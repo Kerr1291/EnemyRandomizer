@@ -22,6 +22,8 @@ Here's how to resolve them:
 
 Now if you open up EnemyRandomizer.cs, you should see no errors.
 
+Note: install_built.bat is currently set to run as a post-build step. Open the file and configure "MOD_DEST" to automatically copy in the dll to your game's mod path after building.
+
 ### Debugging
 
 Printf-style debugging is done through calls to `Modding.ModHooks.ModLog()`,
