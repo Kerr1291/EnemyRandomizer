@@ -2,6 +2,8 @@
 
 This is a mod for [Hollow Knight](http://hollowknight.com/) that randomizes the Enemies.
 
+This mod is still in the early stages of development! There are several things that are incomplete and/or will softlock a game. Use at your own risk!
+
 ## Dependencies
 
 This mod depends on the Modding API by Seanpr and Firzen, which is a modified `Assembly-CSharp.dll`.
