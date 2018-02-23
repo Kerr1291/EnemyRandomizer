@@ -14,7 +14,14 @@ using UnityEngine;
 /*
  * Top TODOs:
  * 
- * NEXT: make enemies randomized selection be based on a seed so it's always the same
+ * 0. Create more rando UI
+ * 
+ * 1. get rotated enemies to orient to the walls/cieling
+ * 
+ * 2. find a way to serialize playmaker fsms....
+ * 
+ * 3. test rando for softlocks && bugs
+ * 
  * 
  * try something with this to kill enemies
             //FSMUtility.LocateFSM( enemy, "health_manager_enemy" ).SetState( "Decrement Health" );
@@ -25,6 +32,10 @@ namespace EnemyRandomizerMod
 {
     public partial class EnemyRandomizer : Mod<EnemyRandomizerSettings>, ITogglableMod
     {
+        //TODO: allow a user configurable option for this
+        //the user configurable seed for the randomizer
+        int loadedBaseSeed = -1;
+
         bool randomizerReady = false;
 
         public static EnemyRandomizer Instance { get; private set; }
@@ -65,6 +76,9 @@ namespace EnemyRandomizerMod
         {
             if( databaseGenerated )
                 randomizerReady = true;
+
+            //FOR TESTING 
+            loadedBaseSeed = 100;
         }
 
         public override void Initialize()

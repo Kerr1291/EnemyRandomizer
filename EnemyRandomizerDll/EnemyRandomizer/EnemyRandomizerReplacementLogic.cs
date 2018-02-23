@@ -10,14 +10,208 @@ using Modding;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
+using nv;
+
 namespace EnemyRandomizerMod
 {
     public partial class EnemyRandomizer
     {
+        RNG replacementRNG;
 
+        //TODO: allow a user configurable option for this
+        //set to false then the seed will be based on the type of enemy we're going to randomize
+        //this will make each enemy type randomize into the same kind of enemy
+        //if set to true, it also disables roomRNG and all enemies will be totally randomized
+        bool chaosRNG = false;
+
+        //TODO: allow a user configurable option for this
+        //if roomRNG is enabled, then we will also offset the seed based on the room's hash code
+        //this will cause enemy types within the same room to be randomized the same
+        //Example: all Spitters could be randomized into Flys in one room, and Fat Flys in another
+        bool roomRNG = true;
+
+        //TODO: allow a user configurable option for this
+        //if enabled, this will NOT skip disabled game objects while looking for things to randomize
+        //as a result, you may end up with a lot more enemies in some areas...
+        bool randomizeDisabledEnemies = false;
+
+        string currentScene = "";
         string randoEnemyNamePrefix = "Rando Enemy: ";
         nv.Contractor randomEnemyLocator = new nv.Contractor();
         IEnumerator randomizerReplacer = null;
+
+        void InitReplacementLogicForScene(string scene)
+        {
+            if( replacementRNG == null )
+            {
+                //only really matters if chaosRNG is enabled...
+                if( loadedBaseSeed >= 0 )
+                    replacementRNG = new RNG( loadedBaseSeed );
+                else
+                    replacementRNG = new RNG();
+            }
+        }
+
+        void StartRandomEnemyLocator( Scene from, Scene to )
+        {
+            Log( "Transitioning FROM [" + from.name + "] TO [" + to.name + "]" );
+            if( !randomizerReady )
+                return;
+
+            //ignore randomizing on scenes that aren't normal game world scenes
+            if( to.buildIndex != 7 && (to.buildIndex <= 36 || to.buildIndex > 362) )
+                return;
+
+            currentScene = to.name;
+
+            InitReplacementLogicForScene( to.name );
+
+            randomEnemyLocator.Reset();
+                        
+            Log( "Starting the replacer which will search the scene for enemies and randomize them!" );
+            randomizerReplacer = DoLocateAndRandomizeEnemies();
+
+            restartDelay = 0f;
+            nextRestartDelay = baseRestartDelay;
+
+            randomEnemyLocator.OnUpdate = LocateAndRandomizeEnemies;
+            randomEnemyLocator.Looping = true;
+            randomEnemyLocator.SetUpdateRate( nv.Contractor.UpdateRateType.Frame );
+
+
+            //float randomEnemyLocatorDelayTimer = 1f;
+            //randomEnemyLocator.OnComplete = LocateAndRandomizeEnemies;
+            //randomEnemyLocator.Duration = randomEnemyLocatorDelayTimer;
+
+            randomEnemyLocator.Start();
+        }
+
+        float baseRestartDelay = 1f;
+        float nextRestartDelay = 1f;
+        float restartDelay = 0f;
+        void LocateAndRandomizeEnemies()
+        {
+            if( randomizerReplacer != null && !randomizerReplacer.MoveNext() )
+            {
+                Log( "end of iterator or iterator became null" );
+                randomEnemyLocator.Reset();
+            }
+
+            if( randomizerReplacer != null && ( randomizerReplacer.Current as bool? ) == false )
+            {
+                Log( "iterator returned false" );
+                //randomEnemyLocator.Reset();
+                randomizerReplacer = null;
+            }
+
+            if( randomizerReplacer == null )
+            {
+                if( restartDelay <= 0 )
+                {
+                    restartDelay = nextRestartDelay;
+                    nextRestartDelay = nextRestartDelay * 2f;
+                    //restart iterator, every time it restarts, lets turn up the cooldown on restarting
+                    randomizerReplacer = DoLocateAndRandomizeEnemies();
+                }
+                else
+                {
+                    restartDelay -= Time.deltaTime;
+                }
+            }
+        }
+
+        IEnumerator DoLocateAndRandomizeEnemies()
+        {
+            //wait until all scenes are loaded
+            for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; )
+            {
+                bool status = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isLoaded;
+                if( !status )
+                {
+                    i = 0;
+                    yield return null;
+                }
+                else
+                {
+                    ++i;
+                }
+            }
+
+            //iterate over the loaded scenes
+            for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
+            {
+                //iterate over the loaded game objects
+                GameObject[] rootGameObjects = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).GetRootGameObjects();
+
+                //bool printed = false;
+                foreach( GameObject rootGameObject in rootGameObjects )
+                {
+                    //and their children
+                    if( rootGameObject == null )
+                    {
+                        Log( "Scene "+i+" has a null root game object! Skipping scene..." );
+                        break; 
+                    }
+
+                    //if(!printed)
+                    //{
+                    //    printed = true;
+                    //    DebugPrintAllObjects( UnityEngine.SceneManagement.SceneManager.GetSceneAt( i ).name );
+                    //}
+
+                    if( rootGameObject.name == ModRoot.name )
+                    {
+                        continue;
+                    }
+
+                    //Log( "searching root: " + rootGameObject.name );
+
+                    int counter = 0;
+                    foreach( Transform t in rootGameObject.GetComponentsInChildren<Transform>( true ) )
+                    {
+                        counter++;
+                        string name = t.gameObject.name;
+
+                        if( counter % 100 == 0 )
+                            yield return true;
+
+                        //Log( "potential rando enemy Name = " + name );
+
+                        //don't replace null/destroyed game objects
+                        if( !randomizeDisabledEnemies )
+                        {
+                            if( t == null || t.gameObject == null )
+                                continue;
+                        }
+
+                        //don't replace inactive game objects
+                        if( !t.gameObject.activeInHierarchy )
+                            continue;
+
+                        if( SkipLoadingGameObject( name ) )
+                            continue;
+
+                        //skip child components of randomized enemies
+                        foreach( Transform p in t.GetComponentsInParent<Transform>( true ) )
+                        {
+                            if( p.name.Contains( "Rando" ) )
+                                continue;
+                        }
+
+                        GameObject potentialEnemy = t.gameObject;
+
+                        bool isRandoEnemy = IsRandoEnemyType(potentialEnemy);
+                        if( isRandoEnemy )
+                            RandomizeEnemy( potentialEnemy );
+                    }
+
+                    yield return true;
+                }
+            }
+            
+            randomizerReplacer = null;
+            yield return false;
+        }
 
         void OnLoadObjectCollider( GameObject potentialEnemy )
         {
@@ -32,7 +226,7 @@ namespace EnemyRandomizerMod
         void RandomizeEnemy( GameObject enemy )
         {
             //this failsafe is needed here in the case where we have exceptional things that should NOT be randomized
-            if( SkipRandomizeEnemy(enemy.name) )
+            if( SkipRandomizeEnemy( enemy.name ) )
             {
                 //Log( "Exceptional case found in SkipRandomizeEnemy() -- Skipping randomization for: " + enemy.name );
                 return;
@@ -45,122 +239,6 @@ namespace EnemyRandomizerMod
             GameObject replacement = GetRandomEnemyReplacement(enemy, ref randomReplacementIndex);
             ReplaceEnemy( enemy, replacement, randomReplacementIndex );
         }
-
-        public class FLAGS
-        {
-            static public int GROUND = 1;
-            static public int FLYING = 2;
-            static public int SMALL = 4;
-            static public int MED = 8;
-            static public int BIG = 16;
-            static public int WALL = 32;
-            static public int HARD = 64;
-        }
-
-        int GetTypeFlags( string enemy )
-        {
-            bool isGround = IsExactlyInList(enemy, EnemyRandoData.groundEnemyTypeNames);
-            bool isFlying = IsExactlyInList(enemy, EnemyRandoData.flyerEnemyTypeNames);
-            bool isSmall = IsExactlyInList(enemy, EnemyRandoData.smallEnemyTypeNames);
-            bool isMed = IsExactlyInList(enemy, EnemyRandoData.mediumEnemyTypeNames);
-            bool isLarge = IsExactlyInList(enemy, EnemyRandoData.bigEnemyTypeNames);
-            bool isWall = IsExactlyInList(enemy, EnemyRandoData.wallEnemyTypeNames);
-            bool isHard = IsExactlyInList(enemy, EnemyRandoData.hardEnemyTypeNames);
-
-            int flags = 0;
-            flags |= ( isGround ? 1 : 0 ) << 0;
-            flags |= ( isFlying ? 1 : 0 ) << 1;
-            flags |= ( isSmall ? 1 : 0 ) << 2;
-            flags |= ( isMed ? 1 : 0 ) << 3;
-            flags |= ( isLarge ? 1 : 0 ) << 4;
-            flags |= ( isWall ? 1 : 0 ) << 5;
-            flags |= ( isHard ? 1 : 0 ) << 6;
-
-            return flags;
-        }
-
-        int GetTypeFlags( GameObject enemy )
-        {
-            int flags = GetTypeFlags(enemy.name);
-
-            return flags;
-        }
-
-        bool HasSameType( int flagsA, int flagsB )
-        {
-            if( ( flagsA & FLAGS.GROUND ) > 0 && ( flagsB & FLAGS.GROUND ) > 0 )
-            {
-                return true;
-            }
-            if( ( flagsA & FLAGS.FLYING ) > 0 && ( flagsB & FLAGS.FLYING ) > 0 )
-            {
-                return true;
-            }
-            if( ( flagsA & FLAGS.WALL ) > 0 && ( flagsB & FLAGS.WALL ) > 0 )
-            {
-                return true;
-            }
-            return false;
-        }
-
-        bool HasSameSize( int flagsA, int flagsB )
-        {
-            if( ( flagsA & FLAGS.SMALL ) > 0 && ( flagsB & FLAGS.SMALL ) > 0 )
-            {
-                return true;
-            }
-            if( ( flagsA & FLAGS.MED ) > 0 && ( flagsB & FLAGS.MED ) > 0 )
-            {
-                return true;
-            }
-            if( ( flagsA & FLAGS.BIG ) > 0 && ( flagsB & FLAGS.BIG ) > 0 )
-            {
-                return true;
-            }
-            return false;
-        }
-
-        GameObject GetRandomEnemyReplacement( GameObject enemy, ref int randomReplacementIndex )
-        {
-            string enemyName = enemy.name;
-            string trimmedName = TrimEnemyNameToBeLoaded(enemyName);
-            int enemyFlags = GetTypeFlags(trimmedName);
-
-            //search for a compatible replacement
-            int randomReplacement = -1;
-            while( randomReplacement < 0 )
-            {
-                int temp = UnityEngine.Random.Range(0, loadedEnemyPrefabs.Count);
-
-                GameObject tempPrefab = loadedEnemyPrefabs[temp];
-                string tempName = loadedEnemyPrefabNames[temp];
-
-                int tempFlags = GetTypeFlags(tempName);
-                bool isValid = false;
-
-                if( HasSameType( enemyFlags, tempFlags ) )
-                {
-                    if( HasSameSize( enemyFlags, tempFlags ) )
-                        isValid = true;
-                }
-
-                if( ( enemyFlags & FLAGS.WALL ) > 0 && ( tempFlags & FLAGS.WALL ) > 0 )
-                {
-                    isValid = true;
-                }
-
-                if( isValid )
-                    randomReplacement = temp;
-            }
-
-            randomReplacementIndex = randomReplacement;
-
-            GameObject prefab = loadedEnemyPrefabs[randomReplacement];
-            Log( "Spawning rando monster: " + prefab.name + " from index " + randomReplacement + " out of " + loadedEnemyPrefabs.Count + " to replace " + enemy.name );
-            return prefab;
-        }
-
-
 
         void ReplaceEnemy( GameObject oldEnemy, GameObject replacementPrefab, int prefabIndex )
         {
@@ -311,158 +389,139 @@ namespace EnemyRandomizerMod
             newEnemy.transform.rotation = oldEnemy.transform.rotation;
         }
 
-        void StartRandomEnemyLocator( Scene from, Scene to )
+
+
+        public class FLAGS
         {
-            Log( "Transitioning FROM [" + from.name + "] TO [" + to.name + "]" );
-            if( !randomizerReady )
-                return;
-
-            //ignore randomizing on scenes that aren't in-game scenes
-            if( to.buildIndex <= 36 || to.buildIndex > 362 )
-                return;
-
-            randomEnemyLocator.Reset();
-                        
-            Log( "Starting the replacer which will search the scene for enemies and randomize them!" );
-            randomizerReplacer = DoLocateAndRandomizeEnemies();
-
-            restartDelay = 0f;
-            nextRestartDelay = baseRestartDelay;
-
-            randomEnemyLocator.OnUpdate = LocateAndRandomizeEnemies;
-            randomEnemyLocator.Looping = true;
-            randomEnemyLocator.SetUpdateRate( nv.Contractor.UpdateRateType.Frame );
-
-
-            //float randomEnemyLocatorDelayTimer = 1f;
-            //randomEnemyLocator.OnComplete = LocateAndRandomizeEnemies;
-            //randomEnemyLocator.Duration = randomEnemyLocatorDelayTimer;
-
-            randomEnemyLocator.Start();
+            static public int GROUND = 1;
+            static public int FLYING = 2;
+            static public int SMALL = 4;
+            static public int MED = 8;
+            static public int BIG = 16;
+            static public int WALL = 32;
+            static public int HARD = 64;
         }
 
-        float baseRestartDelay = 1f;
-        float nextRestartDelay = 1f;
-        float restartDelay = 0f;
-        void LocateAndRandomizeEnemies()
+        int GetTypeFlags( string enemy )
         {
-            if( randomizerReplacer != null && !randomizerReplacer.MoveNext() )
-            {
-                Log( "end of iterator or iterator became null" );
-                randomEnemyLocator.Reset();
-            }
+            bool isGround = IsExactlyInList(enemy, EnemyRandoData.groundEnemyTypeNames);
+            bool isFlying = IsExactlyInList(enemy, EnemyRandoData.flyerEnemyTypeNames);
+            bool isSmall = IsExactlyInList(enemy, EnemyRandoData.smallEnemyTypeNames);
+            bool isMed = IsExactlyInList(enemy, EnemyRandoData.mediumEnemyTypeNames);
+            bool isLarge = IsExactlyInList(enemy, EnemyRandoData.bigEnemyTypeNames);
+            bool isWall = IsExactlyInList(enemy, EnemyRandoData.wallEnemyTypeNames);
+            bool isHard = IsExactlyInList(enemy, EnemyRandoData.hardEnemyTypeNames);
 
-            if( randomizerReplacer != null && ( randomizerReplacer.Current as bool? ) == false )
-            {
-                Log( "iterator returned false" );
-                //randomEnemyLocator.Reset();
-                randomizerReplacer = null;
-            }
+            int flags = 0;
+            flags |= ( isGround ? 1 : 0 ) << 0;
+            flags |= ( isFlying ? 1 : 0 ) << 1;
+            flags |= ( isSmall ? 1 : 0 ) << 2;
+            flags |= ( isMed ? 1 : 0 ) << 3;
+            flags |= ( isLarge ? 1 : 0 ) << 4;
+            flags |= ( isWall ? 1 : 0 ) << 5;
+            flags |= ( isHard ? 1 : 0 ) << 6;
 
-            if( randomizerReplacer == null )
-            {
-                if( restartDelay <= 0 )
-                {
-                    restartDelay = nextRestartDelay;
-                    nextRestartDelay = nextRestartDelay * 2f;
-                    //restart iterator, every time it restarts, lets turn up the cooldown on restarting
-                    randomizerReplacer = DoLocateAndRandomizeEnemies();
-                }
-                else
-                {
-                    restartDelay -= Time.deltaTime;
-                }
-            }
+            return flags;
         }
 
-        IEnumerator DoLocateAndRandomizeEnemies()
+        int GetTypeFlags( GameObject enemy )
         {
-            //wait until all scenes are loaded
-            for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; )
+            int flags = GetTypeFlags(enemy.name);
+
+            return flags;
+        }
+
+        bool HasSameType( int flagsA, int flagsB )
+        {
+            if( ( flagsA & FLAGS.GROUND ) > 0 && ( flagsB & FLAGS.GROUND ) > 0 )
             {
-                bool status = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isLoaded;
-                if( !status )
-                {
-                    i = 0;
-                    yield return null;
-                }
-                else
-                {
-                    ++i;
-                }
+                return true;
             }
-
-            //iterate over the loaded scenes
-            for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
+            if( ( flagsA & FLAGS.FLYING ) > 0 && ( flagsB & FLAGS.FLYING ) > 0 )
             {
-                //iterate over the loaded game objects
-                GameObject[] rootGameObjects = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).GetRootGameObjects();
-
-                //bool printed = false;
-                foreach( GameObject rootGameObject in rootGameObjects )
-                {
-                    //and their children
-                    if( rootGameObject == null )
-                    {
-                        Log( "Scene "+i+" has a null root game object! Skipping scene..." );
-                        break; 
-                    }
-
-                    //if(!printed)
-                    //{
-                    //    printed = true;
-                    //    DebugPrintAllObjects( UnityEngine.SceneManagement.SceneManager.GetSceneAt( i ).name );
-                    //}
-
-                    if( rootGameObject.name == ModRoot.name )
-                    {
-                        continue;
-                    }
-
-                    //Log( "searching root: " + rootGameObject.name );
-
-                    int counter = 0;
-                    foreach( Transform t in rootGameObject.GetComponentsInChildren<Transform>( true ) )
-                    {
-                        counter++;
-                        string name = t.gameObject.name;
-
-                        if( counter % 100 == 0 )
-                            yield return true;
-
-                        //Log( "potential rando enemy Name = " + name );
-
-                        //don't replace null/destroyed game objects
-                        if( t == null || t.gameObject == null )
-                            continue;
-
-                        //don't replace inactive game objects
-                        if( !t.gameObject.activeInHierarchy )
-                            continue;
-
-                        if( SkipLoadingGameObject( name ) )
-                            continue;
-
-                        //skip child components of randomized enemies
-                        foreach( Transform p in t.GetComponentsInParent<Transform>( true ) )
-                        {
-                            if( p.name.Contains( "Rando" ) )
-                                continue;
-                        }
-
-                        GameObject potentialEnemy = t.gameObject;
-
-                        bool isRandoEnemy = IsRandoEnemyType(potentialEnemy);
-                        if( isRandoEnemy )
-                            RandomizeEnemy( potentialEnemy );
-                    }
-
-                    yield return true;
-                }
+                return true;
             }
+            if( ( flagsA & FLAGS.WALL ) > 0 && ( flagsB & FLAGS.WALL ) > 0 )
+            {
+                return true;
+            }
+            return false;
+        }
+
+        bool HasSameSize( int flagsA, int flagsB )
+        {
+            if( ( flagsA & FLAGS.SMALL ) > 0 && ( flagsB & FLAGS.SMALL ) > 0 )
+            {
+                return true;
+            }
+            if( ( flagsA & FLAGS.MED ) > 0 && ( flagsB & FLAGS.MED ) > 0 )
+            {
+                return true;
+            }
+            if( ( flagsA & FLAGS.BIG ) > 0 && ( flagsB & FLAGS.BIG ) > 0 )
+            {
+                return true;
+            }
+            return false;
+        }
+
+        GameObject GetRandomEnemyReplacement( GameObject enemy, ref int randomReplacementIndex )
+        {
+            string enemyName = enemy.name;
+            string trimmedName = TrimEnemyNameToBeLoaded(enemyName);
+            int enemyFlags = GetTypeFlags(trimmedName);
             
-            randomizerReplacer = null;
-            yield return false;
+            //if not set, enemy replacements will be completely random
+            if( !chaosRNG )
+            {
+                //set the seed based on the type of enemy we're going to randomize
+                //this "should" make each enemy type randomize into the same kind of enemy
+                int stringHashValue = trimmedName.GetHashCode();
+                replacementRNG.Seed = stringHashValue + loadedBaseSeed;
+                
+                //if roomRNG is enabled, then we will also offset the seed based on the room's hash code
+                //this will cause enemy types within the same room to be randomized the same
+                //Example: all Spitters could be randomized into Flys in one room, and Fat Flys in another
+                if( roomRNG )
+                {
+                    int sceneHashValue = currentScene.GetHashCode();
+                    replacementRNG.Seed = stringHashValue + loadedBaseSeed + sceneHashValue;
+                }
+            }
+
+            //search for a compatible replacement
+            int randomReplacement = -1;
+            while( randomReplacement < 0 )
+            {
+                //int temp = UnityEngine.Random.Range(0, loadedEnemyPrefabs.Count);
+                int temp = replacementRNG.Rand(loadedEnemyPrefabs.Count-1);
+
+                GameObject tempPrefab = loadedEnemyPrefabs[temp];
+                string tempName = loadedEnemyPrefabNames[temp];
+
+                int tempFlags = GetTypeFlags(tempName);
+                bool isValid = false;
+
+                if( HasSameType( enemyFlags, tempFlags ) )
+                {
+                    if( HasSameSize( enemyFlags, tempFlags ) )
+                        isValid = true;
+                }
+
+                if( ( enemyFlags & FLAGS.WALL ) > 0 && ( tempFlags & FLAGS.WALL ) > 0 )
+                {
+                    isValid = true;
+                }
+
+                if( isValid )
+                    randomReplacement = temp;
+            }
+
+            randomReplacementIndex = randomReplacement;
+
+            GameObject prefab = loadedEnemyPrefabs[randomReplacement];
+            Log( "Spawning rando monster: " + prefab.name + " from index " + randomReplacement + " out of " + loadedEnemyPrefabs.Count + " to replace " + enemy.name );
+            return prefab;
         }
     }
 }
