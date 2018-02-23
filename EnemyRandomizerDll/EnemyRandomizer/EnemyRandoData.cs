@@ -7,61 +7,9 @@ namespace EnemyRandomizerMod
 {
     public class EnemyRandoData
     {
-
         /*
          * 
          *  NOTES
-         *  
-         *  scene 36 isn't loading anything???
-            "Bursting Zombie",//36
-            "Mender Bug",//36
-         *  
-         *  scene 58 seems to be useless???
-         *  
-         *  scene 127 isn't loading anything???
-            "Plant Turret", //127
-            "Acid Walker", //127
-         *  
-         *  
-         *  scene 276 isn't loading anything???
-            "Tiny Spider", //276
-         *  
-         *  
-         *  
-         *  //missed monster list:
-         *  
-         *  all crawlers in crossroads entrance didn't get randomized
-         *  angry buzzer in crossroads entrance didn't get randomized
-         *    ---didn't get detected with the FSM detection trick, add a unique exception for:
-         *       Angry Buzzer
-         *       Climber
-         *       Crawler
-         *       Zombie Guard
-         *       Spitter
-         *       Buzzer
-         *       Crystal Crawler
-         *       Crystallised Lazer Bug
-         *       Laser Turret
-         *       Mines Crawler
-         *       Crystal Flyer
-         *       Abyss Crawler
-         *       Parasite Balloon (3)
-         *       Mawlek Turret
-         *       Spider Mini
-         *       Spider Flyer
-         *       Big Centipede
-         *       Moss Flyer
-         *       Acid Walker
-         *       Pidgeon
-         *       Mantis Heavy Flyer
-         *       Jellyfish Baby
-         *       Jellyfish
-         *       Fungus Flyer
-         *       Mushroom Turret
-         *       Mushroom Roller  --WAHW guy
-         *       Mushroom Brawler
-         *       Mantis
-         *       Mantis Flyer Child
          * 
          * 
          * --needs more space (above it) when it spawns
@@ -134,13 +82,13 @@ namespace EnemyRandomizerMod
          * --bug: big bee replaced mage knight
          * --spider flyer didn't get randomized
          * --bug? mantis heavy flyer is a ground thing?
-         * --crystal guardian will have to be removed, it causes the camera to pan way off to the side on activation
+         * --crystal guardian will have to be removed or have its camera effect fixed, it causes the camera to pan way off to the side on activation
          * 
          * 
          * --mage blob replaced the zombie guard by grub?
          * --mage knight seems to have spawning issue, need to experiement with it more
          * 
-         * 
+         * --removed mender bug as he was always showing up as disabled
          * 
          * 
          * 
@@ -149,18 +97,6 @@ namespace EnemyRandomizerMod
          * 
          * 
          * 
-[INFO]:[EnemyRandomizer] - Enemies not loaded:
-[INFO]:[EnemyRandomizer] - Missing type: Mender Bug
-[INFO]:[EnemyRandomizer] - Missing type: Ruins Flying Sentry Javelin
-[INFO]:[EnemyRandomizer] - Missing type: Ruins Flying Sentry
-[INFO]:[EnemyRandomizer] - Missing type: Acid Flyer
-[INFO]:[EnemyRandomizer] - Missing type: Fungus Flyer
-[INFO]:[EnemyRandomizer] - Missing type: Mantis Flyer Child
-[INFO]:[EnemyRandomizer] - Missing type: Moss Flyer
-[INFO]:[EnemyRandomizer] - Missing type: Lazy Flyer Enemy
-[INFO]:[EnemyRandomizer] - Missing type: Crystal Flyer
-[INFO]:[EnemyRandomizer] - Missing type: Spider Flyer
-[INFO]:[EnemyRandomizer] - Missing type: Inflater
          * 
          * 
          * 
@@ -172,6 +108,7 @@ namespace EnemyRandomizerMod
 
 
         /*
+         * Tutorial: 7 
          * Crossroads: Scenes 38-80         * 
          * Ruins_House (city of tears internal): 81-85  
          * Ruins (City of tears): 86 - 116
@@ -190,11 +127,13 @@ namespace EnemyRandomizerMod
 
         public static List<int> enemyTypeScenes = new List<int>()
         {
+            7,//tutorial scene
             28,
             33,
             34,
             35,
             36,
+            //38,//mender bug
             40,
             41,
             46,
@@ -207,29 +146,36 @@ namespace EnemyRandomizerMod
             74,
             76,
             82,
-            90,
+            88,//Ruins Flying Sentry
+            90,//(should have Ruins Flying Sentry Javelin (2) )
             97,
             102,
             106,
             115,
             117,
             121,
-            126,
+            126,//(should have Acid Flyer???)
             127,
+            135,//should have Fat Fly???
             137,
+            142,//lazy flyer enemy
             144,
             146,
             155,
             158,
+            164,//(Mantis Flyer Child)
             166,
             167,
             177,
+            181,//(fungus flyer)
             183,
+            186,//(moss flyer)
             189,
             194,
             204,
             208,
             226,
+            232,//(crystal flyer)
             234,
             241,
             243,
@@ -237,12 +183,13 @@ namespace EnemyRandomizerMod
             259,
             269,
             271,
-            276,
+            276,//(supposed to have spider flyer)
             285,
             302,
             313,
             320,
             321,
+            326,//(Inflater)
             327,
             331,
             336,
@@ -277,7 +224,7 @@ namespace EnemyRandomizerMod
             "Giant Fly Col",//34 
             //"Giant Fly",// (gruz mother, it starts sleeping and looks weird...)
             //"Fly Spawn",
-            "Fat Fly", //146 
+            "Fat Fly", //146 --doesn't seem to be here? --try scene 135???
             "Blow Fly", //285
             //"Fluke Fly Spawner", //
             "Fluke Fly", //327
@@ -314,7 +261,7 @@ namespace EnemyRandomizerMod
 
             //Crossroads
             "Bursting Zombie",//36
-            "Mender Bug",//36
+            //"Mender Bug",//38?(not 36?)
             
             "Fung Crawler", //158
             "Mines Crawler", //243
@@ -551,7 +498,7 @@ namespace EnemyRandomizerMod
             "Mawlek Col",//35 ??? might be same as lesser mawlek
             "Mawlek Body", //46 (BOSS)
             "Bursting Zombie",//36
-            "Mender Bug",//36
+            //"Mender Bug",//38?(not 36?)
             "Fung Crawler", //158
             "Mines Crawler", //243
             "Crystal Crawler", //243
@@ -666,7 +613,7 @@ namespace EnemyRandomizerMod
             "Lesser Mawlek",//35
             "Mawlek Col",//35 ??? might be same as lesser mawlek
             "Bursting Zombie",//36
-            "Mender Bug",//36
+            //"Mender Bug",//38?(not 36?)
             "Crystal Crawler", //243
             "Zombie Hornhead Sp", //271
             "Zombie Hornhead", //41 (Giant Fly = boss)
