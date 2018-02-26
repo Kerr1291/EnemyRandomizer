@@ -10,6 +10,8 @@ using Modding;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
+using EnemyRandomizerMod.Menu;
+
 namespace EnemyRandomizerMod
 {
     public partial class EnemyRandomizer
@@ -24,6 +26,19 @@ namespace EnemyRandomizerMod
 
         GameObject menu = null;
         UnityEngine.UI.Slider loadingBar = null;
+
+        RandomizerMenu settingsMenu;
+
+        void LoadConfigUI()
+        {
+            settingsMenu = new RandomizerMenu();
+        }
+
+        void RestoreUI()
+        {
+            menu = null;
+            loadingBar = null;
+        }
 
         void ToggleBuildRandoDatabaseUI( Scene from, Scene to )
         {

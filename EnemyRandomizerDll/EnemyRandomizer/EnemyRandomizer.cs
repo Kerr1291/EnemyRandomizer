@@ -10,6 +10,8 @@ using Modding;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
+using nv;
+
 
 /*
  * Top TODOs:
@@ -30,11 +32,23 @@ using UnityEngine;
 
 namespace EnemyRandomizerMod
 {
-    public partial class EnemyRandomizer : Mod<EnemyRandomizerSettings>, ITogglableMod
+    public partial class EnemyRandomizer : Mod<EnemyRandomizerSettings, EnemyRandomizerSettings>, ITogglableMod
     {
         //TODO: allow a user configurable option for this
         //the user configurable seed for the randomizer
         int loadedBaseSeed = -1;
+        public int LoadedBaseSeed {
+            get {
+                return loadedBaseSeed;
+            }
+            set {
+                if( randomizerReady && Settings != null )
+                    Settings.BaseSeed = value;
+                if( GlobalSettings != null )
+                    GlobalSettings.BaseSeed = value;
+                loadedBaseSeed = value;
+            }
+        }
 
         bool randomizerReady = false;
 
@@ -67,18 +81,61 @@ namespace EnemyRandomizerMod
             }
         }
 
-        void EnableEnemyRandomizerFromSave( int id )
+        //Called when loading a save game
+        void TryEnableEnemyRandomizerFromSave( SaveGameData data )
         {
-            EnableEnemyRandomizer();
+            if( !databaseGenerated )
+                return;
+
+            randomizerReady = true;
+
+            Log( "Before: "+loadedBaseSeed );
+
+            //TODO: Make sure this is happening!
+            loadedBaseSeed = Settings.BaseSeed;
+
+            Log( "After: " + loadedBaseSeed );
+            chaosRNG = Settings.RNGChaosMode;
+            roomRNG = Settings.RNGRoomMode;
+            randomizeDisabledEnemies = Settings.RandomizeDisabledEnemies;
         }
 
-        void EnableEnemyRandomizer()
+        //Call from New Game
+        void TryEnableEnemyRandomizer()
         {
-            if( databaseGenerated )
-                randomizerReady = true;
+            if( !databaseGenerated )
+                return;
 
-            //FOR TESTING 
-            loadedBaseSeed = 100;
+            randomizerReady = true;
+
+            LoadedBaseSeed = GlobalSettings.BaseSeed;
+            ChaosRNG = GlobalSettings.RNGChaosMode;
+            RoomRNG = GlobalSettings.RNGRoomMode;
+            RandomizeDisabledEnemies = GlobalSettings.RandomizeDisabledEnemies;
+        }
+
+        //call when returning to the main menu
+        void DisableEnemyRandomizer()
+        {
+            randomizerReady = false;
+            RestoreLogic();
+        }
+
+        void SetupDefaultGlobalSettings()
+        {
+            string globalSettingsFilename = Application.persistentDataPath + ModHooks.PathSeperator + GetType().Name + ".GlobalSettings.json";
+
+            //TODO: while debugging, always reload the defaults
+            //if( !File.Exists( globalSettingsFilename ) )
+            {
+                Log( "Global settings file not found, generating new one... File not found: " + globalSettingsFilename );
+                //setup default global settings
+                LoadedBaseSeed = GameRNG.Randi();
+                ChaosRNG = false;
+                RoomRNG = false;
+                RandomizeDisabledEnemies = false;
+                SaveGlobalSettings();
+            }
         }
 
         public override void Initialize()
@@ -91,28 +148,30 @@ namespace EnemyRandomizerMod
 
             Instance = this;
 
+            SetupDefaultGlobalSettings();
+
             Log("Enemy Randomizer Mod initializing!");
 
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= ToggleBuildRandoDatabaseUI;
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged += ToggleBuildRandoDatabaseUI;
 
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= StartRandomEnemyLocator;
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += StartRandomEnemyLocator;
-            
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += StartRandomEnemyLocator;            
 
+            //TODO: may not be needed anymore...??
             ModHooks.Instance.ColliderCreateHook -= OnLoadObjectCollider;
             ModHooks.Instance.ColliderCreateHook += OnLoadObjectCollider;
 
-            ModHooks.Instance.SavegameLoadHook -= EnableEnemyRandomizerFromSave;
-            ModHooks.Instance.SavegameLoadHook += EnableEnemyRandomizerFromSave;
+            ModHooks.Instance.AfterSavegameLoadHook -= TryEnableEnemyRandomizerFromSave;
+            ModHooks.Instance.AfterSavegameLoadHook += TryEnableEnemyRandomizerFromSave;
 
-            ModHooks.Instance.NewGameHook -= EnableEnemyRandomizer;
-            ModHooks.Instance.NewGameHook += EnableEnemyRandomizer;
+            ModHooks.Instance.NewGameHook -= TryEnableEnemyRandomizer;
+            ModHooks.Instance.NewGameHook += TryEnableEnemyRandomizer;
 
             ModHooks.Instance.SlashHitHook -= Debug_PrintObjectOnHit;
             ModHooks.Instance.SlashHitHook += Debug_PrintObjectOnHit;
 
-            //ModHooks.Instance.DashPressedHook += StartLoad; //used for testing
+            LoadConfigUI();
         }
 
         public void Unload()
@@ -123,8 +182,8 @@ namespace EnemyRandomizerMod
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= StartRandomEnemyLocator;
 
             ModHooks.Instance.ColliderCreateHook -= OnLoadObjectCollider;
-            ModHooks.Instance.SavegameLoadHook -= EnableEnemyRandomizerFromSave;
-            ModHooks.Instance.NewGameHook -= EnableEnemyRandomizer;
+            ModHooks.Instance.AfterSavegameLoadHook -= TryEnableEnemyRandomizerFromSave;
+            ModHooks.Instance.NewGameHook -= TryEnableEnemyRandomizer;
             ModHooks.Instance.SlashHitHook -= Debug_PrintObjectOnHit;
 
             ModRoot = null;
@@ -136,25 +195,15 @@ namespace EnemyRandomizerMod
 
             Restore();
         }
-
-        //TODO: split the restore function into functions for each part
+        
         void Restore()
         {
-            currentDatabaseIndex = 0;
-            menu = null;
-            databaseGenerated = false;
-            isLoadingDatabase = false;
-            loadCount = 0;
-            enemyTypes = new Dictionary<string, List<string>>();
-            loadedEnemyPrefabs = new List<GameObject>();
-            loadedEnemyPrefabNames = new List<string>();
-            uniqueEnemyTypes = new List<string>();
-            databaseLoader = new nv.Contractor();
-            loadingBar = null;
             randomizerReady = false;
-            randomEnemyLocator = new nv.Contractor();
-            databaseLoadProgress = 0f;
             recentHit = "";
+
+            RestoreUI();
+            RestoreSetup();
+            RestoreLogic();
         }
 
         public override string GetVersion()

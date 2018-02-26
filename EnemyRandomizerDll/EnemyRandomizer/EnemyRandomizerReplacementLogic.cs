@@ -23,37 +23,77 @@ namespace EnemyRandomizerMod
         //this will make each enemy type randomize into the same kind of enemy
         //if set to true, it also disables roomRNG and all enemies will be totally randomized
         bool chaosRNG = false;
+        bool ChaosRNG {
+            get {
+                return chaosRNG;
+            }
+            set {
+                if( randomizerReady && Settings != null )
+                    Settings.RNGChaosMode = value;
+                if( GlobalSettings != null )
+                    GlobalSettings.RNGChaosMode = value;
+                chaosRNG = value;
+            }
+        }
 
         //TODO: allow a user configurable option for this
         //if roomRNG is enabled, then we will also offset the seed based on the room's hash code
         //this will cause enemy types within the same room to be randomized the same
         //Example: all Spitters could be randomized into Flys in one room, and Fat Flys in another
         bool roomRNG = true;
+        bool RoomRNG {
+            get {
+                return roomRNG;
+            }
+            set {
+                if( randomizerReady && Settings != null )
+                    Settings.RNGRoomMode = value;
+                if( GlobalSettings != null )
+                    GlobalSettings.RNGRoomMode = value;
+                roomRNG = value;
+            }
+        }
 
         //TODO: allow a user configurable option for this
         //if enabled, this will NOT skip disabled game objects while looking for things to randomize
         //as a result, you may end up with a lot more enemies in some areas...
         bool randomizeDisabledEnemies = false;
+        bool RandomizeDisabledEnemies {
+            get {
+                return randomizeDisabledEnemies;
+            }
+            set {
+                if( randomizerReady && Settings != null )
+                    Settings.RandomizeDisabledEnemies = value;
+                if( GlobalSettings != null )
+                    GlobalSettings.RandomizeDisabledEnemies = value;
+                randomizeDisabledEnemies = value;
+            }
+        }
 
         string currentScene = "";
         string randoEnemyNamePrefix = "Rando Enemy: ";
         nv.Contractor randomEnemyLocator = new nv.Contractor();
         IEnumerator randomizerReplacer = null;
 
-        void InitReplacementLogicForScene(string scene)
+        float baseRestartDelay = 1f;
+        float nextRestartDelay = 1f;
+        float restartDelay = 0f;
+
+        void RestoreLogic()
         {
-            if( replacementRNG == null )
-            {
-                //only really matters if chaosRNG is enabled...
-                if( loadedBaseSeed >= 0 )
-                    replacementRNG = new RNG( loadedBaseSeed );
-                else
-                    replacementRNG = new RNG();
-            }
+            if( randomEnemyLocator != null )
+                randomEnemyLocator.Reset();
+            randomEnemyLocator = new nv.Contractor();
         }
 
+        //entry point into the replacement logic, started on each scene transition
         void StartRandomEnemyLocator( Scene from, Scene to )
         {
+            //"disable" the randomizer when we enter the title screen, it's enabled when a new game is started or a game is loaded
+            if( to.name == "Menu_Title" )
+                DisableEnemyRandomizer();
+
             Log( "Transitioning FROM [" + from.name + "] TO [" + to.name + "]" );
             if( !randomizerReady )
                 return;
@@ -77,18 +117,22 @@ namespace EnemyRandomizerMod
             randomEnemyLocator.OnUpdate = LocateAndRandomizeEnemies;
             randomEnemyLocator.Looping = true;
             randomEnemyLocator.SetUpdateRate( nv.Contractor.UpdateRateType.Frame );
-
-
-            //float randomEnemyLocatorDelayTimer = 1f;
-            //randomEnemyLocator.OnComplete = LocateAndRandomizeEnemies;
-            //randomEnemyLocator.Duration = randomEnemyLocatorDelayTimer;
-
+            
             randomEnemyLocator.Start();
         }
 
-        float baseRestartDelay = 1f;
-        float nextRestartDelay = 1f;
-        float restartDelay = 0f;
+        void InitReplacementLogicForScene( string scene )
+        {
+            if( replacementRNG == null )
+            {
+                //only really matters if chaosRNG is enabled...
+                if( loadedBaseSeed >= 0 )
+                    replacementRNG = new RNG( loadedBaseSeed );
+                else
+                    replacementRNG = new RNG();
+            }
+        }
+
         void LocateAndRandomizeEnemies()
         {
             if( randomizerReplacer != null && !randomizerReplacer.MoveNext() )

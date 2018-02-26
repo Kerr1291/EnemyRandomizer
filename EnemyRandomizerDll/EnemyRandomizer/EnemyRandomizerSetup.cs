@@ -44,6 +44,22 @@ namespace EnemyRandomizerMod
             }
         }
 
+        void RestoreSetup()
+        {
+            currentDatabaseIndex = 0;
+            databaseGenerated = false;
+            isLoadingDatabase = false;
+
+            databaseLoadProgress = 0f;
+            loadCount = 0;
+
+            enemyTypes = new Dictionary<string, List<string>>();
+            loadedEnemyPrefabs = new List<GameObject>();
+            loadedEnemyPrefabNames = new List<string>();
+            uniqueEnemyTypes = new List<string>();
+            databaseLoader = new nv.Contractor();
+        }
+
         /// <summary>
         /// Initial workhorse funciton. Load all the enemy types in the game.
         /// </summary>

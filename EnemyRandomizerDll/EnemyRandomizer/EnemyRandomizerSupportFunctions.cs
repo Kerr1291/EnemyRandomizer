@@ -144,17 +144,30 @@ namespace EnemyRandomizerMod
             Instance.Log( "END +++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
         }
 
-        public static void DebugPrintObjectTree( GameObject root )
+        public static void DebugPrintObjectTree( GameObject root, bool printComponents = false )
         {
             if( root == null )
+
                 return;
 
             Instance.Log( "DebugPrintObjectTree START =====================================================" );
-            Instance.Log( "Printing scene hierarchy for scene: " + root.name );
+            Instance.Log( "Printing scene hierarchy for game object: " + root.name );
             foreach( Transform t in root.GetComponentsInChildren<Transform>( true ) )
             {
                 string objectNameAndPath = GetObjectPath(t);
                 Instance.Log( objectNameAndPath );
+
+                if( printComponents )
+                {
+                    string componentHeader = "";
+                    for( int i = 0; i < (objectNameAndPath.Length - t.gameObject.name.Length); ++i )
+                        componentHeader += " ";
+
+                    foreach( Component c in t.GetComponents<Component>() )
+                    {
+                        Instance.Log( componentHeader + @" \--Component: " + c.GetType().Name );
+                    }
+                }
             }
             Instance.Log( "DebugPrintObjectTree END +++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
         }
