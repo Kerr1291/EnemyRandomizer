@@ -2,6 +2,8 @@
 
 This is a mod for [Hollow Knight](http://hollowknight.com/) that randomizes the Enemies.
 
+This mod is still in the early stages of development! There are several things that are incomplete and/or will softlock a game. Use at your own risk!
+
 ## Dependencies
 
 This mod depends on the Modding API by Seanpr and Firzen, which is a modified `Assembly-CSharp.dll`.
@@ -21,6 +23,8 @@ Here's how to resolve them:
 5. Add Folder
 
 Now if you open up EnemyRandomizer.cs, you should see no errors.
+
+Note: install_built.bat is currently set to run as a post-build step. Open the file and configure "MOD_DEST" to automatically copy in the dll to your game's mod path after building.
 
 ### Debugging
 
