@@ -222,11 +222,15 @@ namespace EnemyRandomizerMod.Menu
             //SETUP MOD MENU
         }
 
-        void OnCustomString(string seed)
+        void OnCustomSeed(string seed)
         {
-            EnemyRandomizer.Instance.GlobalSettings.IntValues[ "CustomSeed" ] = Int32.Parse( seed );
+            if( seed.Length <= 0 )
+                return;
+
+            //EnemyRandomizer.Instance.GlobalSettings.IntValues[ "CustomSeed" ] = Int32.Parse( seed );
             EnemyRandomizer.Instance.LoadedBaseSeed = Int32.Parse( seed );
             randoSeedMenuItem.OptionList[ 0 ] = seed;
+            randoSeedMenuItem.OptionText.text = seed;
         }
 
         RandomizerFauxMenuOptionHorizontal randoSeedMenuItem;
@@ -239,10 +243,6 @@ namespace EnemyRandomizerMod.Menu
             //TODO: get this key value a cleaner way....
             modOptions.Insert( 0, "BaseSeed" );
             modOptions.Insert( 0, "CustomSeed" );
-
-            Log( "options" );
-            foreach( var s in modOptions )
-                Log( s );
 
             try
             {
@@ -257,7 +257,6 @@ namespace EnemyRandomizerMod.Menu
                         string optionName = modOptions[i];
                         string optionLabel = "No Label";
 
-                        Log( "A" );
                         if( optionName == "CustomSeed" )
                         {
                             customSeedInput = menuItemParent.AddComponent<UnityEngine.UI.InputField>();
@@ -267,15 +266,32 @@ namespace EnemyRandomizerMod.Menu
                             Text t = Object.Instantiate( customSeedInput.textComponent ) as Text;
                             t.transform.SetParent( customSeedInput.transform );
                             customSeedInput.placeholder = t;
-                            t.text = "Click to type a custom seed";
+                            t.horizontalOverflow = HorizontalWrapMode.Overflow;
+                            t.text = "Click to type a custom seed";                            
+                            t.transform.Translate( new Vector3( 500f, 0f, 0f ) );
 
+                            customSeedInput.caretColor = Color.white;
                             customSeedInput.contentType = InputField.ContentType.IntegerNumber;
-                            customSeedInput.onValueChanged.AddListener( OnCustomString );
+                            //customSeedInput.onValueChanged.AddListener( OnCustomSeed );
+                            customSeedInput.onEndEdit.AddListener( OnCustomSeed );
                             customSeedInput.navigation = Navigation.defaultNavigation;
+                            customSeedInput.caretWidth = 8;
+                            customSeedInput.characterLimit = 11;
+
+                            ColorBlock cb = new ColorBlock();
+                            cb.highlightedColor = Color.yellow;
+                            cb.pressedColor = Color.red;
+                            cb.disabledColor = Color.black;
+                            cb.normalColor = Color.white;
+                            cb.colorMultiplier = 2f;
+
+                            customSeedInput.colors = cb;
+                            
 
                             ModOptions[ i ] = customSeedInput;
 
-                            EnemyRandomizer.Instance.GlobalSettings.StringValues.TryGetValue( "CustomSeed", out optionLabel );
+                            optionLabel = "Custom Seed";
+                            //EnemyRandomizer.Instance.GlobalSettings.StringValues.TryGetValue( "CustomSeed", out optionLabel );
                         }
                         else
                         {
@@ -297,6 +313,7 @@ namespace EnemyRandomizerMod.Menu
                                     int seed = nv.GameRNG.Randi();
                                     EnemyRandomizer.Instance.GlobalSettings.IntValues[ optionName ] = seed;
                                     menuItem.OptionList[ 0 ] = seed.ToString();
+                                    customSeedInput.text = "";
                                 }
                                 else
                                 {
@@ -361,7 +378,6 @@ namespace EnemyRandomizerMod.Menu
                         //GameObject.Destroy(localizeUI);
                     }
 
-                    EnemyRandomizer.Instance.Log( "H" );
                     Navigation[] navs = new Navigation[ModOptions.Length];
                     for( int i = 0; i < ModOptions.Length; i++ )
                     {
@@ -375,10 +391,10 @@ namespace EnemyRandomizerMod.Menu
                         ModOptions[ i ].navigation = navs[ i ];
                     }
 
-                    ModMenuScreen.defaultHighlight = ModOptions[ 0 ];
+                    ModMenuScreen.defaultHighlight = ModOptions[ 1 ];
                     Navigation nav2 = Back.navigation;
                     nav2.selectOnUp = ModOptions[ ModOptions.Length - 1 ];
-                    nav2.selectOnDown = ModOptions[ 0 ];
+                    nav2.selectOnDown = ModOptions[ 1 ];
                     Back.navigation = nav2;
                 }
             }

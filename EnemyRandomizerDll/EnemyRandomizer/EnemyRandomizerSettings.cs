@@ -39,13 +39,5 @@ namespace EnemyRandomizerMod
                 SetInt( value );
             }
         }
-
-        public int CustomSeed {
-            get => GetInt( -1 );
-            set {
-                StringValues[ "CustomSeed" ] = "Custom Seed";
-                SetInt( value );
-            }
-        }
     }
 }

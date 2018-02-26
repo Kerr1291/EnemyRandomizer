@@ -16,8 +16,6 @@ using nv;
 /*
  * Top TODOs:
  * 
- * 0. Create more rando UI
- * 
  * 1. get rotated enemies to orient to the walls/cieling
  * 
  * 2. find a way to serialize playmaker fsms....
