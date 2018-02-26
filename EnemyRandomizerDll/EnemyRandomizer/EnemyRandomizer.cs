@@ -124,7 +124,7 @@ namespace EnemyRandomizerMod
             string globalSettingsFilename = Application.persistentDataPath + ModHooks.PathSeperator + GetType().Name + ".GlobalSettings.json";
 
             //TODO: while debugging, always reload the defaults
-            //if( !File.Exists( globalSettingsFilename ) )
+            if( !File.Exists( globalSettingsFilename ) )
             {
                 Log( "Global settings file not found, generating new one... File not found: " + globalSettingsFilename );
                 //setup default global settings

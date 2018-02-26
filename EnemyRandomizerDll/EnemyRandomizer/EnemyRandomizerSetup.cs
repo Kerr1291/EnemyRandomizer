@@ -16,8 +16,7 @@ namespace EnemyRandomizerMod
     {
         nv.Contractor databaseLoader = new nv.Contractor();
         
-        //TODO: revert me!
-        int currentDatabaseIndex = 5;
+        int currentDatabaseIndex = 0;
 
         IEnumerator randomizerSceneProcessor = null;
 
@@ -216,11 +215,7 @@ namespace EnemyRandomizerMod
 
         protected virtual bool IsDoneLoadingRandomizerData()
         {
-            //TODO: temp for testing...
-            return currentDatabaseIndex > 10;
-
-            //correct way
-            //return ( currentDatabaseIndex + 1) >= EnemyRandoData.enemyTypeScenes.Count;
+            return ( currentDatabaseIndex + 1) >= EnemyRandoData.enemyTypeScenes.Count;
         }
 
         protected virtual void BuildDatabase()
