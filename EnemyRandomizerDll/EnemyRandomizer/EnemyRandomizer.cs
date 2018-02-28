@@ -53,7 +53,7 @@ namespace EnemyRandomizerMod
         public static EnemyRandomizer Instance { get; private set; }
 
         string recentHit = "";
-        string fullVersionName = "0.0.7";
+        string fullVersionName = "0.0.8";
 
         Dictionary<string, List<string>> enemyTypes = new Dictionary<string, List<string>>();
         List<GameObject> loadedEnemyPrefabs = new List<GameObject>();
@@ -79,26 +79,6 @@ namespace EnemyRandomizerMod
             }
         }
 
-
-        GameObject replacementRoot;
-        GameObject ReplacementRoot {
-            get {
-                if( replacementRoot == null )
-                {
-                    replacementRoot = new GameObject( "ReplacementRoot" );
-                    GameObject.DontDestroyOnLoad( replacementRoot );
-                }
-                return replacementRoot;
-            }
-            set {
-                if( replacementRoot != null && value != replacementRoot )
-                {
-                    GameObject.Destroy( replacementRoot );
-                }
-                replacementRoot = value;
-            }
-        }
-
         //Called when loading a save game
         void TryEnableEnemyRandomizerFromSave( SaveGameData data )
         {
@@ -108,17 +88,21 @@ namespace EnemyRandomizerMod
             randomizerReady = true;
 
             Log( "Before: "+loadedBaseSeed );
-
-            //TODO: Make sure this is happening!
-            loadedBaseSeed = Settings.BaseSeed;
+            
+            if( Settings != null )
+                loadedBaseSeed = Settings.BaseSeed;
+            else
+                LoadedBaseSeed = GlobalSettings.BaseSeed;
 
             Log( "After: " + loadedBaseSeed );
-            chaosRNG = Settings.RNGChaosMode;
-            roomRNG = Settings.RNGRoomMode;
-            randomizeDisabledEnemies = Settings.RandomizeDisabledEnemies;
+            //chaosRNG = Settings.RNGChaosMode;
+            //roomRNG = Settings.RNGRoomMode;
+            //randomizeDisabledEnemies = Settings.RandomizeDisabledEnemies;
+            ChaosRNG = GlobalSettings.RNGChaosMode;
+            RoomRNG = GlobalSettings.RNGRoomMode;
+            RandomizeDisabledEnemies = GlobalSettings.RandomizeDisabledEnemies;
         }
-
-        //TODO: REMOVE NON-SEED SETTINGS FROM PLAYER SPECIFIC DATA
+        
         //Call from New Game
         void TryEnableEnemyRandomizer()
         {

@@ -22,7 +22,7 @@ namespace EnemyRandomizerMod
         //this will make each enemy type randomize into the same kind of enemy
         //if set to true, it also disables roomRNG and all enemies will be totally randomized
         bool chaosRNG = false;
-        bool ChaosRNG {
+        public bool ChaosRNG {
             get {
                 return chaosRNG;
             }
@@ -39,7 +39,7 @@ namespace EnemyRandomizerMod
         //this will cause enemy types within the same room to be randomized the same
         //Example: all Spitters could be randomized into Flys in one room, and Fat Flys in another
         bool roomRNG = true;
-        bool RoomRNG {
+        public bool RoomRNG {
             get {
                 return roomRNG;
             }
@@ -55,7 +55,7 @@ namespace EnemyRandomizerMod
         //if enabled, this will NOT skip disabled game objects while looking for things to randomize
         //as a result, you may end up with a lot more enemies in some areas...
         bool randomizeDisabledEnemies = false;
-        bool RandomizeDisabledEnemies {
+        public bool RandomizeDisabledEnemies {
             get {
                 return randomizeDisabledEnemies;
             }
@@ -511,6 +511,9 @@ namespace EnemyRandomizerMod
 
             Log( "Adding replacement pair: "+ oldEnemy.gameObject.name +" replaced by "+ newEnemy.gameObject.name );
             replacements.Add( new ReplacementPair() { original = oldEnemy, replacement = newEnemy } );
+
+            //hide the old enemy for now
+            oldEnemy.SetActive( false );
         }
 
         GameObject InstantiateEnemy( GameObject prefab )
@@ -535,6 +538,8 @@ namespace EnemyRandomizerMod
         void ScaleRandomizedEnemy( GameObject newEnemy )
         {
             //TODO as a fun factor option, try scaling the new enemy?
+            if( newEnemy.name.Contains( "Mawlek Turret" ) )
+                newEnemy.transform.localScale = newEnemy.transform.localScale * .6f;
         }
 
         void RotateRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
@@ -562,100 +567,114 @@ namespace EnemyRandomizerMod
                 positionOffset = new Vector3( 0f, collider.size.y, 0f );
             }
 
-            if( ( flags & FLAGS.WALL ) > 0 )
+            if( ( flags & FLAGS.WALL ) > 0 || ( flags & FLAGS.CRAWLER ) > 0 )
             {
-                Vector3 toDown = GetVectorTo(newEnemy, Vector2.down, 50f);
-                Vector3 toUp = GetVectorTo(newEnemy, Vector2.up, 50f);
-                Vector3 toLeft = GetVectorTo(newEnemy, Vector2.left, 50f);
-                Vector3 toRight = GetVectorTo(newEnemy, Vector2.right, 50f);
+                Vector2 originalUp = oldEnemy.transform.up.normalized;
 
-                Log( "Down: " + toDown );
-                Log( "toUp: " + toUp );
-                Log( "toLeft: " + toLeft );
-                Log( "toRight: " + toRight );
+                Vector2 ePos = newEnemy.transform.position;
+                Vector2 upOffset = ePos + originalUp * 10f;
 
-                //find the nearest surface and stick our wall enemy there
-                Vector3 min = Vector3.one * 10000;
-                if( toDown.magnitude < toUp.magnitude )
-                    min = toDown;
-                else
-                    min = toUp;
+                Vector2 originalDown = -originalUp;
 
-                if( toLeft.magnitude < min.magnitude )
-                    min = toLeft;
-                if( toRight.magnitude < min.magnitude )
-                    min = toRight;
+                Vector3 toSurface = GetVectorTo(ePos,originalDown,50f);
 
-                Log( "min: " + min );
-                Log( "min.magnitude: " + min.magnitude );
+                Log( "CRAWLER/WALL: ToSurface: " + toSurface );
 
-                Vector2 finalDir = min.normalized;
-                Vector3 onGround = GetPointOn(newEnemy,finalDir, 50f);
+                Vector2 finalDir = toSurface.normalized;
+                Vector3 onGround = GetPointOn(ePos,finalDir, 50f);
 
-                Log( "finalDir: " + finalDir );
-                Log( "onGround: " + onGround );
+                //DebugCreateLine( newEnemy.transform.position, onGround, Color.white );
 
                 newEnemy.transform.position = onGround;
 
                 BoxCollider2D collider = newEnemy.GetComponent<BoxCollider2D>();
+                if( newEnemy.name.Contains( "Plant Trap") )
+                { 
+                    positionOffset = originalUp * 2f;
 
-                if( newEnemy == null || collider == null )
-                    return;
+                    //DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
+                }
+                if( collider != null && newEnemy.name.Contains( "Mawlek Turret" ) )
+                {
+                    positionOffset = originalUp * collider.size.y / 3f;
 
-                Log( "new Vector3( collider.size.x * Mathf.Abs( finalDir.x ), collider.size.y * Mathf.Abs(finalDir.y), 0f ): " + new Vector3( collider.size.x * Mathf.Abs( finalDir.x ), collider.size.y * Mathf.Abs( finalDir.y ), 0f ) );
-                positionOffset = new Vector3( collider.size.x * Mathf.Abs( finalDir.x ), collider.size.y * Mathf.Abs(finalDir.y), 0f );
-                
-                //orient the wall enemy
-                float angle = Mathf.Atan2(finalDir.y, finalDir.x) * Mathf.Rad2Deg;
-                angle += 90f;
-                newEnemy.transform.rotation = Quaternion.AngleAxis( angle, Vector3.forward );
-                Log( "angle: " + angle );
+                    //DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
+                }
+                if( collider != null && newEnemy.name.Contains( "Mushroom Turret" ) )
+                {
+                    positionOffset = originalUp * collider.size.y / 10f;
+
+                    //DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
+                }
+                if( newEnemy.name.Contains( "Plant Turret" ) )
+                {
+                    positionOffset = originalUp * .7f;
+
+                    //DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
+                }
+                if( collider != null && newEnemy.name.Contains( "Laser Turret" ) )
+                {
+                    positionOffset = originalUp * collider.size.y / 10f;
+
+                    //DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
+                }
+                if( collider != null && newEnemy.name.Contains( "Worm" ) )
+                {
+                    positionOffset = originalUp * collider.size.y / 3f;
+
+                    //DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
+                }
+                ////orient the wall enemy
+                //float angle = Mathf.Atan2(finalDir.y, finalDir.x) * Mathf.Rad2Deg;
+                ////angle += 90f;
+                //newEnemy.transform.rotation = Quaternion.AngleAxis( angle, Vector3.forward );
+                //Log( "angle: " + angle );
             }
 
 
-            if( ( flags & FLAGS.CRAWLER ) > 0 )
-            {
-                Vector3 toDown = GetVectorTo(newEnemy, Vector2.down, 50f);
-                Vector3 toUp = GetVectorTo(newEnemy, Vector2.up, 50f);
-                Vector3 toLeft = GetVectorTo(newEnemy, Vector2.left, 50f);
-                Vector3 toRight = GetVectorTo(newEnemy, Vector2.right, 50f);
+            //if( ( flags & FLAGS.CRAWLER ) > 0 )
+            //{
+            //    Vector3 toDown = GetVectorTo(newEnemy, Vector2.down, 50f);
+            //    Vector3 toUp = GetVectorTo(newEnemy, Vector2.up, 50f);
+            //    Vector3 toLeft = GetVectorTo(newEnemy, Vector2.left, 50f);
+            //    Vector3 toRight = GetVectorTo(newEnemy, Vector2.right, 50f);
 
-                Log( "Down: " + toDown );
-                Log( "toUp: " + toUp );
-                Log( "toLeft: " + toLeft );
-                Log( "toRight: " + toRight );
+            //    Log( "Down: " + toDown );
+            //    Log( "toUp: " + toUp );
+            //    Log( "toLeft: " + toLeft );
+            //    Log( "toRight: " + toRight );
 
-                //find the nearest surface and stick our wall enemy there
-                Vector3 min = Vector3.one * 10000;
-                if( toDown.magnitude < toUp.magnitude )
-                    min = toDown;
-                else
-                    min = toUp;
+            //    //find the nearest surface and stick our wall enemy there
+            //    Vector3 min = Vector3.one * 10000;
+            //    if( toDown.magnitude < toUp.magnitude )
+            //        min = toDown;
+            //    else
+            //        min = toUp;
 
-                if( toLeft.magnitude < min.magnitude )
-                    min = toLeft;
-                if( toRight.magnitude < min.magnitude )
-                    min = toRight;
+            //    if( toLeft.magnitude < min.magnitude )
+            //        min = toLeft;
+            //    if( toRight.magnitude < min.magnitude )
+            //        min = toRight;
 
-                Log( "min: " + min );
-                Log( "min.magnitude: " + min.magnitude );
+            //    Log( "min: " + min );
+            //    Log( "min.magnitude: " + min.magnitude );
 
-                Vector2 finalDir = min.normalized;
-                Vector3 onGround = GetPointOn(newEnemy,finalDir, 50f);
+            //    Vector2 finalDir = min.normalized;
+            //    Vector3 onGround = GetPointOn(newEnemy,finalDir, 50f);
 
-                Log( "finalDir: " + finalDir );
-                Log( "onGround: " + onGround );
+            //    Log( "finalDir: " + finalDir );
+            //    Log( "onGround: " + onGround );
 
-                newEnemy.transform.position = onGround;
+            //    newEnemy.transform.position = onGround;
 
-                //BoxCollider2D collider = newEnemy.GetComponent<BoxCollider2D>();
+            //    //BoxCollider2D collider = newEnemy.GetComponent<BoxCollider2D>();
 
-                //if( newEnemy == null || collider == null )
-                //    return;
+            //    //if( newEnemy == null || collider == null )
+            //    //    return;
 
-                //Log( "new Vector3( collider.size.x * Mathf.Abs( finalDir.x ), collider.size.y * Mathf.Abs(finalDir.y), 0f ): " + new Vector3( collider.size.x * Mathf.Abs( finalDir.x ), collider.size.y * Mathf.Abs( finalDir.y ), 0f ) );
-                //positionOffset = new Vector3( collider.size.x * Mathf.Abs( finalDir.x ), collider.size.y * Mathf.Abs(finalDir.y), 0f );                
-            }
+            //    //Log( "new Vector3( collider.size.x * Mathf.Abs( finalDir.x ), collider.size.y * Mathf.Abs(finalDir.y), 0f ): " + new Vector3( collider.size.x * Mathf.Abs( finalDir.x ), collider.size.y * Mathf.Abs( finalDir.y ), 0f ) );
+            //    //positionOffset = new Vector3( collider.size.x * Mathf.Abs( finalDir.x ), collider.size.y * Mathf.Abs(finalDir.y), 0f );                
+            //}
 
             newEnemy.transform.position = newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z );
 
@@ -708,7 +727,11 @@ namespace EnemyRandomizerMod
 
         Vector3 GetPointOn( GameObject entitiy, Vector2 dir, float max )
         {
-            Vector2 origin = entitiy.transform.position;
+            return GetPointOn( entitiy.transform.position, dir, max );
+        }
+
+        Vector3 GetPointOn( Vector2 origin, Vector2 dir, float max )
+        {
             Vector2 direction = dir;
 
             RaycastHit2D[] toGround = Physics2D.RaycastAll(origin,direction,max, Physics2D.AllLayers);
@@ -761,7 +784,11 @@ namespace EnemyRandomizerMod
 
         Vector3 GetVectorTo( GameObject entitiy, Vector2 dir, float max )
         {
-            Vector2 origin = entitiy.transform.position;
+            return GetVectorTo( entitiy.transform.position, dir, max );
+        }
+        
+        Vector3 GetVectorTo( Vector2 origin, Vector2 dir, float max )
+        {
             Vector2 direction = dir;
 
             RaycastHit2D[] toGround = Physics2D.RaycastAll(origin,direction,max, Physics2D.AllLayers);
@@ -917,6 +944,12 @@ namespace EnemyRandomizerMod
                     if( HasSameSize( enemyFlags, tempFlags ) )
                         isValid = true;
                 }
+
+                if( enemy.transform.up.y < 0f && tempName == "Mawlek Turret" )
+                    isValid = false;
+
+                if( enemy.transform.up.y > 0f && tempName == "Mawlek Turret Ceiling" )
+                    isValid = false;
 
                 //if( ( enemyFlags & FLAGS.WALL ) > 0 && ( tempFlags & FLAGS.WALL ) > 0 )
                 //{

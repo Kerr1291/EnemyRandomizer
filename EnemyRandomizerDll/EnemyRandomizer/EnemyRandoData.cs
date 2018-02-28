@@ -605,6 +605,12 @@ namespace EnemyRandomizerMod
             "Bee Hatchling Ambient", //
             "Inflater", //
             "Parasite Balloon",
+            "Mawlek Turret Ceiling", //321
+            "Mawlek Turret", //321
+            "Worm", //49
+            "Worm", //49
+            "Plant Trap", //117
+            "Plant Trap", //117
             "Zote Boss"//33 (BOSS???)
         };
 
@@ -684,7 +690,6 @@ namespace EnemyRandomizerMod
             "Worm", //49
             "Zombie Guard", //76 (big enemy)
             "Great Shield Zombie", //106
-            "Plant Trap", //117
             //"Moss Knight Fat", //204
             "Moss Knight", //137            
             "Fungus Flyer", //
@@ -693,8 +698,6 @@ namespace EnemyRandomizerMod
             "Lazy Flyer Enemy", //
             "Grave Zombie", //226
             "Slash Spider", //271   -- doesn't seem to randomize well, needs more research
-            "Mawlek Turret Ceiling", //321
-            "Mawlek Turret", //321
             "Royal Gaurd", //358
             "Big Bee", //362
             "Colosseum_Worm",//34
@@ -707,8 +710,6 @@ namespace EnemyRandomizerMod
         {
             "Ceiling Dropper Col",//34
             "Ceiling Dropper", //??(forgot)
-            "Worm", //49
-            "Worm", //49
             "Plant Trap", //117
             "Plant Trap", //117
             "Plant Turret", //127
@@ -717,6 +718,8 @@ namespace EnemyRandomizerMod
             "Laser Turret Frames", //234
             "Mawlek Turret Ceiling", //321
             "Mawlek Turret", //321
+            "Worm", //49
+            "Worm", //49
             "Mushroom Turret",
             "Mushroom Turret"
         };

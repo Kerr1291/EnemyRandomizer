@@ -128,6 +128,31 @@ namespace EnemyRandomizerMod
             }
         }
 
+        public void DebugCreateLine(Vector2 from, Vector2 to, Color c )
+        {
+            GameObject lineObj = new GameObject("line: "+from+" -> "+to);
+            LineRenderer lr = lineObj.AddComponent<LineRenderer>();
+            lr.SetVertexCount( 2 );
+            Vector3[] points = new Vector3[]{from,to};
+            lr.SetPositions( points );
+            lr.SetWidth( .5f, .1f );
+            if( lr.GetComponent<Renderer>() )
+                lr.GetComponent<Renderer>().material = new Material( Shader.Find( "Diffuse" ) );
+            if( lr.GetComponent<Renderer>() )
+                lr.GetComponent<Renderer>().material.color = c;
+                lr.SetColors( c, c );
+        }
+
+        //public void DebugCreateBox( Bounds b, Color c )
+        //{
+        //    GameObject lineObj = new GameObject("line: "+from+" -> "+to);
+        //    LineRenderer lr = lineObj.AddComponent<LineRenderer>();
+        //    lr.SetVertexCount( 2 );
+        //    Vector3[] points = new Vector3[]{b.min,b.max,};
+        //    lr.SetPositions( b. );
+        //    lr.SetWidth( .5f, .1f );
+        //}
+
         public static void DebugPrintAllObjects( string sceneName )
         {
             Instance.Log( "START =====================================================" );
@@ -408,7 +433,7 @@ namespace EnemyRandomizerMod
             if( index > 0 )
                 name = name.Substring( 0, index );
 
-            if( name != "Zombie Spider 1" )
+            if( name != "Zombie Spider 1" && name != "Zombie Spider 2" )
             {
                 //trim off " 1" from the word, if it's there
                 index = name.LastIndexOf( " 1" );

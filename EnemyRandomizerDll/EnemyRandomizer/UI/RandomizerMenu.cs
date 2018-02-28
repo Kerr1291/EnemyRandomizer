@@ -312,6 +312,10 @@ namespace EnemyRandomizerMod.Menu
                                 {
                                     int seed = nv.GameRNG.Randi();
                                     EnemyRandomizer.Instance.GlobalSettings.IntValues[ optionName ] = seed;
+
+                                    EnemyRandomizer.Instance.LoadedBaseSeed = seed;
+                                        
+
                                     menuItem.OptionList[ 0 ] = seed.ToString();
                                     customSeedInput.text = "";
                                 }
@@ -320,10 +324,24 @@ namespace EnemyRandomizerMod.Menu
                                     if( optionIndex == 1 )
                                     {
                                         EnemyRandomizer.Instance.GlobalSettings.BoolValues[ optionName ] = false;
+
+                                        if( optionName == "RNGChaosMode" )
+                                            EnemyRandomizer.Instance.ChaosRNG = false;
+                                        if( optionName == "RNGRoomMode" )
+                                            EnemyRandomizer.Instance.RoomRNG = false;
+                                        if( optionName == "RandomizeDisabledEnemies" )
+                                            EnemyRandomizer.Instance.RandomizeDisabledEnemies = false;
                                     }
                                     else
                                     {
                                         EnemyRandomizer.Instance.GlobalSettings.BoolValues[ optionName ] = true;
+
+                                        if( optionName == "RNGChaosMode" )
+                                            EnemyRandomizer.Instance.ChaosRNG = true;
+                                        if( optionName == "RNGRoomMode" )
+                                            EnemyRandomizer.Instance.RoomRNG = true;
+                                        if( optionName == "RandomizeDisabledEnemies" )
+                                            EnemyRandomizer.Instance.RandomizeDisabledEnemies = true;
                                     }
                                 }
 
