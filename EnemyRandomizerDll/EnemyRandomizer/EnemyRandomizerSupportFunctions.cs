@@ -166,6 +166,27 @@ namespace EnemyRandomizerMod
                     foreach( Component c in t.GetComponents<Component>() )
                     {
                         Instance.Log( componentHeader + @" \--Component: " + c.GetType().Name );
+
+                        if( c as Transform != null )
+                        {
+                            Instance.Log( componentHeader + @" \--Transform Position: " + ( c as Transform ).position );
+                            Instance.Log( componentHeader + @" \--Transform Rotation: " + ( c as Transform ).rotation.eulerAngles );
+                            Instance.Log( componentHeader + @" \--Transform LocalScale: " + ( c as Transform ).localScale );
+                        }
+
+                        if(c as PlayMakerFSM != null)
+                        {
+                            Instance.Log( componentHeader + @" \--PFSM Name: " + ( c as PlayMakerFSM ).FsmName );
+                            Instance.Log( componentHeader + @" \--PFSM FsmDescription: " + ( c as PlayMakerFSM ).FsmDescription );
+
+                            string[] stateNames = ( c as PlayMakerFSM ).FsmStates.Select(x=>x.Name).ToArray();
+
+                            Instance.Log( componentHeader + @" \--PFSM StateNames" );
+                            foreach( string s in stateNames )
+                                Instance.Log( componentHeader + @" \----PFSM StateName: " + s );
+                            Instance.Log( componentHeader + @" \--PFSM Active: " + ( c as PlayMakerFSM ).Active );
+                            Instance.Log( componentHeader + @" \--PFSM ActiveStateName: " + ( c as PlayMakerFSM ).ActiveStateName );                            
+                        }
                     }
                 }
             }
@@ -285,12 +306,33 @@ namespace EnemyRandomizerMod
 
             if( name.Contains( "Summon" ) )
                 return true;
-            
+
+            //if( name.Contains( "Mushroom Brawler" ) )
+            //    return true;
+
+            //if( name.Contains( "Lesser Mawlek" ) )
+            //    return true;
+
             //don't randomize mender bug or else players will fall onto an enemy every time
             //they enter crossroads
             if( name.Contains( "Mender" ) )
                 return true;
 
+            return false;
+        }
+
+        bool ShouldSkipRandomizingScene(string name)
+        {
+            //if( name.Contains( "Room_Coloss" ) )
+            //    return true;
+            //if( name.Contains( "Ruins2_09" ) )
+            //    return true;
+            //if( name.Contains( "Crossroads_09" ) )
+            //    return true;
+            //if( name.Contains( "Crossroads_08" ) )
+            //    return true;
+            //if( name.Contains( "Crossroads_04" ) )
+            //    return true;
             return false;
         }
 
@@ -370,6 +412,38 @@ namespace EnemyRandomizerMod
             {
                 //trim off " 1" from the word, if it's there
                 index = name.LastIndexOf( " 1" );
+                if( index > 0 )
+                    name = name.Substring( 0, index );
+
+                index = name.LastIndexOf( " 2" );
+                if( index > 0 )
+                    name = name.Substring( 0, index );
+
+                index = name.LastIndexOf( " 3" );
+                if( index > 0 )
+                    name = name.Substring( 0, index );
+
+                index = name.LastIndexOf( " 4" );
+                if( index > 0 )
+                    name = name.Substring( 0, index );
+
+                index = name.LastIndexOf( " 5" );
+                if( index > 0 )
+                    name = name.Substring( 0, index );
+
+                index = name.LastIndexOf( " 6" );
+                if( index > 0 )
+                    name = name.Substring( 0, index );
+
+                index = name.LastIndexOf( " 7" );
+                if( index > 0 )
+                    name = name.Substring( 0, index );
+
+                index = name.LastIndexOf( " 8" );
+                if( index > 0 )
+                    name = name.Substring( 0, index );
+
+                index = name.LastIndexOf( " 9" );
                 if( index > 0 )
                     name = name.Substring( 0, index );
             }

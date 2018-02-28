@@ -475,13 +475,16 @@ namespace EnemyRandomizerMod
             "Spider Flyer", //
             "Bee Hatchling Ambient", //
             "Inflater", //
-            "Bee Stinger", //  
+            "Bee Stinger", // 
+            "Shade Sibling",
             "Big Bee", //362 
+            "Parasite Balloon"
         };
 
         public static List<string> groundEnemyTypeNames = new List<string>()
         {
             "Colosseum_Miner",//35
+            "Colosseum_Worm",//34
             "Colosseum_Shield_Zombie",//33
             "Grub Mimic",//34
             "Spitting Zombie",//34 and 41
@@ -496,15 +499,10 @@ namespace EnemyRandomizerMod
             "Mage Knight",//35
             "Lesser Mawlek",//35
             "Mawlek Col",//35 ??? might be same as lesser mawlek
+            "Crystal Crawler", //243
             "Mawlek Body", //46 (BOSS)
             "Bursting Zombie",//36
             //"Mender Bug",//38?(not 36?)
-            "Fung Crawler", //158
-            "Mines Crawler", //243
-            "Crystal Crawler", //243
-            "Abyss Crawler", //320
-            "Crawler", //40
-            "Climber", //40
             "Zombie Hornhead Sp", //271
             "Zombie Hornhead", //41 (Giant Fly = boss)
             "Prayer Slug", //47 prayer slugs = maggots
@@ -549,7 +547,20 @@ namespace EnemyRandomizerMod
             "Flukeman", //
             "Royal Gaurd", //358
             "Zombie Hive", //   
+            "Mimic Spider", //269 (Nosk, BOSS)
+            "Mantis Traitor Lord", //194 (BOSS)          needs lots of room or will fall through the floor  
             "Zote Boss"//33 (BOSS???)
+        };
+
+
+        public static List<string> crawlerEnemyTypeNames = new List<string>()
+        {
+            "Fung Crawler", //158
+            "Mines Crawler", //243
+            "Abyss Crawler", //320
+            "Crawler", //40
+            "Climber", //40
+            "Crystallised Lazer Bug", //243 (this was removed from the list for some reason???)
         };
 
         public static List<string> smallEnemyTypeNames = new List<string>()
@@ -593,6 +604,7 @@ namespace EnemyRandomizerMod
             "Tiny Spider", //276
             "Bee Hatchling Ambient", //
             "Inflater", //
+            "Parasite Balloon",
             "Zote Boss"//33 (BOSS???)
         };
 
@@ -650,6 +662,7 @@ namespace EnemyRandomizerMod
             "Flukeman", //
             "Zombie Hive", //   
             "Bee Stinger", //   
+            "Shade Sibling"
         };
 
         public static List<string> bigEnemyTypeNames = new List<string>()
@@ -684,24 +697,28 @@ namespace EnemyRandomizerMod
             "Mawlek Turret", //321
             "Royal Gaurd", //358
             "Big Bee", //362
+            "Colosseum_Worm",//34
+            "Mimic Spider", //269 (Nosk, BOSS)
+            "Mantis Traitor Lord", //194 (BOSS)          needs lots of room or will fall through the floor  
         };
 
+        //doubled the occurence of some types in here to even out the replacements
         public static List<string> wallEnemyTypeNames = new List<string>()
         {
             "Ceiling Dropper Col",//34
             "Ceiling Dropper", //??(forgot)
-            "Mines Crawler", //243
-            "Abyss Crawler", //320
-            "Crawler", //40
-            "Climber", //40
-            "Colosseum_Worm",//34
+            "Worm", //49
             "Worm", //49
             "Plant Trap", //117
+            "Plant Trap", //117
+            "Plant Turret", //127
             "Plant Turret", //127
             "Laser Turret Frames", //234
-            //"Crystallised Lazer Bug", //243
+            "Laser Turret Frames", //234
             "Mawlek Turret Ceiling", //321
             "Mawlek Turret", //321
+            "Mushroom Turret",
+            "Mushroom Turret"
         };
 
         public static List<string> hardEnemyTypeNames = new List<string>()
@@ -717,6 +734,8 @@ namespace EnemyRandomizerMod
             "Moss Knight", //137            
             "Mushroom Brawler", //
             "Royal Gaurd", //358
+            "Mimic Spider", //269 (Nosk, BOSS)
+            "Mantis Traitor Lord" //194 (BOSS)          needs lots of room or will fall through the floor  
         };
 
         //"Giant Fly",//(gruz mother?)
@@ -725,7 +744,7 @@ namespace EnemyRandomizerMod
         public static List<string> bossTypeNames = new List<string>()
         {
             "Jar Collector", //115 (boss)
-            "Mushroom Turret", //
+            //"Mushroom Turret", //
             "Mantis Traitor Lord", //194 (BOSS)          needs lots of room or will fall through the floor  
             "Mantis Lord Temp", //167 (BOSSES)
             "Mantis Lord", //

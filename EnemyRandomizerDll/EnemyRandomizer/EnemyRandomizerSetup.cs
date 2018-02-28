@@ -52,10 +52,10 @@ namespace EnemyRandomizerMod
             databaseLoadProgress = 0f;
             loadCount = 0;
 
-            enemyTypes = new Dictionary<string, List<string>>();
-            loadedEnemyPrefabs = new List<GameObject>();
-            loadedEnemyPrefabNames = new List<string>();
-            uniqueEnemyTypes = new List<string>();
+            //enemyTypes = new Dictionary<string, List<string>>();
+            //loadedEnemyPrefabs = new List<GameObject>();
+            //loadedEnemyPrefabNames = new List<string>();
+            //uniqueEnemyTypes = new List<string>();
             databaseLoader = new nv.Contractor();
         }
 
@@ -215,6 +215,8 @@ namespace EnemyRandomizerMod
 
         protected virtual bool IsDoneLoadingRandomizerData()
         {
+            //TODO: FOR TESTING - CHANGE BACK
+            //return ( currentDatabaseIndex + 1 ) >= 11;
             return ( currentDatabaseIndex + 1) >= EnemyRandoData.enemyTypeScenes.Count;
         }
 
