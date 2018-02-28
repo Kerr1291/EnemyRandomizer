@@ -53,7 +53,7 @@ namespace EnemyRandomizerMod
         public static EnemyRandomizer Instance { get; private set; }
 
         string recentHit = "";
-        string fullVersionName = "0.0.2";
+        string fullVersionName = "0.0.7";
 
         Dictionary<string, List<string>> enemyTypes = new Dictionary<string, List<string>>();
         List<GameObject> loadedEnemyPrefabs = new List<GameObject>();

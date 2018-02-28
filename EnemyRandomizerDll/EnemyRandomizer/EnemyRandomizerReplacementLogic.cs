@@ -17,8 +17,7 @@ namespace EnemyRandomizerMod
     public partial class EnemyRandomizer
     {
         RNG replacementRNG;
-
-        //TODO: allow a user configurable option for this
+        
         //set to false then the seed will be based on the type of enemy we're going to randomize
         //this will make each enemy type randomize into the same kind of enemy
         //if set to true, it also disables roomRNG and all enemies will be totally randomized
@@ -35,8 +34,7 @@ namespace EnemyRandomizerMod
                 chaosRNG = value;
             }
         }
-
-        //TODO: allow a user configurable option for this
+        
         //if roomRNG is enabled, then we will also offset the seed based on the room's hash code
         //this will cause enemy types within the same room to be randomized the same
         //Example: all Spitters could be randomized into Flys in one room, and Fat Flys in another
@@ -53,8 +51,7 @@ namespace EnemyRandomizerMod
                 roomRNG = value;
             }
         }
-
-        //TODO: allow a user configurable option for this
+        
         //if enabled, this will NOT skip disabled game objects while looking for things to randomize
         //as a result, you may end up with a lot more enemies in some areas...
         bool randomizeDisabledEnemies = false;
@@ -149,7 +146,7 @@ namespace EnemyRandomizerMod
             
             randomEnemyLocator.Start();
 
-            Log( "clear list" );
+            //Log( "clear list" );
             //allObjs.Clear();
             //needsList = true;
             sceneBoundry.Clear();
@@ -183,6 +180,7 @@ namespace EnemyRandomizerMod
                     {
                         if( p.original != null )
                         {
+                            p.original.SetActive( false );
                             p.original.transform.position = somewhereOffInSpace;
                             Rigidbody2D r = p.original.GetComponentInChildren<Rigidbody2D>();
                             if(r != null)
@@ -203,8 +201,12 @@ namespace EnemyRandomizerMod
                 foreach( ReplacementPair p in pairsToRemove )
                 {
                     //kill enemy?
-                    Log( "Sending kill to: " + p.original.name );
-                    GetEnemyFSM( p.original ).SendEvent( "INSTA KILL" );
+                    if( p.original != null )
+                    {
+                        p.original.SetActive( false );
+                        Log( "Sending kill to: " + p.original.name );
+                        GetEnemyFSM( p.original ).SendEvent( "INSTA KILL" );
+                    }
                     replacements.Remove( p );
                 }
                 pairsToRemove.Clear();
@@ -243,7 +245,7 @@ namespace EnemyRandomizerMod
                 if( restartDelay <= 0 )
                 {
                     restartDelay = nextRestartDelay;
-                    nextRestartDelay = nextRestartDelay * 2f;
+                    nextRestartDelay = nextRestartDelay * 1f;
                     //restart iterator, every time it restarts, lets turn up the cooldown on restarting
                     randomizerReplacer = DoLocateAndRandomizeEnemies();
                 }
