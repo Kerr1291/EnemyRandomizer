@@ -40,7 +40,7 @@ namespace EnemyRandomizerMod
                 return loadedBaseSeed;
             }
             set {
-                if( randomizerReady && Settings != null )
+                if( RandomizerReady && Settings != null )
                     Settings.BaseSeed = value;
                 if( GlobalSettings != null )
                     GlobalSettings.BaseSeed = value;
@@ -48,12 +48,24 @@ namespace EnemyRandomizerMod
             }
         }
 
+        //For debugging, set this to true to have the scene replacer run its logic without doing anything
+        //(Useful for testing without needing to wait through the load times)
+        bool simulateReplacement = false;
+
         bool randomizerReady = false;
+        bool RandomizerReady {
+            get {
+                return randomizerReady || simulateReplacement;
+            }
+            set {
+                randomizerReady = value;
+            }
+        }
 
         public static EnemyRandomizer Instance { get; private set; }
 
         string recentHit = "";
-        string fullVersionName = "0.0.8";
+        string fullVersionName = "0.0.9";
 
         Dictionary<string, List<string>> enemyTypes = new Dictionary<string, List<string>>();
         List<GameObject> loadedEnemyPrefabs = new List<GameObject>();
@@ -85,7 +97,7 @@ namespace EnemyRandomizerMod
             if( !databaseGenerated )
                 return;
 
-            randomizerReady = true;
+            RandomizerReady = true;
 
             Log( "Before: "+loadedBaseSeed );
             
@@ -109,7 +121,7 @@ namespace EnemyRandomizerMod
             if( !databaseGenerated )
                 return;
 
-            randomizerReady = true;
+            RandomizerReady = true;
 
             LoadedBaseSeed = GlobalSettings.BaseSeed;
             ChaosRNG = GlobalSettings.RNGChaosMode;
@@ -120,7 +132,7 @@ namespace EnemyRandomizerMod
         //call when returning to the main menu
         void DisableEnemyRandomizer()
         {
-            randomizerReady = false;
+            RandomizerReady = false;
             RestoreLogic();
         }
 
@@ -201,7 +213,7 @@ namespace EnemyRandomizerMod
         
         void Restore()
         {
-            randomizerReady = false;
+            RandomizerReady = false;
             recentHit = "";
 
             RestoreUI();

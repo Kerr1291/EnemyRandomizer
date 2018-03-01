@@ -334,7 +334,7 @@ namespace EnemyRandomizerMod
             //"Acid Walker", //127 (don't randomize this, since it's fairly key to getting around a few places)
             
 
-            //"Moss Knight Fat", //204
+            "Moss Knight Fat", //204
             "Moss Knight", //137            
 
             //"Mega Moss Charger", //144 (subboss thing, doesn't work when spawned somewhere else)
@@ -668,11 +668,11 @@ namespace EnemyRandomizerMod
             "Flukeman", //
             "Zombie Hive", //   
             "Bee Stinger", //   
-            "Shade Sibling"
-        };
+            "Shade Sibling",
 
-        public static List<string> bigEnemyTypeNames = new List<string>()
-        {
+
+
+            //original "big enemy" list
             "Blow Fly", //285
             "Ruins Sentry Fat", //90
             "Giant Fly Col",//34 
@@ -690,7 +690,7 @@ namespace EnemyRandomizerMod
             "Worm", //49
             "Zombie Guard", //76 (big enemy)
             "Great Shield Zombie", //106
-            //"Moss Knight Fat", //204
+            "Moss Knight Fat", //204
             "Moss Knight", //137            
             "Fungus Flyer", //
             "Mushroom Brawler", //
@@ -702,7 +702,47 @@ namespace EnemyRandomizerMod
             "Big Bee", //362
             "Colosseum_Worm",//34
             "Mimic Spider", //269 (Nosk, BOSS)
-            "Mantis Traitor Lord", //194 (BOSS)          needs lots of room or will fall through the floor  
+            "Mantis Traitor Lord" //194 (BOSS)          needs lots of room or will fall through the floor  
+
+
+
+        };
+
+        //TODO: testing....
+        public static List<string> bigEnemyTypeNames = new List<string>()
+        {
+            "NONE",
+            "NONE"
+            //"Blow Fly", //285
+            //"Ruins Sentry Fat", //90
+            //"Giant Fly Col",//34 
+            ////"Giant Fly",//(gruz mother?)
+            ////"Fly Spawn",
+            //"Fat Fly", //146 
+            //"Mega Fat Bee",//34
+            //"Lancer",//35
+            //"Lobster",//35
+            //"Mage Knight",//35
+            //"Electric Mage",//35
+            //"Mage",//35
+            //"Mawlek Body", //46 (BOSS)
+            //"Colosseum_Worm",//34
+            //"Worm", //49
+            //"Zombie Guard", //76 (big enemy)
+            //"Great Shield Zombie", //106
+            //"Moss Knight Fat", //204
+            //"Moss Knight", //137            
+            //"Fungus Flyer", //
+            //"Mushroom Brawler", //
+            //"Jellyfish", //
+            //"Lazy Flyer Enemy", //
+            //"Grave Zombie", //226
+            //"Slash Spider", //271   -- doesn't seem to randomize well, needs more research
+            //"Royal Gaurd", //358
+            //"Big Bee", //362
+            //"Colosseum_Worm",//34
+            //"Mimic Spider", //269 (Nosk, BOSS)
+            //"Mantis Traitor Lord" //194 (BOSS)          needs lots of room or will fall through the floor  
         };
 
         //doubled the occurence of some types in here to even out the replacements
@@ -724,43 +764,43 @@ namespace EnemyRandomizerMod
             "Mushroom Turret"
         };
 
-        public static List<string> hardEnemyTypeNames = new List<string>()
-        {
-            "Gorgeous Husk", //82 (for fun)
-            "Electric Mage",//35
-            "Mage Knight",//35
-            "Giant Buzzer Col",//33
-            "Giant Fly Col",//34 
-            "Lancer",//35
-            "Lobster",//35
-            "Mawlek Body", //46 (mini boss)
-            "Moss Knight", //137            
-            "Mushroom Brawler", //
-            "Royal Gaurd", //358
-            "Mimic Spider", //269 (Nosk, BOSS)
-            "Mantis Traitor Lord" //194 (BOSS)          needs lots of room or will fall through the floor  
-        };
+        //public static List<string> hardEnemyTypeNames = new List<string>()
+        //{
+        //    "Gorgeous Husk", //82 (for fun)
+        //    "Electric Mage",//35
+        //    "Mage Knight",//35
+        //    "Giant Buzzer Col",//33
+        //    "Giant Fly Col",//34 
+        //    "Lancer",//35
+        //    "Lobster",//35
+        //    "Mawlek Body", //46 (mini boss)
+        //    "Moss Knight", //137            
+        //    "Mushroom Brawler", //
+        //    "Royal Gaurd", //358
+        //    "Mimic Spider", //269 (Nosk, BOSS)
+        //    "Mantis Traitor Lord" //194 (BOSS)          needs lots of room or will fall through the floor  
+        //};
 
         //"Giant Fly",//(gruz mother?)
         //"Great Shield Zombie", //106
         //"Moss Knight Fat", //204
-        public static List<string> bossTypeNames = new List<string>()
-        {
-            "Jar Collector", //115 (boss)
-            //"Mushroom Turret", //
-            "Mantis Traitor Lord", //194 (BOSS)          needs lots of room or will fall through the floor  
-            "Mantis Lord Temp", //167 (BOSSES)
-            "Mantis Lord", //
-            "Mega Zombie Beam Miner", //241
-            //"Zote Boss",//33 (BOSS???)
-            "Infected Knight", //320 (boss)
-            "Hornet Boss 1",//121     (BOSS)       
-            "Hornet Boss 2", //302 (BOSS)
-            "Mimic Spider", //269 (Nosk, BOSS)
-            "Dung Defender", //331  (BOSS)
-            "Fluke Mother" //336 (BOSS)
+        //public static List<string> bossTypeNames = new List<string>()
+        //{
+        //    "Jar Collector", //115 (boss)
+        //    //"Mushroom Turret", //
+        //    "Mantis Traitor Lord", //194 (BOSS)          needs lots of room or will fall through the floor  
+        //    "Mantis Lord Temp", //167 (BOSSES)
+        //    "Mantis Lord", //
+        //    "Mega Zombie Beam Miner", //241
+        //    //"Zote Boss",//33 (BOSS???)
+        //    "Infected Knight", //320 (boss)
+        //    "Hornet Boss 1",//121     (BOSS)       
+        //    "Hornet Boss 2", //302 (BOSS)
+        //    "Mimic Spider", //269 (Nosk, BOSS)
+        //    "Dung Defender", //331  (BOSS)
+        //    "Fluke Mother" //336 (BOSS)
 
-            //"PLACEHOLDER"
-        };
+        //    //"PLACEHOLDER"
+        //};
     }
 }

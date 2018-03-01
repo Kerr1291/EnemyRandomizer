@@ -16,25 +16,21 @@ namespace EnemyRandomizerMod
     {
         bool IsRandoEnemyType( GameObject enemy )
         {
-            //Log("Found an enemy? Seeing if it is an enemy and if we should randomize it. ");
-            //Log("Object Name: " + enemy.name);
-
             if( enemy.name.Contains( "Corpse" ) )
                 return false;
 
             if( enemy.name.Contains( "Lil Jellyfish" ) )
                 return false;
-
-            if( enemy.name.Contains( "Summon" ) )
-                return false;
-
+            
             string enemyName = enemy.name;
             string trimmedName = TrimEnemyNameToBeLoaded(enemyName);
 
-            //var words = loadedEnemyPrefabNames.Select(w => @"\b" + Regex.Escape(w) + @"\b").ToArray();
-            //var pattern = new Regex("(" + string.Join(")|(", words) + ")");
-            bool isRandoEnemyType = IsExactlyInList(trimmedName,loadedEnemyPrefabNames);
-                //pattern.IsMatch(enemy.name);
+            bool isRandoEnemyType = false;
+
+            if( simulateReplacement )
+                isRandoEnemyType = IsExactlyInList( trimmedName, EnemyRandoData.enemyTypeNames );
+            else
+                isRandoEnemyType = IsExactlyInList( trimmedName, loadedEnemyPrefabNames );
 
             return isRandoEnemyType;
         }
@@ -153,17 +149,40 @@ namespace EnemyRandomizerMod
         //    lr.SetWidth( .5f, .1f );
         //}
 
-        public static void DebugPrintAllObjects( string sceneName )
+        public void DebugPrintAllObjects( string sceneName, int localIndex = -1 )
         {
+            Scene namedScene = UnityEngine.SceneManagement.SceneManager.GetSceneByName( sceneName );
+
+            if( !namedScene.IsValid() )
+                return;
+
             Instance.Log( "START =====================================================" );
-            Instance.Log( "Printing scene hierarchy for scene: " + sceneName );
-            GameObject[] rootGameObjects = UnityEngine.SceneManagement.SceneManager.GetSceneByName(sceneName).GetRootGameObjects();
+            Instance.Log( "Printing scene hierarchy for scene: " + sceneName +" [Build index: "+ namedScene.buildIndex+"]" );
+            if( localIndex >= 0 )
+                Instance.Log( "Local scene index: " + localIndex );
+
+            GameObject[] rootGameObjects = namedScene.GetRootGameObjects();
+            
             foreach( GameObject go in rootGameObjects )
             {
+                if( go == null )
+                {
+                    Log( "Scene " + sceneName + " has a null root game object! Skipping debug print scene..." );
+                    break;
+                }
+
                 foreach( Transform t in go.GetComponentsInChildren<Transform>( true ) )
                 {
                     string objectNameAndPath = GetObjectPath(t);
-                    Instance.Log( objectNameAndPath );
+                    string logContent = objectNameAndPath;
+                    if( !sceneBounds.Contains( t.position ) )
+                        logContent += " ::: IsOutsideSceneBounds = true";
+                    if( SkipLoadingGameObject( t.gameObject.name ) )
+                        logContent += " ::: SkipLoadingGameObject = true";
+                    if( IsRandomizerEnemy( t.gameObject ) )
+                        logContent += " ::: IsRandomizerEnemy = true";
+
+                    Instance.Log( logContent );
                 }
             }
             Instance.Log( "END +++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
@@ -302,35 +321,35 @@ namespace EnemyRandomizerMod
             if( name.Contains( "Corpse" ) )
                 return true;
 
-            if( name.Contains( "Rubble" ) )
-                return true;
+            //if( name.Contains( "Rubble" ) )
+            //    return true;
 
-            if( name.Contains( "Chunk" ) )
-                return true;
+            //if( name.Contains( "Chunk" ) )
+            //    return true;
 
-            if( name.Contains( "Rock" ) )
-                return true;
+            //if( name.Contains( "Rock" ) )
+            //    return true;
 
-            if( name.Contains( "Particle" ) )
-                return true;
+            //if( name.Contains( "Particle" ) )
+            //    return true;
 
-            if( name.Contains( "Prompt" ) )
-                return true;
+            //if( name.Contains( "Prompt" ) )
+            //    return true;
 
-            if( name.Contains( "death" ) )
-                return true;
+            //if( name.Contains( "death" ) )
+            //    return true;
 
-            if( name.Contains( "Layer" ) )
-                return true;
+            //if( name.Contains( "Layer" ) )
+            //    return true;
 
-            if( name.Contains( "Terrain" ) )
-                return true;
+            //if( name.Contains( "Terrain" ) )
+            //    return true;
 
             if( name.Contains( "Rando" ) )
                 return true;
 
-            if( name.Contains( "Summon" ) )
-                return true;
+            //if( name.Contains( "Summon" ) )
+            //    return true;
 
             //if( name.Contains( "Mushroom Brawler" ) )
             //    return true;

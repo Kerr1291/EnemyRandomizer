@@ -27,7 +27,7 @@ namespace EnemyRandomizerMod
                 return chaosRNG;
             }
             set {
-                if( randomizerReady && Settings != null )
+                if( RandomizerReady && Settings != null )
                     Settings.RNGChaosMode = value;
                 if( GlobalSettings != null )
                     GlobalSettings.RNGChaosMode = value;
@@ -44,7 +44,7 @@ namespace EnemyRandomizerMod
                 return roomRNG;
             }
             set {
-                if( randomizerReady && Settings != null )
+                if( RandomizerReady && Settings != null )
                     Settings.RNGRoomMode = value;
                 if( GlobalSettings != null )
                     GlobalSettings.RNGRoomMode = value;
@@ -60,7 +60,7 @@ namespace EnemyRandomizerMod
                 return randomizeDisabledEnemies;
             }
             set {
-                if( randomizerReady && Settings != null )
+                if( RandomizerReady && Settings != null )
                     Settings.RandomizeDisabledEnemies = value;
                 if( GlobalSettings != null )
                     GlobalSettings.RandomizeDisabledEnemies = value;
@@ -76,6 +76,16 @@ namespace EnemyRandomizerMod
 
         nv.Contractor replacementController = new nv.Contractor();
 
+        class ReplacementPair
+        {
+            public GameObject original;
+            public GameObject replacement;
+        }
+
+        List<ReplacementPair> replacements = new List<ReplacementPair>();
+
+
+
         float baseRestartDelay = 1f;
         float nextRestartDelay = 1f;
         float restartDelay = 0f;
@@ -89,14 +99,6 @@ namespace EnemyRandomizerMod
             replacementController.Reset();
         }
 
-        class ReplacementPair
-        {
-            public GameObject original;
-            public GameObject replacement;
-        }
-
-        List<ReplacementPair> replacements = new List<ReplacementPair>();
-
         //entry point into the replacement logic, started on each scene transition
         void StartRandomEnemyLocator( Scene from, Scene to )
         {
@@ -105,14 +107,15 @@ namespace EnemyRandomizerMod
                 DisableEnemyRandomizer();
 
             Log( "Transitioning FROM [" + from.name + "] TO [" + to.name + "]" );
-            if( !randomizerReady )
+            if( !RandomizerReady )
                 return;
 
             //ignore randomizing on scenes that aren't normal game world scenes
-            if( to.buildIndex != 7 && (to.buildIndex <= 36 || to.buildIndex > 362) )
+            //if( to.buildIndex != 7 && (to.buildIndex <= 36 || to.buildIndex > 362) )
+            //    return;
+            if( to.buildIndex < 4 )
                 return;
 
-            Log( "Clearing replacements" );
             replacements.Clear();
             pairsToRemove.Clear();
 
@@ -138,6 +141,8 @@ namespace EnemyRandomizerMod
             randomizerReplacer = DoLocateAndRandomizeEnemies();
 
             restartDelay = 0f;
+
+            //TODO: see if the performance cost here is still OK and refactor out this hack after some more testing
             nextRestartDelay = baseRestartDelay;
 
             randomEnemyLocator.OnUpdate = LocateAndRandomizeEnemies;
@@ -145,73 +150,12 @@ namespace EnemyRandomizerMod
             randomEnemyLocator.SetUpdateRate( nv.Contractor.UpdateRateType.Frame );
             
             randomEnemyLocator.Start();
-
-            //Log( "clear list" );
-            //allObjs.Clear();
-            //needsList = true;
+            
             sceneBoundry.Clear();
+            printedScenees.Clear();
         }
 
         List<ReplacementPair> pairsToRemove = new List<ReplacementPair>();
-
-        //float timer = 10f;
-        
-        void ControlReplacementRoot()
-        {
-            Vector3 somewhereOffInSpace = Vector3.one * 50000f;
-            if( replacements.Count > 0 )
-            {
-                foreach( ReplacementPair p in replacements )
-                {
-                    //if( timer < 0 )
-                    //{
-                    //    if( p.original != null ) 
-                    //        Log( "DEBUG:: Original is " + p.original.gameObject.name +" at"+ p.original.transform.position);
-                    //    if( p.replacement != null )
-                    //        Log( "DEBUG:: Replacement is " + p.replacement.gameObject.name + " at" + p.replacement.transform.position );
-                    //}
-
-                    if( p.replacement == null || p.replacement.gameObject.activeInHierarchy == false )
-                    {
-                        pairsToRemove.Add( p );
-                        Log( "replacement died, removing original: " + p.original.name );
-                    }
-                    else
-                    {
-                        if( p.original != null )
-                        {
-                            p.original.SetActive( false );
-                            p.original.transform.position = somewhereOffInSpace;
-                            Rigidbody2D r = p.original.GetComponentInChildren<Rigidbody2D>();
-                            if(r != null)
-                            {
-                                r.isKinematic = true;
-                                r.velocity = Vector2.zero;
-                            }
-                        }
-                    }
-                }
-                //if( timer < 0 )
-                //    timer = 10f;
-                //timer -= 0.016f;
-            }
-
-            if( pairsToRemove.Count > 0 )
-            {
-                foreach( ReplacementPair p in pairsToRemove )
-                {
-                    //kill enemy?
-                    if( p.original != null )
-                    {
-                        p.original.SetActive( false );
-                        Log( "Sending kill to: " + p.original.name );
-                        GetEnemyFSM( p.original ).SendEvent( "INSTA KILL" );
-                    }
-                    replacements.Remove( p );
-                }
-                pairsToRemove.Clear();
-            }
-        }
 
         void InitReplacementLogicForScene( string scene )
         {
@@ -227,16 +171,25 @@ namespace EnemyRandomizerMod
 
         void LocateAndRandomizeEnemies()
         {
-            if( randomizerReplacer != null && !randomizerReplacer.MoveNext() )
+            //This should catch any weird behaviors during the replacement algorithm and prevent it from
+            //breaking during a player's game.
+            try
             {
-                Log( "end of iterator or iterator became null" );
-                randomEnemyLocator.Reset();
-            }
+                if( randomizerReplacer != null && !randomizerReplacer.MoveNext() )
+                {
+                    Log( "end of iterator or iterator became null" );
+                    randomEnemyLocator.Reset();
+                }
 
-            if( randomizerReplacer != null && ( randomizerReplacer.Current as bool? ) == false )
+                if( randomizerReplacer != null && ( randomizerReplacer.Current as bool? ) == false )
+                {
+                    Log( "iterator returned false" );
+                    randomizerReplacer = null;
+                }
+            }
+            catch(Exception e)
             {
-                Log( "iterator returned false" );
-                //randomEnemyLocator.Reset();
+                Log( "Replacer hit an exception: " + e.Message );
                 randomizerReplacer = null;
             }
 
@@ -246,6 +199,7 @@ namespace EnemyRandomizerMod
                 {
                     restartDelay = nextRestartDelay;
                     nextRestartDelay = nextRestartDelay * 1f;
+
                     //restart iterator, every time it restarts, lets turn up the cooldown on restarting
                     randomizerReplacer = DoLocateAndRandomizeEnemies();
                 }
@@ -256,13 +210,12 @@ namespace EnemyRandomizerMod
             }
         }
 
-
-        //List<GameObject> allObjs = new List<GameObject>();
-        //bool needsList = true;
-
         bool calculateBounds = true;
         Bounds sceneBounds;
         List<GameObject> sceneBoundry = new List<GameObject>();
+
+
+        List<int> printedScenees = new List<int>();
 
         IEnumerator DoLocateAndRandomizeEnemies()
         {
@@ -287,12 +240,22 @@ namespace EnemyRandomizerMod
                 //iterate over the loaded scenes
                 for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
                 {
-                    //iterate over the loaded game objects
-                    GameObject[] rootGameObjects = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).GetRootGameObjects();
+                    Scene loadedScene = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
 
-                    //bool printed = false;
+                    int buildIndex = loadedScene.buildIndex;
+
+                    if(!printedScenees.Contains(buildIndex))
+                    {
+                        printedScenees.Add( buildIndex );
+                        DebugPrintAllObjects( loadedScene.name, i );
+                    }
+
+                    //iterate over the loaded game objects
+                    GameObject[] rootGameObjects = loadedScene.GetRootGameObjects();
+
                     foreach( GameObject rootGameObject in rootGameObjects )
                     {
+                        yield return true;
                         //and their children
                         if( rootGameObject == null )
                         {
@@ -300,14 +263,10 @@ namespace EnemyRandomizerMod
                             break;
                         }
 
-                        yield return true;
-
                         if( rootGameObject.name == ModRoot.name )
                         {
                             continue;
                         }
-
-                        //Log( "searching root: " + rootGameObject.name );
 
                         int counter = 0;
                         foreach( Transform t in rootGameObject.GetComponentsInChildren<Transform>( true ) )
@@ -330,10 +289,12 @@ namespace EnemyRandomizerMod
             {
                 List<GameObject> xList = sceneBoundry.Select(x=>x).OrderBy(x=>x.transform.position.x).ToList();
                 List<GameObject> yList = sceneBoundry.Select(x=>x).OrderBy(x=>x.transform.position.y).ToList();
-                
-                sceneBounds = new Bounds();
-                sceneBounds.min = new Vector3( xList[ 0 ].transform.position.x, yList[ 0 ].transform.position.y, -10f );
-                sceneBounds.max = new Vector3( xList[ xList.Count-1 ].transform.position.x, yList[ yList.Count - 1 ].transform.position.y, 10f );
+
+                sceneBounds = new Bounds
+                {
+                    min = new Vector3( xList[ 0 ].transform.position.x, yList[ 0 ].transform.position.y, -10f ),
+                    max = new Vector3( xList[ xList.Count - 1 ].transform.position.x, yList[ yList.Count - 1 ].transform.position.y, 10f )
+                };
 
                 Log( "Bounds created with dimensions" );
                 Log( "min "+sceneBounds.min );
@@ -344,14 +305,12 @@ namespace EnemyRandomizerMod
                 calculateBounds = false;
             }
 
-
             //iterate over the loaded scenes
             for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
             {
                 //iterate over the loaded game objects
                 GameObject[] rootGameObjects = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).GetRootGameObjects();
 
-                //bool printed = false;
                 foreach( GameObject rootGameObject in rootGameObjects )
                 {
                     //and their children
@@ -361,35 +320,18 @@ namespace EnemyRandomizerMod
                         break; 
                     }
 
-                    //if(!printed)
-                    //{
-                    //    printed = true;
-                    //    DebugPrintAllObjects( UnityEngine.SceneManagement.SceneManager.GetSceneAt( i ).name );
-                    //}
-
+                    //skip our mod root
                     if( rootGameObject.name == ModRoot.name )
-                    {
                         continue;
-                    }
-
-                    //Log( "searching root: " + rootGameObject.name );
 
                     int counter = 0;
                     foreach( Transform t in rootGameObject.GetComponentsInChildren<Transform>( true ) )
                     {
-                        //if( t.gameObject.name.Contains( "SceneBorder" ) )
-                        //    DebugPrintObjectTree( t.gameObject, true );
-
-                        //if( !allObjs.Contains( t.gameObject ) )
-                        //    allObjs.Add( t.gameObject );
-
                         counter++;
                         string name = t.gameObject.name;
 
                         if( counter % 100 == 0 )
                             yield return true;
-
-                        //Log( "potential rando enemy Name = " + name );
 
                         //don't replace null/destroyed game objects
                         if( t == null || t.gameObject == null )
@@ -408,7 +350,7 @@ namespace EnemyRandomizerMod
                                 continue;
                         }
 
-                        if( SkipLoadingGameObject( name ) )
+                        if( SkipRandomizeEnemy( name ) )
                             continue;
 
                         //skip child components of randomized enemies
@@ -447,14 +389,14 @@ namespace EnemyRandomizerMod
 
             //    needsList = false;
             //}
-            
+
             randomizerReplacer = null;
             yield return false;
         }
 
         void OnLoadObjectCollider( GameObject potentialEnemy )
         {
-            if( !randomizerReady )
+            if( !RandomizerReady )
                 return;
 
             bool isRandoEnemy = IsRandomizerEnemy(potentialEnemy);
@@ -472,6 +414,13 @@ namespace EnemyRandomizerMod
             }
 
             Log( "Randomizing: " + enemy.name );
+
+            if( simulateReplacement )
+            {
+                Log( "Sim mode enabled, not replacing the enemy, but we'll flag it like we did!" );
+                enemy.name += " Rando simulated";
+                return;
+            }
 
             int randomReplacementIndex = 0;
 
@@ -578,12 +527,10 @@ namespace EnemyRandomizerMod
 
                 Vector3 toSurface = GetVectorTo(ePos,originalDown,50f);
 
-                Log( "CRAWLER/WALL: ToSurface: " + toSurface );
+                //Log( "CRAWLER/WALL: ToSurface: " + toSurface );
 
                 Vector2 finalDir = toSurface.normalized;
                 Vector3 onGround = GetPointOn(ePos,finalDir, 50f);
-
-                //DebugCreateLine( newEnemy.transform.position, onGround, Color.white );
 
                 newEnemy.transform.position = onGround;
 
@@ -597,108 +544,30 @@ namespace EnemyRandomizerMod
                 if( collider != null && newEnemy.name.Contains( "Mawlek Turret" ) )
                 {
                     positionOffset = originalUp * collider.size.y / 3f;
-
-                    //DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
                 }
                 if( collider != null && newEnemy.name.Contains( "Mushroom Turret" ) )
                 {
                     positionOffset = originalUp * collider.size.y / 10f;
-
-                    //DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
                 }
                 if( newEnemy.name.Contains( "Plant Turret" ) )
                 {
                     positionOffset = originalUp * .7f;
-
-                    //DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
                 }
                 if( collider != null && newEnemy.name.Contains( "Laser Turret" ) )
                 {
                     positionOffset = originalUp * collider.size.y / 10f;
 
-                    //DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
                 }
                 if( collider != null && newEnemy.name.Contains( "Worm" ) )
                 {
                     positionOffset = originalUp * collider.size.y / 3f;
-
-                    //DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
                 }
-                ////orient the wall enemy
-                //float angle = Mathf.Atan2(finalDir.y, finalDir.x) * Mathf.Rad2Deg;
-                ////angle += 90f;
-                //newEnemy.transform.rotation = Quaternion.AngleAxis( angle, Vector3.forward );
-                //Log( "angle: " + angle );
             }
 
-
-            //if( ( flags & FLAGS.CRAWLER ) > 0 )
-            //{
-            //    Vector3 toDown = GetVectorTo(newEnemy, Vector2.down, 50f);
-            //    Vector3 toUp = GetVectorTo(newEnemy, Vector2.up, 50f);
-            //    Vector3 toLeft = GetVectorTo(newEnemy, Vector2.left, 50f);
-            //    Vector3 toRight = GetVectorTo(newEnemy, Vector2.right, 50f);
-
-            //    Log( "Down: " + toDown );
-            //    Log( "toUp: " + toUp );
-            //    Log( "toLeft: " + toLeft );
-            //    Log( "toRight: " + toRight );
-
-            //    //find the nearest surface and stick our wall enemy there
-            //    Vector3 min = Vector3.one * 10000;
-            //    if( toDown.magnitude < toUp.magnitude )
-            //        min = toDown;
-            //    else
-            //        min = toUp;
-
-            //    if( toLeft.magnitude < min.magnitude )
-            //        min = toLeft;
-            //    if( toRight.magnitude < min.magnitude )
-            //        min = toRight;
-
-            //    Log( "min: " + min );
-            //    Log( "min.magnitude: " + min.magnitude );
-
-            //    Vector2 finalDir = min.normalized;
-            //    Vector3 onGround = GetPointOn(newEnemy,finalDir, 50f);
-
-            //    Log( "finalDir: " + finalDir );
-            //    Log( "onGround: " + onGround );
-
-            //    newEnemy.transform.position = onGround;
-
-            //    //BoxCollider2D collider = newEnemy.GetComponent<BoxCollider2D>();
-
-            //    //if( newEnemy == null || collider == null )
-            //    //    return;
-
-            //    //Log( "new Vector3( collider.size.x * Mathf.Abs( finalDir.x ), collider.size.y * Mathf.Abs(finalDir.y), 0f ): " + new Vector3( collider.size.x * Mathf.Abs( finalDir.x ), collider.size.y * Mathf.Abs( finalDir.y ), 0f ) );
-            //    //positionOffset = new Vector3( collider.size.x * Mathf.Abs( finalDir.x ), collider.size.y * Mathf.Abs(finalDir.y), 0f );                
-            //}
-
             newEnemy.transform.position = newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z );
-
-
-            //if(newEnemy.name.Contains("Lesser Mawlek"))
-            //{
-
-            //}
+            
         }
-        //    public class mything
-        //    {
-        //        public StateFlags flags = 0;
 
-        //        public void SetFlags()
-        //        {
-        //            flags |= ( isGround ? StateFlags.Ground : 0 );
-        //        }
-
-        //        public void CheckFlags()
-        //        {
-        //            if( flags.HasFlag( StateFlags.Ground & StateFlags.Small ) )
-        //        //burp
-        //}
-        //    }
         Vector3 GetPointOnGround( GameObject entitiy )
         {
             Vector2 origin = entitiy.transform.position;
@@ -835,7 +704,7 @@ namespace EnemyRandomizerMod
             bool isMed = IsExactlyInList(enemy, EnemyRandoData.mediumEnemyTypeNames);
             bool isLarge = IsExactlyInList(enemy, EnemyRandoData.bigEnemyTypeNames);
             bool isWall = IsExactlyInList(enemy, EnemyRandoData.wallEnemyTypeNames);
-            bool isHard = IsExactlyInList(enemy, EnemyRandoData.hardEnemyTypeNames);
+            //bool isHard = IsExactlyInList(enemy, EnemyRandoData.hardEnemyTypeNames);
             bool isCrawler = IsExactlyInList(enemy, EnemyRandoData.crawlerEnemyTypeNames);
 
             int flags = 0;
@@ -845,7 +714,7 @@ namespace EnemyRandomizerMod
             flags |= ( isMed ? 1 : 0 ) << 3;
             flags |= ( isLarge ? 1 : 0 ) << 4;
             flags |= ( isWall ? 1 : 0 ) << 5;
-            flags |= ( isHard ? 1 : 0 ) << 6;
+            //flags |= ( isHard ? 1 : 0 ) << 6;
             flags |= ( isCrawler ? 1 : 0 ) << 7;
 
             return flags;
@@ -950,12 +819,7 @@ namespace EnemyRandomizerMod
 
                 if( enemy.transform.up.y > 0f && tempName == "Mawlek Turret Ceiling" )
                     isValid = false;
-
-                //if( ( enemyFlags & FLAGS.WALL ) > 0 && ( tempFlags & FLAGS.WALL ) > 0 )
-                //{
-                //    isValid = true;
-                //}
-
+                
                 if( isValid )
                     randomReplacement = temp;
 
@@ -976,5 +840,58 @@ namespace EnemyRandomizerMod
             Log( "Spawning rando monster: " + prefab.name + " from index " + randomReplacement + " out of " + loadedEnemyPrefabs.Count + " to replace " + enemy.name );
             return prefab;
         }
+
+
+
+        void ControlReplacementRoot()
+        {
+            Vector3 somewhereOffInSpace = Vector3.one * 50000f;
+            if( replacements.Count > 0 )
+            {
+                foreach( ReplacementPair p in replacements )
+                {
+                    if( p.replacement == null || p.replacement.gameObject.activeInHierarchy == false )
+                    {
+                        pairsToRemove.Add( p );
+                        Log( "replacement died, removing original: " + p.original.name );
+                    }
+                    else
+                    {
+                        if( p.original != null )
+                        {
+                            p.original.SetActive( false );
+                            p.original.transform.position = somewhereOffInSpace;
+                            Rigidbody2D r = p.original.GetComponentInChildren<Rigidbody2D>();
+                            if( r != null )
+                            {
+                                r.isKinematic = true;
+                                r.velocity = Vector2.zero;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if( pairsToRemove.Count > 0 )
+            {
+                foreach( ReplacementPair p in pairsToRemove )
+                {
+                    //kill enemy?
+                    if( p.original != null )
+                    {
+                        p.original.SetActive( false );
+                        Log( "Sending kill to: " + p.original.name );
+                        GetEnemyFSM( p.original ).SendEvent( "INSTA KILL" );
+                    }
+                    replacements.Remove( p );
+                }
+                pairsToRemove.Clear();
+            }
+        }
+        ////orient the wall enemy
+        //float angle = Mathf.Atan2(finalDir.y, finalDir.x) * Mathf.Rad2Deg;
+        ////angle += 90f;
+        //newEnemy.transform.rotation = Quaternion.AngleAxis( angle, Vector3.forward );
+        //Log( "angle: " + angle );
     }
 }
