@@ -497,6 +497,7 @@ namespace EnemyRandomizerMod
             newEnemy.transform.rotation = oldEnemy.transform.rotation;
         }
 
+        //zombie myla fell through world when placed
         void PositionRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
         {
             //TODO adjust the position to take into account the new monster type and/or size
@@ -795,15 +796,21 @@ namespace EnemyRandomizerMod
             int emergencyAbortCounter = 0;
             int emergencyAbortCounterMax = 100000;
 
+            Log( "loadedEnemyPrefabs.Count = " + loadedEnemyPrefabs.Count );
+
             //search for a compatible replacement
             int randomReplacement = -1;
             while( randomReplacement < 0 )
             {
                 //int temp = UnityEngine.Random.Range(0, loadedEnemyPrefabs.Count);
+                
                 int temp = replacementRNG.Rand(loadedEnemyPrefabs.Count-1);
 
                 GameObject tempPrefab = loadedEnemyPrefabs[temp];
                 string tempName = loadedEnemyPrefabNames[temp];
+
+
+                Log( "Attempted replacement index: " + temp + " which is " + tempName + " with prefab name " + tempPrefab.name );
 
                 int tempFlags = GetTypeFlags(tempName);
                 bool isValid = false;
@@ -811,17 +818,28 @@ namespace EnemyRandomizerMod
                 if( HasSameType( enemyFlags, tempFlags ) )
                 {
                     if( HasSameSize( enemyFlags, tempFlags ) )
+                    {
                         isValid = true;
+                        Log( "Replacement is VALID." );
+                    }                    
                 }
 
                 if( enemy.transform.up.y < 0f && tempName == "Mawlek Turret" )
+                {
                     isValid = false;
+                    Log( "(wrong type of mawlek turret)." );
+                }
 
                 if( enemy.transform.up.y > 0f && tempName == "Mawlek Turret Ceiling" )
+                {
                     isValid = false;
+                    Log( "(wrong type of mawlek turret)." );
+                }
                 
                 if( isValid )
                     randomReplacement = temp;
+                else
+                    Log( "Replacement is INVALID." );
 
                 emergencyAbortCounter++;
 

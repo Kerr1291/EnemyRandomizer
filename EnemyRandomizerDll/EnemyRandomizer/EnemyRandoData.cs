@@ -349,7 +349,7 @@ namespace EnemyRandomizerMod
 
 
             
-            //"Mantis Traitor Lord", //194 (BOSS)          needs lots of room or will fall through the floor  
+            "Mantis Traitor Lord", //194 (BOSS)          needs lots of room or will fall through the floor  
             "Mantis Heavy Flyer",//35
             "Mantis Heavy",//35
             //"Mantis Lord Temp", //167 (BOSSES)
@@ -357,7 +357,7 @@ namespace EnemyRandomizerMod
             //"Mantis Lord S2", // (static clinging mantis bosses, don't load these)
             //"Mantis Lord", // (boss)
             "Mantis Flyer Child", //166
-            //"Gate Mantis", // --kinda boring, let's not randomize him, also might break something in mantis village
+            "Gate Mantis", // --kinda boring, let's not randomize him, also might break something in mantis village
             "Mantis", //
 
             "Mushroom Baby", //177
@@ -392,7 +392,7 @@ namespace EnemyRandomizerMod
 
             "Slash Spider", //271
             "Spider Mini", //271
-            "Zombie Spider 1", //271
+            "Zombie Spider 1", //271 -- TODO: put a filter in to NOT use him a replacement
             "Zombie Spider 2", //271
 
             "Tiny Spider", //276
@@ -422,6 +422,9 @@ namespace EnemyRandomizerMod
             "Bee Stinger", //   
             "Zombie Hive", //   
             //"Hiveling Spawner", // don't want this
+
+            
+            "Mimic Spider", //269 (Nosk, BOSS)
             
             
             "Zote Boss"//33 (BOSS???)
@@ -547,6 +550,8 @@ namespace EnemyRandomizerMod
             "Flukeman", //
             "Royal Gaurd", //358
             "Zombie Hive", //   
+            "Gate Mantis",
+            "Mega Zombie Beam Miner", //241
             "Mimic Spider", //269 (Nosk, BOSS)
             "Mantis Traitor Lord", //194 (BOSS)          needs lots of room or will fall through the floor  
             "Zote Boss"//33 (BOSS???)
@@ -655,6 +660,7 @@ namespace EnemyRandomizerMod
             "Moss Walker", //117
             "Mossman_Runner",//117
             "Acid Flyer", //126
+            "Gate Mantis",
             "Mantis Heavy Flyer",//35
             "Mantis Heavy",//35
             "Mantis Flyer Child", //166
@@ -670,6 +676,7 @@ namespace EnemyRandomizerMod
             "Bee Stinger", //   
             "Shade Sibling",
 
+            "Mega Zombie Beam Miner", //241
 
 
             //original "big enemy" list
