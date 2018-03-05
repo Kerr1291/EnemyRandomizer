@@ -236,9 +236,14 @@ namespace EnemyRandomizerMod.Menu
         RandomizerFauxMenuOptionHorizontal randoSeedMenuItem;
         UnityEngine.UI.InputField customSeedInput = null;
 
+        List<GameObject> mainMenuOnlyItems = new List<GameObject>();
+
         void GenerateListOfModOptions()
         {
             List<string> modOptions = EnemyRandomizer.Instance.GlobalSettings.BoolValues.Select(x=>x.Key).ToList();
+            
+            //TODO: may not be needed....
+            modOptions.Remove( "RandomizeDisabledEnemies" );
 
             //TODO: get this key value a cleaner way....
             modOptions.Insert( 0, "BaseSeed" );
@@ -290,6 +295,8 @@ namespace EnemyRandomizerMod.Menu
 
                             ModOptions[ i ] = customSeedInput;
 
+                            mainMenuOnlyItems.Add( customSeedInput.gameObject );
+
                             optionLabel = "Custom Seed";
                             //EnemyRandomizer.Instance.GlobalSettings.StringValues.TryGetValue( "CustomSeed", out optionLabel );
                         }
@@ -300,7 +307,10 @@ namespace EnemyRandomizerMod.Menu
                             EnemyRandomizer.Instance.GlobalSettings.StringValues.TryGetValue( optionName, out optionLabel );
 
                             if( optionName == "BaseSeed" )
+                            {
                                 randoSeedMenuItem = menuItem;
+                                mainMenuOnlyItems.Add( menuItem.gameObject );
+                            }
 
                             //Manages what should happen when the menu option changes (the user clicks and the mod is toggled On/Off)
                             menuItem.OnUpdate += optionIndex =>
@@ -329,8 +339,8 @@ namespace EnemyRandomizerMod.Menu
                                             EnemyRandomizer.Instance.ChaosRNG = false;
                                         if( optionName == "RNGRoomMode" )
                                             EnemyRandomizer.Instance.RoomRNG = false;
-                                        if( optionName == "RandomizeDisabledEnemies" )
-                                            EnemyRandomizer.Instance.RandomizeDisabledEnemies = false;
+                                        //if( optionName == "RandomizeDisabledEnemies" )
+                                        //    EnemyRandomizer.Instance.RandomizeDisabledEnemies = false;
                                     }
                                     else
                                     {
@@ -340,8 +350,8 @@ namespace EnemyRandomizerMod.Menu
                                             EnemyRandomizer.Instance.ChaosRNG = true;
                                         if( optionName == "RNGRoomMode" )
                                             EnemyRandomizer.Instance.RoomRNG = true;
-                                        if( optionName == "RandomizeDisabledEnemies" )
-                                            EnemyRandomizer.Instance.RandomizeDisabledEnemies = true;
+                                        //if( optionName == "RandomizeDisabledEnemies" )
+                                        //    EnemyRandomizer.Instance.RandomizeDisabledEnemies = true;
                                     }
                                 }
 
@@ -445,10 +455,27 @@ namespace EnemyRandomizerMod.Menu
         private void SceneLoaded(Scene scene, LoadSceneMode lsm)
         {
             if( scene.name != "Menu_Title" )
+            {
+                ShowNonInGameOptions( false );
                 return;
+            }
 
-            nv.Contractor enableUI = new nv.Contractor(LoadRandomizerMenu, 0.4f);
-            enableUI.Start();
+            ShowNonInGameOptions( true );
+
+            //don't try to "enable" the UI after it's already "enabled"
+            if( _uim == null )
+            {
+                nv.Contractor enableUI = new nv.Contractor(LoadRandomizerMenu, 0.4f);
+                enableUI.Start();
+            }
+        }
+
+        void ShowNonInGameOptions(bool show)
+        {
+            foreach(GameObject go in mainMenuOnlyItems )
+            {
+                go.SetActive( show );
+            }
         }
 
         void LoadRandomizerMenu()

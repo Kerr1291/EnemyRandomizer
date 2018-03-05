@@ -179,10 +179,18 @@ namespace EnemyRandomizerMod
                         logContent += " ::: IsOutsideSceneBounds = true";
                     if( SkipLoadingGameObject( t.gameObject.name ) )
                         logContent += " ::: SkipLoadingGameObject = true";
-                    if( IsRandomizerEnemy( t.gameObject ) )
+
+                    bool isRandoEnemy = IsRandomizerEnemy( t.gameObject );
+                    if( isRandoEnemy )
                         logContent += " ::: IsRandomizerEnemy = true";
 
                     Instance.Log( logContent );
+
+                    //also print the all the components on the enemy so we can see what playmaker FSMs are on it
+                    //if( isRandoEnemy )
+                    {
+                        DebugPrintObjectTree( t.gameObject, true );
+                    }
                 }
             }
             Instance.Log( "END +++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
@@ -191,7 +199,6 @@ namespace EnemyRandomizerMod
         public static void DebugPrintObjectTree( GameObject root, bool printComponents = false )
         {
             if( root == null )
-
                 return;
 
             Instance.Log( "DebugPrintObjectTree START =====================================================" );
@@ -218,6 +225,14 @@ namespace EnemyRandomizerMod
                             Instance.Log( componentHeader + @" \--Transform LocalScale: " + ( c as Transform ).localScale );
                         }
 
+                        if( c as BoxCollider2D != null )
+                        {
+                            Instance.Log( componentHeader + @" \--BoxCollider2D Size: " + ( c as BoxCollider2D ).size );
+                            Instance.Log( componentHeader + @" \--BoxCollider2D Offset: " + ( c as BoxCollider2D ).offset );
+                            Instance.Log( componentHeader + @" \--BoxCollider2D Bounds-Min: " + ( c as BoxCollider2D ).bounds.min );
+                            Instance.Log( componentHeader + @" \--BoxCollider2D Bounds-Max: " + ( c as BoxCollider2D ).bounds.max );
+                        }
+
                         if(c as PlayMakerFSM != null)
                         {
                             Instance.Log( componentHeader + @" \--PFSM Name: " + ( c as PlayMakerFSM ).FsmName );
@@ -227,9 +242,28 @@ namespace EnemyRandomizerMod
 
                             Instance.Log( componentHeader + @" \--PFSM StateNames" );
                             foreach( string s in stateNames )
+                            {
                                 Instance.Log( componentHeader + @" \----PFSM StateName: " + s );
+
+                                var selected = ( c as PlayMakerFSM ).FsmStates.Select(x=>x).Where(x=>x.Name == s).ToArray();
+                                var transitions = selected[0].Transitions.ToArray();
+                                var actions = selected[0].Actions.ToArray();
+
+                                string[] trans = transitions.Select(x=> {return "Transition on "+x.EventName+" to state "+x.ToState; } ).ToArray();
+
+                                string[] actionNames = actions.Select(x=> {return "Actions on "+selected[0].Name+" ::: "+x.Name; } ).ToArray();
+
+                                foreach( string x in trans )
+                                    Instance.Log( componentHeader + @" \----PFSM ---- Transitions for state: " + x );
+
+                                foreach( string x in actionNames )
+                                    Instance.Log( componentHeader + @" \----PFSM ---- Actions for state: " + x );
+                            }
                             Instance.Log( componentHeader + @" \--PFSM Active: " + ( c as PlayMakerFSM ).Active );
-                            Instance.Log( componentHeader + @" \--PFSM ActiveStateName: " + ( c as PlayMakerFSM ).ActiveStateName );                            
+                            Instance.Log( componentHeader + @" \--PFSM ActiveStateName: " + ( c as PlayMakerFSM ).ActiveStateName );
+                            
+
+
                         }
                     }
                 }

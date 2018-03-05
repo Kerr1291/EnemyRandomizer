@@ -379,10 +379,10 @@ namespace EnemyRandomizerMod
             //Crystal Peak
             "Laser Turret Frames", //234
 
-            "Mega Zombie Beam Miner", //241
+            //"Mega Zombie Beam Miner", //241 -- has camera issues, don't load for now until we work on a fix
 
             "Zombie Miner", //243
-            "Crystallised Lazer Bug", //243
+            //"Crystallised Lazer Bug", //243 -- has nullref issues, don't load for now until we work on a fix
             "Crystal Flyer", //235
 
             "Zombie Beam Miner", //244
@@ -424,7 +424,7 @@ namespace EnemyRandomizerMod
             //"Hiveling Spawner", // don't want this
 
             
-            "Mimic Spider", //269 (Nosk, BOSS)
+            //"Mimic Spider", //269 (Nosk, BOSS) -- has a memory leak, don't load
             
             
             "Zote Boss"//33 (BOSS???)

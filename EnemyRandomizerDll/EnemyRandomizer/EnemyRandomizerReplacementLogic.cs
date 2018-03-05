@@ -54,19 +54,19 @@ namespace EnemyRandomizerMod
         
         //if enabled, this will NOT skip disabled game objects while looking for things to randomize
         //as a result, you may end up with a lot more enemies in some areas...
-        bool randomizeDisabledEnemies = false;
-        public bool RandomizeDisabledEnemies {
-            get {
-                return randomizeDisabledEnemies;
-            }
-            set {
-                if( RandomizerReady && Settings != null )
-                    Settings.RandomizeDisabledEnemies = value;
-                if( GlobalSettings != null )
-                    GlobalSettings.RandomizeDisabledEnemies = value;
-                randomizeDisabledEnemies = value;
-            }
-        }
+        //bool randomizeDisabledEnemies = false;
+        //public bool RandomizeDisabledEnemies {
+        //    get {
+        //        return randomizeDisabledEnemies;
+        //    }
+        //    set {
+        //        if( RandomizerReady && Settings != null )
+        //            Settings.RandomizeDisabledEnemies = value;
+        //        if( GlobalSettings != null )
+        //            GlobalSettings.RandomizeDisabledEnemies = value;
+        //        randomizeDisabledEnemies = value;
+        //    }
+        //}
 
         string currentScene = "";
         string randoEnemyNamePrefix = "Rando Enemy: ";
@@ -84,6 +84,7 @@ namespace EnemyRandomizerMod
 
         List<ReplacementPair> replacements = new List<ReplacementPair>();
 
+        List<GameObject> battleControls = new List<GameObject>();
 
 
         float baseRestartDelay = 1f;
@@ -97,6 +98,164 @@ namespace EnemyRandomizerMod
             randomEnemyLocator = new nv.Contractor();
 
             replacementController.Reset();
+        }
+
+        void CheckAndAddBattleControls( GameObject go )
+        {
+            if( battleControls.Contains( go ) )
+                return;
+
+            if( FSMUtility.ContainsFSM( go, "Battle Control" ) )
+            {
+                Log( "Found battle control on object: " + go.name );
+                battleControls.Add( go );
+            }
+
+            //foreach( Component c in go.GetComponents<Component>() )
+            //{
+            //    PlayMakerFSM pfsm = c as PlayMakerFSM;
+            //    if(pfsm.FsmName == "Battle Control")
+            //    {
+            //        Log( "Found battle control on object: " + go.name );
+            //        battleControls.Add( go );
+            //    }
+            //}
+        }
+
+        void CheckAndDisableSoftlockGates( GameObject go )
+        {
+            if( go.activeInHierarchy == false )
+                return;
+
+            if( FSMUtility.ContainsFSM( go, "BG Control" ) )
+            {
+                Log( "Found battle gate control on object: " + go.name );
+                go.SetActive( false );
+            }
+        }
+
+        void UpdateBattleControls()
+        {
+            //Log( "A" );
+            for(int i = 0; i < battleControls.Count; )
+            {
+                //Log( "B" );
+                //remove any controls that go null (like from a scene change)
+                if( battleControls[i] == null )
+                {
+                    battleControls.RemoveAt( i );
+                    i = 0;
+                    continue;
+                }
+
+                //Log( "C" );
+                PersistentBoolItem pBoolItem = battleControls[i].GetComponent<PersistentBoolItem>();
+
+                //Log( "D" );
+                //does this battle control have a persistent bool? then we want to make sure it's not set
+                if( pBoolItem != null && pBoolItem.persistentBoolData != null )
+                {
+                    //Log( "pBoolItem.persistentBoolData.activated " + pBoolItem.persistentBoolData.activated);
+
+                    //ignore battle controls that have been completed and remove them from the list
+                    if( pBoolItem.persistentBoolData.activated )
+                    {
+                        battleControls.RemoveAt( i );
+                        i = 0;
+                        continue;
+                    }
+                }
+                                
+                //average screen size
+                //20 width
+                //12 high
+
+                //Log( "E" );
+                //ok, so the battle control hasn't been run or completed yet, we need to manually monitor it
+                BoxCollider2D collider = battleControls[i].GetComponent<BoxCollider2D>();
+                Bounds localBounds;
+
+                //Log( "F" );
+                if( collider == null )
+                {
+                    Log( "Creating out own bounds to test" );
+                    localBounds = new Bounds( battleControls[ i ].transform.position, new Vector3( 28f, 24f, 10f ) );
+                }
+                else
+                {
+                    Log( "Using provided bounds..." );
+                    localBounds = collider.bounds;
+                }
+
+                //Log( "G" );
+
+                //Log( "H" );
+                //add some Z size to the bounds
+
+                float width = Mathf.Max(28f,localBounds.extents.x);
+                float height = Mathf.Max(24f,localBounds.extents.y);
+
+                localBounds.extents = new Vector3( width, height, 10f );
+
+                //Log( "I" );
+                Vector3 heroPos = HeroController.instance.transform.position;
+
+                //Log( "J" );
+                //is the hero in the battle scene? if not, no point in checking things
+                if( !localBounds.Contains( heroPos ) )
+                {
+                    Log( "Hero outside the bounds of our battle control, don't monitor" );
+                    Log( "Hero: " + heroPos );
+                    Log( "Bounds Center: " + localBounds.center );
+                    Log( "Bounds Extents: " + localBounds.extents );
+                    //DebugPrintObjectTree( battleControls[ i ], true );
+                }
+                else
+                {
+                    //Log( "K" );
+                    //see if any rando enemies are inside the area, if they are, we don't set next
+                    bool setNext = true;
+                    //Log( "L" );
+                    foreach( var pair in replacements )
+                    {
+                        //Log( "M" );
+                        if( pair.replacement == null )
+                            continue;
+
+                        //Log( "N" );
+                        if( localBounds.Contains( pair.replacement.transform.position ) )
+                        {
+                            setNext = false;
+                            break;
+                        }
+                    }
+
+                    //TODO: special giant fly logic? gruz mother
+                    //GameObject giantFly = GameObject.Find("Giant Fly");
+
+                    //if(giantFly != null)
+                    //{
+
+                    //}
+
+                    //Log( "O" );
+
+                    if( setNext )
+                    {
+                        Log( "Sending NEXT event to " + battleControls[ i ].name );
+                        //get the battle control
+                        //Log( "Q" );
+                        PlayMakerFSM pfsm = FSMUtility.LocateFSM( battleControls[i], "Battle Control" );
+
+                        if(pfsm != null)
+                        {
+                            pfsm.SendEvent( "NEXT" );
+                        }
+                    }
+                }
+                
+                ++i;
+            }
         }
 
         //entry point into the replacement logic, started on each scene transition
@@ -142,6 +301,9 @@ namespace EnemyRandomizerMod
 
             restartDelay = 0f;
 
+            //TODO: remove me
+            //Time.timeScale = 2f;
+
             //TODO: see if the performance cost here is still OK and refactor out this hack after some more testing
             nextRestartDelay = baseRestartDelay;
 
@@ -153,6 +315,8 @@ namespace EnemyRandomizerMod
             
             sceneBoundry.Clear();
             printedScenees.Clear();
+
+            battleControls.Clear();
         }
 
         List<ReplacementPair> pairsToRemove = new List<ReplacementPair>();
@@ -161,6 +325,12 @@ namespace EnemyRandomizerMod
         {
             if( replacementRNG == null )
             {
+                //TODO: move to a better place, print all the loaded prefabs on load
+                foreach( GameObject go in loadedEnemyPrefabs )
+                {
+                    DebugPrintObjectTree( go, true );
+                }
+
                 //only really matters if chaosRNG is enabled...
                 if( loadedBaseSeed >= 0 )
                     replacementRNG = new RNG( loadedBaseSeed );
@@ -234,6 +404,7 @@ namespace EnemyRandomizerMod
                 }
             }
 
+            //TODO: move into a precalculate scene function
             while( sceneBoundry.Count <= 0 )
             {
                 calculateBounds = true;
@@ -273,6 +444,9 @@ namespace EnemyRandomizerMod
                         {
                             if( t.gameObject.name.Contains( "SceneBorder" ) && !sceneBoundry.Contains( t.gameObject ) )
                                 sceneBoundry.Add( t.gameObject );
+
+                            //CheckAndDisableSoftlockGates( t.gameObject );
+                            CheckAndAddBattleControls( t.gameObject );
 
                             counter++;
                             string name = t.gameObject.name;
@@ -342,13 +516,10 @@ namespace EnemyRandomizerMod
                             //Log( "Skipping " + t.gameObject.name + " Because it is outside the bounds. " + t.position );
                             continue;
                         }
-
-                        if( !randomizeDisabledEnemies )
-                        {
-                            //don't replace inactive game objects
-                            if( !t.gameObject.activeInHierarchy )
-                                continue;
-                        }
+                        
+                        //don't replace inactive game objects
+                        if( !t.gameObject.activeInHierarchy )
+                            continue;                        
 
                         if( SkipRandomizeEnemy( name ) )
                             continue;
@@ -370,6 +541,12 @@ namespace EnemyRandomizerMod
                     yield return true;
                 }
             }
+
+            //Log( "Updating battle controls" );
+
+            yield return null;
+
+            UpdateBattleControls();
 
             //Log( "Printing list" );
             ////if(needsList)
@@ -419,6 +596,7 @@ namespace EnemyRandomizerMod
             {
                 Log( "Sim mode enabled, not replacing the enemy, but we'll flag it like we did!" );
                 enemy.name += " Rando simulated";
+                replacements.Add( new ReplacementPair() { original = enemy, replacement = enemy } );
                 return;
             }
 
@@ -493,11 +671,26 @@ namespace EnemyRandomizerMod
 
         void RotateRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
         {
-            //TODO adjust the rotation to take into account the new monster type and/or size
-            newEnemy.transform.rotation = oldEnemy.transform.rotation;
-        }
+            //TODO adjust the rotation to take into account the new monster type and/or size            
+            newEnemy.transform.rotation = oldEnemy.transform.rotation;            
 
-        //zombie myla fell through world when placed
+            if(oldEnemy.name.Contains( "Mantis Flyer Child" ) )
+            {
+                newEnemy.transform.rotation = Quaternion.identity;
+            }
+
+            //if they're ceiling droppers, flip them the opposite direction
+            if( newEnemy.name.Contains( "Ceiling Dropper" ) )
+            {
+                Quaternion rot180degrees = Quaternion.Euler(-oldEnemy.transform.rotation.eulerAngles);
+                newEnemy.transform.rotation = rot180degrees * oldEnemy.transform.rotation;
+            }
+
+            //if they're the grass ambush things, flip them opposite (find out the name of the enemy)
+
+            //if they're wall flying mantis, don't rotate the replacement
+        }
+        
         void PositionRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
         {
             //TODO adjust the position to take into account the new monster type and/or size
@@ -868,14 +1061,17 @@ namespace EnemyRandomizerMod
             {
                 foreach( ReplacementPair p in replacements )
                 {
-                    if( p.replacement == null || p.replacement.gameObject.activeInHierarchy == false )
+                    if( p.replacement == null || p.replacement.gameObject == null || p.replacement.gameObject.activeInHierarchy == false )
                     {
                         pairsToRemove.Add( p );
-                        Log( "replacement died, removing original: " + p.original.name );
+                        if( p.original != null )
+                            Log( "replacement died, removing original: " + p.original.name );
+                        else
+                            Log( "replacement died, removing original (object is null now) " );
                     }
                     else
                     {
-                        if( p.original != null )
+                        if( p.original != null && !simulateReplacement )
                         {
                             p.original.SetActive( false );
                             p.original.transform.position = somewhereOffInSpace;
@@ -897,7 +1093,7 @@ namespace EnemyRandomizerMod
                     //kill enemy?
                     if( p.original != null )
                     {
-                        p.original.SetActive( false );
+                        p.original.SetActive( true );
                         Log( "Sending kill to: " + p.original.name );
                         GetEnemyFSM( p.original ).SendEvent( "INSTA KILL" );
                     }

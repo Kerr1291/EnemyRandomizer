@@ -121,6 +121,12 @@ namespace EnemyRandomizerMod
                             GameObject.DontDestroyOnLoad( prefab );
                             prefab.transform.SetParent( root.transform );
 
+                            //TODO: special logic for certain enemies:
+
+                            //remove the "Cam Lock" game object child from the crystal guardian (mega zombie beam miner)
+
+                            //check out the "Climber Control" playmaker actions-- i think they're throwing nullref for the crystallized laser bug -- look into fixing that
+
                             loadedEnemyPrefabs.Add( prefab );
                             loadedEnemyPrefabNames.Add( EnemyRandoData.enemyTypeNames[indexOfRandomizerEnemyType] );
                             Log( "Adding enemy type: " + prefab.name + " to list with search string " + EnemyRandoData.enemyTypeNames[ indexOfRandomizerEnemyType ] );                            
@@ -204,11 +210,18 @@ namespace EnemyRandomizerMod
 
         protected virtual void PrintDebugLoadingError()
         {
-            Log( "Enemies not loaded so far:" );
+            bool printInitial = true;
             foreach( string enemy in EnemyRandoData.enemyTypeNames )
             {
                 if( loadedEnemyPrefabNames.Contains( enemy ) )
                     continue;
+
+                if( printInitial )
+                {
+                    Log( "Enemies not loaded so far:" );
+                    printInitial = false;
+                }
+
                 Log( "Missing type: " + enemy );
             }
         }

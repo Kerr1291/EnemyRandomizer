@@ -13,26 +13,11 @@ using UnityEngine;
 using nv;
 
 
-/*
- * Top TODOs:
- * 
- * 1. get rotated enemies to orient to the walls/cieling
- * 
- * 2. find a way to serialize playmaker fsms....
- * 
- * 3. test rando for softlocks && bugs
- * 
- * 
- * try something with this to kill enemies
-            //FSMUtility.LocateFSM( enemy, "health_manager_enemy" ).SetState( "Decrement Health" );
- * 
- * */
 
 namespace EnemyRandomizerMod
 {
     public partial class EnemyRandomizer : Mod<EnemyRandomizerSettings, EnemyRandomizerSettings>, ITogglableMod
     {
-        //TODO: allow a user configurable option for this
         //the user configurable seed for the randomizer
         int loadedBaseSeed = -1;
         public int LoadedBaseSeed {
@@ -65,7 +50,7 @@ namespace EnemyRandomizerMod
         public static EnemyRandomizer Instance { get; private set; }
 
         string recentHit = "";
-        string fullVersionName = "0.0.9";
+        string fullVersionName = "0.0.11"; 
 
         Dictionary<string, List<string>> enemyTypes = new Dictionary<string, List<string>>();
         List<GameObject> loadedEnemyPrefabs = new List<GameObject>();
@@ -112,7 +97,6 @@ namespace EnemyRandomizerMod
             //randomizeDisabledEnemies = Settings.RandomizeDisabledEnemies;
             ChaosRNG = GlobalSettings.RNGChaosMode;
             RoomRNG = GlobalSettings.RNGRoomMode;
-            RandomizeDisabledEnemies = GlobalSettings.RandomizeDisabledEnemies;
         }
         
         //Call from New Game
@@ -126,7 +110,6 @@ namespace EnemyRandomizerMod
             LoadedBaseSeed = GlobalSettings.BaseSeed;
             ChaosRNG = GlobalSettings.RNGChaosMode;
             RoomRNG = GlobalSettings.RNGRoomMode;
-            RandomizeDisabledEnemies = GlobalSettings.RandomizeDisabledEnemies;
         }
 
         //call when returning to the main menu
@@ -139,8 +122,7 @@ namespace EnemyRandomizerMod
         void SetupDefaultGlobalSettings()
         {
             string globalSettingsFilename = Application.persistentDataPath + ModHooks.PathSeperator + GetType().Name + ".GlobalSettings.json";
-
-            //TODO: while debugging, always reload the defaults
+            
             if( !File.Exists( globalSettingsFilename ) )
             {
                 Log( "Global settings file not found, generating new one... File not found: " + globalSettingsFilename );
@@ -148,9 +130,17 @@ namespace EnemyRandomizerMod
                 LoadedBaseSeed = GameRNG.Randi();
                 ChaosRNG = false;
                 RoomRNG = false;
-                RandomizeDisabledEnemies = false;
+
+                //catch all for a weird edge case
+                if( LoadedBaseSeed == -1 )
+                    LoadedBaseSeed = GameRNG.Randi();
+
                 SaveGlobalSettings();
             }
+
+            //catch all for a weird edge case
+            if( LoadedBaseSeed == -1 )
+                LoadedBaseSeed = GameRNG.Randi();
         }
 
         public override void Initialize()
@@ -160,6 +150,7 @@ namespace EnemyRandomizerMod
                 Log("Warning: EnemyRandomizer is a singleton. Trying to create more than one may cause issues!");
                 return;
             }
+            //Time.timeScale = 2f;
 
             Instance = this;
 
