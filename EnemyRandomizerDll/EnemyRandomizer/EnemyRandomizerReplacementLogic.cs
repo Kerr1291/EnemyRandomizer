@@ -314,7 +314,7 @@ namespace EnemyRandomizerMod
             randomEnemyLocator.Start();
             
             sceneBoundry.Clear();
-            printedScenees.Clear();
+            //printedScenees.Clear();
 
             battleControls.Clear();
         }
@@ -385,7 +385,7 @@ namespace EnemyRandomizerMod
         List<GameObject> sceneBoundry = new List<GameObject>();
 
 
-        List<int> printedScenees = new List<int>();
+        //List<int> printedScenees = new List<int>();
 
         IEnumerator DoLocateAndRandomizeEnemies()
         {
@@ -415,11 +415,11 @@ namespace EnemyRandomizerMod
 
                     int buildIndex = loadedScene.buildIndex;
 
-                    if(!printedScenees.Contains(buildIndex))
-                    {
-                        printedScenees.Add( buildIndex );
-                        DebugPrintAllObjects( loadedScene.name, i );
-                    }
+                    //if(!printedScenees.Contains(buildIndex))
+                    //{
+                    //    printedScenees.Add( buildIndex );
+                    //    DebugPrintAllObjects( loadedScene.name, i );
+                    //}
 
                     //iterate over the loaded game objects
                     GameObject[] rootGameObjects = loadedScene.GetRootGameObjects();
@@ -732,8 +732,6 @@ namespace EnemyRandomizerMod
                 if( newEnemy.name.Contains( "Plant Trap") )
                 { 
                     positionOffset = originalUp * 2f;
-
-                    //DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
                 }
                 if( collider != null && newEnemy.name.Contains( "Mawlek Turret" ) )
                 {
@@ -756,6 +754,12 @@ namespace EnemyRandomizerMod
                 {
                     positionOffset = originalUp * collider.size.y / 3f;
                 }
+
+                if( ( flags & FLAGS.CRAWLER ) > 0 )
+                {
+                    positionOffset = originalUp * 1f;
+                }
+                DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
             }
 
             newEnemy.transform.position = newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z );
@@ -1061,7 +1065,15 @@ namespace EnemyRandomizerMod
             {
                 foreach( ReplacementPair p in replacements )
                 {
-                    if( p.replacement == null || p.replacement.gameObject == null || p.replacement.gameObject.activeInHierarchy == false )
+                    if( p.replacement == null 
+                        || p.replacement.gameObject == null 
+                        || p.replacement.gameObject.activeInHierarchy == false 
+                        || ( FSMUtility.ContainsFSM( p.replacement, "health_manager_enemy" ) 
+                             && ( FSMUtility.LocateFSM( p.replacement, "health_manager_enemy" ).ActiveStateName.Contains( "Corpse" ) 
+                               || FSMUtility.LocateFSM( p.replacement, "health_manager_enemy" ).ActiveStateName.Contains( "Death" ) 
+                               )
+                           )
+                       )
                     {
                         pairsToRemove.Add( p );
                         if( p.original != null )

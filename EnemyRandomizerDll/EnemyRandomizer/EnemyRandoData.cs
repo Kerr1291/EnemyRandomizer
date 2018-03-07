@@ -368,7 +368,7 @@ namespace EnemyRandomizerMod
             "Jellyfish", //
 
             "Moss Flyer", //
-            "Garden Zombie", //
+            //"Garden Zombie", // -- has idle issues, does not wake up like it should
 
             
             "Lazy Flyer Enemy", //
@@ -382,10 +382,10 @@ namespace EnemyRandomizerMod
             //"Mega Zombie Beam Miner", //241 -- has camera issues, don't load for now until we work on a fix
 
             "Zombie Miner", //243
-            //"Crystallised Lazer Bug", //243 -- has nullref issues, don't load for now until we work on a fix
+            "Crystallised Lazer Bug", //243
             "Crystal Flyer", //235
 
-            "Zombie Beam Miner", //244
+            //"Zombie Beam Miner", //244 -- has nullref issues, don't load for now until we work on a fix
 
             //Deepnest
             "Baby Centipede", //259
@@ -679,47 +679,7 @@ namespace EnemyRandomizerMod
             "Mega Zombie Beam Miner", //241
 
 
-            //original "big enemy" list
-            "Blow Fly", //285
-            "Ruins Sentry Fat", //90
-            "Giant Fly Col",//34 
-            //"Giant Fly",//(gruz mother?)
-            //"Fly Spawn",
-            "Fat Fly", //146 
-            "Mega Fat Bee",//34
-            "Lancer",//35
-            "Lobster",//35
-            "Mage Knight",//35
-            "Electric Mage",//35
-            "Mage",//35
-            "Mawlek Body", //46 (BOSS)
-            "Colosseum_Worm",//34
-            "Worm", //49
-            "Zombie Guard", //76 (big enemy)
-            "Great Shield Zombie", //106
-            "Moss Knight Fat", //204
-            "Moss Knight", //137            
-            "Fungus Flyer", //
-            "Mushroom Brawler", //
-            "Jellyfish", //
-            "Lazy Flyer Enemy", //
-            "Grave Zombie", //226
-            "Slash Spider", //271   -- doesn't seem to randomize well, needs more research
-            "Royal Gaurd", //358
-            "Big Bee", //362
-            "Colosseum_Worm",//34
-            "Mimic Spider", //269 (Nosk, BOSS)
-            "Mantis Traitor Lord" //194 (BOSS)          needs lots of room or will fall through the floor  
-
-
-
-        };
-
-        //TODO: testing....
-        public static List<string> bigEnemyTypeNames = new List<string>()
-        {
-            "NONE",
-            "NONE"
+            ////original "big enemy" list
             //"Blow Fly", //285
             //"Ruins Sentry Fat", //90
             //"Giant Fly Col",//34 
@@ -750,6 +710,46 @@ namespace EnemyRandomizerMod
             //"Colosseum_Worm",//34
             //"Mimic Spider", //269 (Nosk, BOSS)
             //"Mantis Traitor Lord" //194 (BOSS)          needs lots of room or will fall through the floor  
+
+
+
+        };
+
+        //TODO: testing....
+        public static List<string> bigEnemyTypeNames = new List<string>()
+        {
+            //"NONE",
+            //"NONE"
+            "Blow Fly", //285
+            "Ruins Sentry Fat", //90
+            "Giant Fly Col",//34 
+            //"Giant Fly",//(gruz mother?)
+            //"Fly Spawn",
+            "Fat Fly", //146 
+            "Mega Fat Bee",//34
+            "Lancer",//35
+            "Lobster",//35
+            "Mage Knight",//35
+            "Electric Mage",//35
+            "Mage",//35
+            "Mawlek Body", //46 (BOSS)
+            "Colosseum_Worm",//34
+            "Worm", //49
+            "Zombie Guard", //76 (big enemy)
+            "Great Shield Zombie", //106
+            "Moss Knight Fat", //204
+            "Moss Knight", //137            
+            "Fungus Flyer", //
+            "Mushroom Brawler", //
+            "Jellyfish", //
+            "Lazy Flyer Enemy", //
+            "Grave Zombie", //226
+            "Slash Spider", //271   -- doesn't seem to randomize well, needs more research
+            "Royal Gaurd", //358
+            "Big Bee", //362
+            "Colosseum_Worm",//34
+            "Mimic Spider", //269 (Nosk, BOSS)
+            "Mantis Traitor Lord" //194 (BOSS)          needs lots of room or will fall through the floor  
         };
 
         //doubled the occurence of some types in here to even out the replacements
@@ -770,6 +770,11 @@ namespace EnemyRandomizerMod
             "Mushroom Turret",
             "Mushroom Turret"
         };
+
+
+
+
+        
 
         //public static List<string> hardEnemyTypeNames = new List<string>()
         //{

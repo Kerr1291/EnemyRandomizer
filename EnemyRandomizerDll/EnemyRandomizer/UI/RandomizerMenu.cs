@@ -197,8 +197,8 @@ namespace EnemyRandomizerMod.Menu
             GameObject.DestroyImmediate( ModMenuScreen.content.GetComponent<VerticalLayoutGroup>() );
             GameObject.Destroy( ModMenuScreen.defaultHighlight.gameObject.transform.parent.gameObject );
 
-            Log( "Printing UI state BEFORE option generation" );
-            EnemyRandomizer.DebugPrintObjectTree( _uim.gameObject, true );
+            //Log( "Printing UI state BEFORE option generation" );
+            //EnemyRandomizer.DebugPrintObjectTree( _uim.gameObject, true );
 
             GenerateListOfModOptions();
 
