@@ -1107,17 +1107,12 @@ namespace EnemyRandomizerMod
                     {
                         p.original.SetActive( true );
                         Log( "Sending kill to: " + p.original.name );
-                        GetEnemyFSM( p.original ).SendEvent( "INSTA KILL" );
+                        p.original.GetEnemyFSM().SendEvent( "INSTA KILL" );
                     }
                     replacements.Remove( p );
                 }
                 pairsToRemove.Clear();
             }
         }
-        ////orient the wall enemy
-        //float angle = Mathf.Atan2(finalDir.y, finalDir.x) * Mathf.Rad2Deg;
-        ////angle += 90f;
-        //newEnemy.transform.rotation = Quaternion.AngleAxis( angle, Vector3.forward );
-        //Log( "angle: " + angle );
     }
 }

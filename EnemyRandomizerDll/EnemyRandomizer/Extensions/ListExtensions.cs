@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using nv;
 
 namespace nv
 {
@@ -47,6 +47,33 @@ namespace nv
         {
             int index = GameRNG.Rand(0, list.Count);
             return list[ index ];
+        }
+
+        public static GameObject CreateLineRenderer( this List<Vector2> points, Color c, float z = 0f, float width = .5f )
+        {
+            if( points == null || points.Count < 0 )
+                return null;
+
+            return CreateLineRenderer( points.Select( x => { return new Vector3( x.x, x.y, z ); } ).ToList(), c, width );
+        }
+
+        public static GameObject CreateLineRenderer( this List<Vector3> points, Color c, float width = .5f )
+        {
+            if( points == null || points.Count < 0 )
+                return null;
+
+            GameObject lineObj = new GameObject("LineRenderer created by ListExtensions.CreateLineRenderer");
+            LineRenderer lr = lineObj.AddComponent<LineRenderer>();
+            lr.SetVertexCount( points.Count );
+            lr.SetPositions( points.ToArray() );
+            lr.SetWidth( width, width );
+            if( lr.GetComponent<Renderer>() )
+                lr.GetComponent<Renderer>().material = new Material( Shader.Find( "Diffuse" ) );
+            if( lr.GetComponent<Renderer>() )
+                lr.GetComponent<Renderer>().material.color = c;
+            lr.SetColors( c, c );
+
+            return lineObj;
         }
     }
 }

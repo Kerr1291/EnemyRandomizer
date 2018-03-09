@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace EnemyRandomizerMod
+namespace nv
 {
     public static class GameObjectExtensions
     {
-        public static bool IsRandomizerEnemy( this GameObject gameObject )
+        public static bool IsRandomizerEnemy( this GameObject gameObject, List<string> enemyTypes )
         {
             if( gameObject == null )
                 return false;
@@ -25,13 +25,7 @@ namespace EnemyRandomizerMod
             string enemyName = gameObject.name;
             string trimmedName = enemyName.TrimGameObjectName();
 
-            bool isRandoEnemyType = false;
-
-            //TODO: Move this logic into getter in the data manager
-            if( EnemyRandomizer.simulateReplacement )
-                isRandoEnemyType = EnemyRandoData.enemyTypeNames.Contains( trimmedName );
-            else
-                isRandoEnemyType = EnemyRandomizer.Instance.loadedEnemyPrefabNames.Contains( trimmedName );
+            bool isRandoEnemyType = enemyTypes.Contains( trimmedName );
 
             return isRandoEnemyType;
         }
@@ -67,12 +61,12 @@ namespace EnemyRandomizerMod
             if( gameObject == null )
                 return;
 
-            EnemyRandomizer.Instance.Log( "DebugPrintObjectTree START =====================================================" );
-            EnemyRandomizer.Instance.Log( "Printing scene hierarchy for game object: " + gameObject.name );
+            Dev.Log( "DebugPrintObjectTree START =====================================================" );
+            Dev.Log( "Printing scene hierarchy for game object: " + gameObject.name );
             foreach( Transform t in gameObject.GetComponentsInChildren<Transform>( true ) )
             {
                 string objectNameAndPath = t.gameObject.PrintSceneHierarchyPath();
-                EnemyRandomizer.Instance.Log( objectNameAndPath );
+                Dev.Log( objectNameAndPath );
 
                 if( printComponents )
                 {
@@ -89,7 +83,7 @@ namespace EnemyRandomizerMod
                     }
                 }
             }
-            EnemyRandomizer.Instance.Log( "DebugPrintObjectTree END +++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
+            Dev.Log( "DebugPrintObjectTree END +++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
         }
 
 
@@ -142,6 +136,25 @@ namespace EnemyRandomizerMod
                 fsm.FsmVariables.GetFsmInt( "Geo Large" ).Value = (int)( fsm.FsmVariables.GetFsmInt( "Geo Large" ).Value * multiplier );
                 fsm.FsmVariables.GetFsmInt( "Geo Large Extra" ).Value = (int)( fsm.FsmVariables.GetFsmInt( "Geo Large Extra" ).Value * multiplier );
             }
+        }
+
+        public static T GetOrAddComponent<T>( GameObject source ) where T : UnityEngine.Component
+        {
+            T result = source.GetComponent<T>();
+            if( result != null )
+                return result;
+            result = source.AddComponent<T>();
+            return result;
+        }
+
+        public static void GetOrAddComponentIfNull<T>( ref T result, GameObject source ) where T : UnityEngine.Component
+        {
+            if( result != null )
+                return;
+            result = source.GetComponent<T>();
+            if( result != null )
+                return;
+            result = source.AddComponent<T>();
         }
     }
 }

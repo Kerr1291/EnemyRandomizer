@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace EnemyRandomizerMod
+namespace nv
 {
     public static class ComponentExtensions
     {
@@ -12,16 +12,16 @@ namespace EnemyRandomizerMod
         {
             if( c == null )
                 return;
-            EnemyRandomizer.Instance.Log( componentHeader + @" \--Component: " + c.GetType().Name );
+            Dev.Log( componentHeader + @" \--Component: " + c.GetType().Name );
         }
 
         public static void PrintTransform( this Component c, string componentHeader = "" )
         {
             if( c as Transform != null )
             {
-                EnemyRandomizer.Instance.Log( componentHeader + @" \--Transform Position: " + ( c as Transform ).position );
-                EnemyRandomizer.Instance.Log( componentHeader + @" \--Transform Rotation: " + ( c as Transform ).rotation.eulerAngles );
-                EnemyRandomizer.Instance.Log( componentHeader + @" \--Transform LocalScale: " + ( c as Transform ).localScale );
+                Dev.Log( componentHeader + @" \--Transform Position: " + ( c as Transform ).position );
+                Dev.Log( componentHeader + @" \--Transform Rotation: " + ( c as Transform ).rotation.eulerAngles );
+                Dev.Log( componentHeader + @" \--Transform LocalScale: " + ( c as Transform ).localScale );
             }
         }
 
@@ -29,10 +29,10 @@ namespace EnemyRandomizerMod
         {
             if( c as BoxCollider2D != null )
             {
-                EnemyRandomizer.Instance.Log( componentHeader + @" \--BoxCollider2D Size: " + ( c as BoxCollider2D ).size );
-                EnemyRandomizer.Instance.Log( componentHeader + @" \--BoxCollider2D Offset: " + ( c as BoxCollider2D ).offset );
-                EnemyRandomizer.Instance.Log( componentHeader + @" \--BoxCollider2D Bounds-Min: " + ( c as BoxCollider2D ).bounds.min );
-                EnemyRandomizer.Instance.Log( componentHeader + @" \--BoxCollider2D Bounds-Max: " + ( c as BoxCollider2D ).bounds.max );
+                Dev.Log( componentHeader + @" \--BoxCollider2D Size: " + ( c as BoxCollider2D ).size );
+                Dev.Log( componentHeader + @" \--BoxCollider2D Offset: " + ( c as BoxCollider2D ).offset );
+                Dev.Log( componentHeader + @" \--BoxCollider2D Bounds-Min: " + ( c as BoxCollider2D ).bounds.min );
+                Dev.Log( componentHeader + @" \--BoxCollider2D Bounds-Max: " + ( c as BoxCollider2D ).bounds.max );
             }
         }
 
@@ -40,15 +40,15 @@ namespace EnemyRandomizerMod
         {
             if( c as PlayMakerFSM != null )
             {
-                EnemyRandomizer.Instance.Log( componentHeader + @" \--PFSM Name: " + ( c as PlayMakerFSM ).FsmName );
-                EnemyRandomizer.Instance.Log( componentHeader + @" \--PFSM FsmDescription: " + ( c as PlayMakerFSM ).FsmDescription );
+                Dev.Log( componentHeader + @" \--PFSM Name: " + ( c as PlayMakerFSM ).FsmName );
+                Dev.Log( componentHeader + @" \--PFSM FsmDescription: " + ( c as PlayMakerFSM ).FsmDescription );
 
                 string[] stateNames = ( c as PlayMakerFSM ).FsmStates.Select(x=>x.Name).ToArray();
 
-                EnemyRandomizer.Instance.Log( componentHeader + @" \--PFSM StateNames" );
+                Dev.Log( componentHeader + @" \--PFSM StateNames" );
                 foreach( string s in stateNames )
                 {
-                    EnemyRandomizer.Instance.Log( componentHeader + @" \----PFSM StateName: " + s );
+                    Dev.Log( componentHeader + @" \----PFSM StateName: " + s );
 
                     var selected = ( c as PlayMakerFSM ).FsmStates.Select(x=>x).Where(x=>x.Name == s).ToArray();
                     var transitions = selected[0].Transitions.ToArray();
@@ -59,13 +59,13 @@ namespace EnemyRandomizerMod
                     string[] actionNames = actions.Select(x=> {return "Actions on "+selected[0].Name+" ::: "+x.Name; } ).ToArray();
 
                     foreach( string x in trans )
-                        EnemyRandomizer.Instance.Log( componentHeader + @" \----PFSM ---- Transitions for state: " + x );
+                        Dev.Log( componentHeader + @" \----PFSM ---- Transitions for state: " + x );
 
                     foreach( string x in actionNames )
-                        EnemyRandomizer.Instance.Log( componentHeader + @" \----PFSM ---- Actions for state: " + x );
+                        Dev.Log( componentHeader + @" \----PFSM ---- Actions for state: " + x );
                 }
-                EnemyRandomizer.Instance.Log( componentHeader + @" \--PFSM Active: " + ( c as PlayMakerFSM ).Active );
-                EnemyRandomizer.Instance.Log( componentHeader + @" \--PFSM ActiveStateName: " + ( c as PlayMakerFSM ).ActiveStateName );
+                Dev.Log( componentHeader + @" \--PFSM Active: " + ( c as PlayMakerFSM ).Active );
+                Dev.Log( componentHeader + @" \--PFSM ActiveStateName: " + ( c as PlayMakerFSM ).ActiveStateName );
             }
         }
 

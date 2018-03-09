@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace EnemyRandomizerMod
+namespace nv
 {
     public static class StringExtensions
     {

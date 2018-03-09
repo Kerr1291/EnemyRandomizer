@@ -5,19 +5,19 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace EnemyRandomizerMod
+namespace nv
 {
     public static class SceneExtensions
     {
-        public static void PrintHierarchy( this Scene scene, int localIndex = -1, Bounds? sceneBounds = null )
+        public static void PrintHierarchy( this Scene scene, int localIndex = -1, Bounds? sceneBounds = null, List<string> randomizerEnemyTypes = null )
         {
             if( !scene.IsValid() )
                 return;
 
-            EnemyRandomizer.Instance.Log( "START =====================================================" );
-            EnemyRandomizer.Instance.Log( "Printing scene hierarchy for scene: " + scene.name + " [Build index: " + scene.buildIndex + "]" );
+            Dev.Log( "START =====================================================" );
+            Dev.Log( "Printing scene hierarchy for scene: " + scene.name + " [Build index: " + scene.buildIndex + "]" );
             if( localIndex >= 0 )
-                EnemyRandomizer.Instance.Log( "Local scene index: " + localIndex );
+                Dev.Log( "Local scene index: " + localIndex );
 
             GameObject[] rootGameObjects = scene.GetRootGameObjects();
 
@@ -25,7 +25,7 @@ namespace EnemyRandomizerMod
             {
                 if( go == null )
                 {
-                    EnemyRandomizer.Instance.Log( "Scene " + scene.name + " has a null root game object! Skipping debug print scene..." );
+                    Dev.Log( "Scene " + scene.name + " has a null root game object! Skipping debug print scene..." );
                     break;
                 }
 
@@ -40,14 +40,14 @@ namespace EnemyRandomizerMod
                         logContent += " ::: IsSkipLoadingString = true";
                     if( t.gameObject.name.IsSkipRandomizingString() )
                         logContent += " ::: IsSkipRandomizingString = true";                    
-                    if( t.gameObject.IsRandomizerEnemy() )
+                    if( randomizerEnemyTypes != null && t.gameObject.IsRandomizerEnemy( randomizerEnemyTypes ) )
                         logContent += " ::: IsRandomizerEnemy = true";
 
-                    EnemyRandomizer.Instance.Log( logContent );
+                    Dev.Log( logContent );
                     t.gameObject.PrintSceneHierarchyTree( true );
                 }
             }
-            EnemyRandomizer.Instance.Log( "END +++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
+            Dev.Log( "END +++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
         }
     }
 }

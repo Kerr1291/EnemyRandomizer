@@ -13,9 +13,7 @@ using UnityEngine;
 using nv;
 
 
-//TODO: create LayerMask extension class
 //TODO: move most of the extension-able types out of Dev and into their respective extension classses
-//TODO: move all the extensions into the nv namespace
 //TODO: move all the Log calls to use my Dev.Log
 //TODO: change Dev.Log to print to the mod's Logging output when the #define exists
 //TODO: continue the refactor toward the alpha build....
