@@ -114,7 +114,7 @@ namespace EnemyRandomizerMod
                         //    Log( "IsEnemyByFSM(t.gameObject) ? " + IsEnemyByFSM( t.gameObject ) );
                         //}
 
-                        if( indexOfRandomizerEnemyType >= 0 && IsEnemyByFSM(t.gameObject) )
+                        if( indexOfRandomizerEnemyType >= 0 && IsObjectAnEnemy(t.gameObject) )
                         {
                             GameObject prefab = GameObject.Instantiate(t.gameObject);
                             prefab.SetActive( false );

@@ -13,6 +13,13 @@ using UnityEngine;
 using nv;
 
 
+//TODO: create LayerMask extension class
+//TODO: move most of the extension-able types out of Dev and into their respective extension classses
+//TODO: move all the extensions into the nv namespace
+//TODO: move all the Log calls to use my Dev.Log
+//TODO: change Dev.Log to print to the mod's Logging output when the #define exists
+//TODO: continue the refactor toward the alpha build....
+
 
 namespace EnemyRandomizerMod
 {
@@ -35,7 +42,7 @@ namespace EnemyRandomizerMod
 
         //For debugging, set this to true to have the scene replacer run its logic without doing anything
         //(Useful for testing without needing to wait through the load times)
-        bool simulateReplacement = false;
+        public const bool simulateReplacement = false;
 
         bool randomizerReady = false;
         bool RandomizerReady {
@@ -52,10 +59,10 @@ namespace EnemyRandomizerMod
         string recentHit = "";
         string fullVersionName = "0.0.13a"; 
 
-        Dictionary<string, List<string>> enemyTypes = new Dictionary<string, List<string>>();
-        List<GameObject> loadedEnemyPrefabs = new List<GameObject>();
-        List<string> loadedEnemyPrefabNames = new List<string>();
-        List<string> uniqueEnemyTypes = new List<string>();
+        public Dictionary<string, List<string>> enemyTypes = new Dictionary<string, List<string>>();
+        public List<GameObject> loadedEnemyPrefabs = new List<GameObject>();
+        public List<string> loadedEnemyPrefabNames = new List<string>();
+        public List<string> uniqueEnemyTypes = new List<string>();
 
         GameObject modRoot;
         GameObject ModRoot {
@@ -250,6 +257,16 @@ namespace EnemyRandomizerMod
             catch( Exception )
             {
                 return true;
+            }
+        }
+
+
+        public void Debug_PrintObjectOnHit( Collider2D otherCollider, GameObject gameObject )
+        {
+            if( otherCollider.gameObject.name != recentHit )
+            {
+                Log( "(" + otherCollider.gameObject.transform.position + ") HIT: " + otherCollider.gameObject.name );
+                recentHit = otherCollider.gameObject.name;
             }
         }
 

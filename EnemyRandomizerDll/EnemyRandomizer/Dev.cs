@@ -332,6 +332,20 @@ namespace nv
         }
     }
 
+    public static void DebugCreateLine( Vector2 from, Vector2 to, Color c )
+    {
+        GameObject lineObj = new GameObject("line: "+from+" -> "+to);
+        LineRenderer lr = lineObj.AddComponent<LineRenderer>();
+        lr.SetVertexCount( 2 );
+        Vector3[] points = new Vector3[]{from,to};
+        lr.SetPositions( points );
+        lr.SetWidth( .5f, .1f );
+        if( lr.GetComponent<Renderer>() )
+            lr.GetComponent<Renderer>().material = new Material( Shader.Find( "Diffuse" ) );
+        if( lr.GetComponent<Renderer>() )
+            lr.GetComponent<Renderer>().material.color = c;
+        lr.SetColors( c, c );
+    }
 
 
 }
