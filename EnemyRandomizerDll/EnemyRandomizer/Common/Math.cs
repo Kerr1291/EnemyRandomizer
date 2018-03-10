@@ -80,12 +80,6 @@ namespace nv
             return vout;
         }
 
-
-        public static void SetVectorComponent( ref Vector3 v, int component, float value )
-        {
-            v[ component ] = value;
-        }
-
         public static int Sign( int v )
         {
             if( v < 0 )
@@ -194,6 +188,5 @@ namespace nv
             area.height = Mathf.Min( area.yMax, min_max.yMax ) - area.y;
             return area;
         }
-
     }
 }

@@ -29,54 +29,42 @@ namespace nv
             Quaternion pq = new Quaternion(p.x, p.y, p.z, 0);
             pq = localSpace.localRotation * pq * Quaternion.Inverse( localSpace.localRotation );
             input = new Vector3(pq.x, pq.y, pq.z);
+        }        
+
+        public static void Set( this Vector3 v, int componentIndex, float value )
+        {
+            v[ componentIndex ] = value;
         }
 
-
-        public static Vector3 VectorXZ( int x, int y )
+        public static void SetX( this Vector3 v, float value )
         {
-            return new Vector3( x, 0, y );
+            v[ 0 ] = value;
         }
 
-        public static Vector3 VectorXZ( float x, float y )
+        public static void SetY( this Vector3 v, float value )
         {
-            return new Vector3( x, 0f, y );
+            v[ 1 ] = value;
         }
 
-        public static Vector3 VectorXZ( Vector2 v )
+        public static void SetZ( this Vector3 v, float value )
         {
-            return new Vector3( v.x, 0.0f, v.y );
+            v[ 2 ] = value;
         }
 
-        public static Vector3 VectorXZ( Vector2 v, float y )
+        public static Vector3 Sign( this Vector3 v )
         {
-            return new Vector3( v.x, y, v.y );
+            Vector3 t = Vector3.zero;
+            t.x = Mathnv.Sign( v.x );
+            t.y = Mathnv.Sign( v.y );
+            t.z = Mathnv.Sign( v.z );
+            return t;
         }
 
-        public static Vector3 VectorXZ( Vector3 v )
+        public static void ToInt( this Vector3 v )
         {
-            return new Vector3( v.x, 0.0f, v.z );
-        }
-
-        public static void VectorXZ( ref Vector3 v )
-        {
-            v.y = 0f;
-        }
-
-        public static void XYtoXZ( ref Vector3 v )
-        {
-            v.z = v.y;
-            v.y = 0f;
-        }
-
-        public static void XYtoXZ( ref Vector3 v, float y )
-        {
-            v.z = v.y;
-            v.y = y;
-        }
-
-        public static void SetVectorComponent( ref Vector3 v, int component, float value )
-        {
-            v[ component ] = value;
+            v.x = (int)( v.x );
+            v.y = (int)( v.y );
+            v.z = (int)( v.z );
         }
     }
 }

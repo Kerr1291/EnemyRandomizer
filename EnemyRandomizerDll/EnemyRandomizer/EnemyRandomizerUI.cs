@@ -12,6 +12,8 @@ using UnityEngine;
 
 using EnemyRandomizerMod.Menu;
 
+using nv;
+
 namespace EnemyRandomizerMod
 {
     public partial class EnemyRandomizer
@@ -104,14 +106,14 @@ namespace EnemyRandomizerMod
             }
 
             //setup enable randomizer button
-            GameObject enableRandoButton = FindGameObjectInChildren(menu, enableButtonName);
+            GameObject enableRandoButton = menu.FindGameObjectInChildren(enableButtonName);
             UnityEngine.UI.Button enableButton = enableRandoButton.GetComponent<UnityEngine.UI.Button>();
             enableButton.onClick.AddListener( BuildEnemyRandomizerDatabase );
 
             //setup the loading bar
             if( loadingBar == null )
             {
-                GameObject loadingBarObj = FindGameObjectInChildren(menu, loadingBarName);
+                GameObject loadingBarObj = menu.FindGameObjectInChildren(loadingBarName);
                 loadingBar = loadingBarObj.GetComponent<UnityEngine.UI.Slider>();
                 loadingBar.gameObject.SetActive( false );
             }

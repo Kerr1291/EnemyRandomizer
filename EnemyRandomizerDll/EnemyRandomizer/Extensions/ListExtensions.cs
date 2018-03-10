@@ -43,9 +43,15 @@ namespace nv
             return list.Contains( go.name );
         }
 
-        public static T GetRandomElementFromList<T>( List<T> list )
+        public static T GetRandomElementFromList<T>( this List<T> list )
         {
             int index = GameRNG.Rand(0, list.Count);
+            return list[ index ];
+        }
+
+        public static T GetRandomElementFromList<T>( this List<T> list, RNG rng )
+        {
+            int index = rng.Rand(0, list.Count);
             return list[ index ];
         }
 
@@ -57,20 +63,25 @@ namespace nv
             return CreateLineRenderer( points.Select( x => { return new Vector3( x.x, x.y, z ); } ).ToList(), c, width );
         }
 
-        public static GameObject CreateLineRenderer( this List<Vector3> points, Color c, float width = .5f )
+        public static GameObject CreateLineRenderer( this List<Vector3> points, Color c, float width = .5f, Transform parent = null )
         {
             if( points == null || points.Count < 0 )
                 return null;
 
             GameObject lineObj = new GameObject("LineRenderer created by ListExtensions.CreateLineRenderer");
+            if( parent != null )
+                lineObj.transform.SetParent( parent );
+
             LineRenderer lr = lineObj.AddComponent<LineRenderer>();
             lr.SetVertexCount( points.Count );
             lr.SetPositions( points.ToArray() );
             lr.SetWidth( width, width );
+
             if( lr.GetComponent<Renderer>() )
                 lr.GetComponent<Renderer>().material = new Material( Shader.Find( "Diffuse" ) );
             if( lr.GetComponent<Renderer>() )
                 lr.GetComponent<Renderer>().material.color = c;
+
             lr.SetColors( c, c );
 
             return lineObj;

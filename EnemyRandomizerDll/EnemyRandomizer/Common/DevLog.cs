@@ -1,8 +1,16 @@
-﻿using UnityEngine;
+﻿//TODO: move define into precompiler option
+#define USE_HK_MODLOG
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System;
+
+#if USE_HK_MODLOG
+using Mod = EnemyRandomizerMod.EnemyRandomizer;
+#endif
+
+
 
 //disable the unreachable code detected warning for this file
 #pragma warning disable 0162
@@ -14,8 +22,7 @@ namespace nv
         public static new DevLog Instance {
             get {
                 DevLog log = GameSingleton<DevLog>.Instance;
-
-                if( log.logRoot == null )
+                if( log.logRoot == null)
                     log.Setup();
                 return log;
             }
@@ -37,6 +44,47 @@ namespace nv
 
         [SerializeField]
         GameObject logTextPrefab = null;
+
+        public void SetupPrefabs()
+        {
+            if(logTextPrefab == null)
+            {
+                logTextPrefab = new GameObject( "DebugLogTextElement" );
+                Text text = logTextPrefab.AddComponent<Text>();
+                text.color = Color.red;
+                logTextPrefab.SetActive( false );
+            }
+            if( logRoot == null )
+            {
+                logRoot = new GameObject( "DebugLogRoot" );
+                Canvas canvas = logRoot.AddComponent<Canvas>();
+                canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+                canvas.gameObject.GetOrAddComponent<RectTransform>().sizeDelta = new Vector2( 1920f * .5f, 1080f * 20f );
+                CanvasScaler canvasScaler = logRoot.AddComponent<CanvasScaler>();
+                canvasScaler.referenceResolution = new Vector2( 1920f, 1080f );
+            }
+            if( logWindow == null )
+            {
+                logWindow = new GameObject( "DebugLogWindow" );
+                logWindow.transform.SetParent( logRoot.transform );
+                CanvasRenderer canvas = logWindow.AddComponent<CanvasRenderer>();
+
+                //create a window that fills its parent
+                canvas.gameObject.GetOrAddComponent<RectTransform>().anchorMax = Vector2.one;
+                canvas.gameObject.GetOrAddComponent<RectTransform>().anchorMin = Vector2.zero;
+                canvas.gameObject.GetOrAddComponent<RectTransform>().sizeDelta = Vector2.zero;
+                canvas.gameObject.GetOrAddComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                //add background image
+                Image bg = logWindow.AddComponent<Image>();
+
+                //mostly black/dark grey transparent background
+                bg.color = new Color( .1f, .1f, .1f, .4f );
+            }
+            GameObject.DontDestroyOnLoad( logTextPrefab );
+            GameObject.DontDestroyOnLoad( logRoot );
+            GameObject.DontDestroyOnLoad( logWindow );
+        }
 
         public void Hide()
         {
@@ -85,11 +133,11 @@ namespace nv
 
         void Setup()
         {
-            logRoot = new GameObject();
-            Dev.GetOrAddComponent<Canvas>( logRoot );
-            Dev.GetOrAddComponent<RectTransform>( logRoot ).sizeDelta = new Vector2( 1024, 680 ); ;
+            //logRoot = new GameObject();
+            //Dev.GetOrAddComponent<Canvas>( logRoot );
+            //Dev.GetOrAddComponent<RectTransform>( logRoot ).sizeDelta = new Vector2( 1024, 680 ); ;
 
-
+            SetupPrefabs();
         }
     }
 
@@ -176,6 +224,8 @@ namespace nv
         {
 #if UNITY_EDITOR
             UnityEngine.Debug.Log( " :::: " + Dev.FunctionHeader() );
+#elif USE_HK_MODLOG
+            Mod.Instance.Log( " :::: " + Dev.FunctionHeader() );
 #endif
         }
 
@@ -183,6 +233,8 @@ namespace nv
         {
 #if UNITY_EDITOR
             UnityEngine.Debug.LogError( Dev.FunctionHeader() + Dev.Colorize( text, ColorToHex( Color.red ) ) );
+#elif USE_HK_MODLOG
+            Mod.Instance.LogError( Dev.FunctionHeader() + Dev.Colorize( text, ColorToHex( Color.red ) ) );
 #else
             DevLog.Instance.Log( Dev.FunctionHeader() + Dev.Colorize( text, ColorToHex(Color.red) ) );
 #endif
@@ -192,6 +244,7 @@ namespace nv
         {
 #if UNITY_EDITOR
             UnityEngine.Debug.LogWarning( Dev.FunctionHeader() + Dev.Colorize( text, ColorToHex(Color.yellow) ) );
+#elif USE_HK_MODLOG
 #else
             DevLog.Instance.Log( Dev.FunctionHeader() + Dev.Colorize( text, ColorToHex(Color.yellow) ) );
 #endif
@@ -201,6 +254,8 @@ namespace nv
         {
 #if UNITY_EDITOR
             UnityEngine.Debug.Log( Dev.FunctionHeader() + Dev.Colorize( text, _log_color ) );
+#elif USE_HK_MODLOG
+            Mod.Instance.Log( Dev.FunctionHeader() + Dev.Colorize( text, _log_color ) );
 #else
             DevLog.Instance.Log( Dev.FunctionHeader() + Dev.Colorize( text, _log_color ) );
 #endif
@@ -210,6 +265,8 @@ namespace nv
         {
 #if UNITY_EDITOR
             UnityEngine.Debug.Log( Dev.FunctionHeader() + Dev.Colorize( text, Dev.ColorStr( r, g, b ) ) );
+#elif USE_HK_MODLOG
+            Mod.Instance.Log( Dev.FunctionHeader() + Dev.Colorize( text, Dev.ColorStr( r, g, b ) ) );
 #else
             DevLog.Instance.Log( ( Dev.FunctionHeader() + Dev.Colorize( text, Dev.ColorStr( r, g, b ) ) ) );
 #endif
@@ -218,6 +275,8 @@ namespace nv
         {
 #if UNITY_EDITOR
             UnityEngine.Debug.Log( Dev.FunctionHeader() + Dev.Colorize( text, Dev.ColorStr( r, g, b ) ) );
+#elif USE_HK_MODLOG
+            Mod.Instance.Log( Dev.FunctionHeader() + Dev.Colorize( text, Dev.ColorStr( r, g, b ) ) );
 #else
             DevLog.Instance.Log( Dev.FunctionHeader() + Dev.Colorize( text, Dev.ColorStr( r, g, b ) ) );
 #endif
@@ -227,6 +286,8 @@ namespace nv
         {
 #if UNITY_EDITOR
             UnityEngine.Debug.Log( Dev.FunctionHeader() + Dev.Colorize( text, Dev.ColorToHex( color ) ) );
+#elif USE_HK_MODLOG
+            Mod.Instance.Log( Dev.FunctionHeader() + Dev.Colorize( text, Dev.ColorToHex( color ) ) );
 #else
             DevLog.Instance.Log( Dev.FunctionHeader() + Dev.Colorize( text, Dev.ColorToHex( color ) ) );
 #endif
@@ -244,6 +305,10 @@ namespace nv
             string var_name = GetVarName(var);// var.GetType().
             string var_value = Convert.ToString( var );
             UnityEngine.Debug.Log( Dev.FunctionHeader() + Dev.Colorize( var_name, _param_color ) + " = " + Dev.Colorize( var_value, _log_color ) );
+#elif USE_HK_MODLOG
+            string var_name = GetVarName(var);// var.GetType().
+            string var_value = Convert.ToString( var );
+            Mod.Instance.Log( Dev.FunctionHeader() + Dev.Colorize( var_name, _param_color ) + " = " + Dev.Colorize( var_value, _log_color ) );
 #else
         //in the case of a release build, this will be called instead
         LogVar( "--DEBUG VAR (Change this call to see a meaningful label)--", var );
@@ -261,6 +326,8 @@ namespace nv
             string var_value = Convert.ToString( var );
 #if UNITY_EDITOR
             UnityEngine.Debug.Log( Dev.FunctionHeader() + Dev.Colorize( var_name, _param_color ) + " = " + Dev.Colorize( var_value, _log_color ) );
+#elif USE_HK_MODLOG
+            Mod.Instance.Log( Dev.FunctionHeader() + Dev.Colorize( var_name, _param_color ) + " = " + Dev.Colorize( var_value, _log_color ) );
 #else
             DevLog.Instance.Log( Dev.FunctionHeader() + Dev.Colorize( var_name, _param_color ) + " = " + Dev.Colorize( var_value, _log_color ) );
 #endif
@@ -280,6 +347,13 @@ namespace nv
                 string vname = label + "[" + Dev.Colorize( Convert.ToString( i ), _log_color ) +"]";
                 UnityEngine.Debug.Log( Dev.FunctionHeader() + Dev.Colorize( vname, _param_color ) + " = " + Dev.Colorize( Convert.ToString( array[ i ] ), _log_color ) );
             }
+#elif USE_HK_MODLOG
+            int size = array.Count;
+            for( int i = 0; i < size; ++i )
+            {
+                string vname = label + "[" + Dev.Colorize( Convert.ToString( i ), _log_color ) +"]";
+                Mod.Instance.Log( Dev.FunctionHeader() + Dev.Colorize( vname, _param_color ) + " = " + Dev.Colorize( Convert.ToString( array[ i ] ), _log_color ) );
+            }
 #endif
         }
 
@@ -292,6 +366,15 @@ namespace nv
             string var_name = label;
             string var_value = Convert.ToString( var );
             UnityEngine.Debug.Log( Dev.FunctionHeader() + Dev.Colorize( var_name, _param_color ) + " = " + Dev.Colorize( var_value, _log_color ) );
+            
+#elif USE_HK_MODLOG
+
+            if( this_name != input_name )
+                return;
+
+            string var_name = label;
+            string var_value = Convert.ToString( var );
+            Mod.Instance.Log( Dev.FunctionHeader() + Dev.Colorize( var_name, _param_color ) + " = " + Dev.Colorize( var_value, _log_color ) );            
 #endif
         }
         #endregion
@@ -328,6 +411,29 @@ namespace nv
                     UnityEngine.Debug.Log( Dev.Colorize( child.gameObject.name, Dev.ColorToHex( Color.white ) ) + ".hideflags = " + Dev.Colorize( Convert.ToString( child.gameObject.hideFlags ), _param_color ) );
                 }
             }
+#elif USE_HK_MODLOG
+            bool showed_where = false;
+
+            if( print_nones )
+            {
+                Dev.Where();
+                showed_where = true;
+            }
+
+            foreach( Transform child in parent.GetComponentsInChildren<Transform>() )
+            {
+                if( print_nones && child.gameObject.hideFlags == HideFlags.None )
+                    Mod.Instance.Log( Dev.Colorize( child.gameObject.name, Dev.ColorToHex( Color.white ) ) + ".hideflags = " + Dev.Colorize( Convert.ToString( child.gameObject.hideFlags ), _param_color ) );
+                else if( child.gameObject.hideFlags != HideFlags.None )
+                {
+                    if( !showed_where )
+                    {
+                        Dev.Where();
+                        showed_where = true;
+                    }
+                    Mod.Instance.Log( Dev.Colorize( child.gameObject.name, Dev.ColorToHex( Color.white ) ) + ".hideflags = " + Dev.Colorize( Convert.ToString( child.gameObject.hideFlags ), _param_color ) );
+                }
+            }
 #endif
         }
 
@@ -359,6 +465,42 @@ namespace nv
                 for( int i = 0; i < lineNumber - 1; i++ )
                     file.ReadLine();
                 string varName = file.ReadLine().Split(new char[] { '(', ')' })[1];
+                GetVarNameHelper._cached_name.Add( uniqueId, varName );
+                return varName;
+            }
+        }
+#elif USE_HK_MODLOG
+        class GetVarNameHelper
+        {
+            public static Dictionary<string, string> _cached_name = new Dictionary<string, string>();
+        }
+
+        static string GetVarName( object obj )
+        {
+            //TODO: see if i can encode a path to the local assembly dump
+            StackFrame stackFrame = new StackTrace(true).GetFrame(2);
+            string fileName = stackFrame.GetFileName();
+            //fileName = System.IO.Path.GetFileName( fileName );
+            int lineNumber = stackFrame.GetFileLineNumber();
+            string uniqueId = fileName + lineNumber;
+            if( GetVarNameHelper._cached_name.ContainsKey( uniqueId ) )
+            {
+                return GetVarNameHelper._cached_name[ uniqueId ];
+            }
+            else
+            {
+                string varName = "DevLog::GetVarName() Failed. Var: Type ="+ obj.GetType().Name +" at "+lineNumber+" :: Value ";
+                try
+                {
+                    System.IO.StreamReader file = new System.IO.StreamReader(fileName);
+                    for( int i = 0; i < lineNumber - 1; i++ )
+                        file.ReadLine();
+                    varName = file.ReadLine().Split(new char[] { '(', ')' })[1];
+                }
+                catch(Exception e)
+                {
+                    ///...eat the exception, we don't care if it failed to find the file or something went wrong
+                }
                 GetVarNameHelper._cached_name.Add( uniqueId, varName );
                 return varName;
             }

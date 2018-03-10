@@ -86,6 +86,24 @@ namespace nv
             Dev.Log( "DebugPrintObjectTree END +++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
         }
 
+        public static T GetOrAddComponent<T>( this GameObject source ) where T : UnityEngine.Component
+        {
+            T result = source.GetComponent<T>();
+            if( result != null )
+                return result;
+            result = source.AddComponent<T>();
+            return result;
+        }
+
+        public static void GetOrAddComponentIfNull<T>( this GameObject source, ref T result ) where T : UnityEngine.Component
+        {
+            if( result != null )
+                return;
+            result = source.GetComponent<T>();
+            if( result != null )
+                return;
+            result = source.AddComponent<T>();
+        }
 
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -138,23 +156,5 @@ namespace nv
             }
         }
 
-        public static T GetOrAddComponent<T>( GameObject source ) where T : UnityEngine.Component
-        {
-            T result = source.GetComponent<T>();
-            if( result != null )
-                return result;
-            result = source.AddComponent<T>();
-            return result;
-        }
-
-        public static void GetOrAddComponentIfNull<T>( ref T result, GameObject source ) where T : UnityEngine.Component
-        {
-            if( result != null )
-                return;
-            result = source.GetComponent<T>();
-            if( result != null )
-                return;
-            result = source.AddComponent<T>();
-        }
     }
 }

@@ -30,22 +30,43 @@ namespace nv
         }
 
 
-        public static Vector2 Sign( Vector2 v )
+        public static Vector2 Sign( this Vector2 v )
         {
-            v.x = Sign( v.x );
-            v.y = Sign( v.y );
-            return v;
+            Vector3 t = Vector3.zero;
+            t.x = Mathnv.Sign( v.x );
+            t.y = Mathnv.Sign( v.y );
+            return t;
         }
 
-        public static void SetVectorComponent( ref Vector3 v, int component, float value )
+        public static void Set( this Vector2 v, int componentIndex, float value )
         {
-            v[ component ] = value;
+            v[ componentIndex ] = value;
         }
 
-        public static void ClampToInt( ref Vector2 v )
+        public static void SetX( this Vector2 v, float value )
+        {
+            v[ 0 ] = value;
+        }
+
+        public static void SetY( this Vector2 v, float value )
+        {
+            v[ 1 ] = value;
+        }
+
+        public static void ToInt( this Vector2 v )
         {
             v.x = (int)( v.x );
             v.y = (int)( v.y );
+        }
+
+        public static Vector3 VectorXZ( this Vector2 v )
+        {
+            return new Vector3( v.x, 0.0f, v.y );
+        }
+
+        public static Vector3 VectorXZ( this Vector2 v, float y )
+        {
+            return new Vector3( v.x, y, v.y );
         }
     }
 }
