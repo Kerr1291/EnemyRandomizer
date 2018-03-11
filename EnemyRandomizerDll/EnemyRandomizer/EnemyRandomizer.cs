@@ -88,7 +88,6 @@ namespace EnemyRandomizerMod
                 return randomizerReady || simulateReplacement;
             }
             set {
-                randomizerReady = value;
                 if(value && value != randomizerReady)
                 {
                     logic.Setup( simulateReplacement );
@@ -97,6 +96,7 @@ namespace EnemyRandomizerMod
                 {
                     logic.Unload();
                 }
+                randomizerReady = value;
             }
         }
 
@@ -186,9 +186,7 @@ namespace EnemyRandomizerMod
 
             database.Setup();
             loader.Setup();
-            menu.Setup();
-
-            menu.AddLoadingButtonCallback( loader.BuildEnemyRandomizerDatabase );
+            menu.Setup(); 
         }
 
         void SetupDefaulSettings()

@@ -151,7 +151,7 @@ namespace nv
                 {
                     if( parameters.Length == 1 )
                     {
-                        Dev.Log("adding single parameter callback");
+                        //Dev.Log("adding single parameter callback");
                         // the method has a single parameter, the callback binder doesn't expect 
                         enabledMethodInfos.Add( new SerializableMethodInfo( methodInfo ) );
                         enabledCallbacks.Add( parameters[ 0 ].ParameterType, methodInfo );
@@ -159,7 +159,7 @@ namespace nv
                     //this method takes two parameters, the 2nd of which is the sending object
                     else if(parameters.Length == 2)
                     {
-                        Dev.Log("adding double parameter callback");
+                        //Dev.Log("adding double parameter callback");
                         // the method has a two parameters, the 2nd is the sending object
                         enabledMethodInfos.Add(new SerializableMethodInfo(methodInfo));
                         enabledCallbacks.Add(parameters[0].ParameterType, methodInfo);

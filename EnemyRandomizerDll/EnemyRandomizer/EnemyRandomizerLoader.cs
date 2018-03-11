@@ -9,7 +9,7 @@ namespace EnemyRandomizerMod
 {
     public class EnemyRandomizerLoader
     {
-        public EnemyRandomizerLoader Instance { get; private set; }
+        public static EnemyRandomizerLoader Instance { get; private set; }
 
         CommunicationNode comms;
 
@@ -36,6 +36,7 @@ namespace EnemyRandomizerMod
             }
             set {
                 databaseLoadProgress = value;
+                
                 comms.Publish( new LoadingProgressEvent() { progress = value } );
             }
         }
@@ -157,13 +158,13 @@ namespace EnemyRandomizerMod
         {
             try
             {
-                //Dev.Log( "Loading scene data: " + GetSceneToLoadFromRandomizerData( currentDatabaseIndex ) );
+                Dev.Log( "Loading scene data: " + GetSceneToLoadFromRandomizerData( currentDatabaseIndex ) );
                 LoadSceneData();
 
                 DatabaseLoadProgress = currentDatabaseIndex / (float)(EnemyRandomizerDatabase.enemyTypeScenes.Count - 1);
-                //Dev.Log( "Loading Progress: " + DatabaseLoadProgress );
+                Dev.Log( "Loading Progress: " + DatabaseLoadProgress );
 
-                //Dev.Log( "Unloading scene: " + GetSceneToLoadFromRandomizerData( currentDatabaseIndex ) );
+                Dev.Log( "Unloading scene: " + GetSceneToLoadFromRandomizerData( currentDatabaseIndex ) );
                 UnityEngine.SceneManagement.SceneManager.UnloadScene( GetSceneToLoadFromRandomizerData( currentDatabaseIndex ) );
             }
             catch( Exception e )
@@ -178,11 +179,12 @@ namespace EnemyRandomizerMod
             Dev.Log( "Loaded data from " + loadCount + " scenes." );
             //PrintDebugLoadingError();
 
+            //TODO:uncomment
             //For debugging: print all the loaded enemies
-            foreach( GameObject go in database.loadedEnemyPrefabs )
-            {
-                go.PrintSceneHierarchyTree( true );
-            }
+            //foreach( GameObject go in database.loadedEnemyPrefabs )
+            //{
+            //    go.PrintSceneHierarchyTree( true );
+            //}
 
             DatabaseGenerated = true;
             databaseLoader.Reset();

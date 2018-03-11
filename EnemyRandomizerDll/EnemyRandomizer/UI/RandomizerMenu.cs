@@ -30,6 +30,7 @@ namespace EnemyRandomizerMod.Menu
         GameObject loadingRoot;
         GameObject loadingButton;
         GameObject loadingBar;
+        Text loadingBarText;
 
         MenuButton enterOptionsMenuButton;
         GameObject menuTogglePrefab;
@@ -71,6 +72,8 @@ namespace EnemyRandomizerMod.Menu
         {
             if( loadingButton == null )
                 return;
+
+            Dev.Where();
             
             Button enableButton = loadingButton.GetComponentInChildren<Button>();
             enableButton.onClick.RemoveListener( loadingCallback );
@@ -84,7 +87,7 @@ namespace EnemyRandomizerMod.Menu
             else
                 loadingBar.SetActive( false );
 
-            //TODO: implement setting/filling the loading bar
+            loadingBarText.text = "Loading Progress: " +(int)(progress * 100.0f)+"%";
         }
 
         public void Unload()
@@ -116,30 +119,118 @@ namespace EnemyRandomizerMod.Menu
             Instance = null;
         }
 
+
         void CreateMainMenuUIElements()
         {
+            if( rootUIManager == null )
+                return;
+
             GameObject go = new GameObject( OptionsUIManagerName );
             optionsUIManager = go.AddComponent<RandomizerFauxUIManager>();
 
-            loadingRoot = Modding.CanvasUtil.CreateCanvas( RenderMode.ScreenSpaceOverlay, new Vector2( 1920f, 1080f ) );
-            loadingButton = Modding.CanvasUtil.CreateButton( loadingRoot, LoadingButtonClicked, 1, null, "Load Enemy Randomizer", 20, TextAnchor.MiddleCenter, new Modding.CanvasUtil.RectData( new Vector2( 400f, 200f ), Vector2.zero ) );
-            loadingBar = Modding.CanvasUtil.CreateImagePanel( loadingRoot, null, new Modding.CanvasUtil.RectData( new Vector2( 400f, 40f ), Vector2.zero ) );
+            Vector2 buttonPos = new Vector2( -1100f, 400f );
+            Vector2 barPos = new Vector2( -1100f, 200f );
+
+            Vector2 buttonSize = new Vector2( 400f, 200f );
+            Vector2 barSize = new Vector2( 400f, 40f );
+
+            loadingRoot = new GameObject( "Loading Root" );
+
+            Canvas canvas = loadingRoot.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.gameObject.GetOrAddComponent<RectTransform>().sizeDelta = new Vector2( 1920f, 1080f );
+            CanvasScaler canvasScaler = loadingRoot.AddComponent<CanvasScaler>();
+            canvasScaler.referenceResolution = new Vector2( 1920f, 1080f );
+
+            //rootUIManager.gameObject.PrintSceneHierarchyTree();
+
+            Vector3 pos = rootUIManager.gameObject.FindGameObjectInChildren( "StartGameButton" ).transform.position;
+
+            loadingButton = GameObject.Instantiate(rootUIManager.gameObject.FindGameObjectInChildren( "StartGameButton" ) );
+            loadingButton.transform.SetParent( rootUIManager.gameObject.FindGameObjectInChildren( "MainMenuScreen" ).transform );
+            loadingButton.gameObject.SetActive( true );
+            loadingButton.transform.localScale = Vector3.one;
+            loadingButton.transform.position = pos;
+            loadingButton.transform.Translate( new Vector3( -4f, 4f ) );
+
+            //Dev.Log( "Finished loader ui elements" );
+
+            GameObject.DestroyImmediate( loadingButton.GetComponent<MenuButton>() );
+            GameObject.DestroyImmediate( loadingButton.GetComponent<EventTrigger>() );
+            GameObject.DestroyImmediate( loadingButton.GetComponentInChildren<AutoLocalizeTextUI>() );
+
+            Text loadingButtonText = loadingButton.GetComponentInChildren<Text>();
+            loadingButtonText.text = "Load Enemy Randomizer";
+            loadingButtonText.color = Color.white;
+            loadingButtonText.horizontalOverflow = HorizontalWrapMode.Overflow;
+            loadingButtonText.verticalOverflow = VerticalWrapMode.Overflow;
+
+            Button b = loadingButton.AddComponent<Button>();
+            b.targetGraphic = loadingButtonText;
+            b.interactable = true;
+            ColorBlock cb = new ColorBlock
+            {
+                highlightedColor = Color.yellow,
+                pressedColor = Color.red,
+                disabledColor = Color.black,
+                normalColor = Color.white,
+                colorMultiplier = 2f
+            };
+            b.colors = cb;
+            b.onClick.AddListener( LoadingButtonClicked );
+
+            AddLoadingButtonCallback( EnemyRandomizerLoader.Instance.BuildEnemyRandomizerDatabase );
+
+
+
+            loadingBar = GameObject.Instantiate( rootUIManager.gameObject.FindGameObjectInChildren( "StartGameButton" ) );
+            loadingBar.transform.SetParent( rootUIManager.gameObject.FindGameObjectInChildren( "MainMenuScreen" ).transform );
+            loadingBar.gameObject.SetActive( true );
+            loadingBar.transform.localScale = Vector3.one;
+            loadingBar.transform.position = pos;
+            loadingBar.transform.Translate( new Vector3( -4f, 3.7f ) );
+
+            GameObject.DestroyImmediate( loadingBar.GetComponent<MenuButton>() );
+            GameObject.DestroyImmediate( loadingBar.GetComponent<EventTrigger>() );
+            GameObject.DestroyImmediate( loadingBar.GetComponentInChildren<AutoLocalizeTextUI>() );
+
+            loadingBarText = loadingBar.GetComponentInChildren<Text>();
+            loadingBarText.text = "Loading Progress: ";
+            loadingBarText.color = Color.white;
+            loadingBarText.horizontalOverflow = HorizontalWrapMode.Overflow;
+            loadingBarText.verticalOverflow = VerticalWrapMode.Overflow;
+            loadingBar.gameObject.SetActive( false );
 
             GameObject.DontDestroyOnLoad( loadingRoot );
-            GameObject.DontDestroyOnLoad( loadingButton );
-            GameObject.DontDestroyOnLoad( loadingBar );
         }
 
-        void LoadingButtonClicked( int id )
+        void LoadingButtonClicked()
         {
             loadingButtonPressed = true;
+            loadingButton.gameObject.SetActive( false );
         }
+
+        Contractor showDatabaseUIWhenReady = new Contractor();
 
         void ShowRandoDatabaseUI( bool show )
         {
             if( loadingButtonPressed )
                 return;
 
+            if( loadingRoot != null )
+            {
+                loadingRoot.SetActive( show );
+            }
+            else
+            {
+                showDatabaseUIWhenReady.OnUpdate = DoShowRandoDatabaseUI;
+                showDatabaseUIWhenReady.Looping = true;
+                showDatabaseUIWhenReady.Start();
+            }
+        }
+
+        void DoShowRandoDatabaseUI()
+        {
             if( loadingRoot == null )
             {
                 CreateMainMenuUIElements();
@@ -147,7 +238,8 @@ namespace EnemyRandomizerMod.Menu
 
             if( loadingRoot != null )
             {
-                loadingRoot.SetActive( show );
+                showDatabaseUIWhenReady.Reset();
+                loadingRoot.SetActive( true );
             }
         }
 
@@ -201,6 +293,9 @@ namespace EnemyRandomizerMod.Menu
             Dev.Log( "Creating mod options menu..." );
 
             rootUIManager = UIManager.instance;
+
+            rootUIManager.gameObject.PrintSceneHierarchyTree(true);
+
             uiManagerCanvasRoot = rootUIManager.gameObject.FindGameObjectInChildren( "UICanvas" );
 
             AddModMenuButtonToOptionMenu();
@@ -563,6 +658,14 @@ namespace EnemyRandomizerMod.Menu
             events.triggers.Add( click );
 
             //SETUP MOD BUTTON TO RESPOND TO SUBMIT AND CANCEL EVENTS CORRECTLY
+        }
+
+        static Sprite NullSprite(Vector2 size, Color32 c)
+        {
+            Texture2D tex = new Texture2D( (int)size.x, (int)size.y );
+            tex.LoadRawTextureData( new byte[] { c.r, c.g, c.b, c.a } );
+            tex.Apply();
+            return Sprite.Create( tex, new Rect( 0, 0, size.x, size.y ), Vector2.zero );
         }
 
         static Sprite NullSprite()

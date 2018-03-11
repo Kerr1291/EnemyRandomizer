@@ -60,6 +60,7 @@ namespace EnemyRandomizerMod
 
         public void Setup( bool simulateReplacement )
         {
+            Dev.Where();
             Instance = this;
             comms = new CommunicationNode();
             comms.EnableNode( this );
@@ -73,6 +74,7 @@ namespace EnemyRandomizerMod
 
         public void Unload()
         {
+            Dev.Where();
             if( randomEnemyLocator != null )
                 randomEnemyLocator.Reset();
             randomEnemyLocator = new nv.Contractor();
@@ -249,7 +251,7 @@ namespace EnemyRandomizerMod
         {
             //"disable" the randomizer when we enter the title screen, it's enabled when a new game is started or a game is loaded
             if( to.name == Menu.RandomizerMenu.MainMenuSceneName )            
-                return;           
+                return;
 
             Dev.Log( "Transitioning FROM [" + from.name + "] TO [" + to.name + "]" );
 
@@ -257,6 +259,7 @@ namespace EnemyRandomizerMod
             if( to.buildIndex < 4 )
                 return;
 
+            Dev.Where();
             replacements.Clear();
             pairsToRemove.Clear();
 

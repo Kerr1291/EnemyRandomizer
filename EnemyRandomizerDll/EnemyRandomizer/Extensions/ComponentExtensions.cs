@@ -56,6 +56,7 @@ namespace nv
 
                     string[] trans = transitions.Select(x=> {return "Transition on "+x.EventName+" to state "+x.ToState; } ).ToArray();
 
+                    //TODO: figure out why x.Name is empty????
                     string[] actionNames = actions.Select(x=> {return "Actions on "+selected[0].Name+" ::: "+x.Name; } ).ToArray();
 
                     foreach( string x in trans )
