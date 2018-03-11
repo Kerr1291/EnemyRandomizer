@@ -12,61 +12,58 @@ using UnityEngine;
 
 using nv;
 
-
-//TODO: move all the Log calls to use my Dev.Log
-//TODO: change Dev.Log to print to the mod's Logging output when the #define exists
-//TODO: continue the refactor toward the alpha build....
-
-
 namespace EnemyRandomizerMod
 {
-    public partial class EnemyRandomizer : Mod<EnemyRandomizerSettings, EnemyRandomizerSettings>, ITogglableMod
+    /*
+     * 
+     *  NOTES
+     * 
+     * 
+     * 
+     * --add Centipede Hatcher to rando monsters?
+     * they're extra dangerous because theirs spawns are randomized
+     * 
+     * --health scuttler is the blue health bug
+     * 
+     * --things replacing baby centipede need to be adjusted to be sure they're in a safe spot like the siblings since they can spawn inside the ground
+     * 
+     * --add? Tentacle Box monster
+     * 
+     * --crystal guardian will have to be removed or have its camera effect fixed, it causes the camera to pan way off to the side on activation
+     * 
+     * --mage knight seems to have spawning issue, need to experiement with it more
+     * 
+     * --removed mender bug as he was always showing up as disabled
+     * 
+     * 
+     * //Possible way to show enemy hitboxes:
+     *   https://github.com/AllanBishop/UnityPhysicsDebugDraw2D
+     * 
+     * 
+     * 
+     */
+
+
+    public partial class EnemyRandomizer : Mod<EnemyRandomizerSaveSettings, EnemyRandomizerSettings>, ITogglableMod
     {
-        //the user configurable seed for the randomizer
-        int loadedBaseSeed = -1;
-        public int LoadedBaseSeed {
-            get {
-                return loadedBaseSeed;
-            }
-            set {
-                if( RandomizerReady && Settings != null )
-                    Settings.BaseSeed = value;
-                if( GlobalSettings != null )
-                    GlobalSettings.BaseSeed = value;
-                loadedBaseSeed = value;
-            }
-        }
-
-        //For debugging, set this to true to have the scene replacer run its logic without doing anything
-        //(Useful for testing without needing to wait through the load times)
-        public const bool simulateReplacement = false;
-
-        bool randomizerReady = false;
-        bool RandomizerReady {
-            get {
-                return randomizerReady || simulateReplacement;
-            }
-            set {
-                randomizerReady = value;
-            }
-        }
-
         public static EnemyRandomizer Instance { get; private set; }
 
-        string recentHit = "";
-        string fullVersionName = "0.0.13a"; 
+        CommunicationNode comms;
 
-        public Dictionary<string, List<string>> enemyTypes = new Dictionary<string, List<string>>();
-        public List<GameObject> loadedEnemyPrefabs = new List<GameObject>();
-        public List<string> loadedEnemyPrefabNames = new List<string>();
-        public List<string> uniqueEnemyTypes = new List<string>();
+        Menu.RandomizerMenu menu;
+        EnemyRandomizerLoader loader;
+        EnemyRandomizerDatabase database;
+        EnemyRandomizerLogic logic;
 
+        string fullVersionName = "0.1.1";
+        string modRootName = "RandoRoot";
+        
         GameObject modRoot;
-        GameObject ModRoot {
+        public GameObject ModRoot {
             get {
                 if( modRoot == null )
                 {
-                    modRoot = new GameObject( "RandoRoot" );
+                    modRoot = new GameObject(modRootName);
                     GameObject.DontDestroyOnLoad( modRoot );
                 }
                 return modRoot;
@@ -80,71 +77,77 @@ namespace EnemyRandomizerMod
             }
         }
 
-        //Called when loading a save game
-        void TryEnableEnemyRandomizerFromSave( SaveGameData data )
-        {
-            if( !databaseGenerated )
-                return;
+        //For debugging, the scene replacer will run its logic without doing anything
+        //(Useful for testing without needing to wait through the load times)
+        //This is set to true if the game is started without loading the database
+        bool simulateReplacement = false;
 
-            RandomizerReady = true;
+        bool randomizerReady = false;
+        bool RandomizerReady {
+            get {
+                return randomizerReady || simulateReplacement;
+            }
+            set {
+                randomizerReady = value;
+                if(value && value != randomizerReady)
+                {
+                    logic.Setup( simulateReplacement );
+                }
+                if( !value && value != randomizerReady )
+                {
+                    logic.Unload();
+                }
+            }
+        }
 
-            Log( "Before: "+loadedBaseSeed );
-            
-            if( Settings != null )
-                loadedBaseSeed = Settings.BaseSeed;
-            else
-                LoadedBaseSeed = GlobalSettings.BaseSeed;
+        //value that can be set if a player enters the options menu
+        //on startup, this value is randomized
+        public int OptionsMenuSeed { get; set; }
 
-            Log( "After: " + loadedBaseSeed );
-            //chaosRNG = Settings.RNGChaosMode;
-            //roomRNG = Settings.RNGRoomMode;
-            //randomizeDisabledEnemies = Settings.RandomizeDisabledEnemies;
-            ChaosRNG = GlobalSettings.RNGChaosMode;
-            RoomRNG = GlobalSettings.RNGRoomMode;
+        //the user configurable seed for the randomizer
+        public int GameSeed { get; set; }
+
+        //nice access to the player settings seed
+        public int PlayerSettingsSeed {
+            get {
+                if (Settings == null)
+                    return -1;
+                return Settings.Seed;
+            }
+            set {
+                if (Settings != null)
+                    Settings.Seed = value;
+            }
         }
         
-        //Call from New Game
-        void TryEnableEnemyRandomizer()
-        {
-            if( !databaseGenerated )
-                return;
-
-            RandomizerReady = true;
-
-            LoadedBaseSeed = GlobalSettings.BaseSeed;
-            ChaosRNG = GlobalSettings.RNGChaosMode;
-            RoomRNG = GlobalSettings.RNGRoomMode;
-        }
-
-        //call when returning to the main menu
-        void DisableEnemyRandomizer()
-        {
-            RandomizerReady = false;
-            RestoreLogic();
-        }
-
-        void SetupDefaultGlobalSettings()
-        {
-            string globalSettingsFilename = Application.persistentDataPath + ModHooks.PathSeperator + GetType().Name + ".GlobalSettings.json";
-            
-            if( !File.Exists( globalSettingsFilename ) )
-            {
-                Log( "Global settings file not found, generating new one... File not found: " + globalSettingsFilename );
-                //setup default global settings
-                LoadedBaseSeed = GameRNG.Randi();
-                ChaosRNG = false;
-                RoomRNG = false;
-
-                //catch all for a weird edge case
-                if( LoadedBaseSeed == -1 )
-                    LoadedBaseSeed = GameRNG.Randi();
-
-                SaveGlobalSettings();
+        //set to false then the seed will be based on the type of enemy we're going to randomize
+        //this will make each enemy type randomize into the same kind of enemy
+        //if set to true, it also disables roomRNG and all enemies will be totally randomized
+        bool chaosRNG = false;
+        public bool ChaosRNG {
+            get {
+                return chaosRNG;
             }
+            set {
+                if( GlobalSettings != null )
+                    GlobalSettings.RNGChaosMode = value;
+                chaosRNG = value;
+            }
+        }
 
-            //catch all for a weird edge case
-            if( LoadedBaseSeed == -1 )
-                LoadedBaseSeed = GameRNG.Randi();
+        //if roomRNG is enabled, then we will also offset the seed based on the room's hash code
+        //this will cause enemy types within the same room to be randomized the same
+        //Example: all Spitters could be randomized into Flys in one room, and Fat Flys in another
+        bool roomRNG = true;
+        public bool RoomRNG {
+            get {
+                return roomRNG;
+            }
+            set {
+                if( GlobalSettings != null )
+                    GlobalSettings.RNGRoomMode = value;
+                roomRNG = value;
+            }
         }
 
         public override void Initialize()
@@ -154,118 +157,154 @@ namespace EnemyRandomizerMod
                 Log("Warning: EnemyRandomizer is a singleton. Trying to create more than one may cause issues!");
                 return;
             }
-            //Time.timeScale = 2f;
 
             Instance = this;
-
-            SetupDefaultGlobalSettings();
+            comms = new CommunicationNode();
+            comms.EnableNode( this );
 
             Log("Enemy Randomizer Mod initializing!");
 
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= ToggleBuildRandoDatabaseUI;
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += ToggleBuildRandoDatabaseUI;
+            SetupDefaulSettings();
 
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= StartRandomEnemyLocator;
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += StartRandomEnemyLocator;            
+            UnRegisterCallbacks();
+            RegisterCallbacks();
 
-            //TODO: may not be needed anymore...??
-            ModHooks.Instance.ColliderCreateHook -= OnLoadObjectCollider;
-            ModHooks.Instance.ColliderCreateHook += OnLoadObjectCollider;
+            //create the database that will hold all the loaded enemies
+            if( database == null )
+                database = new EnemyRandomizerDatabase();
 
-            ModHooks.Instance.AfterSavegameLoadHook -= TryEnableEnemyRandomizerFromSave;
-            ModHooks.Instance.AfterSavegameLoadHook += TryEnableEnemyRandomizerFromSave;
+            if( logic == null )
+                logic = new EnemyRandomizerLogic( database );
 
-            ModHooks.Instance.NewGameHook -= TryEnableEnemyRandomizer;
-            ModHooks.Instance.NewGameHook += TryEnableEnemyRandomizer;
+            //create the loader which will handle loading all the enemy types in the game
+            if( loader == null )
+                loader = new EnemyRandomizerLoader( database );
 
-            ModHooks.Instance.SlashHitHook -= Debug_PrintObjectOnHit;
-            ModHooks.Instance.SlashHitHook += Debug_PrintObjectOnHit;
+            //Create all mod UI elements and their manager
+            if( menu == null )
+                menu = new Menu.RandomizerMenu();
 
-            LoadConfigUI();
+            database.Setup();
+            loader.Setup();
+            menu.Setup();
+
+            menu.AddLoadingButtonCallback( loader.BuildEnemyRandomizerDatabase );
         }
 
+        void SetupDefaulSettings()
+        {
+            string globalSettingsFilename = Application.persistentDataPath + ModHooks.PathSeperator + GetType().Name + ".GlobalSettings.json";
+
+            if (!File.Exists(globalSettingsFilename))
+            {
+                Log("Global settings file not found, generating new one... File was not found at: " + globalSettingsFilename);
+
+                ChaosRNG = false;
+                RoomRNG = false;
+
+                SaveGlobalSettings();
+            }
+
+            OptionsMenuSeed = GameRNG.Randi();
+        }
+
+        void RegisterCallbacks()
+        {
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= CheckAndDisableLogicInMenu;
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += CheckAndDisableLogicInMenu;
+            ModHooks.Instance.AfterSavegameLoadHook += TryEnableEnemyRandomizerFromSave;
+            ModHooks.Instance.NewGameHook += EnableEnemyRandomizerFromNewGame;
+            ModHooks.Instance.SlashHitHook += DebugPrintObjectOnHit;
+        }
+
+        void UnRegisterCallbacks()
+        {
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= CheckAndDisableLogicInMenu;
+            ModHooks.Instance.AfterSavegameLoadHook -= TryEnableEnemyRandomizerFromSave;
+            ModHooks.Instance.NewGameHook -= EnableEnemyRandomizerFromNewGame;
+            ModHooks.Instance.SlashHitHook -= DebugPrintObjectOnHit;
+        }
+
+        void CheckAndDisableLogicInMenu( Scene from, Scene to )
+        {
+            if( to.name == Menu.RandomizerMenu.MainMenuSceneName )
+            {
+                DisableEnemyRandomizer();
+            }
+        }
+
+        ///Revert all changes the mod has made
         public void Unload()
         {
-            Instance = null;
+            DisableEnemyRandomizer();
 
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= ToggleBuildRandoDatabaseUI;
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= StartRandomEnemyLocator;
+            UnRegisterCallbacks();
 
-            ModHooks.Instance.ColliderCreateHook -= OnLoadObjectCollider;
-            ModHooks.Instance.AfterSavegameLoadHook -= TryEnableEnemyRandomizerFromSave;
-            ModHooks.Instance.NewGameHook -= TryEnableEnemyRandomizer;
-            ModHooks.Instance.SlashHitHook -= Debug_PrintObjectOnHit;
+            menu.Unload();
+            loader.Unload();
+            database.Unload();
 
             ModRoot = null;
 
-            if( menu != null )
-            {
-                GameObject.Destroy( menu );
-            }
-
-            Restore();
+            comms.DisableNode();
+            Instance = null;
         }
-        
-        void Restore()
+
+        //Called when loading a save game
+        void TryEnableEnemyRandomizerFromSave(SaveGameData data)
+        {
+            if( Settings != null )
+                GameSeed = Settings.Seed;
+            else
+                GameSeed = OptionsMenuSeed;
+
+            EnableEnemyRandomizer();
+        }
+
+        //Call from New Game
+        void EnableEnemyRandomizerFromNewGame()
+        {
+            GameSeed = OptionsMenuSeed;
+            EnableEnemyRandomizer();
+        }
+
+        void EnableEnemyRandomizer()
+        {
+            RandomizerReady = true;
+
+            simulateReplacement = !loader.DatabaseGenerated;
+
+            ChaosRNG = GlobalSettings.RNGChaosMode;
+            RoomRNG = GlobalSettings.RNGRoomMode;
+        }
+
+        //call when returning to the main menu
+        void DisableEnemyRandomizer()
         {
             RandomizerReady = false;
-            recentHit = "";
-
-            RestoreUI();
-            RestoreSetup();
-            RestoreLogic();
         }
 
+        //TODO: update when version checker is fixed in new modding API version
         public override string GetVersion()
         {
-            if( fullVersionName.Length < 2 )
-            {
-                //try
-                //{
-                //    GithubVersionHelper helper = new GithubVersionHelper("Kerr1291/EnemyRandomizer");
-                //    fullVersionName = "0.0.1 (Github version: " + helper.GetVersion() + ")";
-                //}
-                //catch(Exception e)
-                //{
-                //    fullVersionName = "0.0.1";
-                //}
-            }
             return fullVersionName;
         }
 
+        //TODO: update when version checker is fixed in new modding API version
         public override bool IsCurrent()
         {
-            try
-            {
-                //GithubVersionHelper helper = null;
-                //try
-                //{
-                //    helper = new GithubVersionHelper("Kerr1291/EnemyRandomizer");
-                //    Log( "Github = " + helper.GetVersion() );
-                //}
-                //catch( Exception e )
-                //{
-                //    helper = null;
-                //}
-
-                return true;
-                //return helper == null || GetVersion().StartsWith( helper.GetVersion() );
-            }
-            catch( Exception )
-            {
-                return true;
-            }
+            return true;        
         }
 
-
-        public void Debug_PrintObjectOnHit( Collider2D otherCollider, GameObject gameObject )
+        //used while testing to record things hit by a player's nail
+        static string debugRecentHit = "";
+        static void DebugPrintObjectOnHit( Collider2D otherCollider, GameObject gameObject )
         {
-            if( otherCollider.gameObject.name != recentHit )
+            if( otherCollider.gameObject.name != debugRecentHit )
             {
-                Log( "(" + otherCollider.gameObject.transform.position + ") HIT: " + otherCollider.gameObject.name );
-                recentHit = otherCollider.gameObject.name;
+                Dev.Log( "(" + otherCollider.gameObject.transform.position + ") HIT: " + otherCollider.gameObject.name );
+                debugRecentHit = otherCollider.gameObject.name;
             }
         }
-
     }
 }

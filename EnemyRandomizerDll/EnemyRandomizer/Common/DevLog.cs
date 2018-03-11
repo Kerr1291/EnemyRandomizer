@@ -497,7 +497,7 @@ namespace nv
                         file.ReadLine();
                     varName = file.ReadLine().Split(new char[] { '(', ')' })[1];
                 }
-                catch(Exception e)
+                catch(Exception)
                 {
                     ///...eat the exception, we don't care if it failed to find the file or something went wrong
                 }

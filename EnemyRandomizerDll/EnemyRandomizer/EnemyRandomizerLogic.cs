@@ -14,65 +14,21 @@ using nv;
 
 namespace EnemyRandomizerMod
 {
-    public partial class EnemyRandomizer
+    //TODO: clean this up.... a lot
+    public class EnemyRandomizerLogic
     {
-        RNG replacementRNG;
-        
-        //set to false then the seed will be based on the type of enemy we're going to randomize
-        //this will make each enemy type randomize into the same kind of enemy
-        //if set to true, it also disables roomRNG and all enemies will be totally randomized
-        bool chaosRNG = false;
-        public bool ChaosRNG {
-            get {
-                return chaosRNG;
-            }
-            set {
-                if( RandomizerReady && Settings != null )
-                    Settings.RNGChaosMode = value;
-                if( GlobalSettings != null )
-                    GlobalSettings.RNGChaosMode = value;
-                chaosRNG = value;
-            }
-        }
-        
-        //if roomRNG is enabled, then we will also offset the seed based on the room's hash code
-        //this will cause enemy types within the same room to be randomized the same
-        //Example: all Spitters could be randomized into Flys in one room, and Fat Flys in another
-        bool roomRNG = true;
-        public bool RoomRNG {
-            get {
-                return roomRNG;
-            }
-            set {
-                if( RandomizerReady && Settings != null )
-                    Settings.RNGRoomMode = value;
-                if( GlobalSettings != null )
-                    GlobalSettings.RNGRoomMode = value;
-                roomRNG = value;
-            }
-        }
-        
-        //if enabled, this will NOT skip disabled game objects while looking for things to randomize
-        //as a result, you may end up with a lot more enemies in some areas...
-        //bool randomizeDisabledEnemies = false;
-        //public bool RandomizeDisabledEnemies {
-        //    get {
-        //        return randomizeDisabledEnemies;
-        //    }
-        //    set {
-        //        if( RandomizerReady && Settings != null )
-        //            Settings.RandomizeDisabledEnemies = value;
-        //        if( GlobalSettings != null )
-        //            GlobalSettings.RandomizeDisabledEnemies = value;
-        //        randomizeDisabledEnemies = value;
-        //    }
-        //}
+        public static EnemyRandomizerLogic Instance { get; private set; }
 
+        CommunicationNode comms;
+
+        EnemyRandomizerDatabase database;
+
+        RNG replacementRNG;        
+        
         string currentScene = "";
         string randoEnemyNamePrefix = "Rando Enemy: ";
         nv.Contractor randomEnemyLocator = new nv.Contractor();
         IEnumerator randomizerReplacer = null;
-
 
         nv.Contractor replacementController = new nv.Contractor();
 
@@ -86,18 +42,48 @@ namespace EnemyRandomizerMod
 
         List<GameObject> battleControls = new List<GameObject>();
 
+        //For debugging, the scene replacer will run its logic without doing anything
+        //(Useful for testing without needing to wait through the load times)
+        //This is set to true if the game is started without loading the database
+        bool simulateReplacement = false;
 
         float baseRestartDelay = 1f;
         float nextRestartDelay = 1f;
         float restartDelay = 0f;
 
-        void RestoreLogic()
+        List<ReplacementPair> pairsToRemove = new List<ReplacementPair>();
+
+        public EnemyRandomizerLogic( EnemyRandomizerDatabase database )
+        {
+            this.database = database;
+        }
+
+        public void Setup( bool simulateReplacement )
+        {
+            Instance = this;
+            comms = new CommunicationNode();
+            comms.EnableNode( this );
+
+            ModHooks.Instance.ColliderCreateHook -= OnLoadObjectCollider;
+            ModHooks.Instance.ColliderCreateHook += OnLoadObjectCollider;
+
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= StartRandomEnemyLocator;
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += StartRandomEnemyLocator;
+        }
+
+        public void Unload()
         {
             if( randomEnemyLocator != null )
                 randomEnemyLocator.Reset();
             randomEnemyLocator = new nv.Contractor();
 
             replacementController.Reset();
+
+            comms.DisableNode();
+            Instance = null;
+
+            ModHooks.Instance.ColliderCreateHook -= OnLoadObjectCollider;
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= StartRandomEnemyLocator;
         }
 
         void CheckAndAddBattleControls( GameObject go )
@@ -107,7 +93,7 @@ namespace EnemyRandomizerMod
 
             if( FSMUtility.ContainsFSM( go, "Battle Control" ) )
             {
-                Log( "Found battle control on object: " + go.name );
+                Dev.Log( "Found battle control on object: " + go.name );
                 battleControls.Add( go );
             }
 
@@ -116,7 +102,7 @@ namespace EnemyRandomizerMod
             //    PlayMakerFSM pfsm = c as PlayMakerFSM;
             //    if(pfsm.FsmName == "Battle Control")
             //    {
-            //        Log( "Found battle control on object: " + go.name );
+            //        Dev.Log( "Found battle control on object: " + go.name );
             //        battleControls.Add( go );
             //    }
             //}
@@ -129,17 +115,17 @@ namespace EnemyRandomizerMod
 
             if( FSMUtility.ContainsFSM( go, "BG Control" ) )
             {
-                Log( "Found battle gate control on object: " + go.name );
+                Dev.Log( "Found battle gate control on object: " + go.name );
                 go.SetActive( false );
             }
         }
 
         void UpdateBattleControls()
         {
-            //Log( "A" );
+            //Dev.Log( "A" );
             for(int i = 0; i < battleControls.Count; )
             {
-                //Log( "B" );
+                //Dev.Log( "B" );
                 //remove any controls that go null (like from a scene change)
                 if( battleControls[i] == null )
                 {
@@ -148,14 +134,14 @@ namespace EnemyRandomizerMod
                     continue;
                 }
 
-                //Log( "C" );
+                //Dev.Log( "C" );
                 PersistentBoolItem pBoolItem = battleControls[i].GetComponent<PersistentBoolItem>();
 
-                //Log( "D" );
+                //Dev.Log( "D" );
                 //does this battle control have a persistent bool? then we want to make sure it's not set
                 if( pBoolItem != null && pBoolItem.persistentBoolData != null )
                 {
-                    //Log( "pBoolItem.persistentBoolData.activated " + pBoolItem.persistentBoolData.activated);
+                    //Dev.Log( "pBoolItem.persistentBoolData.activated " + pBoolItem.persistentBoolData.activated);
 
                     //ignore battle controls that have been completed and remove them from the list
                     if( pBoolItem.persistentBoolData.activated )
@@ -170,26 +156,26 @@ namespace EnemyRandomizerMod
                 //20 width
                 //12 high
 
-                //Log( "E" );
+                //Dev.Log( "E" );
                 //ok, so the battle control hasn't been run or completed yet, we need to manually monitor it
                 BoxCollider2D collider = battleControls[i].GetComponent<BoxCollider2D>();
                 Bounds localBounds;
 
-                //Log( "F" );
+                //Dev.Log( "F" );
                 if( collider == null )
                 {
-                    Log( "Creating out own bounds to test" );
+                    Dev.Log( "Creating out own bounds to test" );
                     localBounds = new Bounds( battleControls[ i ].transform.position, new Vector3( 28f, 24f, 10f ) );
                 }
                 else
                 {
-                    Log( "Using provided bounds..." );
+                    Dev.Log( "Using provided bounds..." );
                     localBounds = collider.bounds;
                 }
 
-                //Log( "G" );
+                //Dev.Log( "G" );
 
-                //Log( "H" );
+                //Dev.Log( "H" );
                 //add some Z size to the bounds
 
                 float width = Mathf.Max(28f,localBounds.extents.x);
@@ -197,32 +183,32 @@ namespace EnemyRandomizerMod
 
                 localBounds.extents = new Vector3( width, height, 10f );
 
-                //Log( "I" );
+                //Dev.Log( "I" );
                 Vector3 heroPos = HeroController.instance.transform.position;
 
-                //Log( "J" );
+                //Dev.Log( "J" );
                 //is the hero in the battle scene? if not, no point in checking things
                 if( !localBounds.Contains( heroPos ) )
                 {
-                    Log( "Hero outside the bounds of our battle control, don't monitor" );
-                    Log( "Hero: " + heroPos );
-                    Log( "Bounds Center: " + localBounds.center );
-                    Log( "Bounds Extents: " + localBounds.extents );
+                    Dev.Log( "Hero outside the bounds of our battle control, don't monitor" );
+                    Dev.Log( "Hero: " + heroPos );
+                    Dev.Log( "Bounds Center: " + localBounds.center );
+                    Dev.Log( "Bounds Extents: " + localBounds.extents );
                     //DebugPrintObjectTree( battleControls[ i ], true );
                 }
                 else
                 {
-                    //Log( "K" );
+                    //Dev.Log( "K" );
                     //see if any rando enemies are inside the area, if they are, we don't set next
                     bool setNext = true;
-                    //Log( "L" );
+                    //Dev.Log( "L" );
                     foreach( var pair in replacements )
                     {
-                        //Log( "M" );
+                        //Dev.Log( "M" );
                         if( pair.replacement == null )
                             continue;
 
-                        //Log( "N" );
+                        //Dev.Log( "N" );
                         if( localBounds.Contains( pair.replacement.transform.position ) )
                         {
                             setNext = false;
@@ -238,13 +224,13 @@ namespace EnemyRandomizerMod
 
                     //}
 
-                    //Log( "O" );
+                    //Dev.Log( "O" );
 
                     if( setNext )
                     {
-                        Log( "Sending NEXT event to " + battleControls[ i ].name );
+                        Dev.Log( "Sending NEXT event to " + battleControls[ i ].name );
                         //get the battle control
-                        //Log( "Q" );
+                        //Dev.Log( "Q" );
                         PlayMakerFSM pfsm = FSMUtility.LocateFSM( battleControls[i], "Battle Control" );
 
                         if(pfsm != null)
@@ -262,16 +248,12 @@ namespace EnemyRandomizerMod
         void StartRandomEnemyLocator( Scene from, Scene to )
         {
             //"disable" the randomizer when we enter the title screen, it's enabled when a new game is started or a game is loaded
-            if( to.name == "Menu_Title" )
-                DisableEnemyRandomizer();
+            if( to.name == Menu.RandomizerMenu.MainMenuSceneName )            
+                return;           
 
-            Log( "Transitioning FROM [" + from.name + "] TO [" + to.name + "]" );
-            if( !RandomizerReady )
-                return;
+            Dev.Log( "Transitioning FROM [" + from.name + "] TO [" + to.name + "]" );
 
-            //ignore randomizing on scenes that aren't normal game world scenes
-            //if( to.buildIndex != 7 && (to.buildIndex <= 36 || to.buildIndex > 362) )
-            //    return;
+            //ignore randomizing on the menu/movie intro scenes
             if( to.buildIndex < 4 )
                 return;
 
@@ -284,26 +266,16 @@ namespace EnemyRandomizerMod
             replacementController.Start();
 
             currentScene = to.name;
-            
-            if( ShouldSkipRandomizingScene(to.name) )
-            {
-                Log( "Skipping randomization of scene..." );
-                randomEnemyLocator.Reset();
-                return;
-            }
 
-            InitReplacementLogicForScene( to.name );
+            SetupRNGForScene( to.name );
 
             randomEnemyLocator.Reset();
                         
-            Log( "Starting the replacer which will search the scene for enemies and randomize them!" );
+            Dev.Log( "Starting the replacer which will search the scene for enemies and randomize them!" );
             randomizerReplacer = DoLocateAndRandomizeEnemies();
 
             restartDelay = 0f;
-
-            //TODO: remove me
-            //Time.timeScale = 2f;
-
+            
             //TODO: see if the performance cost here is still OK and refactor out this hack after some more testing
             nextRestartDelay = baseRestartDelay;
 
@@ -319,21 +291,13 @@ namespace EnemyRandomizerMod
             battleControls.Clear();
         }
 
-        List<ReplacementPair> pairsToRemove = new List<ReplacementPair>();
-
-        void InitReplacementLogicForScene( string scene )
+        void SetupRNGForScene( string scene )
         {
             if( replacementRNG == null )
             {
-                //TODO: move to a better place, print all the loaded prefabs on load
-                foreach( GameObject go in loadedEnemyPrefabs )
-                {
-                    DebugPrintObjectTree( go, true );
-                }
-
                 //only really matters if chaosRNG is enabled...
-                if( loadedBaseSeed >= 0 )
-                    replacementRNG = new RNG( loadedBaseSeed );
+                if( EnemyRandomizer.Instance.GameSeed >= 0 )
+                    replacementRNG = new RNG( EnemyRandomizer.Instance.GameSeed );
                 else
                     replacementRNG = new RNG();
             }
@@ -347,19 +311,19 @@ namespace EnemyRandomizerMod
             {
                 if( randomizerReplacer != null && !randomizerReplacer.MoveNext() )
                 {
-                    Log( "end of iterator or iterator became null" );
+                    Dev.Log( "end of iterator or iterator became null" );
                     randomEnemyLocator.Reset();
                 }
 
                 if( randomizerReplacer != null && ( randomizerReplacer.Current as bool? ) == false )
                 {
-                    Log( "iterator returned false" );
+                    Dev.Log( "iterator returned false" );
                     randomizerReplacer = null;
                 }
             }
             catch(Exception e)
             {
-                Log( "Replacer hit an exception: " + e.Message );
+                Dev.Log( "Replacer hit an exception: " + e.Message );
                 randomizerReplacer = null;
             }
 
@@ -430,11 +394,11 @@ namespace EnemyRandomizerMod
                         //and their children
                         if( rootGameObject == null )
                         {
-                            Log( "Scene " + i + " has a null root game object! Skipping scene..." );
+                            Dev.Log( "Scene " + i + " has a null root game object! Skipping scene..." );
                             break;
                         }
 
-                        if( rootGameObject.name == ModRoot.name )
+                        if( rootGameObject.name == EnemyRandomizer.Instance.ModRoot.name )
                         {
                             continue;
                         }
@@ -470,11 +434,11 @@ namespace EnemyRandomizerMod
                     max = new Vector3( xList[ xList.Count - 1 ].transform.position.x, yList[ yList.Count - 1 ].transform.position.y, 10f )
                 };
 
-                Log( "Bounds created with dimensions" );
-                Log( "min "+sceneBounds.min );
-                Log( "max " + sceneBounds.max );
-                Log( "center " + sceneBounds.center );
-                Log( "extents " + sceneBounds.extents );
+                Dev.Log( "Bounds created with dimensions" );
+                Dev.Log( "min "+sceneBounds.min );
+                Dev.Log( "max " + sceneBounds.max );
+                Dev.Log( "center " + sceneBounds.center );
+                Dev.Log( "extents " + sceneBounds.extents );
 
                 calculateBounds = false;
             }
@@ -490,12 +454,12 @@ namespace EnemyRandomizerMod
                     //and their children
                     if( rootGameObject == null )
                     {
-                        Log( "Scene "+i+" has a null root game object! Skipping scene..." );
+                        Dev.Log( "Scene "+i+" has a null root game object! Skipping scene..." );
                         break; 
                     }
 
                     //skip our mod root
-                    if( rootGameObject.name == ModRoot.name )
+                    if( rootGameObject.name == EnemyRandomizer.Instance.ModRoot.name )
                         continue;
 
                     int counter = 0;
@@ -513,7 +477,7 @@ namespace EnemyRandomizerMod
 
                         if( !sceneBounds.Contains( t.position ) )
                         {
-                            //Log( "Skipping " + t.gameObject.name + " Because it is outside the bounds. " + t.position );
+                            //Dev.Log( "Skipping " + t.gameObject.name + " Because it is outside the bounds. " + t.position );
                             continue;
                         }
                         
@@ -521,7 +485,7 @@ namespace EnemyRandomizerMod
                         if( !t.gameObject.activeInHierarchy )
                             continue;                        
 
-                        if( SkipRandomizeEnemy( name ) )
+                        if( name.IsSkipRandomizingString() )
                             continue;
 
                         //skip child components of randomized enemies
@@ -533,7 +497,7 @@ namespace EnemyRandomizerMod
 
                         GameObject potentialEnemy = t.gameObject;
 
-                        bool isRandoEnemy = IsRandoEnemyType(potentialEnemy);
+                        bool isRandoEnemy = potentialEnemy.IsRandomizerEnemy(database.loadedEnemyPrefabNames);
                         if( isRandoEnemy )
                             RandomizeEnemy( potentialEnemy );
                     }
@@ -542,13 +506,13 @@ namespace EnemyRandomizerMod
                 }
             }
 
-            //Log( "Updating battle controls" );
+            //Dev.Log( "Updating battle controls" );
 
             yield return null;
 
             UpdateBattleControls();
 
-            //Log( "Printing list" );
+            //Dev.Log( "Printing list" );
             ////if(needsList)
             //{
             //    List<GameObject> xList = allObjs.Select(x=>x).OrderBy(x=>x.transform.position.x).ToList();
@@ -556,12 +520,12 @@ namespace EnemyRandomizerMod
 
             //    foreach(var g in xList)
             //    {
-            //        Log( "X: " + g.transform.position.x + " :::: " + g.name);
+            //        Dev.Log( "X: " + g.transform.position.x + " :::: " + g.name);
             //    }
 
             //    foreach( var g in yList )
             //    {
-            //        Log( "Y: " + g.transform.position.y + " :::: " + g.name );
+            //        Dev.Log( "Y: " + g.transform.position.y + " :::: " + g.name );
             //    }
 
             //    needsList = false;
@@ -573,10 +537,7 @@ namespace EnemyRandomizerMod
 
         void OnLoadObjectCollider( GameObject potentialEnemy )
         {
-            if( !RandomizerReady )
-                return;
-
-            bool isRandoEnemy = IsRandomizerEnemy(potentialEnemy);
+            bool isRandoEnemy = potentialEnemy.IsRandomizerEnemy( database.loadedEnemyPrefabNames );
             if( isRandoEnemy )
                 RandomizeEnemy( potentialEnemy );
         }
@@ -584,17 +545,17 @@ namespace EnemyRandomizerMod
         void RandomizeEnemy( GameObject enemy )
         {
             //this failsafe is needed here in the case where we have exceptional things that should NOT be randomized
-            if( SkipRandomizeEnemy( enemy.name ) )
+            if( enemy.name.IsSkipRandomizingString() )
             {
-                //Log( "Exceptional case found in SkipRandomizeEnemy() -- Skipping randomization for: " + enemy.name );
+                //Dev.Log( "Exceptional case found in SkipRandomizeEnemy() -- Skipping randomization for: " + enemy.name );
                 return;
             }
 
-            Log( "Randomizing: " + enemy.name );
+            Dev.Log( "Randomizing: " + enemy.name );
 
             if( simulateReplacement )
             {
-                Log( "Sim mode enabled, not replacing the enemy, but we'll flag it like we did!" );
+                Dev.Log( "Sim mode enabled, not replacing the enemy, but we'll flag it like we did!" );
                 enemy.name += " Rando simulated";
                 replacements.Add( new ReplacementPair() { original = enemy, replacement = enemy } );
                 return;
@@ -616,7 +577,7 @@ namespace EnemyRandomizerMod
             GameObject newEnemy = InstantiateEnemy(replacementPrefab);
 
             //temporary, origianl name used to configure the enemy
-            newEnemy.name = loadedEnemyPrefabNames[ prefabIndex ];
+            newEnemy.name = database.loadedEnemyPrefabNames[ prefabIndex ];
 
             ScaleRandomizedEnemy( newEnemy );
             RotateRandomizedEnemy( newEnemy, oldEnemy );
@@ -636,7 +597,7 @@ namespace EnemyRandomizerMod
 
             oldEnemy.gameObject.name = "Rando Replaced Enemy: " + oldEnemy.gameObject.name;
 
-            Log( "Adding replacement pair: "+ oldEnemy.gameObject.name +" replaced by "+ newEnemy.gameObject.name );
+            Dev.Log( "Adding replacement pair: "+ oldEnemy.gameObject.name +" replaced by "+ newEnemy.gameObject.name );
             replacements.Add( new ReplacementPair() { original = oldEnemy, replacement = newEnemy } );
 
             //hide the old enemy for now
@@ -659,7 +620,7 @@ namespace EnemyRandomizerMod
 
         void NameRandomizedEnemy( GameObject newEnemy, int prefabIndex )
         {
-            newEnemy.name = randoEnemyNamePrefix + loadedEnemyPrefabNames[ prefabIndex ]; //gameObject.name; //if we put the game object's name here it'll re-randomize itself (whoops)
+            newEnemy.name = randoEnemyNamePrefix + database.loadedEnemyPrefabNames[ prefabIndex ]; //gameObject.name; //if we put the game object's name here it'll re-randomize itself (whoops)
         }
 
         void ScaleRandomizedEnemy( GameObject newEnemy )
@@ -721,7 +682,7 @@ namespace EnemyRandomizerMod
 
                 Vector3 toSurface = GetVectorTo(ePos,originalDown,50f);
 
-                //Log( "CRAWLER/WALL: ToSurface: " + toSurface );
+                //Dev.Log( "CRAWLER/WALL: ToSurface: " + toSurface );
 
                 Vector2 finalDir = toSurface.normalized;
                 Vector3 onGround = GetPointOn(ePos,finalDir, 50f);
@@ -777,7 +738,7 @@ namespace EnemyRandomizerMod
             {
                 foreach( var v in toGround )
                 {
-                    Log( "GetPointOnGround:: RaycastHit2D hit object: " + v.collider.gameObject.name );
+                    Dev.Log( "GetPointOnGround:: RaycastHit2D hit object: " + v.collider.gameObject.name );
                     if( v.collider.gameObject.name.Contains( "Chunk" ) )
                     {
                         return v.point;
@@ -786,7 +747,7 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                Log( "GetPointOnGround:: RaycastHit2D is null! " );
+                Dev.Log( "GetPointOnGround:: RaycastHit2D is null! " );
             }
 
             return Vector3.zero;
@@ -807,7 +768,7 @@ namespace EnemyRandomizerMod
             {
                 foreach( var v in toGround )
                 {
-                    Log( "GetPointOn:: RaycastHit2D hit object: " + v.collider.gameObject.name );
+                    Dev.Log( "GetPointOn:: RaycastHit2D hit object: " + v.collider.gameObject.name );
                     if( v.collider.gameObject.name.Contains( "Chunk" ) )
                     {
                         return v.point;
@@ -816,7 +777,7 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                Log( "GetPointOn:: RaycastHit2D is null! " );
+                Dev.Log( "GetPointOn:: RaycastHit2D is null! " );
             }
 
             return Vector3.one * max;
@@ -833,7 +794,7 @@ namespace EnemyRandomizerMod
             {
                 foreach( var v in toGround )
                 {
-                    Log( "GetVectorToGround:: RaycastHit2D hit object: " + v.collider.gameObject.name );
+                    Dev.Log( "GetVectorToGround:: RaycastHit2D hit object: " + v.collider.gameObject.name );
                     if( v.collider.gameObject.name.Contains( "Chunk" ) )
                     {
                         Vector2 vectorToGround = v.point - origin;
@@ -843,7 +804,7 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                Log( "GetVectorToGround:: RaycastHit2D is null! " );
+                Dev.Log( "GetVectorToGround:: RaycastHit2D is null! " );
             }
 
             return Vector3.zero;
@@ -864,7 +825,7 @@ namespace EnemyRandomizerMod
             {
                 foreach( var v in toGround )
                 {
-                    Log( "GetVectorTo:: RaycastHit2D hit object: " + v.collider.gameObject.name );
+                    Dev.Log( "GetVectorTo:: RaycastHit2D hit object: " + v.collider.gameObject.name );
                     if( v.collider.gameObject.name.Contains( "Chunk" ) )
                     {
                         Vector2 vectorToGround = v.point - origin;
@@ -874,7 +835,7 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                Log( "GetVectorTo:: RaycastHit2D is null! " );
+                Dev.Log( "GetVectorTo:: RaycastHit2D is null! " );
             }
 
             return Vector3.one * max;
@@ -896,14 +857,14 @@ namespace EnemyRandomizerMod
 
         int GetTypeFlags( string enemy )
         {
-            bool isGround = IsExactlyInList(enemy, EnemyRandoData.groundEnemyTypeNames);
-            bool isFlying = IsExactlyInList(enemy, EnemyRandoData.flyerEnemyTypeNames);
-            bool isSmall = IsExactlyInList(enemy, EnemyRandoData.smallEnemyTypeNames);
-            bool isMed = IsExactlyInList(enemy, EnemyRandoData.mediumEnemyTypeNames);
-            bool isLarge = IsExactlyInList(enemy, EnemyRandoData.bigEnemyTypeNames);
-            bool isWall = IsExactlyInList(enemy, EnemyRandoData.wallEnemyTypeNames);
-            //bool isHard = IsExactlyInList(enemy, EnemyRandoData.hardEnemyTypeNames);
-            bool isCrawler = IsExactlyInList(enemy, EnemyRandoData.crawlerEnemyTypeNames);
+            bool isGround = EnemyRandomizerDatabase.groundEnemyTypeNames.Contains( enemy );
+            bool isFlying = EnemyRandomizerDatabase.flyerEnemyTypeNames.Contains( enemy );
+            bool isSmall = EnemyRandomizerDatabase.smallEnemyTypeNames.Contains( enemy );
+            bool isMed = EnemyRandomizerDatabase.mediumEnemyTypeNames.Contains( enemy );
+            bool isLarge = EnemyRandomizerDatabase.bigEnemyTypeNames.Contains( enemy );
+            bool isWall = EnemyRandomizerDatabase.wallEnemyTypeNames.Contains( enemy );
+            //bool isHard = EnemyRandomizerDatabase.hardEnemyTypeNames.Contains( enemy );
+            bool isCrawler = EnemyRandomizerDatabase.crawlerEnemyTypeNames.Contains( enemy );
 
             int flags = 0;
             flags |= ( isGround ? 1 : 0 ) << 0;
@@ -966,34 +927,34 @@ namespace EnemyRandomizerMod
         GameObject GetRandomEnemyReplacement( GameObject enemy, ref int randomReplacementIndex )
         {
             string enemyName = enemy.name;
-            string trimmedName = TrimEnemyNameToBeLoaded(enemyName);
+            string trimmedName = enemyName.TrimGameObjectName();
             int enemyFlags = GetTypeFlags(trimmedName);
             
             //if not set, enemy replacements will be completely random
-            if( !chaosRNG )
+            if( !EnemyRandomizer.Instance.ChaosRNG )
             {
                 //set the seed based on the type of enemy we're going to randomize
                 //this "should" make each enemy type randomize into the same kind of enemy
                 int stringHashValue = trimmedName.GetHashCode();
-                replacementRNG.Seed = stringHashValue + loadedBaseSeed;
+                replacementRNG.Seed = stringHashValue + EnemyRandomizer.Instance.GameSeed;
                 
                 //if roomRNG is enabled, then we will also offset the seed based on the room's hash code
                 //this will cause enemy types within the same room to be randomized the same
                 //Example: all Spitters could be randomized into Flys in one room, and Fat Flys in another
-                if( roomRNG )
+                if( EnemyRandomizer.Instance.RoomRNG )
                 {
                     int sceneHashValue = currentScene.GetHashCode();
-                    replacementRNG.Seed = stringHashValue + loadedBaseSeed + sceneHashValue;
+                    replacementRNG.Seed = stringHashValue + EnemyRandomizer.Instance.GameSeed + sceneHashValue;
 
                 }
 
-                Log( "Settings seed to " + replacementRNG.Seed );
+                Dev.Log( "Settings seed to " + replacementRNG.Seed );
             }
 
             int emergencyAbortCounter = 0;
             int emergencyAbortCounterMax = 100000;
 
-            Log( "loadedEnemyPrefabs.Count = " + loadedEnemyPrefabs.Count );
+            Dev.Log( "loadedEnemyPrefabs.Count = " + database.loadedEnemyPrefabs.Count );
 
             //search for a compatible replacement
             int randomReplacement = -1;
@@ -1001,13 +962,13 @@ namespace EnemyRandomizerMod
             {
                 //int temp = UnityEngine.Random.Range(0, loadedEnemyPrefabs.Count);
                 
-                int temp = replacementRNG.Rand(loadedEnemyPrefabs.Count-1);
+                int temp = replacementRNG.Rand( database.loadedEnemyPrefabs.Count-1);
 
-                GameObject tempPrefab = loadedEnemyPrefabs[temp];
-                string tempName = loadedEnemyPrefabNames[temp];
+                GameObject tempPrefab = database.loadedEnemyPrefabs[temp];
+                string tempName = database.loadedEnemyPrefabNames[temp];
 
 
-                Log( "Attempted replacement index: " + temp + " which is " + tempName + " with prefab name " + tempPrefab.name );
+                Dev.Log( "Attempted replacement index: " + temp + " which is " + tempName + " with prefab name " + tempPrefab.name );
 
                 int tempFlags = GetTypeFlags(tempName);
                 bool isValid = false;
@@ -1017,32 +978,32 @@ namespace EnemyRandomizerMod
                     if( HasSameSize( enemyFlags, tempFlags ) )
                     {
                         isValid = true;
-                        Log( "Replacement is VALID." );
+                        Dev.Log( "Replacement is VALID." );
                     }                    
                 }
 
                 if( enemy.transform.up.y < 0f && tempName == "Mawlek Turret" )
                 {
                     isValid = false;
-                    Log( "(wrong type of mawlek turret)." );
+                    Dev.Log( "(wrong type of mawlek turret)." );
                 }
 
                 if( enemy.transform.up.y > 0f && tempName == "Mawlek Turret Ceiling" )
                 {
                     isValid = false;
-                    Log( "(wrong type of mawlek turret)." );
+                    Dev.Log( "(wrong type of mawlek turret)." );
                 }
                 
                 if( isValid )
                     randomReplacement = temp;
                 else
-                    Log( "Replacement is INVALID." );
+                    Dev.Log( "Replacement is INVALID." );
 
                 emergencyAbortCounter++;
 
                 if( emergencyAbortCounter > emergencyAbortCounterMax )
                 {
-                    Log( "ERROR: COULD NOT MATCH OR FIND A REPLACEMENT FOR " + enemy.name );
+                    Dev.Log( "ERROR: COULD NOT MATCH OR FIND A REPLACEMENT FOR " + enemy.name );
                     //basically stop trying to randomize this scene....
                     nextRestartDelay = 200000f;
                     break;
@@ -1051,12 +1012,10 @@ namespace EnemyRandomizerMod
 
             randomReplacementIndex = randomReplacement;
 
-            GameObject prefab = loadedEnemyPrefabs[randomReplacement];
-            Log( "Spawning rando monster: " + prefab.name + " from index " + randomReplacement + " out of " + loadedEnemyPrefabs.Count + " to replace " + enemy.name );
+            GameObject prefab = database.loadedEnemyPrefabs[randomReplacement];
+            Dev.Log( "Spawning rando monster: " + prefab.name + " from index " + randomReplacement + " out of " + database.loadedEnemyPrefabs.Count + " to replace " + enemy.name );
             return prefab;
         }
-
-
 
         void ControlReplacementRoot()
         {
@@ -1077,9 +1036,9 @@ namespace EnemyRandomizerMod
                     {
                         pairsToRemove.Add( p );
                         if( p.original != null )
-                            Log( "replacement died, removing original: " + p.original.name );
+                            Dev.Log( "replacement died, removing original: " + p.original.name );
                         else
-                            Log( "replacement died, removing original (object is null now) " );
+                            Dev.Log( "replacement died, removing original (object is null now) " );
                     }
                     else
                     {
@@ -1106,7 +1065,7 @@ namespace EnemyRandomizerMod
                     if( p.original != null )
                     {
                         p.original.SetActive( true );
-                        Log( "Sending kill to: " + p.original.name );
+                        Dev.Log( "Sending kill to: " + p.original.name );
                         p.original.GetEnemyFSM().SendEvent( "INSTA KILL" );
                     }
                     replacements.Remove( p );

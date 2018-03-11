@@ -2,114 +2,45 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
+
+using nv;
 
 namespace EnemyRandomizerMod
 {
-    public class EnemyRandoData
+    public class EnemyRandomizerDatabase
     {
-        /*
-         * 
-         *  NOTES
-         * 
-         * 
-         * --needs more space (above it) when it spawns
-         * Royal Gaurd needs more space, stuck in floor when spawned
-         * giant moss crawler needs more space?, fell through the world?
-         * mimic grub
-         * great zombie guard (2 damage sword one)
-         * Lobster
-         * mega fat bee (flying but needs space)
-         * moss knight fat
-         * 
-         * --rotated mobs like worms need to be un-rotated
-         * 
-         * --Laser Turret Frames needs to be properly rotated and placed on a surface (worms work pretty well actually)
-         * --plant turret needs to be placed on ground or other surface
-         * laser crawler
-         * 
-         * 
-         * --mawlek turret (3) disappeared?
-         * --huge grass charger fell down elevator shaft and vanished?
-         * --infected knight (lost kin) replaced a miner in crystal peak and vanished
-         * --zombie beam miner and and zombie shield dropped through floor after they replaced some miners in crystal peak
-         * 
-         * 
-         * --baulder shell enemy had every enemy he shot randomized
-         * 
-         * --enemies that replace shade siblings should be placed into the air/on the ground (they spawn in the ground)
-         * 
-         * --maybe add Abyss Tendrils?
-         * 
-         * --brooding malwerk spazzes out of spawned in a tight hallway
-         * 
-         * --spawning door mantis is kinda lame
-         * 
-         * --"lil jellyfish" (the exploding one) is getting rando replaced
-         * 
-         * --add Centipede Hatcher to rando monsters?
-         * they're extra dangerous because theirs spawns are randomized
-         * 
-         * --health scuttler is the blue health bug
-         * 
-         * --"Steep Slope" to keep player from climbing something
-         * 
-         * --flukemarm spawning in certain spots just causes infinite yelling effect
-         * 
-         * --things replacing baby centipede need to be adjusted to be sure they're in a safe spot like the siblings since they can spawn inside the ground
-         * 
-         * --add? Tentacle Box monster
-         * 
-         * 
-         * --fun thing, small mushrooms rando when they "wake up"
-         * 
-         * --having nosk spawn while exploring is annoying
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * ----
-         * --prevent wall type enemies from replacing flyers
-         * --spread out the post load searching for randomized enemies over multiple frames, it takes too long and causes the game to hang for a moment
-         * --moss knight fat fell through the world? OH i think this is the "sub boss" one... let's not randomize it
-         * --mushroom brawler needs to be lowered to the floor? and flipped/rotated the proper direction
-         * --mage night was invisible? not sure what adjustment it needs
-         * --brooding mawlek could be adjusted to the bottom/ground, but it's also kinda ok floating above things
-         * --wall enemies need logic to be placed on walls correctly
-         * --Ruins Flying Sentry Javelin wasn't randomized in one scene
-         * --bug: big bee replaced mage knight
-         * --spider flyer didn't get randomized
-         * --bug? mantis heavy flyer is a ground thing?
-         * --crystal guardian will have to be removed or have its camera effect fixed, it causes the camera to pan way off to the side on activation
-         * 
-         * 
-         * --mage blob replaced the zombie guard by grub?
-         * --mage knight seems to have spawning issue, need to experiement with it more
-         * 
-         * --removed mender bug as he was always showing up as disabled
-         * 
-         * 
-         * 
-         * //TRY THIS to enable enemy hitboxes:
-         *   https://github.com/AllanBishop/UnityPhysicsDebugDraw2D
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         * 
-         */
+        public EnemyRandomizerDatabase Instance { get; private set; }
 
+        CommunicationNode comms;
 
-        /*
+        public Dictionary<string, List<string>> enemyTypes = new Dictionary<string, List<string>>();
+        public List<GameObject> loadedEnemyPrefabs = new List<GameObject>();
+        public List<string> loadedEnemyPrefabNames = new List<string>();
+        public List<string> uniqueEnemyTypes = new List<string>();
+        
+        public EnemyRandomizerDatabase()
+        {
+        }
+
+        public void Setup()
+        {
+            Instance = this;
+            comms = new CommunicationNode();
+            comms.EnableNode( this );
+        }
+
+        public void Unload()
+        {
+            comms.DisableNode();
+            Instance = null;
+        }
+
+        /* 
+         * Zones by build index__
+         * 
          * Tutorial: 7 
-         * Crossroads: Scenes 38-80         * 
+         * Crossroads: Scenes 38-80         
          * Ruins_House (city of tears internal): 81-85  
          * Ruins (City of tears): 86 - 116
          * Greenpath/Fungal Wastes/Queens Gardens: 117 - 212
@@ -123,7 +54,6 @@ namespace EnemyRandomizerMod
          * Hive: 359 - 363
          * 
          */
-
 
         public static List<int> enemyTypeScenes = new List<int>()
         {

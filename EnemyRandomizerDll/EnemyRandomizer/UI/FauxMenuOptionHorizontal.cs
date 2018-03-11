@@ -2,7 +2,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Modding;
+
+using nv;
 
 namespace EnemyRandomizerMod.Menu
 {
@@ -14,7 +15,7 @@ namespace EnemyRandomizerMod.Menu
     {
         void Log( string s )
         {
-            EnemyRandomizer.Instance.Log( s );
+            Dev.Log( s );
         }
 
         /// <summary>

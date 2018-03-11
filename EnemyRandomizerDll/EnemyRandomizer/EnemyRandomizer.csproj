@@ -32,11 +32,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>K:\Games\SteamApps\common\Hollow Knight\hollow_knight_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="PlayMaker, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>K:\Games\SteamApps\common\Hollow Knight\hollow_knight_Data\Managed\PlayMaker.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\PlayMaker.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,22 +46,25 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>K:\Games\SteamApps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>K:\Games\SteamApps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Communication\CommunicationNode.cs" />
+    <Compile Include="Common\Communication\SerializableMethodInfo.cs" />
+    <Compile Include="Common\Communication\SerializableType.cs" />
     <Compile Include="Common\Contractor.cs" />
     <Compile Include="Common\Dev.cs" />
     <Compile Include="Common\DevLog.cs" />
-    <Compile Include="EnemyRandoData.cs" />
+    <Compile Include="EnemyRandomizerDatabase.cs" />
     <Compile Include="EnemyRandomizer.cs" />
-    <Compile Include="EnemyRandomizerSetup.cs" />
-    <Compile Include="EnemyRandomizerReplacementLogic.cs" />
+    <Compile Include="EnemyRandomizerLoader.cs" />
+    <Compile Include="EnemyRandomizerLogic.cs" />
     <Compile Include="EnemyRandomizerSettings.cs" />
-    <Compile Include="EnemyRandomizerUI.cs" />
+    <Compile Include="Events\LoadingEvents.cs" />
     <Compile Include="Extensions\ComponentExtensions.cs" />
     <Compile Include="Extensions\GameObjectExtensions.cs" />
     <Compile Include="Extensions\LayerMaskExtensions.cs" />

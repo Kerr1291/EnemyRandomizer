@@ -113,14 +113,14 @@ namespace EnemyRandomizerMod.Menu
         {
             _logger.Log("Loading Mod Menu");
             yield return StartCoroutine(HideMenu(UIManager.instance.optionsMenuScreen));
-            yield return StartCoroutine(ShowMenu(RandomizerMenu.ModMenuScreen));
+            yield return StartCoroutine(ShowMenu(RandomizerMenu.optionsMenuScreen));
             gameManager.inputHandler.StartUIInput();
         }
 
         public IEnumerator QuitModMenu()
         {
             _logger.Log("Quitting Mod Menu");
-            yield return StartCoroutine(HideMenu(RandomizerMenu.ModMenuScreen));
+            yield return StartCoroutine(HideMenu(RandomizerMenu.optionsMenuScreen));
             yield return StartCoroutine(ShowMenu(UIManager.instance.optionsMenuScreen));
             gameManager.inputHandler.StartUIInput();
         }

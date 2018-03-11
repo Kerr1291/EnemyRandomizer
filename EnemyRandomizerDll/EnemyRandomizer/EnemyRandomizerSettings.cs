@@ -6,12 +6,23 @@ using Modding;
 
 namespace EnemyRandomizerMod
 {
+    //string lookup names for the config options
+    public class EnemyRandomizerSettingsVars
+    {
+        public const string Seed = "Seed";
+        public const string CustomSeed = "CustomSeed";
+
+        public const string RNGChaosMode = "RNGChaosMode";
+        public const string RNGRoomMode = "RNGRoomMode";
+    }
+
+    //Global (non-player specific) settings
     public class EnemyRandomizerSettings : IModSettings
     {
         public bool RNGChaosMode {
             get => GetBool( false );
             set {
-                StringValues[ "RNGChaosMode" ] = "Chaos Mode";
+                StringValues[EnemyRandomizerSettingsVars.RNGChaosMode] = "Chaos Mode";
                 SetBool( value );
             }
         }
@@ -19,24 +30,20 @@ namespace EnemyRandomizerMod
         public bool RNGRoomMode {
             get => GetBool( false );
             set {
-                StringValues[ "RNGRoomMode" ] = "Room Mode";
+                StringValues[EnemyRandomizerSettingsVars.RNGRoomMode] = "Room Mode";
                 SetBool( value );
             }
         }
+    }
 
-        public bool RandomizeDisabledEnemies {
-            get => GetBool( false );
+    //Player specific settings
+    public class EnemyRandomizerSaveSettings : IModSettings
+    {
+        public int Seed {
+            get => GetInt(-1);
             set {
-                StringValues[ "RandomizeDisabledEnemies" ] = "Rando Disabled Enemies";
-                SetBool( value );
-            }
-        }
-
-        public int BaseSeed {
-            get => GetInt( -1 );
-            set {
-                StringValues[ "BaseSeed" ] = "Seed (Click for new)";
-                SetInt( value );
+                StringValues[EnemyRandomizerSettingsVars.Seed] = "Seed (Click for new)";
+                SetInt(value);
             }
         }
     }
