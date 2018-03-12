@@ -73,7 +73,7 @@ namespace EnemyRandomizerMod
                 {
                     GameObject.Destroy( modRoot );
                 }
-                modRoot = value;
+                modRoot = value;  
             }
         }
 
