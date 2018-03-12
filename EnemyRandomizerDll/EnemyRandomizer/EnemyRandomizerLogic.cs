@@ -1020,6 +1020,14 @@ namespace EnemyRandomizerMod
             return prefab;
         }
 
+
+        bool IsEnemyDead(GameObject enemy)
+        {
+            return enemy == null
+                || enemy.activeInHierarchy == false
+                || (enemy.IsGameEnemy() && ( enemy.GetEnemyFSM().ActiveStateName.Contains( "Corpse" ) || enemy.GetEnemyFSM().ActiveStateName.Contains( "Death" ) || (FSMUtility.GetInt( enemy.GetEnemyFSM(), "HP" ) <= 0) ) );                
+        }
+
         void ControlReplacementRoot()
         {
             Vector3 somewhereOffInSpace = Vector3.one * 50000f;
@@ -1027,15 +1035,15 @@ namespace EnemyRandomizerMod
             {
                 foreach( ReplacementPair p in replacements )
                 {
-                    if( p.replacement == null 
-                        || p.replacement.gameObject == null 
-                        || p.replacement.gameObject.activeInHierarchy == false 
-                        || ( FSMUtility.ContainsFSM( p.replacement, "health_manager_enemy" ) 
-                             && ( FSMUtility.LocateFSM( p.replacement, "health_manager_enemy" ).ActiveStateName.Contains( "Corpse" ) 
-                               || FSMUtility.LocateFSM( p.replacement, "health_manager_enemy" ).ActiveStateName.Contains( "Death" ) 
-                               )
-                           )
-                       )
+                    if( p.replacement == null || IsEnemyDead(p.replacement.gameObject) )
+                       // || p.replacement.gameObject == null 
+                       // || p.replacement.gameObject.activeInHierarchy == false 
+                       // || ( FSMUtility.ContainsFSM( p.replacement, "health_manager_enemy" ) 
+                       //      && ( FSMUtility.LocateFSM( p.replacement, "health_manager_enemy" ).ActiveStateName.Contains( "Corpse" ) 
+                       //        || FSMUtility.LocateFSM( p.replacement, "health_manager_enemy" ).ActiveStateName.Contains( "Death" ) 
+                       //        )
+                       //    )
+                       //)
                     {
                         pairsToRemove.Add( p );
                         if( p.original != null )
