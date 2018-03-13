@@ -218,7 +218,7 @@ namespace EnemyRandomizerMod
 
             "Zombie Shield", //52
             "Zombie Leaper",//52
-            "Zombie Myla", //71
+            "Zombie Myla", //71 -- seems to be killing enemies it replaces?? maybe remove from replacement list
             //"Blocker",//74 (baulder shell)
 
             "Zombie Guard", //76 (big enemy)
@@ -461,7 +461,8 @@ namespace EnemyRandomizerMod
             "Mossman_Shaker", //117
             "Mossman_Runner",//117
             //"Moss Knight Fat", //204
-            "Moss Knight", //137            
+            "Moss Knight", //137        
+            "Fung Crawler", //158    
             "Zombie Fungus", //155
             "Mantis Heavy",//35
             "Mantis", //
@@ -485,17 +486,6 @@ namespace EnemyRandomizerMod
             "Mimic Spider", //269 (Nosk, BOSS)
             "Mantis Traitor Lord", //194 (BOSS)          needs lots of room or will fall through the floor  
             "Zote Boss"//33 (BOSS???)
-        };
-
-
-        public static List<string> crawlerEnemyTypeNames = new List<string>()
-        {
-            "Fung Crawler", //158
-            "Mines Crawler", //243
-            "Abyss Crawler", //320
-            "Crawler", //40
-            "Climber", //40
-            "Crystallised Lazer Bug", //243 (this was removed from the list for some reason???)
         };
 
         public static List<string> smallEnemyTypeNames = new List<string>()
@@ -543,8 +533,6 @@ namespace EnemyRandomizerMod
             "Mawlek Turret Ceiling", //321
             "Mawlek Turret", //321
             "Worm", //49
-            "Worm", //49
-            "Plant Trap", //117
             "Plant Trap", //117
             "Zote Boss"//33 (BOSS???)
         };
@@ -677,7 +665,6 @@ namespace EnemyRandomizerMod
             "Slash Spider", //271   -- doesn't seem to randomize well, needs more research
             "Royal Gaurd", //358
             "Big Bee", //362
-            "Colosseum_Worm",//34
             "Mimic Spider", //269 (Nosk, BOSS)
             "Mantis Traitor Lord" //194 (BOSS)          needs lots of room or will fall through the floor  
         };
@@ -702,26 +689,90 @@ namespace EnemyRandomizerMod
         };
 
 
+        public static List<string> crawlerEnemyTypeNames = new List<string>()
+        {
+            "Mines Crawler", //243
+            "Abyss Crawler", //320
+            "Crawler", //40
+            "Climber", //40
+            "Crystallised Lazer Bug", //243 (this was removed from the list for some reason???)
+        };
 
 
-        
+        public static List<string> excludeFromBattleArenaZones = new List<string>()
+        {
+            "Electric Mage",//35 //TODO: needs to be moved down? (by 20?)
+            "Mossman_Shaker",
+            "Mage Blob",//35
+            "Mage Balloon", //102
+            "Zombie Spider 1", //271
+            "Zombie Spider 2", //271
+            "Parasite Balloon",
+            "Mega Zombie Beam Miner", //241
+            "Mage Knight",//35
+            "Lancer",//35
+            "Lobster",//35
+            "Colosseum_Worm",//34
+            "Laser Turret Frames", //234
+            "Worm", //49
+        };
 
-        //public static List<string> hardEnemyTypeNames = new List<string>()
-        //{
-        //    "Gorgeous Husk", //82 (for fun)
-        //    "Electric Mage",//35
-        //    "Mage Knight",//35
-        //    "Giant Buzzer Col",//33
-        //    "Giant Fly Col",//34 
-        //    "Lancer",//35
-        //    "Lobster",//35
-        //    "Mawlek Body", //46 (mini boss)
-        //    "Moss Knight", //137            
-        //    "Mushroom Brawler", //
-        //    "Royal Gaurd", //358
-        //    "Mimic Spider", //269 (Nosk, BOSS)
-        //    "Mantis Traitor Lord" //194 (BOSS)          needs lots of room or will fall through the floor  
-        //};
+
+        public static List<string> colloseumEnemyTypes = new List<string>()
+        {
+            "Colosseum_Armoured_Mosquito",//34
+            
+            "Colosseum_Miner",//35
+
+            "Giant Buzzer Col",//33
+            
+            "Colosseum_Shield_Zombie",//33
+            "Super Spitter Col",//33
+
+            "Bursting Bouncer",//33
+            
+            "Ceiling Dropper Col",//34
+            "Giant Fly Col",//34 
+            
+            "Grub Mimic",//34
+            "Mega Fat Bee",//34
+            "Colosseum_Flying_Sentry",//34
+
+            "Colosseum Grass Hopper",//35
+            "Giant Hopper",//34
+            "Hopper",//34
+            "Blobble",//34
+
+            "Lancer",//35
+            "Lobster",//35
+            
+            "Mage Knight",//35
+            "Mage Blob",//35
+            "Electric Mage",//35
+            "Mage",//35
+            "Mantis Heavy Flyer",//35
+            "Mantis Heavy",//35
+            
+            "Mawlek Col",//35 ??? might be same as lesser mawlek
+        };
+
+
+        public static List<string> hardEnemyTypeNames = new List<string>()
+        {
+            "Gorgeous Husk", //82 (for fun)
+            "Electric Mage",//35
+            "Mage Knight",//35
+            "Giant Buzzer Col",//33
+            "Giant Fly Col",//34 
+            "Lancer",//35
+            "Lobster",//35
+            "Mawlek Body", //46 (mini boss)
+            "Moss Knight", //137            
+            "Mushroom Brawler", //
+            "Royal Gaurd", //358
+            "Mimic Spider", //269 (Nosk, BOSS)
+            "Mantis Traitor Lord" //194 (BOSS)          needs lots of room or will fall through the floor  
+        };
 
         //"Giant Fly",//(gruz mother?)
         //"Great Shield Zombie", //106

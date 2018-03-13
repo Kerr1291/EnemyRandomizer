@@ -128,8 +128,8 @@ namespace EnemyRandomizerMod.Menu
             GameObject go = new GameObject( OptionsUIManagerName );
             optionsUIManager = go.AddComponent<RandomizerFauxUIManager>();
 
-            Vector2 buttonPos = new Vector2( -1100f, 400f );
-            Vector2 barPos = new Vector2( -1100f, 200f );
+            Vector2 buttonPos = new Vector2( -1400f, 400f );
+            Vector2 barPos = new Vector2( -1400f, 200f );
 
             Vector2 buttonSize = new Vector2( 400f, 200f );
             Vector2 barSize = new Vector2( 400f, 40f );
@@ -151,7 +151,7 @@ namespace EnemyRandomizerMod.Menu
             loadingButton.gameObject.SetActive( true );
             loadingButton.transform.localScale = Vector3.one;
             loadingButton.transform.position = pos;
-            loadingButton.transform.Translate( new Vector3( -4f, 4f ) );
+            loadingButton.transform.Translate( new Vector3( -4.8f, 4f ) );
 
             //Dev.Log( "Finished loader ui elements" );
 
@@ -160,7 +160,7 @@ namespace EnemyRandomizerMod.Menu
             GameObject.DestroyImmediate( loadingButton.GetComponentInChildren<AutoLocalizeTextUI>() );
 
             Text loadingButtonText = loadingButton.GetComponentInChildren<Text>();
-            loadingButtonText.text = "Load Enemy Randomizer";
+            loadingButtonText.text = "[Load Enemy Randomizer]";
             loadingButtonText.color = Color.white;
             loadingButtonText.horizontalOverflow = HorizontalWrapMode.Overflow;
             loadingButtonText.verticalOverflow = VerticalWrapMode.Overflow;
@@ -188,7 +188,7 @@ namespace EnemyRandomizerMod.Menu
             loadingBar.gameObject.SetActive( true );
             loadingBar.transform.localScale = Vector3.one;
             loadingBar.transform.position = pos;
-            loadingBar.transform.Translate( new Vector3( -4f, 3.7f ) );
+            loadingBar.transform.Translate( new Vector3( -4.8f, 3.7f ) );
 
             GameObject.DestroyImmediate( loadingBar.GetComponent<MenuButton>() );
             GameObject.DestroyImmediate( loadingBar.GetComponent<EventTrigger>() );
@@ -471,6 +471,7 @@ namespace EnemyRandomizerMod.Menu
         {
             List<string> modOptions = EnemyRandomizer.Instance.GlobalSettings.BoolValues.Select( x => x.Key ).ToList();
 
+            modOptions.Insert( 0, EnemyRandomizerSettingsVars.CheatNoclip );
             modOptions.Insert( 0, EnemyRandomizerSettingsVars.Seed );
             modOptions.Insert( 0, EnemyRandomizerSettingsVars.CustomSeed );
 
@@ -540,6 +541,11 @@ namespace EnemyRandomizerMod.Menu
                                 optionLabel = "Seed (Click for new)";
                             }
 
+                            if(optionName == EnemyRandomizerSettingsVars.CheatNoclip )
+                            {
+                                optionLabel = EnemyRandomizerSettingsVars.CheatNoclip;
+                            }
+
                             //Manages what should happen when the menu option changes (the user clicks and the mod is toggled On/Off)
                             menuItem.OnUpdate += optionIndex =>
                             {
@@ -561,6 +567,12 @@ namespace EnemyRandomizerMod.Menu
                                             EnemyRandomizer.Instance.ChaosRNG = false;
                                         if( optionName == EnemyRandomizerSettingsVars.RNGRoomMode )
                                             EnemyRandomizer.Instance.RoomRNG = false;
+                                        if( optionName == EnemyRandomizerSettingsVars.CheatNoclip )
+                                            EnemyRandomizer.Instance.SetNoclip( false );
+                                        if( optionName == EnemyRandomizerSettingsVars.RandomizeGeo )
+                                            EnemyRandomizer.Instance.RandomizeGeo = false;
+
+
                                     }
                                     else
                                     {
@@ -570,6 +582,10 @@ namespace EnemyRandomizerMod.Menu
                                             EnemyRandomizer.Instance.ChaosRNG = true;
                                         if( optionName == EnemyRandomizerSettingsVars.RNGRoomMode )
                                             EnemyRandomizer.Instance.RoomRNG = true;
+                                        if( optionName == EnemyRandomizerSettingsVars.CheatNoclip )
+                                            EnemyRandomizer.Instance.SetNoclip( true );
+                                        if( optionName == EnemyRandomizerSettingsVars.RandomizeGeo )
+                                            EnemyRandomizer.Instance.RandomizeGeo = true;
                                     }
                                 }
 
@@ -581,6 +597,11 @@ namespace EnemyRandomizerMod.Menu
                             {
                                 menuItem.OptionList = new[] { optionName };
                                 menuItem.SelectedOptionIndex = 0;
+                            }
+                            else if( optionName == EnemyRandomizerSettingsVars.CheatNoclip )
+                            {
+                                menuItem.OptionList = new[] { "On", "Off" };
+                                menuItem.SelectedOptionIndex = EnemyRandomizer.Instance.NoClipState ? 0 : 1;
                             }
                             else
                             {

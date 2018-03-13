@@ -150,6 +150,19 @@ namespace EnemyRandomizerMod
             }
         }
 
+        //if randomizeGeo is enabled, then we will put a random amount of geo on enemies
+        bool randomizeGeo = false;
+        public bool RandomizeGeo {
+            get {
+                return randomizeGeo;
+            }
+            set {
+                if( GlobalSettings != null )
+                    GlobalSettings.RandomizeGeo = value;
+                randomizeGeo = value;
+            }
+        }
+
         public override void Initialize()
         {
             if(Instance != null)
@@ -193,12 +206,26 @@ namespace EnemyRandomizerMod
         {
             string globalSettingsFilename = Application.persistentDataPath + ModHooks.PathSeperator + GetType().Name + ".GlobalSettings.json";
 
-            if (!File.Exists(globalSettingsFilename))
+            bool forceReloadGlobalSettings = false;
+            if( GlobalSettings != null && GlobalSettings.SettingsVersion != EnemyRandomizerSettingsVars.GlobalSettingsVersion )
+                forceReloadGlobalSettings = true;
+
+            if( forceReloadGlobalSettings || !File.Exists( globalSettingsFilename ) )
             {
-                Log("Global settings file not found, generating new one... File was not found at: " + globalSettingsFilename);
+                if( forceReloadGlobalSettings )
+                {
+                    Log( "Global settings are outdated! Reloading global settings" );
+                }
+                else
+                {
+                    Log( "Global settings file not found, generating new one... File was not found at: " + globalSettingsFilename );
+                }
+
+                GlobalSettings.SettingsVersion = EnemyRandomizerSettingsVars.GlobalSettingsVersion;
 
                 ChaosRNG = false;
-                RoomRNG = false;
+                RoomRNG = true;
+                RandomizeGeo = false;
 
                 SaveGlobalSettings();
             }
@@ -268,17 +295,20 @@ namespace EnemyRandomizerMod
 
         void EnableEnemyRandomizer()
         {
+            SetNoclip( false );
             RandomizerReady = true;
 
             simulateReplacement = !loader.DatabaseGenerated;
 
             ChaosRNG = GlobalSettings.RNGChaosMode;
             RoomRNG = GlobalSettings.RNGRoomMode;
+            RandomizeGeo = GlobalSettings.RandomizeGeo;
         }
 
         //call when returning to the main menu
         void DisableEnemyRandomizer()
         {
+            SetNoclip( false );
             RandomizerReady = false;
         }
 
@@ -292,6 +322,72 @@ namespace EnemyRandomizerMod
         public override bool IsCurrent()
         {
             return true;        
+        }
+
+        public void SetNoclip(bool state)
+        {
+            noclip = state;
+
+            if( noclip )
+            {
+                Dev.Log( "Enabled noclip" );
+                noclipPos = HeroController.instance.gameObject.transform.position;
+                noClipRunner.OnUpdate = DoNoclip;
+                noClipRunner.Looping = true;
+                noClipRunner.Start();
+            }
+            else
+            {
+                noClipRunner.Reset();
+                Dev.Log( "Disabled noclip" );
+            }
+        }
+
+        public bool NoClipState {
+            get {
+                return noclip;
+            }
+        }
+
+        Contractor noClipRunner = new Contractor();
+        Vector3 noclipPos;
+        bool noclip = false;
+        public void DoNoclip()
+        {
+            if( HeroController.instance == null || HeroController.instance.gameObject == null || !HeroController.instance.gameObject.activeInHierarchy )
+                return;
+
+            if( noclip )
+            {
+                if( GameManager.instance.inputHandler.inputActions.left.IsPressed )
+                {
+                    noclipPos = new Vector3( noclipPos.x - Time.deltaTime * 20f, noclipPos.y, noclipPos.z );
+                }
+
+                if( GameManager.instance.inputHandler.inputActions.right.IsPressed )
+                {
+                    noclipPos = new Vector3( noclipPos.x + Time.deltaTime * 20f, noclipPos.y, noclipPos.z );
+                }
+
+                if( GameManager.instance.inputHandler.inputActions.up.IsPressed )
+                {
+                    noclipPos = new Vector3( noclipPos.x, noclipPos.y + Time.deltaTime * 20f, noclipPos.z );
+                }
+
+                if( GameManager.instance.inputHandler.inputActions.down.IsPressed )
+                {
+                    noclipPos = new Vector3( noclipPos.x, noclipPos.y - Time.deltaTime * 20f, noclipPos.z );
+                }
+
+                if( HeroController.instance.transitionState.ToString() == "WAITING_TO_TRANSITION" )
+                {
+                    HeroController.instance.gameObject.transform.position = noclipPos;
+                }
+                else
+                {
+                    noclipPos = HeroController.instance.gameObject.transform.position;
+                }
+            }
         }
 
         //used while testing to record things hit by a player's nail

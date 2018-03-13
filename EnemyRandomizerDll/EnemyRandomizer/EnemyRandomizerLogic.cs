@@ -586,6 +586,8 @@ namespace EnemyRandomizerMod
             RotateRandomizedEnemy( newEnemy, oldEnemy );
             PositionRandomizedEnemy( newEnemy, oldEnemy );
 
+            ModifyRandomizedEnemyGeo( newEnemy, oldEnemy );
+
             //must happen after position
             NameRandomizedEnemy( newEnemy, prefabIndex );
 
@@ -625,7 +627,7 @@ namespace EnemyRandomizerMod
         {
             newEnemy.name = randoEnemyNamePrefix + database.loadedEnemyPrefabNames[ prefabIndex ]; //gameObject.name; //if we put the game object's name here it'll re-randomize itself (whoops)
         }
-
+        
         void ScaleRandomizedEnemy( GameObject newEnemy )
         {
             //TODO as a fun factor option, try scaling the new enemy?
@@ -633,34 +635,99 @@ namespace EnemyRandomizerMod
                 newEnemy.transform.localScale = newEnemy.transform.localScale * .6f;
         }
 
+        //TODO: add variables to allow players to adjust the geo rates
+        void ModifyRandomizedEnemyGeo( GameObject newEnemy, GameObject oldEnemy )
+        {
+            if( IsHardEnemy( GetTypeFlags( newEnemy ) ) )
+            {
+                int smallGeo = GameRNG.Rand(0,40);
+                int medGeo = GameRNG.Rand(0,30);
+                int bigGeo = GameRNG.Rand(0,25);
+
+                newEnemy.SetEnemyGeoRates( smallGeo, medGeo, bigGeo );
+            }
+            else if( IsColloseumEnemy( GetTypeFlags( newEnemy ) ) )
+            {
+                newEnemy.SetEnemyGeoRates( oldEnemy );
+            }
+            else
+            {
+                if( EnemyRandomizer.Instance.RandomizeGeo )
+                {
+                    int smallGeo = GetTypeSize(GetTypeFlags(newEnemy)) == FLAGS.SMALL ? GameRNG.Rand(0,10) : GameRNG.Rand(0,20);
+                    int medGeo = GetTypeSize(GetTypeFlags(newEnemy)) == FLAGS.MED ? GameRNG.Rand(0,10) : GameRNG.Rand(0,5);
+                    int bigGeo = GetTypeSize(GetTypeFlags(newEnemy)) == FLAGS.BIG ? GameRNG.Rand(0,20) : 0;
+
+                    newEnemy.SetEnemyGeoRates( smallGeo, medGeo, bigGeo );
+                }
+                else
+                {
+                    //no change
+                }
+            }
+        }
+
         void RotateRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
         {
-            //TODO adjust the rotation to take into account the new monster type and/or size            
-            newEnemy.transform.rotation = oldEnemy.transform.rotation;            
+            //TODO adjust the rotation to take into account the new monster type and/or size         
+            if( !newEnemy.name.Contains( "Ceiling Dropper" ) )
+                newEnemy.transform.rotation = oldEnemy.transform.rotation;            
 
             if(oldEnemy.name.Contains( "Mantis Flyer Child" ) )
             {
                 newEnemy.transform.rotation = Quaternion.identity;
             }
 
-            //if they're ceiling droppers, flip them the opposite direction
-            if( newEnemy.name.Contains( "Ceiling Dropper" ) )
+            if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
             {
                 Quaternion rot180degrees = Quaternion.Euler(-oldEnemy.transform.rotation.eulerAngles);
                 newEnemy.transform.rotation = rot180degrees * oldEnemy.transform.rotation;
             }
+            //let the ceiling droppers remain in their default orientation
+            //if they're ceiling droppers, flip them the opposite direction
+            //if( newEnemy.name.Contains( "Ceiling Dropper" ) )
+            //{
+            //    Quaternion rot180degrees = Quaternion.Euler(-oldEnemy.transform.rotation.eulerAngles);
+            //    newEnemy.transform.rotation = rot180degrees * oldEnemy.transform.rotation;
+            //}
 
             //if they're the grass ambush things, flip them opposite (find out the name of the enemy)
 
             //if they're wall flying mantis, don't rotate the replacement
         }
+
+        public IEnumerator PositionCorrector(GameObject newEnemy, Vector3 lockedPosition)
+        {
+            float time = 4f;
+            while( time > 0f )
+            {
+                newEnemy.transform.position = lockedPosition;
+
+                time -= Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
+            yield break;
+        }
         
         void PositionRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
         {
-            //TODO adjust the position to take into account the new monster type and/or size
+            //adjust the position to take into account the new monster type and/or size
             newEnemy.transform.position = oldEnemy.transform.position;
 
             Vector3 positionOffset = Vector3.zero;
+            
+            //TODO: needs more adjusting to figure out why it doesn't attack sometimes
+            if(newEnemy.name.Contains( "Electric Mage" ) )
+            {
+                Vector3 pos = oldEnemy.transform.position - new Vector3(-2f, -20f,0f);
+                ( ContractorManager.Instance ).StartCoroutine( PositionCorrector( newEnemy, pos ) );
+            }
+
+            //TODO: needs more work to figure out why it despawns? or teleports sometimes
+            if(newEnemy.name.Contains( "Giant Fly Col"))
+            {
+                ( ContractorManager.Instance ).StartCoroutine( PositionCorrector( newEnemy, oldEnemy.transform.position ) );
+            }
 
             int flags = GetTypeFlags(newEnemy);
             if( ( flags & FLAGS.GROUND ) > 0 )
@@ -683,13 +750,22 @@ namespace EnemyRandomizerMod
 
                 Vector2 originalDown = -originalUp;
 
-                Vector3 toSurface = GetVectorTo(ePos,originalDown,50f);
+                float projectionDistance = 50f;
+
+                Vector3 toSurface = GetVectorTo(ePos,originalDown,projectionDistance);
+                
+                //project the ceiling droppers onto the ceiling
+                if( newEnemy.name.Contains( "Ceiling Dropper" ) )
+                {
+                    projectionDistance = 500f;
+                    toSurface = GetVectorTo( ePos, Vector2.up, projectionDistance );
+                }
 
                 //Dev.Log( "CRAWLER/WALL: ToSurface: " + toSurface );
 
                 Vector2 finalDir = toSurface.normalized;
-                Vector3 onGround = GetPointOn(ePos,finalDir, 50f);
-
+                Vector3 onGround = GetPointOn(ePos,finalDir, projectionDistance);
+                                
                 newEnemy.transform.position = onGround;
 
                 BoxCollider2D collider = newEnemy.GetComponent<BoxCollider2D>();
@@ -722,6 +798,17 @@ namespace EnemyRandomizerMod
                 if( ( flags & FLAGS.CRAWLER ) > 0 )
                 {
                     positionOffset = originalUp * 1f;
+
+                    //TODO: test this, needs to be closer to the ground than the rest
+                    if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
+                    {
+                        positionOffset = originalUp * .7f;
+                    }
+
+                    if(newEnemy.name.Contains( "Mines Crawler" ) )
+                    {
+                        positionOffset = originalUp * 1.2f;
+                    }
                 }
                 //DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
             }
@@ -737,14 +824,26 @@ namespace EnemyRandomizerMod
 
             RaycastHit2D[] toGround = Physics2D.RaycastAll(origin,direction,5f, Physics2D.AllLayers);
 
+            Vector2 lastGoodPoint = Vector2.zero;
+
             if( toGround != null )
             {
                 foreach( var v in toGround )
                 {
                     Dev.Log( "GetPointOnGround:: RaycastHit2D hit object: " + v.collider.gameObject.name );
-                    if( v.collider.gameObject.name.Contains( "Chunk" ) )
+                    if( v.collider.gameObject.name.Contains( "Chunk" ) || v.collider.gameObject.name.Contains( "Platform" ) || v.collider.gameObject.name.Contains( "Roof" ) )
                     {
                         return v.point;
+                    }
+                    else
+                    {
+                        float newDist = (v.point - origin).magnitude;
+                        float oldDist = (lastGoodPoint - origin).magnitude;
+
+                        if(newDist < oldDist)
+                        {
+                            lastGoodPoint = v.point;
+                        }
                     }
                 }
             }
@@ -753,7 +852,7 @@ namespace EnemyRandomizerMod
                 Dev.Log( "GetPointOnGround:: RaycastHit2D is null! " );
             }
 
-            return Vector3.zero;
+            return lastGoodPoint;
         }
 
         Vector3 GetPointOn( GameObject entitiy, Vector2 dir, float max )
@@ -767,14 +866,26 @@ namespace EnemyRandomizerMod
 
             RaycastHit2D[] toGround = Physics2D.RaycastAll(origin,direction,max, Physics2D.AllLayers);
 
+            Vector2 lastGoodPoint = Vector2.zero;
+
             if( toGround != null )
             {
                 foreach( var v in toGround )
                 {
                     Dev.Log( "GetPointOn:: RaycastHit2D hit object: " + v.collider.gameObject.name );
-                    if( v.collider.gameObject.name.Contains( "Chunk" ) )
+                    if( v.collider.gameObject.name.Contains( "Chunk" ) || v.collider.gameObject.name.Contains( "Platform" ) || v.collider.gameObject.name.Contains( "Roof" ) )
                     {
                         return v.point;
+                    }
+                    else
+                    {
+                        float newDist = (v.point - origin).magnitude;
+                        float oldDist = (lastGoodPoint - origin).magnitude;
+
+                        if( newDist < oldDist )
+                        {
+                            lastGoodPoint = v.point;
+                        }
                     }
                 }
             }
@@ -783,7 +894,7 @@ namespace EnemyRandomizerMod
                 Dev.Log( "GetPointOn:: RaycastHit2D is null! " );
             }
 
-            return Vector3.one * max;
+            return lastGoodPoint;
         }
 
         Vector3 GetVectorToGround( GameObject entitiy )
@@ -854,8 +965,10 @@ namespace EnemyRandomizerMod
             static public int MED = 8;
             static public int BIG = 16;
             static public int WALL = 32;
-            static public int HARD = 64;
+            static public int COLLOSEUM = 64;
             static public int CRAWLER = 128;
+            static public int ARENA_EXCLUDE = 256;
+            static public int HARD = 512;
         }
 
         int GetTypeFlags( string enemy )
@@ -866,8 +979,10 @@ namespace EnemyRandomizerMod
             bool isMed = EnemyRandomizerDatabase.mediumEnemyTypeNames.Contains( enemy );
             bool isLarge = EnemyRandomizerDatabase.bigEnemyTypeNames.Contains( enemy );
             bool isWall = EnemyRandomizerDatabase.wallEnemyTypeNames.Contains( enemy );
-            //bool isHard = EnemyRandomizerDatabase.hardEnemyTypeNames.Contains( enemy );
+            bool isColloseum = EnemyRandomizerDatabase.colloseumEnemyTypes.Contains( enemy );
             bool isCrawler = EnemyRandomizerDatabase.crawlerEnemyTypeNames.Contains( enemy );
+            bool isArenaExluded = EnemyRandomizerDatabase.excludeFromBattleArenaZones.Contains( enemy );
+            bool isHard = EnemyRandomizerDatabase.hardEnemyTypeNames.Contains( enemy );
 
             int flags = 0;
             flags |= ( isGround ? 1 : 0 ) << 0;
@@ -876,8 +991,10 @@ namespace EnemyRandomizerMod
             flags |= ( isMed ? 1 : 0 ) << 3;
             flags |= ( isLarge ? 1 : 0 ) << 4;
             flags |= ( isWall ? 1 : 0 ) << 5;
-            //flags |= ( isHard ? 1 : 0 ) << 6;
+            flags |= ( isColloseum ? 1 : 0 ) << 6;
             flags |= ( isCrawler ? 1 : 0 ) << 7;
+            flags |= ( isArenaExluded ? 1 : 0 ) << 8;
+            flags |= ( isHard ? 1 : 0 ) << 9;
 
             return flags;
         }
@@ -921,6 +1038,51 @@ namespace EnemyRandomizerMod
                 return true;
             }
             if( ( flagsA & FLAGS.BIG ) > 0 && ( flagsB & FLAGS.BIG ) > 0 )
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        int GetTypeSize( int flags )
+        {
+            if( (flags & FLAGS.SMALL) > 0 )
+            {
+                return FLAGS.SMALL;
+            }
+            if( (flags & FLAGS.MED) > 0 )
+            {
+                return FLAGS.MED;
+            }
+            if( (flags & FLAGS.BIG) > 0 )
+            {
+                return FLAGS.BIG;
+            }
+            return 0;
+        }
+
+        bool IsArenaExluded(int flags)
+        {
+            if( ( flags & FLAGS.ARENA_EXCLUDE ) > 0 )
+            {
+                return true;
+            }
+            return false;
+        }
+
+        bool IsColloseumEnemy( int flags )
+        {
+            if( ( flags & FLAGS.COLLOSEUM ) > 0 )
+            {
+                return true;
+            }
+            return false;
+        }
+
+        bool IsHardEnemy( int flags )
+        {
+            if( ( flags & FLAGS.HARD ) > 0 )
             {
                 return true;
             }
@@ -997,6 +1159,15 @@ namespace EnemyRandomizerMod
                     Dev.Log( "(wrong type of mawlek turret)." );
                 }
                 
+                if(battleControls.Count > 0)
+                {
+                    if( IsArenaExluded( GetTypeFlags( tempName ) ) )
+                    {
+                        isValid = false;
+                        Dev.Log( "(Enemy not allowed in battle arena zones)." );
+                    }
+                }
+                
                 if( isValid )
                     randomReplacement = temp;
                 else
@@ -1016,7 +1187,7 @@ namespace EnemyRandomizerMod
             randomReplacementIndex = randomReplacement;
 
             GameObject prefab = database.loadedEnemyPrefabs[randomReplacement];
-            Dev.Log( "Spawning rando monster: " + prefab.name + " from index " + randomReplacement + " out of " + database.loadedEnemyPrefabs.Count + " to replace " + enemy.name );
+            Dev.Log( "Spawning rando monster: " + prefab.name + " from index " + randomReplacement + " out of " + database.loadedEnemyPrefabs.Count + " to replace " + enemy.name +" at "+enemy.transform.position );
             return prefab;
         }
 

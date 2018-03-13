@@ -156,5 +156,53 @@ namespace nv
             }
         }
 
+        public static void SetEnemyGeoRates( this GameObject gameObject, int smallValue, int medValue, int largeValue )
+        {
+            if( gameObject == null )
+                return;
+
+            if( !gameObject.IsGameEnemy() )
+                return;
+
+            //TODO: wrap in #if/#else for case where playmaker is gone
+            PlayMakerFSM fsm = gameObject.GetEnemyFSM();
+            if( fsm != null )
+            {
+                fsm.FsmVariables.GetFsmInt( "Geo Small" ).Value = smallValue;
+                fsm.FsmVariables.GetFsmInt( "Geo Small Extra" ).Value = smallValue;
+                fsm.FsmVariables.GetFsmInt( "Geo Medium" ).Value = medValue;
+                fsm.FsmVariables.GetFsmInt( "Geo Med Extra" ).Value = medValue;
+                fsm.FsmVariables.GetFsmInt( "Geo Large" ).Value = largeValue;
+                fsm.FsmVariables.GetFsmInt( "Geo Large Extra" ).Value = largeValue;
+            }
+        }
+
+        public static void SetEnemyGeoRates( this GameObject gameObject, GameObject copyFrom )
+        {
+            if( gameObject == null )
+                return;
+
+            if( !gameObject.IsGameEnemy() )
+                return;
+
+            if( copyFrom == null )
+                return;
+
+            if( !copyFrom.IsGameEnemy() )
+                return;
+
+            //TODO: wrap in #if/#else for case where playmaker is gone
+            PlayMakerFSM fsm = gameObject.GetEnemyFSM();
+            PlayMakerFSM otherFsm = copyFrom.GetEnemyFSM();
+            if( fsm != null )
+            {
+                fsm.FsmVariables.GetFsmInt( "Geo Small" ).Value = otherFsm.FsmVariables.GetFsmInt( "Geo Small" ).Value;
+                fsm.FsmVariables.GetFsmInt( "Geo Small Extra" ).Value = otherFsm.FsmVariables.GetFsmInt( "Geo Small Extra" ).Value;
+                fsm.FsmVariables.GetFsmInt( "Geo Medium" ).Value = otherFsm.FsmVariables.GetFsmInt( "Geo Medium" ).Value;
+                fsm.FsmVariables.GetFsmInt( "Geo Med Extra" ).Value = otherFsm.FsmVariables.GetFsmInt( "Geo Med Extra" ).Value;
+                fsm.FsmVariables.GetFsmInt( "Geo Large" ).Value = otherFsm.FsmVariables.GetFsmInt( "Geo Large" ).Value;
+                fsm.FsmVariables.GetFsmInt( "Geo Large Extra" ).Value = otherFsm.FsmVariables.GetFsmInt( "Geo Large Extra" ).Value;
+            }
+        }
     }
 }
