@@ -1,8 +1,14 @@
 # EnemyRandomizer
 
+https://github.com/Kerr1291/EnemyRandomizer
+
 This is a mod for [Hollow Knight](http://hollowknight.com/) that randomizes the Enemies.
 
-This mod is still in the early stages of development! There are several things that are incomplete and/or will softlock a game. Use at your own risk!
+This mod is still in the early stages of development! Use at your own risk!
+
+## Installation
+
+Copy the "EnemyRandomizer.dll" to Folder: `<Path-To-Hollow Knight>\Hollow Knight\hollow_knight_Data\Managed\Mods`
 
 ## Dependencies
 
