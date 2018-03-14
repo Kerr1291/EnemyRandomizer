@@ -55,7 +55,7 @@ namespace EnemyRandomizerMod
         EnemyRandomizerDatabase database;
         EnemyRandomizerLogic logic;
 
-        string fullVersionName = "0.1.1";
+        string fullVersionName = "0.1.2";
         string modRootName = "RandoRoot";
         
         GameObject modRoot;
@@ -226,11 +226,11 @@ namespace EnemyRandomizerMod
                 ChaosRNG = false;
                 RoomRNG = true;
                 RandomizeGeo = false;
-
-                SaveGlobalSettings();
             }
 
             OptionsMenuSeed = GameRNG.Randi();
+
+            SaveGlobalSettings();
         }
 
         void RegisterCallbacks()
@@ -279,9 +279,13 @@ namespace EnemyRandomizerMod
         void TryEnableEnemyRandomizerFromSave(SaveGameData data)
         {
             if( Settings != null )
-                GameSeed = Settings.Seed;
+            {
+                GameSeed = PlayerSettingsSeed;
+            }
             else
+            {
                 GameSeed = OptionsMenuSeed;
+            }
 
             EnableEnemyRandomizer();
         }
@@ -290,6 +294,7 @@ namespace EnemyRandomizerMod
         void EnableEnemyRandomizerFromNewGame()
         {
             GameSeed = OptionsMenuSeed;
+            PlayerSettingsSeed = GameSeed;
             EnableEnemyRandomizer();
         }
 

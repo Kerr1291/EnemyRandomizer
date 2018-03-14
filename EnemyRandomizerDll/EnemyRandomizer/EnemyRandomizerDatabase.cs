@@ -534,7 +534,81 @@ namespace EnemyRandomizerMod
             "Mawlek Turret", //321
             "Worm", //49
             "Plant Trap", //117
-            "Zote Boss"//33 (BOSS???)
+            
+            //old BIG flyer types
+            "Shade Sibling",
+            "Blow Fly", //285
+            "Giant Fly Col",//34 
+            "Fat Fly", //146 
+            //"Giant Fly",//(gruz mother?)
+            //"Fly Spawn",
+            "Mega Fat Bee",//34
+            "Electric Mage",//35
+            "Mage",//35     
+            "Fungus Flyer", //
+            "Jellyfish", //
+            "Lazy Flyer Enemy", //
+            "Big Bee", //362
+            
+
+            //old med enemy types --testing to see how this plays out
+            "Colosseum_Miner",//35
+            "Giant Buzzer Col",//33
+            "Angry Buzzer",//35
+            "Colosseum_Shield_Zombie",//33
+            "Grub Mimic",//34
+            "Colosseum_Flying_Sentry",//34
+            "Spitting Zombie",//34 and 41
+            "Colosseum Grass Hopper",//35
+            "Giant Hopper",//34
+            "Grass Hopper", //208
+            "Flip Hopper", //
+            "Hopper",//34
+            "Lesser Mawlek",//35
+            "Mawlek Col",//35 ??? might be same as lesser mawlek
+            "Bursting Zombie",//36
+            //"Mender Bug",//38?(not 36?)
+            "Crystal Crawler", //243
+            "Zombie Hornhead Sp", //271
+            "Zombie Hornhead", //41 (Giant Fly = boss)
+            "Prayer Slug", //47 prayer slugs = maggots
+            "Hatcher",//52
+            "Zombie Shield", //52
+            "Zombie Leaper",//52
+            "Zombie Myla", //71
+            //"Blocker",//74
+            "Mushroom Roller", //
+            "Gorgeous Husk", //82
+            "Zombie Runner Sp", //271
+            "Zombie Runner", //90
+            "Zombie Barger", //90
+            "Ruins Sentry", //90
+            "Royal Zombie Coward", //106
+            "Royal Zombie Fat", //106
+            "Royal Zombie", //106
+            "Ruins Flying Sentry Javelin", //106
+            "Ruins Flying Sentry", //106
+            "Moss Walker", //117
+            "Mossman_Runner",//117
+            "Acid Flyer", //126
+            "Gate Mantis",
+            "Mantis Heavy Flyer",//35
+            "Mantis Heavy",//35
+            "Mantis Flyer Child", //166
+            "Mantis", //
+            "Zombie Miner", //243
+            "Zombie Beam Miner", //244
+            "Baby Centipede", //259
+            "Zombie Spider 1", //271
+            "Zombie Spider 2", //271
+            "Spider Flyer", //
+            "Flukeman", //
+            "Zombie Hive", //   
+            "Bee Stinger", //   
+
+
+
+            "Zote Boss"//33 (BOSS???)            
         };
 
         public static List<string> mediumEnemyTypeNames = new List<string>()
@@ -592,10 +666,8 @@ namespace EnemyRandomizerMod
             "Flukeman", //
             "Zombie Hive", //   
             "Bee Stinger", //   
-            "Shade Sibling",
 
             "Mega Zombie Beam Miner", //241
-
 
             ////original "big enemy" list
             //"Blow Fly", //285
@@ -638,33 +710,36 @@ namespace EnemyRandomizerMod
         {
             //"NONE",
             //"NONE"
+            
+            //these were doubled into the small list so they could be scaled down when replacing small enemies
             "Blow Fly", //285
-            "Ruins Sentry Fat", //90
             "Giant Fly Col",//34 
+            "Fat Fly", //146 
             //"Giant Fly",//(gruz mother?)
             //"Fly Spawn",
-            "Fat Fly", //146 
             "Mega Fat Bee",//34
+            "Electric Mage",//35
+            "Mage",//35     
+            "Fungus Flyer", //
+            "Jellyfish", //
+            "Lazy Flyer Enemy", //
+            "Big Bee", //362
+
+            "Ruins Sentry Fat", //90
             "Lancer",//35
             "Lobster",//35
             "Mage Knight",//35
-            "Electric Mage",//35
-            "Mage",//35
             "Mawlek Body", //46 (BOSS)
             "Colosseum_Worm",//34
             "Worm", //49
             "Zombie Guard", //76 (big enemy)
             "Great Shield Zombie", //106
             "Moss Knight Fat", //204
-            "Moss Knight", //137            
-            "Fungus Flyer", //
+            "Moss Knight", //137       
             "Mushroom Brawler", //
-            "Jellyfish", //
-            "Lazy Flyer Enemy", //
             "Grave Zombie", //226
             "Slash Spider", //271   -- doesn't seem to randomize well, needs more research
             "Royal Gaurd", //358
-            "Big Bee", //362
             "Mimic Spider", //269 (Nosk, BOSS)
             "Mantis Traitor Lord" //194 (BOSS)          needs lots of room or will fall through the floor  
         };
@@ -715,6 +790,7 @@ namespace EnemyRandomizerMod
             "Colosseum_Worm",//34
             "Laser Turret Frames", //234
             "Worm", //49
+            "Zote Boss"//33 (BOSS???)
         };
 
 

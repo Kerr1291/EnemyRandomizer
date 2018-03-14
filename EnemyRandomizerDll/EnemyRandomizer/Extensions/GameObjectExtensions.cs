@@ -43,6 +43,19 @@ namespace nv
             return null;
         }
 
+        public static GameObject FindGameObjectNameContainsInChildren( this GameObject gameObject, string name )
+        {
+            if( gameObject == null )
+                return null;
+
+            foreach( var t in gameObject.GetComponentsInChildren<Transform>( true ) )
+            {
+                if( t.name.Contains( name ))
+                    return t.gameObject;
+            }
+            return null;
+        }
+
         public static string PrintSceneHierarchyPath( this GameObject gameObject )
         {
             if( gameObject == null )

@@ -272,9 +272,20 @@ namespace EnemyRandomizerMod.Menu
 
         void ShowNonInGameOptions( bool show )
         {
-            foreach( GameObject go in mainMenuOnlyItems )
+            if( mainMenuOnlyItems == null )
+                return;
+
+            for( int i = 0; i < mainMenuOnlyItems.Count; )
             {
-                go.SetActive( show );
+                if( mainMenuOnlyItems[i] == null )
+                {
+                    mainMenuOnlyItems.RemoveAt( i );
+                    i = 0;
+                    continue;
+                }
+
+                mainMenuOnlyItems[i].SetActive( show );
+                ++i;
             }
         }
 
@@ -294,7 +305,8 @@ namespace EnemyRandomizerMod.Menu
 
             rootUIManager = UIManager.instance;
 
-            rootUIManager.gameObject.PrintSceneHierarchyTree(true);
+            //TODO: for testing
+            //rootUIManager.gameObject.PrintSceneHierarchyTree(true);
 
             uiManagerCanvasRoot = rootUIManager.gameObject.FindGameObjectInChildren( "UICanvas" );
 

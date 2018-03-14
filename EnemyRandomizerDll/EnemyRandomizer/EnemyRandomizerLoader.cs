@@ -181,10 +181,10 @@ namespace EnemyRandomizerMod
 
             //TODO:uncomment
             //For debugging: print all the loaded enemies
-            foreach( GameObject go in database.loadedEnemyPrefabs )
-            {
-                go.PrintSceneHierarchyTree( true );
-            }
+            //foreach( GameObject go in database.loadedEnemyPrefabs )
+            //{
+            //    go.PrintSceneHierarchyTree( true );
+            //}
 
             DatabaseGenerated = true;
             databaseLoader.Reset();
