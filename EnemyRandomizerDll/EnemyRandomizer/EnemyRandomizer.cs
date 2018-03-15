@@ -55,7 +55,7 @@ namespace EnemyRandomizerMod
         EnemyRandomizerDatabase database;
         EnemyRandomizerLogic logic;
 
-        string fullVersionName = "0.1.2";
+        string fullVersionName = "0.1.3";
         string modRootName = "RandoRoot";
         
         GameObject modRoot;
@@ -208,7 +208,13 @@ namespace EnemyRandomizerMod
 
             bool forceReloadGlobalSettings = false;
             if( GlobalSettings != null && GlobalSettings.SettingsVersion != EnemyRandomizerSettingsVars.GlobalSettingsVersion )
+            {
                 forceReloadGlobalSettings = true;
+            }
+            else
+            {
+                Log( "Global settings version match!" );
+            }
 
             if( forceReloadGlobalSettings || !File.Exists( globalSettingsFilename ) )
             {
@@ -220,6 +226,8 @@ namespace EnemyRandomizerMod
                 {
                     Log( "Global settings file not found, generating new one... File was not found at: " + globalSettingsFilename );
                 }
+
+                GlobalSettings.Reset();
 
                 GlobalSettings.SettingsVersion = EnemyRandomizerSettingsVars.GlobalSettingsVersion;
 

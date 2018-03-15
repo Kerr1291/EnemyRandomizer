@@ -261,6 +261,8 @@ namespace EnemyRandomizerMod
                         //continue;
                         PlayMakerFSM pfsm = FSMUtility.LocateFSM( battleControls[i], "Battle Control" );
 
+                        //this has an unintended side-effect of causing colosseum 3 to be rushed through.... and it's very fun (and crazy)
+                        //so even if i change to another fix for this later, will keep this behavior around for that reason
                         if( pfsm != null )
                         {
                             pfsm.SendEvent( "NEXT" );
@@ -556,6 +558,12 @@ namespace EnemyRandomizerMod
                         GameObject potentialEnemy = t.gameObject;
 
                         bool isRandoEnemy = potentialEnemy.IsRandomizerEnemy(database.loadedEnemyPrefabNames);
+
+                        if( EnemyRandomizerDatabase.USE_TEST_SCENES )
+                        {
+                            isRandoEnemy = potentialEnemy.IsRandomizerEnemy( EnemyRandomizerDatabase.enemyTypeNames );
+                        }
+
                         if( isRandoEnemy )
                             RandomizeEnemy( potentialEnemy );
                     }
@@ -596,6 +604,12 @@ namespace EnemyRandomizerMod
         void OnLoadObjectCollider( GameObject potentialEnemy )
         {
             bool isRandoEnemy = potentialEnemy.IsRandomizerEnemy( database.loadedEnemyPrefabNames );
+
+            if(EnemyRandomizerDatabase.USE_TEST_SCENES)
+            {
+                isRandoEnemy = potentialEnemy.IsRandomizerEnemy( EnemyRandomizerDatabase.enemyTypeNames );
+            }
+
             if( isRandoEnemy )
                 RandomizeEnemy( potentialEnemy );
         }
@@ -607,6 +621,26 @@ namespace EnemyRandomizerMod
             {
                 //Dev.Log( "Exceptional case found in SkipRandomizeEnemy() -- Skipping randomization for: " + enemy.name );
                 return;
+            }
+
+            //TODO: refactor this into a function
+            for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
+            {
+                Scene loadedScene = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
+
+                if( !loadedScene.IsValid() )
+                    continue;
+
+                string sceneName = loadedScene.name;
+
+                if( sceneName.Contains( "Colosseum" ) )
+                {
+                    //don't randomize these in the colosseum, will cause a softlock
+                    if( enemy.name.Contains( "Zote Boss" ) )
+                        return;
+                    if( enemy.name.Contains( "Baby Centipede" ) )
+                        return;
+                }
             }
 
             Dev.Log( "Randomizing: " + enemy.name );
@@ -627,7 +661,7 @@ namespace EnemyRandomizerMod
 
         void ReplaceEnemy( GameObject oldEnemy, GameObject replacementPrefab, int prefabIndex )
         {
-            GameObject newEnemy = InstantiateEnemy(replacementPrefab);
+            GameObject newEnemy = InstantiateEnemy(replacementPrefab,oldEnemy);
 
             //temporary, origianl name used to configure the enemy
             newEnemy.name = database.loadedEnemyPrefabNames[ prefabIndex ];
@@ -646,29 +680,35 @@ namespace EnemyRandomizerMod
 
             newEnemy.SetActive( true );
 
+            InitRandomizedEnemy( newEnemy, oldEnemy );
+
             //DebugPrintObjectTree( oldEnemy, true );
 
             oldEnemy.gameObject.name = "Rando Replaced Enemy: " + oldEnemy.gameObject.name;
 
 
-            //TODO: test new idea: put replaced enemies in a "box of doom"
+            //put replaced enemies in a "box of doom"
             //when tied enemy is kiled, kill the replaced enemy in the box
             Dev.Log( "Adding replacement pair: "+ oldEnemy.gameObject.name +" replaced by "+ newEnemy.gameObject.name );
             replacements.Add( new ReplacementPair() { original = oldEnemy, replacement = newEnemy } );
+
+            //TODO: remove this 
+            //newEnemy.PrintSceneHierarchyTree(true);
 
             //hide the old enemy for now
             oldEnemy.SetActive( false );
         }
 
-        GameObject InstantiateEnemy( GameObject prefab )
+        GameObject InstantiateEnemy( GameObject prefab, GameObject oldEnemy )
         {
             //where we'll place the new enemy in the scene
-            GameObject newEnemyRoot = GameObject.Find("_Enemies");
+            //GameObject newEnemyRoot = GameObject.Find("_Enemies");
 
             GameObject newEnemy = UnityEngine.Object.Instantiate(prefab) as GameObject;
-
-            newEnemy.transform.SetParent( newEnemyRoot.transform );
             
+            //newEnemy.transform.SetParent( newEnemyRoot.transform );
+            newEnemy.transform.SetParent( oldEnemy.transform.parent );
+
             newEnemy.tag = prefab.tag;
 
             return newEnemy;
@@ -697,6 +737,85 @@ namespace EnemyRandomizerMod
             {
                 newEnemy.transform.localScale = originalNewEnemyScale * .6f;
             }
+        }
+
+        void InitRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
+        {
+            TryInitPlayMakerFSM( newEnemy );
+        }
+
+        public static void TryInitPlayMakerFSM( GameObject newEnemy )
+        {
+            //wake up the mage knight
+            if( newEnemy.name.Contains( "Mage Knight" ) )
+            {
+                PlayMakerFSM fsm = null;
+
+                foreach( Component c in newEnemy.GetComponents<Component>() )
+                {
+                    if( c as PlayMakerFSM != null )
+                    {
+                        if( ( c as PlayMakerFSM ).FsmName == "Mage Knight" )
+                        {
+                            fsm = ( c as PlayMakerFSM );
+                            break;
+                        }
+                    }
+                }
+
+                if(fsm != null)
+                {                     
+                    fsm.SendEvent( "FINISHED" );
+                    fsm.SendEvent( "WAKE" );
+                }
+            }
+            else if( newEnemy.name.Contains( "Electric Mage" ) )
+            {
+                PlayMakerFSM fsm = null;
+
+                foreach( Component c in newEnemy.GetComponents<Component>() )
+                {
+                    if( c as PlayMakerFSM != null )
+                    {
+                        if( ( c as PlayMakerFSM ).FsmName == "Mage Knight" )
+                        {
+                            fsm = ( c as PlayMakerFSM );
+                            break;
+                        }
+                    }
+                }
+
+                if( fsm != null )
+                {
+                    fsm.SendEvent( "IN RANGE" );
+                    fsm.SendEvent( "FINISHED" );
+                    fsm.SendEvent( "WAKE" );
+                }
+            }
+            else if( newEnemy.name.Contains( "Mage" ) )
+            {
+                PlayMakerFSM fsm = null;
+
+                foreach( Component c in newEnemy.GetComponents<Component>() )
+                {
+                    if( c as PlayMakerFSM != null )
+                    {
+                        if( ( c as PlayMakerFSM ).FsmName == "Mage" )
+                        {
+                            fsm = ( c as PlayMakerFSM );
+                            break;
+                        }
+                    }
+                }
+
+                if( fsm != null )
+                {
+                    fsm.SendEvent( "IN RANGE" );
+                    fsm.SendEvent( "WAKE" );
+                }
+            }
+
+            
         }
 
         void FixRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
@@ -853,8 +972,14 @@ namespace EnemyRandomizerMod
             if( !newEnemy.name.Contains( "Ceiling Dropper" ) )
                 newEnemy.transform.rotation = oldEnemy.transform.rotation;
             
-            //if they're wall flying mantis, don't rotate the replacement
+            //if they were a wall flying mantis, don't rotate the replacement
             if( oldEnemy.name.Contains( "Mantis Flyer Child" ) )
+            {
+                newEnemy.transform.rotation = Quaternion.identity;
+            }
+
+            //mosquitos rotate, so spawn replacements with default rotation
+            if( oldEnemy.name.Contains( "Mosquito" ) )
             {
                 newEnemy.transform.rotation = Quaternion.identity;
             }
@@ -996,13 +1121,13 @@ namespace EnemyRandomizerMod
                     //TODO: test this, needs to be closer to the ground than the rest
                     if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
                     {
-                        positionOffset = -finalDir * .5f;
+                        positionOffset = -finalDir * .25f;
                     }
 
                     //TODO: test this, needs to be farther from the ground than the rest
                     if( newEnemy.name.Contains( "Mines Crawler" ) )
                     {
-                        positionOffset = -finalDir * 1.5f;
+                        positionOffset = -finalDir * 1.25f;
                     }
                 }
                 //DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
@@ -1289,7 +1414,37 @@ namespace EnemyRandomizerMod
             string enemyName = enemy.name;
             string trimmedName = enemyName.TrimGameObjectName();
             int enemyFlags = GetTypeFlags(trimmedName);
-            
+
+
+
+
+            //check to see if this enemy is allowed in this scene and do some special logic depending...
+            //TODO: refactor this into a function
+            for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
+            {
+                Scene loadedScene = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
+
+                if( !loadedScene.IsValid() )
+                    continue;
+
+                string sceneName = loadedScene.name;
+
+                if( sceneName.Contains( "Colosseum" ) )
+                {
+                    if( trimmedName.Contains( "Ceiling Dropper" ) )
+                    {
+                        //remove wall type
+                        enemyFlags &= ~FLAGS.WALL;
+
+                        //add flying type, this will causing ceiling droppers in the colosseum to become random flying enemies
+                        //and hopefully avoid a softlock
+                        enemyFlags |= FLAGS.FLYING;
+                    }
+                }
+            }
+
+
+
             //if not set, enemy replacements will be completely random
             if( !EnemyRandomizer.Instance.ChaosRNG )
             {
@@ -1327,11 +1482,11 @@ namespace EnemyRandomizerMod
                 GameObject tempPrefab = database.loadedEnemyPrefabs[temp];
                 string tempName = database.loadedEnemyPrefabNames[temp];
 
-
                 Dev.Log( "Attempted replacement index: " + temp + " which is " + tempName + " with prefab name " + tempPrefab.name );
 
                 int tempFlags = GetTypeFlags(tempName);
                 bool isValid = false;
+
 
                 if( HasSameType( enemyFlags, tempFlags ) )
                 {
@@ -1339,7 +1494,21 @@ namespace EnemyRandomizerMod
                     {
                         isValid = true;
                         Dev.Log( "Replacement is VALID." );
-                    }                    
+                    }
+                }
+
+                if( EnemyRandomizerDatabase.USE_TEST_SCENES )
+                    isValid = true;
+
+                //this one never explodes...
+                if( tempName == "Ceiling Dropper Col" )
+                    isValid = false;
+                
+                //if you have the void charm, shade siblings are no longer enemies
+                if( HeroController.instance.playerData.royalCharmState > 2 )
+                {
+                    if( tempName.Contains( "Shade Sibling" ) )
+                        isValid = false;
                 }
 
                 if( enemy.transform.up.y < 0f && tempName == "Mawlek Turret" )
@@ -1362,7 +1531,7 @@ namespace EnemyRandomizerMod
                         Dev.Log( "(Enemy not allowed in battle arena zones)." );
                     }
                 }
-                
+
                 if( isValid )
                     randomReplacement = temp;
                 else
@@ -1422,7 +1591,9 @@ namespace EnemyRandomizerMod
                         if( p.original != null && !simulateReplacement )
                         {
                             p.original.SetActive( false );
-                            p.original.transform.position = somewhereOffInSpace;
+
+                            //TODO: later try removing the re-positioning
+                            p.original.transform.position = p.replacement.transform.position + somewhereOffInSpace;
                             Rigidbody2D r = p.original.GetComponentInChildren<Rigidbody2D>();
                             if( r != null )
                             {

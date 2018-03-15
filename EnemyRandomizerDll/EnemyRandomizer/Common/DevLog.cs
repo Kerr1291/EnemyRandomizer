@@ -1,5 +1,6 @@
 ﻿//TODO: move define into precompiler option
 #define USE_HK_MODLOG
+//#define ENABLE_COLOR //<-uncomment to enable color hex codes on output in the debug logs
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
@@ -180,7 +181,11 @@ namespace nv
 
         static string Colorize( string text, string colorhex )
         {
+#if ENABLE_COLOR
             string str = "<color=#" + colorhex + ">" + "<b>" + text + "</b>" + "</color>";
+#else
+            string str = text;
+#endif
             return str;
         }
 
@@ -189,9 +194,9 @@ namespace nv
             return Dev.Colorize( Dev.GetFunctionHeader( frame ), Dev._method_color ) + " :::: ";
         }
 
-        #endregion
+#endregion
 
-        #region Settings
+#region Settings
         
         public static int BaseFunctionHeader = 3;
 
@@ -215,9 +220,9 @@ namespace nv
             public static void SetParamColor( Color c ) { Dev._param_color = Dev.ColorToHex( c ); }
 
         }
-        #endregion
+#endregion
 
-        #region Logging
+#region Logging
 
 
         public static void Where()
@@ -377,9 +382,9 @@ namespace nv
             Mod.Instance.Log( Dev.FunctionHeader() + Dev.Colorize( var_name, _param_color ) + " = " + Dev.Colorize( var_value, _log_color ) );            
 #endif
         }
-        #endregion
+#endregion
 
-        #region Helpers
+#region Helpers
 
         public static string ColorString( string input, Color color )
         {
@@ -506,7 +511,7 @@ namespace nv
             }
         }
 #endif
-        #endregion
+#endregion
     }
 
 }

@@ -39,7 +39,7 @@ namespace nv
                     if( t.gameObject.name.IsSkipLoadingString() )
                         logContent += " ::: IsSkipLoadingString = true";
                     if( t.gameObject.name.IsSkipRandomizingString() )
-                        logContent += " ::: IsSkipRandomizingString = true";                    
+                        logContent += " ::: IsSkipRandomizingString = true";                                  
                     if( randomizerEnemyTypes != null && t.gameObject.IsRandomizerEnemy( randomizerEnemyTypes ) )
                         logContent += " ::: IsRandomizerEnemy = true";
 

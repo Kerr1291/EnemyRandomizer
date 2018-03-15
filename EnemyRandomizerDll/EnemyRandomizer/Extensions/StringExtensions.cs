@@ -74,6 +74,10 @@ namespace nv
             if( str.Contains( "Rando" ) )
                 return true;
 
+            //don't randomize blockers
+            if( str.Contains( "Blocker" ) )
+                return true;
+
             //don't randomize mender bug or else players will fall onto an enemy every time
             //they enter crossroads
             if( str.Contains( "Mender" ) )
@@ -211,6 +215,45 @@ namespace nv
             if( trimmedString.Contains( "Electric Mage" ) )
             {
                 index = trimmedString.LastIndexOf( " New" );
+                if( index > 0 )
+                    trimmedString = trimmedString.Substring( 0, index );
+            }
+
+            if( trimmedString.Contains( "Baby Centipede" ) )
+            {
+                index = trimmedString.LastIndexOf( " Summon" );
+                if( index > 0 )
+                    trimmedString = trimmedString.Substring( 0, index );
+                index = trimmedString.LastIndexOf( " Summoner" );
+                if( index > 0 )
+                    trimmedString = trimmedString.Substring( 0, index );
+                index = trimmedString.LastIndexOf( " Spawner" );
+                if( index > 0 )
+                    trimmedString = trimmedString.Substring( 0, index );
+            }
+
+            if( trimmedString.Contains( "Fluke Fly" ) )
+            {
+                index = trimmedString.LastIndexOf( " Summon" );
+                if( index > 0 )
+                    trimmedString = trimmedString.Substring( 0, index );
+                index = trimmedString.LastIndexOf( " Summoner" );
+                if( index > 0 )
+                    trimmedString = trimmedString.Substring( 0, index );
+                index = trimmedString.LastIndexOf( " Spawner" );
+                if( index > 0 )
+                    trimmedString = trimmedString.Substring( 0, index );
+            }
+
+            if( trimmedString.Contains( "Balloon" ) )
+            {
+                index = trimmedString.LastIndexOf( " Summon" );
+                if( index > 0 )
+                    trimmedString = trimmedString.Substring( 0, index );
+                index = trimmedString.LastIndexOf( " Summoner" );
+                if( index > 0 )
+                    trimmedString = trimmedString.Substring( 0, index );
+                index = trimmedString.LastIndexOf( " Spawner" );
                 if( index > 0 )
                     trimmedString = trimmedString.Substring( 0, index );
             }

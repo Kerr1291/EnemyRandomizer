@@ -6,6 +6,9 @@ using UnityEngine;
 
 using nv;
 
+//disable the unreachable code detected warning for this file
+#pragma warning disable 0162
+
 namespace EnemyRandomizerMod
 {
     public class EnemyRandomizerDatabase
@@ -55,14 +58,27 @@ namespace EnemyRandomizerMod
          * 
          */
 
-        public static List<int> enemyTypeScenes = new List<int>()
+        public const bool USE_TEST_SCENES = false;
+
+
+        public static List<int> EnemyTypeScenes {
+            get {
+                if( USE_TEST_SCENES )
+                    return testTypeScenes;
+                else
+                    return enemyTypeScenes;
+            }
+        }
+
+        static List<int> testTypeScenes = new List<int>()
+        {
+            34,
+            35
+        };
+
+        static List<int> enemyTypeScenes = new List<int>()
         {
             7,//tutorial scene
-            28,
-            33,
-            34,
-            35,
-            36,
             //38,//mender bug
             40,
             41,
@@ -107,6 +123,13 @@ namespace EnemyRandomizerMod
             226,
             232,//(crystal flyer)
             234,
+
+            28,
+            33,
+            34,
+            35,
+            36,
+
             241,
             243,
             244,
@@ -219,7 +242,7 @@ namespace EnemyRandomizerMod
             "Zombie Shield", //52
             "Zombie Leaper",//52
             "Zombie Myla", //71 -- seems to be killing enemies it replaces?? maybe remove from replacement list
-            //"Blocker",//74 (baulder shell)
+            "Blocker",//74 (baulder shell)
 
             "Zombie Guard", //76 (big enemy)
             
@@ -637,7 +660,7 @@ namespace EnemyRandomizerMod
             "Zombie Shield", //52
             "Zombie Leaper",//52
             "Zombie Myla", //71
-            //"Blocker",//74
+            "Blocker",//74
             "Mushroom Roller", //
             "Gorgeous Husk", //82
             "Zombie Runner Sp", //271
@@ -776,7 +799,11 @@ namespace EnemyRandomizerMod
 
         public static List<string> excludeFromBattleArenaZones = new List<string>()
         {
+            //until these 3 are fixed, do not spawn them in battle areas
+            //"Mage Knight",//35
             "Electric Mage",//35 //TODO: needs to be moved down? (by 20?)
+            //"Mage",//35
+
             "Mossman_Shaker",
             "Mage Blob",//35
             "Mage Balloon", //102
@@ -784,12 +811,13 @@ namespace EnemyRandomizerMod
             "Zombie Spider 2", //271
             "Parasite Balloon",
             "Mega Zombie Beam Miner", //241
-            "Mage Knight",//35
+            //"Mage Knight",//35
             "Lancer",//35
             "Lobster",//35
             "Colosseum_Worm",//34
             "Laser Turret Frames", //234
             "Worm", //49
+            "Baby Centipede", //259
             "Zote Boss"//33 (BOSS???)
         };
 
@@ -829,7 +857,7 @@ namespace EnemyRandomizerMod
             "Mantis Heavy Flyer",//35
             "Mantis Heavy",//35
             
-            "Mawlek Col",//35 ??? might be same as lesser mawlek
+            "Mawlek Col"//35 ??? might be same as lesser mawlek
         };
 
 
@@ -873,3 +901,6 @@ namespace EnemyRandomizerMod
         //};
     }
 }
+
+
+#pragma warning restore 0162

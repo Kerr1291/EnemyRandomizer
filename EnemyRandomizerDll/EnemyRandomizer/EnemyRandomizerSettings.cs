@@ -18,12 +18,21 @@ namespace EnemyRandomizerMod
         public const string CheatNoclip = "(Cheat) No Clip";
 
         //change when the global settings are updated to force a recreation of the global settings
-        public const string GlobalSettingsVersion = "0.0.2";
+        public const string GlobalSettingsVersion = "0.0.4";
     }
 
     //Global (non-player specific) settings
     public class EnemyRandomizerSettings : IModSettings
     {
+        public void Reset()
+        {
+            BoolValues.Clear();
+            StringValues.Clear();
+            IntValues.Clear();
+            FloatValues.Clear();
+        }
+
+
         public string SettingsVersion {
             get => GetString( "0.0.0" );
             set {

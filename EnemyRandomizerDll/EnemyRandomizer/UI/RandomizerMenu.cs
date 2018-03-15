@@ -272,6 +272,8 @@ namespace EnemyRandomizerMod.Menu
 
         void ShowNonInGameOptions( bool show )
         {
+            Dev.LogVar( "show",show );
+
             if( mainMenuOnlyItems == null )
                 return;
 
@@ -483,9 +485,11 @@ namespace EnemyRandomizerMod.Menu
         {
             List<string> modOptions = EnemyRandomizer.Instance.GlobalSettings.BoolValues.Select( x => x.Key ).ToList();
 
-            modOptions.Insert( 0, EnemyRandomizerSettingsVars.CheatNoclip );
-            modOptions.Insert( 0, EnemyRandomizerSettingsVars.Seed );
-            modOptions.Insert( 0, EnemyRandomizerSettingsVars.CustomSeed );
+            Dev.LogVarArray( "modOptions", modOptions );
+
+            modOptions.Insert( 0, EnemyRandomizerSettingsVars.Seed ); //option 1
+            modOptions.Insert( 0, EnemyRandomizerSettingsVars.CustomSeed ); //option 0
+            modOptions.Add( EnemyRandomizerSettingsVars.CheatNoclip ); //last option
 
             try
             {
@@ -500,12 +504,14 @@ namespace EnemyRandomizerMod.Menu
                         string optionName = modOptions[ i ];
                         string optionLabel = "No Label";
 
+                        Dev.Log( "Setting up " + optionName );
+
+                        //create input field for a custom seed -- TODO refactor this into a method to create an input field element easier
                         if( optionName == EnemyRandomizerSettingsVars.CustomSeed )
                         {
                             customSeedInput = menuItemParent.AddComponent<UnityEngine.UI.InputField>();
                             customSeedInput.textComponent = menuItemParent.transform.GetChild( 1 ).GetComponent<Text>();
-
-                            //TODO: fix me in the morning :(
+                            
                             Text t = Object.Instantiate( customSeedInput.textComponent ) as Text;
                             t.transform.SetParent( customSeedInput.transform );
                             customSeedInput.placeholder = t;
@@ -553,7 +559,7 @@ namespace EnemyRandomizerMod.Menu
                                 optionLabel = "Seed (Click for new)";
                             }
 
-                            if(optionName == EnemyRandomizerSettingsVars.CheatNoclip )
+                            if( optionName == EnemyRandomizerSettingsVars.CheatNoclip )
                             {
                                 optionLabel = EnemyRandomizerSettingsVars.CheatNoclip;
                             }
@@ -567,13 +573,15 @@ namespace EnemyRandomizerMod.Menu
                                     EnemyRandomizer.Instance.OptionsMenuSeed = seed;
 
                                     menuItem.OptionList[ 0 ] = seed.ToString();
-                                    customSeedInput.text = "";
+                                    if( customSeedInput != null )
+                                       customSeedInput.text = "";
                                 }
                                 else
                                 {
                                     if( optionIndex == 1 )
                                     {
-                                        EnemyRandomizer.Instance.GlobalSettings.BoolValues[ optionName ] = false;
+                                        if( EnemyRandomizer.Instance.GlobalSettings.BoolValues.ContainsKey(optionName) )
+                                            EnemyRandomizer.Instance.GlobalSettings.BoolValues[ optionName ] = false;
 
                                         if( optionName == EnemyRandomizerSettingsVars.RNGChaosMode )
                                             EnemyRandomizer.Instance.ChaosRNG = false;
@@ -588,7 +596,8 @@ namespace EnemyRandomizerMod.Menu
                                     }
                                     else
                                     {
-                                        EnemyRandomizer.Instance.GlobalSettings.BoolValues[ optionName ] = true;
+                                        if( EnemyRandomizer.Instance.GlobalSettings.BoolValues.ContainsKey( optionName ) )
+                                            EnemyRandomizer.Instance.GlobalSettings.BoolValues[ optionName ] = true;
 
                                         if( optionName == EnemyRandomizerSettingsVars.RNGChaosMode )
                                             EnemyRandomizer.Instance.ChaosRNG = true;
@@ -607,7 +616,7 @@ namespace EnemyRandomizerMod.Menu
                             menuItem.OptionText = menuItem.gameObject.transform.GetChild( 1 ).GetComponent<Text>();
                             if( optionName == EnemyRandomizerSettingsVars.Seed )
                             {
-                                menuItem.OptionList = new[] { optionName };
+                                menuItem.OptionList = new[] { EnemyRandomizer.Instance.OptionsMenuSeed.ToString() };
                                 menuItem.SelectedOptionIndex = 0;
                             }
                             else if( optionName == EnemyRandomizerSettingsVars.CheatNoclip )

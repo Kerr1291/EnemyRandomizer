@@ -50,6 +50,9 @@ namespace EnemyRandomizerMod
         {
             Instance = this;
 
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= PrintNextSceneToLoad;
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += PrintNextSceneToLoad;
+
             comms = new CommunicationNode();
             comms.EnableNode( this );
         }
@@ -58,7 +61,16 @@ namespace EnemyRandomizerMod
         {
             comms.DisableNode();
 
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= PrintNextSceneToLoad;
+
             Instance = null;
+        }
+
+
+        void PrintNextSceneToLoad( Scene from, Scene to )
+        {
+            //For debugging
+            Dev.Log( "Loading Scene [" + to.name + "]" );
         }
 
         /// <summary>
@@ -131,7 +143,7 @@ namespace EnemyRandomizerMod
 
         public int GetSceneToLoadFromRandomizerData(int databaseIndex)
         {
-            return EnemyRandomizerDatabase.enemyTypeScenes[ databaseIndex ];
+            return EnemyRandomizerDatabase.EnemyTypeScenes[ databaseIndex ];
         }
 
         protected virtual void AdditivelyLoadCurrentScene()
@@ -161,7 +173,7 @@ namespace EnemyRandomizerMod
                 Dev.Log( "Loading scene data: " + GetSceneToLoadFromRandomizerData( currentDatabaseIndex ) );
                 LoadSceneData();
 
-                DatabaseLoadProgress = currentDatabaseIndex / (float)(EnemyRandomizerDatabase.enemyTypeScenes.Count - 1);
+                DatabaseLoadProgress = currentDatabaseIndex / (float)(EnemyRandomizerDatabase.EnemyTypeScenes.Count - 1);
                 Dev.Log( "Loading Progress: " + DatabaseLoadProgress );
 
                 Dev.Log( "Unloading scene: " + GetSceneToLoadFromRandomizerData( currentDatabaseIndex ) );
@@ -186,6 +198,8 @@ namespace EnemyRandomizerMod
             //    go.PrintSceneHierarchyTree( true );
             //}
 
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= PrintNextSceneToLoad;
+
             DatabaseGenerated = true;
             databaseLoader.Reset();
             randomizerSceneProcessor = null;
@@ -195,7 +209,7 @@ namespace EnemyRandomizerMod
 
         protected virtual bool IsDoneLoadingRandomizerData()
         {
-            return ( currentDatabaseIndex + 1) >= EnemyRandomizerDatabase.enemyTypeScenes.Count;
+            return ( currentDatabaseIndex + 1) >= EnemyRandomizerDatabase.EnemyTypeScenes.Count;
         }
 
         protected virtual void BuildDatabase()
