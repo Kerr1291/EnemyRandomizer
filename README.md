@@ -9,14 +9,19 @@ This mod is still in the early stages of development! Use at your own risk!
 ## Other mods that pair well with this
 
 RandomizerMod ( https://github.com/MyEyes/RandomizerMod ) - Randomizes Spells and Charms in the game
+
 Debug Mod ( https://github.com/seanpr96/DebugMod ) - A life saver in case anything breaks, also fun to have around.
 
 ## Example of what this mod does
 
 https://clips.twitch.tv/HeadstrongThoughtfulEmuSoonerLater
+
 https://clips.twitch.tv/CrazyFamousSheepShadyLulu
+
 https://clips.twitch.tv/SingleObliqueMomNotLikeThis
+
 https://clips.twitch.tv/PreciousCleverPeanutGOWSkull
+
 https://clips.twitch.tv/RichDeterminedCakeMingLee
 
 Twitch clips courtesy of 56 from #modding.
