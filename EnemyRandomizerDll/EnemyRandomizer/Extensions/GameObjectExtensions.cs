@@ -78,6 +78,9 @@ namespace nv
             Dev.Log( "Printing scene hierarchy for game object: " + gameObject.name );
             foreach( Transform t in gameObject.GetComponentsInChildren<Transform>( true ) )
             {
+                if( t.gameObject.name.IsSkipAlwaysString() )
+                    continue;
+
                 string objectNameAndPath = t.gameObject.PrintSceneHierarchyPath();
                 Dev.Log( objectNameAndPath );
 

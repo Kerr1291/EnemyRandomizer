@@ -29,23 +29,44 @@ namespace nv
                     break;
                 }
 
-                foreach( Transform t in go.GetComponentsInChildren<Transform>( true ) )
-                {
-                    string objectNameAndPath = t.gameObject.PrintSceneHierarchyPath();
-                    string logContent = objectNameAndPath;
+                if( go.name.IsSkipAlwaysString() )
+                    continue;
 
-                    if( sceneBounds.HasValue && !sceneBounds.Value.Contains( t.position ) )
-                        logContent += " ::: IsOutsideSceneBounds = true";
-                    if( t.gameObject.name.IsSkipLoadingString() )
-                        logContent += " ::: IsSkipLoadingString = true";
-                    if( t.gameObject.name.IsSkipRandomizingString() )
-                        logContent += " ::: IsSkipRandomizingString = true";                                  
-                    if( randomizerEnemyTypes != null && t.gameObject.IsRandomizerEnemy( randomizerEnemyTypes ) )
-                        logContent += " ::: IsRandomizerEnemy = true";
+                go.PrintSceneHierarchyTree( true );
 
-                    Dev.Log( logContent );
-                    t.gameObject.PrintSceneHierarchyTree( true );
-                }
+                //List<GameObject> printed = new List<GameObject>();
+                //foreach( Transform t in go.GetComponentsInChildren<Transform>( true ) )
+                //{
+                //    string objectNameAndPath = t.gameObject.PrintSceneHierarchyPath();
+                //    string logContent = objectNameAndPath;
+
+                //    //TODO: have these performed inside PrintSceneHierarchyTree
+                //    //if( sceneBounds.HasValue && !sceneBounds.Value.Contains( t.position ) )
+                //    //    logContent += " ::: IsOutsideSceneBounds = true";
+                //    //if( t.gameObject.name.IsSkipLoadingString() )
+                //    //    logContent += " ::: IsSkipLoadingString = true";
+                //    //if( t.gameObject.name.IsSkipRandomizingString() )
+                //    //    logContent += " ::: IsSkipRandomizingString = true";                                  
+                //    //if( randomizerEnemyTypes != null && t.gameObject.IsRandomizerEnemy( randomizerEnemyTypes ) )
+                //    //    logContent += " ::: IsRandomizerEnemy = true";
+
+                //    Dev.Log( logContent );
+
+                //    bool skip = false;
+                //    foreach(Transform u in t.gameObject.GetComponentInParent<Transform>())
+                //    {
+                //        if( printed.Contains(u.gameObject) )
+                //        {
+                //            skip = true;
+                //            break;
+                //        }
+                //    }
+
+                //    if( !skip )
+                //    {
+                //        t.gameObject.PrintSceneHierarchyTree( true );
+                //    }
+                //}
             }
             Dev.Log( "END +++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
         }

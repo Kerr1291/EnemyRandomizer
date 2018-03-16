@@ -33,6 +33,12 @@ namespace nv
             return Dev.HexString( (int)( 255.0f * Mathf.Clamp01( r ) ) ) + Dev.HexString( (int)( 255.0f * Mathf.Clamp01( g ) ) ) + Dev.HexString( (int)( 255.0f * Mathf.Clamp01( b ) ) );
         }
 
+        public static GameObject CreateLineRenderer( Vector2 from, Vector2 to, Color c, float z = 0f, float width = .5f )
+        {
+            List<Vector2> points = new List<Vector2>() { from, to };
+            return points.CreateLineRenderer( c, z, width );
+        }
+
         public static Texture2D RectArrayToTexture<T>( T[,] data, System.Func<T,Color> toColor = null )
         {
             Texture2D tex = new Texture2D( (int)data.Length, (int)data.Rank, TextureFormat.ARGB32, false, false );

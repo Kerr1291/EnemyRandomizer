@@ -21,6 +21,7 @@ namespace nv
             }
         }
 
+        //TODO: move this list into a list
         public static bool IsSkipLoadingString( this string str )
         {
             if( string.IsNullOrEmpty( str ) )
@@ -62,6 +63,109 @@ namespace nv
             return false;
         }
 
+        public static bool IsSkipAlwaysString( this string str )
+        {
+            if( string.IsNullOrEmpty( str ) )
+                return true;
+
+
+            if( str.Contains( "Message" ) )
+                return true;
+
+            if( str.Contains( "Region" ) )
+                return true;
+
+            if( str.Contains( "BlurPlane" ) )
+                return true;
+
+            if( str.Contains( "Trigger" ) )
+                return true;
+
+            if( str.Contains( "_SceneManager" ) )
+                return true;
+
+            if( str.Contains( "GO UP" ) )
+                return true;
+
+            if( str.Contains( "Area Title Controller" ) )
+                return true;
+
+            if( str.Contains( "mask_container" ) )
+                return true;
+
+            if( str.Contains( "Prompt" ) )
+                return true;
+
+            return false;
+        }
+
+
+        public static bool IsSkipRootString( this string str )
+        {
+            if( string.IsNullOrEmpty( str ) )
+                return true;
+
+            if( str.Contains( "Message" ) )
+                return true;
+
+            if( str.Contains( "Region" ) )
+                return true;
+
+            if( str.Contains( "BlurPlane" ) )
+                return true;
+
+            if( str.Contains( "Trigger" ) )
+                return true;
+
+            if( str.Contains( "_SceneManager" ) )
+                return true;
+
+            if( str.Contains( "GO UP" ) )
+                return true;
+
+            if( str.Contains( "Area Title Controller" ) )
+                return true;
+
+            if( str.Contains( "Rubble" ) )
+                return true;
+
+            if( str.Contains( "Tutorial" ) )
+                return true;
+
+            if( str.Contains( "mask_container" ) )
+                return true;
+
+            if( str.Contains( "tutorial_credits" ) )
+                return true;
+
+            if( str.Contains( "TileMap Render Data" ) )
+                return true;
+
+            if( str.Contains( "_Markers" ) )
+                return true;
+
+            if( str.Contains( "_Transition Gates" ) )
+                return true;
+
+            if( str.Contains( "_Scenery" ) )
+                return true;
+
+            if( str.Contains( "_Props" ) )
+                return true;
+
+            if( str.Contains( "Prompt" ) )
+                return true;
+
+            if( str.Contains( "Geo" ) )
+                return true;
+
+            if( str.Contains( "Cocoon" ) )
+                return true;
+
+            return false;
+        }
+
+
 
         public static bool IsSkipRandomizingString( this string str )
         {
@@ -102,6 +206,10 @@ namespace nv
 
             //trim off "(Clone)" from the word, if it's there
             int index = trimmedString.LastIndexOf("(Clone)");
+            if( index > 0 )
+                trimmedString = trimmedString.Substring( 0, index );
+
+            index = trimmedString.LastIndexOf( " Fixed" );
             if( index > 0 )
                 trimmedString = trimmedString.Substring( 0, index );
 

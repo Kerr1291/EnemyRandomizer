@@ -58,7 +58,7 @@ namespace EnemyRandomizerMod
          * 
          */
 
-        public const bool USE_TEST_SCENES = false;
+        public const bool USE_TEST_SCENES = true;
 
 
         public static List<int> EnemyTypeScenes {
@@ -72,8 +72,16 @@ namespace EnemyRandomizerMod
 
         static List<int> testTypeScenes = new List<int>()
         {
-            34,
-            35
+            //7,
+            243,
+            241,
+            271,
+            276,
+            183,
+
+            //test these for mage??
+            95,
+            96
         };
 
         static List<int> enemyTypeScenes = new List<int>()
@@ -152,9 +160,30 @@ namespace EnemyRandomizerMod
             362
         };
 
+
+        //TODO: place health cocoons around places
+        //for most of these objects, set the "PersistentBoolItem" component to = that of the original
+        public static List<string> miscObjectNames = new List<string>()
+        {
+            //"Cocoon Plant 1", //??? also part of health cocoon??? -- OH this is just the butterfly looking plants
+            "Health Cocoon", //scene 7, default rotation is hanging from roof
+            //check if it has the "HealthCocoon" component
+            //does have PersistentBoolItem
+        
+            //"Chest" //scene 7, by default contains a charm -- check if it has a "Chest Control" FSM
+            //mess with this after the content patch, right now it would use FSMs to modify... too much work :P
+
+            "Geo Rock"//scene 7 -- basic crossroads geo rock
+            //Example: "Geo Rock 3" is the rock just to the left of start
+            //check if it has "Geo Rock" FSM
+            //does not have? PersistentBoolItem
+        };
+
         public static List<string> enemyTypeNames = new List<string>()
         {
             //Fungus shaman?
+            "Flamebearer Spawn",//7 -- NEEDS TESTING
+
             "Colosseum_Armoured_Mosquito",//34
             "Mosquito",//28
             
@@ -320,7 +349,7 @@ namespace EnemyRandomizerMod
             "Jellyfish", //
 
             "Moss Flyer", //
-            //"Garden Zombie", // -- has idle issues, does not wake up like it should
+            "Garden Zombie", // -- has idle issues, does not wake up like it should
 
             
             "Lazy Flyer Enemy", //
@@ -331,7 +360,7 @@ namespace EnemyRandomizerMod
             //Crystal Peak
             "Laser Turret Frames", //234
 
-            //"Mega Zombie Beam Miner", //241 -- has camera issues, don't load for now until we work on a fix
+            "Mega Zombie Beam Miner", //241 -- has camera issues, don't load for now until we work on a fix
 
             "Zombie Miner", //243
             "Crystallised Lazer Bug", //243
@@ -412,6 +441,7 @@ namespace EnemyRandomizerMod
             "Colosseum_Flying_Sentry",//34
             "Blobble",//34
             "Mage Balloon", //102
+            "Flamebearer Spawn",
             "Electric Mage",//35
             "Mage",//35
             "Hatcher",//52
@@ -693,8 +723,6 @@ namespace EnemyRandomizerMod
             "Zombie Hive", //   
             "Bee Stinger", //   
 
-            "Mega Zombie Beam Miner", //241
-
             ////original "big enemy" list
             //"Blow Fly", //285
             //"Ruins Sentry Fat", //90
@@ -750,6 +778,7 @@ namespace EnemyRandomizerMod
             "Jellyfish", //
             "Lazy Flyer Enemy", //
             "Big Bee", //362
+            "Flamebearer Spawn",
 
             "Ruins Sentry Fat", //90
             "Lancer",//35
@@ -807,6 +836,7 @@ namespace EnemyRandomizerMod
             "Electric Mage",//35 //TODO: needs to be moved down? (by 20?)
             "Mage",//35 //TODO: still broken
             "Mantis Traitor Lord",
+            "Flamebearer Spawn",
 
             "Mossman_Shaker",
             "Mage Blob",//35
@@ -879,6 +909,7 @@ namespace EnemyRandomizerMod
             "Mushroom Brawler", //
             "Royal Gaurd", //358
             "Mimic Spider", //269 (Nosk, BOSS)
+            "Mega Zombie Beam Miner", //241
             "Mantis Traitor Lord" //194 (BOSS)          needs lots of room or will fall through the floor  
         };
 

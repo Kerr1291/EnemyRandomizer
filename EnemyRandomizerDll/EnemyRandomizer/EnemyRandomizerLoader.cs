@@ -7,6 +7,43 @@ using nv;
 
 namespace EnemyRandomizerMod
 {
+    //parent this to the mage knight
+    public class WakeUpMageKnight : MonoBehaviour
+    {
+        public BoxCollider2D collider;
+        public GameObject mageKnight;
+
+        private void OnTriggerEnter2D( Collider2D collision )
+        {
+            if( !collider.bounds.Contains( HeroController.instance.transform.position ) )
+                return;
+
+            PlayMakerFSM fsm = null;
+
+            foreach( Component c in mageKnight.GetComponents<Component>() )
+            {
+                if( c as PlayMakerFSM != null )
+                {
+                    if( ( c as PlayMakerFSM ).FsmName == "Mage Knight" )
+                    {
+                        fsm = ( c as PlayMakerFSM );
+                        break;
+                    }
+                }
+            }
+
+            if( fsm != null )
+            {
+                fsm.SendEvent( "FINISHED" );
+                fsm.SendEvent( "WAKE" );
+            }
+
+            //remove this after waking up the enemy
+            Destroy( gameObject );
+        }
+    }
+
+
     public class EnemyRandomizerLoader
     {
         public static EnemyRandomizerLoader Instance { get; private set; }
@@ -112,11 +149,8 @@ namespace EnemyRandomizerMod
                             GameObject.DontDestroyOnLoad( prefab );
                             prefab.transform.SetParent( root.transform );
 
-                            //TODO: special logic for certain enemies:
-
-                            //remove the "Cam Lock" game object child from the crystal guardian (mega zombie beam miner)
-
-                            //check out the "Climber Control" playmaker actions-- i think they're throwing nullref for the crystallized laser bug -- look into fixing that
+                            //special logic for certain enemies:
+                            prefab = ModifyGameObjectPrefab( prefab );
 
                             database.loadedEnemyPrefabs.Add( prefab );
                             database.loadedEnemyPrefabNames.Add( EnemyRandomizerDatabase.enemyTypeNames[indexOfRandomizerEnemyType] );
@@ -126,6 +160,40 @@ namespace EnemyRandomizerMod
                 }//end for each root game object
             }//iterate over all LOADED scenes
         }//end LoadSceneData()
+
+        GameObject ModifyGameObjectPrefab( GameObject randoPrefab )
+        {
+            GameObject modifiedPrefab = randoPrefab;
+
+            //TODO?: check out the "Climber Control" playmaker actions-- i think they're throwing nullref for the crystallized laser bug -- look into fixing that
+
+            //Create a custom "wake up" base game object and put it on the mage knight
+            if( randoPrefab.name.Contains( "Mage Knight" ) )
+            {
+                GameObject wakeUpRoot = new GameObject("MK Wake Up Object");
+                wakeUpRoot.transform.SetParent( randoPrefab.transform );
+                wakeUpRoot.transform.localPosition = Vector3.zero;
+
+                BoxCollider2D box = wakeUpRoot.AddComponent<BoxCollider2D>();
+                box.isTrigger = true;
+                box.size = new Vector2( 15f, 15f );
+
+                WakeUpMageKnight specialWakeUp = wakeUpRoot.AddComponent<WakeUpMageKnight>();
+                specialWakeUp.collider = box;
+                specialWakeUp.mageKnight = randoPrefab;
+            }
+
+            //TODO: NEEDS TESTING see if this fixes the camera problem with him
+            //remove the "Cam Lock" game object child from the crystal guardian (mega zombie beam miner)
+            if( randoPrefab.name.Contains( "Mega Zombie Beam Miner" ) )
+            {
+                GameObject camLock = randoPrefab.FindGameObjectInChildren("Cam Lock");
+                if( camLock != null )
+                    GameObject.Destroy( camLock );
+            }
+
+            return modifiedPrefab;
+        }
 
         public void BuildEnemyRandomizerDatabase()
         {

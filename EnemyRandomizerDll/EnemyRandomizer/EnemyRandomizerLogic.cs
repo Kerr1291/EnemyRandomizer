@@ -21,7 +21,7 @@ namespace EnemyRandomizerMod
         public static EnemyRandomizerLogic Instance { get; private set; }
 
         //TODO: check tomorrow
-        public const bool RUN_DEBUG_INPUT = false;
+        public const bool RUN_DEBUG_INPUT = true;
         IEnumerator debugInput = null;
 
         CommunicationNode comms;
@@ -65,18 +65,16 @@ namespace EnemyRandomizerMod
 
         IEnumerator DebugInput()
         {
-            bool printed = false;
             while( true )
             {
                 yield return new WaitForEndOfFrame();
-                if( !printed && UnityEngine.Input.GetKeyDown( KeyCode.T ) )
+                if( UnityEngine.Input.GetKeyDown( KeyCode.T ) )
                 {
-                    printed = true;
                     Dev.Log( "=====================================" );
                     Dev.Log( "=====================================" );
                     Dev.Log( "=====================================" );
                     Dev.Log( "Dumping Scene" );
-                    for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; )
+                    for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
                     {
                         Scene s = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
                         bool status = s.IsValid();
@@ -85,22 +83,36 @@ namespace EnemyRandomizerMod
                     }
                     Dev.Log( "=====================================" );
                 }
-                if( !printed && UnityEngine.Input.GetKeyDown( KeyCode.Y ) )
+                if( UnityEngine.Input.GetKeyDown( KeyCode.Y ) )
                 {
-                    printed = true;
                     Dev.Log( "=====================================" );
                     Dev.Log( "=====================================" );
                     Dev.Log( "=====================================" );
                     Dev.Log( "Dumping FSM Objects" );
+                    List<GameObject> printedObjects = new List<GameObject>();
                     foreach( var fsm in GameObject.FindObjectsOfType<PlayMakerFSM>() )
                     {
-                        fsm.gameObject.PrintSceneHierarchyTree( true );
+                        if( fsm == null )
+                            continue;
+
+                        //search the parents of this game object to see if this tree has already been printed
+                        bool skip = false;
+                        foreach( Transform u in fsm.gameObject.GetComponentsInParent<Transform>() )
+                        {
+                            if( printedObjects.Contains( u.gameObject ) )
+                            {
+                                skip = true;
+                                break;
+                            }
+                        }
+
+                        if( !skip )
+                        {
+                            printedObjects.Add( fsm.gameObject );
+                            fsm.gameObject.PrintSceneHierarchyTree( true );
+                        }
                     }
                     Dev.Log( "=====================================" );
-                }
-                if( printed && UnityEngine.Input.GetKeyDown( KeyCode.U ) )
-                {
-                    printed = false;
                 }
             }
 
@@ -517,6 +529,9 @@ namespace EnemyRandomizerMod
                             continue;
                         }
 
+                        if( rootGameObject.name.IsSkipRootString() )
+                            continue;
+
                         int counter = 0;
                         foreach( Transform t in rootGameObject.GetComponentsInChildren<Transform>( true ) )
                         {
@@ -582,6 +597,9 @@ namespace EnemyRandomizerMod
 
                     //skip our mod root
                     if( rootGameObject.name == EnemyRandomizer.Instance.ModRoot.name )
+                        continue;
+
+                    if( rootGameObject.name.IsSkipRootString() )
                         continue;
 
                     int counter = 0;
@@ -764,7 +782,8 @@ namespace EnemyRandomizerMod
 
             ModifyRandomizedEnemyGeo( newEnemy, oldEnemy );
 
-            FixRandomizedEnemy( newEnemy, oldEnemy );
+            //TODO: move this to init and only run it on some enemies?
+            //FixRandomizedEnemy( newEnemy, oldEnemy );
 
             //must happen after position
             NameRandomizedEnemy( newEnemy, prefabIndex );
@@ -851,8 +870,7 @@ namespace EnemyRandomizerMod
 
         public static void TryInitPlayMakerFSM( GameObject newEnemy )
         {
-            //wake up the mage knight
-            if( newEnemy.name.Contains( "Mage Knight" ) )
+            if( newEnemy.name.Contains( "Electric Mage" ) )
             {
                 PlayMakerFSM fsm = null;
 
@@ -860,29 +878,7 @@ namespace EnemyRandomizerMod
                 {
                     if( c as PlayMakerFSM != null )
                     {
-                        if( ( c as PlayMakerFSM ).FsmName == "Mage Knight" )
-                        {
-                            fsm = ( c as PlayMakerFSM );
-                            break;
-                        }
-                    }
-                }
-
-                if( fsm != null )
-                {
-                    fsm.SendEvent( "FINISHED" );
-                    fsm.SendEvent( "WAKE" );
-                }
-            }
-            else if( newEnemy.name.Contains( "Electric Mage" ) )
-            {
-                PlayMakerFSM fsm = null;
-
-                foreach( Component c in newEnemy.GetComponents<Component>() )
-                {
-                    if( c as PlayMakerFSM != null )
-                    {
-                        if( ( c as PlayMakerFSM ).FsmName == "Mage Knight" )
+                        if( ( c as PlayMakerFSM ).FsmName == "Electric Mage" )
                         {
                             fsm = ( c as PlayMakerFSM );
                             break;
@@ -919,8 +915,6 @@ namespace EnemyRandomizerMod
                     fsm.SendEvent( "WAKE" );
                 }
             }
-
-
         }
 
         void FixRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
@@ -1229,16 +1223,18 @@ namespace EnemyRandomizerMod
                     //TODO: test this, needs to be closer to the ground than the rest
                     if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
                     {
-                        positionOffset = -finalDir * .25f;
+                        //suppposedly 1/2 their Y collider space offset should be 1.25
+                        positionOffset = -finalDir * .5f;
                     }
 
                     //TODO: test this, needs to be farther from the ground than the rest
                     if( newEnemy.name.Contains( "Mines Crawler" ) )
                     {
-                        positionOffset = -finalDir * 1.25f;
+                        positionOffset = -finalDir * 1.4f;
                     }
                 }
-                //DebugCreateLine( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red );
+                //show adjustment
+                Dev.CreateLineRenderer( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red, 2f );
             }
 
             newEnemy.transform.position = newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z );
