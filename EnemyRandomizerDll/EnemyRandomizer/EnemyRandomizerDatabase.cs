@@ -79,6 +79,13 @@ namespace EnemyRandomizerMod
         static List<int> enemyTypeScenes = new List<int>()
         {
             7,//tutorial scene
+
+            28,
+            33,
+            34,
+            35,
+            36,
+
             //38,//mender bug
             40,
             41,
@@ -123,12 +130,6 @@ namespace EnemyRandomizerMod
             226,
             232,//(crystal flyer)
             234,
-
-            28,
-            33,
-            34,
-            35,
-            36,
 
             241,
             243,
@@ -219,9 +220,7 @@ namespace EnemyRandomizerMod
             "Fung Crawler", //158
             "Mines Crawler", //243
             "Crystal Crawler", //243
-            //"Crystal Crawler", //243?
             "Abyss Crawler", //320
-            //"Abyss Crawler", //321
             "Crawler", //40
 
             "Climber", //40
@@ -276,12 +275,12 @@ namespace EnemyRandomizerMod
             //Greenapth
             "Moss Walker", //117
             "Mossman_Shaker", //117
-            //"Pigeon", //117 (don't randomize, while technically enemies, kinda ends up being lame)
+            "Pigeon", //117 (don't randomize, while technically enemies, kinda ends up being lame)
             "Plant Trap", //117
             "Mossman_Runner",//117
 
             "Acid Flyer", //126
-            //"Shell", //126 (don't randomize this, since it's key to a couple encounters)
+            "Shell", //126 (don't randomize this, since it's key to a couple encounters)
             
             "Plant Turret", //127
             //"Acid Walker", //127 (don't randomize this, since it's fairly key to getting around a few places)
@@ -338,7 +337,7 @@ namespace EnemyRandomizerMod
             "Crystallised Lazer Bug", //243
             "Crystal Flyer", //235
 
-            //"Zombie Beam Miner", //244 -- has nullref issues, don't load for now until we work on a fix
+            "Zombie Beam Miner", //244 -- has nullref issues, don't load for now until we work on a fix
 
             //Deepnest
             "Baby Centipede", //259
@@ -451,6 +450,7 @@ namespace EnemyRandomizerMod
             "Hopper",//34
             "Lancer",//35
             "Lobster",//35
+            "Pigeon",
             "Mage Blob",//35 (the "mistake" enemy)
             "Mage Knight",//35
             "Lesser Mawlek",//35
@@ -465,7 +465,7 @@ namespace EnemyRandomizerMod
             "Zombie Shield", //52
             "Zombie Leaper",//52
             "Zombie Myla", //71
-            //"Blocker",//74
+            "Blocker",//74
             "Zombie Guard", //76 (big enemy)
             "Colosseum_Armoured_Roller",//33
             "Mushroom Roller", //
@@ -490,6 +490,7 @@ namespace EnemyRandomizerMod
             "Mantis Heavy",//35
             "Mantis", //
             "Mushroom Baby", //177
+            "Shell",
             "Mushroom Brawler", //
             "Garden Zombie", //
             "Grave Zombie", //226
@@ -516,6 +517,8 @@ namespace EnemyRandomizerMod
             "Colosseum_Armoured_Mosquito",//34
             "Mosquito",//28
             "Buzzer",//74
+            "Shell",
+            "Pigeon",
             "Super Spitter Col",//33
             "Super Spitter",//34
             "Spitter", //40
@@ -802,7 +805,8 @@ namespace EnemyRandomizerMod
             //until these 3 are fixed, do not spawn them in battle areas
             //"Mage Knight",//35
             "Electric Mage",//35 //TODO: needs to be moved down? (by 20?)
-            //"Mage",//35
+            "Mage",//35 //TODO: still broken
+            "Mantis Traitor Lord",
 
             "Mossman_Shaker",
             "Mage Blob",//35

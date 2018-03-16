@@ -73,9 +73,16 @@ namespace nv
 
             if( str.Contains( "Rando" ) )
                 return true;
-
-            //don't randomize blockers
+            
+            //don't randomize blockers - baulder
             if( str.Contains( "Blocker" ) )
+                return true;
+
+            //don't randomize shells - slightly different baulder
+            if( str.Contains( "Shell" ) )
+                return true;
+
+            if( str.Contains( "Pigeon" ) )
                 return true;
 
             //don't randomize mender bug or else players will fall onto an enemy every time
