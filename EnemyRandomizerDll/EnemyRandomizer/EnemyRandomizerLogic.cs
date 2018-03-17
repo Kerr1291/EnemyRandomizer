@@ -63,10 +63,19 @@ namespace EnemyRandomizerMod
             this.database = database;
         }
 
+        //GameObject crawler = null;
         IEnumerator DebugInput()
         {
+            //yield return new WaitForSeconds( 3.5f );
             while( true )
             {
+                //if( crawler != null )
+                //{
+                //    crawler.PrintSceneHierarchyTree( true );
+                //    yield return new WaitForSeconds( 0.5f );
+                //}
+
+                //Time.timeScale = .1f;
                 yield return new WaitForEndOfFrame();
                 if( UnityEngine.Input.GetKeyDown( KeyCode.T ) )
                 {
@@ -821,6 +830,8 @@ namespace EnemyRandomizerMod
             {
                 Dev.Log( "Exception trying to deactivate old enemy!" + e.Message );
             }
+
+            Dev.Log( "New stats for rando monster: " + newEnemy.name + " to replace " + oldEnemy.name + " at " + newEnemy.transform.position + " with rotation " + newEnemy.transform.localRotation.eulerAngles );
         }
 
         GameObject InstantiateEnemy( GameObject prefab, GameObject oldEnemy )
@@ -865,7 +876,7 @@ namespace EnemyRandomizerMod
 
         void InitRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
         {
-            TryInitPlayMakerFSM( newEnemy );
+            TryInitPlayMakerFSM( newEnemy ); 
         }
 
         public static void TryInitPlayMakerFSM( GameObject newEnemy )
@@ -913,6 +924,27 @@ namespace EnemyRandomizerMod
                 {
                     fsm.SendEvent( "IN RANGE" );
                     fsm.SendEvent( "WAKE" );
+                }
+            }
+            else if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
+            {
+                PlayMakerFSM fsm = null;
+
+                foreach( Component c in newEnemy.GetComponents<Component>() )
+                {
+                    if( c as PlayMakerFSM != null )
+                    {
+                        if( ( c as PlayMakerFSM ).FsmName == "Climber Control" )
+                        {
+                            fsm = ( c as PlayMakerFSM );
+                            break;
+                        }
+                    }
+                }
+
+                if( fsm != null )
+                {
+                    fsm.SetState( "Set Dir to 0" );
                 }
             }
         }
@@ -1052,9 +1084,9 @@ namespace EnemyRandomizerMod
             {
                 if( IsHardEnemy( GetTypeFlags( newEnemy ) ) )
                 {
-                    int smallGeo = GameRNG.Rand(0,40);
-                    int medGeo = GameRNG.Rand(0,30);
-                    int bigGeo = GameRNG.Rand(0,25);
+                    int smallGeo = GameRNG.Rand(0,20);
+                    int medGeo = GameRNG.Rand(0,15);
+                    int bigGeo = GameRNG.Rand(0,10);
 
                     newEnemy.SetEnemyGeoRates( smallGeo, medGeo, bigGeo );
                 }
@@ -1085,24 +1117,29 @@ namespace EnemyRandomizerMod
             {
                 newEnemy.transform.rotation = Quaternion.identity;
             }
-
-            //looks like it's not needed???
-            //if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
-            //{
-            //    Quaternion rot180degrees = Quaternion.Euler(-oldEnemy.transform.rotation.eulerAngles);
-            //    newEnemy.transform.rotation = rot180degrees * oldEnemy.transform.rotation;
-            //}
+            
+            if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
+            {
+                //Dev.Log( "Old rotation = " + newEnemy.transform.rotation.eulerAngles );
+                //Quaternion rotate = Quaternion.Euler(new Vector3(0f,0f,-180f));
+                //newEnemy.transform.rotation = rotate * oldEnemy.transform.rotation;
+                //Dev.Log( "New rotation = " + newEnemy.transform.rotation.eulerAngles );
+                ( ContractorManager.Instance ).StartCoroutine( RotationCorrector( newEnemy, oldEnemy.transform.rotation, 4f ) );
+                newEnemy.PrintSceneHierarchyTree(true);
+                //crawler = newEnemy;
+            }
 
             if( oldEnemy.name.Contains( "Moss Walker" ) )
             {
-                Quaternion rot180degrees = Quaternion.Euler(-oldEnemy.transform.rotation.eulerAngles);
-                newEnemy.transform.rotation = rot180degrees * oldEnemy.transform.rotation;
+                //Quaternion rot180degrees = Quaternion.Euler(-oldEnemy.transform.rotation.eulerAngles);
+                //newEnemy.transform.rotation = rot180degrees * oldEnemy.transform.rotation;
+                newEnemy.transform.rotation = Quaternion.identity;
             }
         }
 
-        public IEnumerator PositionCorrector( GameObject newEnemy, Vector3 lockedPosition )
+        public IEnumerator PositionCorrector( GameObject newEnemy, Vector3 lockedPosition, float lockTime = 4f )
         {
-            float time = 4f;
+            float time = lockTime;
             while( time > 0f )
             {
                 //player could leave screen while this is happening.. or other strange things could happen
@@ -1110,6 +1147,23 @@ namespace EnemyRandomizerMod
                     yield break;
 
                 newEnemy.transform.position = lockedPosition;
+
+                time -= Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
+            yield break;
+        }
+
+        public IEnumerator RotationCorrector( GameObject newEnemy, Quaternion lockedRotation, float lockTime = 4f )
+        {
+            float time = lockTime;
+            while( time > 0f )
+            {
+                //player could leave screen while this is happening.. or other strange things could happen
+                if( newEnemy == null )
+                    yield break;
+
+                newEnemy.transform.localRotation = lockedRotation;
 
                 time -= Time.deltaTime;
                 yield return new WaitForEndOfFrame();
@@ -1161,7 +1215,15 @@ namespace EnemyRandomizerMod
                 Vector2 originalUp = oldEnemy.transform.up.normalized;
 
                 Vector2 ePos = newEnemy.transform.position;
-                Vector2 upOffset = ePos + originalUp * 10f;
+
+
+                //TODO: remove me, for testing only
+                if( newEnemy.name.Contains( "Lazer" ) )
+                {
+                    ePos += new Vector2( -70f, 0f );
+                }
+
+                Vector2 upOffset = ePos + originalUp * 5f;
 
                 Vector2 originalDown = -originalUp;
 
@@ -1224,7 +1286,8 @@ namespace EnemyRandomizerMod
                     if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
                     {
                         //suppposedly 1/2 their Y collider space offset should be 1.25
-                        positionOffset = -finalDir * .5f;
+                        positionOffset = -finalDir * 0.0f;
+                        ( ContractorManager.Instance ).StartCoroutine( PositionCorrector( newEnemy, onGround, 1f ) );
                     }
 
                     //TODO: test this, needs to be farther from the ground than the rest
@@ -1234,10 +1297,10 @@ namespace EnemyRandomizerMod
                     }
                 }
                 //show adjustment
-                Dev.CreateLineRenderer( onGround, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ), Color.red, 2f );
+                Dev.CreateLineRenderer( onGround, newEnemy.transform.position + positionOffset, Color.red, -1f );
             }
 
-            newEnemy.transform.position = newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z );
+            newEnemy.transform.position = newEnemy.transform.position + positionOffset;
 
         }
 
@@ -1655,7 +1718,7 @@ namespace EnemyRandomizerMod
             randomReplacementIndex = randomReplacement;
 
             GameObject prefab = database.loadedEnemyPrefabs[randomReplacement];
-            Dev.Log( "Spawning rando monster: " + prefab.name + " from index " + randomReplacement + " out of " + database.loadedEnemyPrefabs.Count + " to replace " + enemy.name + " at " + enemy.transform.position );
+            Dev.Log( "Spawning rando monster: " + prefab.name + " from index " + randomReplacement + " out of " + database.loadedEnemyPrefabs.Count + " to replace " + enemy.name );
             return prefab;
         }
 

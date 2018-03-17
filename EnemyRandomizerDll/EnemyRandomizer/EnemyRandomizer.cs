@@ -55,7 +55,7 @@ namespace EnemyRandomizerMod
         EnemyRandomizerDatabase database;
         EnemyRandomizerLogic logic;
 
-        string fullVersionName = "0.1.4";
+        string fullVersionName = "0.1.3b";
         string modRootName = "RandoRoot";
         
         GameObject modRoot;

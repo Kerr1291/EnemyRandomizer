@@ -72,16 +72,15 @@ namespace EnemyRandomizerMod
 
         static List<int> testTypeScenes = new List<int>()
         {
-            //7,
-            243,
-            241,
-            271,
-            276,
-            183,
+            //7, //test flame spawn
+            243, //test crystal crawler
+            241, //test crystal guardian
+            276, //testing tiny spider
+            183, //testing garden zombie
 
             //test these for mage??
-            95,
-            96
+            95, //testing mage?
+            96  //testing mage?
         };
 
         static List<int> enemyTypeScenes = new List<int>()
@@ -349,7 +348,7 @@ namespace EnemyRandomizerMod
             "Jellyfish", //
 
             "Moss Flyer", //
-            "Garden Zombie", // -- has idle issues, does not wake up like it should
+            "Garden Zombie", //183 -- has idle issues, does not wake up like it should
 
             
             "Lazy Flyer Enemy", //
@@ -370,6 +369,7 @@ namespace EnemyRandomizerMod
 
             //Deepnest
             "Baby Centipede", //259
+            "Centipede Hatcher", //???? (find scene for this)
 
             "Slash Spider", //271
             "Spider Mini", //271
@@ -463,6 +463,7 @@ namespace EnemyRandomizerMod
             "Bee Stinger", // 
             "Shade Sibling",
             "Big Bee", //362 
+            "Centipede Hatcher",
             "Parasite Balloon"
         };
 
@@ -527,8 +528,8 @@ namespace EnemyRandomizerMod
             "Zombie Miner", //243
             "Zombie Beam Miner", //244
             "Baby Centipede", //259
+            "Crawler", //40
             "Slash Spider", //271
-            "Spider Mini", //271
             "Zombie Spider 1", //271
             "Zombie Spider 2", //271
             "Tiny Spider", //276
@@ -780,6 +781,7 @@ namespace EnemyRandomizerMod
             "Big Bee", //362
             "Flamebearer Spawn",
 
+            "Centipede Hatcher",
             "Ruins Sentry Fat", //90
             "Lancer",//35
             "Lobster",//35
@@ -823,9 +825,9 @@ namespace EnemyRandomizerMod
         {
             "Mines Crawler", //243
             "Abyss Crawler", //320
-            "Crawler", //40
             "Climber", //40
             "Crystallised Lazer Bug", //243 (this was removed from the list for some reason???)
+            "Spider Mini" //271
         };
 
 
@@ -837,7 +839,7 @@ namespace EnemyRandomizerMod
             "Mage",//35 //TODO: still broken
             "Mantis Traitor Lord",
             "Flamebearer Spawn",
-
+            "Centipede Hatcher",
             "Mossman_Shaker",
             "Mage Blob",//35
             "Mage Balloon", //102
@@ -897,6 +899,7 @@ namespace EnemyRandomizerMod
 
         public static List<string> hardEnemyTypeNames = new List<string>()
         {
+            "Centipede Hatcher",
             "Gorgeous Husk", //82 (for fun)
             "Electric Mage",//35
             "Mage Knight",//35

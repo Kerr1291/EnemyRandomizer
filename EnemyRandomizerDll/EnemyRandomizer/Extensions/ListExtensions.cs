@@ -75,7 +75,7 @@ namespace nv
             LineRenderer lr = lineObj.AddComponent<LineRenderer>();
             lr.SetVertexCount( points.Count );
             lr.SetPositions( points.ToArray() );
-            lr.SetWidth( width, width );
+            lr.SetWidth( width, .001f );
 
             if( lr.GetComponent<Renderer>() )
                 lr.GetComponent<Renderer>().material = new Material( Shader.Find( "Diffuse" ) );
