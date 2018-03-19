@@ -96,6 +96,7 @@ namespace nv
                         c.PrintTransform( componentHeader );
                         c.PrintBoxCollider2D( componentHeader );
                         c.PrintPlayMakerFSM( componentHeader );
+                        c.PrintPersistentBoolItem( componentHeader );
                     }
                 }
             }

@@ -73,13 +73,11 @@ namespace EnemyRandomizerMod
         static List<int> testTypeScenes = new List<int>()
         {
             //7, //test flame spawn
-            243, //test crystal crawler
-            241, //test crystal guardian
+            241, //test crystal guardian and Zombie Beam Miner(244)
             276, //testing tiny spider
             183, //testing garden zombie
 
             //test these for mage??
-            95, //testing mage?
             96  //testing mage?
         };
 
@@ -135,7 +133,7 @@ namespace EnemyRandomizerMod
             204,
             208,
             226,
-            232,//(crystal flyer)
+            //232,//(crystal flyer) -- TEST, don't seem to need this!
             234,
 
             241,
@@ -229,13 +227,13 @@ namespace EnemyRandomizerMod
             "Lobster",//35
             
             //"Mage Balloon Spawner",//35
-            "Mage Knight",//35
-            "Mage Blob",//35
-            "Mage Balloon", //102
+            //"Mage Knight",//35(96) -- TEMP
+            //"Mage Blob",//35(96) -- TEMP
+            //"Mage Balloon", //102 -- TEMP
             //"Mage Lord Phase2", //97 (BOSS)
             //"Mage Lord", //97 (BOSS)
             "Electric Mage",//35
-            "Mage",//35
+            "Mage",//35(96)
 
             "Lesser Mawlek",//35
             "Mawlek Col",//35 ??? might be same as lesser mawlek
@@ -247,7 +245,7 @@ namespace EnemyRandomizerMod
             
             "Fung Crawler", //158
             "Mines Crawler", //243
-            "Crystal Crawler", //243
+            //"Crystal Crawler", //243 -- TEMP
             "Abyss Crawler", //320
             "Crawler", //40
 
@@ -344,14 +342,14 @@ namespace EnemyRandomizerMod
             "Mushroom Brawler", //
 
             //Queens Garden
-            "Jellyfish Baby", //183
-            "Jellyfish", //
+            //"Jellyfish Baby", //183 -- TEMP
+            //"Jellyfish", // -- TEMP
 
             "Moss Flyer", //
             "Garden Zombie", //183 -- has idle issues, does not wake up like it should
 
             
-            "Lazy Flyer Enemy", //
+            //"Lazy Flyer Enemy", // -- TEMP
 
             //Resting Grounds
             "Grave Zombie", //226
@@ -361,9 +359,9 @@ namespace EnemyRandomizerMod
 
             "Mega Zombie Beam Miner", //241 -- has camera issues, don't load for now until we work on a fix
 
-            "Zombie Miner", //243
-            "Crystallised Lazer Bug", //243
-            "Crystal Flyer", //235
+            //"Zombie Miner", //243 -- TEMP
+            //"Crystallised Lazer Bug", //243 -- TEMP
+            //"Crystal Flyer", //243 -- TEMP
 
             "Zombie Beam Miner", //244 -- has nullref issues, don't load for now until we work on a fix
 
@@ -377,7 +375,7 @@ namespace EnemyRandomizerMod
             "Zombie Spider 2", //271
 
             "Tiny Spider", //276
-            "Spider Flyer", //
+            //"Spider Flyer", //--TEMP
             //"Deep Spikes", //
             
             //Kingdom's Edge
@@ -456,7 +454,7 @@ namespace EnemyRandomizerMod
             "Jellyfish", //
             "Moss Flyer", //
             "Lazy Flyer Enemy", //
-            "Crystal Flyer", //235
+            "Crystal Flyer", //243
             "Spider Flyer", //
             "Bee Hatchling Ambient", //
             "Inflater", //
@@ -581,7 +579,7 @@ namespace EnemyRandomizerMod
             "Garden Zombie", //
             "Laser Turret Frames", //234
             "Crystallised Lazer Bug", //243
-            "Crystal Flyer", //235
+            "Crystal Flyer", //243
             "Spider Mini", //271
             "Tiny Spider", //276
             "Bee Hatchling Ambient", //

@@ -1,22 +1,209 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using System.Linq;
 
 using nv;
 
 namespace EnemyRandomizerMod
 {
+    public class DebugOnWake : MonoBehaviour
+    {
+        public BoxCollider2D collider;
+        public GameObject owner;
+
+        //the fsm to aim our events at
+        public string fsmName;
+
+        //the events to send the fsm
+        public List<string> wakeEvents = new List<string>();
+
+        //send the wake events every time we're in this state for the fsmName given
+        public string sendWakeEventsOnState;
+
+        //Dictionary = FSM and the current state it's in
+        public Dictionary<PlayMakerFSM,string> fsmsOnObject = new Dictionary<PlayMakerFSM, string>();
+
+        //run logic on the FSMs every frame?
+        public bool monitorFSMStates = false;
+
+        //print debug bounding boxes and debug log info?
+        public bool logFSM = true;
+
+        IEnumerator DebugFSMS()
+        {
+            fsmsOnObject = new Dictionary<PlayMakerFSM, string>();
+
+            foreach( var p in owner.GetComponentsInChildren<PlayMakerFSM>() )
+            {
+                fsmsOnObject.Add( p, p.ActiveStateName );
+                if( logFSM )
+                    Dev.Log( "FSMDEBUG :::: Added FSM for " + owner.name + " had the fsm [" + p.FsmName + "] with initial state [" + p.ActiveStateName + "]" );
+            }
+
+            //Dev.Log( "FSMDEBUG :::: Tracking FSMS on " + owner.name );
+            while( monitorFSMStates )
+            {
+                if( owner == null )
+                    yield break;
+
+                //Dev.Log( "FSMDEBUG :::: FOREACH ON " + owner.name );
+                foreach( var p in owner.GetComponentsInChildren<PlayMakerFSM>() )
+                {
+                    if( p == null )
+                        continue;
+
+                    if(!fsmsOnObject.ContainsKey(p))
+                    {
+                        fsmsOnObject.Add( p, p.ActiveStateName );
+                        if( logFSM )
+                            Dev.Log( "FSMDEBUG :::: Added FSM for " + owner.name + " had the fsm [" + p.FsmName + "] with initial state [" + p.ActiveStateName + "]" );
+                    }                    
+                    else if( p.ActiveStateName != fsmsOnObject[ p ] )
+                    {
+                        if( logFSM )
+                            Dev.Log( "FSMDEBUG :::: " + owner.name + " had the fsm [" + p.FsmName + "] change FROM state [" + fsmsOnObject[ p ] + "] TO state [" + p.ActiveStateName + "] on EVENT [" + ( ( p.Fsm != null && p.Fsm.LastTransition != null ) ? p.Fsm.LastTransition.EventName : "GAME OBJECT AWAKE" ) + "]" );
+                        fsmsOnObject[ p ] = p.ActiveStateName;
+                    }
+
+                    //force-send an event on this state if everything matches?
+                    if( !string.IsNullOrEmpty( sendWakeEventsOnState ) && fsmName == p.FsmName && sendWakeEventsOnState == p.ActiveStateName )
+                    {
+                        if( p != null && wakeEvents != null )
+                        {
+                            foreach( string s in wakeEvents )
+                            {
+                                p.SendEvent( s );
+                            }
+                        }
+                    }
+                }
+
+                yield return new WaitForEndOfFrame();
+            }
+        }
+
+        private IEnumerator Start()
+        {
+            while( collider == null && owner == null )
+            {
+                yield return null;
+            }
+
+            if( logFSM )
+                Dev.CreateBoxOfLineRenderers( collider.bounds, Color.green, -2.1f, .01f );
+
+            if(monitorFSMStates)
+            {
+                StartCoroutine( DebugFSMS() );
+            }
+        }
+
+        private void OnTriggerEnter2D( Collider2D collision )
+        {
+            if( monitorFSMStates )
+                return;
+
+            bool isPlayer = false;
+
+            foreach( Transform t in collision.gameObject.GetComponentsInParent<Transform>() )
+            {
+                if( t.gameObject == HeroController.instance.gameObject )
+                {
+                    isPlayer = true;
+                    break;
+                }
+            }
+
+            if( !isPlayer )
+            {
+                Dev.Log( "Something not the player entered us!" );
+                return;
+            }
+
+            Dev.Log( "Player entered our wake area! " );
+
+            if( !string.IsNullOrEmpty( fsmName ) )
+            {
+
+                PlayMakerFSM fsm = null;
+
+                foreach( Component c in owner.GetComponents<Component>() )
+                {
+                    if( c as PlayMakerFSM != null )
+                    {
+                        if( ( c as PlayMakerFSM ).FsmName == fsmName )
+                        {
+                            fsm = ( c as PlayMakerFSM );
+                            break;
+                        }
+                    }
+                }
+
+                if( fsm != null && wakeEvents != null )
+                {
+                    foreach( string s in wakeEvents )
+                    {
+                        fsm.SendEvent( s );
+                    }
+                }
+                else
+                {
+                    Dev.Log( "Could not find FSM!" );
+                }
+
+            }
+
+            //remove this after waking up the enemy
+            Destroy( gameObject );
+        }
+    }
+
+
     //parent this to the mage knight
     public class WakeUpMageKnight : MonoBehaviour
     {
         public BoxCollider2D collider;
         public GameObject mageKnight;
 
+        private IEnumerator Start()
+        {
+            //Dev.Log( "Trying to load WakeUpMageKnight ");
+            while( collider == null && mageKnight == null )
+            {
+                yield return null;
+            }
+            //Dev.Log( "Created waker for " + mageKnight.name );
+            //Dev.Log( "Bounds " + collider.bounds );
+
+            Dev.CreateBoxOfLineRenderers( collider.bounds, Color.green, -2.1f, .01f );
+
+            //Dev.Log( "Hero is at " + HeroController.instance.transform.position );
+            //HeroController.instance.gameObject.PrintSceneHierarchyTree( true );
+        }
+
         private void OnTriggerEnter2D( Collider2D collision )
         {
-            if( !collider.bounds.Contains( HeroController.instance.transform.position ) )
+            bool isPlayer = false;
+
+            foreach( Transform t in collision.gameObject.GetComponentsInParent<Transform>() )
+            {
+                if( t.gameObject == HeroController.instance.gameObject )
+                {
+                    isPlayer = true;
+                    break;
+                }
+            }
+
+            if( !isPlayer )
+            {
+                Dev.Log( "Something not the player entered us!" );
                 return;
+            }
+
+            Dev.Log( "Player entered our wake area! " );
 
             PlayMakerFSM fsm = null;
 
@@ -37,11 +224,16 @@ namespace EnemyRandomizerMod
                 fsm.SendEvent( "FINISHED" );
                 fsm.SendEvent( "WAKE" );
             }
+            else
+            {
+                Dev.Log( "Could not find Mage Knight FSM!" );
+            }
 
             //remove this after waking up the enemy
             Destroy( gameObject );
         }
     }
+
 
 
     public class EnemyRandomizerLoader
@@ -87,8 +279,8 @@ namespace EnemyRandomizerMod
         {
             Instance = this;
 
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= PrintNextSceneToLoad;
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += PrintNextSceneToLoad;
+            //UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= PrintNextSceneToLoad;
+            //UnityEngine.SceneManagement.SceneManager.activeSceneChanged += PrintNextSceneToLoad;
 
             comms = new CommunicationNode();
             comms.EnableNode( this );
@@ -98,17 +290,17 @@ namespace EnemyRandomizerMod
         {
             comms.DisableNode();
 
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= PrintNextSceneToLoad;
+            //UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= PrintNextSceneToLoad;
 
             Instance = null;
         }
 
 
-        void PrintNextSceneToLoad( Scene from, Scene to )
-        {
-            //For debugging
-            Dev.Log( "Loading Scene [" + to.name + "]" );
-        }
+        //void PrintNextSceneToLoad( Scene from, Scene to )
+        //{
+        //    //For debugging
+        //    Dev.Log( "Loading Scene [" + to.name + "]" );
+        //}
 
         /// <summary>
         /// Initial workhorse funciton. Load all the enemy types in the game.
@@ -120,7 +312,11 @@ namespace EnemyRandomizerMod
             //iterate over the loaded scenes
             for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
             {
-                GameObject[] rootGameObjects = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).GetRootGameObjects();
+                Scene sceneToLoad = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
+
+                Dev.Log( "Loading Scene [" + sceneToLoad.name + "]" );
+
+                GameObject[] rootGameObjects = sceneToLoad.GetRootGameObjects();
                 foreach( GameObject go in rootGameObjects )
                 {
                     //ignore the mod root
@@ -170,13 +366,18 @@ namespace EnemyRandomizerMod
             //Create a custom "wake up" base game object and put it on the mage knight
             if( randoPrefab.name.Contains( "Mage Knight" ) )
             {
+                //BoxCollider2D mkCollider = randoPrefab.GetComponent<BoxCollider2D>();
+
                 GameObject wakeUpRoot = new GameObject("MK Wake Up Object");
                 wakeUpRoot.transform.SetParent( randoPrefab.transform );
                 wakeUpRoot.transform.localPosition = Vector3.zero;
 
+                wakeUpRoot.layer = 13; //try this
+                wakeUpRoot.tag = randoPrefab.tag;
+
                 BoxCollider2D box = wakeUpRoot.AddComponent<BoxCollider2D>();
                 box.isTrigger = true;
-                box.size = new Vector2( 15f, 15f );
+                box.size = new Vector2( 40f, 20f );
 
                 WakeUpMageKnight specialWakeUp = wakeUpRoot.AddComponent<WakeUpMageKnight>();
                 specialWakeUp.collider = box;
@@ -187,9 +388,25 @@ namespace EnemyRandomizerMod
             //remove the "Cam Lock" game object child from the crystal guardian (mega zombie beam miner)
             if( randoPrefab.name.Contains( "Mega Zombie Beam Miner" ) )
             {
+                //randoPrefab.PrintSceneHierarchyTree( true );
                 GameObject camLock = randoPrefab.FindGameObjectInChildren("Cam Lock");
                 if( camLock != null )
+                {
+                    Dev.Log( "Marking Cam Lock for removal!" );
                     GameObject.Destroy( camLock );
+                }
+
+                DebugOnWake d = AddDebugOnWake(randoPrefab);
+                d.monitorFSMStates = false;
+            }
+
+            if( randoPrefab.name.Contains( "Slash Spider" ) )
+            {
+                //this fixes the slash spider!
+                DebugOnWake d = AddDebugOnWake(randoPrefab, "Slash Spider", new List<string>() { "WAKE" } );
+                d.monitorFSMStates = true;
+                d.sendWakeEventsOnState = "Waiting";
+                d.logFSM = false;
             }
 
             return modifiedPrefab;
@@ -266,7 +483,7 @@ namespace EnemyRandomizerMod
             //    go.PrintSceneHierarchyTree( true );
             //}
 
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= PrintNextSceneToLoad;
+            //UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= PrintNextSceneToLoad;
 
             DatabaseGenerated = true;
             databaseLoader.Reset();
@@ -349,6 +566,44 @@ namespace EnemyRandomizerMod
 
                 Dev.Log( "Missing type: " + enemy );
             }
+        }
+
+
+
+        DebugOnWake AddDebugOnWake( GameObject enemy, string fsmName = "", List<string> wakeEvents = null, Vector2? customColliderSize = null )
+        {
+            GameObject wakeUpRoot = new GameObject(enemy.name + " DebugWake Object");
+            wakeUpRoot.transform.SetParent( enemy.transform );
+            wakeUpRoot.transform.localPosition = Vector3.zero;
+
+            wakeUpRoot.layer = 13; //try this
+            wakeUpRoot.tag = enemy.tag;
+
+            BoxCollider2D box = wakeUpRoot.AddComponent<BoxCollider2D>();
+            box.isTrigger = true;
+            //box.size = new Vector2( 10f, 10f );
+
+            if( !customColliderSize.HasValue )
+            {
+                BoxCollider2D pbox = enemy.GetComponent<BoxCollider2D>();
+                if( pbox != null )
+                {
+                    box.size = pbox.size;
+                    box.offset = pbox.offset;
+                }
+            }
+            else
+            {
+                box.size = customColliderSize.Value;
+            }
+
+            DebugOnWake specialWakeUp = wakeUpRoot.AddComponent<DebugOnWake>();
+            specialWakeUp.collider = box;
+            specialWakeUp.owner = enemy;
+            specialWakeUp.fsmName = fsmName;
+            specialWakeUp.wakeEvents = wakeEvents;
+
+            return specialWakeUp;
         }
     }
 }

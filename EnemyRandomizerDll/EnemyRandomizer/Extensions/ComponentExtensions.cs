@@ -15,10 +15,26 @@ namespace nv
             Dev.Log( componentHeader + @" \--Component: " + c.GetType().Name );
         }
 
+        public static void PrintPersistentBoolItem(this Component c, string componentHeader = "" )
+        {
+            if( c as PersistentBoolItem != null )
+            {
+                Dev.Log( componentHeader + @" \--PersistentBoolItem semiPersistent: " + ( c as PersistentBoolItem ).semiPersistent );
+                if( ( c as PersistentBoolItem ).persistentBoolData != null )
+                {
+                    Dev.Log( componentHeader + @" \--PersistentBoolItem id: " + ( c as PersistentBoolItem ).persistentBoolData.id );
+                    Dev.Log( componentHeader + @" \--PersistentBoolItem sceneName: " + ( c as PersistentBoolItem ).persistentBoolData.sceneName );
+                    Dev.Log( componentHeader + @" \--PersistentBoolItem activated: " + ( c as PersistentBoolItem ).persistentBoolData.activated );
+                }
+            }
+        }
+
         public static void PrintTransform( this Component c, string componentHeader = "" )
         {
             if( c as Transform != null )
             {
+                Dev.Log( componentHeader + @" \--GameObject layer: " + ( c as Transform ).gameObject.layer );
+                Dev.Log( componentHeader + @" \--GameObject tag: " + ( c as Transform ).gameObject.tag );
                 Dev.Log( componentHeader + @" \--Transform Position: " + ( c as Transform ).position );
                 Dev.Log( componentHeader + @" \--Transform Rotation: " + ( c as Transform ).rotation.eulerAngles );
                 Dev.Log( componentHeader + @" \--Transform LocalScale: " + ( c as Transform ).localScale );
@@ -33,6 +49,7 @@ namespace nv
                 Dev.Log( componentHeader + @" \--BoxCollider2D Offset: " + ( c as BoxCollider2D ).offset );
                 Dev.Log( componentHeader + @" \--BoxCollider2D Bounds-Min: " + ( c as BoxCollider2D ).bounds.min );
                 Dev.Log( componentHeader + @" \--BoxCollider2D Bounds-Max: " + ( c as BoxCollider2D ).bounds.max );
+                Dev.Log( componentHeader + @" \--BoxCollider2D isTrigger: " + ( c as BoxCollider2D ).isTrigger );
             }
         }
 
@@ -40,6 +57,14 @@ namespace nv
         {
             if( c as PlayMakerFSM != null )
             {
+                //don't print this one....
+                if( ( c as PlayMakerFSM ).FsmName == "health_manager_enemy" ) 
+                    return;
+
+                //don't print this one....
+                if( ( c as PlayMakerFSM ).FsmName == "recoil" )
+                    return;
+
                 Dev.Log( componentHeader + @" \--PFSM Name: " + ( c as PlayMakerFSM ).FsmName );
                 Dev.Log( componentHeader + @" \--PFSM FsmDescription: " + ( c as PlayMakerFSM ).FsmDescription );
 
@@ -61,9 +86,32 @@ namespace nv
 
                     foreach( string x in trans )
                         Dev.Log( componentHeader + @" \----PFSM ---- Transitions for state: " + x );
-
+                    
                     foreach( string x in actionNames )
                         Dev.Log( componentHeader + @" \----PFSM ---- Actions for state: " + x );
+
+                    if( actions != null )
+                    {
+                        foreach( var x in actions )
+                        {
+                            var pdb = ( x as HutongGames.PlayMaker.Actions.PlayerDataBoolTest );
+                            if( pdb != null && pdb.boolName != null )
+                            {
+                                Dev.Log( componentHeader + @" \----PFSM ---- PlayerDataBoolTest (boolName) = " + pdb.boolName.Value );
+                                try
+                                {
+                                    if( HeroController.instance != null && HeroController.instance.playerData != null )
+                                    {
+                                        Dev.Log( componentHeader + @" \----PFSM ---- PlayerDataBoolTest (bool.Value) = " + HeroController.instance.playerData.GetBoolInternal( pdb.boolName.Value ) );
+                                    }
+                                }
+                                catch( Exception )
+                                {
+                                    Dev.Log( componentHeader + @" \----PFSM ---- PlayerDataBoolTest (bool.Value) = " + "null? Player data not initialized" );
+                                }
+                            }
+                        }
+                    }
                 }
                 Dev.Log( componentHeader + @" \--PFSM Active: " + ( c as PlayMakerFSM ).Active );
                 Dev.Log( componentHeader + @" \--PFSM ActiveStateName: " + ( c as PlayMakerFSM ).ActiveStateName );

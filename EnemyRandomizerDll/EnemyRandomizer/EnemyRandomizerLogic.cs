@@ -62,20 +62,11 @@ namespace EnemyRandomizerMod
         {
             this.database = database;
         }
-
-        //GameObject crawler = null;
+        
         IEnumerator DebugInput()
         {
-            //yield return new WaitForSeconds( 3.5f );
             while( true )
             {
-                //if( crawler != null )
-                //{
-                //    crawler.PrintSceneHierarchyTree( true );
-                //    yield return new WaitForSeconds( 0.5f );
-                //}
-
-                //Time.timeScale = .1f;
                 yield return new WaitForEndOfFrame();
                 if( UnityEngine.Input.GetKeyDown( KeyCode.T ) )
                 {
@@ -311,6 +302,7 @@ namespace EnemyRandomizerMod
                         //kill enemies that escape the coloseeum
                         if( isColosseum && !localBounds.Contains( pair.replacement.transform.position ) )
                         {
+                            Dev.Log( "Sending force kill for out of bounds in colosseum to " + pair.replacement.name );
                             if( pair.replacement.GetEnemyFSM() != null )
                                 pair.replacement.GetEnemyFSM().SendEvent( "INSTA KILL" );
                         }
@@ -485,6 +477,17 @@ namespace EnemyRandomizerMod
 
         IEnumerator DoLocateAndRandomizeEnemies()
         {
+            //TEST REMOVE ME
+            //Dev.Log( "SETTING UP" );
+            //float F = 10f;
+            //while(F > 0f)
+            //{
+            //    F -= Time.deltaTime;
+
+            //    yield return new WaitForEndOfFrame();
+            //}
+            //Dev.Log( "GOING" );
+
             //wait until all scenes are loaded
             for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; )
             {
@@ -625,6 +628,7 @@ namespace EnemyRandomizerMod
                         {
                             if( !sceneBounds.Contains( t.position ) )
                             {
+                                Dev.Log( "Sending force kill for out of scene to " + name );
                                 if( t.gameObject.GetEnemyFSM() != null )
                                     t.gameObject.GetEnemyFSM().SendEvent( "INSTA KILL" );
                             }
@@ -792,7 +796,7 @@ namespace EnemyRandomizerMod
             ModifyRandomizedEnemyGeo( newEnemy, oldEnemy );
 
             //TODO: move this to init and only run it on some enemies?
-            //FixRandomizedEnemy( newEnemy, oldEnemy );
+            FixRandomizedEnemy( newEnemy, oldEnemy );
 
             //must happen after position
             NameRandomizedEnemy( newEnemy, prefabIndex );
@@ -876,7 +880,9 @@ namespace EnemyRandomizerMod
 
         void InitRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
         {
-            TryInitPlayMakerFSM( newEnemy ); 
+            TryInitPlayMakerFSM( newEnemy );
+
+            newEnemy.gameObject.PrintSceneHierarchyTree( true );
         }
 
         public static void TryInitPlayMakerFSM( GameObject newEnemy )
@@ -926,38 +932,44 @@ namespace EnemyRandomizerMod
                     fsm.SendEvent( "WAKE" );
                 }
             }
-            else if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
-            {
-                PlayMakerFSM fsm = null;
+            //else if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
+            //{
+            //    PlayMakerFSM fsm = null;
 
-                foreach( Component c in newEnemy.GetComponents<Component>() )
-                {
-                    if( c as PlayMakerFSM != null )
-                    {
-                        if( ( c as PlayMakerFSM ).FsmName == "Climber Control" )
-                        {
-                            fsm = ( c as PlayMakerFSM );
-                            break;
-                        }
-                    }
-                }
+            //    foreach( Component c in newEnemy.GetComponents<Component>() )
+            //    {
+            //        if( c as PlayMakerFSM != null )
+            //        {
+            //            if( ( c as PlayMakerFSM ).FsmName == "Climber Control" )
+            //            {
+            //                fsm = ( c as PlayMakerFSM );
+            //                break;
+            //            }
+            //        }
+            //    }
 
-                if( fsm != null )
-                {
-                    fsm.SetState( "Set Dir to 0" );
-                }
-            }
+            //    if( fsm != null )
+            //    {
+            //        fsm.SetState( "Set Dir to 0" );
+            //    }
+            //}
         }
 
         void FixRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
         {
-            foreach( Transform t in newEnemy.GetComponentsInChildren<Transform>( true ) )
+            //TODO: store this value off in our mod and set it to true in the scenes that care about it... but for now....
+            if(newEnemy.name.Contains( "Mega Zombie Beam Miner" ) ) 
             {
-                foreach( Component c in t.GetComponents<Component>() )
-                {
-                    TryFixPlayMakerFSM( newEnemy, c );
-                }
+                HeroController.instance.playerData.SetBoolInternal( "killedMegaBeamMiner", false );
             }
+
+            //foreach( Transform t in newEnemy.GetComponentsInChildren<Transform>( true ) )
+            //{
+            //    foreach( Component c in t.GetComponents<Component>() )
+            //    {
+            //        TryFixPlayMakerFSM( newEnemy, c );
+            //    }
+            //}
         }
 
 
@@ -1118,14 +1130,15 @@ namespace EnemyRandomizerMod
                 newEnemy.transform.rotation = Quaternion.identity;
             }
             
+            //TODO: after next content patch is out
             if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
             {
                 //Dev.Log( "Old rotation = " + newEnemy.transform.rotation.eulerAngles );
                 //Quaternion rotate = Quaternion.Euler(new Vector3(0f,0f,-180f));
                 //newEnemy.transform.rotation = rotate * oldEnemy.transform.rotation;
                 //Dev.Log( "New rotation = " + newEnemy.transform.rotation.eulerAngles );
-                ( ContractorManager.Instance ).StartCoroutine( RotationCorrector( newEnemy, oldEnemy.transform.rotation, 4f ) );
-                newEnemy.PrintSceneHierarchyTree(true);
+                //( ContractorManager.Instance ).StartCoroutine( RotationCorrector( newEnemy, oldEnemy.transform.rotation, 1.5f ) );
+                //newEnemy.PrintSceneHierarchyTree(true);
                 //crawler = newEnemy;
             }
 
@@ -1150,6 +1163,33 @@ namespace EnemyRandomizerMod
 
                 time -= Time.deltaTime;
                 yield return new WaitForEndOfFrame();
+            }
+            yield break;
+        }
+
+        public IEnumerator PositionCorrectorProjection( GameObject newEnemy, Quaternion matchDir, Vector2 origin, Vector2 dir, float max, float startDelay = 0f, float timeout = 4f )
+        {
+            Dev.Log( "WAITING" );
+            yield return new WaitForSeconds( startDelay );
+            Dev.Log( "STARTING" );
+            float time = timeout;
+            while( time > 0f )
+            {
+                yield return new WaitForEndOfFrame();
+                //player could leave screen while this is happening.. or other strange things could happen
+                if( newEnemy == null )
+                    yield break;
+
+                time -= Time.deltaTime;
+
+                Dev.Log( "Searching for match: "+ newEnemy.transform.rotation.eulerAngles.z +" VS "+ matchDir.eulerAngles.z );
+                if( !Mathf.Approximately( newEnemy.transform.rotation.eulerAngles.z, matchDir.eulerAngles.z ) )
+                    continue;
+
+                Dev.Log( "found match! Projecting to new pos..." );
+                newEnemy.transform.position = GetPointOn(origin,dir,max);
+                Dev.CreateLineRenderer( origin, newEnemy.transform.position, Color.white, -2f );
+                break;
             }
             yield break;
         }
@@ -1198,6 +1238,11 @@ namespace EnemyRandomizerMod
                 Vector3 toGround = GetVectorToGround(newEnemy);
                 Vector3 onGround = GetPointOnGround(newEnemy);
 
+                //if( newEnemy.name.Contains( "Mega Zombie Beam Miner" ) )
+                //{
+                //    onGround += new Vector3( -70f, 0f, 0f );
+                //}
+
                 newEnemy.transform.position = onGround;
 
                 BoxCollider2D collider = newEnemy.GetComponent<BoxCollider2D>();
@@ -1206,7 +1251,16 @@ namespace EnemyRandomizerMod
                 //TODO: TEST, see if this fixes him spawning in the roof
                 if( newEnemy.name.Contains( "Mantis Traitor Lord" ) )
                 {
-                    ( ContractorManager.Instance ).StartCoroutine( PositionCorrector( newEnemy, newEnemy.transform.position + new Vector3( positionOffset.x, positionOffset.y, positionOffset.z ) ) );
+                    ( ContractorManager.Instance ).StartCoroutine( PositionCorrector( newEnemy, newEnemy.transform.position + positionOffset ) );
+                }
+
+                if( newEnemy.name.Contains( "Mega Zombie Beam Miner" ) )
+                {
+                    //positionOffset += Vector3.up * 1.0f;
+
+
+                    //newEnemy.transform.position = HeroController.instance.transform.position;
+                    //( ContractorManager.Instance ).StartCoroutine( PositionCorrector( newEnemy, newEnemy.transform.position + positionOffset, 15f ) );
                 }
             }
 
@@ -1215,14 +1269,7 @@ namespace EnemyRandomizerMod
                 Vector2 originalUp = oldEnemy.transform.up.normalized;
 
                 Vector2 ePos = newEnemy.transform.position;
-
-
-                //TODO: remove me, for testing only
-                if( newEnemy.name.Contains( "Lazer" ) )
-                {
-                    ePos += new Vector2( -70f, 0f );
-                }
-
+                
                 Vector2 upOffset = ePos + originalUp * 5f;
 
                 Vector2 originalDown = -originalUp;
@@ -1282,18 +1329,18 @@ namespace EnemyRandomizerMod
                 {
                     positionOffset = originalUp * 1f;
 
-                    //TODO: test this, needs to be closer to the ground than the rest
+                    //TODO: test this, fix this up after next content patch is out
                     if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
                     {
                         //suppposedly 1/2 their Y collider space offset should be 1.25
-                        positionOffset = -finalDir * 0.0f;
-                        ( ContractorManager.Instance ).StartCoroutine( PositionCorrector( newEnemy, onGround, 1f ) );
+                        positionOffset = -finalDir * 1.0f;
+                        //( ContractorManager.Instance ).StartCoroutine( PositionCorrectorProjection( newEnemy, newEnemy.transform.rotation, upOffset, finalDir, 10f, 1f, 10f ) );
                     }
 
                     //TODO: test this, needs to be farther from the ground than the rest
                     if( newEnemy.name.Contains( "Mines Crawler" ) )
                     {
-                        positionOffset = -finalDir * 1.4f;
+                        positionOffset = -finalDir * 1.5f;
                     }
                 }
                 //show adjustment

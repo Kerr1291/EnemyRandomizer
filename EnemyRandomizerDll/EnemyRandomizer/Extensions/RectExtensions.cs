@@ -13,9 +13,19 @@ namespace nv
             return input.position;
         }
 
+        public static Vector2 TopRight( this Rect input )
+        {
+            return new Vector2( input.xMax, input.position.y );
+        }
+
         public static Vector2 BottomRight( this Rect input )
         {
             return new Vector2( input.xMax, input.yMax );
+        }
+
+        public static Vector2 BottomLeft( this Rect input )
+        {
+            return new Vector2( input.position.x, input.yMax );
         }
 
         public static void Clamp( this Rect area, Vector2 pos, Vector2 extents )

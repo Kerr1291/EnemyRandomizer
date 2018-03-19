@@ -272,7 +272,7 @@ namespace EnemyRandomizerMod.Menu
 
         void ShowNonInGameOptions( bool show )
         {
-            Dev.LogVar( "show",show );
+            //Dev.LogVar( "show",show );
 
             if( mainMenuOnlyItems == null )
                 return;
