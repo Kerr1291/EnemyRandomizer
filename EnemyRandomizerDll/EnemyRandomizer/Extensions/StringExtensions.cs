@@ -93,9 +93,12 @@ namespace nv
             if( str.Contains( "mask_container" ) )
                 return true;
 
-            if( str.Contains( "Prompt" ) )
+            if( str.Contains( "_Scenery" ) )
                 return true;
 
+            if( str.Contains( "Prompt" ) )
+                return true;
+            
             return false;
         }
 

@@ -13,7 +13,7 @@ namespace EnemyRandomizerMod
 {
     public class EnemyRandomizerDatabase
     {
-        public EnemyRandomizerDatabase Instance { get; private set; }
+        public static EnemyRandomizerDatabase Instance { get; private set; }
 
         CommunicationNode comms;
 
@@ -21,7 +21,9 @@ namespace EnemyRandomizerMod
         public List<GameObject> loadedEnemyPrefabs = new List<GameObject>();
         public List<string> loadedEnemyPrefabNames = new List<string>();
         public List<string> uniqueEnemyTypes = new List<string>();
-        
+
+        public Dictionary<string, GameObject> loadedEffectPrefabs = new Dictionary<string, GameObject>();
+
         public EnemyRandomizerDatabase()
         {
         }
@@ -73,8 +75,10 @@ namespace EnemyRandomizerMod
         static List<int> testTypeScenes = new List<int>()
         {
             //7, //test flame spawn
-            241, //test crystal guardian and Zombie Beam Miner(244)
-            276, //testing tiny spider
+            241,
+            244, //test crystal guardian and Zombie Beam Miner(244)
+            34,
+            //276, //testing tiny spider
             183, //testing garden zombie
 
             //test these for mage??
@@ -83,6 +87,8 @@ namespace EnemyRandomizerMod
 
         static List<int> enemyTypeScenes = new List<int>()
         {
+            241,  //LOAD THIS SCENE FIRST -- has laser impact special objects that we want
+
             7,//tutorial scene
 
             28,
@@ -136,9 +142,7 @@ namespace EnemyRandomizerMod
             //232,//(crystal flyer) -- TEST, don't seem to need this!
             234,
 
-            241,
             243,
-            244,
             259,
             269,
             271,
@@ -155,6 +159,21 @@ namespace EnemyRandomizerMod
             340,
             358,
             362
+        };
+
+
+
+        //TODO: place health cocoons around places
+        //for most of these objects, set the "PersistentBoolItem" component to = that of the original
+        public static List<string> effectObjectNames = new List<string>()
+        {
+            //load from crystal guardian scene 241
+            "Beam Impact",
+            "Beam Ball",
+            "Beam Point L",
+            "Beam Point R",
+            "Beam",
+            "Crystal Rain"
         };
 
 
@@ -278,7 +297,7 @@ namespace EnemyRandomizerMod
             //City of tears
             "Gorgeous Husk", //82
             
-            "Zombie Runner Sp", //271
+            "Zombie Runner Sp", //271 ???
             "Zombie Runner", //90
 
             "Zombie Barger", //90
@@ -357,7 +376,7 @@ namespace EnemyRandomizerMod
             //Crystal Peak
             "Laser Turret Frames", //234
 
-            "Mega Zombie Beam Miner", //241 -- has camera issues, don't load for now until we work on a fix
+            //"Mega Zombie Beam Miner", //241 --  TEMP 
 
             //"Zombie Miner", //243 -- TEMP
             //"Crystallised Lazer Bug", //243 -- TEMP
@@ -369,10 +388,10 @@ namespace EnemyRandomizerMod
             "Baby Centipede", //259
             "Centipede Hatcher", //???? (find scene for this)
 
-            "Slash Spider", //271
+            //"Slash Spider", //271 -- TEMP
             "Spider Mini", //271
-            "Zombie Spider 1", //271 -- TODO: put a filter in to NOT use him a replacement
-            "Zombie Spider 2", //271
+            //"Zombie Spider 1", //271 TEMP -- TODO: put a filter in to NOT use him a replacement
+            //"Zombie Spider 2", //271 TEMP
 
             "Tiny Spider", //276
             //"Spider Flyer", //--TEMP

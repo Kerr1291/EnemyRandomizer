@@ -517,6 +517,12 @@ namespace EnemyRandomizerMod
 
                     int buildIndex = loadedScene.buildIndex;
 
+                    //load our custom enemies for a scene here (TODO: move into a function)
+                    if(loadedScene.name == "Town")
+                    {
+                        CreateMemeEnemy();
+                    }
+
                     //if(!printedScenees.Contains(buildIndex))
                     //{
                     //    printedScenees.Add( buildIndex );
@@ -593,10 +599,10 @@ namespace EnemyRandomizerMod
             //iterate over the loaded scenes
             for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
             {
-                Scene currentScene = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
+                Scene sceneAti = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
 
                 //iterate over the loaded game objects
-                GameObject[] rootGameObjects = currentScene.GetRootGameObjects();
+                GameObject[] rootGameObjects = sceneAti.GetRootGameObjects();
 
                 foreach( GameObject rootGameObject in rootGameObjects )
                 {
@@ -733,6 +739,48 @@ namespace EnemyRandomizerMod
             if( isRandoEnemy )
                 RandomizeEnemy( potentialEnemy );
         }
+        
+        void CreateMemeEnemy()
+        {
+            if( GameObject.Find( "Rando Custom: Super Spitter" ) != null )
+                return;
+
+            Dev.Log( "Creating meme ");
+
+            int replacementIndex = 0;
+                        
+            GameObject enemyPrefab = GetEnemyTypePrefab("Super Spitter", ref replacementIndex);
+            if( enemyPrefab == null )
+                return;
+
+            //Vector3 position = new Vector3(226.4f, 10.0f, 0.0f);
+            Vector3 position = new Vector3(126.4f, 20.0f, 0.0f);
+            GameObject newEnemy = PlaceEnemy( enemyPrefab, enemyPrefab, replacementIndex, position );
+
+            newEnemy.name = "Rando Custom: Super Spitter";
+            newEnemy.SetEnemyGeoRates( 100, 75, 50 );
+
+            newEnemy.transform.localScale = new Vector3( 3.2f, 3.2f, 3.2f );
+            newEnemy.SetEnemyHP( 10000 );
+
+            //TODO: copy the roar FSM from another enemy?
+
+            HutongGames.PlayMaker.Actions.DistanceFly df = newEnemy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.DistanceFly>("Distance Fly","spitter");
+            df.distance.Value *= 1.5f;
+            df.acceleration.Value *= 8f;
+            df.speedMax.Value *= 200f;
+
+            HutongGames.PlayMaker.Actions.FireAtTarget fa = newEnemy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.FireAtTarget>("Fire","spitter");
+            fa.speed.Value *= 2.24f;
+
+            GameObject bullet = newEnemy.FindGameObjectInChildren( "BulletSprite (1)" );
+            bullet.transform.localScale = Vector3.one * 3.2f;
+
+            DebugOnWake d = EnemyRandomizerLoader.Instance.AddDebugOnWake(newEnemy);
+            d.monitorFSMStates = true;
+
+            newEnemy.PrintSceneHierarchyTree( true );
+        }
 
         void RandomizeEnemy( GameObject enemy )
         {
@@ -794,8 +842,7 @@ namespace EnemyRandomizerMod
             PositionRandomizedEnemy( newEnemy, oldEnemy );
 
             ModifyRandomizedEnemyGeo( newEnemy, oldEnemy );
-
-            //TODO: move this to init and only run it on some enemies?
+            
             FixRandomizedEnemy( newEnemy, oldEnemy );
 
             //must happen after position
@@ -867,6 +914,12 @@ namespace EnemyRandomizerMod
             {
                 newEnemy.transform.localScale = newEnemy.transform.localScale * .5f;
             }
+
+            if( GetTypeSize( GetTypeFlags( newEnemy ) ) == FLAGS.BIG && GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.MED )
+            {
+                newEnemy.transform.localScale = newEnemy.transform.localScale * .7f;
+            }
+
             if( GetTypeSize( GetTypeFlags( newEnemy ) ) == FLAGS.MED && GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.SMALL )
             {
                 newEnemy.transform.localScale = newEnemy.transform.localScale * .75f;
@@ -875,6 +928,12 @@ namespace EnemyRandomizerMod
             if( newEnemy.name.Contains( "Mawlek Turret" ) )
             {
                 newEnemy.transform.localScale = originalNewEnemyScale * .6f;
+            }
+
+            //shrink him!
+            if( newEnemy.name.Contains( "Mantis Traitor Lord" ) && ( GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.SMALL || GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.MED ) )
+            {
+                newEnemy.transform.localScale = newEnemy.transform.localScale * .4f;
             }
         }
 
@@ -887,51 +946,51 @@ namespace EnemyRandomizerMod
 
         public static void TryInitPlayMakerFSM( GameObject newEnemy )
         {
-            if( newEnemy.name.Contains( "Electric Mage" ) )
-            {
-                PlayMakerFSM fsm = null;
+            //if( newEnemy.name.Contains( "Electric Mage" ) )
+            //{
+            //    PlayMakerFSM fsm = null;
 
-                foreach( Component c in newEnemy.GetComponents<Component>() )
-                {
-                    if( c as PlayMakerFSM != null )
-                    {
-                        if( ( c as PlayMakerFSM ).FsmName == "Electric Mage" )
-                        {
-                            fsm = ( c as PlayMakerFSM );
-                            break;
-                        }
-                    }
-                }
+            //    foreach( Component c in newEnemy.GetComponents<Component>() )
+            //    {
+            //        if( c as PlayMakerFSM != null )
+            //        {
+            //            if( ( c as PlayMakerFSM ).FsmName == "Electric Mage" )
+            //            {
+            //                fsm = ( c as PlayMakerFSM );
+            //                break;
+            //            }
+            //        }
+            //    }
 
-                if( fsm != null )
-                {
-                    fsm.SendEvent( "IN RANGE" );
-                    fsm.SendEvent( "FINISHED" );
-                    fsm.SendEvent( "WAKE" );
-                }
-            }
-            else if( newEnemy.name.Contains( "Mage" ) )
-            {
-                PlayMakerFSM fsm = null;
+            //    if( fsm != null )
+            //    {
+            //        fsm.SendEvent( "IN RANGE" );
+            //        fsm.SendEvent( "FINISHED" );
+            //        fsm.SendEvent( "WAKE" );
+            //    }
+            //}
+            //else if( newEnemy.name.Contains( "Mage" ) )
+            //{
+            //    PlayMakerFSM fsm = null;
 
-                foreach( Component c in newEnemy.GetComponents<Component>() )
-                {
-                    if( c as PlayMakerFSM != null )
-                    {
-                        if( ( c as PlayMakerFSM ).FsmName == "Mage" )
-                        {
-                            fsm = ( c as PlayMakerFSM );
-                            break;
-                        }
-                    }
-                }
+            //    foreach( Component c in newEnemy.GetComponents<Component>() )
+            //    {
+            //        if( c as PlayMakerFSM != null )
+            //        {
+            //            if( ( c as PlayMakerFSM ).FsmName == "Mage" )
+            //            {
+            //                fsm = ( c as PlayMakerFSM );
+            //                break;
+            //            }
+            //        }
+            //    }
 
-                if( fsm != null )
-                {
-                    fsm.SendEvent( "IN RANGE" );
-                    fsm.SendEvent( "WAKE" );
-                }
-            }
+            //    if( fsm != null )
+            //    {
+            //        fsm.SendEvent( "IN RANGE" );
+            //        fsm.SendEvent( "WAKE" );
+            //    }
+            //}
             //else if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
             //{
             //    PlayMakerFSM fsm = null;
@@ -958,110 +1017,273 @@ namespace EnemyRandomizerMod
         void FixRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
         {
             //TODO: store this value off in our mod and set it to true in the scenes that care about it... but for now....
-            if(newEnemy.name.Contains( "Mega Zombie Beam Miner" ) ) 
+            if(newEnemy.name.Contains( "Zombie Beam Miner" ) ) 
             {
-                HeroController.instance.playerData.SetBoolInternal( "killedMegaBeamMiner", false );
-            }
+                //HeroController.instance.playerData.SetBoolInternal( "killedMegaBeamMiner", false );
+                PersistentBoolItem pbi = newEnemy.GetComponent<PersistentBoolItem>();
+                if( pbi != null )
+                {
+                    pbi.semiPersistent = true;
+                    //pbi.persistentBoolData.activated = true;
+                    pbi.persistentBoolData.sceneName = currentScene;
+                }
 
-            //foreach( Transform t in newEnemy.GetComponentsInChildren<Transform>( true ) )
-            //{
-            //    foreach( Component c in t.GetComponents<Component>() )
-            //    {
-            //        TryFixPlayMakerFSM( newEnemy, c );
-            //    }
-            //}
+                foreach( Transform t in newEnemy.GetComponentsInChildren<Transform>( true ) )
+                {
+                    foreach( Component c in t.GetComponents<Component>() )
+                    {
+                        TryFixPlayMakerFSM( newEnemy, c );
+                    }
+                }
+            }
         }
 
 
-        public static void TryFixPlayMakerFSM( GameObject newEnemy, Component c )
+        public void TryFixPlayMakerFSM( GameObject newEnemy, Component c )
         {
-            if( newEnemy.name.Contains( "Mage" ) && !newEnemy.name.Contains( "Knight" ) )
-                return;
-
             try
             {
-                if( c as PlayMakerFSM != null )
+                PlayMakerFSM fsm = c as PlayMakerFSM;
+                if( fsm != null )
                 {
-                    foreach( var s in ( c as PlayMakerFSM ).FsmStates )
+                    foreach( var s in fsm.FsmStates )
                     {
                         foreach( var a in s.Actions )
                         {
-                            HutongGames.PlayMaker.Actions.GetColliderRange gcr = a as HutongGames.PlayMaker.Actions.GetColliderRange;
-                            if( gcr != null )
+                            HutongGames.PlayMaker.Actions.GetAngleToTarget2D ga2d = a as HutongGames.PlayMaker.Actions.GetAngleToTarget2D;
+                            if( ga2d != null )
                             {
-                                if( gcr.gameObject == null )
+                                if( newEnemy.name.Contains( "Mega Zombie Beam Miner" ) )
                                 {
-                                    Dev.Log( "TESTING PLAYMAKER FIX GetColliderRange" );
-                                    PlayMakerFSM fsmProxy = ( c as PlayMakerFSM );
-                                    //if( fsmProxy == null )
+                                    //fix the targetting angle
+                                    {
+                                        HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsm.Fsm.GameObject);
+                                        HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
+
+                                        HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
+                                        goTarget.GameObject = goa;
+                                        goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+                                        ga2d.gameObject = goTarget;
+                                        ga2d.target = gob;
+                                    }
+
+                                    //fix the targetting source?
+                                    {
+                                        HutongGames.PlayMaker.Actions.GetPosition action = a as HutongGames.PlayMaker.Actions.GetPosition;
+                                        if( action != null && ( s.Name == "Aim Left" || s.Name == "Aim Right" || s.Name == "Aim" ) )
+                                        {
+                                            if( action.gameObject.GameObject.Name == "Beam Point R" || action.gameObject.GameObject.Name == "Beam Point L" )
+                                            {
+                                                GameObject beamPoint = GameObject.Instantiate( database.loadedEffectPrefabs[ action.gameObject.GameObject.Name ] );
+                                                HutongGames.PlayMaker.FsmGameObject fsmGO = new HutongGames.PlayMaker.FsmGameObject(beamPoint);
+
+                                                HutongGames.PlayMaker.FsmOwnerDefault fsmOwnerDefault = new HutongGames.PlayMaker.FsmOwnerDefault();
+                                                fsmOwnerDefault.GameObject = fsmGO;
+                                                fsmOwnerDefault.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+
+                                                action.gameObject = fsmOwnerDefault;
+                                            }
+                                            if( action.gameObject.GameObject.Name == "Beam Origin" )
+                                            {
+                                                GameObject beamOrigin = newEnemy.FindGameObjectInChildren("Beam Origin");
+                                                HutongGames.PlayMaker.FsmGameObject fsmGO = new HutongGames.PlayMaker.FsmGameObject(beamOrigin);
+
+                                                HutongGames.PlayMaker.FsmOwnerDefault fsmOwnerDefault = new HutongGames.PlayMaker.FsmOwnerDefault();
+                                                fsmOwnerDefault.GameObject = fsmGO;
+                                                fsmOwnerDefault.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+
+                                                action.gameObject = fsmOwnerDefault;
+                                            }
+                                        }
+                                    }
+
+                                    //fix the targetting dest?
+                                    {
+                                        HutongGames.PlayMaker.Actions.SetPosition action = a as HutongGames.PlayMaker.Actions.SetPosition;
+                                        if( action != null && ( s.Name == "Aim Left" || s.Name == "Aim Right" || s.Name == "Aim" ) )
+                                        {
+                                            if( action.gameObject.GameObject.Name == "Beam Ball" )
+                                            {
+                                                GameObject beamBall = GameObject.Instantiate( database.loadedEffectPrefabs[ action.gameObject.GameObject.Name ] );
+                                                HutongGames.PlayMaker.FsmGameObject fsmGO = new HutongGames.PlayMaker.FsmGameObject(beamBall);
+
+                                                HutongGames.PlayMaker.FsmOwnerDefault fsmOwnerDefault = new HutongGames.PlayMaker.FsmOwnerDefault();
+                                                fsmOwnerDefault.GameObject = fsmGO;
+                                                fsmOwnerDefault.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+
+                                                action.gameObject = fsmOwnerDefault;
+                                            }
+
+                                            if( action.gameObject.GameObject.Name == "Beam" )
+                                            {
+                                                GameObject beam = GameObject.Instantiate( database.loadedEffectPrefabs[ action.gameObject.GameObject.Name ] );
+                                                HutongGames.PlayMaker.FsmGameObject fsmGO = new HutongGames.PlayMaker.FsmGameObject(beam);
+
+                                                HutongGames.PlayMaker.FsmOwnerDefault fsmOwnerDefault = new HutongGames.PlayMaker.FsmOwnerDefault();
+                                                fsmOwnerDefault.GameObject = fsmGO;
+                                                fsmOwnerDefault.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+
+                                                action.gameObject = fsmOwnerDefault;
+                                            }
+                                        }
+                                    }
+                                }
+                                else if( newEnemy.name.Contains( "Zombie Beam Miner" ) )
+                                {
+                                    Dev.Log( "DebugFSMS fixing zombie beam miner" );
+                                    //fix the targetting angle
+                                    {
+                                        HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsm.Fsm.GameObject);
+                                        HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
+
+                                        HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
+                                        goTarget.GameObject = goa;
+                                        goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+                                        ga2d.gameObject = goTarget;
+                                        ga2d.target = gob;
+                                    }
+
+                                    //fix the targetting source?
                                     //{
-                                    //    continue;
+                                    //    HutongGames.PlayMaker.Actions.GetPosition action = a as HutongGames.PlayMaker.Actions.GetPosition;
+                                    //    if( action != null && ( s.Name == "Aim Left" || s.Name == "Aim Right" || s.Name == "Aim" ) )
+                                    //    {
+                                    //        if( action.gameObject.GameObject.Name == "Beam Point R" || action.gameObject.GameObject.Name == "Beam Point L" )
+                                    //        {
+                                    //            GameObject beamPoint = GameObject.Instantiate( database.loadedEffectPrefabs[ action.gameObject.GameObject.Name ] );
+                                    //            HutongGames.PlayMaker.FsmGameObject fsmGO = new HutongGames.PlayMaker.FsmGameObject(beamPoint);
+
+                                    //            HutongGames.PlayMaker.FsmOwnerDefault fsmOwnerDefault = new HutongGames.PlayMaker.FsmOwnerDefault();
+                                    //            fsmOwnerDefault.GameObject = fsmGO;
+                                    //            fsmOwnerDefault.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+
+                                    //            action.gameObject = fsmOwnerDefault;
+                                    //        }
+                                    //        if( action.gameObject.GameObject.Name == "Beam Origin" )
+                                    //        {
+                                    //            GameObject beamOrigin = newEnemy.FindGameObjectInChildren("Beam Origin");
+                                    //            HutongGames.PlayMaker.FsmGameObject fsmGO = new HutongGames.PlayMaker.FsmGameObject(beamOrigin);
+
+                                    //            HutongGames.PlayMaker.FsmOwnerDefault fsmOwnerDefault = new HutongGames.PlayMaker.FsmOwnerDefault();
+                                    //            fsmOwnerDefault.GameObject = fsmGO;
+                                    //            fsmOwnerDefault.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+
+                                    //            action.gameObject = fsmOwnerDefault;
+                                    //        }
+                                    //    }
                                     //}
 
-                                    //testing...
-                                    HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
-                                    goTarget.GameObject = fsmProxy.Fsm.GameObject;
-                                    goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
-                                    //HutongGames.PlayMaker.FsmEventTarget fsmEventTarget = new HutongGames.PlayMaker.FsmEventTarget();
-                                    //fsmEventTarget.excludeSelf = false;
-                                    //fsmEventTarget.target = HutongGames.PlayMaker.FsmEventTarget.EventTarget.GameObject;
-                                    //fsmEventTarget.gameObject = goTarget;
-                                    //fsmEventTarget.sendToChildren = false;
+                                    ////fix the targetting dest?
+                                    //{
+                                    //    HutongGames.PlayMaker.Actions.SetPosition action = a as HutongGames.PlayMaker.Actions.SetPosition;
+                                    //    if( action != null && ( s.Name == "Aim Left" || s.Name == "Aim Right" || s.Name == "Aim" ) )
+                                    //    {
+                                    //        if( action.gameObject.GameObject.Name == "Beam Ball" )
+                                    //        {
+                                    //            GameObject beamBall = GameObject.Instantiate( database.loadedEffectPrefabs[ action.gameObject.GameObject.Name ] );
+                                    //            HutongGames.PlayMaker.FsmGameObject fsmGO = new HutongGames.PlayMaker.FsmGameObject(beamBall);
 
-                                    gcr.gameObject = goTarget;
-                                    Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
+                                    //            HutongGames.PlayMaker.FsmOwnerDefault fsmOwnerDefault = new HutongGames.PlayMaker.FsmOwnerDefault();
+                                    //            fsmOwnerDefault.GameObject = fsmGO;
+                                    //            fsmOwnerDefault.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+
+                                    //            action.gameObject = fsmOwnerDefault;
+                                    //        }
+
+                                    //        if( action.gameObject.GameObject.Name == "Beam" )
+                                    //        {
+                                    //            GameObject beam = GameObject.Instantiate( database.loadedEffectPrefabs[ action.gameObject.GameObject.Name ] );
+                                    //            HutongGames.PlayMaker.FsmGameObject fsmGO = new HutongGames.PlayMaker.FsmGameObject(beam);
+
+                                    //            HutongGames.PlayMaker.FsmOwnerDefault fsmOwnerDefault = new HutongGames.PlayMaker.FsmOwnerDefault();
+                                    //            fsmOwnerDefault.GameObject = fsmGO;
+                                    //            fsmOwnerDefault.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+
+                                    //            action.gameObject = fsmOwnerDefault;
+                                    //        }
+                                    //    }
+                                    //}
                                 }
                             }
 
-                            HutongGames.PlayMaker.Actions.ChaseObjectV2 doc = a as HutongGames.PlayMaker.Actions.ChaseObjectV2;
-                            if( doc != null )
-                            {
-                                Dev.Log( "TESTING PLAYMAKER FIX ChaseObjectV2" );
-                                //if( doc.target != null )
-                                //    continue;
+                            //HutongGames.PlayMaker.Actions.GetColliderRange gcr = a as HutongGames.PlayMaker.Actions.GetColliderRange;
+                            //if( gcr != null )
+                            //{
+                            //    if( gcr.gameObject == null )
+                            //    {
+                            //        Dev.Log( "TESTING PLAYMAKER FIX GetColliderRange" );
+                            //        PlayMakerFSM fsmProxy = ( c as PlayMakerFSM );
+                            //        //if( fsmProxy == null )
+                            //        //{
+                            //        //    continue;
+                            //        //}
 
-                                HutongGames.PlayMaker.FsmGameObject go = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
+                            //        //testing...
+                            //        HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
+                            //        goTarget.GameObject = fsmProxy.Fsm.GameObject;
+                            //        goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+                            //        //HutongGames.PlayMaker.FsmEventTarget fsmEventTarget = new HutongGames.PlayMaker.FsmEventTarget();
+                            //        //fsmEventTarget.excludeSelf = false;
+                            //        //fsmEventTarget.target = HutongGames.PlayMaker.FsmEventTarget.EventTarget.GameObject;
+                            //        //fsmEventTarget.gameObject = goTarget;
+                            //        //fsmEventTarget.sendToChildren = false;
 
-                                doc.target = go;
-                                Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
-                            }
+                            //        gcr.gameObject = goTarget;
+                            //        Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
+                            //    }
+                            //}
+
+                            //HutongGames.PlayMaker.Actions.ChaseObjectV2 doc = a as HutongGames.PlayMaker.Actions.ChaseObjectV2;
+                            //if( doc != null )
+                            //{
+                            //    Dev.Log( "TESTING PLAYMAKER FIX ChaseObjectV2" );
+                            //    //if( doc.target != null )
+                            //    //    continue;
+
+                            //    HutongGames.PlayMaker.FsmGameObject go = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
+
+                            //    doc.target = go;
+                            //    Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
+                            //}
 
 
-                            HutongGames.PlayMaker.Actions.FaceObject fo = a as HutongGames.PlayMaker.Actions.FaceObject;
-                            if( fo != null )
-                            {
-                                Dev.Log( "TESTING PLAYMAKER FIX FaceObject" );
-                                //if( fo.objectA != null )
-                                //    continue;
+                            //HutongGames.PlayMaker.Actions.FaceObject fo = a as HutongGames.PlayMaker.Actions.FaceObject;
+                            //if( fo != null )
+                            //{
+                            //    Dev.Log( "TESTING PLAYMAKER FIX FaceObject" );
+                            //    //if( fo.objectA != null )
+                            //    //    continue;
 
-                                PlayMakerFSM fsmProxy = ( c as PlayMakerFSM );
-                                HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsmProxy.Fsm.GameObject);
-                                HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
+                            //    PlayMakerFSM fsmProxy = ( c as PlayMakerFSM );
+                            //    HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsmProxy.Fsm.GameObject);
+                            //    HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
 
-                                fo.objectA = goa;
-                                fo.objectB = gob;
-                                Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
-                            }
+                            //    fo.objectA = goa;
+                            //    fo.objectB = gob;
+                            //    Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
+                            //}
 
 
-                            HutongGames.PlayMaker.Actions.CheckTargetDirection ctd = a as HutongGames.PlayMaker.Actions.CheckTargetDirection;
-                            if( ctd != null )
-                            {
-                                Dev.Log( "TESTING PLAYMAKER FIX CheckTargetDirection" );
-                                //if( ctd.target != null )
-                                //    continue;
+                            //HutongGames.PlayMaker.Actions.CheckTargetDirection ctd = a as HutongGames.PlayMaker.Actions.CheckTargetDirection;
+                            //if( ctd != null )
+                            //{
+                            //    Dev.Log( "TESTING PLAYMAKER FIX CheckTargetDirection" );
+                            //    //if( ctd.target != null )
+                            //    //    continue;
 
-                                PlayMakerFSM fsmProxy = ( c as PlayMakerFSM );
-                                HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsmProxy.Fsm.GameObject);
-                                HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
+                            //    PlayMakerFSM fsmProxy = ( c as PlayMakerFSM );
+                            //    HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsmProxy.Fsm.GameObject);
+                            //    HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
 
-                                HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
-                                goTarget.GameObject = goa;
-                                goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
-                                ctd.gameObject = goTarget;
-                                ctd.target = gob;
-                                Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
-                            }
+                            //    HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
+                            //    goTarget.GameObject = goa;
+                            //    goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+                            //    ctd.gameObject = goTarget;
+                            //    ctd.target = gob;
+                            //    Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
+                            //}
+
+
                         }
                     }
                 }
@@ -1211,25 +1433,31 @@ namespace EnemyRandomizerMod
             yield break;
         }
 
-        void PositionRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
+        //optional startingPos to use to place the enemy intstead of the old enemy's position
+        void PositionRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy, Vector3? startingPos = null )
         {
             //adjust the position to take into account the new monster type and/or size
             newEnemy.transform.position = oldEnemy.transform.position;
 
+            if( startingPos != null && startingPos.HasValue )
+            {
+                newEnemy.transform.position = startingPos.Value;
+            }
+
             Vector3 positionOffset = Vector3.zero;
 
             //TODO: needs more adjusting to figure out why it doesn't attack sometimes
-            if( newEnemy.name.Contains( "Electric Mage" ) )
-            {
-                Vector3 pos = oldEnemy.transform.position - new Vector3(-2f, -20f,0f);
-                ( ContractorManager.Instance ).StartCoroutine( PositionCorrector( newEnemy, pos ) );
-            }
+            //if( newEnemy.name.Contains( "Electric Mage" ) )
+            //{
+            //    Vector3 pos = oldEnemy.transform.position - new Vector3(-2f, -20f,0f);
+            //    ( ContractorManager.Instance ).StartCoroutine( PositionCorrector( newEnemy, pos ) );
+            //}
 
             //TODO: needs more work to figure out why it despawns? or teleports sometimes
-            if( newEnemy.name.Contains( "Giant Fly Col" ) )
-            {
-                ( ContractorManager.Instance ).StartCoroutine( PositionCorrector( newEnemy, oldEnemy.transform.position ) );
-            }
+            //if( newEnemy.name.Contains( "Giant Fly Col" ) )
+            //{
+            //    ( ContractorManager.Instance ).StartCoroutine( PositionCorrector( newEnemy, oldEnemy.transform.position ) );
+            //}
 
 
             int flags = GetTypeFlags(newEnemy);
@@ -1237,11 +1465,6 @@ namespace EnemyRandomizerMod
             {
                 Vector3 toGround = GetVectorToGround(newEnemy);
                 Vector3 onGround = GetPointOnGround(newEnemy);
-
-                //if( newEnemy.name.Contains( "Mega Zombie Beam Miner" ) )
-                //{
-                //    onGround += new Vector3( -70f, 0f, 0f );
-                //}
 
                 newEnemy.transform.position = onGround;
 
@@ -1252,15 +1475,6 @@ namespace EnemyRandomizerMod
                 if( newEnemy.name.Contains( "Mantis Traitor Lord" ) )
                 {
                     ( ContractorManager.Instance ).StartCoroutine( PositionCorrector( newEnemy, newEnemy.transform.position + positionOffset ) );
-                }
-
-                if( newEnemy.name.Contains( "Mega Zombie Beam Miner" ) )
-                {
-                    //positionOffset += Vector3.up * 1.0f;
-
-
-                    //newEnemy.transform.position = HeroController.instance.transform.position;
-                    //( ContractorManager.Instance ).StartCoroutine( PositionCorrector( newEnemy, newEnemy.transform.position + positionOffset, 15f ) );
                 }
             }
 
@@ -1333,6 +1547,7 @@ namespace EnemyRandomizerMod
                     if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
                     {
                         //suppposedly 1/2 their Y collider space offset should be 1.25
+                        //but whatever we set it at, they spawn pretty broken, so spawn them out of the ground a bit so they're still a threat
                         positionOffset = -finalDir * 1.0f;
                         //( ContractorManager.Instance ).StartCoroutine( PositionCorrectorProjection( newEnemy, newEnemy.transform.rotation, upOffset, finalDir, 10f, 1f, 10f ) );
                     }
@@ -1342,7 +1557,25 @@ namespace EnemyRandomizerMod
                     {
                         positionOffset = -finalDir * 1.5f;
                     }
+
+                    if( newEnemy.name.Contains( "Spider Mini" ) )
+                    {
+                        positionOffset = Vector3.zero;
+                    }
+
+                    //TODO: unknown what value this needs
+                    if( newEnemy.name.Contains( "Abyss Crawler" ) )
+                    {
+                        positionOffset = Vector3.zero;
+                    }
+
+                    //TODO: unknown what value this needs
+                    if( newEnemy.name.Contains( "Climber" ) )
+                    {
+                        positionOffset = Vector3.zero;
+                    }
                 }
+
                 //show adjustment
                 Dev.CreateLineRenderer( onGround, newEnemy.transform.position + positionOffset, Color.red, -1f );
             }
@@ -1622,6 +1855,67 @@ namespace EnemyRandomizerMod
             }
             return false;
         }
+
+        GameObject GetEnemyTypePrefab( string enemyTypeName, ref int randomReplacementIndex )
+        {
+            string enemyName = enemyTypeName;
+            string trimmedName = enemyName.TrimGameObjectName();
+            int enemyFlags = GetTypeFlags(trimmedName);
+            
+            //get the enemy's index
+            int enemyTypeIndex = database.loadedEnemyPrefabNames.IndexOf( enemyTypeName );
+
+            if( enemyTypeIndex < 0 )
+            {
+                Dev.Log( "Error: " + enemyTypeName + " not found in loaded enemy types." );
+                return null;
+            }
+
+            randomReplacementIndex = enemyTypeIndex;
+
+            //use the index to get the prefab
+            GameObject enemyTypePrefab = database.loadedEnemyPrefabs[enemyTypeIndex];
+
+            GameObject prefab = database.loadedEnemyPrefabs[enemyTypeIndex];
+            Dev.Log( "Getting prefab for monster: " + prefab.name + " from index " + enemyTypeIndex );
+            return prefab;
+        }
+
+
+        GameObject PlaceEnemy( GameObject oldEnemy, GameObject replacementPrefab, int prefabIndex, Vector3 pos )
+        {
+            GameObject newEnemy = InstantiateEnemy(replacementPrefab,oldEnemy);
+
+            //temporary, origianl name used to configure the enemy
+            newEnemy.name = database.loadedEnemyPrefabNames[ prefabIndex ];
+
+            //customize the randomized enemy
+            ScaleRandomizedEnemy( newEnemy, oldEnemy );
+            RotateRandomizedEnemy( newEnemy, oldEnemy );
+            PositionRandomizedEnemy( newEnemy, oldEnemy, pos );
+
+            ModifyRandomizedEnemyGeo( newEnemy, oldEnemy );
+
+            FixRandomizedEnemy( newEnemy, oldEnemy );
+
+            //must happen after position
+            NameRandomizedEnemy( newEnemy, prefabIndex );
+
+            try
+            {
+                newEnemy.SetActive( true );
+            }
+            catch( Exception e )
+            {
+                Dev.Log( "Exception trying to activate new enemy!" + e.Message );
+            }
+
+            InitRandomizedEnemy( newEnemy, oldEnemy );
+            
+            Dev.Log( "New stats for custom rando monster: " + newEnemy.name + " at " + newEnemy.transform.position + " with rotation " + newEnemy.transform.localRotation.eulerAngles );
+            return newEnemy;
+        }
+
 
         GameObject GetRandomEnemyReplacement( GameObject enemy, ref int randomReplacementIndex )
         {

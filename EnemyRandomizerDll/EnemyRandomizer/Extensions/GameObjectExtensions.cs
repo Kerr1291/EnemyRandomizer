@@ -50,7 +50,7 @@ namespace nv
 
             foreach( var t in gameObject.GetComponentsInChildren<Transform>( true ) )
             {
-                if( t.name.Contains( name ))
+                if( t.name.Contains( name ) )
                     return t.gameObject;
             }
             return null;
@@ -220,6 +220,150 @@ namespace nv
                 fsm.FsmVariables.GetFsmInt( "Geo Large" ).Value = otherFsm.FsmVariables.GetFsmInt( "Geo Large" ).Value;
                 fsm.FsmVariables.GetFsmInt( "Geo Large Extra" ).Value = otherFsm.FsmVariables.GetFsmInt( "Geo Large Extra" ).Value;
             }
+        }
+
+        public static int GetEnemyHP( this GameObject gameObject )
+        {
+            int hp = 0;
+            if( gameObject.GetEnemyFSM().Fsm.Variables.FindFsmInt( "HP" ) != null )
+            {
+                hp = FSMUtility.GetInt( gameObject.GetEnemyFSM(), "HP" );
+            }
+            return hp;
+        }
+
+        public static void SetEnemyHP( this GameObject gameObject, int newHP )
+        {
+            if( gameObject.GetEnemyFSM().Fsm.Variables.FindFsmInt( "HP" ) != null )
+            {
+                FSMUtility.SetInt( gameObject.GetEnemyFSM(), "HP", newHP );
+            }
+        }
+
+        //if fsmName is empty, try every state on all fsms
+        public static HutongGames.PlayMaker.FsmState GetFSMState( this GameObject gameObject, string stateName, string fsmName = "" )
+        {
+            foreach( PlayMakerFSM fsm in gameObject.GetComponents<PlayMakerFSM>() )
+            {
+                if( string.IsNullOrEmpty( fsmName ) || fsmName == fsm.FsmName )
+                {
+                    foreach( var s in fsm.FsmStates )
+                    {
+                        if( s.Name == stateName )
+                            return s;
+                    }
+                }
+            }
+            return null;
+
+            //        PlayMakerFSM fsm = c as PlayMakerFSM;
+            //        if( fsm != null )
+            //        {
+            //                foreach( var a in s.Actions )
+            //                {
+            //                    HutongGames.PlayMaker.Actions.GetAngleToTarget2D ga2d = a as HutongGames.PlayMaker.Actions.GetAngleToTarget2D;
+            //                    if( ga2d != null )
+            //                    {
+            //                        if( newEnemy.name.Contains( "Mega Zombie Beam Miner" ) )
+            //                        {
+            //                            //fix the targetting angle
+            //                            {
+            //                                HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsm.Fsm.GameObject);
+            //                                HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
+
+            //                                HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
+            //                                goTarget.GameObject = goa;
+            //                                goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+            //                                ga2d.gameObject = goTarget;
+            //                                ga2d.target = gob;
+            //                            }
+
+            //                            //fix the targetting source?
+            //                            {
+            //                                HutongGames.PlayMaker.Actions.GetPosition action = a as HutongGames.PlayMaker.Actions.GetPosition;
+            //                                if( action != null && ( s.Name == "Aim Left" || s.Name == "Aim Right" || s.Name == "Aim" ) )
+            //                                {
+            //                                    if( action.gameObject.GameObject.Name == "Beam Point R" || action.gameObject.GameObject.Name == "Beam Point L" )
+            //                                    {
+            //                                        GameObject beamPoint = GameObject.Instantiate( database.loadedEffectPrefabs[ action.gameObject.GameObject.Name ] );
+            //                                        HutongGames.PlayMaker.FsmGameObject fsmGO = new HutongGames.PlayMaker.FsmGameObject(beamPoint);
+
+            //                                        HutongGames.PlayMaker.FsmOwnerDefault fsmOwnerDefault = new HutongGames.PlayMaker.FsmOwnerDefault();
+            //                                        fsmOwnerDefault.GameObject = fsmGO;
+            //                                        fsmOwnerDefault.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+
+            //                                        action.gameObject = fsmOwnerDefault;
+            //                                    }
+        }
+
+        public static T GetFSMActionOnState<T>( this GameObject gameObject, string actionName, string stateName, string fsmName = "" ) where T : HutongGames.PlayMaker.FsmStateAction
+        {
+            var state = gameObject.GetFSMState(stateName,fsmName);
+            if( state != null )
+            {
+                foreach(var action in state.Actions)
+                {
+                    if(action.Name == actionName)
+                    {
+                        return action as T;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public static T GetFSMActionOnState<T>( this GameObject gameObject, string stateName, string fsmName = "" ) where T : HutongGames.PlayMaker.FsmStateAction
+        {
+            var state = gameObject.GetFSMState(stateName,fsmName);
+            if( state != null )
+            {
+                foreach( var action in state.Actions )
+                {
+                    if( action.GetType() == typeof(T) )
+                    {
+                        return action as T;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public static List<T> GetFSMActionsOnState<T>( this GameObject gameObject, string actionName, string stateName, string fsmName = "" ) where T : HutongGames.PlayMaker.FsmStateAction
+        {
+            List<T> actions = new List<T>();
+            var state = gameObject.GetFSMState(stateName,fsmName);
+            if( state != null )
+            {
+                foreach( var action in state.Actions )
+                {
+                    if( action.Name == actionName )
+                    {
+                        actions.Add(action as T);
+                    }
+                }
+            }
+
+            return actions;
+        }
+
+        public static List<T> GetFSMActionsOnState<T>( this GameObject gameObject, string stateName, string fsmName = "" ) where T : HutongGames.PlayMaker.FsmStateAction
+        {
+            List<T> actions = new List<T>();
+            var state = gameObject.GetFSMState(stateName,fsmName);
+            if( state != null )
+            {
+                foreach( var action in state.Actions )
+                {
+                    if( action.GetType() == typeof( T ) )
+                    {
+                        actions.Add( action as T );
+                    }
+                }
+            }
+
+            return actions;
         }
     }
 }

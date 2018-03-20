@@ -128,11 +128,11 @@ namespace EnemyRandomizerMod.Menu
             GameObject go = new GameObject( OptionsUIManagerName );
             optionsUIManager = go.AddComponent<RandomizerFauxUIManager>();
 
-            Vector2 buttonPos = new Vector2( -1400f, 400f );
-            Vector2 barPos = new Vector2( -1400f, 200f );
+            //Vector2 buttonPos = new Vector2( -1400f, 400f );
+            //Vector2 barPos = new Vector2( -1400f, 200f );
 
-            Vector2 buttonSize = new Vector2( 400f, 200f );
-            Vector2 barSize = new Vector2( 400f, 40f );
+            //Vector2 buttonSize = new Vector2( 400f, 200f );
+            //Vector2 barSize = new Vector2( 400f, 40f );
 
             loadingRoot = new GameObject( "Loading Root" );
 
@@ -151,7 +151,7 @@ namespace EnemyRandomizerMod.Menu
             loadingButton.gameObject.SetActive( true );
             loadingButton.transform.localScale = Vector3.one;
             loadingButton.transform.position = pos;
-            loadingButton.transform.Translate( new Vector3( -4.8f, 4f ) );
+            loadingButton.transform.Translate( new Vector3( -5.0f, 4f ) );
 
             //Dev.Log( "Finished loader ui elements" );
 
@@ -188,7 +188,7 @@ namespace EnemyRandomizerMod.Menu
             loadingBar.gameObject.SetActive( true );
             loadingBar.transform.localScale = Vector3.one;
             loadingBar.transform.position = pos;
-            loadingBar.transform.Translate( new Vector3( -4.8f, 3.7f ) );
+            loadingBar.transform.Translate( new Vector3( -5.1f, 3.7f ) );
 
             GameObject.DestroyImmediate( loadingBar.GetComponent<MenuButton>() );
             GameObject.DestroyImmediate( loadingBar.GetComponent<EventTrigger>() );

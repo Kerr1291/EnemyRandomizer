@@ -55,7 +55,7 @@ namespace EnemyRandomizerMod
         EnemyRandomizerDatabase database;
         EnemyRandomizerLogic logic;
 
-        string fullVersionName = "0.1.3b";
+        string fullVersionName = "0.1.3c";
         string modRootName = "RandoRoot";
         
         GameObject modRoot;
@@ -409,7 +409,7 @@ namespace EnemyRandomizerMod
         {
             if( otherCollider.gameObject.name != debugRecentHit )
             {
-                Dev.Log( "(" + otherCollider.gameObject.transform.position + ") HIT: " + otherCollider.gameObject.name );
+                Dev.Log( "Hero at "+HeroController.instance.transform.position+" HIT: " + otherCollider.gameObject.name + " at (" + otherCollider.gameObject.transform.position + ")");
                 debugRecentHit = otherCollider.gameObject.name;
             }
         }
