@@ -591,6 +591,8 @@ namespace EnemyRandomizerMod.Menu
                                             EnemyRandomizer.Instance.SetNoclip( false );
                                         if( optionName == EnemyRandomizerSettingsVars.RandomizeGeo )
                                             EnemyRandomizer.Instance.RandomizeGeo = false;
+                                        if( optionName == EnemyRandomizerSettingsVars.CustomEnemies )
+                                            EnemyRandomizer.Instance.CustomEnemies = false;
 
 
                                     }
@@ -607,6 +609,8 @@ namespace EnemyRandomizerMod.Menu
                                             EnemyRandomizer.Instance.SetNoclip( true );
                                         if( optionName == EnemyRandomizerSettingsVars.RandomizeGeo )
                                             EnemyRandomizer.Instance.RandomizeGeo = true;
+                                        if( optionName == EnemyRandomizerSettingsVars.CustomEnemies )
+                                            EnemyRandomizer.Instance.CustomEnemies = true;
                                     }
                                 }
 

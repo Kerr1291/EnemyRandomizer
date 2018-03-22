@@ -19,26 +19,13 @@ namespace EnemyRandomizerMod
      *  NOTES
      * 
      * 
-     * 
-     * --add Centipede Hatcher to rando monsters?
-     * they're extra dangerous because theirs spawns are randomized
-     * 
      * --health scuttler is the blue health bug
      * 
      * --things replacing baby centipede need to be adjusted to be sure they're in a safe spot like the siblings since they can spawn inside the ground
      * 
      * --add? Tentacle Box monster
      * 
-     * --crystal guardian will have to be removed or have its camera effect fixed, it causes the camera to pan way off to the side on activation
-     * 
-     * --mage knight seems to have spawning issue, need to experiement with it more
-     * 
      * --removed mender bug as he was always showing up as disabled
-     * 
-     * 
-     * //Possible way to show enemy hitboxes:
-     *   https://github.com/AllanBishop/UnityPhysicsDebugDraw2D
-     * 
      * 
      * 
      */
@@ -55,7 +42,7 @@ namespace EnemyRandomizerMod
         EnemyRandomizerDatabase database;
         EnemyRandomizerLogic logic;
 
-        string fullVersionName = "0.1.3c";
+        string fullVersionName = "0.1.4";
         string modRootName = "RandoRoot";
         
         GameObject modRoot;
@@ -163,6 +150,19 @@ namespace EnemyRandomizerMod
             }
         }
 
+        //if custom enemies is enabled, then we are allowed to add custom enemies that don't exist in the base game
+        bool customEnemies = false;
+        public bool CustomEnemies {
+            get {
+                return customEnemies;
+            }
+            set {
+                if( GlobalSettings != null )
+                    GlobalSettings.CustomEnemies = value;
+                customEnemies = value;
+            }
+        }
+
         public override void Initialize()
         {
             if(Instance != null)
@@ -234,6 +234,7 @@ namespace EnemyRandomizerMod
                 ChaosRNG = false;
                 RoomRNG = true;
                 RandomizeGeo = false;
+                CustomEnemies = false;
             }
 
             OptionsMenuSeed = GameRNG.Randi();
@@ -316,6 +317,7 @@ namespace EnemyRandomizerMod
             ChaosRNG = GlobalSettings.RNGChaosMode;
             RoomRNG = GlobalSettings.RNGRoomMode;
             RandomizeGeo = GlobalSettings.RandomizeGeo;
+            CustomEnemies = GlobalSettings.CustomEnemies;
         }
 
         //call when returning to the main menu

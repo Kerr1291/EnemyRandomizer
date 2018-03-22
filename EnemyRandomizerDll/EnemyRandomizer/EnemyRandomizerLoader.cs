@@ -9,6 +9,7 @@ using nv;
 
 namespace EnemyRandomizerMod
 {
+    //TODO: move the wake components into their own classes....
     public class DebugOnWake : MonoBehaviour
     {
         public BoxCollider2D collider;
@@ -85,9 +86,155 @@ namespace EnemyRandomizerMod
                 if( owner == null )
                     yield break;
 
+                //if( owner.name.Contains( "Garden" ) && owner.FindGameObjectInChildren( "Attack Range" ).activeInHierarchy )
+                //{
+                //    //    //this fixes the slash spider!
+                //    //    //DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Mage", new List<string>() { "IN RANGE" }, new Vector2( 40f, 20f ));
+                //    //    DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Mage", new List<string>() { "IN RANGE" }, new Vector2( 40f, 20f ));
+                //    //    d.monitorFSMStates = true;
+                //    //    //d.monitorFSMStates = true;
+                //    //    //d.sendWakeEventsOnState = "Waiting";
+                //    //    //d.logFSM = false;
+
+                //    //    //HutongGames.PlayMaker.Actions.GetColliderRange gcr = modifiedPrefab.GetFSMActionOnState<HutongGames.PlayMaker.Actions.GetColliderRange>("Select Target","Mage");
+
+                //    //    //Dev.Log( "PRINTING!!!" );
+                //    //    //PlayMakerFSM fsm = FSMUtility.LocateFSM( modifiedPrefab, "Mage" );
+                //    //    //if( fsm != null && gcr != null )
+                //    //    //{
+                //    //    //    if( gcr.gameObject != null )
+                //    //    //    {
+                //    //    //        Dev.Log( "DebugFSMS OO -- " + gcr.gameObject.OwnerOption );
+                //    //    //        Dev.Log( "DebugFSMS GO -- " + gcr.gameObject.GameObject );
+                //    //    //    }
+                //    //    //    if( gcr.gameObject.GameObject != null )
+                //    //    //    {
+                //    //    //        Dev.Log( "DebugFSMS GON -- " + gcr.gameObject.GameObject.Name );
+                //    //    //    }
+                //    //    //}
+
+
+                //    //TODO: move all this debug crap into a function 
+
+                //    {
+                //        HutongGames.PlayMaker.Actions.FindGameObject y = owner.FindGameObjectInChildren("Attack Range").GetFSMActionOnState<HutongGames.PlayMaker.Actions.FindGameObject>("Initialise","attack_range_detect");
+
+                //        if( y != null )
+                //        {
+                //            if( y.objectName != null )
+                //                Dev.Log( "DebugFSMS FindGameObject objectName --- " + y.objectName.Value );
+                //            if( y.withTag != null )
+                //                Dev.Log( "DebugFSMS FindGameObject withTag --- " + y.withTag.Value );
+                //            if( y.store != null )
+                //                Dev.Log( "DebugFSMS FindGameObject store --- " + y.store.Name );
+                //        }
+                //    }
+
+                //    {
+                //        List<HutongGames.PlayMaker.Actions.GetPosition> y = owner.FindGameObjectInChildren("Attack Range").GetFSMActionsOnState<HutongGames.PlayMaker.Actions.GetPosition>("Raycast","attack_range_detect");
+
+                //        if( y != null )
+                //        {
+                //            foreach( var yy in y )
+                //            {
+                //                Dev.Log( "DebugFSMS GetPosition Name --- " + yy.gameObject.GameObject.Name );
+                //                Dev.Log( "DebugFSMS GetPosition Value --- " + yy.gameObject.GameObject.Value );
+                //            }
+                //        }
+                //    }
+
+                //    {
+                //        List<HutongGames.PlayMaker.Actions.SetFloatValue> y = owner.FindGameObjectInChildren("Attack Range").GetFSMActionsOnState<HutongGames.PlayMaker.Actions.SetFloatValue>("Raycast","attack_range_detect");
+
+                //        if( y != null )
+                //        {
+                //            foreach( var yy in y )
+                //            {
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.floatVariable.Name );
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.floatVariable?.Value );
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.floatValue );
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.floatValue?.Name );
+                //            }
+                //        }
+                //    }
+
+                //    {
+                //        List<HutongGames.PlayMaker.Actions.FloatSubtract> y = owner.FindGameObjectInChildren("Attack Range").GetFSMActionsOnState<HutongGames.PlayMaker.Actions.FloatSubtract>("Raycast","attack_range_detect");
+
+                //        if( y != null )
+                //        {
+                //            foreach( var yy in y )
+                //            {
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.floatVariable.Name );
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.floatVariable?.Value );
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.subtract );
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.subtract?.Name );
+                //            }
+                //        }
+                //    }
+
+                //    {
+                //        List<HutongGames.PlayMaker.Actions.SetVector2XY> y = owner.FindGameObjectInChildren("Attack Range").GetFSMActionsOnState<HutongGames.PlayMaker.Actions.SetVector2XY>("Raycast","attack_range_detect");
+
+                //        if( y != null )
+                //        {
+                //            foreach( var yy in y )
+                //            {
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.vector2Variable.Name );
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.vector2Variable?.Value );
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.vector2Value );
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.vector2Value?.Name );
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.x );
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.x?.Name );
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.y );
+                //                Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.y?.Name );
+                //            }
+                //        }
+                //    }
+
+                //    {
+                //        HutongGames.PlayMaker.Actions.RayCast2d x = owner.FindGameObjectInChildren("Attack Range").GetFSMActionOnState<HutongGames.PlayMaker.Actions.RayCast2d>("Raycast","attack_range_detect");
+
+                //        if( x != null && x.fromGameObject != null && x.fromGameObject.GameObject != null && x.fromGameObject.GameObject.Value != null )
+                //        {
+                //            //checkFSM = fsm;
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.fromGameObject.GameObject.Name );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.fromGameObject.GameObject.Value.transform.position );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.fromPosition );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.direction );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.space );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.distance );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.minDepth );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.maxDepth );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.hitEvent );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.storeDidHit );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.storeHitObject );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.storeHitPoint );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.storeHitNormal );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.storeHitDistance );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.storeHitFraction );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.repeatInterval );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.layerMask );
+                //            Dev.Log( "DebugFSMS RayCast2d --- " + x.invertMask );
+                //        }
+                //    }
+
+
+
+
+
+
+
+
+
+
+                //    //    //modifiedPrefab.PrintSceneHierarchyTree( true );
+                //    //    //UnityEngine.SceneManagement.SceneManager.GetSceneByName( currentlyLoadingScene ).PrintHierarchy();
+                //}
+
                 bool isDead = IsEnemyDead(owner);
                 //Dev.Log( "Is dead? " + isDead );
-
+                
                 //Dev.Log( "Position " + transform.position );
 
                 //Dev.Log( "FSMDEBUG :::: FOREACH ON " + owner.name );
@@ -120,73 +267,6 @@ namespace EnemyRandomizerMod
                             }
                         }
                     }
-
-                    //if( ( p.ActiveStateName == "Beam" || p.ActiveStateName == "Aim" || p.ActiveStateName == "Aim Left" || p.ActiveStateName == "Aim Right" || p.ActiveStateName == "Shoot Antic" ) )
-                    //{
-                    //    foreach( var st in p.FsmStates )
-                    //    {
-                    //        foreach( var aa in st.Actions )
-                    //        {
-                    //            Dev.Log( "Action " + aa.GetType().Name );
-                    //            {
-                    //                var x = aa as HutongGames.PlayMaker.Actions.RayCast2d;
-                    //                if( x != null )
-                    //                {
-                    //                    //checkFSM = fsm;
-                    //                    Dev.Log( "RayCast2d --- " + x.fromGameObject.GameObject.Name );
-                    //                    Dev.Log( "RayCast2d --- " + x.fromPosition );
-                    //                    Dev.Log( "RayCast2d --- " + x.direction );
-                    //                    Dev.Log( "RayCast2d --- " + x.space );
-                    //                    Dev.Log( "RayCast2d --- " + x.distance );
-                    //                    Dev.Log( "RayCast2d --- " + x.minDepth );
-                    //                    Dev.Log( "RayCast2d --- " + x.maxDepth );
-                    //                    Dev.Log( "RayCast2d --- " + x.hitEvent );
-                    //                    Dev.Log( "RayCast2d --- " + x.storeDidHit );
-                    //                    Dev.Log( "RayCast2d --- " + x.storeHitObject );
-                    //                    Dev.Log( "RayCast2d --- " + x.storeHitPoint );
-                    //                    Dev.Log( "RayCast2d --- " + x.storeHitNormal );
-                    //                    Dev.Log( "RayCast2d --- " + x.storeHitDistance );
-                    //                    Dev.Log( "RayCast2d --- " + x.storeHitFraction );
-                    //                    Dev.Log( "RayCast2d --- " + x.repeatInterval );
-                    //                    Dev.Log( "RayCast2d --- " + x.layerMask );
-                    //                    Dev.Log( "RayCast2d --- " + x.invertMask );
-                    //                }
-                    //            }
-                    //            {
-                    //                var x = aa as HutongGames.PlayMaker.Actions.PlayParticleEmitter;
-                    //                if( x != null )
-                    //                {
-                    //                    //checkFSM = fsm;
-                    //                    Dev.Log( "PlayParticleEmitter --- " + x.gameObject.GameObject.Name );
-                    //                    Dev.Log( "PlayParticleEmitter --- " + x.Owner.name );
-                    //                }
-                    //            }
-                    //            {
-                    //                var x = aa as HutongGames.PlayMaker.Actions.GetPosition;
-                    //                if( x != null )
-                    //                {
-                    //                    //checkFSM = fsm;
-                    //                    Dev.Log( "PlayParticleEmitter --- " + x.gameObject.GameObject.Name );
-                    //                    Dev.Log( "PlayParticleEmitter --- " + x.Owner.name );
-                    //                    Dev.Log( "PlayParticleEmitter --- " + x.space );
-                    //                }
-                    //            }
-                    //            {
-                    //                var x = aa as HutongGames.PlayMaker.Actions.SetPosition;
-                    //                if( x != null )
-                    //                {
-                    //                    //checkFSM = fsm;
-                    //                    Dev.Log( "PlayParticleEmitter --- " + x.gameObject.GameObject.Name );
-                    //                    Dev.Log( "PlayParticleEmitter --- " + x.Owner.name );
-                    //                    Dev.Log( "PlayParticleEmitter --- " + x.space );
-                    //                    Dev.Log( "PlayParticleEmitter --- " + x.vector );
-                    //                }
-                    //            }
-                    //        }
-                    //        //if( checkFSM != null )
-                    //        //    break; 
-                    //    }
-                    //}
                 }
 
                 yield return new WaitForEndOfFrame();
@@ -201,7 +281,15 @@ namespace EnemyRandomizerMod
             }
 
             if( logFSM )
-                Dev.CreateBoxOfLineRenderers( collider.bounds, Color.green, -2.1f, .01f );
+            {
+                List<GameObject> lines = new List<GameObject>();
+                lines = Dev.CreateBoxOfLineRenderers( collider.bounds, Color.green, -2.1f, .01f );
+                foreach(var go in lines )
+                {
+                    go.transform.SetParent( owner.transform );
+                    go.transform.localPosition = Vector3.zero;
+                }
+            }
 
             if(monitorFSMStates)
             {
@@ -234,26 +322,14 @@ namespace EnemyRandomizerMod
             Dev.Log( "Player entered our wake area! " );
 
             if( !string.IsNullOrEmpty( fsmName ) )
-            {
-
-                PlayMakerFSM fsm = null;
-
-                foreach( Component c in owner.GetComponents<Component>() )
-                {
-                    if( c as PlayMakerFSM != null )
-                    {
-                        if( ( c as PlayMakerFSM ).FsmName == fsmName )
-                        {
-                            fsm = ( c as PlayMakerFSM );
-                            break;
-                        }
-                    }
-                }
-
+            {                
+                PlayMakerFSM fsm = FSMUtility.LocateFSM( owner, fsmName );
+                
                 if( fsm != null && wakeEvents != null )
                 {
                     foreach( string s in wakeEvents )
                     {
+                        Dev.Log( "Sending event! " + s );
                         fsm.SendEvent( s );
                     }
                 }
@@ -261,7 +337,6 @@ namespace EnemyRandomizerMod
                 {
                     Dev.Log( "Could not find FSM!" );
                 }
-
             }
 
             //remove this after waking up the enemy
@@ -286,7 +361,7 @@ namespace EnemyRandomizerMod
             //Dev.Log( "Created waker for " + mageKnight.name );
             //Dev.Log( "Bounds " + collider.bounds );
 
-            Dev.CreateBoxOfLineRenderers( collider.bounds, Color.green, -2.1f, .01f );
+            //Dev.CreateBoxOfLineRenderers( collider.bounds, Color.green, -2.1f, .01f );
 
             //Dev.Log( "Hero is at " + HeroController.instance.transform.position );
             //HeroController.instance.gameObject.PrintSceneHierarchyTree( true );
@@ -343,7 +418,6 @@ namespace EnemyRandomizerMod
     }
 
 
-
     public class EnemyRandomizerLoader
     {
         public static EnemyRandomizerLoader Instance { get; private set; }
@@ -353,12 +427,16 @@ namespace EnemyRandomizerMod
         EnemyRandomizerDatabase database;
 
         nv.Contractor databaseLoader;
+
         IEnumerator randomizerSceneProcessor = null;
 
         public bool DatabaseGenerated { get; private set; }
 
         int currentDatabaseIndex = 0;
+
         int loadCount = 0;
+
+        string currentlyLoadingScene = "";
 
         bool IsLoadingDatabase {
             get {
@@ -410,9 +488,11 @@ namespace EnemyRandomizerMod
         //    Dev.Log( "Loading Scene [" + to.name + "]" );
         //}
 
+
         /// <summary>
         /// Initial workhorse funciton. Load all the enemy types in the game.
         /// </summary>
+        /// 
         void LoadSceneData()
         {
             GameObject root = EnemyRandomizer.Instance.ModRoot;
@@ -423,7 +503,8 @@ namespace EnemyRandomizerMod
             {
                 Scene sceneToLoad = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
 
-                Dev.Log( "Loading Scene [" + sceneToLoad.name + "]" );
+                currentlyLoadingScene = sceneToLoad.name;
+                Dev.Log( "Loading Scene [" + currentlyLoadingScene + "]" );
 
                 GameObject[] rootGameObjects = sceneToLoad.GetRootGameObjects();
                 foreach( GameObject go in rootGameObjects )
@@ -449,6 +530,21 @@ namespace EnemyRandomizerMod
                             //database.loadedEffectPrefabs.Add( EnemyRandomizerDatabase.effectObjectNames[ indexOfEffectType ], prefab );
                             Dev.Log( "Saving special enemy effect: " + prefab.name );
                         }//end if-enemy
+                    }
+
+                    //save off teleplanes
+                    //if( sceneToLoad.buildIndex == 96 )
+                    {
+                        if(go.name.Contains( "Teleplanes" ) )
+                        {
+                            GameObject prefab = go;
+                            GameObject.DontDestroyOnLoad( prefab );
+                            prefab.transform.SetParent( root.transform );
+
+                            //don't actually add this one, keep it around because the mages need it
+                            Dev.Log( "Saving special enemy effect: " + prefab.name );
+                            continue;
+                        }
                     }
 
                     bool isInEffectList = database.loadedEffectPrefabs.ContainsKey(go.name);
@@ -503,6 +599,10 @@ namespace EnemyRandomizerMod
                             {
                                 prefab = t.gameObject;
                             }
+                            if( name ==  "Mage" )
+                            {
+                                prefab = t.gameObject;
+                            }
                             else
                             {
                                 prefab = GameObject.Instantiate(t.gameObject);
@@ -527,9 +627,7 @@ namespace EnemyRandomizerMod
         GameObject ModifyGameObjectPrefab( GameObject randoPrefab )
         {
             GameObject modifiedPrefab = randoPrefab;
-
-            //TODO?: check out the "Climber Control" playmaker actions-- i think they're throwing nullref for the crystallized laser bug -- look into fixing that
-
+            
             //Create a custom "wake up" base game object and put it on the mage knight
             if( modifiedPrefab.name.Contains( "Mage Knight" ) )
             {
@@ -551,7 +649,152 @@ namespace EnemyRandomizerMod
                 specialWakeUp.mageKnight = modifiedPrefab;
             }
 
-            //TODO: NEEDS TESTING see if this fixes the camera problem with him
+            //if( modifiedPrefab.name.Contains( "Garden" ) )
+            //{
+            //    //    //this fixes the slash spider!
+            //    //    //DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Mage", new List<string>() { "IN RANGE" }, new Vector2( 40f, 20f ));
+            //    //    DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Mage", new List<string>() { "IN RANGE" }, new Vector2( 40f, 20f ));
+            //    //    d.monitorFSMStates = true;
+            //    //    //d.monitorFSMStates = true;
+            //    //    //d.sendWakeEventsOnState = "Waiting";
+            //    //    //d.logFSM = false;
+
+            //    //    //HutongGames.PlayMaker.Actions.GetColliderRange gcr = modifiedPrefab.GetFSMActionOnState<HutongGames.PlayMaker.Actions.GetColliderRange>("Select Target","Mage");
+
+            //    //    //Dev.Log( "PRINTING!!!" );
+            //    //    //PlayMakerFSM fsm = FSMUtility.LocateFSM( modifiedPrefab, "Mage" );
+            //    //    //if( fsm != null && gcr != null )
+            //    //    //{
+            //    //    //    if( gcr.gameObject != null )
+            //    //    //    {
+            //    //    //        Dev.Log( "DebugFSMS OO -- " + gcr.gameObject.OwnerOption );
+            //    //    //        Dev.Log( "DebugFSMS GO -- " + gcr.gameObject.GameObject );
+            //    //    //    }
+            //    //    //    if( gcr.gameObject.GameObject != null )
+            //    //    //    {
+            //    //    //        Dev.Log( "DebugFSMS GON -- " + gcr.gameObject.GameObject.Name );
+            //    //    //    }
+            //    //    //}
+
+
+            //    //TODO: move all this debug crap into a function 
+
+            //    //{
+            //    //    HutongGames.PlayMaker.Actions.FindGameObject y = modifiedPrefab.FindGameObjectInChildren("Attack Range").GetFSMActionOnState<HutongGames.PlayMaker.Actions.FindGameObject>("Initialise","attack_range_detect");
+
+            //    //    if( y != null )
+            //    //    {
+            //    //        if( y.objectName != null )
+            //    //            Dev.Log( "DebugFSMS FindGameObject objectName --- " + y.objectName.Value );
+            //    //        if( y.withTag != null )
+            //    //            Dev.Log( "DebugFSMS FindGameObject withTag --- " + y.withTag.Value );
+            //    //        if( y.store != null )
+            //    //            Dev.Log( "DebugFSMS FindGameObject store --- " + y.store.Name );
+            //    //    }
+            //    //}
+
+            //    //{
+            //    //    List<HutongGames.PlayMaker.Actions.GetPosition> y = modifiedPrefab.FindGameObjectInChildren("Attack Range").GetFSMActionsOnState<HutongGames.PlayMaker.Actions.GetPosition>("Raycast","attack_range_detect");
+
+            //    //    if( y != null )
+            //    //    {
+            //    //        foreach( var yy in y )
+            //    //        {
+            //    //            Dev.Log( "DebugFSMS GetPosition Name --- " + yy.gameObject.GameObject.Name );
+            //    //            Dev.Log( "DebugFSMS GetPosition Value --- " + yy.gameObject.GameObject.Value );
+            //    //        }
+            //    //    }
+            //    //}
+
+            //    //{
+            //    //    List<HutongGames.PlayMaker.Actions.SetFloatValue> y = modifiedPrefab.FindGameObjectInChildren("Attack Range").GetFSMActionsOnState<HutongGames.PlayMaker.Actions.SetFloatValue>("Raycast","attack_range_detect");
+
+            //    //    if( y != null )
+            //    //    {
+            //    //        foreach( var yy in y )
+            //    //        {
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.floatVariable.Name );
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.floatVariable?.Value );
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.floatValue );
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.floatValue?.Name );
+            //    //        }
+            //    //    }
+            //    //}
+
+            //    //{
+            //    //    List<HutongGames.PlayMaker.Actions.FloatSubtract> y = modifiedPrefab.FindGameObjectInChildren("Attack Range").GetFSMActionsOnState<HutongGames.PlayMaker.Actions.FloatSubtract>("Raycast","attack_range_detect");
+
+            //    //    if( y != null )
+            //    //    {
+            //    //        foreach( var yy in y )
+            //    //        {
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.floatVariable.Name );
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.floatVariable?.Value );
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.subtract );
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.subtract?.Name );
+            //    //        }
+            //    //    }
+            //    //}
+
+            //    //{
+            //    //    List<HutongGames.PlayMaker.Actions.SetVector2XY> y = modifiedPrefab.FindGameObjectInChildren("Attack Range").GetFSMActionsOnState<HutongGames.PlayMaker.Actions.SetVector2XY>("Raycast","attack_range_detect");
+
+            //    //    if( y != null )
+            //    //    {
+            //    //        foreach( var yy in y )
+            //    //        {
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.vector2Variable.Name );
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.vector2Variable?.Value );
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.vector2Value );
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.vector2Value?.Name );
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.x );
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.x?.Name );
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.y );
+            //    //            Dev.Log( "DebugFSMS " + yy.GetType().Name + "--- " + yy.y?.Name );
+            //    //        }
+            //    //    }
+            //    //}
+
+            //    //{
+            //    //    HutongGames.PlayMaker.Actions.RayCast2d x = modifiedPrefab.FindGameObjectInChildren("Attack Range").GetFSMActionOnState<HutongGames.PlayMaker.Actions.RayCast2d>("Raycast","attack_range_detect");
+
+            //    //    if( x != null )
+            //    //    {
+            //    //        //checkFSM = fsm;
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.fromGameObject.GameObject.Name );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.fromGameObject.GameObject.Value.transform.position );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.fromPosition );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.direction );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.space );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.distance );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.minDepth );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.maxDepth );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.hitEvent );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.storeDidHit );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.storeHitObject );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.storeHitPoint );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.storeHitNormal );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.storeHitDistance );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.storeHitFraction );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.repeatInterval );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.layerMask );
+            //    //        Dev.Log( "DebugFSMS RayCast2d --- " + x.invertMask );
+            //    //    }
+            //    //}
+
+
+
+
+
+
+
+
+
+
+            //    //    //modifiedPrefab.PrintSceneHierarchyTree( true );
+            //    //    //UnityEngine.SceneManagement.SceneManager.GetSceneByName( currentlyLoadingScene ).PrintHierarchy();
+            //}
+
             //remove the "Cam Lock" game object child from the crystal guardian (mega zombie beam miner)
             if( modifiedPrefab.name.Contains( "Mega Zombie Beam Miner" ) )
             {
@@ -609,8 +852,9 @@ namespace EnemyRandomizerMod
                 }
                 
                 DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Beam Miner", new List<string>() { "FINISHED" } );
-                d.monitorFSMStates = false;
+                d.monitorFSMStates = true;
                 d.sendWakeEventsOnState = "Beam End";
+                d.logFSM = false;
             }
 
             //fix the beam miner FSM from getting stuck
@@ -618,8 +862,9 @@ namespace EnemyRandomizerMod
             {
                 Dev.Log( "DebugFSMS added zombie beam miner" );
                 DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Beam Miner", new List<string>() { "FINISHED" } );
-                d.monitorFSMStates = false;
+                d.monitorFSMStates = true;
                 d.sendWakeEventsOnState = "Beam End";
+                d.logFSM = false;
             }
 
             //fix the slash spider from getting stuck
@@ -627,10 +872,21 @@ namespace EnemyRandomizerMod
             {
                 //this fixes the slash spider!
                 DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Slash Spider", new List<string>() { "WAKE" } );
-                d.monitorFSMStates = false;
+                d.monitorFSMStates = true;
                 d.sendWakeEventsOnState = "Waiting";
                 d.logFSM = false;
             }
+            
+            //if( modifiedPrefab.name.Contains( "Garden Zombie" ) )
+            //{
+            //    //this fixes the slash spider!
+            //    //DebugOnWake d = AddDebugOnWake(modifiedPrefab.FindGameObjectInChildren("Attack Range"), "attack_range_detect", new List<string>() { "WAKE" } );
+            //    //d.monitorFSMStates = true;
+            //    ////d.sendWakeEventsOnState = "Waiting";
+            //    ////d.logFSM = false;
+
+            //    //modifiedPrefab.PrintSceneHierarchyTree( true );
+            //}
 
             return modifiedPrefab;
         }
@@ -707,10 +963,10 @@ namespace EnemyRandomizerMod
             //}
 
             //For debugging: print all the loaded effects
-            foreach( var effect in database.loadedEffectPrefabs )
-            {
-                effect.Value.PrintSceneHierarchyTree( true );
-            }
+            //foreach( var effect in database.loadedEffectPrefabs )
+            //{
+            //    effect.Value.PrintSceneHierarchyTree( true );
+            //}
 
 
             //UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= PrintNextSceneToLoad;

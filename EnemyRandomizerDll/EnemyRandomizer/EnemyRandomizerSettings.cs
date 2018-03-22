@@ -16,9 +16,10 @@ namespace EnemyRandomizerMod
         public const string RNGRoomMode = "RNGRoomMode";
         public const string RandomizeGeo = "RandomizeGeo";
         public const string CheatNoclip = "(Cheat) No Clip";
+        public const string CustomEnemies = "CustomEnemies";
 
         //change when the global settings are updated to force a recreation of the global settings
-        public const string GlobalSettingsVersion = "0.0.4";
+        public const string GlobalSettingsVersion = "0.0.6";
     }
 
     //Global (non-player specific) settings
@@ -60,6 +61,14 @@ namespace EnemyRandomizerMod
             get => GetBool( false );
             set {
                 StringValues[ EnemyRandomizerSettingsVars.RandomizeGeo ] = "Randomize Geo";
+                SetBool( value );
+            }
+        }
+
+        public bool CustomEnemies {
+            get => GetBool( false );
+            set {
+                StringValues[ EnemyRandomizerSettingsVars.CustomEnemies ] = "Custom Enemies";
                 SetBool( value );
             }
         }

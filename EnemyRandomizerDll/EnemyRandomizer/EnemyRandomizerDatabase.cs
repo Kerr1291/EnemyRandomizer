@@ -23,7 +23,7 @@ namespace EnemyRandomizerMod
         public List<string> uniqueEnemyTypes = new List<string>();
 
         public Dictionary<string, GameObject> loadedEffectPrefabs = new Dictionary<string, GameObject>();
-
+                
         public EnemyRandomizerDatabase()
         {
         }
@@ -60,7 +60,7 @@ namespace EnemyRandomizerMod
          * 
          */
 
-        public const bool USE_TEST_SCENES = true;
+        public const bool USE_TEST_SCENES = false;
 
 
         public static List<int> EnemyTypeScenes {
@@ -74,20 +74,23 @@ namespace EnemyRandomizerMod
 
         static List<int> testTypeScenes = new List<int>()
         {
-            //7, //test flame spawn
-            241,
-            244, //test crystal guardian and Zombie Beam Miner(244)
+            //241,
+            //244, //test crystal guardian and Zombie Beam Miner(244)
             34,
+            7 //test flame spawn
             //276, //testing tiny spider
-            183, //testing garden zombie
+            //188, //testing garden zombie
+            //189,
+            //190
 
             //test these for mage??
-            96  //testing mage?
+            //96  //testing mage?
         };
 
         static List<int> enemyTypeScenes = new List<int>()
         {
             241,  //LOAD THIS SCENE FIRST -- has laser impact special objects that we want
+            96,  //LOAD SECOND -- has mage/mage knight/mage blob and related enemies AND Teleplanes that the mage requires
 
             7,//tutorial scene
 
@@ -134,7 +137,7 @@ namespace EnemyRandomizerMod
             181,//(fungus flyer)
             183,
             186,//(moss flyer)
-            189,
+            189,//garden zombie
             194,
             204,
             208,
@@ -161,7 +164,8 @@ namespace EnemyRandomizerMod
             362
         };
 
-
+        public tk2dSpriteAnimationClip roarStart;
+        public tk2dSpriteAnimationClip roarLoop;
 
         //TODO: place health cocoons around places
         //for most of these objects, set the "PersistentBoolItem" component to = that of the original
@@ -246,13 +250,13 @@ namespace EnemyRandomizerMod
             "Lobster",//35
             
             //"Mage Balloon Spawner",//35
-            //"Mage Knight",//35(96) -- TEMP
-            //"Mage Blob",//35(96) -- TEMP
-            //"Mage Balloon", //102 -- TEMP
+            "Mage Knight",//35(96) -- TEMP
+            "Mage Blob",//35(96) -- TEMP
+            "Mage Balloon", //102 -- TEMP
             //"Mage Lord Phase2", //97 (BOSS)
             //"Mage Lord", //97 (BOSS)
-            "Electric Mage",//35
-            "Mage",//35(96)
+            "Electric Mage",//35 -- TEMP
+            "Mage",//35(96) -- TEMP
 
             "Lesser Mawlek",//35
             "Mawlek Col",//35 ??? might be same as lesser mawlek
@@ -264,7 +268,7 @@ namespace EnemyRandomizerMod
             
             "Fung Crawler", //158
             "Mines Crawler", //243
-            //"Crystal Crawler", //243 -- TEMP
+            "Crystal Crawler", //243 -- TEMP
             "Abyss Crawler", //320
             "Crawler", //40
 
@@ -347,8 +351,8 @@ namespace EnemyRandomizerMod
 
             
             "Mantis Traitor Lord", //194 (BOSS)          needs lots of room or will fall through the floor  
-            "Mantis Heavy Flyer",//35
-            "Mantis Heavy",//35
+            "Mantis Heavy Flyer",//35 -- TEMP
+            "Mantis Heavy",//35 -- TEMP
             //"Mantis Lord Temp", //167 (BOSSES)
             //"Mantis Lord S1", // (static clinging mantis bosses, don't load these)
             //"Mantis Lord S2", // (static clinging mantis bosses, don't load these)
@@ -361,14 +365,14 @@ namespace EnemyRandomizerMod
             "Mushroom Brawler", //
 
             //Queens Garden
-            //"Jellyfish Baby", //183 -- TEMP
-            //"Jellyfish", // -- TEMP
+            "Jellyfish Baby", //183 -- TEMP
+            "Jellyfish", // -- TEMP
 
-            "Moss Flyer", //
+            "Moss Flyer", // -- TEMP
             "Garden Zombie", //183 -- has idle issues, does not wake up like it should
 
             
-            //"Lazy Flyer Enemy", // -- TEMP
+            "Lazy Flyer Enemy", // -- TEMP
 
             //Resting Grounds
             "Grave Zombie", //226
@@ -376,11 +380,11 @@ namespace EnemyRandomizerMod
             //Crystal Peak
             "Laser Turret Frames", //234
 
-            //"Mega Zombie Beam Miner", //241 --  TEMP 
+            "Mega Zombie Beam Miner", //241 --  TEMP 
 
-            //"Zombie Miner", //243 -- TEMP
-            //"Crystallised Lazer Bug", //243 -- TEMP
-            //"Crystal Flyer", //243 -- TEMP
+            "Zombie Miner", //243 -- TEMP
+            "Crystallised Lazer Bug", //243 -- TEMP
+            "Crystal Flyer", //243 -- TEMP
 
             "Zombie Beam Miner", //244 -- has nullref issues, don't load for now until we work on a fix
 
@@ -388,13 +392,13 @@ namespace EnemyRandomizerMod
             "Baby Centipede", //259
             "Centipede Hatcher", //???? (find scene for this)
 
-            //"Slash Spider", //271 -- TEMP
+            "Slash Spider", //271 -- TEMP
             "Spider Mini", //271
-            //"Zombie Spider 1", //271 TEMP -- TODO: put a filter in to NOT use him a replacement
-            //"Zombie Spider 2", //271 TEMP
+            "Zombie Spider 1", //271 TEMP -- TODO: put a filter in to NOT use him a replacement
+            "Zombie Spider 2", //271 TEMP
 
             "Tiny Spider", //276
-            //"Spider Flyer", //--TEMP
+            "Spider Flyer", //--TEMP
             //"Deep Spikes", //
             
             //Kingdom's Edge
@@ -852,7 +856,7 @@ namespace EnemyRandomizerMod
         {
             //until these 3 are fixed, do not spawn them in battle areas
             //"Mage Knight",//35
-            "Electric Mage",//35 //TODO: needs to be moved down? (by 20?)
+            "Electric Mage",//35 //TODO: needs to be moved down? (by 20?) -- broken can't put most places
             "Mage",//35 //TODO: still broken
             "Mantis Traitor Lord",
             "Flamebearer Spawn",
