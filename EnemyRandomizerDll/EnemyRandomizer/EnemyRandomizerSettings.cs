@@ -19,7 +19,7 @@ namespace EnemyRandomizerMod
         public const string CustomEnemies = "CustomEnemies";
 
         //change when the global settings are updated to force a recreation of the global settings
-        public const string GlobalSettingsVersion = "0.0.6";
+        public const string GlobalSettingsVersion = "0.0.8";
     }
 
     //Global (non-player specific) settings
@@ -31,6 +31,12 @@ namespace EnemyRandomizerMod
             StringValues.Clear();
             IntValues.Clear();
             FloatValues.Clear();
+
+            //foreach(string s in EnemyRandomizerDatabase.enemyTypeNames )
+            //{
+            //    StringValues.Add( s, s );
+            //    BoolValues.Add( s, true );
+            //}
         }
 
 

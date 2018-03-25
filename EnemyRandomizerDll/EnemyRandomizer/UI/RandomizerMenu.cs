@@ -36,6 +36,10 @@ namespace EnemyRandomizerMod.Menu
         GameObject menuTogglePrefab;
         GameObject uiManagerCanvasRoot;
 
+        //GameObject scrollBar;
+        //GameObject scrollRect;
+        //GameObject scrollUIRoot;
+
         bool loadingButtonPressed;
 
         public static string MainMenuSceneName {
@@ -307,8 +311,8 @@ namespace EnemyRandomizerMod.Menu
 
             rootUIManager = UIManager.instance;
 
-            //TODO: for testing
-            //rootUIManager.gameObject.PrintSceneHierarchyTree(true);
+            //TODO: for testing, disable me on releases
+            rootUIManager.gameObject.PrintSceneHierarchyTree(true);
 
             uiManagerCanvasRoot = rootUIManager.gameObject.FindGameObjectInChildren( "UICanvas" );
 
@@ -417,7 +421,7 @@ namespace EnemyRandomizerMod.Menu
                 return;
 
             //find it
-            menuTogglePrefab = rootUIManager.gameObject.FindGameObjectInChildren( "VSyncOption" );
+            menuTogglePrefab = GameObject.Instantiate( rootUIManager.gameObject.FindGameObjectInChildren( "VSyncOption" ) );
 
             //remove default menu behaviors
             GameObject.DestroyImmediate( menuTogglePrefab.GetComponent<MenuOptionHorizontal>() );
@@ -444,7 +448,7 @@ namespace EnemyRandomizerMod.Menu
             //find a toggle-able menu element to use for our mod option prefab
             SetupMenuTogglePrefab();
 
-            GameObject.DestroyImmediate( optionsMenuScreen.content.GetComponent<VerticalLayoutGroup>() );
+            GameObject.DestroyImmediate( optionsMenuScreen.content.GetComponent<VerticalLayoutGroup>() ); //TEST
             GameObject.Destroy( optionsMenuScreen.defaultHighlight.gameObject.transform.parent.gameObject );
 
             GenerateListOfModOptions();
@@ -462,6 +466,28 @@ namespace EnemyRandomizerMod.Menu
             backClick.callback.AddListener( data => { optionsUIManager.UIquitModMenu(); } );
             backEvents.triggers.Add( backClick );
 
+            //TODO: make work later...
+            //create scrollbar/scrollrect to use for options list
+            //scrollBar = (GameObject)GameObject.Instantiate( rootUIManager.gameObject.FindGameObjectInChildren( "AchievementsMenuScreen" ).FindGameObjectInChildren( "Scrollbar" ), optionsMenuScreen.content.transform.parent );
+            //scrollRect = (GameObject)GameObject.Instantiate( rootUIManager.gameObject.FindGameObjectInChildren( "AchievementsMenuScreen" ).FindGameObjectInChildren( "ScrollRect" ), optionsMenuScreen.content.transform.parent );
+
+            ////MenuPreventDeselect??
+            //GameObject.DestroyImmediate( scrollRect.FindGameObjectInChildren( "AchievementListUI" ) );
+
+            //optionsMenuScreen.content.transform.SetParent( scrollRect.transform );
+
+            //LayoutElement layout = optionsMenuScreen.content.gameObject.AddComponent<LayoutElement>();
+            //layout.preferredWidth = 1200;
+            //layout.preferredHeight = 1000;
+
+            //ContentSizeFitter fitter = optionsMenuScreen.content.gameObject.AddComponent<ContentSizeFitter>();
+            //fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            //fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+
+            //ScrollRect sRect = scrollRect.GetComponent<ScrollRect>();
+            //sRect.verticalScrollbar = scrollBar.GetComponent<Scrollbar>();
+            
             //SETUP MOD MENU
         }
 
@@ -651,13 +677,20 @@ namespace EnemyRandomizerMod.Menu
 
                         RectTransform rt = menuItemParent.GetComponent<RectTransform>();
 
+                        //rt.SetParent( scrollRect.transform );//TEST -- TODO: fix later
                         rt.SetParent( optionsMenuScreen.content.transform );
                         rt.localScale = new Vector3( 2, 2, 2 );
 
-                        rt.sizeDelta = new Vector2( 960, 120 );
+                        //rt.sizeDelta = new Vector2( 960, 120 );
+                        rt.sizeDelta = new Vector2( 1200, 120 );
                         rt.anchoredPosition = new Vector2( 0, (766 / 2) - 90 - (150 * i) );
                         rt.anchorMin = new Vector2( 0.5f, 1.0f );
                         rt.anchorMax = new Vector2( 0.5f, 1.0f );
+
+                        //TEST -- TODO: fix later
+                        //LayoutElement layout = RandomizerMenu.modOptions[ i ].gameObject.AddComponent<LayoutElement>();
+                        //layout.preferredWidth = 1200;
+                        //layout.preferredHeight = 120;
                     }
 
                     Navigation[] navs = new Navigation[ RandomizerMenu.modOptions.Length ];

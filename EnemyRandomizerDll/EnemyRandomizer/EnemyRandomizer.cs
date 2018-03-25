@@ -42,7 +42,7 @@ namespace EnemyRandomizerMod
         EnemyRandomizerDatabase database;
         EnemyRandomizerLogic logic;
 
-        string fullVersionName = "0.1.4";
+        string fullVersionName = "0.2.0";
         string modRootName = "RandoRoot";
         
         GameObject modRoot;
@@ -199,7 +199,29 @@ namespace EnemyRandomizerMod
 
             database.Setup();
             loader.Setup();
-            menu.Setup(); 
+            menu.Setup();
+
+
+            ContractorManager.Instance.StartCoroutine( DebugInput() );
+        }
+
+        IEnumerator DebugInput()
+        {
+            yield return new WaitForSeconds( 2f );
+            MenuStyles.Instance.SetStyle( 4, true, false );
+
+
+            //int i = 0;
+            //while( true )
+            //{
+            //    yield return new WaitForEndOfFrame();
+            //    if( UnityEngine.Input.GetKeyDown( KeyCode.Y ) )
+            //    {
+            //        MenuStyles.Instance.SetStyle( i, true, false );
+            //        i = ( i + 1 ) % MenuStyles.Instance.styles.Length;
+            //    }
+            //}
+            //yield break;
         }
 
         void SetupDefaulSettings()

@@ -38,7 +38,7 @@ namespace EnemyRandomizerMod
             if( monitorFSMStates )
             {
                 if( logFSM )
-                    Dev.Log( "DebugFSMS was DebugOnWake disabled, likely because the enemy died " );
+                    Dev.Log( "DebugFSMS DebugOnWake was disabled, likely because the enemy died " );
 
                 //final FSM info....
                 foreach( var p in owner.GetComponentsInChildren<PlayMakerFSM>() )
@@ -71,13 +71,6 @@ namespace EnemyRandomizerMod
                 fsmsOnObject.Add( p, p.ActiveStateName );
                 if( logFSM )
                     Dev.Log( "Added FSM for " + owner.name + " had the fsm [" + p.FsmName + "] with initial state [" + p.ActiveStateName + "]" );
-            }
-
-            bool IsEnemyDead( GameObject enemy )
-            {
-                return enemy == null
-                    || enemy.activeInHierarchy == false
-                    || ( enemy.IsGameEnemy() && ( enemy.GetEnemyFSM().ActiveStateName.Contains( "Corpse" ) || enemy.GetEnemyFSM().ActiveStateName.Contains( "Death" ) || ( enemy.GetEnemyFSM().Fsm.Variables.FindFsmInt( "HP" ) != null && FSMUtility.GetInt( enemy.GetEnemyFSM(), "HP" ) <= 0 ) ) );
             }
 
             //Dev.Log( "FSMDEBUG :::: Tracking FSMS on " + owner.name );
@@ -232,7 +225,7 @@ namespace EnemyRandomizerMod
                 //    //    //UnityEngine.SceneManagement.SceneManager.GetSceneByName( currentlyLoadingScene ).PrintHierarchy();
                 //}
 
-                bool isDead = IsEnemyDead(owner);
+                bool isDead = owner.IsEnemyDead();
                 //Dev.Log( "Is dead? " + isDead );
                 
                 //Dev.Log( "Position " + transform.position );
@@ -432,11 +425,12 @@ namespace EnemyRandomizerMod
 
         public bool DatabaseGenerated { get; private set; }
 
-        int currentDatabaseIndex = 0;
+        int currentDatabaseIndex = 3;
 
         int loadCount = 0;
 
         string currentlyLoadingScene = "";
+
 
         bool IsLoadingDatabase {
             get {
@@ -497,13 +491,22 @@ namespace EnemyRandomizerMod
         {
             GameObject root = EnemyRandomizer.Instance.ModRoot;
 
-            bool debugOnce = true;
+            //bool debugOnce = true;
             //iterate over the loaded scenes
             for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
             {
                 Scene sceneToLoad = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
 
+                if( sceneToLoad.name == "Menu_Title" )
+                    continue;
+
+                //bool addToSkip = true;
+
+                //TODO: REMOVE ME
+                //sceneToLoad.PrintHierarchy( sceneToLoad.buildIndex, null, null, "Scenes/"+sceneToLoad.name + ".txt" );
+
                 currentlyLoadingScene = sceneToLoad.name;
+                
                 Dev.Log( "Loading Scene [" + currentlyLoadingScene + "]" );
 
                 GameObject[] rootGameObjects = sceneToLoad.GetRootGameObjects();
@@ -583,30 +586,33 @@ namespace EnemyRandomizerMod
                         if( isInLoadedList )
                             continue;
 
-                        if( debugOnce && name.Contains( "Zombie Beam Miner" ) && !name.Contains( "Mega" ) )
-                        {
-                            debugOnce = false;
-                            //t.gameObject.PrintSceneHierarchyTree( true );
-                            sceneToLoad.PrintHierarchy( i );
-                        }
+                        //if( debugOnce && name.Contains( "Zombie Beam Miner" ) && !name.Contains( "Rematch" ) )
+                        //{
+                        //    debugOnce = false;
+                        //    //t.gameObject.PrintSceneHierarchyTree( true );
+                        //    sceneToLoad.PrintHierarchy( i );
+                        //}
 
-                        int indexOfRandomizerEnemyType = EnemyRandomizerDatabase.enemyTypeNames.IndexOf(name);
-                        
-                        if( indexOfRandomizerEnemyType >= 0 && t.gameObject.IsGameEnemy() )
+                        //int indexOfRandomizerEnemyType = EnemyRandomizerDatabase.enemyTypeNames.IndexOf(name);
+
+                        //if( indexOfRandomizerEnemyType >= 0 && t.gameObject.IsGameEnemy() )
+                        //{
+                        if( t.gameObject.IsGameEnemy() )
                         {
+                            //addToSkip = false;
+
+                            //Dev.Log( "Loading index " + indexOfRandomizerEnemyType );
+                            Dev.Log( "Loading enemy " + t.gameObject.name );
                             GameObject prefab = null;
-                            if( name.Contains("Zombie Beam Miner") )
-                            {
+                            //if( name.Contains("Zombie Beam Miner") || name == "Mage" )
+                            //{
+                            //TODO: test
                                 prefab = t.gameObject;
-                            }
-                            if( name ==  "Mage" )
-                            {
-                                prefab = t.gameObject;
-                            }
-                            else
-                            {
-                                prefab = GameObject.Instantiate(t.gameObject);
-                            }
+                            //}
+                            //else
+                            //{
+                            //    prefab = GameObject.Instantiate(t.gameObject);
+                            //}
                             
                             prefab.SetActive( false );
                             GameObject.DontDestroyOnLoad( prefab );
@@ -616,16 +622,29 @@ namespace EnemyRandomizerMod
                             prefab = ModifyGameObjectPrefab( prefab );
 
                             database.loadedEnemyPrefabs.Add( prefab );
-                            database.loadedEnemyPrefabNames.Add( EnemyRandomizerDatabase.enemyTypeNames[indexOfRandomizerEnemyType] );
-                            Dev.Log( "Adding enemy type: " + prefab.name + " to list with search string " + EnemyRandomizerDatabase.enemyTypeNames[ indexOfRandomizerEnemyType ] );                            
+                            //database.loadedEnemyPrefabNames.Add( EnemyRandomizerDatabase.enemyTypeNames[indexOfRandomizerEnemyType] );
+                            database.loadedEnemyPrefabNames.Add( name );
+                            //Dev.Log( "Adding enemy type: " + prefab.name + " to list with search string " + EnemyRandomizerDatabase.enemyTypeNames[ indexOfRandomizerEnemyType ] );
+                            Dev.Log( "Adding enemy type: " + prefab.name + " to list with search string " + name );
                         }//end if-enemy
                     }//end foreach transform in the root game objects
                 }//end for each root game object
-            }//iterate over all LOADED scenes
+
+                //if(addToSkip)
+                //{
+                //    database.emptyScenesToSkipOnLoad.Add( sceneToLoad.buildIndex );
+                //}
+                //else
+                //{   
+                //    database.scenesLoaded.Add( sceneToLoad.buildIndex );
+                //}
+
+            }//iterate over all LOADED scenes            
         }//end LoadSceneData()
 
         GameObject ModifyGameObjectPrefab( GameObject randoPrefab )
         {
+            Dev.Log( "Modifying " + randoPrefab );
             GameObject modifiedPrefab = randoPrefab;
             
             //Create a custom "wake up" base game object and put it on the mage knight
@@ -795,8 +814,8 @@ namespace EnemyRandomizerMod
             //    //    //UnityEngine.SceneManagement.SceneManager.GetSceneByName( currentlyLoadingScene ).PrintHierarchy();
             //}
 
-            //remove the "Cam Lock" game object child from the crystal guardian (mega zombie beam miner)
-            if( modifiedPrefab.name.Contains( "Mega Zombie Beam Miner" ) )
+            //remove the "Cam Lock" game object child from the crystal guardian (Zombie Beam Miner Rematch)
+            if( modifiedPrefab.name.Contains( "Zombie Beam Miner Rematch" ) )
             {
                 modifiedPrefab.PrintSceneHierarchyTree( true );
                 GameObject camLock = modifiedPrefab.FindGameObjectInChildren("Cam Lock");
@@ -857,35 +876,25 @@ namespace EnemyRandomizerMod
                 d.logFSM = false;
             }
 
-            //fix the beam miner FSM from getting stuck
-            else if( modifiedPrefab.name.Contains( "Zombie Beam Miner" ) )
-            {
-                Dev.Log( "DebugFSMS added zombie beam miner" );
-                DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Beam Miner", new List<string>() { "FINISHED" } );
-                d.monitorFSMStates = true;
-                d.sendWakeEventsOnState = "Beam End";
-                d.logFSM = false;
-            }
+            //TODO: uncomment
+            ////fix the beam miner FSM from getting stuck
+            //else if( modifiedPrefab.name.Contains( "Zombie Beam Miner" ) )
+            //{
+            //    Dev.Log( "DebugFSMS added zombie beam miner" );
+            //    DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Beam Miner", new List<string>() { "FINISHED" } );
+            //    d.monitorFSMStates = true;
+            //    d.sendWakeEventsOnState = "Beam End";
+            //    d.logFSM = false;
+            //}
 
-            //fix the slash spider from getting stuck
-            if( modifiedPrefab.name.Contains( "Slash Spider" ) )
-            {
-                //this fixes the slash spider!
-                DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Slash Spider", new List<string>() { "WAKE" } );
-                d.monitorFSMStates = true;
-                d.sendWakeEventsOnState = "Waiting";
-                d.logFSM = false;
-            }
-            
-            //if( modifiedPrefab.name.Contains( "Garden Zombie" ) )
+            ////fix the slash spider from getting stuck
+            //if( modifiedPrefab.name.Contains( "Slash Spider" ) )
             //{
             //    //this fixes the slash spider!
-            //    //DebugOnWake d = AddDebugOnWake(modifiedPrefab.FindGameObjectInChildren("Attack Range"), "attack_range_detect", new List<string>() { "WAKE" } );
-            //    //d.monitorFSMStates = true;
-            //    ////d.sendWakeEventsOnState = "Waiting";
-            //    ////d.logFSM = false;
-
-            //    //modifiedPrefab.PrintSceneHierarchyTree( true );
+            //    DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Slash Spider", new List<string>() { "WAKE" } );
+            //    d.monitorFSMStates = true;
+            //    d.sendWakeEventsOnState = "Waiting";
+            //    d.logFSM = false;
             //}
 
             return modifiedPrefab;
@@ -907,7 +916,9 @@ namespace EnemyRandomizerMod
 
         public int GetSceneToLoadFromRandomizerData(int databaseIndex)
         {
-            return EnemyRandomizerDatabase.EnemyTypeScenes[ databaseIndex ];
+            return databaseIndex;
+
+            //return EnemyRandomizerDatabase.EnemyTypeScenes[ databaseIndex ];
         }
 
         protected virtual void AdditivelyLoadCurrentScene()
@@ -920,14 +931,20 @@ namespace EnemyRandomizerMod
             }
             catch( Exception e )
             {
-                Dev.Log( "Exception from scene: " + e.Message );
-                PrintDebugLoadingError();
+                Dev.Log( "Exception from scene "+ currentlyLoadingScene +" #" + GetSceneToLoadFromRandomizerData( currentDatabaseIndex ) +" with message: "+ e.Message );
+                //PrintDebugLoadingError();
             }
         }
 
         protected virtual void IncrementCurrentSceneIndex()
         {
             currentDatabaseIndex += 1;
+            while(database.emptyScenesToSkipOnLoad.Contains(currentDatabaseIndex))
+            {
+                currentDatabaseIndex += 1;
+                if( currentDatabaseIndex >= 420 )
+                    break;
+            }
         }
 
         protected virtual void ProcessCurrentSceneForDataLoad()
@@ -937,7 +954,8 @@ namespace EnemyRandomizerMod
                 Dev.Log( "Loading scene data: " + GetSceneToLoadFromRandomizerData( currentDatabaseIndex ) );
                 LoadSceneData();
 
-                DatabaseLoadProgress = currentDatabaseIndex / (float)(EnemyRandomizerDatabase.EnemyTypeScenes.Count - 1);
+                DatabaseLoadProgress = currentDatabaseIndex / (float)( 420 );
+                //DatabaseLoadProgress = currentDatabaseIndex / (float)(EnemyRandomizerDatabase.EnemyTypeScenes.Count - 1);
                 Dev.Log( "Loading Progress: " + DatabaseLoadProgress );
 
                 Dev.Log( "Unloading scene: " + GetSceneToLoadFromRandomizerData( currentDatabaseIndex ) );
@@ -945,8 +963,8 @@ namespace EnemyRandomizerMod
             }
             catch( Exception e )
             {
-                Dev.Log( "Exception from scene: " + e.Message );
-                PrintDebugLoadingError();
+                Dev.Log( "Exception from scene " + currentlyLoadingScene + " #" + GetSceneToLoadFromRandomizerData( currentDatabaseIndex ) + " with message: " + e.Message );
+                //PrintDebugLoadingError();
             }
         }
 
@@ -962,6 +980,12 @@ namespace EnemyRandomizerMod
             //    go.PrintSceneHierarchyTree( true );
             //}
 
+            //Dev.LogVarArray( "Resources", Resources.FindObjectsOfTypeAll<Transform>() );
+            //Dev.LogVarArray( "Enemy Prefabs", database.loadedEnemyPrefabs );
+            Dev.LogVarArray( "Enemies", database.loadedEnemyPrefabNames );
+            //Dev.LogVarArray( "ScenesToSkip", database.emptyScenesToSkipOnLoad );
+            //Dev.LogVarArray( "ScenesWithEnemies", database.scenesLoaded );
+            
             //For debugging: print all the loaded effects
             //foreach( var effect in database.loadedEffectPrefabs )
             //{
@@ -980,7 +1004,8 @@ namespace EnemyRandomizerMod
 
         protected virtual bool IsDoneLoadingRandomizerData()
         {
-            return ( currentDatabaseIndex + 1) >= EnemyRandomizerDatabase.EnemyTypeScenes.Count;
+            return ( currentDatabaseIndex + 1 ) >= 421;
+            //return ( currentDatabaseIndex + 1) >= EnemyRandomizerDatabase.EnemyTypeScenes.Count;
         }
 
         protected virtual void BuildDatabase()
@@ -1036,23 +1061,23 @@ namespace EnemyRandomizerMod
             yield return false;
         }
 
-        protected virtual void PrintDebugLoadingError()
-        {
-            bool printInitial = true;
-            foreach( string enemy in EnemyRandomizerDatabase.enemyTypeNames )
-            {
-                if( database.loadedEnemyPrefabNames.Contains( enemy ) )
-                    continue;
+        //protected virtual void PrintDebugLoadingError()
+        //{
+        //    bool printInitial = true;
+        //    foreach( string enemy in EnemyRandomizerDatabase.enemyTypeNames )
+        //    {
+        //        if( database.loadedEnemyPrefabNames.Contains( enemy ) )
+        //            continue;
 
-                if( printInitial )
-                {
-                    Dev.Log( "Enemies not loaded so far:" );
-                    printInitial = false;
-                }
+        //        if( printInitial )
+        //        {
+        //            Dev.Log( "Enemies not loaded so far:" );
+        //            printInitial = false;
+        //        }
 
-                Dev.Log( "Missing type: " + enemy );
-            }
-        }
+        //        Dev.Log( "Missing type: " + enemy );
+        //    }
+        //}
 
 
 
