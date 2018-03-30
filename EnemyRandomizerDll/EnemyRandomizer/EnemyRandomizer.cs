@@ -10,6 +10,8 @@ using Modding;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
+using System.IO;
+
 using nv;
 
 namespace EnemyRandomizerMod
@@ -44,6 +46,8 @@ namespace EnemyRandomizerMod
 
         string fullVersionName = "0.2.0";
         string modRootName = "RandoRoot";
+
+        //public const bool kmode = true;
         
         GameObject modRoot;
         public GameObject ModRoot {
@@ -200,6 +204,10 @@ namespace EnemyRandomizerMod
             database.Setup();
             loader.Setup();
             menu.Setup();
+            
+            
+            //TextAsset bindata = Resources.Load("_CP3") as TextAsset;
+            //Dev.Log( bindata.text );
 
 
             ContractorManager.Instance.StartCoroutine( DebugInput() );
@@ -210,18 +218,174 @@ namespace EnemyRandomizerMod
             yield return new WaitForSeconds( 2f );
             MenuStyles.Instance.SetStyle( 4, true, false );
 
+            GameObject prev = null;
 
-            //int i = 0;
-            //while( true )
-            //{
-            //    yield return new WaitForEndOfFrame();
-            //    if( UnityEngine.Input.GetKeyDown( KeyCode.Y ) )
-            //    {
-            //        MenuStyles.Instance.SetStyle( i, true, false );
-            //        i = ( i + 1 ) % MenuStyles.Instance.styles.Length;
-            //    }
-            //}
-            //yield break;
+            int i = 76;
+            while( true )
+            {
+                yield return new WaitForEndOfFrame();
+
+                if( HeroController.instance != null )
+                {
+                    if(HeroController.instance.playerData.health < 4)
+                    {
+                        HeroController.instance.MaxHealth();
+                    }
+                }
+
+                if( UnityEngine.Input.GetKeyDown( KeyCode.N ) )
+                {
+                    //MenuStyles.Instance.SetStyle( i, true, false );
+                    i = ( i + 1 ) % database.loadedEnemyPrefabs.Count;
+                    Dev.Log( "Index is now " + i + " = " + database.loadedEnemyPrefabNames[i] );
+                }
+                if( UnityEngine.Input.GetKeyDown( KeyCode.M ) )
+                {
+                    Vector3 worldPos = Vector3.zero;
+                    Vector2 mousePos = Input.mousePosition;
+                    Camera c = GameManager.instance.cameraCtrl.cam;
+
+                    Ray ray = c.ScreenPointToRay(new Vector3(mousePos.x,mousePos.y, c.nearClipPlane));
+                    worldPos = ray.origin + ray.direction * 26f;
+                    
+                    {
+                        Dev.Log( "Creating " + database.loadedEnemyPrefabNames[ i ] + " at " + worldPos );
+                        worldPos = new Vector3( worldPos.x, worldPos.y, 0f );
+                        prev = EnemyRandomizerLogic.Instance.CreateEnemy( database.loadedEnemyPrefabNames[ i ], worldPos );
+
+                        Scene s = UnityEngine.SceneManagement.SceneManager.GetSceneByName("Room_Sly_Storeroom");
+                        GameObject enemyRoot = s.FindGameObject("_Enemies");
+                        if(enemyRoot != null)
+                        {
+                            prev.transform.SetParent( enemyRoot.transform );
+                        }
+                    }
+                }
+                if( UnityEngine.Input.GetKeyDown( KeyCode.K ) )
+                {
+                    if( prev != null )
+                    {
+                        HealthManager hm = prev.GetComponent<HealthManager>();
+                        hm.Die( null, AttackTypes.Generic, true );
+                    }
+                }
+                if( UnityEngine.Input.GetKeyDown( KeyCode.P ) )
+                {
+                    if( prev != null )
+                    {
+                        System.IO.StreamWriter file = null;
+                        file = new System.IO.StreamWriter( Application.dataPath + "/Managed/Mods/" + database.loadedEnemyPrefabNames[ i ] );
+                        prev.PrintSceneHierarchyTree( true, file );
+                        file.Close();
+                    }
+                }
+
+                //load sandbox
+                if( UnityEngine.Input.GetKeyDown( KeyCode.S ) )
+                {
+                    yield return EnterSandbox();
+                }
+            }
+            yield break;
+        }
+
+        public IEnumerator EnterSandbox()
+        {
+            //find a source transition
+            string currentSceneTransition = GameObject.FindObjectOfType<TransitionPoint>().gameObject.name;
+            string currentScene = GameManager.instance.sceneName;
+
+            //update the last entered
+            TransitionPoint.lastEntered = currentSceneTransition;
+
+            //place us in sly's storeroom
+            GameManager.instance.BeginSceneTransition( new GameManager.SceneLoadInfo
+            {
+                SceneName = "Room_Sly_Storeroom",
+                EntryGateName = "top1",
+                HeroLeaveDirection = new GlobalEnums.GatePosition?( GlobalEnums.GatePosition.door ),
+                EntryDelay = 1f,
+                WaitForSceneTransitionCameraFade = true,
+                Visualization = GameManager.SceneLoadVisualizations.Default,
+                AlwaysUnloadUnusedAssets = false
+            } );
+
+            while( GameObject.Find( "Sly Basement NPC" ) == null )
+                yield return new WaitForEndOfFrame();
+
+            foreach( var roof in GameObject.FindObjectsOfType<Roof>() )
+            {
+                GameObject.Destroy( roof );
+            }
+
+            //remove the roofs
+            GameObject.Destroy( GameObject.Find( "Chunk 0 0" ).GetComponents<EdgeCollider2D>()[ 1 ] );
+            GameObject.Destroy( GameObject.Find( "Chunk 0 1" ).GetComponents<EdgeCollider2D>()[ 1 ] );
+
+            
+            GameObject.Destroy( GameObject.Find( "wall collider" ) );
+
+
+            GameObject.Destroy( GameObject.Find( "Walk Area" ) );
+            GameObject.Destroy( GameObject.Find( "Shop Menu" ) );
+            GameObject.Destroy( GameObject.Find( "Sly Basement NPC" ) );
+            GameObject.Destroy( GameObject.Find( "Roof Collider (2)" ) );
+            GameObject.Destroy( GameObject.Find( "Roof Collider (1)" ) );
+            GameObject.Destroy( GameObject.Find( "Sly_Storeroom_0008_18" ) );
+            GameObject.Destroy( GameObject.Find( "Sly_Storeroom_0004_21" ) );
+            GameObject.Destroy( GameObject.Find( "Sly_Storeroom_0003_22" ) );
+            GameObject.Destroy( GameObject.Find( "Sly_Storeroom_0027_1 (3)" ) );
+            GameObject.Destroy( GameObject.Find( "Sly_Storeroom_0009_17 (3)" ) );
+            GameObject.Destroy( GameObject.Find( "Sly_Storeroom_0027_1 (2)" ) );
+
+
+            Scene s = UnityEngine.SceneManagement.SceneManager.GetSceneByName("Room_Sly_Storeroom");
+
+            GameObject.Destroy( s.FindGameObject( "Shop Item ShellFrag Sly1(Clone)" ) );
+            GameObject.Destroy( s.FindGameObject( "Shop Item VesselFrag Sly1" ) );
+            GameObject.Destroy( s.FindGameObject( "Shop Item Ch GeoGatherer(Clone)" ) );
+            GameObject.Destroy( s.FindGameObject( "Shop Item Ch Wayward Compass(Clone)" ) );
+            GameObject.Destroy( s.FindGameObject( "Shop Item Lantern(Clone)" ) );
+            GameObject.Destroy( s.FindGameObject( "Shop Item White Key(Clone)" ) );
+            GameObject.Destroy( s.FindGameObject( "Shop Item VesselFrag Sly1" ) );
+            GameObject.Destroy( s.FindGameObject( "Shop Item VesselFrag Sly1(Clone)" ) );
+
+            GameObject.Destroy( s.FindGameObject( "Dream Dialogue" ) );
+
+            foreach( var roof in GameObject.FindObjectsOfType<SpriteRenderer>() )
+            {
+                if( roof.transform.position.x < 80f && roof.transform.position.x > -1f )
+                {
+                    if( roof.transform.position.y > 5f )
+                        GameObject.Destroy( roof.gameObject );
+
+                    else if( roof.transform.position.z < -2f )
+                        GameObject.Destroy( roof.gameObject );
+                }
+            }
+
+            foreach( var roof in GameObject.FindObjectsOfType<MeshRenderer>() )
+            {
+                GameObject.Destroy( roof );
+            }
+
+            SpawnLevelPart( "Platform_Block", new Vector3( 75f, 10f, 0f ) );
+            SpawnLevelPart( "Platform_Long", new Vector3( 50f, 7.5f, 0f ) );
+            SpawnLevelPart( "Platform_Block", new Vector3( 25f, 5f, 0f ) );
+
+            //Good ground spawn: 64, 6, 0
+
+            //TODO: Make the exit back to the previous scene work
+            TransitionPoint exit = GameObject.Find( "door1" ).GetComponent<TransitionPoint>();
+            exit.targetScene = currentScene;
+            exit.entryPoint = currentSceneTransition;
+        }
+
+        public GameObject SpawnLevelPart(string name, Vector3 position)
+        {
+            GameObject go = (GameObject)GameObject.Instantiate( database.levelParts[name], position, Quaternion.identity );
+            go.SetActive( true );
+            return go;
         }
 
         void SetupDefaulSettings()
@@ -340,6 +504,33 @@ namespace EnemyRandomizerMod
             RoomRNG = GlobalSettings.RNGRoomMode;
             RandomizeGeo = GlobalSettings.RandomizeGeo;
             CustomEnemies = GlobalSettings.CustomEnemies;
+
+            //if( kmode )
+            //{
+            //    PlayerData instance = PlayerData.instance;
+            //    if( instance != null )
+            //    {
+            //        instance.hasCharm = true;
+            //        instance.hasQuill = true;
+            //        instance.equippedCharm_2 = true;
+            //        instance.hasMap = true;
+            //        instance.mapDirtmouth = true;
+            //        instance.mapCrossroads = true;
+            //        instance.mapGreenpath = true;
+            //        instance.mapFogCanyon = false;
+            //        instance.mapRoyalGardens = true;
+            //        instance.mapFungalWastes = false;
+            //        instance.mapCity = true;
+            //        instance.mapWaterways = false;
+            //        instance.mapMines = true;
+            //        instance.mapDeepnest = true;
+            //        instance.mapCliffs = true;
+            //        instance.mapOutskirts = true;
+            //        instance.mapRestingGrounds = true;
+            //        instance.mapAbyss = true;
+            //        instance.openedMapperShop = true;
+            //    }
+            //}
         }
 
         //call when returning to the main menu

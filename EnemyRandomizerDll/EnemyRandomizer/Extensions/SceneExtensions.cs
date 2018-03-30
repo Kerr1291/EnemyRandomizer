@@ -10,6 +10,35 @@ namespace nv
 {
     public static class SceneExtensions
     {
+        public static GameObject FindGameObject( this Scene scene, string name )
+        {
+            if( !scene.IsValid() )
+                return null;
+            
+            GameObject[] rootGameObjects = scene.GetRootGameObjects();
+
+            try
+            {
+                foreach( GameObject go in rootGameObjects )
+                {
+                    if( go == null )
+                    {
+                        break;
+                    }
+
+                    GameObject found = go.FindGameObjectInChildren(name);
+                    if( found != null )
+                        return found;
+                }
+            }
+            catch( Exception e )
+            {
+                Dev.Log( "Exception: " + e.Message );
+            }
+
+            return null;
+        }
+
         public static void PrintHierarchy( this Scene scene, int localIndex = -1, Bounds? sceneBounds = null, List<string> randomizerEnemyTypes = null, string outputFileName = "" )
         {
             if( !scene.IsValid() )
@@ -85,12 +114,12 @@ namespace nv
             if( file != null )
             {
                 file.WriteLine( "END +++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
+                file.Close();
             }
             else
             {
                 Dev.Log( "END +++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
             }
-            file.Close();
         }
     }
 }

@@ -312,7 +312,7 @@ namespace EnemyRandomizerMod.Menu
             rootUIManager = UIManager.instance;
 
             //TODO: for testing, disable me on releases
-            rootUIManager.gameObject.PrintSceneHierarchyTree(true);
+            //rootUIManager.gameObject.PrintSceneHierarchyTree(true);
 
             uiManagerCanvasRoot = rootUIManager.gameObject.FindGameObjectInChildren( "UICanvas" );
 

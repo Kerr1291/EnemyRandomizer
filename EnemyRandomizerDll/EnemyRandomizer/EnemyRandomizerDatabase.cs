@@ -6,6 +6,91 @@ using UnityEngine;
 
 using nv;
 
+
+/*
+ * 
+ * Knight is slightly shorter than 5 units, 3 or 4?
+ * 
+ * 
+ * Flamebearer Small/Med -- Try sending "START" event on wake
+ * Giant Hopper -- Colosseum version? dies when spawned? seems to project itself to 0,0,0???
+ * Bursting Zombie -- needs to drop geo
+ * Mega Fat Bee -- needs a modification to it's position/fly in animation/FSM
+ * Mantis Heavy  -- spawns outside of scene at 0,0,0
+ * Mage Knight -- spawned at 0,0,0
+ * Electric Mage - spawned at 0,0,0
+ * Lobster -- spawned in ground
+ * Mender Bug - needs an awake message of some sort
+ * Giant Fly - needs to spawn as a ground enemy & needs a fix so it spawns enemies
+ * Mawlek Body - needs the fix so it doesn't check to see if the player has killed one already
+ * Blocker - floating just a bit above ground, about 1 unit / never spawns enemies
+ * Hatcher - doesn't spawn enemies
+ * Hatcher Baby - maybe don't rando replace???
+ * Zombie Myla - spawned at zero and also has some persistant thing that needs to be fixed
+ * Ruins Sentry Fat - spawned at zero, but others were fine?
+ * Mage Lord Phase2 - spawned and then teleported far away, fix his teleport destination?/Spawning him twice is broken probably a persistant bool item
+ * Mage Lord - same problem
+ * Black Knight - needs wake event
+ * Infected Knight - needs wake event
+ * Jar Collector - needs wake event
+ * Hornet Boss - needs wake event
+ * Moss Charger - index 88, needs to be looked at for nullref  (  EnemyRandomizerMod.EnemyRandomizerLogic.PositionRandomizedEnemy  threw a nullref  )
+ * 
+ * 
+ * 
+ * None of the colosseum enemies project themselves onto the ground properly?
+ * 
+ * Colosseum List:
+ * 
+ * Colosseum_Armoured_Roller
+ * Super Spitter Col
+ * Colosseum_Worm
+ * Hopper
+ * Ceiling Dropper Col (now works properly)
+ * Super Spitter
+ * Mega Fat Bee
+ * Mantis Heavy Flier
+ * Mantis Heavy 
+ * Colosseum Grass Hopper
+ * Mawlek Col
+ * Lesser Mawlek
+ * Angry Buzzer
+ * Lancer
+ * Lobster
+ * Mage Knight
+ * Mage Blob
+ * Mage
+ * Mage Balloon
+ * Electric Mage
+ * 
+ * 
+ * 
+ * Other Notes:
+ * 
+ * Increase the raycast down length for positioning ground enemies
+ * 
+ * Sending Force Kill didn't "properly" kill mage lord phase 2?
+ * 
+ * Mage Knight/Mage seem to probably need my area wake fixes
+ * 
+ * Rando enemies need to have their persistant bool things removed, else they will kill themselves when spawned
+ * Lnacer still does not despawn on death, careful of where we place her
+ * 
+ * 
+ * Don't spawn:
+ * 
+ * Buzzer Col -- duplicate of Buzzer and does not drop geo
+ * Maybe: Giant Buzzer Col - does not spawn adds
+ * False Knight New -- very broken
+ * Great Shield Zombie bottom - duplicate
+ * Ruins Sentry Fat - remove duplicates
+ * Roller R - very broken
+ * Spitter R - very broken
+ * Buzzer R -
+ * 
+ * 
+ * */
+
 //disable the unreachable code detected warning for this file
 #pragma warning disable 0162
 
@@ -26,6 +111,8 @@ namespace EnemyRandomizerMod
 
         //hold references to certain effects used by enemies (like the beam parts used by crystal guardian)
         public Dictionary<string, GameObject> loadedEffectPrefabs = new Dictionary<string, GameObject>();
+
+        public Dictionary<string, GameObject> levelParts = new Dictionary<string, GameObject>();
                 
         public EnemyRandomizerDatabase()
         {
@@ -45,29 +132,31 @@ namespace EnemyRandomizerMod
         }
 
         //enable this to only load scenes from the "testTypeScenes" list for faster debugging
-        //public const bool USE_TEST_SCENES = false;
+        public const bool USE_TEST_SCENES = false;
 
-        //public static List<int> EnemyTypeScenes {
-        //    get {
-        //        //if( USE_TEST_SCENES )
-        //            return testTypeScenes;
+        public static List<int> EnemyTypeScenes {
+            get {
+                if( USE_TEST_SCENES )
+                    return testTypeScenes;
 
-        //        //else
-        //        //    return enemyTypeScenes;
-        //    }
-        //}
+                else
+                    return scenesToLoad;
+            }
+        }
 
-        //static List<int> testTypeScenes = new List<int>()
-        //{
-        //    //244, //test crystal guardian and Zombie Beam Miner(244)
-        //    34, //test super spitter (colosseum enemies)
-        //    7 //test flame spawn
-        //    //276, //testing tiny spider
-        //    //189,//testing garden zombie
-
-        //    //test these for mage??
-        //    //96  //testing mage?
-        //};
+        static List<int> testTypeScenes = new List<int>()
+        {
+            367,
+            368
+             // 6
+             //,27
+             //,32
+             //,33
+             //,34
+             //,37
+             //,39
+             //,40
+        };
 
 
         /* 
@@ -168,315 +257,113 @@ namespace EnemyRandomizerMod
         //    362
         //};
 
-        public List<int> emptyScenesToSkipOnLoad = new List<int>()
+        public static List<int> scenesToLoad = new List<int>()
         {
-            0,1,2,3,4,5
-            ,7
-            ,8
-            ,9
-            ,10
-            ,11
-            ,12
-            ,13
-            ,14
-            ,15
-            ,16
-            ,17
-            ,18
-            ,19
-            ,20
-            ,21
-            ,22
-            ,23
-            ,24
-            ,25
-            ,26
-            ,28
-            ,29
-            ,30
-            ,31
-            ,35
-            ,36
-            ,38
-            ,41
-            ,42
-            ,44
-            ,46
-            ,47
-            ,51
-            ,52
-            ,53
-            ,55
-            ,56
-            ,60
-            ,61
-            ,62
-            ,63
-            ,64
-            ,65
-            ,66
-            ,67
-            ,68
-            ,69
-            ,70
-            ,71
-            ,72
-            ,74
-            ,75
-            ,77
-            ,78
-            ,79
-            ,80
-            ,82
-            ,85
-            ,86
-            ,87
-            ,89
-            ,91
-            ,93
-            ,95
-            ,96
-            ,97
-            ,98
-            ,99
-            ,100
-            ,101
-            ,103
-            ,104
-            ,105
-            ,106
-            ,107
-            ,108
-            ,109
-            ,110
-            ,111
-            ,112
-            ,113
-            ,116
-            ,117
-            ,118
-            ,119
-            ,120
-            ,121
-            ,122
-            ,123
-            ,124
-            ,125
-            ,127
-            ,129
-            ,130
-            ,131
-            ,132
-            ,134
-            ,135
-            ,136
-            ,137
-            ,142
-            ,143
-            ,144
-            ,145
-            ,146
-            ,150
-            ,152
-            ,153
-            ,155
-            ,157
-            ,158
-            ,160
-            ,162
-            ,163
-            ,164
-            ,165
-            ,166
-            ,170
-            ,172
-            ,173
-            ,175
-            ,177
-            ,179
-            ,181
-            ,182
-            ,183
-            ,184
-            ,185
-            ,186
-            ,187
-            ,188
-            ,189
-            ,190
-            ,191
-            ,192
-            ,193
-            ,195
-            ,196
-            ,198
-            ,199
-            ,201
-            ,202
-            ,204
-            ,205
-            ,206
-            ,207
-            ,208
-            ,210
-            ,211
-            ,212
-            ,213
-            ,214
-            ,215
-            ,216
-            ,217
-            ,218
-            ,220
-            ,222
-            ,223
-            ,224
-            ,225
-            ,226
-            ,227
-            ,230
-            ,231
-            ,233
-            ,234
-            ,235
-            ,236
-            ,237
-            ,239
-            ,240
-            ,241
-            ,242
-            ,243
-            ,244
-            ,246
-            ,247
-            ,248
-            ,250
-            ,253
-            ,254
-            ,255
-            ,257
-            ,259
-            ,260
-            ,262
-            ,263
-            ,265
-            ,266
-            ,267
-            ,268
-            ,269
-            ,270
-            ,272
-            ,273
-            ,274
-            ,275
-            ,276
-            ,277
-            ,281
-            ,282
-            ,283
-            ,284
-            ,285
-            ,287
-            ,288
-            ,289
-            ,291
-            ,293
-            ,294
-            ,295
-            ,296
-            ,299
-            ,300
-            ,301
-            ,302
-            ,303
-            ,304
-            ,305
-            ,307
-            ,308
-            ,311
-            ,312
-            ,313
-            ,315
-            ,316
-            ,317
-            ,318
-            ,319
-            ,320
-            ,321
-            ,322
-            ,323
-            ,324
-            ,325
-            ,326
-            ,327
-            ,328
-            ,329
-            ,330
-            ,331
-            ,333
-            ,334
-            ,335
-            ,337
-            ,338
-            ,339
-            ,340
-            ,342
-            ,345
-            ,346
-            ,347
-            ,348
-            ,351
-            ,352
-            ,353
-            ,354
-            ,356
-            ,357
-            ,359
-            ,360
-            ,362
-            ,363
-            ,364
-            ,368
-            ,369
-            ,370
-            ,371
-            ,372
-            ,373
-            ,374
-            ,375
-            ,376
-            ,377
-            ,378
-            ,379
-            ,380
-            ,381
-            ,382
-            ,383
-            ,385
-            ,387
-            ,388
-            ,390
-            ,391
-            ,394
-            ,400
-            ,401
-            ,402
-            ,403
-            ,404
-            ,405
-            ,406
-            ,408
-            ,410
-            ,411
-            ,412
-            ,413
-            ,414
-            ,415
-            ,416
-            ,417
-            ,418
-            ,419
-            ,420
+              6
+             ,27
+             ,32
+             ,33
+             ,34
+             ,37
+             ,39
+             ,40
+             ,45
+             ,48
+             ,49
+             ,50
+             ,54
+             ,57
+             ,58
+             ,59
+             ,73
+             ,76
+             ,81
+             ,83
+             ,84
+             ,88
+             ,90
+             ,92
+             ,94
+             ,102
+             ,114
+             ,115
+             ,126
+             ,128
+             ,133
+             ,138
+             ,139
+             ,140
+             ,141
+             ,147
+             ,148
+             ,149
+             ,151
+             ,154
+             ,156
+             ,159
+             ,161
+             ,167
+             ,168
+             ,169
+             ,171
+             ,174
+             ,176
+             ,178
+             ,180
+             ,192
+             ,194
+             ,197
+             ,200
+             ,203
+             ,209
+             ,219
+             ,221
+             ,228
+             ,229
+             ,238
+             ,245
+             ,249
+             ,251
+             ,252
+             ,256
+             ,258
+             ,261
+             ,264
+             ,271
+             ,278
+             ,279
+             ,280
+             ,286
+             ,290
+             ,291
+             ,292
+             ,297
+             ,298
+             ,306
+             ,314
+             ,332
+             ,334
+             ,344
+             ,349
+             ,350
+             ,355
+             ,358
+             ,361
+             ,365
+             ,367
+             ,384
+             ,386
+             ,389
+             ,392
+             ,393
+             ,395
+             ,396
+             ,398
+             ,409
+             ,407
+             ,399
+             ,397
+             ,366
         };
 
         public List<int> scenesLoaded = new List<int>();

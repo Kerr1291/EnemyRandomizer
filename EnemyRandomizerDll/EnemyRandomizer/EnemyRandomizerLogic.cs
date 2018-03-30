@@ -634,10 +634,10 @@ namespace EnemyRandomizerMod
 
                         bool isRandoEnemy = potentialEnemy.IsRandomizerEnemy(database.loadedEnemyPrefabNames);
 
-                        //if( EnemyRandomizerDatabase.USE_TEST_SCENES )
-                        //{
-                        //    isRandoEnemy = potentialEnemy.IsRandomizerEnemy( EnemyRandomizerDatabase.enemyTypeNames );
-                        //}
+                        if( EnemyRandomizerDatabase.USE_TEST_SCENES )
+                        {
+                            isRandoEnemy = potentialEnemy.IsRandomizerEnemy( database.loadedEnemyPrefabNames );
+                        }
 
                         if( isRandoEnemy && !potentialEnemy.IsEnemyDead() )
                             RandomizeEnemy( potentialEnemy );
@@ -680,10 +680,10 @@ namespace EnemyRandomizerMod
         {
             bool isRandoEnemy = potentialEnemy.IsRandomizerEnemy( database.loadedEnemyPrefabNames );
 
-            //if( EnemyRandomizerDatabase.USE_TEST_SCENES )
-            //{
-            //    isRandoEnemy = potentialEnemy.IsRandomizerEnemy( EnemyRandomizerDatabase.enemyTypeNames );
-            //}
+            if( EnemyRandomizerDatabase.USE_TEST_SCENES )
+            {
+                isRandoEnemy = potentialEnemy.IsRandomizerEnemy( database.loadedEnemyPrefabNames );
+            }
 
             if( isRandoEnemy )
                 RandomizeEnemy( potentialEnemy );
@@ -824,6 +824,41 @@ namespace EnemyRandomizerMod
             //newEnemy.PrintSceneHierarchyTree( true );
         }
 
+
+        //TODO: change to return by ref?
+        public GameObject CreateEnemy(string name, Vector3 position)
+        {
+            if( simulateReplacement )
+            {
+                Dev.Log( "Simulating create enemy "+name );
+                return null;
+            }
+
+            int replacementIndex = 0;
+
+            GameObject enemyPrefab = GetEnemyTypePrefab(name, ref replacementIndex);
+            if( enemyPrefab == null )
+                return null;
+
+            Dev.Log( "Creating enemy "+name );
+            
+            GameObject newEnemy = PlaceEnemy( enemyPrefab, enemyPrefab, replacementIndex, position );
+
+            newEnemy.name = "Rando Custom: " + name;
+
+            DebugOnWake d = EnemyRandomizerLoader.Instance.AddDebugOnWake( newEnemy );
+
+            if( newEnemy.name.Contains( "Flamebearer" ) )
+            {
+                d.fsmName = "Control";
+                d.sendWakeEventsOnState = "Init";
+                d.wakeEvents = new List<string>() { "START" };
+            }
+
+            d.monitorFSMStates = true;
+            return newEnemy;
+        }
+
         //T CopyComponent<T>( T original, GameObject destination ) where T : Component
         //{
         //    System.Type type = original.GetType();
@@ -952,12 +987,16 @@ namespace EnemyRandomizerMod
             //where we'll place the new enemy in the scene
             //GameObject newEnemyRoot = GameObject.Find("_Enemies");
 
+            //Dev.Log( "Loading " + prefab );
+            //Dev.Log( "Loading " + prefab.name );
+            //GameObject newEnemy = UnityEngine.Object.Instantiate(Resources.Load(prefab.name)) as GameObject;
             GameObject newEnemy = UnityEngine.Object.Instantiate(prefab) as GameObject;
+            //UnityEngine.Object.Instantiate(prefab) as GameObject;
 
             //newEnemy.transform.SetParent( newEnemyRoot.transform );
             newEnemy.transform.SetParent( oldEnemy.transform.parent );
 
-            newEnemy.tag = prefab.tag;
+            //newEnemy.tag = prefab.tag;
 
             return newEnemy;
         }
@@ -1377,7 +1416,7 @@ namespace EnemyRandomizerMod
         //adjust the rotation to take into account the new monster type and/or size     
         void RotateRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
         {
-            if( !newEnemy.name.Contains( "Ceiling Dropper" ) )
+            if( !newEnemy.name.Contains( "Ceiling Dropper" ) ) 
                 newEnemy.transform.rotation = oldEnemy.transform.rotation;
 
             //if they were a wall flying mantis, don't rotate the replacement
@@ -1404,12 +1443,12 @@ namespace EnemyRandomizerMod
                 //crawler = newEnemy;
             }
 
-            if( oldEnemy.name.Contains( "Moss Walker" ) )
-            {
-                //Quaternion rot180degrees = Quaternion.Euler(-oldEnemy.transform.rotation.eulerAngles);
-                //newEnemy.transform.rotation = rot180degrees * oldEnemy.transform.rotation;
-                newEnemy.transform.rotation = Quaternion.identity;
-            }
+            //if( oldEnemy.name.Contains( "Moss Walker" ) )
+            //{
+            //    //Quaternion rot180degrees = Quaternion.Euler(-oldEnemy.transform.rotation.eulerAngles);
+            //    //newEnemy.transform.rotation = rot180degrees * oldEnemy.transform.rotation;
+            //    newEnemy.transform.rotation = Quaternion.identity;
+            //}
         }
 
         public IEnumerator PositionCorrector( GameObject newEnemy, Vector3 lockedPosition, float lockTime = 4f )
@@ -1512,10 +1551,10 @@ namespace EnemyRandomizerMod
                 positionOffset = new Vector3( 0f, collider.size.y, 0f );
 
                 //TODO: TEST, see if this fixes him spawning in the roof
-                if( newEnemy.name.Contains( "Mantis Traitor Lord" ) )
-                {
-                    ( ContractorManager.Instance ).StartCoroutine( PositionCorrector( newEnemy, newEnemy.transform.position + positionOffset ) );
-                }
+                //if( newEnemy.name.Contains( "Mantis Traitor Lord" ) )
+                //{
+                //    ( ContractorManager.Instance ).StartCoroutine( PositionCorrector( newEnemy, newEnemy.transform.position + positionOffset ) );
+                //}
             }
 
             if( ( flags & FLAGS.WALL ) > 0 || ( flags & FLAGS.CRAWLER ) > 0 )
@@ -1581,39 +1620,42 @@ namespace EnemyRandomizerMod
 
                 if( ( flags & FLAGS.CRAWLER ) > 0 )
                 {
-                    positionOffset = originalUp * 1f;
+                    //positionOffset =  * 1f;
+                    //BoxCollider2D collider = newEnemy.GetComponent<BoxCollider2D>();
+                    if( collider != null )
+                        positionOffset = new Vector3( collider.size.x * originalUp.x, collider.size.y * originalUp.y, 0f );
 
-                    //TODO: test this, fix this up after next content patch is out
-                    if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
-                    {
-                        //suppposedly 1/2 their Y collider space offset should be 1.25
-                        //but whatever we set it at, they spawn pretty broken, so spawn them out of the ground a bit so they're still a threat
-                        positionOffset = -finalDir * 1.0f;
-                        //( ContractorManager.Instance ).StartCoroutine( PositionCorrectorProjection( newEnemy, newEnemy.transform.rotation, upOffset, finalDir, 10f, 1f, 10f ) );
-                    }
+                    ////TODO: test this, fix this up after next content patch is out
+                    //if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
+                    //{
+                    //    //suppposedly 1/2 their Y collider space offset should be 1.25
+                    //    //but whatever we set it at, they spawn pretty broken, so spawn them out of the ground a bit so they're still a threat
+                    //    positionOffset = -finalDir * 1.0f;
+                    //    //( ContractorManager.Instance ).StartCoroutine( PositionCorrectorProjection( newEnemy, newEnemy.transform.rotation, upOffset, finalDir, 10f, 1f, 10f ) );
+                    //}
 
-                    //TODO: test this, needs to be farther from the ground than the rest
-                    if( newEnemy.name.Contains( "Mines Crawler" ) )
-                    {
-                        positionOffset = -finalDir * 1.5f;
-                    }
+                    ////TODO: test this, needs to be farther from the ground than the rest
+                    //if( newEnemy.name.Contains( "Mines Crawler" ) )
+                    //{
+                    //    positionOffset = -finalDir * 1.5f;
+                    //}
 
-                    if( newEnemy.name.Contains( "Spider Mini" ) )
-                    {
-                        positionOffset = Vector3.zero;
-                    }
+                    //if( newEnemy.name.Contains( "Spider Mini" ) )
+                    //{
+                    //    positionOffset = Vector3.zero;
+                    //}
 
-                    //TODO: unknown what value this needs
-                    if( newEnemy.name.Contains( "Abyss Crawler" ) )
-                    {
-                        positionOffset = Vector3.zero;
-                    }
+                    ////TODO: unknown what value this needs
+                    //if( newEnemy.name.Contains( "Abyss Crawler" ) )
+                    //{
+                    //    positionOffset = Vector3.zero;
+                    //}
 
-                    //TODO: unknown what value this needs
-                    if( newEnemy.name.Contains( "Climber" ) )
-                    {
-                        positionOffset = Vector3.zero;
-                    }
+                    ////TODO: unknown what value this needs
+                    //if( newEnemy.name.Contains( "Climber" ) )
+                    //{
+                    //    positionOffset = Vector3.zero;
+                    //}
                 }
 
                 //show adjustment
@@ -1936,7 +1978,7 @@ namespace EnemyRandomizerMod
 
             ModifyRandomizedEnemyGeo( newEnemy, oldEnemy );
 
-            FixRandomizedEnemy( newEnemy, oldEnemy );
+            //FixRandomizedEnemy( newEnemy, oldEnemy );
 
             //must happen after position
             NameRandomizedEnemy( newEnemy, prefabIndex );
@@ -1950,7 +1992,7 @@ namespace EnemyRandomizerMod
                 Dev.Log( "Exception trying to activate new enemy!" + e.Message );
             }
 
-            InitRandomizedEnemy( newEnemy, oldEnemy );
+            //InitRandomizedEnemy( newEnemy, oldEnemy );
             
             Dev.Log( "New stats for custom rando monster: " + newEnemy.name + " at " + newEnemy.transform.position + " with rotation " + newEnemy.transform.localRotation.eulerAngles );
             return newEnemy;
@@ -2045,8 +2087,9 @@ namespace EnemyRandomizerMod
                     }
                 }
 
+                //TODO: change me back
                 //if( EnemyRandomizerDatabase.USE_TEST_SCENES )
-                //    isValid = true;
+                    isValid = true;
 
                 //this one never explodes...
                 if( tempName == "Ceiling Dropper Col" )

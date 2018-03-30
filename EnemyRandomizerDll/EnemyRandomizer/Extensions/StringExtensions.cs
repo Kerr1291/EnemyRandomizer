@@ -21,11 +21,34 @@ namespace nv
             }
         }
 
+        public static List<string> skipLoadingList = new List<string>()
+        {
+            "Hollow Shade",
+            "Head",
+            "Spawn Roller v2",
+            "Hatcher Baby Spawner",
+            "Hatcher NP",
+            "Egg Sac",
+            "Lil Jellyfish",
+            "Gate Mantis",
+            "Mantis Lord S2",
+            "Mantis Lord",
+            "Mantis Lord S1",
+            "Dummy Mantis",
+            "Real Bat",
+            "Tinger",
+            "Zote Balloon",
+            "fluke_baby_01",
+            "fluke_baby_02",
+            "fluke_baby_03"
+        };
+
+
         //TODO: move this list into a list
         public static bool IsSkipLoadingString( this string str )
         {
             if( string.IsNullOrEmpty( str ) )
-                return false;
+                return true;
 
             if( str.Contains( "Corpse" ) )
                 return true;
@@ -58,6 +81,18 @@ namespace nv
                 return true;
 
             if( str.Contains( "Summon" ) )
+                return true;
+
+            if( str.Contains( "fluke_baby_03" ) )
+                return true;
+            if( str.Contains( "Flukeman Top" ) )
+                return true;
+            if( str.Contains( "Flukeman Bot" ) )
+                return true;
+
+            string trimmedName = str.TrimGameObjectName();
+
+            if( skipLoadingList.Contains( trimmedName ) )
                 return true;
 
             return false;
@@ -223,71 +258,7 @@ namespace nv
             if( indexOfStartParethesis > 0 )
                 trimmedString = trimmedString.Substring( 0, indexOfStartParethesis );
 
-
-            ////trim off " (1)" from the word, if it's there
-            //index = trimmedString.LastIndexOf( " (1)" );
-            //if( index > 0 )
-            //    trimmedString = trimmedString.Substring( 0, index );
-
-            ////trim off " (2)" from the word, if it's there
-            //index = trimmedString.LastIndexOf( " (2)" );
-            //if( index > 0 )
-            //    trimmedString = trimmedString.Substring( 0, index );
-
-            ////trim off " (3)" from the word, if it's there
-            //index = trimmedString.LastIndexOf( " (3)" );
-            //if( index > 0 )
-            //    trimmedString = trimmedString.Substring( 0, index );
-
-            ////trim off " (4)" from the word, if it's there
-            //index = trimmedString.LastIndexOf( " (4)" );
-            //if( index > 0 )
-            //    trimmedString = trimmedString.Substring( 0, index );
-
-            ////trim off " (4)" from the word, if it's there
-            //index = trimmedString.LastIndexOf( " (5)" );
-            //if( index > 0 )
-            //    trimmedString = trimmedString.Substring( 0, index );
-
-            ////trim off " (4)" from the word, if it's there
-            //index = trimmedString.LastIndexOf( " (6)" );
-            //if( index > 0 )
-            //    trimmedString = trimmedString.Substring( 0, index );
-
-            ////trim off " (4)" from the word, if it's there
-            //index = trimmedString.LastIndexOf( " (7)" );
-            //if( index > 0 )
-            //    trimmedString = trimmedString.Substring( 0, index );
-
-            ////trim off " (4)" from the word, if it's there
-            //index = trimmedString.LastIndexOf( " (8)" );
-            //if( index > 0 )
-            //    trimmedString = trimmedString.Substring( 0, index );
-
-            ////trim off " (4)" from the word, if it's there
-            //index = trimmedString.LastIndexOf( " (9)" );
-            //if( index > 0 )
-            //    trimmedString = trimmedString.Substring( 0, index );
-
-            ////trim off " (4)" from the word, if it's there
-            //index = trimmedString.LastIndexOf( " (10)" );
-            //if( index > 0 )
-            //    trimmedString = trimmedString.Substring( 0, index );
-
-            ////trim off " (10)" from the word, if it's there
-            //index = trimmedString.LastIndexOf( " (11)" );
-            //if( index > 0 )
-            //    trimmedString = trimmedString.Substring( 0, index );
-
-            ////trim off " (10)" from the word, if it's there
-            //index = trimmedString.LastIndexOf( " (12)" );
-            //if( index > 0 )
-            //    trimmedString = trimmedString.Substring( 0, index );
-
-            //trim off " (10)" from the word, if it's there
-            //index = trimmedString.LastIndexOf( " (13)" );
-            //if( index > 0 )
-            //    trimmedString = trimmedString.Substring( 0, index );
+            
 
             if( trimmedString != "Zombie Spider 1" && trimmedString != "Zombie Spider 2" )
             {
