@@ -12,7 +12,7 @@ using nv;
  * Knight is slightly shorter than 5 units, 3 or 4?
  * 
  * 
- * Flamebearer Small/Med -- Try sending "START" event on wake
+ * [DONE]Flamebearer Small/Med -- Try sending "START" event on wake
  * Giant Hopper -- Colosseum version? dies when spawned? seems to project itself to 0,0,0???
  * Bursting Zombie -- needs to drop geo
  * Mega Fat Bee -- needs a modification to it's position/fly in animation/FSM
@@ -34,7 +34,34 @@ using nv;
  * Infected Knight - needs wake event
  * Jar Collector - needs wake event
  * Hornet Boss - needs wake event
- * Moss Charger - index 88, needs to be looked at for nullref  (  EnemyRandomizerMod.EnemyRandomizerLogic.PositionRandomizedEnemy  threw a nullref  )
+ * (added)Moss Charger - index 88, needs to be looked at for nullref  (  EnemyRandomizerMod.EnemyRandomizerLogic.PositionRandomizedEnemy  threw a nullref  )
+ * Moss Knight - spawns a bit above the ground by around 1 unit
+ * Lazy Flyer Enemy - lake of unn fliers, either add geo or remove them from the list
+ * Mega Moss Charger - needs something fixed in the fsm so it works where it spawns
+ * Ghost Warrior No Eyes - works, but spawns offset way to the left and up, needs lots of space
+ * Mushroom Turret - spawns a bit inside the wall, move out by about 0.5 units
+ * Mushroom Brawler - needs a wake area component
+ * Mantis Flyer Child - when spawning, use the crawler placement logic, when replacing, use the flyer
+ * Ghost Warrior Slug - works, just needs lots of space
+ * Ghost Warrior Hu - needs space and room for his attacks, attacks don't work, need something to fix
+ * Garden Zombie - raycast that it does to wake up? seems to be broken. either needs wake event or a "fixed" fsm
+ * Mantis Traitor Lord - needs a fix, spawns about 20 units above his placement point
+ * Mega Jellyfish - spawns somewhere? and dies
+ * Mines Crawler - upside down and about 1 unit far from the wall
+ * Mega Zombie Beam Miner - needs to have a fix in for his lasers, probably temporarily remove since version 2 works fine
+ * (added)Baby Centipede - nullref issue (need to instantiate and keep a copy of this like the old way)
+ * Centipede Hatcher - doesn't spawn anything
+ * Mimic Spider - spawn position seems locked to a fixed point? nosk seems to jump up into the roof and get stuck?
+ * Ghost Warrior Galien - needs lots of room and a fix for spawning his attack
+ * Ghost Warrior Markoth - needs fix for his attack
+ * Abyss Crawler - spawning upside down?
+ * (added)Shade Sibling - nullref issue, needs to instantiate like old way
+ * Dung Defender - needs to spawn in the ground? and needs a wake event and lots of space -- just remove for now
+ * Fluke Mother - needs fix for spawning enemies
+ * "Enemy" - needs to be move down 1/2 unit
+ * Zombie Hive - needs fix for spawning adds
+ * Hive Knight - needs wake event
+ * Dream mage lord - fix to not dream spawn you
  * 
  * 
  * 
@@ -67,6 +94,10 @@ using nv;
  * 
  * Other Notes:
  * 
+ * Blow Fly - fat kingdom's edge fly
+ * Zombie Runner Sp - on death randomizes into another enemy, kindof awesome
+ * Zombie Hornhead Sp - on death randomizes into another enemy, kindof awesome
+ * 
  * Increase the raycast down length for positioning ground enemies
  * 
  * Sending Force Kill didn't "properly" kill mage lord phase 2?
@@ -87,7 +118,14 @@ using nv;
  * Roller R - very broken
  * Spitter R - very broken
  * Buzzer R -
- * 
+ * Shell - broken
+ * Plant Turret Right - the enemy ends up right and up by about 5? units. also duplicate of Plant Turret, so try removing
+ * Giant Buzzer - duplicate of the Buazzer Col and spawns holding zote, maybe keep buzzer col. for certain, don't rando replace this one
+ * Moss Knight B - duplicate of Moss Knight and doesn't spawn properly
+ * Moss Knight C - ^^
+ * Cap Hit - don't load, not an enemy
+ * Jellyfish Baby Inert - duplicate
+ * Hiveling Spawner - remove
  * 
  * */
 
@@ -257,6 +295,7 @@ namespace EnemyRandomizerMod
         //    362
         //};
 
+            //tip: the scene we end the load on will determine the menu music
         public static List<int> scenesToLoad = new List<int>()
         {
               6
@@ -359,11 +398,12 @@ namespace EnemyRandomizerMod
              ,395
              ,396
              ,398
-             ,409
+             ,409 //hollow knight room
              ,407
              ,399
              ,397
-             ,366
+             ,366 //white palace
+             ,383 //path of pain
         };
 
         public List<int> scenesLoaded = new List<int>();

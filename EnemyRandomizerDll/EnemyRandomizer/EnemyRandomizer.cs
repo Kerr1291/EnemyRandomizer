@@ -220,7 +220,7 @@ namespace EnemyRandomizerMod
 
             GameObject prev = null;
 
-            int i = 76;
+            int i = 155;
             while( true )
             {
                 yield return new WaitForEndOfFrame();

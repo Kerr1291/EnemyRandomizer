@@ -44,6 +44,28 @@ namespace nv
         };
 
 
+        public static List<string> makeCopyOnLoadingList = new List<string>()
+        {
+            "Baby Centipede",
+            "Shade Sibling",
+            "Moss Charger"
+        };
+
+        
+        public static bool IsCopyOnLoadingString( this string str )
+        {
+            if( string.IsNullOrEmpty( str ) )
+                return false;
+
+            string trimmedName = str.TrimGameObjectName();
+
+            if( skipLoadingList.Contains( trimmedName ) )
+                return true;
+
+            return false;
+        }
+
+
         //TODO: move this list into a list
         public static bool IsSkipLoadingString( this string str )
         {

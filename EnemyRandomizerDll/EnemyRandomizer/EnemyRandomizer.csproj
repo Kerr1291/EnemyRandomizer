@@ -60,6 +60,8 @@
     <Compile Include="Common\Contractor.cs" />
     <Compile Include="Common\Dev.cs" />
     <Compile Include="Common\DevLog.cs" />
+    <Compile Include="Components\DebugOnWake.cs" />
+    <Compile Include="Components\WakeUpMageKnight.cs" />
     <Compile Include="EnemyRandomizerDatabase.cs" />
     <Compile Include="EnemyRandomizer.cs" />
     <Compile Include="EnemyRandomizerLoader.cs" />

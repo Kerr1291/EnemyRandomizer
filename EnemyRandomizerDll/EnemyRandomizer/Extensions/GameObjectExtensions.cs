@@ -37,6 +37,18 @@ namespace nv
 
     public static class GameObjectExtensions
     {
+        public static bool FindAndDestroyGameObjectInChildren( this GameObject gameObject, string name )
+        {
+            bool found = false;
+            GameObject toDestroy = gameObject.FindGameObjectInChildren(name);
+            if( toDestroy != null )
+            {
+                GameObject.Destroy( toDestroy );
+                found = true;
+            }
+            return found;
+        }
+
         public static GameObject FindGameObjectInChildren( this GameObject gameObject, string name )
         {
             if( gameObject == null )
@@ -189,31 +201,15 @@ namespace nv
                 || enemy.activeInHierarchy == false
                 || ( enemy.IsGameEnemy() && enemy.GetEnemyHP() <= 0 )
                 || ( enemy.IsGameEnemy() && enemy.GetEnemyHealthManager().isDead );
-            //( enemy.GetEnemyFSM().ActiveStateName.Contains( "Corpse" ) || enemy.GetEnemyFSM().ActiveStateName.Contains( "Death" ) || ( enemy.GetEnemyFSM().Fsm.Variables.FindFsmInt( "HP" ) != null && FSMUtility.GetInt( enemy.GetEnemyFSM(), "HP" ) <= 0 ) ) );
         }
 
         public static bool IsGameEnemy( this GameObject gameObject )
         {
             if( gameObject == null )
                 return false;
-
-            //TODO: wrap in #if/#else for case where playmaker is gone
-            return gameObject.GetComponent<HealthManager>() != null;// || ( FSMUtility.ContainsFSM( gameObject, "health_manager_enemy" ) ) || ( FSMUtility.ContainsFSM( gameObject, "health_manager" ) );
+            
+            return gameObject.GetComponent<HealthManager>() != null;
         }
-
-        //TODO: wrap in #if/#else for case where playmaker is gone
-        //public static PlayMakerFSM GetEnemyFSM( this GameObject gameObject )
-        //{
-        //    PlayMakerFSM fsm = null;
-        //    if( gameObject == null )
-        //        return fsm;
-
-        //    fsm = ( FSMUtility.LocateFSM( gameObject, "health_manager_enemy" ) );
-        //    if( fsm != null )
-        //        return fsm;
-        //    fsm = ( FSMUtility.LocateFSM( gameObject, "health_manager" ) );
-        //    return fsm;
-        //}
 
         public static HealthManager GetEnemyHealthManager( this GameObject gameObject )
         {
@@ -302,6 +298,39 @@ namespace nv
             {
                 hm.hp = newHP;
             }
+        }
+
+        public static PlayMakerFSM GetMatchingFSMComponent( this GameObject gameObject, string fsmName, string stateName, string actionName )
+        {
+            PlayMakerFSM foundFSM = null;
+            for( int i = 0; i < gameObject.GetComponentsInChildren<PlayMakerFSM>().Length; ++i )
+            {
+                PlayMakerFSM fsm = gameObject.GetComponentsInChildren<PlayMakerFSM>()[i];
+                if( fsm.FsmName == fsmName )
+                {
+                    foreach( var s in fsm.FsmStates )
+                    {
+                        if( s.Name == stateName )
+                        {
+                            foreach( var a in s.Actions )
+                            {
+                                if( a.GetType().Name == actionName )
+                                {
+                                    foundFSM = fsm;
+                                    break;
+                                }
+                            }
+
+                            if( foundFSM != null )
+                                break;
+                        }
+                    }
+                }
+
+                if( foundFSM != null )
+                    break;
+            }
+            return foundFSM;
         }
 
         //if fsmName is empty, try every state on all fsms

@@ -8,266 +8,7 @@ using System.Linq;
 using nv;
 
 namespace EnemyRandomizerMod
-{
-    //TODO: move the wake components into their own classes....
-    public class DebugOnWake : MonoBehaviour
-    {
-        public BoxCollider2D collider;
-        public GameObject owner;
-
-        List<GameObject> lines;
-
-        //the fsm to aim our events at
-        public string fsmName;
-
-        //the events to send the fsm
-        public List<string> wakeEvents = new List<string>();
-
-        //send the wake events every time we're in this state for the fsmName given
-        public string sendWakeEventsOnState;
-
-        //Dictionary = FSM and the current state it's in
-        public Dictionary<PlayMakerFSM,string> fsmsOnObject = new Dictionary<PlayMakerFSM, string>();
-
-        //run logic on the FSMs every frame?
-        public bool monitorFSMStates = false;
-
-        //print debug bounding boxes and debug log info?
-        public bool logFSM = true;
-
-        private void OnDisable()
-        {
-            if( monitorFSMStates )
-            {
-                if( logFSM )
-                    Dev.Log( "DebugFSMS DebugOnWake was disabled, likely because the enemy died " );
-
-                //final FSM info....
-                foreach( var p in owner.GetComponentsInChildren<PlayMakerFSM>() )
-                {
-                    if( p == null )
-                        continue;
-
-                    if( !fsmsOnObject.ContainsKey( p ) )
-                    {
-                        fsmsOnObject.Add( p, p.ActiveStateName );
-                        if( logFSM )
-                            Dev.Log( "DebugFSMS :::: Added FSM for " + owner.name + " had the fsm [" + p.FsmName + "] with initial state [" + p.ActiveStateName + "]" );
-                    }
-                    else if( p.ActiveStateName != fsmsOnObject[ p ] )
-                    {
-                        if( logFSM )
-                            Dev.Log( "DebugFSMS :::: " + owner.name + " had the fsm [" + p.FsmName + "] change FROM state [" + fsmsOnObject[ p ] + "] TO state [" + p.ActiveStateName + "] on EVENT [" + ( ( p.Fsm != null && p.Fsm.LastTransition != null ) ? p.Fsm.LastTransition.EventName : "GAME OBJECT AWAKE" ) + "]" );
-                        fsmsOnObject[ p ] = p.ActiveStateName;
-                    }
-                }
-            }
-        }
-
-        IEnumerator DebugFSMS()
-        {
-            fsmsOnObject = new Dictionary<PlayMakerFSM, string>();
-
-            foreach( var p in owner.GetComponentsInChildren<PlayMakerFSM>() )
-            {
-                fsmsOnObject.Add( p, p.ActiveStateName );
-                if( logFSM )
-                    Dev.Log( "Added FSM for " + owner.name + " had the fsm [" + p.FsmName + "] with initial state [" + p.ActiveStateName + "]" );
-            }
-
-            //Dev.Log( "FSMDEBUG :::: Tracking FSMS on " + owner.name );
-            while( monitorFSMStates )
-            {
-                if( owner == null )
-                    yield break;
-                
-
-                bool isDead = owner.IsEnemyDead();
-                //Dev.Log( "Is dead? " + isDead );
-                
-                //Dev.Log( "Position " + transform.position );
-
-                //Dev.Log( "FSMDEBUG :::: FOREACH ON " + owner.name );
-                foreach( var p in owner.GetComponentsInChildren<PlayMakerFSM>() )
-                {
-                    if( p == null )
-                        continue;
-
-                    if( !fsmsOnObject.ContainsKey( p ) )
-                    {
-                        fsmsOnObject.Add( p, p.ActiveStateName );
-                        if( logFSM )
-                            Dev.Log( "Added FSM for " + owner.name + " had the fsm [" + p.FsmName + "] with initial state [" + p.ActiveStateName + "]" );
-                    }
-                    else if( p.ActiveStateName != fsmsOnObject[ p ] )
-                    {
-                        if( logFSM )
-                            Dev.Log( "" + owner.name + " had the fsm [" + p.FsmName + "] change FROM state [" + fsmsOnObject[ p ] + "] TO state [" + p.ActiveStateName + "] on EVENT [" + ( ( p.Fsm != null && p.Fsm.LastTransition != null ) ? p.Fsm.LastTransition.EventName : "GAME OBJECT AWAKE" ) + "]" );
-                        fsmsOnObject[ p ] = p.ActiveStateName;
-                    }
-
-                    //force-send an event on this state if everything matches?
-                    if( !string.IsNullOrEmpty( sendWakeEventsOnState ) && fsmName == p.FsmName && sendWakeEventsOnState == p.ActiveStateName )
-                    {
-                        if( p != null && wakeEvents != null )
-                        {
-                            foreach( string s in wakeEvents )
-                            {
-                                p.SendEvent( s );
-                            }
-                        }
-                    }
-                }
-
-                yield return new WaitForEndOfFrame();
-            }
-        }
-
-        private IEnumerator Start()
-        {
-            while( collider == null && owner == null )
-            {
-                yield return null;
-            }
-
-            if( logFSM )
-            {
-                lines = new List<GameObject>();
-                lines = Dev.CreateBoxOfLineRenderers( collider.bounds, Color.green, -2.1f, .01f );
-                foreach(var go in lines )
-                {
-                    go.transform.SetParent( owner.transform );
-                    go.transform.localPosition = Vector3.zero;
-                }
-            }
-
-            if(monitorFSMStates)
-            {
-                StartCoroutine( DebugFSMS() );
-            }
-        }
-
-        private void OnTriggerEnter2D( Collider2D collision )
-        {
-            if( monitorFSMStates )
-                return;
-
-            bool isPlayer = false;
-
-            foreach( Transform t in collision.gameObject.GetComponentsInParent<Transform>() )
-            {
-                if( t.gameObject == HeroController.instance.gameObject )
-                {
-                    isPlayer = true;
-                    break;
-                }
-            }
-
-            if( !isPlayer )
-            {
-                Dev.Log( "Something not the player entered us!" );
-                return;
-            }
-
-            Dev.Log( "Player entered our wake area! " );
-
-            if( !string.IsNullOrEmpty( fsmName ) )
-            {                
-                PlayMakerFSM fsm = FSMUtility.LocateFSM( owner, fsmName );
-                
-                if( fsm != null && wakeEvents != null )
-                {
-                    foreach( string s in wakeEvents )
-                    {
-                        Dev.Log( "Sending event! " + s );
-                        fsm.SendEvent( s );
-                    }
-                }
-                else
-                {
-                    Dev.Log( "Could not find FSM!" );
-                }
-            }
-
-            //remove this after waking up the enemy
-            Destroy( gameObject );
-        }
-    }
-
-
-    //parent this to the mage knight
-    public class WakeUpMageKnight : MonoBehaviour
-    {
-        public BoxCollider2D collider;
-        public GameObject mageKnight;
-
-        private IEnumerator Start()
-        {
-            //Dev.Log( "Trying to load WakeUpMageKnight ");
-            while( collider == null && mageKnight == null )
-            {
-                yield return null;
-            }
-            //Dev.Log( "Created waker for " + mageKnight.name );
-            //Dev.Log( "Bounds " + collider.bounds );
-
-            //Dev.CreateBoxOfLineRenderers( collider.bounds, Color.green, -2.1f, .01f );
-
-            //Dev.Log( "Hero is at " + HeroController.instance.transform.position );
-            //HeroController.instance.gameObject.PrintSceneHierarchyTree( true );
-        }
-
-        private void OnTriggerEnter2D( Collider2D collision )
-        {
-            bool isPlayer = false;
-
-            foreach( Transform t in collision.gameObject.GetComponentsInParent<Transform>() )
-            {
-                if( t.gameObject == HeroController.instance.gameObject )
-                {
-                    isPlayer = true;
-                    break;
-                }
-            }
-
-            if( !isPlayer )
-            {
-                Dev.Log( "Something not the player entered us!" );
-                return;
-            }
-
-            Dev.Log( "Player entered our wake area! " );
-
-            PlayMakerFSM fsm = null;
-
-            foreach( Component c in mageKnight.GetComponents<Component>() )
-            {
-                if( c as PlayMakerFSM != null )
-                {
-                    if( ( c as PlayMakerFSM ).FsmName == "Mage Knight" )
-                    {
-                        fsm = ( c as PlayMakerFSM );
-                        break;
-                    }
-                }
-            }
-
-            if( fsm != null )
-            {
-                fsm.SendEvent( "FINISHED" );
-                fsm.SendEvent( "WAKE" );
-            }
-            else
-            {
-                Dev.Log( "Could not find Mage Knight FSM!" );
-            }
-
-            //remove this after waking up the enemy
-            Destroy( gameObject );
-        }
-    }
-
-
+{   
     public class EnemyRandomizerLoader
     {
         public static EnemyRandomizerLoader Instance { get; private set; }
@@ -317,9 +58,6 @@ namespace EnemyRandomizerMod
         {
             Instance = this;
 
-            //UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= PrintNextSceneToLoad;
-            //UnityEngine.SceneManagement.SceneManager.activeSceneChanged += PrintNextSceneToLoad;
-
             comms = new CommunicationNode();
             comms.EnableNode( this );
         }
@@ -327,19 +65,9 @@ namespace EnemyRandomizerMod
         public void Unload()
         {
             comms.DisableNode();
-
-            //UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= PrintNextSceneToLoad;
-
+            
             Instance = null;
         }
-
-
-        //void PrintNextSceneToLoad( Scene from, Scene to )
-        //{
-        //    //For debugging
-        //    Dev.Log( "Loading Scene [" + to.name + "]" );
-        //}
-
 
         /// <summary>
         /// Initial workhorse funciton. Load all the enemy types in the game.
@@ -348,22 +76,16 @@ namespace EnemyRandomizerMod
         void LoadSceneData()
         {
             GameObject root = EnemyRandomizer.Instance.ModRoot;
-
-            //bool debugOnce = true;
+            
             //iterate over the loaded scenes
             for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
             {
                 Scene sceneToLoad = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
 
-                if( sceneToLoad.name == "Menu_Title" )
+                if( sceneToLoad.name == Menu.RandomizerMenu.MainMenuSceneName )
                     continue;
 
                 LoadLevelParts( sceneToLoad );
-
-                //bool addToSkip = true;
-
-                //TODO: REMOVE ME
-                //sceneToLoad.PrintHierarchy( sceneToLoad.buildIndex, null, null, "Scenes/"+sceneToLoad.name + ".txt" );
 
                 currentlyLoadingScene = sceneToLoad.name;
 
@@ -372,208 +94,74 @@ namespace EnemyRandomizerMod
                 Dev.Log( "Loading Scene [" + currentlyLoadingScene + "]" );
 
                 foreach( var go in Resources.FindObjectsOfTypeAll<HealthManager>() )
-                    //foreach( var go in Resources.FindObjectsOfTypeAll<GameObject>() )
                 {
                     string name = go.name;
+
+                    name = name.TrimGameObjectName();
 
                     if( name.IsSkipLoadingString() )
                         continue;
 
-                    name = name.TrimGameObjectName();
-
-                    bool isInLoadedList = database.loadedEnemyPrefabNames.Contains(name);
-                    if( isInLoadedList )
-                        continue;
-
-                    //int indexOfRandomizerEnemyType = EnemyRandomizerDatabase.enemyTypeNames.IndexOf(name);
-
-                    //if( indexOfRandomizerEnemyType >= 0 && t.gameObject.IsGameEnemy() )
-                    //{
                     if( go.gameObject.IsGameEnemy() )
                     {
-                        //addToSkip = false;
-                        //Dev.Log( "Loading index " + indexOfRandomizerEnemyType );
-                        Dev.Log( "Loading enemy " + go.name );
-                        GameObject prefab = go.gameObject;                        
+                        bool isInLoadedList = database.loadedEnemyPrefabNames.Contains(name);
+                        if( isInLoadedList )
+                            continue;
 
-                        prefab.SetActive( false );
-                        GameObject.DontDestroyOnLoad( prefab );
-                        prefab.transform.SetParent( root.transform );
+                        Dev.Log( "Loading enemy " + go.name );
+                        GameObject prefab = go.gameObject;
+                        if( name.IsCopyOnLoadingString() )
+                        {
+                            prefab = (GameObject)GameObject.Instantiate( go.gameObject );
+                        }
 
                         //special logic for certain enemies:
-                        prefab = ModifyGameObjectPrefab( prefab );
+                        prefab = ModifyGameObjectPrefab( prefab, name );
 
                         database.loadedEnemyPrefabs.Add( prefab );
-                        //database.loadedEnemyPrefabNames.Add( EnemyRandomizerDatabase.enemyTypeNames[indexOfRandomizerEnemyType] );
                         database.loadedEnemyPrefabNames.Add( name );
-                        //Dev.Log( "Adding enemy type: " + prefab.name + " to list with search string " + EnemyRandomizerDatabase.enemyTypeNames[ indexOfRandomizerEnemyType ] );
                         Dev.Log( "Adding enemy type: " + prefab.name + " to list with search string " + name );
                     }//end if-enemy
-                }
-                
-
-                //if( addToSkip )
-                //{
-                //    if(!database.emptyScenesToSkipOnLoad.Contains( sceneToLoad.buildIndex ) )
-                //        database.emptyScenesToSkipOnLoad.Add( sceneToLoad.buildIndex );
-                //}
-                //else
-                //{
-                //    database.scenesLoaded.Add( sceneToLoad.buildIndex );
-                //}
-
-                //GameObject[] rootGameObjects = sceneToLoad.GetRootGameObjects();
-                //foreach( GameObject go in rootGameObjects )
-                //{
-                //    //ignore the mod root
-                //    if( go.name == root.name )
-                //        continue;
-
-                //    if( sceneToLoad.buildIndex == 244 )
-                //    {
-                //        int indexOfEffectType = EnemyRandomizerDatabase.effectObjectNames.IndexOf(go.name);
-
-                //        if( indexOfEffectType >= 0 )
-                //        {
-                //            GameObject prefab = go;
-                //            GameObject.DontDestroyOnLoad( prefab );
-                //            prefab.transform.SetParent( root.transform );
-
-                //            //special logic for certain enemies:
-                //            prefab = ModifyGameObjectPrefab( prefab );
-
-                //            //don't actually add this one
-                //            //database.loadedEffectPrefabs.Add( EnemyRandomizerDatabase.effectObjectNames[ indexOfEffectType ], prefab );
-                //            Dev.Log( "Saving special enemy effect: " + prefab.name );
-                //        }//end if-enemy
-                //    }
-
-                //    //save off teleplanes
-                //    //if( sceneToLoad.buildIndex == 96 )
-                //    {
-                //        if(go.name.Contains( "Teleplanes" ) )
-                //        {
-                //            GameObject prefab = go;
-                //            GameObject.DontDestroyOnLoad( prefab );
-                //            prefab.transform.SetParent( root.transform );
-
-                //            //don't actually add this one, keep it around because the mages need it
-                //            Dev.Log( "Saving special enemy effect: " + prefab.name );
-                //            continue;
-                //        }
-                //    }
-
-                //    bool isInEffectList = database.loadedEffectPrefabs.ContainsKey(go.name);
-                //    if( isInEffectList )
-                //        continue;
-
-                //    //load beam effects
-                //    if( sceneToLoad.buildIndex == 241 )
-                //    {
-                //        int indexOfEffectType = EnemyRandomizerDatabase.effectObjectNames.IndexOf(go.name);
-
-                //        if( indexOfEffectType >= 0 )
-                //        {
-                //            GameObject prefab = go;
-                //            GameObject.DontDestroyOnLoad( prefab );
-                //            prefab.transform.SetParent( root.transform );
-
-                //            //special logic for certain enemies:
-                //            prefab = ModifyGameObjectPrefab( prefab );
-
-                //            database.loadedEffectPrefabs.Add( EnemyRandomizerDatabase.effectObjectNames[ indexOfEffectType ], prefab );
-                //            Dev.Log( "Adding enemy effect: " + prefab.name + " to loaded effect list with search string " + EnemyRandomizerDatabase.effectObjectNames[ indexOfEffectType ] );
-                //        }//end if-enemy
-                //    }
-
-                //    foreach( Transform t in go.GetComponentsInChildren<Transform>( true ) )
-                //    {
-                //        string name = t.gameObject.name;
-
-                //        if( name.IsSkipLoadingString() )
-                //            continue;
-
-                //        name = name.TrimGameObjectName();
-
-                //        bool isInLoadedList = database.loadedEnemyPrefabNames.Contains(name);
-                //        if( isInLoadedList )
-                //            continue;
-
-                //        //if( debugOnce && name.Contains( "Zombie Beam Miner" ) && !name.Contains( "Rematch" ) )
-                //        //{
-                //        //    debugOnce = false;
-                //        //    //t.gameObject.PrintSceneHierarchyTree( true );
-                //        //    sceneToLoad.PrintHierarchy( i );
-                //        //}
-
-                //        //int indexOfRandomizerEnemyType = EnemyRandomizerDatabase.enemyTypeNames.IndexOf(name);
-
-                //        //if( indexOfRandomizerEnemyType >= 0 && t.gameObject.IsGameEnemy() )
-                //        //{
-                //        if( t.gameObject.IsGameEnemy() )
-                //        {
-                //            //addToSkip = false;
-
-                //            //Dev.Log( "Loading index " + indexOfRandomizerEnemyType );
-                //            Dev.Log( "Loading enemy " + t.gameObject.name );
-                //            GameObject prefab = null;
-                //            //if( name.Contains("Zombie Beam Miner") || name == "Mage" )
-                //            //{
-                //            //TODO: test
-                //                prefab = t.gameObject;
-                //            //}
-                //            //else
-                //            //{
-                //            //    prefab = GameObject.Instantiate(t.gameObject);
-                //            //}
-
-                //            prefab.SetActive( false );
-                //            GameObject.DontDestroyOnLoad( prefab );
-                //            prefab.transform.SetParent( root.transform );
-
-                //            //special logic for certain enemies:
-                //            prefab = ModifyGameObjectPrefab( prefab );
-
-                //            database.loadedEnemyPrefabs.Add( prefab );
-                //            //database.loadedEnemyPrefabNames.Add( EnemyRandomizerDatabase.enemyTypeNames[indexOfRandomizerEnemyType] );
-                //            database.loadedEnemyPrefabNames.Add( name );
-                //            //Dev.Log( "Adding enemy type: " + prefab.name + " to list with search string " + EnemyRandomizerDatabase.enemyTypeNames[ indexOfRandomizerEnemyType ] );
-                //            Dev.Log( "Adding enemy type: " + prefab.name + " to list with search string " + name );
-                //        }//end if-enemy
-                //    }//end foreach transform in the root game objects
-                //}//end for each root game object
-
-                //if(addToSkip)
-                //{
-                //    database.emptyScenesToSkipOnLoad.Add( sceneToLoad.buildIndex );
-                //}
-                //else
-                //{   
-                //    database.scenesLoaded.Add( sceneToLoad.buildIndex );
-                //}
-
+                }//iterate over resources
             }//iterate over all LOADED scenes            
         }//end LoadSceneData()
 
-        GameObject ModifyGameObjectPrefab( GameObject randoPrefab )
+        GameObject ModifyGameObjectPrefab( GameObject randoPrefab, string name )
         {
+            Transform root = EnemyRandomizer.Instance.ModRoot.transform;
+            Vector2 customWakeAreaSize = new Vector2( 40f, 20f );
+            
             GameObject modifiedPrefab = randoPrefab;
+            
+            //modifications done to all enemies
+            modifiedPrefab.SetActive( false );
+            GameObject.DontDestroyOnLoad( modifiedPrefab );
+            modifiedPrefab.transform.SetParent( root.transform );
 
+            //delete persistant bool items
             { 
                 PersistentBoolItem pbi = modifiedPrefab.GetComponent<PersistentBoolItem>();
                 if( pbi != null )
                 {
-                    //pbi.semiPersistent = true;
-                    //pbi.persistentBoolData.activated = true;
                     GameObject.Destroy( pbi );
                 }
             }
 
-            //Create a custom "wake up" base game object and put it on the mage knight
-            if( modifiedPrefab.name.Contains( "Mage Knight" ) )
+            //remove any FSMs that have a persistant bool check
             {
-                //BoxCollider2D mkCollider = modifiedPrefab.GetComponent<BoxCollider2D>();
+                PlayMakerFSM deleteFSM = modifiedPrefab.GetMatchingFSMComponent("FSM","Check","PlayerDataBoolTest");
+                //remove the persistant bool check item
+                if( deleteFSM != null )
+                {
+                    GameObject.Destroy( deleteFSM );
+                }
+            }
+            
+            //modifiactions to specific enemies below
 
+            //Create a custom "wake up" base game object and put it on the mage knight
+            if( name == "Mage Knight" )
+            {
                 GameObject wakeUpRoot = new GameObject("MK Wake Up Object");
                 wakeUpRoot.transform.SetParent( modifiedPrefab.transform );
                 wakeUpRoot.transform.localPosition = Vector3.zero;
@@ -583,110 +171,37 @@ namespace EnemyRandomizerMod
 
                 BoxCollider2D box = wakeUpRoot.AddComponent<BoxCollider2D>();
                 box.isTrigger = true;
-                box.size = new Vector2( 40f, 20f );
+                box.size = customWakeAreaSize;
 
                 WakeUpMageKnight specialWakeUp = wakeUpRoot.AddComponent<WakeUpMageKnight>();
                 specialWakeUp.collider = box;
                 specialWakeUp.mageKnight = modifiedPrefab;
             }
-
-            if( modifiedPrefab.name.Contains( "Electric Mage" ) )
+            else if( name == "Electric Mage" )
             {
-                Vector2 box = new Vector2( 40f, 20f );
-
-                Dev.Log( "Modifying " + randoPrefab );
-                //this fixes the slash spider!
-                DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Electric Mage", new List<string>() { "FINISHED" }, box );
-                d.monitorFSMStates = true;
-                d.sendWakeEventsOnState = "Init";
-                d.logFSM = false;
+                //try to fix the electric mage
+                DebugOnWake d = DebugOnWake.AddDebugOnWake(modifiedPrefab, "Electric Mage", "Init", new List<string>() { "FINISHED" }, true, customWakeAreaSize, false );
+            }
+            else if( name == "Mage" )
+            {
+                //try to fix the mage
+                DebugOnWake d = DebugOnWake.AddDebugOnWake(modifiedPrefab, "Mage", "Manual Sleep", new List<string>() { "WAKE" }, true, customWakeAreaSize, false );
+            }
+            else if( name == "Zombie Beam Miner Rematch" || name == "Mega Zombie Beam Miner" )
+            {
+                //remove the "Cam Lock" game object child from the crystal guardian (Zombie Beam Miner Rematch)
+                modifiedPrefab.FindAndDestroyGameObjectInChildren( "Cam Lock" );
+            }
+            else if( name == "Slash Spider" )
+            {
+                //fix the slash spider from getting stuck
+                DebugOnWake d = DebugOnWake.AddDebugOnWake(modifiedPrefab, "Slash Spider", "Waiting", new List<string>() { "WAKE" }, true, null, false );
             }
 
-            if( modifiedPrefab.name == "Mage" )
+
+            if( name.Contains( "Flamebearer" ) )
             {
-                Vector2 box = new Vector2( 40f, 20f );
-
-                Dev.Log( "Modifying " + randoPrefab );
-                //this fixes the slash spider!
-                DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Mage", new List<string>() { "WAKE" }, box );
-                d.monitorFSMStates = true;
-                d.sendWakeEventsOnState = "Manual Sleep";
-                d.logFSM = false;
-            }
-
-            //remove the "Cam Lock" game object child from the crystal guardian (Zombie Beam Miner Rematch)
-            if( modifiedPrefab.name.Contains( "Zombie Beam Miner Rematch" ) )
-            {
-                Dev.Log( "Modifying " + randoPrefab );
-                modifiedPrefab.PrintSceneHierarchyTree( true );
-                GameObject camLock = modifiedPrefab.FindGameObjectInChildren("Cam Lock");
-                if( camLock != null )
-                {
-                    Dev.Log( "Marking Cam Lock for removal!" );
-                    GameObject.Destroy( camLock );
-                }
-
-                PersistentBoolItem pbi = modifiedPrefab.GetComponent<PersistentBoolItem>();
-                if( pbi != null )
-                {
-                    pbi.semiPersistent = true;
-                    //pbi.persistentBoolData.activated = true;
-                    //GameObject.Destroy( pbi );
-                }
-
-
-                //find and remove the FSM that kills the boss
-                PlayMakerFSM deleteFSM = null;
-                for(int i = 0; i < modifiedPrefab.GetComponentsInChildren<PlayMakerFSM>().Length; ++i )
-                {
-                    PlayMakerFSM fsm = modifiedPrefab.GetComponentsInChildren<PlayMakerFSM>()[i];
-                    if(fsm.FsmName == "FSM")
-                    {
-                        foreach( var s in fsm.FsmStates )
-                        {
-                            if( s.Name == "Check" )
-                            {
-                                foreach( var a in s.Actions )
-                                {
-                                    if(a.GetType().Name == "PlayerDataBoolTest" )
-                                    {
-                                        deleteFSM = fsm;
-                                        break;
-                                    }
-                                }
-
-                                if( deleteFSM != null )
-                                    break;
-                            }
-                        }
-                    }
-
-                    if( deleteFSM != null )
-                        break;
-                }
-
-                //remove the persistant bool check item
-                if( deleteFSM != null )
-                {
-                    GameObject.Destroy( deleteFSM );
-                }
-                
-                //TODO: don't think i need this
-                //DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Beam Miner", new List<string>() { "FINISHED" } );
-                //d.monitorFSMStates = true;
-                //d.sendWakeEventsOnState = "Beam End";
-                //d.logFSM = false;
-            }
-
-            //fix the slash spider from getting stuck
-            if( modifiedPrefab.name.Contains( "Slash Spider" ) )
-            {
-                Dev.Log( "Modifying " + randoPrefab );
-                //this fixes the slash spider!
-                DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Slash Spider", new List<string>() { "WAKE" } );
-                d.monitorFSMStates = true;
-                d.sendWakeEventsOnState = "Waiting";
-                d.logFSM = false;
+                DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Control", "Init", new List<string>() { "START" }, true, customWakeAreaSize, false );
             }
 
             return modifiedPrefab;
@@ -715,14 +230,12 @@ namespace EnemyRandomizerMod
         {
             try
             {
-                //Dev.Log( "Additively loading scene " + GetSceneToLoadFromRandomizerData(currentDatabaseIndex));
                 UnityEngine.SceneManagement.SceneManager.LoadScene( GetSceneToLoadFromRandomizerData( currentDatabaseIndex ), LoadSceneMode.Additive );
                 loadCount++;
             }
             catch( Exception e )
             {
                 Dev.Log( "Exception from scene "+ currentlyLoadingScene +" #" + GetSceneToLoadFromRandomizerData( currentDatabaseIndex ) +" with message: "+ e.Message );
-                //PrintDebugLoadingError();
             }
         }
 
@@ -747,7 +260,6 @@ namespace EnemyRandomizerMod
             catch( Exception e )
             {
                 Dev.Log( "Exception from scene " + currentlyLoadingScene + " #" + GetSceneToLoadFromRandomizerData( currentDatabaseIndex ) + " with message: " + e.Message );
-                //PrintDebugLoadingError();
             }
         }
 
@@ -847,62 +359,6 @@ namespace EnemyRandomizerMod
             yield return false;
         }
 
-        //protected virtual void PrintDebugLoadingError()
-        //{
-        //    bool printInitial = true;
-        //    foreach( string enemy in EnemyRandomizerDatabase.enemyTypeNames )
-        //    {
-        //        if( database.loadedEnemyPrefabNames.Contains( enemy ) )
-        //            continue;
-
-        //        if( printInitial )
-        //        {
-        //            Dev.Log( "Enemies not loaded so far:" );
-        //            printInitial = false;
-        //        }
-
-        //        Dev.Log( "Missing type: " + enemy );
-        //    }
-        //}
-
-
-
-        public DebugOnWake AddDebugOnWake( GameObject enemy, string fsmName = "", List<string> wakeEvents = null, Vector2? customColliderSize = null )
-        {
-            GameObject wakeUpRoot = new GameObject(enemy.name + " DebugWake Object");
-            wakeUpRoot.transform.SetParent( enemy.transform );
-            wakeUpRoot.transform.localPosition = Vector3.zero;
-
-            wakeUpRoot.layer = 13; //try this
-            wakeUpRoot.tag = enemy.tag;
-
-            BoxCollider2D box = wakeUpRoot.AddComponent<BoxCollider2D>();
-            box.isTrigger = true;
-            //box.size = new Vector2( 10f, 10f );
-
-            if( !customColliderSize.HasValue )
-            {
-                BoxCollider2D pbox = enemy.GetComponent<BoxCollider2D>();
-                if( pbox != null )
-                {
-                    box.size = pbox.size;
-                    box.offset = pbox.offset;
-                }
-            }
-            else
-            {
-                box.size = customColliderSize.Value;
-            }
-
-            DebugOnWake specialWakeUp = wakeUpRoot.AddComponent<DebugOnWake>();
-            specialWakeUp.collider = box;
-            specialWakeUp.owner = enemy;
-            specialWakeUp.fsmName = fsmName;
-            specialWakeUp.wakeEvents = wakeEvents;
-
-            return specialWakeUp;
-        }
-
         public void LoadLevelParts(Scene scene)
         {
             //load some scene parts for use in things
@@ -916,8 +372,6 @@ namespace EnemyRandomizerMod
                     LoadLevelPart( "white_palace_wall_set_01 (9)", "Wall" );
                 }
             }
-
-            //367
         }
 
         public void LoadLevelPart(string name, string customName = "")
@@ -945,6 +399,206 @@ namespace EnemyRandomizerMod
     }
 }
 
+
+
+//protected virtual void PrintDebugLoadingError()
+//{
+//    bool printInitial = true;
+//    foreach( string enemy in EnemyRandomizerDatabase.enemyTypeNames )
+//    {
+//        if( database.loadedEnemyPrefabNames.Contains( enemy ) )
+//            continue;
+
+//        if( printInitial )
+//        {
+//            Dev.Log( "Enemies not loaded so far:" );
+//            printInitial = false;
+//        }
+
+//        Dev.Log( "Missing type: " + enemy );
+//    }
+//}
+
+
+
+
+
+//if( addToSkip )
+//{
+//    if(!database.emptyScenesToSkipOnLoad.Contains( sceneToLoad.buildIndex ) )
+//        database.emptyScenesToSkipOnLoad.Add( sceneToLoad.buildIndex );
+//}
+//else
+//{
+//    database.scenesLoaded.Add( sceneToLoad.buildIndex );
+//}
+
+//GameObject[] rootGameObjects = sceneToLoad.GetRootGameObjects();
+//foreach( GameObject go in rootGameObjects )
+//{
+//    //ignore the mod root
+//    if( go.name == root.name )
+//        continue;
+
+//    if( sceneToLoad.buildIndex == 244 )
+//    {
+//        int indexOfEffectType = EnemyRandomizerDatabase.effectObjectNames.IndexOf(go.name);
+
+//        if( indexOfEffectType >= 0 )
+//        {
+//            GameObject prefab = go;
+//            GameObject.DontDestroyOnLoad( prefab );
+//            prefab.transform.SetParent( root.transform );
+
+//            //special logic for certain enemies:
+//            prefab = ModifyGameObjectPrefab( prefab );
+
+//            //don't actually add this one
+//            //database.loadedEffectPrefabs.Add( EnemyRandomizerDatabase.effectObjectNames[ indexOfEffectType ], prefab );
+//            Dev.Log( "Saving special enemy effect: " + prefab.name );
+//        }//end if-enemy
+//    }
+
+//    //save off teleplanes
+//    //if( sceneToLoad.buildIndex == 96 )
+//    {
+//        if(go.name.Contains( "Teleplanes" ) )
+//        {
+//            GameObject prefab = go;
+//            GameObject.DontDestroyOnLoad( prefab );
+//            prefab.transform.SetParent( root.transform );
+
+//            //don't actually add this one, keep it around because the mages need it
+//            Dev.Log( "Saving special enemy effect: " + prefab.name );
+//            continue;
+//        }
+//    }
+
+//    bool isInEffectList = database.loadedEffectPrefabs.ContainsKey(go.name);
+//    if( isInEffectList )
+//        continue;
+
+//    //load beam effects
+//    if( sceneToLoad.buildIndex == 241 )
+//    {
+//        int indexOfEffectType = EnemyRandomizerDatabase.effectObjectNames.IndexOf(go.name);
+
+//        if( indexOfEffectType >= 0 )
+//        {
+//            GameObject prefab = go;
+//            GameObject.DontDestroyOnLoad( prefab );
+//            prefab.transform.SetParent( root.transform );
+
+//            //special logic for certain enemies:
+//            prefab = ModifyGameObjectPrefab( prefab );
+
+//            database.loadedEffectPrefabs.Add( EnemyRandomizerDatabase.effectObjectNames[ indexOfEffectType ], prefab );
+//            Dev.Log( "Adding enemy effect: " + prefab.name + " to loaded effect list with search string " + EnemyRandomizerDatabase.effectObjectNames[ indexOfEffectType ] );
+//        }//end if-enemy
+//    }
+
+//    foreach( Transform t in go.GetComponentsInChildren<Transform>( true ) )
+//    {
+//        string name = t.gameObject.name;
+
+//        if( name.IsSkipLoadingString() )
+//            continue;
+
+//        name = name.TrimGameObjectName();
+
+//        bool isInLoadedList = database.loadedEnemyPrefabNames.Contains(name);
+//        if( isInLoadedList )
+//            continue;
+
+//        //if( debugOnce && name.Contains( "Zombie Beam Miner" ) && !name.Contains( "Rematch" ) )
+//        //{
+//        //    debugOnce = false;
+//        //    //t.gameObject.PrintSceneHierarchyTree( true );
+//        //    sceneToLoad.PrintHierarchy( i );
+//        //}
+
+//        //int indexOfRandomizerEnemyType = EnemyRandomizerDatabase.enemyTypeNames.IndexOf(name);
+
+//        //if( indexOfRandomizerEnemyType >= 0 && t.gameObject.IsGameEnemy() )
+//        //{
+//        if( t.gameObject.IsGameEnemy() )
+//        {
+//            //addToSkip = false;
+
+//            //Dev.Log( "Loading index " + indexOfRandomizerEnemyType );
+//            Dev.Log( "Loading enemy " + t.gameObject.name );
+//            GameObject prefab = null;
+//            //if( name.Contains("Zombie Beam Miner") || name == "Mage" )
+//            //{
+//            //TODO: test
+//                prefab = t.gameObject;
+//            //}
+//            //else
+//            //{
+//            //    prefab = GameObject.Instantiate(t.gameObject);
+//            //}
+
+//            prefab.SetActive( false );
+//            GameObject.DontDestroyOnLoad( prefab );
+//            prefab.transform.SetParent( root.transform );
+
+//            //special logic for certain enemies:
+//            prefab = ModifyGameObjectPrefab( prefab );
+
+//            database.loadedEnemyPrefabs.Add( prefab );
+//            //database.loadedEnemyPrefabNames.Add( EnemyRandomizerDatabase.enemyTypeNames[indexOfRandomizerEnemyType] );
+//            database.loadedEnemyPrefabNames.Add( name );
+//            //Dev.Log( "Adding enemy type: " + prefab.name + " to list with search string " + EnemyRandomizerDatabase.enemyTypeNames[ indexOfRandomizerEnemyType ] );
+//            Dev.Log( "Adding enemy type: " + prefab.name + " to list with search string " + name );
+//        }//end if-enemy
+//    }//end foreach transform in the root game objects
+//}//end for each root game object
+
+//if(addToSkip)
+//{
+//    database.emptyScenesToSkipOnLoad.Add( sceneToLoad.buildIndex );
+//}
+//else
+//{   
+//    database.scenesLoaded.Add( sceneToLoad.buildIndex );
+//}
+
+
+
+////find and remove the FSM that kills the boss
+//for(int i = 0; i < modifiedPrefab.GetComponentsInChildren<PlayMakerFSM>().Length; ++i )
+//{
+//    PlayMakerFSM fsm = modifiedPrefab.GetComponentsInChildren<PlayMakerFSM>()[i];
+//    if(fsm.FsmName == "FSM")
+//    {
+//        foreach( var s in fsm.FsmStates )
+//        {
+//            if( s.Name == "Check" )
+//            {
+//                foreach( var a in s.Actions )
+//                {
+//                    if(a.GetType().Name == "PlayerDataBoolTest" )
+//                    {
+//                        deleteFSM = fsm;
+//                        break;
+//                    }
+//                }
+
+//                if( deleteFSM != null )
+//                    break;
+//            }
+//        }
+//    }
+
+//    if( deleteFSM != null )
+//        break;
+//}
+
+//TODO: don't think i need this
+//DebugOnWake d = AddDebugOnWake(modifiedPrefab, "Beam Miner", new List<string>() { "FINISHED" } );
+//d.monitorFSMStates = true;
+//d.sendWakeEventsOnState = "Beam End";
+//d.logFSM = false;
 
 //if( modifiedPrefab.name.Contains( "Garden" ) )
 //{

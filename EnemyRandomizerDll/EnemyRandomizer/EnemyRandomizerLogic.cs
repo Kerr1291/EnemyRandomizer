@@ -846,38 +846,8 @@ namespace EnemyRandomizerMod
 
             newEnemy.name = "Rando Custom: " + name;
 
-            DebugOnWake d = EnemyRandomizerLoader.Instance.AddDebugOnWake( newEnemy );
-
-            if( newEnemy.name.Contains( "Flamebearer" ) )
-            {
-                d.fsmName = "Control";
-                d.sendWakeEventsOnState = "Init";
-                d.wakeEvents = new List<string>() { "START" };
-            }
-
-            d.monitorFSMStates = true;
             return newEnemy;
         }
-
-        //T CopyComponent<T>( T original, GameObject destination ) where T : Component
-        //{
-        //    System.Type type = original.GetType();
-        //    var dst = destination.GetComponent(type) as T;
-        //    if( !dst ) dst = destination.AddComponent( type ) as T;
-        //    var fields = type.GetFields();
-        //    foreach( var field in fields )
-        //    {
-        //        if( field.IsStatic ) continue;
-        //        field.SetValue( dst, field.GetValue( original ) );
-        //    }
-        //    var props = type.GetProperties();
-        //    foreach( var prop in props )
-        //    {
-        //        if( !prop.CanWrite || !prop.CanWrite || prop.Name == "name" ) continue;
-        //        prop.SetValue( dst, prop.GetValue( original, null ), null );
-        //    }
-        //    return dst as T;
-        //}
 
         void RandomizeEnemy( GameObject enemy )
         {
@@ -953,8 +923,6 @@ namespace EnemyRandomizerMod
             {
                 Dev.Log( "Exception trying to activate new enemy!" + e.Message );
             }
-
-            InitRandomizedEnemy( newEnemy, oldEnemy );
 
             //DebugPrintObjectTree( oldEnemy, true );
 
@@ -1038,114 +1006,37 @@ namespace EnemyRandomizerMod
             }
         }
 
-        void InitRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
-        {
-            TryInitPlayMakerFSM( newEnemy );
-
-            //newEnemy.gameObject.PrintSceneHierarchyTree( true );
-        }
-
-        public static void TryInitPlayMakerFSM( GameObject newEnemy )
-        {
-            //if( newEnemy.name.Contains( "Electric Mage" ) )
-            //{
-            //    PlayMakerFSM fsm = null;
-
-            //    foreach( Component c in newEnemy.GetComponents<Component>() )
-            //    {
-            //        if( c as PlayMakerFSM != null )
-            //        {
-            //            if( ( c as PlayMakerFSM ).FsmName == "Electric Mage" )
-            //            {
-            //                fsm = ( c as PlayMakerFSM );
-            //                break;
-            //            }
-            //        }
-            //    }
-
-            //    if( fsm != null )
-            //    {
-            //        fsm.SendEvent( "IN RANGE" );
-            //        fsm.SendEvent( "FINISHED" );
-            //        fsm.SendEvent( "WAKE" );
-            //    }
-            //}
-            //else if( newEnemy.name.Contains( "Mage" ) )
-            //{
-            //    PlayMakerFSM fsm = null;
-
-            //    foreach( Component c in newEnemy.GetComponents<Component>() )
-            //    {
-            //        if( c as PlayMakerFSM != null )
-            //        {
-            //            if( ( c as PlayMakerFSM ).FsmName == "Mage" )
-            //            {
-            //                fsm = ( c as PlayMakerFSM );
-            //                break;
-            //            }
-            //        }
-            //    }
-
-            //    if( fsm != null )
-            //    {
-            //        fsm.SendEvent( "IN RANGE" );
-            //        fsm.SendEvent( "WAKE" );
-            //    }
-            //}
-            //else if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
-            //{
-            //    PlayMakerFSM fsm = null;
-
-            //    foreach( Component c in newEnemy.GetComponents<Component>() )
-            //    {
-            //        if( c as PlayMakerFSM != null )
-            //        {
-            //            if( ( c as PlayMakerFSM ).FsmName == "Climber Control" )
-            //            {
-            //                fsm = ( c as PlayMakerFSM );
-            //                break;
-            //            }
-            //        }
-            //    }
-
-            //    if( fsm != null )
-            //    {
-            //        fsm.SetState( "Set Dir to 0" );
-            //    }
-            //}
-        }
-
         void FixRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
         {
             //TODO: store this value off in our mod and set it to true in the scenes that care about it... but for now....
-            if(newEnemy.name.Contains( "Zombie Beam Miner" ) ) 
+            if(newEnemy.name.Contains( "Mega Zombie Beam Miner" ) ) 
             {
                 //HeroController.instance.playerData.SetBoolInternal( "killedMegaBeamMiner", false );
-                PersistentBoolItem pbi = newEnemy.GetComponent<PersistentBoolItem>();
-                if( pbi != null )
-                {
-                    pbi.semiPersistent = true;
-                    //pbi.persistentBoolData.activated = true;
-                    pbi.persistentBoolData.sceneName = currentScene;
-                }
+                //PersistentBoolItem pbi = newEnemy.GetComponent<PersistentBoolItem>();
+                //if( pbi != null )
+                //{
+                //    pbi.semiPersistent = true;
+                //    //pbi.persistentBoolData.activated = true;
+                //    pbi.persistentBoolData.sceneName = currentScene;
+                //}
 
                 //fix the GetAngleToTarget2D actions
-                {
-                    PlayMakerFSM fsm = FSMUtility.LocateFSM(newEnemy,"Beam Miner");
-                    //fix the targetting angle
-                    List<GetAngleToTarget2D> actions = newEnemy.GetFSMActionsOnStates<GetAngleToTarget2D>( new List<string>(){"Aim Left", "Aim Right", "Aim"},"Beam Miner");
-                    foreach(var a in actions)
-                    {
-                        HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsm.Fsm.GameObject);
-                        HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
+                //{
+                //    PlayMakerFSM fsm = FSMUtility.LocateFSM(newEnemy,"Beam Miner");
+                //    //fix the targetting angle
+                //    List<GetAngleToTarget2D> actions = newEnemy.GetFSMActionsOnStates<GetAngleToTarget2D>( new List<string>(){"Aim Left", "Aim Right", "Aim"},"Beam Miner");
+                //    foreach(var a in actions)
+                //    {
+                //        HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsm.Fsm.GameObject);
+                //        HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
 
-                        HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
-                        goTarget.GameObject = goa;
-                        goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
-                        a.gameObject = goTarget;
-                        a.target = gob;
-                    }
-                }
+                //        HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
+                //        goTarget.GameObject = goa;
+                //        goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+                //        a.gameObject = goTarget;
+                //        a.target = gob;
+                //    }
+                //}
 
                 //fix the targetting source?
                 {
@@ -1263,115 +1154,6 @@ namespace EnemyRandomizerMod
             //}
         }
 
-
-        //public void TryFixPlayMakerFSM( GameObject newEnemy, Component c )
-        //{
-        //    try
-        //    {
-
-
-
-
-
-        //        ////TODO: clean this up to use the new functions i made for getting actions and states....
-        //        //PlayMakerFSM fsm = c as PlayMakerFSM;
-        //        //if( fsm != null )
-        //        //{
-        //        //    foreach( var s in fsm.FsmStates )
-        //        //    {
-        //        //        foreach( var a in s.Actions )
-        //        //        {
-        //        //            if( a is HutongGames.PlayMaker.Actions.GetAngleToTarget2D ga2d )
-        //        //            {
-        //        //            }
-
-        //        //            //HutongGames.PlayMaker.Actions.GetColliderRange gcr = a as HutongGames.PlayMaker.Actions.GetColliderRange;
-        //        //            //if( gcr != null )
-        //        //            //{
-        //        //            //    if( gcr.gameObject == null )
-        //        //            //    {
-        //        //            //        Dev.Log( "TESTING PLAYMAKER FIX GetColliderRange" );
-        //        //            //        PlayMakerFSM fsmProxy = ( c as PlayMakerFSM );
-        //        //            //        //if( fsmProxy == null )
-        //        //            //        //{
-        //        //            //        //    continue;
-        //        //            //        //}
-
-        //        //            //        //testing...
-        //        //            //        HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
-        //        //            //        goTarget.GameObject = fsmProxy.Fsm.GameObject;
-        //        //            //        goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
-        //        //            //        //HutongGames.PlayMaker.FsmEventTarget fsmEventTarget = new HutongGames.PlayMaker.FsmEventTarget();
-        //        //            //        //fsmEventTarget.excludeSelf = false;
-        //        //            //        //fsmEventTarget.target = HutongGames.PlayMaker.FsmEventTarget.EventTarget.GameObject;
-        //        //            //        //fsmEventTarget.gameObject = goTarget;
-        //        //            //        //fsmEventTarget.sendToChildren = false;
-
-        //        //            //        gcr.gameObject = goTarget;
-        //        //            //        Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
-        //        //            //    }
-        //        //            //}
-
-        //        //            //HutongGames.PlayMaker.Actions.ChaseObjectV2 doc = a as HutongGames.PlayMaker.Actions.ChaseObjectV2;
-        //        //            //if( doc != null )
-        //        //            //{
-        //        //            //    Dev.Log( "TESTING PLAYMAKER FIX ChaseObjectV2" );
-        //        //            //    //if( doc.target != null )
-        //        //            //    //    continue;
-
-        //        //            //    HutongGames.PlayMaker.FsmGameObject go = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
-
-        //        //            //    doc.target = go;
-        //        //            //    Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
-        //        //            //}
-
-
-        //        //            //HutongGames.PlayMaker.Actions.FaceObject fo = a as HutongGames.PlayMaker.Actions.FaceObject;
-        //        //            //if( fo != null )
-        //        //            //{
-        //        //            //    Dev.Log( "TESTING PLAYMAKER FIX FaceObject" );
-        //        //            //    //if( fo.objectA != null )
-        //        //            //    //    continue;
-
-        //        //            //    PlayMakerFSM fsmProxy = ( c as PlayMakerFSM );
-        //        //            //    HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsmProxy.Fsm.GameObject);
-        //        //            //    HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
-
-        //        //            //    fo.objectA = goa;
-        //        //            //    fo.objectB = gob;
-        //        //            //    Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
-        //        //            //}
-
-
-        //        //            //HutongGames.PlayMaker.Actions.CheckTargetDirection ctd = a as HutongGames.PlayMaker.Actions.CheckTargetDirection;
-        //        //            //if( ctd != null )
-        //        //            //{
-        //        //            //    Dev.Log( "TESTING PLAYMAKER FIX CheckTargetDirection" );
-        //        //            //    //if( ctd.target != null )
-        //        //            //    //    continue;
-
-        //        //            //    PlayMakerFSM fsmProxy = ( c as PlayMakerFSM );
-        //        //            //    HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsmProxy.Fsm.GameObject);
-        //        //            //    HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
-
-        //        //            //    HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
-        //        //            //    goTarget.GameObject = goa;
-        //        //            //    goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
-        //        //            //    ctd.gameObject = goTarget;
-        //        //            //    ctd.target = gob;
-        //        //            //    Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
-        //        //            //}
-
-
-        //        //        }
-        //        //    }
-        //        //}
-        //    }
-        //    catch( Exception e )
-        //    {
-        //        Dev.Log( "Exception:" + e.Message );
-        //    }
-        //}
 
         //TODO: add variables to allow players to adjust the geo rates
         void ModifyRandomizedEnemyGeo( GameObject newEnemy, GameObject oldEnemy )
@@ -1978,7 +1760,7 @@ namespace EnemyRandomizerMod
 
             ModifyRandomizedEnemyGeo( newEnemy, oldEnemy );
 
-            //FixRandomizedEnemy( newEnemy, oldEnemy );
+            FixRandomizedEnemy( newEnemy, oldEnemy );
 
             //must happen after position
             NameRandomizedEnemy( newEnemy, prefabIndex );
@@ -2086,9 +1868,8 @@ namespace EnemyRandomizerMod
                         Dev.Log( "Replacement is VALID." );
                     }
                 }
-
-                //TODO: change me back
-                //if( EnemyRandomizerDatabase.USE_TEST_SCENES )
+                
+                if( EnemyRandomizerDatabase.USE_TEST_SCENES )
                     isValid = true;
 
                 //this one never explodes...
@@ -2146,23 +1927,6 @@ namespace EnemyRandomizerMod
             return prefab;
         }
 
-
-        //bool IsEnemyDead( GameObject enemy )
-        //{
-        //    return enemy == null
-        //        || enemy.activeInHierarchy == false
-        //        || ( enemy.IsGameEnemy() && enemy.GetEnemyHP() <= 0 );
-        //    //( enemy.GetEnemyFSM().ActiveStateName.Contains( "Corpse" ) || enemy.GetEnemyFSM().ActiveStateName.Contains( "Death" ) || ( enemy.GetEnemyFSM().Fsm.Variables.FindFsmInt( "HP" ) != null && FSMUtility.GetInt( enemy.GetEnemyFSM(), "HP" ) <= 0 ) ) );
-        //}
-        //bool IsEnemyDead( GameObject enemy )
-        //{
-        //    return enemy.isd
-
-        //    return enemy == null
-        //        || enemy.activeInHierarchy == false
-        //        || ( enemy.IsGameEnemy() && ( enemy.GetEnemyFSM().ActiveStateName.Contains( "Corpse" ) || enemy.GetEnemyFSM().ActiveStateName.Contains( "Death" ) || ( enemy.GetEnemyFSM().Fsm.Variables.FindFsmInt( "HP" ) != null && FSMUtility.GetInt( enemy.GetEnemyFSM(), "HP" ) <= 0 ) ) );
-        //}
-
         void ControlReplacementRoot()
         {
             Vector3 somewhereOffInSpace = Vector3.one * 50000f;
@@ -2171,14 +1935,6 @@ namespace EnemyRandomizerMod
                 foreach( ReplacementPair p in replacements )
                 {
                     if( p.replacement == null || p.replacement.gameObject.IsEnemyDead() )
-                    // || p.replacement.gameObject == null 
-                    // || p.replacement.gameObject.activeInHierarchy == false 
-                    // || ( FSMUtility.ContainsFSM( p.replacement, "health_manager_enemy" ) 
-                    //      && ( FSMUtility.LocateFSM( p.replacement, "health_manager_enemy" ).ActiveStateName.Contains( "Corpse" ) 
-                    //        || FSMUtility.LocateFSM( p.replacement, "health_manager_enemy" ).ActiveStateName.Contains( "Death" ) 
-                    //        )
-                    //    )
-                    //)
                     {
                         pairsToRemove.Add( p );
                         if( p.original != null )
@@ -2209,13 +1965,15 @@ namespace EnemyRandomizerMod
             {
                 foreach( ReplacementPair p in pairsToRemove )
                 {
-                    //kill enemy?
                     if( p.original != null )
                     {
+                        //enable the enemy so it can die
                         p.original.SetActive( true );
-                        Dev.Log( "Sending kill to: " + p.original.name );
-                        p.original.GetEnemyHealthManager().Die( null, AttackTypes.Splatter, true );
-                        //p.original.GetEnemyFSM().SendEvent( "INSTA KILL" );
+
+                        Dev.Log( "Calling Die() on: " + p.original.name );
+                        p.original.GetEnemyHealthManager().Die( null, AttackTypes.Generic, true );
+
+                        //TODO: update this a bit 
                     }
                     replacements.Remove( p );
                 }
@@ -2224,3 +1982,135 @@ namespace EnemyRandomizerMod
         }
     }
 }
+
+
+
+//T CopyComponent<T>( T original, GameObject destination ) where T : Component
+//{
+//    System.Type type = original.GetType();
+//    var dst = destination.GetComponent(type) as T;
+//    if( !dst ) dst = destination.AddComponent( type ) as T;
+//    var fields = type.GetFields();
+//    foreach( var field in fields )
+//    {
+//        if( field.IsStatic ) continue;
+//        field.SetValue( dst, field.GetValue( original ) );
+//    }
+//    var props = type.GetProperties();
+//    foreach( var prop in props )
+//    {
+//        if( !prop.CanWrite || !prop.CanWrite || prop.Name == "name" ) continue;
+//        prop.SetValue( dst, prop.GetValue( original, null ), null );
+//    }
+//    return dst as T;
+//}
+
+
+//public void TryFixPlayMakerFSM( GameObject newEnemy, Component c )
+//{
+//    try
+//    {
+
+
+
+
+
+//        ////TODO: clean this up to use the new functions i made for getting actions and states....
+//        //PlayMakerFSM fsm = c as PlayMakerFSM;
+//        //if( fsm != null )
+//        //{
+//        //    foreach( var s in fsm.FsmStates )
+//        //    {
+//        //        foreach( var a in s.Actions )
+//        //        {
+//        //            if( a is HutongGames.PlayMaker.Actions.GetAngleToTarget2D ga2d )
+//        //            {
+//        //            }
+
+//        //            //HutongGames.PlayMaker.Actions.GetColliderRange gcr = a as HutongGames.PlayMaker.Actions.GetColliderRange;
+//        //            //if( gcr != null )
+//        //            //{
+//        //            //    if( gcr.gameObject == null )
+//        //            //    {
+//        //            //        Dev.Log( "TESTING PLAYMAKER FIX GetColliderRange" );
+//        //            //        PlayMakerFSM fsmProxy = ( c as PlayMakerFSM );
+//        //            //        //if( fsmProxy == null )
+//        //            //        //{
+//        //            //        //    continue;
+//        //            //        //}
+
+//        //            //        //testing...
+//        //            //        HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
+//        //            //        goTarget.GameObject = fsmProxy.Fsm.GameObject;
+//        //            //        goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+//        //            //        //HutongGames.PlayMaker.FsmEventTarget fsmEventTarget = new HutongGames.PlayMaker.FsmEventTarget();
+//        //            //        //fsmEventTarget.excludeSelf = false;
+//        //            //        //fsmEventTarget.target = HutongGames.PlayMaker.FsmEventTarget.EventTarget.GameObject;
+//        //            //        //fsmEventTarget.gameObject = goTarget;
+//        //            //        //fsmEventTarget.sendToChildren = false;
+
+//        //            //        gcr.gameObject = goTarget;
+//        //            //        Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
+//        //            //    }
+//        //            //}
+
+//        //            //HutongGames.PlayMaker.Actions.ChaseObjectV2 doc = a as HutongGames.PlayMaker.Actions.ChaseObjectV2;
+//        //            //if( doc != null )
+//        //            //{
+//        //            //    Dev.Log( "TESTING PLAYMAKER FIX ChaseObjectV2" );
+//        //            //    //if( doc.target != null )
+//        //            //    //    continue;
+
+//        //            //    HutongGames.PlayMaker.FsmGameObject go = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
+
+//        //            //    doc.target = go;
+//        //            //    Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
+//        //            //}
+
+
+//        //            //HutongGames.PlayMaker.Actions.FaceObject fo = a as HutongGames.PlayMaker.Actions.FaceObject;
+//        //            //if( fo != null )
+//        //            //{
+//        //            //    Dev.Log( "TESTING PLAYMAKER FIX FaceObject" );
+//        //            //    //if( fo.objectA != null )
+//        //            //    //    continue;
+
+//        //            //    PlayMakerFSM fsmProxy = ( c as PlayMakerFSM );
+//        //            //    HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsmProxy.Fsm.GameObject);
+//        //            //    HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
+
+//        //            //    fo.objectA = goa;
+//        //            //    fo.objectB = gob;
+//        //            //    Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
+//        //            //}
+
+
+//        //            //HutongGames.PlayMaker.Actions.CheckTargetDirection ctd = a as HutongGames.PlayMaker.Actions.CheckTargetDirection;
+//        //            //if( ctd != null )
+//        //            //{
+//        //            //    Dev.Log( "TESTING PLAYMAKER FIX CheckTargetDirection" );
+//        //            //    //if( ctd.target != null )
+//        //            //    //    continue;
+
+//        //            //    PlayMakerFSM fsmProxy = ( c as PlayMakerFSM );
+//        //            //    HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsmProxy.Fsm.GameObject);
+//        //            //    HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
+
+//        //            //    HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
+//        //            //    goTarget.GameObject = goa;
+//        //            //    goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
+//        //            //    ctd.gameObject = goTarget;
+//        //            //    ctd.target = gob;
+//        //            //    Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
+//        //            //}
+
+
+//        //        }
+//        //    }
+//        //}
+//    }
+//    catch( Exception e )
+//    {
+//        Dev.Log( "Exception:" + e.Message );
+//    }
+//}
