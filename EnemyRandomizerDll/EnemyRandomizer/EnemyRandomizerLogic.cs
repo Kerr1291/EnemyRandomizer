@@ -1026,6 +1026,25 @@ namespace EnemyRandomizerMod
                 }
             }
 
+            //TEST
+            if(newEnemy.name == "Mage Lord" || newEnemy.name == "Dream Mage Lord")
+            {
+                {//Tele Top Y
+                    List<SetFloatValue> actions = newEnemy.GetFSMActionsOnStates<SetFloatValue>( new List<string>() { "Tele Top Y" }, "Mage Lord" );
+                    foreach( var a in actions )
+                    {
+                        a.floatValue = newEnemy.transform.position.y + 20f;
+                    }
+                }
+                {//Tele Bot Y
+                    List<SetFloatValue> actions = newEnemy.GetFSMActionsOnStates<SetFloatValue>( new List<string>() { "Tele Bot Y" }, "Mage Lord" );
+                    foreach( var a in actions )
+                    {
+                        a.floatValue = newEnemy.transform.position.y - 5f;
+                    }
+                }
+            }
+
             //TODO: store this value off in our mod and set it to true in the scenes that care about it... but for now....
             if(newEnemy.name.Contains( "Mega Zombie Beam Miner" ) ) 
             {
@@ -1181,6 +1200,15 @@ namespace EnemyRandomizerMod
                 int smallGeo = GameRNG.Rand( 0, 5 );
                 int medGeo = GameRNG.Rand( 1, 2 );
                 int bigGeo = GameRNG.Rand( 0, 1 );
+
+                newEnemy.SetEnemyGeoRates( smallGeo, medGeo, bigGeo );
+            }
+
+            if(newEnemy.name == "Lazy Flyer Enemy" )
+            {
+                int smallGeo = 0;
+                int medGeo = 0;
+                int bigGeo = GameRNG.Rand( 0, 10 );
 
                 newEnemy.SetEnemyGeoRates( smallGeo, medGeo, bigGeo );
             }
@@ -1364,6 +1392,14 @@ namespace EnemyRandomizerMod
                 {
                     positionOffset = positionOffset + (Vector3)(Vector2.up * 2f);
                 }
+                if( newEnemy.name.Contains( "Blocker" ) )
+                {
+                    positionOffset = positionOffset + (Vector3)( Vector2.up * -1f );
+                }
+                if( newEnemy.name == ( "Moss Knight" ) )
+                {
+                    positionOffset = positionOffset + (Vector3)( Vector2.up * -1f );
+                }
                 //TODO: TEST, see if this fixes him spawning in the roof
                 //if( newEnemy.name.Contains( "Mantis Traitor Lord" ) )
                 //{
@@ -1410,7 +1446,7 @@ namespace EnemyRandomizerMod
                 }
                 if( collider != null && newEnemy.name.Contains( "Mushroom Turret" ) )
                 {
-                    positionOffset = originalUp * collider.size.y / 10f;
+                    positionOffset = originalUp * collider.size.y;
                 }
                 if( newEnemy.name.Contains( "Plant Turret" ) )
                 {
@@ -1419,7 +1455,6 @@ namespace EnemyRandomizerMod
                 if( collider != null && newEnemy.name.Contains( "Laser Turret" ) )
                 {
                     positionOffset = originalUp * collider.size.y / 10f;
-
                 }
                 if( collider != null && newEnemy.name.Contains( "Worm" ) )
                 {

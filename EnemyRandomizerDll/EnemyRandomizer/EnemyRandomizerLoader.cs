@@ -218,13 +218,13 @@ namespace EnemyRandomizerMod
                     GameObject.Destroy( deleteFSM );
                 }
             }
-            
+
             //modifiactions to specific enemies below
 
             //Create a custom "wake up" base game object and put it on the mage knight
             if( name == "Mage Knight" )
             {
-                GameObject wakeUpRoot = new GameObject("MK Wake Up Object");
+                GameObject wakeUpRoot = new GameObject( "MK Wake Up Object" );
                 wakeUpRoot.transform.SetParent( modifiedPrefab.transform );
                 wakeUpRoot.transform.localPosition = Vector3.zero;
 
@@ -242,12 +242,30 @@ namespace EnemyRandomizerMod
             else if( name == "Electric Mage" )
             {
                 //try to fix the electric mage
-                DebugOnWake d = DebugOnWake.AddDebugOnWake(modifiedPrefab, "Electric Mage", "Init", new List<string>() { "FINISHED" }, true, customWakeAreaSize, false );
+                DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Electric Mage", "Init", new List<string>() { "FINISHED" }, true, customWakeAreaSize, false );
+            }
+            else if( name == "Black Knight" )
+            {
+                //try to fix the electric mage
+                DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Black Knight", "Rest", new List<string>() { "WAKE" }, true, customWakeAreaSize, false );
             }
             else if( name == "Mage" )
             {
                 //try to fix the mage
-                DebugOnWake d = DebugOnWake.AddDebugOnWake(modifiedPrefab, "Mage", "Manual Sleep", new List<string>() { "WAKE" }, true, customWakeAreaSize, false );
+                DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Mage", "Manual Sleep", new List<string>() { "WAKE" }, true, customWakeAreaSize, false );
+            }
+            else if( name == "Mage Lord" || "Dream Mage Lord" == name )
+            {
+                //try to fix the mage
+                {
+                    DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Mage Lord", "Sleep", new List<string>() { "WAKE" }, true, customWakeAreaSize, false );
+                }
+
+                PlayMakerFSM destroy = modifiedPrefab.GetMatchingFSMComponent( "Destroy If Defeated", "Check", "PlayerDataBoolTest" );
+                if( destroy != null )
+                {
+                    GameObject.Destroy( destroy );
+                }
             }
             else if( name == "Zombie Beam Miner Rematch" || name == "Mega Zombie Beam Miner" )
             {
@@ -257,10 +275,10 @@ namespace EnemyRandomizerMod
             else if( name == "Slash Spider" )
             {
                 //fix the slash spider from getting stuck
-                DebugOnWake d = DebugOnWake.AddDebugOnWake(modifiedPrefab, "Slash Spider", "Waiting", new List<string>() { "WAKE" }, true, null, false );
+                DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Slash Spider", "Waiting", new List<string>() { "WAKE" }, true, null, false );
             }
             else if( name == "Mender Bug" )
-            {                
+            {
                 {
                     List<PlayerDataBoolTest> actions = modifiedPrefab.GetFSMActionsOnStates<PlayerDataBoolTest>( new List<string>() { "Sign Broken?" }, "Mender Bug Ctrl" );
                     foreach( var a in actions )
@@ -284,7 +302,80 @@ namespace EnemyRandomizerMod
                         a.integer2 = 1;
                     }
                 }
-
+            }
+            else if( name == "Hatcher" )
+            {
+                {
+                    GameObject emptyRoot = new GameObject( "EmptyRoot" );
+                    emptyRoot.transform.position = Vector3.zero;
+                    List<GetRandomChild> actions = modifiedPrefab.GetFSMActionsOnStates<GetRandomChild>( new List<string>() { "Fire" }, "Hatcher" );
+                    foreach( var a in actions )
+                    {
+                        GameObject hatcherBaby = database.loadedEnemyPrefabs[ database.loadedEnemyPrefabNames.IndexOf( "Hatcher Baby" ) ];
+                        hatcherBaby.transform.SetParent( emptyRoot.transform );
+                        a.gameObject = new HutongGames.PlayMaker.FsmOwnerDefault() { GameObject = emptyRoot, OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.SpecifyGameObject };
+                    }
+                }
+            }
+            else if( name == "Infected Knight" )
+            {
+                {
+                    List<PlayerDataBoolTest> actions = modifiedPrefab.GetFSMActionsOnStates<PlayerDataBoolTest>( new List<string>() { "Init" }, "IK Control" );
+                    foreach( var a in actions )
+                    {
+                        a.boolName = "openingCreditsPlayed";
+                    }
+                }
+                {
+                    DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "IK Control", "Sleep", new List<string>() { "BATTLE START" }, true, customWakeAreaSize, false );
+                }
+                {
+                    DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "IK Control", "Waiting", new List<string>() { "BATTLE START" }, true, customWakeAreaSize, false );
+                }
+            }
+            else if( name == "Jar Collector" )
+            {
+                {
+                    DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Control", "Sleep", new List<string>() { "WAKE" }, true, customWakeAreaSize, false );
+                }
+            }
+            else if( name == "Hornet Boss 1" )
+            {
+                {
+                    DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Control", "Inert", new List<string>() { "REFIGHT" }, true, customWakeAreaSize, false );
+                }
+                {
+                    List<IntCompare> actions = modifiedPrefab.GetFSMActionsOnStates<IntCompare>( new List<string>() { "Inert" }, "Control" );
+                    foreach( var a in actions )
+                    {
+                        a.integer1 = 0;
+                        a.integer2 = 0;
+                    }
+                }
+            }
+            else if( name == "Moss Charger" )
+            {
+                {
+                    DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Mossy Control", "Hidden", new List<string>() { "IN RANGE" }, true, customWakeAreaSize, false );
+                }
+                //{
+                //    DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Mossy Control", "Hero Beyond?", new List<string>() { "FINISHED" }, true, customWakeAreaSize, false );
+                //}
+            }
+            else if( name == "Mushroom Brawler" )
+            {
+                {
+                    DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Shroom Brawler", "Sleep", new List<string>() { "WAKE" }, true, customWakeAreaSize, false );
+                }
+            }
+            else if( name == "Garden Zombie" )
+            {
+                {
+                    DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Attack", "Spawn Idle", new List<string>() { "SPAWN" }, true, customWakeAreaSize, false );
+                }
+                {
+                    DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Attack", "Idle", new List<string>() { "HERO IN RANGE" }, true, customWakeAreaSize, false );
+                }
             }
 
 

@@ -40,7 +40,11 @@ namespace nv
             "Zote Balloon",
             "fluke_baby_01",
             "fluke_baby_02",
-            "fluke_baby_03"
+            "fluke_baby_03",
+
+            //TEMP: remove these enemies until they're fixed
+            "Mage Lord Phase2",
+            "Mega Moss Charger",
         };
 
 
@@ -284,7 +288,7 @@ namespace nv
 
             
 
-            if( trimmedString != "Zombie Spider 1" && trimmedString != "Zombie Spider 2" )
+            if( trimmedString != "Zombie Spider 1" && trimmedString != "Zombie Spider 2" && trimmedString != "Hornet Boss 1" && trimmedString != "Hornet Boss 2" )
             {
                 //trim off " 1" from the word, if it's there
                 index = trimmedString.LastIndexOf( " 1" );

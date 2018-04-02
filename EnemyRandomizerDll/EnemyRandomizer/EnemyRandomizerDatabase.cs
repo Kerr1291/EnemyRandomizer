@@ -178,6 +178,9 @@ using nv;
  * Big Centipede (3) -- giant deepnest cave centipede
  * Heart Piece -- brooding mawlek scene -- with FSM Heart Container Control
  * _Enemies\Fly Spawn  -- the fly spawns used by gruz mother
+ * Worm -- needs to be added to effect/"enemies" list
+ * 
+ * 
  * 
  * 
  * FSM replacements that need to happen using existing Components:
@@ -230,30 +233,30 @@ using nv;
  * [TEST]Electric Mage - spawned at 0,0,0  -- force instantiate
  * [TEST]Lobster -- spawned in ground
  * [TEST]Mender Bug - needs an awake message of some sort -- modified the FSM
- * [IN PROGRESS]Giant Fly - needs to spawn as a ground enemy & needs a fix so it spawns enemies && DONT replace it
- * Mawlek Body - needs the fix so it doesn't check to see if the player has killed one already
- * Blocker - floating just a bit above ground, about 1 unit / never spawns enemies
- * Hatcher - doesn't spawn enemies
- * Hatcher Baby - maybe don't rando replace???
- * Zombie Myla - spawned at zero and also has some persistant thing that needs to be fixed
+ * [NEED TO SAVE OFF EFFECT PREFAB]Giant Fly - needs to spawn as a ground enemy & needs a fix so it spawns enemies && DONT replace it
+ * [TEST]Mawlek Body - needs the fix so it doesn't check to see if the player has killed one already
+ * [TEST]Blocker - floating just a bit above ground, about 1 unit / never spawns enemies
+ * [TEST]Hatcher - doesn't spawn enemies
+ * [???]Hatcher Baby - maybe don't rando replace???
+ * [TEST]Zombie Myla - spawned at zero and also has some persistant thing that needs to be fixed
  * Ruins Sentry Fat - spawned at zero, but others were fine?
- * Mage Lord Phase2 - spawned and then teleported far away, fix his teleport destination?/Spawning him twice is broken probably a persistant bool item
- * Mage Lord - same problem
- * Black Knight - needs wake event
- * Infected Knight - needs wake event
- * Jar Collector - needs wake event
- * Hornet Boss - needs wake event
- * (added)Moss Charger - index 88, needs to be looked at for nullref  (  EnemyRandomizerMod.EnemyRandomizerLogic.PositionRandomizedEnemy  threw a nullref  )
- * Moss Knight - spawns a bit above the ground by around 1 unit
- * Lazy Flyer Enemy - lake of unn fliers, either add geo or remove them from the list
- * Mega Moss Charger - needs something fixed in the fsm so it works where it spawns
+ * [TEMP REMOVED]Mage Lord Phase2 - spawned and then teleported far away, fix his teleport destination?/Spawning him twice is broken probably a persistant bool item
+ * [TEST & NEEDS TO SAVE OFF EFFECT PREFAB]Mage Lord - same problem, NEEDS TO COPY OUT ORB SPINNER
+ * [TEST]Black Knight - needs wake event
+ * [TEST]Infected Knight - needs wake event
+ * [TEST]Jar Collector - needs wake event
+ * [TEST]Hornet Boss - needs wake event, NEEDS NEEDLE AND NEEDLE TINK EFFECT OBJECTS
+ * [TEST]Moss Charger - index 88, needs to be looked at for nullref  (  EnemyRandomizerMod.EnemyRandomizerLogic.PositionRandomizedEnemy  threw a nullref  )
+ * [TEST]Moss Knight - spawns a bit above the ground by around 1 unit
+ * [ADDED GEO]Lazy Flyer Enemy - lake of unn fliers, either add geo or remove them from the list
+ * [TEMP REMOVED]Mega Moss Charger - needs something fixed in the fsm so it works where it spawns
  * Ghost Warrior No Eyes - works, but spawns offset way to the left and up, needs lots of space
- * Mushroom Turret - spawns a bit inside the wall, move out by about 0.5 units
- * Mushroom Brawler - needs a wake area component
+ * [TEST]Mushroom Turret - spawns a bit inside the wall, move out by about 0.5 units
+ * [TEST]Mushroom Brawler - needs a wake area component
  * Mantis Flyer Child - when spawning, use the crawler placement logic, when replacing, use the flyer
  * Ghost Warrior Slug - works, just needs lots of space
  * Ghost Warrior Hu - needs space and room for his attacks, attacks don't work, need something to fix
- * Garden Zombie - raycast that it does to wake up? seems to be broken. either needs wake event or a "fixed" fsm
+ * [TEST]Garden Zombie - raycast that it does to wake up? seems to be broken. either needs wake event or a "fixed" fsm
  * Mantis Traitor Lord - needs a fix, spawns about 20 units above his placement point
  * Mega Jellyfish - spawns somewhere? and dies
  * Mines Crawler - upside down and about 1 unit far from the wall
@@ -270,7 +273,7 @@ using nv;
  * "Enemy" - needs to be move down 1/2 unit
  * Zombie Hive - needs fix for spawning adds
  * Hive Knight - needs wake event
- * Dream mage lord - fix to not dream spawn you
+ * [TEST?]Dream mage lord - fix to not dream spawn you
  * 
  * 
  * 
