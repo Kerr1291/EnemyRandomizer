@@ -6,6 +6,7 @@ using UnityEngine;
 using System.Linq;
 
 using nv;
+using HutongGames.PlayMaker.Actions;
 
 namespace EnemyRandomizerMod
 {   
@@ -122,6 +123,66 @@ namespace EnemyRandomizerMod
                         database.loadedEnemyPrefabNames.Add( name );
                         Dev.Log( "Adding enemy type: " + prefab.name + " to list with search string " + name );
                     }//end if-enemy
+
+                    //TODO: GameObject.Find things in the effectObjectNames list...
+
+                    //if( sceneToLoad.buildIndex == 244 )
+                    //{
+                    //    int indexOfEffectType = EnemyRandomizerDatabase.effectObjectNames.IndexOf( go.name );
+
+                    //    if( indexOfEffectType >= 0 )
+                    //    {
+                    //        GameObject prefab = go;
+                    //        GameObject.DontDestroyOnLoad( prefab );
+                    //        prefab.transform.SetParent( root.transform );
+
+                    //        //special logic for certain enemies:
+                    //        prefab = ModifyGameObjectPrefab( prefab );
+
+                    //        //don't actually add this one
+                    //        //database.loadedEffectPrefabs.Add( EnemyRandomizerDatabase.effectObjectNames[ indexOfEffectType ], prefab );
+                    //        Dev.Log( "Saving special enemy effect: " + prefab.name );
+                    //    }//end if-enemy
+                    //}
+
+                    ////save off teleplanes
+                    ////if( sceneToLoad.buildIndex == 96 )
+                    //{
+                    //    if( go.name.Contains( "Teleplanes" ) )
+                    //    {
+                    //        GameObject prefab = go;
+                    //        GameObject.DontDestroyOnLoad( prefab );
+                    //        prefab.transform.SetParent( root.transform );
+
+                    //        //don't actually add this one, keep it around because the mages need it
+                    //        Dev.Log( "Saving special enemy effect: " + prefab.name );
+                    //        continue;
+                    //    }
+                    //}
+
+                    //bool isInEffectList = database.loadedEffectPrefabs.ContainsKey( go.name );
+                    //if( isInEffectList )
+                    //    continue;
+
+                    ////load beam effects
+                    //if( sceneToLoad.buildIndex == 241 )
+                    //{
+                    //    int indexOfEffectType = EnemyRandomizerDatabase.effectObjectNames.IndexOf( go.name );
+
+                    //    if( indexOfEffectType >= 0 )
+                    //    {
+                    //        GameObject prefab = go;
+                    //        GameObject.DontDestroyOnLoad( prefab );
+                    //        prefab.transform.SetParent( root.transform );
+
+                    //        //special logic for certain enemies:
+                    //        prefab = ModifyGameObjectPrefab( prefab );
+
+                    //        database.loadedEffectPrefabs.Add( EnemyRandomizerDatabase.effectObjectNames[ indexOfEffectType ], prefab );
+                    //        Dev.Log( "Adding enemy effect: " + prefab.name + " to loaded effect list with search string " + EnemyRandomizerDatabase.effectObjectNames[ indexOfEffectType ] );
+                    //    }//end if-enemy
+                    //}
+
                 }//iterate over resources
             }//iterate over all LOADED scenes            
         }//end LoadSceneData()
@@ -148,6 +209,7 @@ namespace EnemyRandomizerMod
             }
 
             //remove any FSMs that have a persistant bool check
+            if(name != "Mender Bug" )
             {
                 PlayMakerFSM deleteFSM = modifiedPrefab.GetMatchingFSMComponent("FSM","Check","PlayerDataBoolTest");
                 //remove the persistant bool check item
@@ -196,6 +258,33 @@ namespace EnemyRandomizerMod
             {
                 //fix the slash spider from getting stuck
                 DebugOnWake d = DebugOnWake.AddDebugOnWake(modifiedPrefab, "Slash Spider", "Waiting", new List<string>() { "WAKE" }, true, null, false );
+            }
+            else if( name == "Mender Bug" )
+            {                
+                {
+                    List<PlayerDataBoolTest> actions = modifiedPrefab.GetFSMActionsOnStates<PlayerDataBoolTest>( new List<string>() { "Sign Broken?" }, "Mender Bug Ctrl" );
+                    foreach( var a in actions )
+                    {
+                        a.boolName = "openingCreditsPlayed";
+                    }
+                }
+                {
+                    List<RandomInt> actions = modifiedPrefab.GetFSMActionsOnStates<RandomInt>( new List<string>() { "Chance" }, "Mender Bug Ctrl" );
+                    foreach( var a in actions )
+                    {
+                        a.min = 1;
+                        a.max = 1;
+                    }
+                }
+                {
+                    List<IntCompare> actions = modifiedPrefab.GetFSMActionsOnStates<IntCompare>( new List<string>() { "Chance" }, "Mender Bug Ctrl" );
+                    foreach( var a in actions )
+                    {
+                        a.integer1 = 1;
+                        a.integer2 = 1;
+                    }
+                }
+
             }
 
 

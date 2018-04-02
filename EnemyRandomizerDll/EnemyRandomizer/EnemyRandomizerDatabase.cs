@@ -8,20 +8,229 @@ using nv;
 
 
 /*
+ * [DONE]DONT OPTIMIZE SKIP on _Scenery\Ruins Flying Sentry
+ * 
+ * 
+ * 
+ *
+				if (GameManager.instance.GetCurrentMapZone() != "COLOSSEUM")
+ *
+ * Movement Components
+ * ----
+ * Walker
+ * 
+ * 
+ * 
+ * Enemy FSMs to convert to componets:
+ * ----
+ * Mender Bug Ctrl  --- edit Sign Broken?  state and  PlayerDataBoolTest (boolName) = menderSignBroken  && edit  Chance  && RandomInt/IntCompare
+ * Mawlek Control
+ * Zombie Guard
+ * Centipede
+ * Centipede Hatcher
+ * Hopper - (Hopper & Giant Hopper)
+ * "Control" - Hornet Boss 2  (also want Needle and Needle Tink)
+ * Slash Spider
+ * "Control" - Boss Control\Radiance
+ * Mossy Control -- moss charger
+ * "Control" - Grey Prince
+ * "Control" -- Hornet Boss 1
+ * Moss Knight Control
+ * Mantis Lord
+ * Shroom Turret
+ * Mush Roller
+ * Shroom Brawler  (wake up with WAKE on state Sleep)
+ * "Movement" -- Ghost Warrior Hu  && FSM:Set Ghost PD Int
+ * Mantis - Mantis Traitor Lord   (maybe investigate this Battle Scene\Wave 3\Mantis Traitor Lord\Above Range)
+ * "Attack" -- on garden zombie
+ * Plant Trap Control
+ * Crazy Hopper
+ * Jellyfish
+ * Jellyfish Baby
+ * Mega Jellyfish
+ * "Control" -- Grimm Boss
+ * constrain_x - grimm  
+ * Constrain Y - grimm
+ * Hive Zombie
+ * Big Bee
+ * Bee
+ * Bee Stinger
+ * "Control" - Hive Knight
+ * Grub Mimic
+ * Beam Miner
+ * Roller
+ * Crystal Flyer
+ * Laser Bug
+ * Mines Crawler
+ * Miner FX
+ * Big Buzzer
+ * Electric Mage
+ * Zombie Miner
+ * fat fly bounce -- Mega Fat Bee
+ * Mozzie -- mosquito
+ * Zombie Leap
+ * Mage Lord 2
+ * Mage Lord
+ * Zombie Swipe -- zombie runner
+ * Mage
+ * Mage Knight
+ * Blob -- mage blob
+ * Control -- "mage balloon"
+ * Black Knight
+ * ZombieShieldControl -- on Great Shield Zombie
+ * Ruins Sentry
+ * "Control" -- on Jar Collector
+ * Coward Swipe -- Royal Zombie Coward
+ * Dung Defender
+ * "Attack" -- used by Flip Hopper * 
+ * Flukeman
+ * Fluke Fly
+ * Fluke Mother
+ * Ruins Sentry Fat
+ * Flying Sentry Javelin
+ * Ceiling Dropper
+ * Flying Sentry Nail -- Ruins Flying Sentry
+ * Inflater
+ * Guard  -- white palace
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * Enemy-Related FSM Parts to convert to components:
+ * ----
+ * Destroy Self -- Battle Scene\Jar Collector\Slam Effect
+ * Death -- on Jar Collector
+ * Stun Control -- on Jar Collector
+ * Damage Control -- on Jar Collector
+ * Phase Control -- on Jar Collector
+ * Hit Launch -- is on fluke fly
+ * "FSM" -- from fluke fly -- plays an audio clip
+ * Drowner -- used by flukeman
+ * "FSM" -- Alert Range object -- used by many things
+ * "FSM" -- Hero Range object -- used by flip hopper
+ * Stun -- used by bosses
+ * hp_scaler -- used by bosses (dung, jar)
+ * "FSM" -- Dung Defender\Splash Out && Splash Out Erupt && Burst Effect
+ * Splash Out Control -- used by dung defender
+ * Deactivate -- used by dung defender "Slam Effect"
+ * Corpse -- used by many things
+ * "FSM" -- Evade Check -- used by dung defender and probably others
+ * flyer_receive_direction_msg - on buzzer in tutorial
+ * chaser -- on buzzer in tutorial
+ * nail_clash_tink -- on Great Shield Zombie (2)\Slash1
+ * Shadow Dash -- Great Shield Zombie (2)\Hero Blocker
+ * Boss Deactivate
+ * disable_special_death -- on a Ruins Flying Sentry??
+ * Go Upper -- on a Ruins Flying Sentry??
+ * Lost Hero Check -- on a Ruins Flying Sentry???
+ * "FSM" -- on Black Knights, does "SetHP"
+ * Corpse Black Knight
+ * follow_hero -- used by mage knight
+ * Summon Orbs -- used by mage lord
+ * Tele Out -- mage lord
+ * deactivate -- Mage Lord\Quake Hit
+ * Destroy If Defeated -- mage lord
+ * "FSM" -- on Mosquito, used to aim/rotate?
+ * damages_enemy -- on plant traps
+ * 
+ * 
+ * Dreamnail Reject -- hollow knight
+ * "Control" -- hollow knight boss control -- Boss Control\Hollow Knight Boss
+ * 
+ * 
+ * 
+ * 
+ * Non-Enemy FSMs to convert to components:
+ * ----
+ * Battle Control -- load waves 
+ * "Control" -- on egg sac, controls the spitting out of the pick-up-able item
+ * "Control" -- on Battle Scene in Jar Collector fight
+ * "Battle Control" -- Ruins2_03_boss [Build index: 115]
+ * BG Control - part of ^
+ * deparent_and_follow -- on orb spinner
+ * Lift Control
+ * Shiny Control --- VERY IMPORTANT-- DO THIS  (part of shiny item)
+ * Generate Wave -- also ^
+ * Shiny Control -- Battle Scene v2\Completed\Shiny Item <-- LOOK AT THIS
+ * 
+ * Additional enemy related things to export from scenes:
+ * ----
+ * Hatcher Cage (2)  -- used by fluke mother spawns
+ * Orb Spinner -- used by mage lord
+ * 
+ * 
+ * 
+ * Other things to export from scenes 
+ * ----
+ * Egg Sac -- spawns rancid eggs
+ * Jelly Egg Bomb -- explosive fog canyon bubbles
+ * Jelly Egg Empty -- non explosive fog canon bubbles
+ * Gorgeous Husk\Shine -- shiney golden husk effect
+ * Laser Turret Mega (1) -- from rematch scene, maybe remove fsm - Laser Bug Mega
+ * beam stuff from  Mines_18_boss [Build index: 261]
+ * Laser Turret from Printing full hierarchy for scene: Mines_17 [Build index: 259]
+ * Ring Holder -- special attack for ghost warrior Hu
+ * Shot Mantis Lord -- mantis lord attacks
+ * Cave Spikes (13) -- a cave spike? i think
+ * Big Centipede (3) -- giant deepnest cave centipede
+ * Heart Piece -- brooding mawlek scene -- with FSM Heart Container Control
+ * _Enemies\Fly Spawn  -- the fly spawns used by gruz mother
+ * 
+ * 
+ * FSM replacements that need to happen using existing Components:
+ * -----
+ * Crawler FSM ---> Crawler component
+ * Corpse FSM --> ???? Corpse component
+ * 
+ * 
+ * 
+ * 
+ * 
+ * Components to investigate:
+ * ----
+ * LineOfSightDetector -- on buzzer in tutorial?
+ * AlertRange -- on Royal Zombie Coward?
+ * DeactivateIfPlayerdataTrue
+ * 
+ * 
+ * 
+ * 
+ * CREATE A REFLECTION GETTER FOR 
+	public void SetBattleScene(GameObject newBattleScene)
+	{
+		this.battleScene = newBattleScene;
+	}
+    AND SET THIS ON REPLACEMENTS INSTEAD OF USING REPLACEMENT PAIRS
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * 
  * Knight is slightly shorter than 5 units, 3 or 4?
  * 
  * 
  * [DONE]Flamebearer Small/Med -- Try sending "START" event on wake
- * Giant Hopper -- Colosseum version? dies when spawned? seems to project itself to 0,0,0???
- * Bursting Zombie -- needs to drop geo
- * Mega Fat Bee -- needs a modification to it's position/fly in animation/FSM
- * Mantis Heavy  -- spawns outside of scene at 0,0,0
- * Mage Knight -- spawned at 0,0,0
- * Electric Mage - spawned at 0,0,0
- * Lobster -- spawned in ground
- * Mender Bug - needs an awake message of some sort
- * Giant Fly - needs to spawn as a ground enemy & needs a fix so it spawns enemies
+ * [TEST]Giant Hopper -- Colosseum version? dies when spawned? seems to project itself to 0,0,0???
+ * [DONE]Bursting Zombie -- needs to drop geo
+ * [TEST]Mega Fat Bee -- needs a modification to it's position/fly in animation/FSM
+ * [DONE]Mantis Heavy  -- spawns outside of scene at 0,0,0
+ * [DONE]Mage Knight -- spawned at 0,0,0
+ * [TEST]Electric Mage - spawned at 0,0,0  -- force instantiate
+ * [TEST]Lobster -- spawned in ground
+ * [TEST]Mender Bug - needs an awake message of some sort -- modified the FSM
+ * [IN PROGRESS]Giant Fly - needs to spawn as a ground enemy & needs a fix so it spawns enemies && DONT replace it
  * Mawlek Body - needs the fix so it doesn't check to see if the player has killed one already
  * Blocker - floating just a bit above ground, about 1 unit / never spawns enemies
  * Hatcher - doesn't spawn enemies
@@ -417,7 +626,8 @@ namespace EnemyRandomizerMod
             "Beam Point L",
             "Beam Point R",
             "Beam",
-            "Crystal Rain"
+            "Crystal Rain",
+            "Fly Spawn"
         };
 
 
@@ -692,7 +902,6 @@ namespace EnemyRandomizerMod
             "Spitter",
             "Buzzer",
             "Fly",
-            "Giant Fly",
             "Bursting Bouncer",
             "Hatcher",
             "Ruins Flying Sentry",
@@ -742,6 +951,7 @@ namespace EnemyRandomizerMod
         public static List<string> groundEnemyTypeNames = new List<string>()
         {
             "Colosseum_Miner",
+            "Giant Fly",
             "Lancer",
             "Lobster",
             "Mage Blob",
@@ -1163,6 +1373,7 @@ namespace EnemyRandomizerMod
 
             "Mage Blob",
             "Mage Knight",
+            "Giant Hopper",
 
             "Dung Defender"
             //"Colosseum_Armoured_Mosquito",//34

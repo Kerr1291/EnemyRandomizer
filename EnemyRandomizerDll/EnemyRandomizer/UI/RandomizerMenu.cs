@@ -362,7 +362,7 @@ namespace EnemyRandomizerMod.Menu
             enterOptionsMenuButton.transform.localScale = enterOptionsMenuButton.FindSelectableOnUp().transform.localScale;
 
             Object.Destroy( enterOptionsMenuButton.gameObject.GetComponent<AutoLocalizeTextUI>() );
-            enterOptionsMenuButton.gameObject.transform.FindChild( "Text" ).GetComponent<Text>().text = "Enemy Randomizer";
+            enterOptionsMenuButton.gameObject.FindGameObjectInChildren( "Text" ).GetComponent<Text>().text = "Enemy Randomizer";
             //ADD MODS TO OPTIONS MENU
         }
 
@@ -373,9 +373,9 @@ namespace EnemyRandomizerMod.Menu
 
             GameObject go = Object.Instantiate( rootUIManager.optionsMenuScreen.gameObject );
             optionsMenuScreen = go.GetComponent<MenuScreen>();
-            optionsMenuScreen.title = optionsMenuScreen.gameObject.transform.FindChild( "Title" ).GetComponent<CanvasGroup>();
-            optionsMenuScreen.topFleur = optionsMenuScreen.gameObject.transform.FindChild( "TopFleur" ).GetComponent<Animator>();
-            optionsMenuScreen.content = optionsMenuScreen.gameObject.transform.FindChild( "Content" ).GetComponent<CanvasGroup>();
+            optionsMenuScreen.title = optionsMenuScreen.gameObject.FindGameObjectInChildren( "Title" ).GetComponent<CanvasGroup>();
+            optionsMenuScreen.topFleur = optionsMenuScreen.gameObject.FindGameObjectInChildren( "TopFleur" ).GetComponent<Animator>();
+            optionsMenuScreen.content = optionsMenuScreen.gameObject.FindGameObjectInChildren( "Content" ).GetComponent<CanvasGroup>();
         }
 
         void SetMenuTitle( string title )
@@ -384,7 +384,7 @@ namespace EnemyRandomizerMod.Menu
                 return;
 
             if( optionsMenuScreen.title == null )
-                optionsMenuScreen.title = optionsMenuScreen.gameObject.transform.FindChild( "Title" ).GetComponent<CanvasGroup>();
+                optionsMenuScreen.title = optionsMenuScreen.gameObject.FindGameObjectInChildren( "Title" ).GetComponent<CanvasGroup>();
 
             optionsMenuScreen.title.gameObject.GetComponent<Text>().text = title;
 
@@ -662,16 +662,16 @@ namespace EnemyRandomizerMod.Menu
 
                             menuItem.LocalizeText = false;
                             menuItem.SheetTitle = optionName;
-                            menuItem.leftCursor = menuItem.transform.FindChild( "CursorLeft" ).GetComponent<Animator>();
-                            menuItem.rightCursor = menuItem.transform.FindChild( "CursorRight" ).GetComponent<Animator>();
+                            menuItem.leftCursor = menuItem.gameObject.FindGameObjectInChildren( "CursorLeft" ).GetComponent<Animator>();
+                            menuItem.rightCursor = menuItem.gameObject.FindGameObjectInChildren( "CursorRight" ).GetComponent<Animator>();
                             menuItem.cancelAction = CancelAction.DoNothing;
 
                             RandomizerMenu.modOptions[ i ] = menuItem;
                         }
 
 
-                        Object.DestroyImmediate( menuItemParent.transform.FindChild( "Label" ).GetComponent<AutoLocalizeTextUI>() );
-                        menuItemParent.transform.FindChild( "Label" ).GetComponent<Text>().text = optionLabel;
+                        Object.DestroyImmediate( menuItemParent.FindGameObjectInChildren( "Label" ).GetComponent<AutoLocalizeTextUI>() );
+                        menuItemParent.FindGameObjectInChildren( "Label" ).GetComponent<Text>().text = optionLabel;
 
                         menuItemParent.name = optionName;
 

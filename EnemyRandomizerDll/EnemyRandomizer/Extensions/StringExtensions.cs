@@ -48,6 +48,7 @@ namespace nv
         {
             "Baby Centipede",
             "Shade Sibling",
+            "Electric Mage",
             "Moss Charger"
         };
 
@@ -207,8 +208,9 @@ namespace nv
             if( str.Contains( "_Transition Gates" ) )
                 return true;
 
-            if( str.Contains( "_Scenery" ) )
-                return true;
+            //TODO: put a check in here to avoid skipping on just the city of tears scenes
+            //if( str.Contains( "_Scenery" ) )
+            //    return true;
 
             if( str.Contains( "_Props" ) )
                 return true;

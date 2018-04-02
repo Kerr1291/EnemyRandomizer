@@ -1008,6 +1008,24 @@ namespace EnemyRandomizerMod
 
         void FixRandomizedEnemy( GameObject newEnemy, GameObject oldEnemy )
         {
+            if( newEnemy.name == "Mega Fat Bee" )
+            {
+                {
+                    List<SetPosition> actions = newEnemy.GetFSMActionsOnStates<SetPosition>( new List<string>() { "Swoop In" }, "fat fly bounce" );
+                    foreach( var a in actions )
+                    {
+                        a.vector = newEnemy.transform.position;
+                    }
+                }
+                {
+                    List<Translate> actions = newEnemy.GetFSMActionsOnStates<Translate>( new List<string>() { "Swoop In" }, "fat fly bounce" );
+                    foreach( var a in actions )
+                    {
+                        a.vector = Vector3.zero;
+                    }
+                }
+            }
+
             //TODO: store this value off in our mod and set it to true in the scenes that care about it... but for now....
             if(newEnemy.name.Contains( "Mega Zombie Beam Miner" ) ) 
             {
@@ -1158,6 +1176,16 @@ namespace EnemyRandomizerMod
         //TODO: add variables to allow players to adjust the geo rates
         void ModifyRandomizedEnemyGeo( GameObject newEnemy, GameObject oldEnemy )
         {
+            if(newEnemy.name == "Bursting Zombie" )
+            {
+                int smallGeo = GameRNG.Rand( 0, 5 );
+                int medGeo = GameRNG.Rand( 1, 2 );
+                int bigGeo = GameRNG.Rand( 0, 1 );
+
+                newEnemy.SetEnemyGeoRates( smallGeo, medGeo, bigGeo );
+            }
+
+
             if( EnemyRandomizer.Instance.RandomizeGeo )
             {
                 int smallGeo = GetTypeSize(GetTypeFlags(newEnemy)) == FLAGS.SMALL ? GameRNG.Rand(0,10) : GameRNG.Rand(0,20);
@@ -1324,14 +1352,18 @@ namespace EnemyRandomizerMod
             int flags = GetTypeFlags(newEnemy);
             if( ( flags & FLAGS.GROUND ) > 0 )
             {
-                Vector3 toGround = GetVectorToGround(newEnemy);
-                Vector3 onGround = GetPointOnGround(newEnemy);
+                Vector3 toGround = GetVectorToGround(newEnemy, 50f);
+                Vector3 onGround = GetPointOnGround(newEnemy, 50f);
 
                 newEnemy.transform.position = onGround;
 
                 BoxCollider2D collider = newEnemy.GetComponent<BoxCollider2D>();
                 positionOffset = new Vector3( 0f, collider.size.y, 0f );
 
+                if( newEnemy.name.Contains( "Lobster" ) )
+                {
+                    positionOffset = positionOffset + (Vector3)(Vector2.up * 2f);
+                }
                 //TODO: TEST, see if this fixes him spawning in the roof
                 //if( newEnemy.name.Contains( "Mantis Traitor Lord" ) )
                 //{
@@ -1448,12 +1480,20 @@ namespace EnemyRandomizerMod
 
         }
 
-        Vector3 GetPointOnGround( GameObject entitiy )
+        static bool IsGameSurfaceCollider( Collider2D collider )
+        {
+            return ( collider.GetComponent<Roof>() != null
+                  || collider.gameObject.name.Contains( "Chunk" )
+                  || collider.gameObject.name.Contains( "Platform" )
+                  || collider.gameObject.name.Contains( "Roof" ) );
+        }
+
+        Vector3 GetPointOnGround( GameObject entitiy, float maxProjectionDistance )
         {
             Vector2 origin = entitiy.transform.position;
             Vector2 direction = Vector2.down;
 
-            RaycastHit2D[] toGround = Physics2D.RaycastAll(origin,direction,5f, Physics2D.AllLayers);
+            RaycastHit2D[] toGround = Physics2D.RaycastAll(origin,direction, maxProjectionDistance, Physics2D.AllLayers);
 
             Vector2 lastGoodPoint = Vector2.zero;
 
@@ -1528,12 +1568,12 @@ namespace EnemyRandomizerMod
             return lastGoodPoint;
         }
 
-        Vector3 GetVectorToGround( GameObject entitiy )
+        Vector3 GetVectorToGround( GameObject entitiy, float maxProjectionDistance )
         {
             Vector2 origin = entitiy.transform.position;
             Vector2 direction = Vector2.down;
 
-            RaycastHit2D[] toGround = Physics2D.RaycastAll(origin,direction,5f, Physics2D.AllLayers);
+            RaycastHit2D[] toGround = Physics2D.RaycastAll(origin,direction, maxProjectionDistance, Physics2D.AllLayers);
 
             if( toGround != null )
             {
