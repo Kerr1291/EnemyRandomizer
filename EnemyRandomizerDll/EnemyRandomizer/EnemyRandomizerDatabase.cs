@@ -253,21 +253,21 @@ using nv;
  * Ghost Warrior No Eyes - works, but spawns offset way to the left and up, needs lots of space
  * [TEST]Mushroom Turret - spawns a bit inside the wall, move out by about 0.5 units
  * [TEST]Mushroom Brawler - needs a wake area component
- * Mantis Flyer Child - when spawning, use the crawler placement logic, when replacing, use the flyer
- * Ghost Warrior Slug - works, just needs lots of space
+ * [TEST]Mantis Flyer Child - when spawning, use the crawler placement logic, when replacing, use the flyer
+ * [TEST SCALING]Ghost Warrior Slug - works, just needs lots of space, or scaling
  * Ghost Warrior Hu - needs space and room for his attacks, attacks don't work, need something to fix
  * [TEST]Garden Zombie - raycast that it does to wake up? seems to be broken. either needs wake event or a "fixed" fsm
- * Mantis Traitor Lord - needs a fix, spawns about 20 units above his placement point
- * Mega Jellyfish - spawns somewhere? and dies
- * Mines Crawler - upside down and about 1 unit far from the wall
- * Mega Zombie Beam Miner - needs to have a fix in for his lasers, probably temporarily remove since version 2 works fine
- * (added)Baby Centipede - nullref issue (need to instantiate and keep a copy of this like the old way)
- * Centipede Hatcher - doesn't spawn anything
- * Mimic Spider - spawn position seems locked to a fixed point? nosk seems to jump up into the roof and get stuck?
+ * [NEED MORE INFO]Mantis Traitor Lord - needs a fix, spawns about 20 units above his placement point
+ * [NEED MORE INFO]Mega Jellyfish - spawns somewhere? and dies
+ * [TEST - NEEDS MORE INFO]]Mines Crawler - upside down and about 1 unit far from the wall
+ * [ASSEST NEED TO BE SAVED IN THE ASSET LIST]Mega Zombie Beam Miner - needs to have a fix in for his lasers, probably temporarily remove since version 2 works fine
+   [TEST ADDED SPAWN TO OLD WAY](added)Baby Centipede - nullref issue (need to instantiate and keep a copy of this like the old way)
+ * [TEST]Centipede Hatcher - doesn't spawn anything
+ * [NEEDS CLOSE TEST TO RULE OUT MEMORT=Y LOAK]Mimic Spider - spawn position seems locked to a fixed point? nosk seems to jump up into the roof and get stuck?
  * Ghost Warrior Galien - needs lots of room and a fix for spawning his attack
  * Ghost Warrior Markoth - needs fix for his attack
- * Abyss Crawler - spawning upside down?
- * (added)Shade Sibling - nullref issue, needs to instantiate like old way
+ * [NEEDS TESTING]Abyss Crawler - spawning upside down?
+ * [DONE] Shade Sibling - nullref issue, needs to instantiate like old way
  * Dung Defender - needs to spawn in the ground? and needs a wake event and lots of space -- just remove for now
  * Fluke Mother - needs fix for spawning enemies
  * "Enemy" - needs to be move down 1/2 unit
@@ -279,7 +279,7 @@ using nv;
  * 
  * None of the colosseum enemies project themselves onto the ground properly?
  * 
- * Colosseum List:
+ * Colosseum List: 
  * 
  * Colosseum_Armoured_Roller
  * Super Spitter Col

@@ -44,7 +44,7 @@ namespace EnemyRandomizerMod
         EnemyRandomizerDatabase database;
         EnemyRandomizerLogic logic;
 
-        string fullVersionName = "0.2.0";
+        string fullVersionName = "0.2.0a";
         string modRootName = "RandoRoot";
 
         //public const bool kmode = true;
@@ -220,7 +220,7 @@ namespace EnemyRandomizerMod
 
             GameObject prev = null;
 
-            int i = 155;
+            int i = 0;
             while( true )
             {
                 yield return new WaitForEndOfFrame();

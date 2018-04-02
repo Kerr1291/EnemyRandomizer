@@ -12,6 +12,8 @@ using UnityEngine;
 using System.Reflection;
 using HutongGames.PlayMaker.Actions;
 
+using Bounds = UnityEngine.Bounds;
+
 using nv;
 
 namespace EnemyRandomizerMod
@@ -978,31 +980,51 @@ namespace EnemyRandomizerMod
         {
             Vector3 originalNewEnemyScale = newEnemy.transform.localScale;
 
-            //adjust big enemies that replace small enemies
-            if( GetTypeSize( GetTypeFlags( newEnemy ) ) == FLAGS.BIG && GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.SMALL )
+            Collider2D newC = newEnemy.GetComponent<Collider2D>();
+            Collider2D oldC = oldEnemy.GetComponent<Collider2D>();
+            
+            //new scale logic, compare the size of the colliders and adjust the scale by the ratios
+            if(newC != null && oldC != null)
             {
-                newEnemy.transform.localScale = newEnemy.transform.localScale * .5f;
-            }
+                Bounds newBounds = newC.bounds;
+                Bounds oldBounds = oldC.bounds;
 
-            if( GetTypeSize( GetTypeFlags( newEnemy ) ) == FLAGS.BIG && GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.MED )
-            {
-                newEnemy.transform.localScale = newEnemy.transform.localScale * .7f;
-            }
+                float xRatio = oldBounds.size.x / newBounds.size.x;
+                float yRatio = oldBounds.size.y / newBounds.size.y;
 
-            if( GetTypeSize( GetTypeFlags( newEnemy ) ) == FLAGS.MED && GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.SMALL )
-            {
-                newEnemy.transform.localScale = newEnemy.transform.localScale * .75f;
+                //scale the new enemy to the size of the old enemy
+                newEnemy.transform.localScale = new Vector3( newEnemy.transform.localScale.x * xRatio,
+                    newEnemy.transform.localScale.y * yRatio, 1f );
             }
-
-            if( newEnemy.name.Contains( "Mawlek Turret" ) )
+            //no two colliders to compare? then do old logic (until it's removed....)
+            else
             {
-                newEnemy.transform.localScale = originalNewEnemyScale * .6f;
-            }
+                //adjust big enemies that replace small enemies
+                if( GetTypeSize( GetTypeFlags( newEnemy ) ) == FLAGS.BIG && GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.SMALL )
+                {
+                    newEnemy.transform.localScale = newEnemy.transform.localScale * .5f;
+                }
 
-            //shrink him!
-            if( newEnemy.name.Contains( "Mantis Traitor Lord" ) && ( GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.SMALL || GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.MED ) )
-            {
-                newEnemy.transform.localScale = newEnemy.transform.localScale * .4f;
+                if( GetTypeSize( GetTypeFlags( newEnemy ) ) == FLAGS.BIG && GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.MED )
+                {
+                    newEnemy.transform.localScale = newEnemy.transform.localScale * .7f;
+                }
+
+                if( GetTypeSize( GetTypeFlags( newEnemy ) ) == FLAGS.MED && GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.SMALL )
+                {
+                    newEnemy.transform.localScale = newEnemy.transform.localScale * .75f;
+                }
+
+                if( newEnemy.name.Contains( "Mawlek Turret" ) )
+                {
+                    newEnemy.transform.localScale = originalNewEnemyScale * .6f;
+                }
+
+                //shrink him!
+                if( newEnemy.name.Contains( "Mantis Traitor Lord" ) && ( GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.SMALL || GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.MED ) )
+                {
+                    newEnemy.transform.localScale = newEnemy.transform.localScale * .4f;
+                }
             }
         }
 
@@ -1196,7 +1218,7 @@ namespace EnemyRandomizerMod
         void ModifyRandomizedEnemyGeo( GameObject newEnemy, GameObject oldEnemy )
         {
             if(newEnemy.name == "Bursting Zombie" )
-            {
+            { 
                 int smallGeo = GameRNG.Rand( 0, 5 );
                 int medGeo = GameRNG.Rand( 1, 2 );
                 int bigGeo = GameRNG.Rand( 0, 1 );
@@ -1279,6 +1301,13 @@ namespace EnemyRandomizerMod
                 //( ContractorManager.Instance ).StartCoroutine( RotationCorrector( newEnemy, oldEnemy.transform.rotation, 1.5f ) );
                 //newEnemy.PrintSceneHierarchyTree(true);
                 //crawler = newEnemy;
+            }
+
+            if( newEnemy.name.Contains( "Mines Crawler" ) )
+            {
+                Quaternion rot180degrees = Quaternion.Euler( -oldEnemy.transform.rotation.eulerAngles );
+                newEnemy.transform.rotation = rot180degrees * oldEnemy.transform.rotation;
+                newEnemy.transform.rotation = Quaternion.identity;
             }
 
             //if( oldEnemy.name.Contains( "Moss Walker" ) )
@@ -1407,7 +1436,9 @@ namespace EnemyRandomizerMod
                 //}
             }
 
-            if( ( flags & FLAGS.WALL ) > 0 || ( flags & FLAGS.CRAWLER ) > 0 )
+            bool newEnemyIsMantisFlyerChild = newEnemy.name.Contains( "Mantis Flyer Child" );
+
+            if( newEnemyIsMantisFlyerChild ||( flags & FLAGS.WALL ) > 0 || ( flags & FLAGS.CRAWLER ) > 0 )
             {
                 Vector2 originalUp = oldEnemy.transform.up.normalized;
 
@@ -1474,7 +1505,7 @@ namespace EnemyRandomizerMod
                     if( collider != null )
                         positionOffset = new Vector3( collider.size.x * originalUp.x, collider.size.y * originalUp.y, 0f );
 
-                    ////TODO: test this, fix this up after next content patch is out
+                    //TODO: test this, fix this up after next content patch is out
                     //if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
                     //{
                     //    //suppposedly 1/2 their Y collider space offset should be 1.25
@@ -1483,28 +1514,28 @@ namespace EnemyRandomizerMod
                     //    //( ContractorManager.Instance ).StartCoroutine( PositionCorrectorProjection( newEnemy, newEnemy.transform.rotation, upOffset, finalDir, 10f, 1f, 10f ) );
                     //}
 
-                    ////TODO: test this, needs to be farther from the ground than the rest
-                    //if( newEnemy.name.Contains( "Mines Crawler" ) )
-                    //{
-                    //    positionOffset = -finalDir * 1.5f;
-                    //}
+                    //TODO: test this, needs to be farther from the ground than the rest
+                    if( newEnemy.name.Contains( "Mines Crawler" ) )
+                    {
+                        positionOffset = -finalDir * 1.5f;
+                    }
 
-                    //if( newEnemy.name.Contains( "Spider Mini" ) )
-                    //{
-                    //    positionOffset = Vector3.zero;
-                    //}
+                    if( newEnemy.name.Contains( "Spider Mini" ) )
+                    {
+                        positionOffset = Vector3.zero;
+                    }
 
-                    ////TODO: unknown what value this needs
-                    //if( newEnemy.name.Contains( "Abyss Crawler" ) )
-                    //{
-                    //    positionOffset = Vector3.zero;
-                    //}
+                    //TODO: unknown what value this needs
+                    if( newEnemy.name.Contains( "Abyss Crawler" ) )
+                    {
+                        positionOffset = Vector3.zero;
+                    }
 
-                    ////TODO: unknown what value this needs
-                    //if( newEnemy.name.Contains( "Climber" ) )
-                    //{
-                    //    positionOffset = Vector3.zero;
-                    //}
+                    //TODO: unknown what value this needs
+                    if( newEnemy.name.Contains( "Climber" ) )
+                    {
+                        positionOffset = Vector3.zero;
+                    }
                 }
 
                 //show adjustment

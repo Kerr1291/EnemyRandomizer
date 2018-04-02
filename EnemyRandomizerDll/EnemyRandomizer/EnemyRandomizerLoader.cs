@@ -103,6 +103,9 @@ namespace EnemyRandomizerMod
                     if( name.IsSkipLoadingString() )
                         continue;
 
+                    if( name == "Hatcher" && !database.loadedEnemyPrefabNames.Contains( "Hatcher Baby" ) )
+                        continue;
+
                     if( go.gameObject.IsGameEnemy() )
                     {
                         bool isInLoadedList = database.loadedEnemyPrefabNames.Contains(name);
@@ -198,7 +201,8 @@ namespace EnemyRandomizerMod
             modifiedPrefab.SetActive( false );
             GameObject.DontDestroyOnLoad( modifiedPrefab );
             modifiedPrefab.transform.SetParent( root.transform );
-
+            int i = 0;
+            Dev.Log( "TRYING "+ i++ );
             //delete persistant bool items
             { 
                 PersistentBoolItem pbi = modifiedPrefab.GetComponent<PersistentBoolItem>();
@@ -208,6 +212,7 @@ namespace EnemyRandomizerMod
                 }
             }
 
+            Dev.Log( "TRYING " + i++ );
             //remove any FSMs that have a persistant bool check
             if(name != "Mender Bug" )
             {
@@ -221,6 +226,7 @@ namespace EnemyRandomizerMod
 
             //modifiactions to specific enemies below
 
+            Dev.Log( "TRYING " + i++ );
             //Create a custom "wake up" base game object and put it on the mage knight
             if( name == "Mage Knight" )
             {
@@ -241,21 +247,25 @@ namespace EnemyRandomizerMod
             }
             else if( name == "Electric Mage" )
             {
+                Dev.Log( "TRYING " + i++ );
                 //try to fix the electric mage
                 DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Electric Mage", "Init", new List<string>() { "FINISHED" }, true, customWakeAreaSize, false );
             }
             else if( name == "Black Knight" )
             {
+                Dev.Log( "TRYING " + ( i++ ).ToString() );
                 //try to fix the electric mage
                 DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Black Knight", "Rest", new List<string>() { "WAKE" }, true, customWakeAreaSize, false );
             }
             else if( name == "Mage" )
             {
+                Dev.Log( "TRYING " + ( i++ ).ToString() );
                 //try to fix the mage
                 DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Mage", "Manual Sleep", new List<string>() { "WAKE" }, true, customWakeAreaSize, false );
             }
             else if( name == "Mage Lord" || "Dream Mage Lord" == name )
             {
+                Dev.Log( "TRYING " + ( i++ ).ToString() );
                 //try to fix the mage
                 {
                     DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Mage Lord", "Sleep", new List<string>() { "WAKE" }, true, customWakeAreaSize, false );
@@ -269,16 +279,19 @@ namespace EnemyRandomizerMod
             }
             else if( name == "Zombie Beam Miner Rematch" || name == "Mega Zombie Beam Miner" )
             {
+            Dev.Log( "TRYING " + ( i++ ).ToString() );
                 //remove the "Cam Lock" game object child from the crystal guardian (Zombie Beam Miner Rematch)
                 modifiedPrefab.FindAndDestroyGameObjectInChildren( "Cam Lock" );
             }
             else if( name == "Slash Spider" )
             {
+                Dev.Log( "TRYING " + ( i++ ).ToString() );
                 //fix the slash spider from getting stuck
                 DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Slash Spider", "Waiting", new List<string>() { "WAKE" }, true, null, false );
             }
             else if( name == "Mender Bug" )
             {
+                Dev.Log( "TRYING " + ( i++ ).ToString() );
                 {
                     List<PlayerDataBoolTest> actions = modifiedPrefab.GetFSMActionsOnStates<PlayerDataBoolTest>( new List<string>() { "Sign Broken?" }, "Mender Bug Ctrl" );
                     foreach( var a in actions )
@@ -305,6 +318,7 @@ namespace EnemyRandomizerMod
             }
             else if( name == "Hatcher" )
             {
+                Dev.Log( "TRYING " + ( i++ ).ToString() );
                 {
                     GameObject emptyRoot = new GameObject( "EmptyRoot" );
                     emptyRoot.transform.position = Vector3.zero;
@@ -319,6 +333,7 @@ namespace EnemyRandomizerMod
             }
             else if( name == "Infected Knight" )
             {
+                Dev.Log( "TRYING " + ( i++ ).ToString() );
                 {
                     List<PlayerDataBoolTest> actions = modifiedPrefab.GetFSMActionsOnStates<PlayerDataBoolTest>( new List<string>() { "Init" }, "IK Control" );
                     foreach( var a in actions )
@@ -335,12 +350,14 @@ namespace EnemyRandomizerMod
             }
             else if( name == "Jar Collector" )
             {
+                Dev.Log( "TRYING " + ( i++ ).ToString() );
                 {
                     DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Control", "Sleep", new List<string>() { "WAKE" }, true, customWakeAreaSize, false );
                 }
             }
             else if( name == "Hornet Boss 1" )
             {
+                Dev.Log( "TRYING " + ( i++ ).ToString() );
                 {
                     DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Control", "Inert", new List<string>() { "REFIGHT" }, true, customWakeAreaSize, false );
                 }
@@ -355,6 +372,7 @@ namespace EnemyRandomizerMod
             }
             else if( name == "Moss Charger" )
             {
+                Dev.Log( "TRYING " + ( i++ ).ToString() );
                 {
                     DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Mossy Control", "Hidden", new List<string>() { "IN RANGE" }, true, customWakeAreaSize, false );
                 }
@@ -364,12 +382,14 @@ namespace EnemyRandomizerMod
             }
             else if( name == "Mushroom Brawler" )
             {
+                Dev.Log( "TRYING " + ( i++ ).ToString() );
                 {
                     DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Shroom Brawler", "Sleep", new List<string>() { "WAKE" }, true, customWakeAreaSize, false );
                 }
             }
             else if( name == "Garden Zombie" )
             {
+                Dev.Log( "TRYING " + ( i++ ).ToString() );
                 {
                     DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Attack", "Spawn Idle", new List<string>() { "SPAWN" }, true, customWakeAreaSize, false );
                 }
@@ -377,10 +397,18 @@ namespace EnemyRandomizerMod
                     DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Attack", "Idle", new List<string>() { "HERO IN RANGE" }, true, customWakeAreaSize, false );
                 }
             }
+            else if( name == "Mantis Traitor Lord" )
+            {
+                Dev.Log( "TRYING " + ( i++ ).ToString() );
+                {
+                    DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "", "", new List<string>(), true, null, true );
+                }
+            }
 
-
+            
             if( name.Contains( "Flamebearer" ) )
             {
+                Dev.Log( "TRYING " + ( i++ ).ToString() );
                 DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Control", "Init", new List<string>() { "START" }, true, customWakeAreaSize, false );
             }
 
