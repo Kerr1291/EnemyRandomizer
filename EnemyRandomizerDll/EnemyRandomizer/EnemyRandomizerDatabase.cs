@@ -156,11 +156,6 @@ using nv;
  * Generate Wave -- also ^
  * Shiny Control -- Battle Scene v2\Completed\Shiny Item <-- LOOK AT THIS
  * 
- * Additional enemy related things to export from scenes:
- * ----
- * Hatcher Cage (2)  -- used by fluke mother spawns
- * Orb Spinner -- used by mage lord
- * 
  * 
  * 
  * Other things to export from scenes 
@@ -180,6 +175,8 @@ using nv;
  * _Enemies\Fly Spawn  -- the fly spawns used by gruz mother
  * Worm -- needs to be added to effect/"enemies" list
  * 
+ * Hatcher Cage (2)  -- used by fluke mother spawns
+ * Orb Spinner -- used by mage lord
  * 
  * 
  * 
@@ -239,7 +236,7 @@ using nv;
  * [TEST]Hatcher - doesn't spawn enemies
  * [???]Hatcher Baby - maybe don't rando replace???
  * [TEST]Zombie Myla - spawned at zero and also has some persistant thing that needs to be fixed
- * Ruins Sentry Fat - spawned at zero, but others were fine?
+ * [NEEDS REMOVE?]Ruins Sentry Fat - spawned at zero, but others were fine?
  * [TEMP REMOVED]Mage Lord Phase2 - spawned and then teleported far away, fix his teleport destination?/Spawning him twice is broken probably a persistant bool item
  * [TEST & NEEDS TO SAVE OFF EFFECT PREFAB]Mage Lord - same problem, NEEDS TO COPY OUT ORB SPINNER
  * [TEST]Black Knight - needs wake event
@@ -263,44 +260,18 @@ using nv;
  * [ASSEST NEED TO BE SAVED IN THE ASSET LIST]Mega Zombie Beam Miner - needs to have a fix in for his lasers, probably temporarily remove since version 2 works fine
    [TEST ADDED SPAWN TO OLD WAY](added)Baby Centipede - nullref issue (need to instantiate and keep a copy of this like the old way)
  * [TEST]Centipede Hatcher - doesn't spawn anything
- * [NEEDS CLOSE TEST TO RULE OUT MEMORT=Y LOAK]Mimic Spider - spawn position seems locked to a fixed point? nosk seems to jump up into the roof and get stuck?
+ * [NEEDS TEST TO RULE OUT MEMORY LEAK]Mimic Spider - spawn position seems locked to a fixed point? nosk seems to jump up into the roof and get stuck?
  * Ghost Warrior Galien - needs lots of room and a fix for spawning his attack
  * Ghost Warrior Markoth - needs fix for his attack
  * [NEEDS TESTING]Abyss Crawler - spawning upside down?
- * [DONE] Shade Sibling - nullref issue, needs to instantiate like old way
- * Dung Defender - needs to spawn in the ground? and needs a wake event and lots of space -- just remove for now
+ * [TEST]Shade Sibling - nullref issue, needs to instantiate like old way
+ * [TEMP REMOVED]Dung Defender - needs to spawn in the ground? and needs a wake event and lots of space -- just remove for now
  * Fluke Mother - needs fix for spawning enemies
- * "Enemy" - needs to be move down 1/2 unit
+ * [TEST]"Enemy" - needs to be move down 1/2 unit
  * Zombie Hive - needs fix for spawning adds
  * Hive Knight - needs wake event
  * [TEST?]Dream mage lord - fix to not dream spawn you
  * 
- * 
- * 
- * None of the colosseum enemies project themselves onto the ground properly?
- * 
- * Colosseum List: 
- * 
- * Colosseum_Armoured_Roller
- * Super Spitter Col
- * Colosseum_Worm
- * Hopper
- * Ceiling Dropper Col (now works properly)
- * Super Spitter
- * Mega Fat Bee
- * Mantis Heavy Flier
- * Mantis Heavy 
- * Colosseum Grass Hopper
- * Mawlek Col
- * Lesser Mawlek
- * Angry Buzzer
- * Lancer
- * Lobster
- * Mage Knight
- * Mage Blob
- * Mage
- * Mage Balloon
- * Electric Mage
  * 
  * 
  * 
@@ -324,20 +295,20 @@ using nv;
  * 
  * Buzzer Col -- duplicate of Buzzer and does not drop geo
  * Maybe: Giant Buzzer Col - does not spawn adds
- * False Knight New -- very broken
- * Great Shield Zombie bottom - duplicate
- * Ruins Sentry Fat - remove duplicates
- * Roller R - very broken
- * Spitter R - very broken
- * Buzzer R -
- * Shell - broken
- * Plant Turret Right - the enemy ends up right and up by about 5? units. also duplicate of Plant Turret, so try removing
- * Giant Buzzer - duplicate of the Buazzer Col and spawns holding zote, maybe keep buzzer col. for certain, don't rando replace this one
- * Moss Knight B - duplicate of Moss Knight and doesn't spawn properly
- * Moss Knight C - ^^
- * Cap Hit - don't load, not an enemy
- * Jellyfish Baby Inert - duplicate
- * Hiveling Spawner - remove
+ * [DONE]False Knight New -- very broken
+ * [DONE]Great Shield Zombie bottom - duplicate
+ * [DONE]Ruins Sentry Fat - remove duplicates
+ * [DONE]Roller R - very broken
+ * [DONE]Spitter R - very broken
+ * [DONE]Buzzer R -^^
+ * [DONE]Shell - broken
+ * [TODO: CHECK THEIR FSM TO SEE HOW IT'S DIFFERENT FROM UP]Plant Turret Right - the enemy ends up right and up by about 5? units. also duplicate of Plant Turret, so try removing
+ * [DONE]Giant Buzzer - duplicate of the Buazzer Col and spawns holding zote, maybe keep buzzer col. for certain, don't rando replace this one
+ * [DONE]Moss Knight B - duplicate of Moss Knight and doesn't spawn properly
+ * [DONE]Moss Knight C - ^^
+ * [DONE]Cap Hit - don't load, not an enemy
+ * [DONE]Jellyfish Baby Inert - duplicate
+ * [DONE]Hiveling Spawner - remove
  * 
  * */
 
@@ -398,116 +369,9 @@ namespace EnemyRandomizerMod
         {
             367,
             368
-             // 6
-             //,27
-             //,32
-             //,33
-             //,34
-             //,37
-             //,39
-             //,40
         };
-
-
-        /* 
-         * Zones by build index__
-         * 
-         * Tutorial: 7 
-         * Crossroads: Scenes 38-80         
-         * Ruins_House (city of tears internal): 81-85  
-         * Ruins (City of tears): 86 - 116
-         * Greenpath/Fungal Wastes/Queens Gardens: 117 - 212
-         * Howling Cliffs: 213 - 218
-         * Resting Grounds: 219 - 228
-         * Crystal Peak Mines: 229 - 256
-         * Deepnest: 257 - 302
-         * Abyss: 304 - 323
-         * Waterways: 326 - 339
-         * White Palace: 340 - 358
-         * Hive: 359 - 363
-         * 
-         */
-
-        //static List<int> enemyTypeScenes = new List<int>()
-        //{
-        //    241,  //LOAD THIS SCENE FIRST -- has laser impact special objects that we want
-        //    244,
-
-        //    96,  //LOAD SECOND -- has mage/mage knight/mage blob and related enemies AND Teleplanes that the mage requires
-
-        //    7,//tutorial scene
-
-        //    28,
-        //    33,
-        //    34,
-        //    35,
-        //    36,
-
-        //    //38,//mender bug
-        //    40,
-        //    41,
-        //    46,
-        //    47,
-        //    49,
-        //    52,
-        //    55,
-        //    58,
-        //    71,
-        //    74,
-        //    76,
-        //    82,
-        //    88,//Ruins Flying Sentry
-        //    90,//(should have Ruins Flying Sentry Javelin (2) )
-        //    97,
-        //    102,
-        //    106,
-        //    115,
-        //    117,
-        //    121,
-        //    126,//(should have Acid Flyer???)
-        //    127,
-        //    135,//should have Fat Fly???
-        //    137,
-        //    142,//lazy flyer enemy
-        //    144,
-        //    146,
-        //    155,
-        //    158,
-        //    164,//(Mantis Flyer Child)
-        //    166,
-        //    167,
-        //    177,
-        //    181,//(fungus flyer)
-        //    183,
-        //    186,//(moss flyer)
-        //    189,//garden zombie
-        //    194,
-        //    204,
-        //    208,
-        //    226,
-        //    //232,//(crystal flyer) -- TEST, don't seem to need this!
-        //    234,
-
-        //    243,
-        //    259,
-        //    269,
-        //    271,//seems to have loading problem?
-        //    276,//(supposed to have spider flyer)
-        //    285,
-        //    302,
-        //    313,
-        //    320,
-        //    321,
-        //    326,//(Inflater)
-        //    327,
-        //    331,
-        //    336,
-        //    340,
-        //    358,
-        //    362
-        //};
-
-            //tip: the scene we end the load on will determine the menu music
+        
+        //tip: the scene we end the load on will determine the menu music
         public static List<int> scenesToLoad = new List<int>()
         {
               6
@@ -620,17 +484,64 @@ namespace EnemyRandomizerMod
 
         public List<int> scenesLoaded = new List<int>();
 
+        /*
+         * 
+         * 
+         * Other things to export from scenes 
+         * ----
+         * Egg Sac -- spawns rancid eggs
+         * Jelly Egg Bomb -- explosive fog canyon bubbles
+         * Jelly Egg Empty -- non explosive fog canon bubbles
+         * Gorgeous Husk\Shine -- shiney golden husk effect
+         * Laser Turret Mega (1) -- from rematch scene, maybe remove fsm - Laser Bug Mega
+         * beam stuff from  Mines_18_boss [Build index: 261]
+         * Laser Turret from Printing full hierarchy for scene: Mines_17 [Build index: 259]
+         * Ring Holder -- special attack for ghost warrior Hu
+         * Shot Mantis Lord -- mantis lord attacks
+         * Cave Spikes (13) -- a cave spike? i think
+         * Big Centipede (3) -- giant deepnest cave centipede
+         * Heart Piece -- brooding mawlek scene -- with FSM Heart Container Control
+         * _Enemies\Fly Spawn  -- the fly spawns used by gruz mother
+         * Worm -- needs to be added to effect/"enemies" list
+         * 
+         * Hatcher Cage (2)  -- used by fluke mother spawns
+         * Orb Spinner -- used by mage lord
+         * 
+         * 
+         */
+
+
+
+
         //effects used by enemies, like crystal guardian, or just things we can use for fun
         public static List<string> effectObjectNames = new List<string>()
         {
-            //load from crystal guardian scene 241
             "Beam Impact",
             "Beam Ball",
             "Beam Point L",
             "Beam Point R",
             "Beam",
             "Crystal Rain",
-            "Fly Spawn"
+            "Fly Spawn",
+            "Egg Sac",
+            "Jelly Egg Bomb",
+            "Jelly Egg Empty",
+            "Shine",
+            "Laser Turret Mega",
+            "Laser Turret",
+            "Ring Holder",
+            "Shot Mantis Lord",
+            "Cave Spikes",
+            "Big Centipede",
+            "Heart Piece",
+            "Fly Spawn",
+            "Worm",
+            "Hatcher Cage",
+            "Orb Spinner",
+            "Health Cocoon",
+            "Geo Rock",
+            "Teleplanes",
+            "NONE"
         };
 
 
@@ -651,242 +562,7 @@ namespace EnemyRandomizerMod
             //Example: "Geo Rock 3" is the rock just to the left of start
             //check if it has "Geo Rock" FSM
             //does not have? PersistentBoolItem
-        };
-
-        //all the enemy types used in the randomizer
-        //public static List<string> enemyTypeNames = new List<string>()
-        //{
-        //    //Fungus shaman?
-        //    "Flamebearer Spawn",//7 -- NEEDS TESTING -- probably doesn't work right now
-
-        //    "Colosseum_Armoured_Mosquito",//34
-        //    "Mosquito",//28
-            
-        //    "Colosseum_Miner",//35
-
-        //    //Colosseum
-        //    "Giant Buzzer Col",//33
-        //    "Angry Buzzer",//35
-        //    "Buzzer",//74
-
-        //    "Colosseum_Shield_Zombie",//33
-        //    "Super Spitter Col",//33
-        //    "Super Spitter",//34
-        //    "Spitter", //40
-
-        //    "Bursting Bouncer",//33
-            
-        //    "Ceiling Dropper Col",//34
-        //    "Ceiling Dropper", //??(forgot)
-            
-        //    "Giant Fly Col",//34 
-        //    //"Giant Fly",// (gruz mother, it starts sleeping and looks weird...)
-        //    //"Fly Spawn",
-        //    "Fat Fly", //146 --doesn't seem to be here? --try scene 135???
-        //    "Blow Fly", //285
-        //    "Fluke Fly Spawner", // NEEDS TESTING
-        //    "Fluke Fly", //327
-        //    //"White Palace Fly", //340 (may have to remove randomization for this too)
-        //    "Fly",
-
-        //    "Grub Mimic",//34
-        //    "Mega Fat Bee",//34
-        //    "Colosseum_Flying_Sentry",//34
-        //    "Spitting Zombie",//34 and 41
-
-        //    "Colosseum Grass Hopper",//35
-        //    "Giant Hopper",//34
-        //    "Grass Hopper", //208
-        //    "Flip Hopper", //
-        //    "Hopper",//34
-        //    "Blobble",//34
-
-        //    "Lancer",//35
-        //    "Lobster",//35
-            
-        //    //"Mage Balloon Spawner",//35
-        //    "Mage Knight",//35(96)  
-        //    "Mage Blob",//35(96)  
-        //    "Mage Balloon", //102  
-        //    //"Mage Lord Phase2", //97 (BOSS)
-        //    //"Mage Lord", //97 (BOSS)
-        //    "Electric Mage",//35  
-        //    "Mage",//35(96)  
-
-        //    "Lesser Mawlek",//35
-        //    "Mawlek Col",//35 ??? might be same as lesser mawlek
-        //    "Mawlek Body", //46 (BOSS)
-
-        //    //Crossroads
-        //    "Bursting Zombie",//36
-        //    //"Mender Bug",//38?(not 36?)
-            
-        //    "Fung Crawler", //158
-        //    "Mines Crawler", //243
-        //    "Crystal Crawler", //243  
-        //    "Abyss Crawler", //320
-        //    "Crawler", //40
-
-        //    "Climber", //40
-            
-        //    "Zombie Hornhead Sp", //271
-        //    "Zombie Hornhead", //41 (Giant Fly = boss)
-
-
-        //    // "Head",//turns out this is just a head....
-        //    "Prayer Slug", //47 prayer slugs = maggots
-                        
-        //    "Colosseum_Worm",//34
-        //    "Worm", //49
-            
-        //    //"Hatcher Baby Spawner", //55
-        //    "Hatcher",//52
-
-        //    "Zombie Shield", //52
-        //    "Zombie Leaper",//52
-        //    "Zombie Myla", //71 -- seems to be killing enemies it replaces?? maybe remove from replacement list
-        //    "Blocker",//74 (baulder shell)
-
-        //    "Zombie Guard", //76 (big enemy)
-            
-        //    "Colosseum_Armoured_Roller",//33
-        //    "Mushroom Roller", //
-        //    "Roller", //74
-
-        //    //City of tears
-        //    "Gorgeous Husk", //82
-            
-        //    "Zombie Runner Sp", //271 ???
-        //    "Zombie Runner", //90
-
-        //    "Zombie Barger", //90
-            
-        //    "Ruins Sentry Fat", //90
-        //    "Ruins Sentry", //90
-
-
-        //    "Great Shield Zombie", //106
-
-        //    "Royal Zombie Coward", //106
-        //    "Royal Zombie Fat", //106
-        //    "Royal Zombie", //106
-
-        //    "Ruins Flying Sentry Javelin", //106
-        //    "Ruins Flying Sentry", //106
-            
-        //    //"Jar Collector", //115 (boss)
-
-        //    //Greenapth
-        //    "Moss Walker", //117
-        //    "Mossman_Shaker", //117
-        //    "Pigeon", //117 (don't randomize, while technically enemies, kinda ends up being lame)
-        //    "Plant Trap", //117
-        //    "Mossman_Runner",//117
-
-        //    "Acid Flyer", //126
-        //    "Shell", //126 (don't randomize this, since it's key to a couple encounters)
-            
-        //    "Plant Turret", //127
-        //    //"Acid Walker", //127 (don't randomize this, since it's fairly key to getting around a few places)
-            
-
-        //    "Moss Knight Fat", //204
-        //    "Moss Knight", //137            
-
-        //    //"Mega Moss Charger", //144 (subboss thing, doesn't work when spawned somewhere else)
-            
-            
-        //    //Fungal Waste
-        //    "Zombie Fungus", //155
-        //    "Fungus Flyer", //
-        //    "Mushroom Turret", //
-        //    "Fungoon Baby", //
-
-
-
-            
-        //    "Mantis Traitor Lord", //194 (BOSS)          needs lots of room or will fall through the floor  
-        //    "Mantis Heavy Flyer",//35  
-        //    "Mantis Heavy",//35  
-        //    //"Mantis Lord Temp", //167 (BOSSES)
-        //    //"Mantis Lord S1", // (static clinging mantis bosses, don't load these)
-        //    //"Mantis Lord S2", // (static clinging mantis bosses, don't load these)
-        //    //"Mantis Lord", // (boss)
-        //    "Mantis Flyer Child", //166
-        //    "Gate Mantis", // --kinda boring, let's not randomize him, also might break something in mantis village
-        //    "Mantis", //
-
-        //    "Mushroom Baby", //177
-        //    "Mushroom Brawler", //
-
-        //    //Queens Garden
-        //    "Jellyfish Baby", //183  
-        //    "Jellyfish", //  
-
-        //    "Moss Flyer", //  
-        //    "Garden Zombie", //183 -- has idle issues, does not wake up like it should
-
-            
-        //    "Lazy Flyer Enemy", //  
-
-        //    //Resting Grounds
-        //    "Grave Zombie", //226
-
-        //    //Crystal Peak
-        //    "Laser Turret Frames", //234
-
-        //    "Zombie Beam Miner Rematch", //241    
-
-        //    "Zombie Miner", //243  
-        //    "Crystallised Lazer Bug", //243  
-        //    "Crystal Flyer", //243  
-
-        //    "Zombie Beam Miner", //244 -- has nullref issues, don't load for now until we work on a fix
-
-        //    //Deepnest
-        //    "Baby Centipede", //259
-        //    "Centipede Hatcher", //???? (find scene for this)
-
-        //    "Slash Spider", //271  
-        //    "Spider Mini", //271
-        //    "Zombie Spider 1", //271   -- TODO: put a filter in to NOT use him a replacement
-        //    "Zombie Spider 2", //271  
-
-        //    "Tiny Spider", //276
-        //    "Spider Flyer", // 
-        //    //"Deep Spikes", //
-            
-        //    //Kingdom's Edge
-        //    "Bee Hatchling Ambient", //
-
-        //    //Abyss
-        //    "Shade Sibling", //313
-            
-        //    "Parasite Balloon", //320
-            
-        //    "Mawlek Turret Ceiling", //321
-        //    "Mawlek Turret", //321
-
-        //    //Waterways
-        //    "Inflater", //
-        //    "Flukeman", //
-            
-        //    //White Palace
-        //    "Royal Gaurd", //358
-
-        //    //Hive
-        //    "Big Bee", //362
-        //    "Bee Stinger", //   
-        //    "Zombie Hive", //   
-        //    //"Hiveling Spawner", // don't want this
-
-            
-        //    //"Mimic Spider", //269 (Nosk, BOSS) -- has a memory leak, don't load
-            
-            
-        //    "Zote Boss"//33 (BOSS???)
-        //};
-
+        };        
 
         //==============================================================================================================
         //==============================================================================================================
@@ -1337,7 +1013,9 @@ namespace EnemyRandomizerMod
             "Electric Mage",
             "Zombie Myla",
             "Mega Moss Charger",
-            "White Palace Fly"
+            "White Palace Fly",
+            "Laser Turret",
+            "Laser Turret Mega (1)"
             ////until mage enemies are fixed, do not spawn them in battle areas
             //"Electric Mage",//35 //TODO: needs to be moved down? (by 20?) -- broken can't put most places
             //"Mage",//35 //TODO: still broken
@@ -1361,7 +1039,36 @@ namespace EnemyRandomizerMod
             //"Zote Boss"//33 (BOSS???)
         };
 
-
+        /*
+         * 
+ * 
+ * 
+ * None of the colosseum enemies project themselves onto the ground properly?
+ * 
+ * Colosseum List: 
+ * 
+ * Colosseum_Armoured_Roller
+ * Super Spitter Col
+ * Colosseum_Worm
+ * Hopper
+ * Ceiling Dropper Col (now works properly)
+ * Super Spitter
+ * Mega Fat Bee
+ * Mantis Heavy Flier
+ * Mantis Heavy 
+ * Colosseum Grass Hopper
+ * Mawlek Col
+ * Lesser Mawlek
+ * Angry Buzzer
+ * Lancer
+ * Lobster
+ * Mage Knight
+ * Mage Blob
+ * Mage
+ * Mage Balloon
+ * Electric Mage
+         * 
+         */
         public static List<string> colloseumEnemyTypes = new List<string>()
         {
             "Mosquito",
@@ -1378,41 +1085,28 @@ namespace EnemyRandomizerMod
             "Mage Knight",
             "Giant Hopper",
 
+
+            "Colosseum_Armoured_Roller",
+            "Super Spitter Col",
+            "Colosseum_Worm",
+            "Ceiling Dropper Col",
+            "Super Spitter",
+            "Mantis Heavy Flier",
+            "Mantis Heavy",
+            "Colosseum Grass Hopper",
+            "Mawlek Col",
+            "Lesser Mawlek",
+            "Angry Buzzer",
+            "Mage Knight",
+            "Mage Blob",
+            "Blobble",
+            "Hopper",
+            "Colosseum_Flying_Sentry",
+            "Grub Mimic",
+            "Bursting Bouncer",
+
+
             "Dung Defender"
-            //"Colosseum_Armoured_Mosquito",//34
-            
-            //"Colosseum_Miner",//35
-
-            //"Giant Buzzer Col",//33
-            
-            //"Colosseum_Shield_Zombie",//33
-            //"Super Spitter Col",//33
-
-            //"Bursting Bouncer",//33
-            
-            //"Ceiling Dropper Col",//34
-            //"Giant Fly Col",//34 
-            
-            //"Grub Mimic",//34
-            //"Mega Fat Bee",//34
-            //"Colosseum_Flying_Sentry",//34
-
-            //"Colosseum Grass Hopper",//35
-            //"Giant Hopper",//34
-            //"Hopper",//34
-            //"Blobble",//34
-
-            //"Lancer",//35
-            //"Lobster",//35
-            
-            //"Mage Knight",//35
-            //"Mage Blob",//35
-            //"Electric Mage",//35
-            //"Mage",//35
-            //"Mantis Heavy Flyer",//35
-            //"Mantis Heavy",//35
-            
-            //"Mawlek Col"//35 ??? might be same as lesser mawlek
         };
 
 

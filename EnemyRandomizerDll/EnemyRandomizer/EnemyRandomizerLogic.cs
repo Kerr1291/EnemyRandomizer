@@ -1429,6 +1429,12 @@ namespace EnemyRandomizerMod
                 {
                     positionOffset = positionOffset + (Vector3)( Vector2.up * -1f );
                 }
+                if( newEnemy.name == ( "Enemy" ) )
+                {
+                    positionOffset = positionOffset + (Vector3)( Vector2.up * -0.5f );
+                }
+
+                
                 //TODO: TEST, see if this fixes him spawning in the roof
                 //if( newEnemy.name.Contains( "Mantis Traitor Lord" ) )
                 //{

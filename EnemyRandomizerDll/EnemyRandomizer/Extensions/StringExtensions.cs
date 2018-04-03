@@ -41,10 +41,26 @@ namespace nv
             "fluke_baby_01",
             "fluke_baby_02",
             "fluke_baby_03",
+            "Hiveling Spawner",
+            "Jellyfish Baby Inert",
+            "Cap Hit",
+            "Moss Knight C",
+            "Moss Knight B",
+            "Giant Buzzer",
+            "Plant Turret Right",
+            "Shell",
+            "Buzzer R",
+            "Spitter R",
+            "Roller R",
+            "Ruins Sentry Fat",
+            "Great Shield Zombie bottom",
+            "False Knight New",
 
             //TEMP: remove these enemies until they're fixed
             "Mage Lord Phase2",
             "Mega Moss Charger",
+            "Dung Defender",
+            "NONE"
         };
 
 

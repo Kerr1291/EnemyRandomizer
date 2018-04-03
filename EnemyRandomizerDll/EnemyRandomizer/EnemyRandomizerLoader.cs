@@ -126,66 +126,26 @@ namespace EnemyRandomizerMod
                         database.loadedEnemyPrefabNames.Add( name );
                         Dev.Log( "Adding enemy type: " + prefab.name + " to list with search string " + name );
                     }//end if-enemy
+                    else
+                    {
+                        bool isInLoadedEffectList = database.loadedEffectPrefabs.ContainsKey( name );
+                        if( isInLoadedEffectList )
+                            continue;
 
-                    //TODO: GameObject.Find things in the effectObjectNames list...
+                        bool isInEffectList = EnemyRandomizerDatabase.effectObjectNames.Contains( name );
+                        if( !isInEffectList )
+                            continue;
 
-                    //if( sceneToLoad.buildIndex == 244 )
-                    //{
-                    //    int indexOfEffectType = EnemyRandomizerDatabase.effectObjectNames.IndexOf( go.name );
+                        GameObject effectPrefab = go.gameObject;
+                        GameObject.DontDestroyOnLoad( effectPrefab );
+                        effectPrefab.transform.SetParent( root.transform );
 
-                    //    if( indexOfEffectType >= 0 )
-                    //    {
-                    //        GameObject prefab = go;
-                    //        GameObject.DontDestroyOnLoad( prefab );
-                    //        prefab.transform.SetParent( root.transform );
+                        //special logic for certain enemies:
+                        effectPrefab = ModifyGameObjectPrefab( effectPrefab, name );
 
-                    //        //special logic for certain enemies:
-                    //        prefab = ModifyGameObjectPrefab( prefab );
-
-                    //        //don't actually add this one
-                    //        //database.loadedEffectPrefabs.Add( EnemyRandomizerDatabase.effectObjectNames[ indexOfEffectType ], prefab );
-                    //        Dev.Log( "Saving special enemy effect: " + prefab.name );
-                    //    }//end if-enemy
-                    //}
-
-                    ////save off teleplanes
-                    ////if( sceneToLoad.buildIndex == 96 )
-                    //{
-                    //    if( go.name.Contains( "Teleplanes" ) )
-                    //    {
-                    //        GameObject prefab = go;
-                    //        GameObject.DontDestroyOnLoad( prefab );
-                    //        prefab.transform.SetParent( root.transform );
-
-                    //        //don't actually add this one, keep it around because the mages need it
-                    //        Dev.Log( "Saving special enemy effect: " + prefab.name );
-                    //        continue;
-                    //    }
-                    //}
-
-                    //bool isInEffectList = database.loadedEffectPrefabs.ContainsKey( go.name );
-                    //if( isInEffectList )
-                    //    continue;
-
-                    ////load beam effects
-                    //if( sceneToLoad.buildIndex == 241 )
-                    //{
-                    //    int indexOfEffectType = EnemyRandomizerDatabase.effectObjectNames.IndexOf( go.name );
-
-                    //    if( indexOfEffectType >= 0 )
-                    //    {
-                    //        GameObject prefab = go;
-                    //        GameObject.DontDestroyOnLoad( prefab );
-                    //        prefab.transform.SetParent( root.transform );
-
-                    //        //special logic for certain enemies:
-                    //        prefab = ModifyGameObjectPrefab( prefab );
-
-                    //        database.loadedEffectPrefabs.Add( EnemyRandomizerDatabase.effectObjectNames[ indexOfEffectType ], prefab );
-                    //        Dev.Log( "Adding enemy effect: " + prefab.name + " to loaded effect list with search string " + EnemyRandomizerDatabase.effectObjectNames[ indexOfEffectType ] );
-                    //    }//end if-enemy
-                    //}
-
+                        database.loadedEffectPrefabs.Add( name, effectPrefab );
+                        Dev.Log( "Adding enemy effect: " + effectPrefab.name + " to loaded effect list with key " + name );
+                    }
                 }//iterate over resources
             }//iterate over all LOADED scenes            
         }//end LoadSceneData()
