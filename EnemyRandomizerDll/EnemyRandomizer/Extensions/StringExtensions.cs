@@ -55,11 +55,16 @@ namespace nv
             "Ruins Sentry Fat",
             "Great Shield Zombie bottom",
             "False Knight New",
+            "Dream Mage Lord Phase2",
+            "False Knight Dream",
+            "Mage Lord Phase2",
 
             //TEMP: remove these enemies until they're fixed
             "Mage Lord Phase2",
             "Mega Moss Charger",
             "Dung Defender",
+            "White Defender",
+            "Mega Jellyfish",
             "NONE"
         };
 
@@ -80,7 +85,7 @@ namespace nv
 
             string trimmedName = str.TrimGameObjectName();
 
-            if( skipLoadingList.Contains( trimmedName ) )
+            if( makeCopyOnLoadingList.Contains( trimmedName ) )
                 return true;
 
             return false;

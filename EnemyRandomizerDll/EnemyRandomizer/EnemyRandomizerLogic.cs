@@ -545,109 +545,174 @@ namespace EnemyRandomizerMod
                 calculateBounds = false;
             }
 
-            //iterate over the loaded scenes
-            for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
+
+            foreach( HealthManager ho in GameObject.FindObjectsOfType<HealthManager>() )
             {
-                Scene sceneAti = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
-
-                //iterate over the loaded game objects
-                GameObject[] rootGameObjects = sceneAti.GetRootGameObjects();
-
-                foreach( GameObject rootGameObject in rootGameObjects )
+                while(Time.timeScale <= 0f)
                 {
-                    //and their children
-                    if( rootGameObject == null )
-                    {
-                        Dev.Log( "Scene " + i + " has a null root game object! Skipping scene..." );
-                        break;
-                    }
-
-                    //skip our mod root
-                    if( rootGameObject.name == EnemyRandomizer.Instance.ModRoot.name )
-                        continue;
-
-                    if( rootGameObject.name.IsSkipRootString() )
-                        continue;
-
-                    int counter = 0;
-                    foreach( Transform t in rootGameObject.GetComponentsInChildren<Transform>( true ) )
-                    {
-                        if( t.gameObject == null )
-                            break;
-
-                        counter++;
-                        string name = t.gameObject.name;
-
-                        //kill rando enemies that get outside the scene bounds
-                        if( name.Contains( "Rando" ) && !name.Contains( "Replaced" ) )
-                        {
-                            if( !sceneBounds.Contains( t.position ) )
-                            {
-                                Dev.Log( "Sending force kill for out of scene to " + name );
-                                if( t.gameObject.GetEnemyHealthManager() != null )
-                                    t.gameObject.GetEnemyHealthManager().Die( null, AttackTypes.Splatter, true );// SendEvent( "INSTA KILL" );
-                                //if( t.gameObject.GetEnemyFSM() != null )
-                                //    t.gameObject.GetEnemyFSM().SendEvent( "INSTA KILL" );
-                            }
-                            continue;
-                        }
-
-                        //TODO: test fix for weird behavior in shrumal ogre arena
-                        if( name.Contains( "Cap Hit" ) )
-                        {
-                            GameObject.Destroy( t.gameObject );
-                            continue;
-                        }
-
-                        //if( name.Contains( "Battle Gate" ) )
-                        //{
-                        //    GameObject.Destroy( t.gameObject );
-                        //    continue;
-                        //}
-
-                        if( counter % 500 == 0 )
-                            yield return true;
-
-                        //don't replace null/destroyed game objects
-                        if( t == null || t.gameObject == null )
-                            continue;
-
-                        if( !sceneBounds.Contains( t.position ) )
-                        {
-                            //Dev.Log( "Skipping " + t.gameObject.name + " Because it is outside the bounds. " + t.position );
-                            continue;
-                        }
-
-                        //don't replace inactive game objects
-                        if( !t.gameObject.activeInHierarchy )
-                            continue;
-
-                        if( name.IsSkipRandomizingString() )
-                            continue;
-
-                        //skip child components of randomized enemies
-                        foreach( Transform p in t.GetComponentsInParent<Transform>( true ) )
-                        {
-                            if( p.name.Contains( "Rando" ) )
-                                continue;
-                        }
-
-                        GameObject potentialEnemy = t.gameObject;
-
-                        bool isRandoEnemy = potentialEnemy.IsRandomizerEnemy(database.loadedEnemyPrefabNames);
-
-                        if( EnemyRandomizerDatabase.USE_TEST_SCENES )
-                        {
-                            isRandoEnemy = potentialEnemy.IsRandomizerEnemy( database.loadedEnemyPrefabNames );
-                        }
-
-                        if( isRandoEnemy && !potentialEnemy.IsEnemyDead() )
-                            RandomizeEnemy( potentialEnemy );
-                    }
-
                     yield return true;
                 }
+
+                //skip child components of randomized enemies
+                foreach( Transform p in ho.GetComponentsInParent<Transform>( true ) )
+                {
+                    if( p.name.Contains( "Rando" ) || p.name.Contains( EnemyRandomizer.Instance.ModRoot.name ) )
+                        continue;
+                }
+
+                //don't replace null/destroyed game objects
+                if( ho == null || ho.gameObject == null )
+                    continue;
+
+                //don't replace inactive game objects
+                if( !ho.gameObject.activeInHierarchy )
+                    continue;
+
+                string name = ho.gameObject.name.TrimGameObjectName();
+
+                if( !sceneBounds.Contains( ho.transform.position ) )
+                {
+                    //kill rando enemies that get outside the scene bounds
+                    if( name.Contains( "Rando" ) && !name.Contains( "Replaced" ) )
+                    {
+                        Dev.Log( "Sending force kill for out of scene to " + ho.gameObject.name );
+                        ho.Die( null, AttackTypes.Splatter, true );
+                        continue;
+                    }
+                    //Dev.Log( "Skipping " + t.gameObject.name + " Because it is outside the bounds. " + t.position );
+                    continue;
+                }
+
+                if( name.IsSkipRandomizingString() )
+                    continue;
+
+                GameObject potentialEnemy = ho.gameObject;
+
+                bool isRandoEnemy = potentialEnemy.IsRandomizerEnemy( database.loadedEnemyPrefabNames );
+
+                if( EnemyRandomizerDatabase.USE_TEST_SCENES )
+                {
+                    isRandoEnemy = potentialEnemy.IsRandomizerEnemy( database.loadedEnemyPrefabNames );
+                }
+
+                if( isRandoEnemy && !potentialEnemy.IsEnemyDead() )
+                {
+                    RandomizeEnemy( potentialEnemy );
+                    yield return true;
+                    //Dev.Log( "FINISHED RANDOMIZING: " + ho.name );
+                    //float delay = 10f;
+                    //while( delay > 0f )
+                    //{
+                    //    delay -= Time.deltaTime;
+                    //    yield return true;
+                    //}
+                    //Dev.Log( "DELAY DONE - ONTO NEXT" );
+                }
             }
+
+            //iterate over the loaded scenes
+            //for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
+            //{
+            //    Scene sceneAti = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
+
+            //    //iterate over the loaded game objects
+            //    GameObject[] rootGameObjects = sceneAti.GetRootGameObjects();
+
+            //    foreach( GameObject rootGameObject in rootGameObjects )
+            //    {
+            //        //and their children
+            //        if( rootGameObject == null )
+            //        {
+            //            Dev.Log( "Scene " + i + " has a null root game object! Skipping scene..." );
+            //            break;
+            //        }
+
+            //        //skip our mod root
+            //        if( rootGameObject.name == EnemyRandomizer.Instance.ModRoot.name )
+            //            continue;
+
+            //        if( rootGameObject.name.IsSkipRootString() )
+            //            continue;
+
+            //        int counter = 0;
+            //        foreach( Transform t in rootGameObject.GetComponentsInChildren<Transform>( true ) )
+            //        {
+            //            if( t.gameObject == null )
+            //                break;
+
+            //            counter++;
+            //            string name = t.gameObject.name;
+
+            //            //kill rando enemies that get outside the scene bounds
+            //            if( name.Contains( "Rando" ) && !name.Contains( "Replaced" ) )
+            //            {
+            //                if( !sceneBounds.Contains( t.position ) )
+            //                {
+            //                    Dev.Log( "Sending force kill for out of scene to " + name );
+            //                    if( t.gameObject.GetEnemyHealthManager() != null )
+            //                        t.gameObject.GetEnemyHealthManager().Die( null, AttackTypes.Splatter, true );// SendEvent( "INSTA KILL" );
+            //                    //if( t.gameObject.GetEnemyFSM() != null )
+            //                    //    t.gameObject.GetEnemyFSM().SendEvent( "INSTA KILL" );
+            //                }
+            //                continue;
+            //            }
+
+            //            //TODO: test fix for weird behavior in shrumal ogre arena
+            //            if( name.Contains( "Cap Hit" ) )
+            //            {
+            //                GameObject.Destroy( t.gameObject );
+            //                continue;
+            //            }
+
+            //            //if( name.Contains( "Battle Gate" ) )
+            //            //{
+            //            //    GameObject.Destroy( t.gameObject );
+            //            //    continue;
+            //            //}
+
+            //            if( counter % 500 == 0 )
+            //                yield return true;
+
+            //            //don't replace null/destroyed game objects
+            //            if( t == null || t.gameObject == null )
+            //                continue;
+
+            //            if( !sceneBounds.Contains( t.position ) )
+            //            {
+            //                //Dev.Log( "Skipping " + t.gameObject.name + " Because it is outside the bounds. " + t.position );
+            //                continue;
+            //            }
+
+            //            //don't replace inactive game objects
+            //            if( !t.gameObject.activeInHierarchy )
+            //                continue;
+
+            //            if( name.IsSkipRandomizingString() )
+            //                continue;
+
+            //            //skip child components of randomized enemies
+            //            foreach( Transform p in t.GetComponentsInParent<Transform>( true ) )
+            //            {
+            //                if( p.name.Contains( "Rando" ) )
+            //                    continue;
+            //            }
+
+            //            GameObject potentialEnemy = t.gameObject;
+
+            //            bool isRandoEnemy = potentialEnemy.IsRandomizerEnemy(database.loadedEnemyPrefabNames);
+
+            //            if( EnemyRandomizerDatabase.USE_TEST_SCENES )
+            //            {
+            //                isRandoEnemy = potentialEnemy.IsRandomizerEnemy( database.loadedEnemyPrefabNames );
+            //            }
+
+            //            if( isRandoEnemy && !potentialEnemy.IsEnemyDead() )
+            //                RandomizeEnemy( potentialEnemy );
+            //        }
+
+            //        yield return true;
+            //    }
+            //}
 
             //Dev.Log( "Updating battle controls" );
 
@@ -688,7 +753,11 @@ namespace EnemyRandomizerMod
             }
 
             if( isRandoEnemy )
+            {
                 RandomizeEnemy( potentialEnemy );
+
+                Dev.Log( "FINISHED RANDOMIZING: " + potentialEnemy.name );
+            }
         }
 
 
@@ -986,15 +1055,43 @@ namespace EnemyRandomizerMod
             //new scale logic, compare the size of the colliders and adjust the scale by the ratios
             if(newC != null && oldC != null)
             {
-                Bounds newBounds = newC.bounds;
+                //bounds returns null on colliders of uninstantiated and unactivated game objects
+                //so we need to determine the type of collider manually by downcasting and then query its bounds by hand
+                Vector2 newBounds = Vector2.zero;
+
+                PolygonCollider2D newCPoly = newC as PolygonCollider2D;
+                if( newCPoly != null )
+                {
+                    newBounds = new Vector2( newCPoly.points.Select( x => x.x ).Max() - newCPoly.points.Select(x=>x.x).Min(), newCPoly.points.Select( x => x.y ).Max() - newCPoly.points.Select( x => x.y ).Min());
+                }
+                CircleCollider2D newCCircle = newC as CircleCollider2D;
+                if( newCCircle != null )
+                {
+                    newBounds = Vector2.one * newCCircle.radius;
+                }
+                BoxCollider2D newCBox = newC as BoxCollider2D;
+                if( newCBox != null)
+                {
+                    newBounds = newCBox.size;
+                }
+
                 Bounds oldBounds = oldC.bounds;
 
-                float xRatio = oldBounds.size.x / newBounds.size.x;
-                float yRatio = oldBounds.size.y / newBounds.size.y;
+                Dev.Log( oldBounds.size.x + " / " + newBounds.x );
+                Dev.Log( oldBounds.size.y + " / " + newBounds.y );
+
+                float xRatio = oldBounds.size.x / newBounds.x;
+                float yRatio = oldBounds.size.y / newBounds.y;
+
+                float minBoundsValue = Mathf.Min( xRatio, yRatio );
+
+                Vector3 oldScale = newEnemy.transform.localScale;
 
                 //scale the new enemy to the size of the old enemy
-                newEnemy.transform.localScale = new Vector3( newEnemy.transform.localScale.x * xRatio,
-                    newEnemy.transform.localScale.y * yRatio, 1f );
+                newEnemy.transform.localScale = new Vector3( newEnemy.transform.localScale.x * minBoundsValue,
+                    newEnemy.transform.localScale.y * minBoundsValue, 1f );
+
+                Dev.Log( "Old scale = " + oldScale + " New scale = " + newEnemy.transform.localScale );
             }
             //no two colliders to compare? then do old logic (until it's removed....)
             else
@@ -1066,6 +1163,29 @@ namespace EnemyRandomizerMod
                     }
                 }
             }
+
+            if( newEnemy.name.Contains("Mawlek Turret") )
+            {
+                Vector2 up = newEnemy.transform.up.normalized;
+                //TODO: make them fling in the direction the mawlek turret is facing
+                //{
+                //    List<FlingObjectsFromGlobalPool> actions = newEnemy.GetFSMActionsOnStates<FlingObjectsFromGlobalPool>( new List<string>() { "Fire Left" }, "Mawlek Turret" );
+                //    foreach( var a in actions )
+                //    {
+                //        Dev.Log(a.angleMax
+                //    }
+                //}
+                //{
+                //    List<FlingObjectsFromGlobalPool> actions = newEnemy.GetFSMActionsOnStates<FlingObjectsFromGlobalPool>( new List<string>() { "Fire Right" }, "Mawlek Turret" );
+                //    foreach( var a in actions )
+                //    {
+                //        a.floatValue = newEnemy.transform.position.y - 5f;
+                //    }
+                //}
+            }
+
+
+            
 
             //TODO: store this value off in our mod and set it to true in the scenes that care about it... but for now....
             if(newEnemy.name.Contains( "Mega Zombie Beam Miner" ) ) 
@@ -1414,24 +1534,26 @@ namespace EnemyRandomizerMod
 
                 newEnemy.transform.position = onGround;
 
+                Vector2 scale = newEnemy.transform.localScale;
+
                 BoxCollider2D collider = newEnemy.GetComponent<BoxCollider2D>();
-                positionOffset = new Vector3( 0f, collider.size.y, 0f );
+                positionOffset = new Vector3( 0f, collider.size.y * scale.y, 0f );
 
                 if( newEnemy.name.Contains( "Lobster" ) )
                 {
-                    positionOffset = positionOffset + (Vector3)(Vector2.up * 2f);
+                    positionOffset = positionOffset + (Vector3)(Vector2.up * 2f) * scale.y;
                 }
                 if( newEnemy.name.Contains( "Blocker" ) )
                 {
-                    positionOffset = positionOffset + (Vector3)( Vector2.up * -1f );
+                    positionOffset = positionOffset + (Vector3)( Vector2.up * -1f ) * scale.y;
                 }
                 if( newEnemy.name == ( "Moss Knight" ) )
                 {
-                    positionOffset = positionOffset + (Vector3)( Vector2.up * -1f );
+                    positionOffset = positionOffset + (Vector3)( Vector2.up * -1f ) * scale.y;
                 }
                 if( newEnemy.name == ( "Enemy" ) )
                 {
-                    positionOffset = positionOffset + (Vector3)( Vector2.up * -0.5f );
+                    positionOffset = positionOffset + (Vector3)( Vector2.up * -0.5f ) * scale.y;
                 }
 
                 
@@ -1446,6 +1568,8 @@ namespace EnemyRandomizerMod
 
             if( newEnemyIsMantisFlyerChild ||( flags & FLAGS.WALL ) > 0 || ( flags & FLAGS.CRAWLER ) > 0 )
             {
+                Vector2 scale = newEnemy.transform.localScale;
+
                 Vector2 originalUp = oldEnemy.transform.up.normalized;
 
                 Vector2 ePos = newEnemy.transform.position;
@@ -1475,33 +1599,33 @@ namespace EnemyRandomizerMod
                 BoxCollider2D collider = newEnemy.GetComponent<BoxCollider2D>();
                 if( newEnemy.name.Contains( "Plant Trap" ) )
                 {
-                    positionOffset = originalUp * 2f;
+                    positionOffset = originalUp * 2f * scale.y;
                 }
                 if( collider != null && newEnemy.name.Contains( "Mawlek Turret" ) )
                 {
-                    positionOffset = originalUp * collider.size.y / 3f;
+                    positionOffset = originalUp * collider.size.y / 3f * scale.y;
                 }
                 if( collider != null && newEnemy.name.Contains( "Mushroom Turret" ) )
                 {
-                    positionOffset = originalUp * collider.size.y;
+                    positionOffset = (originalUp * .5f) * scale.y;// collider.size.y;
                 }
                 if( newEnemy.name.Contains( "Plant Turret" ) )
                 {
-                    positionOffset = originalUp * .7f;
+                    positionOffset = originalUp * .7f * scale.y;
                 }
                 if( collider != null && newEnemy.name.Contains( "Laser Turret" ) )
                 {
-                    positionOffset = originalUp * collider.size.y / 10f;
+                    positionOffset = originalUp * collider.size.y / 10f * scale.y;
                 }
                 if( collider != null && newEnemy.name.Contains( "Worm" ) )
                 {
-                    positionOffset = originalUp * collider.size.y / 3f;
+                    positionOffset = originalUp * collider.size.y / 3f * scale.y;
                 }
 
                 if( newEnemy.name.Contains( "Ceiling Dropper" ) )
                 {
                     //move it down a bit, keeps spawning in roof
-                    positionOffset = Vector3.down * 2f;
+                    positionOffset = Vector3.down * 2f * scale.y;
                 }
 
                 if( ( flags & FLAGS.CRAWLER ) > 0 )
@@ -1509,7 +1633,7 @@ namespace EnemyRandomizerMod
                     //positionOffset =  * 1f;
                     //BoxCollider2D collider = newEnemy.GetComponent<BoxCollider2D>();
                     if( collider != null )
-                        positionOffset = new Vector3( collider.size.x * originalUp.x, collider.size.y * originalUp.y, 0f );
+                        positionOffset = new Vector3( collider.size.x * originalUp.x * scale.x, collider.size.y * originalUp.y * scale.y, 0f );
 
                     //TODO: test this, fix this up after next content patch is out
                     //if( newEnemy.name.Contains( "Crystallised Lazer Bug" ) )
@@ -1523,7 +1647,7 @@ namespace EnemyRandomizerMod
                     //TODO: test this, needs to be farther from the ground than the rest
                     if( newEnemy.name.Contains( "Mines Crawler" ) )
                     {
-                        positionOffset = -finalDir * 1.5f;
+                        positionOffset = -finalDir * 1.5f * scale.y;
                     }
 
                     if( newEnemy.name.Contains( "Spider Mini" ) )
@@ -1966,7 +2090,8 @@ namespace EnemyRandomizerMod
                 GameObject tempPrefab = database.loadedEnemyPrefabs[temp];
                 string tempName = database.loadedEnemyPrefabNames[temp];
 
-                Dev.Log( "Attempted replacement index: " + temp + " which is " + tempName + " with prefab name " + tempPrefab.name );
+                Dev.Log( "Attempted replacement index: " + temp + " which is " + tempName );
+                Dev.Log( " with prefab name " + tempPrefab.name );
 
                 int tempFlags = GetTypeFlags(tempName);
                 bool isValid = false;

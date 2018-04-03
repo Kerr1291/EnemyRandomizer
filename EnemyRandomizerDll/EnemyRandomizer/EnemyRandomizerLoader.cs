@@ -364,8 +364,22 @@ namespace EnemyRandomizerMod
                     DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "", "", new List<string>(), true, null, true );
                 }
             }
+            else if( name == "Hive Knight" )
+            {
+                Dev.Log( "TRYING " + ( i++ ).ToString() );
+                //{
+                //    List<PlayerDataBoolTest> actions = modifiedPrefab.GetFSMActionsOnStates<PlayerDataBoolTest>( new List<string>() { "Sign Broken?" }, "Control" );
+                //    foreach( var a in actions )
+                //    {
+                //        a.boolName = "openingCreditsPlayed";
+                //    }
+                //}
+                {
+                    DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Control", "Sleep", new List<string>() { "WAKE" }, true, customWakeAreaSize, false );
+                }
+            }
 
-            
+
             if( name.Contains( "Flamebearer" ) )
             {
                 Dev.Log( "TRYING " + ( i++ ).ToString() );

@@ -252,7 +252,7 @@ using nv;
  * [TEST]Mushroom Brawler - needs a wake area component
  * [TEST]Mantis Flyer Child - when spawning, use the crawler placement logic, when replacing, use the flyer
  * [TEST SCALING]Ghost Warrior Slug - works, just needs lots of space, or scaling
- * Ghost Warrior Hu - needs space and room for his attacks, attacks don't work, need something to fix
+ * [TEST]Ghost Warrior Hu - needs space and room for his attacks, attacks don't work, need something to fix
  * [TEST]Garden Zombie - raycast that it does to wake up? seems to be broken. either needs wake event or a "fixed" fsm
  * [NEED MORE INFO]Mantis Traitor Lord - needs a fix, spawns about 20 units above his placement point
  * [NEED MORE INFO]Mega Jellyfish - spawns somewhere? and dies
@@ -266,10 +266,10 @@ using nv;
  * [NEEDS TESTING]Abyss Crawler - spawning upside down?
  * [TEST]Shade Sibling - nullref issue, needs to instantiate like old way
  * [TEMP REMOVED]Dung Defender - needs to spawn in the ground? and needs a wake event and lots of space -- just remove for now
- * Fluke Mother - needs fix for spawning enemies
+ * [TEST]Fluke Mother - needs fix for spawning enemies
  * [TEST]"Enemy" - needs to be move down 1/2 unit
- * Zombie Hive - needs fix for spawning adds
- * Hive Knight - needs wake event
+ * [TEST]Zombie Hive - needs fix for spawning adds
+ * [TEST]Hive Knight - needs wake event
  * [TEST?]Dream mage lord - fix to not dream spawn you
  * 
  * 
@@ -281,14 +281,14 @@ using nv;
  * Zombie Runner Sp - on death randomizes into another enemy, kindof awesome
  * Zombie Hornhead Sp - on death randomizes into another enemy, kindof awesome
  * 
- * Increase the raycast down length for positioning ground enemies
+ * [DONE]Increase the raycast down length for positioning ground enemies
  * 
- * Sending Force Kill didn't "properly" kill mage lord phase 2?
+ * [REMOVED]Sending Force Kill didn't "properly" kill mage lord phase 2?
  * 
- * Mage Knight/Mage seem to probably need my area wake fixes
+ * [TEST]Mage Knight/Mage seem to probably need my area wake fixes
  * 
- * Rando enemies need to have their persistant bool things removed, else they will kill themselves when spawned
- * Lnacer still does not despawn on death, careful of where we place her
+ * [TEST]Rando enemies need to have their persistant bool things removed, else they will kill themselves when spawned
+ * [TEST]Lnacer still does not despawn on death, careful of where we place her
  * 
  * 
  * Don't spawn:
@@ -541,6 +541,22 @@ namespace EnemyRandomizerMod
             "Health Cocoon",
             "Geo Rock",
             "Teleplanes",
+            "NONE"
+        };
+
+        //TODO: add this to the randomizing and shuffling
+        public static List<string> otherRandomObjectNames = new List<string>()
+        {
+            "Egg Sac",
+            "Jelly Egg Bomb",
+            "Jelly Egg Empty",
+            "Laser Turret Mega",
+            "Laser Turret",
+            "Cave Spikes",
+            "Big Centipede",
+            "Worm",
+            "Health Cocoon",
+            "Geo Rock",
             "NONE"
         };
 
@@ -1015,28 +1031,27 @@ namespace EnemyRandomizerMod
             "Mega Moss Charger",
             "White Palace Fly",
             "Laser Turret",
-            "Laser Turret Mega (1)"
+            "Laser Turret Mega",
             ////until mage enemies are fixed, do not spawn them in battle areas
-            //"Electric Mage",//35 //TODO: needs to be moved down? (by 20?) -- broken can't put most places
-            //"Mage",//35 //TODO: still broken
-            //"Mantis Traitor Lord",
+            "Electric Mage",//35 //TODO: needs to be moved down? (by 20?) -- broken can't put most places
+            "Mage",//35 //TODO: still broken
+            "Mantis Traitor Lord",
             //"Flamebearer Spawn",
             //"Centipede Hatcher",
             //"Mossman_Shaker",
             //"Mage Blob",//35
             //"Mage Balloon", //102
-            //"Zombie Spider 1", //271
-            //"Zombie Spider 2", //271
-            //"Parasite Balloon",
+            "Zombie Spider 1", //271
+            "Zombie Spider 2", //271
+            "Parasite Balloon",
             ////"Zombie Beam Miner Rematch", //241 should be fixed now
             ////"Mage Knight",//35 //he's fixed now
-            //"Lancer",//35
-            //"Lobster",//35
-            //"Colosseum_Worm",//34
-            //"Laser Turret Frames", //234
-            //"Worm", //49
-            //"Baby Centipede", //259
-            //"Zote Boss"//33 (BOSS???)
+            "Lancer",//35
+            "Lobster",//35
+            //"Colosseum_Worm",
+            "Worm", 
+            "Baby Centipede", //259
+            "Zote Boss"//33 (BOSS???)
         };
 
         /*
