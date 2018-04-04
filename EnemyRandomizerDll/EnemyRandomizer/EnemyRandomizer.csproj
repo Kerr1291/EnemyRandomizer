@@ -61,6 +61,7 @@
     <Compile Include="Common\Dev.cs" />
     <Compile Include="Common\DevLog.cs" />
     <Compile Include="Components\DebugOnWake.cs" />
+    <Compile Include="Components\HornetBoss1.cs" />
     <Compile Include="Components\MemeController.cs" />
     <Compile Include="Components\WakeUpMageKnight.cs" />
     <Compile Include="EnemyRandomizerDatabase.cs" />

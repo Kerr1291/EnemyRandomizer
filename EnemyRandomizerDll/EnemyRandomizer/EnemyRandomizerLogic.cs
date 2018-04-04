@@ -303,9 +303,10 @@ namespace EnemyRandomizerMod
                 {
                     battleControls.Add( playMakerFSM.gameObject );
                 }
-            }            
+            }
         }
-        
+
+        bool modifiedHornet = false;
         IEnumerator DoLocateAndRandomizeEnemies()
         {
             //wait until all scenes are loaded
@@ -326,6 +327,17 @@ namespace EnemyRandomizerMod
             while( sceneBoundry.Count <= 0 )
             {
                 yield return true;
+            }
+
+
+            //TODO: temp, remove once we're done developing her
+            if( !modifiedHornet )
+            {
+                while( GameObject.Find( "Hornet Boss 1" ) == null )
+                    yield return new WaitForEndOfFrame();
+
+                GameObject.Find( "Hornet Boss 1" ).AddComponent<HornetBoss1>();
+                modifiedHornet = true;
             }
 
             foreach( HealthManager ho in GameObject.FindObjectsOfType<HealthManager>() )
@@ -384,6 +396,8 @@ namespace EnemyRandomizerMod
                     yield return true;
                 }
             }
+
+
 
             yield return null;
 

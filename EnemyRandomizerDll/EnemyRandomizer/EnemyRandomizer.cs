@@ -281,9 +281,14 @@ namespace EnemyRandomizerMod
                 }
 
                 //load sandbox
+                //if( UnityEngine.Input.GetKeyDown( KeyCode.S ) )
+                //{
+                //    yield return EnterSandbox();
+                //}
+                //enter hornet
                 if( UnityEngine.Input.GetKeyDown( KeyCode.S ) )
                 {
-                    yield return EnterSandbox();
+                    yield return EnterZone( "Fungus1_04", "right1", "Hornet Boss 1" );
                 }
             }
             yield break;
@@ -379,6 +384,75 @@ namespace EnemyRandomizerMod
             TransitionPoint exit = GameObject.Find( "door1" ).GetComponent<TransitionPoint>();
             exit.targetScene = currentScene;
             exit.entryPoint = currentSceneTransition;
+        }
+
+        //copied and modified from "TransitionPoint.cs"
+        public GlobalEnums.GatePosition GetGatePosition(string name)
+        {
+            if( name.Contains( "top" ) )
+            {
+                return GlobalEnums.GatePosition.top;
+            }
+            if( name.Contains( "right" ) )
+            {
+                return GlobalEnums.GatePosition.right;
+            }
+            if( name.Contains( "left" ) )
+            {
+                return GlobalEnums.GatePosition.left;
+            }
+            if( name.Contains( "bot" ) )
+            {
+                return GlobalEnums.GatePosition.bottom;
+            }
+            if( name.Contains( "door" ) )
+            {
+                return GlobalEnums.GatePosition.door;
+            }
+            Dev.LogError( "Gate name " + name + "does not conform to a valid gate position type. Make sure gate name has the form 'left1'" );
+            return GlobalEnums.GatePosition.unknown;
+        }
+
+        //from will be top1,left1,right1,door1,etc...
+        public IEnumerator EnterZone(string name, string from, string waitUntilGameObjectIsLoaded = "", List<string> removeList = null )
+        {
+            //find a source transition
+            string currentSceneTransition = GameObject.FindObjectOfType<TransitionPoint>().gameObject.name;
+            string currentScene = GameManager.instance.sceneName;
+
+            //update the last entered
+            TransitionPoint.lastEntered = currentSceneTransition;
+
+            //place us in sly's storeroom
+            GameManager.instance.BeginSceneTransition( new GameManager.SceneLoadInfo
+            {
+                SceneName = name,
+                EntryGateName = from,
+                HeroLeaveDirection = new GlobalEnums.GatePosition?( GlobalEnums.GatePosition.door ),
+                EntryDelay = 1f,
+                WaitForSceneTransitionCameraFade = true,
+                Visualization = GameManager.SceneLoadVisualizations.Default,
+                AlwaysUnloadUnusedAssets = false
+            } );
+
+            if( !string.IsNullOrEmpty( waitUntilGameObjectIsLoaded ) )
+            {
+                while( GameObject.Find( waitUntilGameObjectIsLoaded ) == null )
+                    yield return new WaitForEndOfFrame();
+            }
+            else
+            {
+                yield return new WaitForEndOfFrame();
+            }
+
+            if( removeList != null )
+            {
+                Scene scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(name);
+                foreach( string s in removeList )
+                {
+                    GameObject.Destroy( scene.FindGameObject( s ) );
+                }
+            }
         }
 
         public GameObject SpawnLevelPart(string name, Vector3 position)

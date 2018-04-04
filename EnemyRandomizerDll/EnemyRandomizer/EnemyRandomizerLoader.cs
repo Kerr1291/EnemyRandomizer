@@ -405,6 +405,11 @@ namespace EnemyRandomizerMod
                 DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Control", "Init", new List<string>() { "START" }, true, customWakeAreaSize, false );
             }
 
+            if(name == "Hornet Boss 1")
+            {
+                modifiedPrefab.AddComponent<HornetBoss1>();
+            }
+
             return modifiedPrefab;
         }
 

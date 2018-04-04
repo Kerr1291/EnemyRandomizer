@@ -291,7 +291,10 @@ namespace nv
             if( str.Contains( "Mender" ) )
                 return true;
 
-            if( str.Contains( "Giant Fly" ) )
+            if( str == "Giant Fly"  )
+                return true;
+
+            if( str.Contains( "Hornet Boss 1" ) )
                 return true;
 
             return false;

@@ -200,6 +200,39 @@ namespace nv
                                 }
 
                                 {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.SetRotation );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetRotation (Name) = " + a?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetRotation (GameObject) = " + a?.gameObject?.GameObject );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetRotation (OwnerOption) = " + a?.gameObject?.OwnerOption );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetRotation (vector) = " + a?.vector );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetRotation (everyFrame) = " + a?.everyFrame );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetRotation (lateUpdate) = " + a?.lateUpdate );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetRotation (space) = " + a?.space );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetRotation (xAngle) = " + a?.xAngle );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetRotation (yAngle) = " + a?.yAngle );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetRotation (zAngle) = " + a?.zAngle );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.SetScale );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetScale (Name) = " + a?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetScale (GameObject) = " + a?.gameObject?.GameObject );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetScale (OwnerOption) = " + a?.gameObject?.OwnerOption );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetScale (vector) = " + a?.vector );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetScale (everyFrame) = " + a?.everyFrame );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetScale (lateUpdate) = " + a?.lateUpdate );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetScale (x) = " + a?.x );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetScale (y) = " + a?.y );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetScale (z) = " + a?.z );
+                                    }
+                                }
+
+                                {
                                     var a = ( x as HutongGames.PlayMaker.Actions.FloatCompare );
                                     if( a != null )
                                     {
@@ -328,6 +361,39 @@ namespace nv
                                 }
 
                                 {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.BoolTestMulti );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- BoolTestMulti (Name) = " + a?.Name );
+                                        if(a?.boolStates != null)
+                                        foreach( var e in a?.boolStates )
+                                            file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( e) );
+                                        if( a?.boolVariables != null )
+                                            foreach( var e in a?.boolVariables )
+                                            file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( e ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "everyFrame", a?.everyFrame ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.storeResult ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- BoolTestMulti (falseEvent) = " + a?.falseEvent?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- BoolTestMulti (trueEvent) = " + a?.trueEvent?.Name );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.FloatTestToBool );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- BoolTest (Name) = " + a?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- BoolTest (equalBool) = " + a?.equalBool );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- BoolTest (everyFrame) = " + a?.everyFrame );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- BoolTest (float1) = " + a?.float1 );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- BoolTest (float2) = " + a?.float2 );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- BoolTest (greaterThanBool) = " + a?.greaterThanBool );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- BoolTest (lessThanBool) = " + a?.lessThanBool );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- BoolTest (tolerance) = " + a?.tolerance );
+                                    }
+                                }
+
+                                {
                                     var a = ( x as HutongGames.PlayMaker.Actions.RandomFloat );
                                     if( a != null )
                                     {
@@ -379,6 +445,61 @@ namespace nv
                                         file.WriteLine( componentHeader + @" \----PFSM ---- SetVelocity2d (vector?.Value) = " + a?.vector?.Value );
                                         file.WriteLine( componentHeader + @" \----PFSM ---- SetVelocity2d (x) = " + a?.x );
                                         file.WriteLine( componentHeader + @" \----PFSM ---- SetVelocity2d (y) = " + a?.y );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetVelocity2d (everyFrame) = " + a?.everyFrame );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.SetIsKinematic2d );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetIsKinematic2d (Name) = " + a?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetIsKinematic2d (gameObject?.GameObject?.Name) = " + a?.gameObject?.GameObject?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetIsKinematic2d (isKinematic) = " + a?.isKinematic );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.SetCollider );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetCollider (Name) = " + a?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetCollider (gameObject?.GameObject?.Name) = " + a?.gameObject?.GameObject?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetCollider (active) = " + a?.active );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.SetMeshRenderer );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetMeshRenderer (Name) = " + a?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetMeshRenderer (gameObject?.GameObject?.Name) = " + a?.gameObject?.GameObject?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetMeshRenderer (active) = " + a?.active );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.SetGravity2dScale );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetGravity2dScale (Name) = " + a?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetGravity2dScale (gameObject?.GameObject?.Name) = " + a?.gameObject?.GameObject?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetGravity2dScale (gravityScale?.Value) = " + a?.gravityScale?.Value );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.GetVelocity2d );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- GetVelocity2d (Name) = " + a?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- GetVelocity2d (gameObject?.GameObject?.Name) = " + a?.gameObject?.GameObject?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- GetVelocity2d (vector?.Value) = " + a?.vector?.Value );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- GetVelocity2d (x) = " + a?.x );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- GetVelocity2d (y) = " + a?.y );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- GetVelocity2d (space) = " + a?.space );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- GetVelocity2d (everyFrame) = " + a?.everyFrame );
                                     }
                                 }
 
@@ -389,6 +510,16 @@ namespace nv
                                         file.WriteLine( componentHeader + @" \----PFSM ---- GetPlayerDataBool (Name) = " + a?.Name );
                                         file.WriteLine( componentHeader + @" \----PFSM ---- GetPlayerDataBool (boolName) = " + a?.boolName );
                                         file.WriteLine( componentHeader + @" \----PFSM ---- GetPlayerDataBool (storeValue) = " + a?.storeValue );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.GetPlayerDataInt );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- GetPlayerDataInt (Name) = " + a?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- GetPlayerDataInt (boolName) = " + a?.intName );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- GetPlayerDataInt (storeValue) = " + a?.storeValue );
                                     }
                                 }
 
@@ -424,6 +555,215 @@ namespace nv
                                     }
                                 }
 
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.SetBoxCollider2DSizeVector );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.gameObject1?.GameObject ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.offset ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.size ) );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.SendRandomEvent );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.delay ) );
+                                        if( a?.events != null )
+                                            foreach(var e in a?.events)
+                                            file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "Event", e?.Name ) );
+                                        if( a?.weights != null )
+                                            foreach( var e in a?.weights )
+                                            file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "Weight", e?.Value ) );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.SendRandomEventV2 );
+                                    if( a != null )
+                                    {
+                                        foreach( var e in a?.trackingInts )
+                                        {
+                                            file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "TrackingIntsName", e?.Name ) );
+                                            file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "TrackingIntsValue", e?.Value ) );
+                                        }
+                                        if( a?.events != null )
+                                            foreach( var e in a?.events )
+                                            file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "Event", e?.Name ) );
+                                        if( a?.weights != null )
+                                            foreach( var e in a?.weights )
+                                            file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "Weight", e?.Value ) );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.WaitRandom );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "finishEvent", a?.finishEvent?.Name ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "realTime", a?.realTime ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.timeMin ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.timeMax ) );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.Wait );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "finishEvent", a?.finishEvent?.Name ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "realTime", a?.realTime ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.time ) );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.Tk2dPlayAnimationWithEvents );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "animationCompleteEvent", a?.animationCompleteEvent?.Name ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "animationTriggerEvent", a?.animationTriggerEvent?.Name ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.clipName ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.gameObject?.GameObject ) );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.AudioPlayerOneShot );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.audioPlayer ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.delay ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.pitchMax ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.pitchMin ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.spawnPoint ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.storePlayer ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.volume ) );
+                                        if( a?.weights != null )
+                                            foreach( var e in a?.weights )
+                                            file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "Weight", e?.Value ) );
+                                        if( a?.audioClips != null )
+                                            foreach( var e in a?.audioClips )
+                                            file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "audioClips", e?.name ) );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.AudioPlaySimple );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.volume ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.gameObject?.GameObject ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.oneShotClip ) );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.GetScale );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "everyFrame",a?.everyFrame ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.gameObject?.GameObject ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "space", a?.space ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.vector ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.xScale ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.yScale ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.zScale ) );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.CheckCollisionSideEnter );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.ignoreTriggers ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.bottomHit ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "bottomHitEvent", a?.bottomHitEvent?.Name ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.leftHit ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "bottomHitEvent", a?.leftHitEvent?.Name ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.rightHit ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "bottomHitEvent", a?.rightHitEvent?.Name ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.topHit ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "bottomHitEvent", a?.topHitEvent?.Name ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "otherLayer", a?.otherLayer ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "otherLayerNumber", a?.otherLayerNumber ) );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.CheckCollisionSide );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.ignoreTriggers ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.bottomHit ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "bottomHitEvent", a?.bottomHitEvent?.Name ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.leftHit ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "bottomHitEvent", a?.leftHitEvent?.Name ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.rightHit ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "bottomHitEvent", a?.rightHitEvent?.Name ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.topHit ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "bottomHitEvent", a?.topHitEvent?.Name ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "otherLayer", a?.otherLayer ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "otherLayerNumber", a?.otherLayerNumber ) );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.DecelerateXY );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.decelerationX ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.decelerationY ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.gameObject?.GameObject ) );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.FaceObject );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.objectA ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.objectB ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.newAnimationClip ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "playNewAnimation", a?.playNewAnimation ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "resetFrame", a?.resetFrame ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.spriteFacesRight ) );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.FloatSubtract );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "everyFrame", a?.everyFrame ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.floatVariable ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "perSecond", a?.perSecond ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.subtract ) );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.FloatInRange );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "everyFrame", a?.everyFrame ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.floatVariable ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.boolVariable ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "falseEvent", a?.falseEvent?.Name ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "trueEvent", a?.trueEvent?.Name ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.lowerValue ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.upperValue ) );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.NextFrameEvent );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( "sendEvent", a?.sendEvent?.Name ) );
+                                    }
+                                }
                             }
                         }
                     }
@@ -483,9 +823,16 @@ namespace nv
                     Dev.Log( componentHeader + @" \--PFSM Active: " + ( c as PlayMakerFSM ).Active );
                     Dev.Log( componentHeader + @" \--PFSM ActiveStateName: " + ( c as PlayMakerFSM ).ActiveStateName );
                 }
-
             }
-        }
+        }//end print playmaker fsm
 
+        static string PlaymakerTypeToString<T>(T var) where T : HutongGames.PlayMaker.NamedVariable
+        {
+            return "("+var?.GetType()?.Name +", "+var?.Name+") = "+var;
+        }
+        static string PlaymakerTypeToString<T>( string label, T var )
+        {
+            return "(" + var?.GetType()?.Name + ", " + label + ") = " + var;
+        }
     }
 }

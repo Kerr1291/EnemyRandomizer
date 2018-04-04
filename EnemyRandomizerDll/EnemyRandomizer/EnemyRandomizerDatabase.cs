@@ -353,7 +353,7 @@ namespace EnemyRandomizerMod
         }
 
         //enable this to only load scenes from the "testTypeScenes" list for faster debugging
-        public const bool USE_TEST_SCENES = false;
+        public const bool USE_TEST_SCENES = true;
 
         public static List<int> EnemyTypeScenes {
             get {
@@ -367,8 +367,8 @@ namespace EnemyRandomizerMod
 
         static List<int> testTypeScenes = new List<int>()
         {
-            367,
-            368
+            132,
+            133
         };
 
         //tip: the scene we end the load on will determine the menu music
