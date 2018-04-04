@@ -187,6 +187,11 @@ namespace nv
             if( gameObject.name.Contains( "Lil Jellyfish" ) )
                 return false;
 
+
+            //TEST: should randomize spawn rollers
+            if( gameObject.name.Contains( "Spawn Roller v2" ) )
+                return true;
+
             string enemyName = gameObject.name;
             string trimmedName = enemyName.TrimGameObjectName();
 

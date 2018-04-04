@@ -58,6 +58,14 @@ namespace nv
             "Dream Mage Lord Phase2",
             "False Knight Dream",
             "Mage Lord Phase2",
+            "Ruins Flying SentryB",
+            "Ruins SentryB",
+            "Ruins Sentry Fat B",
+            "Shade Sibling(Clone)",
+            "Shade Sibling(Clone)(Clone)",
+            "Baby Centipede(Clone)",
+            "Baby Centipede(Clone)(Clone)",
+            "Zoteling",
 
             //TEMP: remove these enemies until they're fixed
             "Mage Lord Phase2",
@@ -65,6 +73,7 @@ namespace nv
             "Dung Defender",
             "White Defender",
             "Mega Jellyfish",
+            "Mega Zombie Beam Miner", //still broken
             "NONE"
         };
 
@@ -74,6 +83,7 @@ namespace nv
             "Baby Centipede",
             "Shade Sibling",
             "Electric Mage",
+            "Hatcher Baby",
             "Moss Charger"
         };
 
@@ -293,6 +303,9 @@ namespace nv
                 return string.Empty;
 
             string trimmedString = str;
+
+            if( trimmedString.Contains( "Spawn Roller v2" ) )
+                return "Roller";
 
             //trim off "(Clone)" from the word, if it's there
             int index = trimmedString.LastIndexOf("(Clone)");

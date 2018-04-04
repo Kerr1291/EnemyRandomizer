@@ -323,7 +323,7 @@ namespace EnemyRandomizerMod
         public static EnemyRandomizerDatabase Instance { get; private set; }
 
         CommunicationNode comms;
-        
+
         public List<GameObject> loadedEnemyPrefabs = new List<GameObject>();
         public List<string> loadedEnemyPrefabNames = new List<string>();
 
@@ -334,7 +334,7 @@ namespace EnemyRandomizerMod
         public Dictionary<string, GameObject> loadedEffectPrefabs = new Dictionary<string, GameObject>();
 
         public Dictionary<string, GameObject> levelParts = new Dictionary<string, GameObject>();
-                
+
         public EnemyRandomizerDatabase()
         {
         }
@@ -370,7 +370,7 @@ namespace EnemyRandomizerMod
             367,
             368
         };
-        
+
         //tip: the scene we end the load on will determine the menu music
         public static List<int> scenesToLoad = new List<int>()
         {
@@ -540,7 +540,11 @@ namespace EnemyRandomizerMod
             "Orb Spinner",
             "Health Cocoon",
             "Geo Rock",
+            "Spawn Jar(Clone)",
+            "Spawn Jar",
             "Teleplanes",
+            "Grimm Bats",
+            "Grimm Spike Holder",
             "NONE"
         };
 
@@ -578,7 +582,7 @@ namespace EnemyRandomizerMod
             //Example: "Geo Rock 3" is the rock just to the left of start
             //check if it has "Geo Rock" FSM
             //does not have? PersistentBoolItem
-        };        
+        };
 
         //==============================================================================================================
         //==============================================================================================================
@@ -588,9 +592,13 @@ namespace EnemyRandomizerMod
         public static List<string> flyerEnemyTypeNames = new List<string>()
         {
             "Mosquito",
+            "Blobble",
             "Giant Buzzer Col",
+            "Buzzer Col",
+            "Super Spitter Col",
             "Mega Fat Bee",
             "Mage",
+            "Giant Fly Col",
             "Mage Balloon",
             "Electric Mage",
             "Angry Buzzer",
@@ -640,12 +648,17 @@ namespace EnemyRandomizerMod
             "Zoteling",
             "Dream Mage Lord",
             "Dream Mage Lord Phase2",
+            "Colosseum_Flying_Sentry",
+            "Colosseum_Armoured_Mosquito",
             "Radiance"
         };
 
         public static List<string> groundEnemyTypeNames = new List<string>()
         {
             "Colosseum_Miner",
+            "Colosseum_Armoured_Roller",
+            "Colosseum_Shield_Zombie",
+            "Colosseum_Worm",
             "Giant Fly",
             "Lancer",
             "Lobster",
@@ -745,11 +758,21 @@ namespace EnemyRandomizerMod
         public static List<string> smallEnemyTypeNames = new List<string>()
         {
             "Mosquito",
+            "Buzzer Col",
+            "Blobble",
+            "Colosseum_Armoured_Roller",
+            "Colosseum_Armoured_Mosquito",
+            "Colosseum_Flying_Sentry",
+            "Colosseum_Shield_Zombie",
+            "Super Spitter Col",
+            "Colosseum_Worm",
+            "Colosseum_Miner",
             "Mega Fat Bee",
             "Mage Knight",
             "Mage Blob",
             "Mage Balloon",
             "Zombie Runner",
+            "Giant Fly Col",
             "Angry Buzzer",
             "Bursting Zombie",
             "Mender Bug",
@@ -858,6 +881,7 @@ namespace EnemyRandomizerMod
             "White Palace Fly",
             "Royal Gaurd",
             "Enemy",
+            "Giant Buzzer Col",
             "Zombie Hive",
             "Bee Stinger",
             "Big Bee",
@@ -869,6 +893,10 @@ namespace EnemyRandomizerMod
         public static List<string> mediumEnemyTypeNames = new List<string>()
         {
             "Mosquito",
+            "Colosseum_Worm",
+            "Colosseum_Flying_Sentry",
+            "Colosseum_Miner",
+            "Colosseum_Shield_Zombie",
             "Mega Fat Bee",
             "Mage Knight",
             "Mage",
@@ -878,6 +906,7 @@ namespace EnemyRandomizerMod
             "Mawlek Body",
             "Great Shield Zombie",
             "Gorgeous Husk",
+            "Giant Fly Col",
             "Royal Zombie Fat",
             "Ruins Sentry",
             "Ruins Flying Sentry",
@@ -925,10 +954,12 @@ namespace EnemyRandomizerMod
             "Bee Stinger",
             "Big Bee"
         };
-        
+
         public static List<string> bigEnemyTypeNames = new List<string>()
         {
             "Mosquito",
+            "Colosseum_Worm",
+            "Giant Buzzer Col",
             "Mega Fat Bee",
             "Lancer",
             "Lobster",
@@ -950,6 +981,7 @@ namespace EnemyRandomizerMod
             "Lazy Flyer Enemy",
             "Mega Moss Charger",
             "Moss Knight C",
+            "Giant Fly Col",
             "Moss Knight B",
             "Ghost Warrior No Eyes",
             "Fungus Flyer",
@@ -1049,9 +1081,44 @@ namespace EnemyRandomizerMod
             "Lancer",//35
             "Lobster",//35
             //"Colosseum_Worm",
-            "Worm", 
+            "Worm",
             "Baby Centipede", //259
+            "Zombie Spider 2",
+            "Zombie Spider 1",
+            "Mender Bug",
+            "Abyss Crawler",
+            "White Defender",
+            "Grey Prince",
+            "Radiance",
+            "Pigeon",
+            "Hollow Knight Boss",
             "Zote Boss"//33 (BOSS???)
+        };
+
+
+        public static List<string> excludeFromColosseum = new List<string>()
+        {
+            "Zombie Myla",
+            "Mega Moss Charger",
+            "White Palace Fly",
+            "Laser Turret",
+            "Laser Turret Mega",
+            "Zombie Spider 1", //271
+            "Zombie Spider 2", //271
+            "Parasite Balloon",
+            "Lancer",//35 //TODO: find a way to check if she is dead
+            "Lobster",//35
+            "Worm",
+            "Baby Centipede", //259
+            "Mender Bug",
+            "Abyss Crawler",
+            "White Defender",
+            "Grey Prince",
+            "Radiance",
+            "Mantis Traitor Lord",
+            "Hollow Knight Boss",
+            "Pigeon",
+            "Zote Boss"//33 (BOSS???) //TODO: find a way to check if zote is dead
         };
 
         /*
@@ -1110,14 +1177,19 @@ namespace EnemyRandomizerMod
             "Mantis Heavy",
             "Colosseum Grass Hopper",
             "Mawlek Col",
+            "Buzzer Col",
             "Lesser Mawlek",
             "Angry Buzzer",
             "Mage Knight",
             "Mage Blob",
+            "Giant Fly Col",
             "Blobble",
             "Hopper",
             "Colosseum_Flying_Sentry",
+            "Colosseum_Armoured_Mosquito",
+            "Colosseum_Shield_Zombie",
             "Grub Mimic",
+            "Blobble",
             "Bursting Bouncer",
 
 
@@ -1129,7 +1201,9 @@ namespace EnemyRandomizerMod
         {
             "Mage Knight",
             "Electric Mage",
+            "Giant Buzzer Col",
             "Mega Fat Bee",
+            "Giant Buzzer",
             "Lancer",
             "Lobster",
             "Mawlek Body",
@@ -1142,11 +1216,13 @@ namespace EnemyRandomizerMod
             "Hornet Boss",
             "Moss Knight",
             "Mega Moss Charger",
+            "Giant Fly Col",
             "Moss Knight C",
             "Moss Knight B",
             "Ghost Warrior No Eyes",
             "Mushroom Brawler",
             "Ghost Warrior Hu",
+            "Big Bee",
             "Mantis Traitor Lord",
             "Moss Knight Fat",
             "Ghost Warrior Marmu",

@@ -75,9 +75,6 @@ namespace EnemyRandomizerMod
                 yield return new WaitForEndOfFrame();
                 if( UnityEngine.Input.GetKeyDown( KeyCode.T ) )
                 {
-                    //Dev.Log( "=====================================" );
-                    //Dev.Log( "=====================================" );
-                    //Dev.Log( "=====================================" );
                     for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
                     {
                         Scene s = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
@@ -89,39 +86,7 @@ namespace EnemyRandomizerMod
                             s.PrintHierarchy( i, sceneBounds, database.loadedEnemyPrefabNames, s.name );
                         }
                     }
-                    //Dev.Log( "=====================================" );
                 }
-                //if( UnityEngine.Input.GetKeyDown( KeyCode.Y ) )
-                //{
-                //    Dev.Log( "=====================================" );
-                //    Dev.Log( "=====================================" );
-                //    Dev.Log( "=====================================" );
-                //    Dev.Log( "Dumping FSM Objects" );
-                //    List<GameObject> printedObjects = new List<GameObject>();
-                //    foreach( var fsm in GameObject.FindObjectsOfType<PlayMakerFSM>() )
-                //    {
-                //        if( fsm == null )
-                //            continue;
-
-                //        //search the parents of this game object to see if this tree has already been printed
-                //        bool skip = false;
-                //        foreach( Transform u in fsm.gameObject.GetComponentsInParent<Transform>() )
-                //        {
-                //            if( printedObjects.Contains( u.gameObject ) )
-                //            {
-                //                skip = true;
-                //                break;
-                //            }
-                //        }
-
-                //        if( !skip )
-                //        {
-                //            printedObjects.Add( fsm.gameObject );
-                //            fsm.gameObject.PrintSceneHierarchyTree( true );
-                //        }
-                //    }
-                //    Dev.Log( "=====================================" );
-                //}
             }
 
             debugInput = null;
@@ -147,6 +112,9 @@ namespace EnemyRandomizerMod
             ModHooks.Instance.ColliderCreateHook -= OnLoadObjectCollider;
             ModHooks.Instance.ColliderCreateHook += OnLoadObjectCollider;
 
+            ModHooks.Instance.DrawBlackBordersHook -= OnSceneBoardersCreated;
+            ModHooks.Instance.DrawBlackBordersHook += OnSceneBoardersCreated;
+
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= StartRandomEnemyLocator;
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged += StartRandomEnemyLocator;
         }
@@ -171,159 +139,9 @@ namespace EnemyRandomizerMod
             Instance = null;
 
             ModHooks.Instance.ColliderCreateHook -= OnLoadObjectCollider;
+            ModHooks.Instance.DrawBlackBordersHook -= OnSceneBoardersCreated;
+
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= StartRandomEnemyLocator;
-        }
-
-        void CheckAndAddBattleControls( GameObject go )
-        {
-            if( battleControls.Contains( go ) )
-                return;
-
-            if( FSMUtility.ContainsFSM( go, "Battle Control" ) )
-            {
-                Dev.Log( "Found battle control on object: " + go.name );
-                battleControls.Add( go );
-            }
-
-            //foreach( Component c in go.GetComponents<Component>() )
-            //{
-            //    PlayMakerFSM pfsm = c as PlayMakerFSM;
-            //    if(pfsm.FsmName == "Battle Control")
-            //    {
-            //        Dev.Log( "Found battle control on object: " + go.name );
-            //        battleControls.Add( go );
-            //    }
-            //}
-        }
-
-        void CheckAndDisableSoftlockGates( GameObject go )
-        {
-            if( go.activeInHierarchy == false )
-                return;
-
-            if( FSMUtility.ContainsFSM( go, "BG Control" ) )
-            {
-                Dev.Log( "Found battle gate control on object: " + go.name );
-                go.SetActive( false );
-            }
-        }
-
-        void UpdateBattleControls()
-        {
-            for( int i = 0; i < battleControls.Count; )
-            {
-                //remove any controls that go null (like from a scene change)
-                if( battleControls[ i ] == null )
-                {
-                    battleControls.RemoveAt( i );
-                    i = 0;
-                    continue;
-                }
-
-                PersistentBoolItem pBoolItem = battleControls[i].GetComponent<PersistentBoolItem>();
-
-                //does this battle control have a persistent bool? then we want to make sure it's not set
-                if( pBoolItem != null && pBoolItem.persistentBoolData != null )
-                {
-                    //Dev.Log( "pBoolItem.persistentBoolData.activated " + pBoolItem.persistentBoolData.activated);
-
-                    //ignore battle controls that have been completed and remove them from the list
-                    if( pBoolItem.persistentBoolData.activated )
-                    {
-                        battleControls.RemoveAt( i );
-                        i = 0;
-                        continue;
-                    }
-                }
-
-                //average screen size?
-                //20 width
-                //12 high
-
-                //ok, so the battle control hasn't been run or completed yet, we need to manually monitor it
-                BoxCollider2D collider = battleControls[i].GetComponent<BoxCollider2D>();
-                UnityEngine.Bounds localBounds;
-
-                if( collider == null )
-                {
-                    //Dev.Log( "Creating out own bounds to test" );
-                    localBounds = new UnityEngine.Bounds( battleControls[ i ].transform.position, new Vector3( 28f, 24f, 10f ) );
-                }
-                else
-                {
-                    //Dev.Log( "Using provided bounds..." );
-                    localBounds = collider.bounds;
-                }
-
-                //add some Z size to the bounds
-                float width = Mathf.Max(28f,localBounds.extents.x);
-                float height = Mathf.Max(24f,localBounds.extents.y);
-
-                localBounds.extents = new Vector3( width, height, 10f );
-
-                Vector3 heroPos = HeroController.instance.transform.position;
-
-                //is the hero in the battle scene? if not, no point in checking things
-                if( !localBounds.Contains( heroPos ) )
-                {
-                    Dev.Log( "Hero outside the bounds of our battle control, don't monitor" );
-                    Dev.Log( "Hero: " + heroPos );
-                    Dev.Log( "Bounds Center: " + localBounds.center );
-                    Dev.Log( "Bounds Extents: " + localBounds.extents );
-                    //DebugPrintObjectTree( battleControls[ i ], true );
-                }
-                else
-                {
-                    //see if any rando enemies are inside the area, if they are, we don't set next
-                    bool setNext = true;
-                    foreach( var pair in replacements )
-                    {
-                        if( pair.replacement == null )
-                            continue;
-
-                        bool isColosseum = false;
-                        for( int j = 0; j < UnityEngine.SceneManagement.SceneManager.sceneCount; ++j )
-                        {
-                            //iterate over the loaded game objects
-                            if( UnityEngine.SceneManagement.SceneManager.GetSceneAt( j ).IsValid() )
-                                isColosseum = UnityEngine.SceneManagement.SceneManager.GetSceneAt( j ).name.Contains( "Colosseum" );
-                            if( isColosseum )
-                                break;
-                        }
-
-                        //kill enemies that escape the coloseeum
-                        if( isColosseum && !localBounds.Contains( pair.replacement.transform.position ) )
-                        {
-                            Dev.Log( "Sending force kill for out of bounds in colosseum to " + pair.replacement.name );
-                            if( pair.replacement.GetEnemyHealthManager() != null )
-                                pair.replacement.GetEnemyHealthManager().Die( null, AttackTypes.Splatter, true );// SendEvent( "INSTA KILL" );
-                        }
-
-                        if( localBounds.Contains( pair.replacement.transform.position ) )
-                        {
-                            setNext = false;
-                            break;
-                        }
-                    }
-
-
-                    if( setNext )
-                    {
-                        PlayMakerFSM pfsm = FSMUtility.LocateFSM( battleControls[i], "Battle Control" );
-
-                        //this has an unintended side-effect of causing colosseum 3 to be rushed through.... and it's very fun (and crazy)
-                        //so even if i change to another fix for this later, will keep this behavior around for that reason
-                        //it also might be causing hollow knight (end boss) to be invisible... oops! (TODO: test and fix)
-                        if( pfsm != null )
-                        {
-                            pfsm.SendEvent( "NEXT" );
-                        }
-                        //continue;
-                    }
-                }
-
-                ++i;
-            }
         }
 
         //entry point into the replacement logic, started on each scene transition
@@ -433,9 +251,60 @@ namespace EnemyRandomizerMod
             }
         }
 
-        bool calculateBounds = true;
+        //bool calculateBounds = true;
         UnityEngine.Bounds sceneBounds;
         List<GameObject> sceneBoundry = new List<GameObject>();
+
+
+        public void OnSceneBoardersCreated( List<GameObject> borders )
+        {
+            sceneBoundry.Clear();
+            sceneBoundry.AddRange( borders );
+
+            List<GameObject> xList = sceneBoundry.Select(x=>x).OrderBy(x=>x.transform.position.x).ToList();
+            List<GameObject> yList = sceneBoundry.Select(x=>x).OrderBy(x=>x.transform.position.y).ToList();
+
+            sceneBounds = new UnityEngine.Bounds
+            {
+                min = new Vector3( xList[ 0 ].transform.position.x, yList[ 0 ].transform.position.y, -10f ),
+                max = new Vector3( xList[ xList.Count - 1 ].transform.position.x, yList[ yList.Count - 1 ].transform.position.y, 10f )
+            };
+
+            //Dev.Log( "Bounds created with dimensions" );
+            //Dev.Log( "min " + sceneBounds.min );
+            //Dev.Log( "max " + sceneBounds.max );
+            //Dev.Log( "center " + sceneBounds.center );
+            //Dev.Log( "extents " + sceneBounds.extents );
+            
+            PreProcessScene();
+        }
+
+        void PreProcessScene()
+        {
+            if( EnemyRandomizer.Instance.CustomEnemies )
+            {
+                if( GameManager.instance.sceneName == "Town" )
+                {
+                    memeEnemy = MemeController.CreateMemeEnemy();
+                }
+            }
+
+            //get the battle controls by checking the FSMS 
+            foreach( PlayMakerFSM pfsm in GameObject.FindObjectsOfType<PlayMakerFSM>())
+            {
+                if( pfsm == null )
+                    continue;
+
+                if( battleControls.Contains( pfsm.gameObject ) )
+                    continue;
+
+                PlayMakerFSM playMakerFSM = FSMUtility.LocateFSM(pfsm.gameObject, "Battle Control");
+                if( playMakerFSM != null )
+                {
+                    battleControls.Add( playMakerFSM.gameObject );
+                }
+            }            
+        }
         
         IEnumerator DoLocateAndRandomizeEnemies()
         {
@@ -454,97 +323,10 @@ namespace EnemyRandomizerMod
                 }
             }
 
-            //TODO: move into a precalculate scene function
             while( sceneBoundry.Count <= 0 )
             {
-                calculateBounds = true;
-                //iterate over the loaded scenes
-                for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
-                {
-                    Scene loadedScene = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
-
-                    if( !loadedScene.IsValid() )
-                        continue;
-
-                    int buildIndex = loadedScene.buildIndex;
-
-                    //load our custom enemies for a scene here (TODO: move into a function)
-                    if( EnemyRandomizer.Instance.CustomEnemies )
-                    {
-                        if( loadedScene.name == "Town" )
-                        {
-                            CreateMemeEnemy();
-                        }
-                    }
-
-                    //iterate over the loaded game objects
-                    GameObject[] rootGameObjects = loadedScene.GetRootGameObjects();
-
-                    foreach( GameObject rootGameObject in rootGameObjects )
-                    {
-                        yield return true;
-                        //and their children
-                        if( rootGameObject == null )
-                        {
-                            Dev.Log( "Scene " + i + " has a null root game object! Skipping scene..." );
-                            break;
-                        }
-
-                        if( rootGameObject.name == EnemyRandomizer.Instance.ModRoot.name )
-                        {
-                            continue;
-                        }
-
-                        if( rootGameObject.name.IsSkipRootString() )
-                            continue;
-
-                        int counter = 0;
-                        foreach( Transform t in rootGameObject.GetComponentsInChildren<Transform>( true ) )
-                        {
-                            if( t.gameObject == null )
-                                break;
-
-                            if( sceneBoundry == null )
-                                break;
-
-                            if( t.gameObject.name.Contains( "SceneBorder" ) && !sceneBoundry.Contains( t.gameObject ) )
-                                sceneBoundry.Add( t.gameObject );
-
-                            //CheckAndDisableSoftlockGates( t.gameObject );
-                            CheckAndAddBattleControls( t.gameObject );
-
-                            counter++;
-                            string name = t.gameObject.name;
-
-                            if( counter % 500 == 0 )
-                                yield return true;
-                        }
-                    }
-                    
-                }
                 yield return true;
             }
-
-            if( calculateBounds )
-            {
-                List<GameObject> xList = sceneBoundry.Select(x=>x).OrderBy(x=>x.transform.position.x).ToList();
-                List<GameObject> yList = sceneBoundry.Select(x=>x).OrderBy(x=>x.transform.position.y).ToList();
-
-                sceneBounds = new UnityEngine.Bounds
-                {
-                    min = new Vector3( xList[ 0 ].transform.position.x, yList[ 0 ].transform.position.y, -10f ),
-                    max = new Vector3( xList[ xList.Count - 1 ].transform.position.x, yList[ yList.Count - 1 ].transform.position.y, 10f )
-                };
-
-                Dev.Log( "Bounds created with dimensions" );
-                Dev.Log( "min " + sceneBounds.min );
-                Dev.Log( "max " + sceneBounds.max );
-                Dev.Log( "center " + sceneBounds.center );
-                Dev.Log( "extents " + sceneBounds.extents );
-
-                calculateBounds = false;
-            }
-
 
             foreach( HealthManager ho in GameObject.FindObjectsOfType<HealthManager>() )
             {
@@ -573,7 +355,8 @@ namespace EnemyRandomizerMod
                 if( !sceneBounds.Contains( ho.transform.position ) )
                 {
                     //kill rando enemies that get outside the scene bounds
-                    if( name.Contains( "Rando" ) && !name.Contains( "Replaced" ) )
+                    //TODO: test, don't kill jar collector
+                    if( name.Contains( "Rando" ) && !name.Contains( "Replaced" ) && !name.Contains("Jar Collector") )
                     {
                         Dev.Log( "Sending force kill for out of scene to " + ho.gameObject.name );
                         ho.Die( null, AttackTypes.Splatter, true );
@@ -599,147 +382,13 @@ namespace EnemyRandomizerMod
                 {
                     RandomizeEnemy( potentialEnemy );
                     yield return true;
-                    //Dev.Log( "FINISHED RANDOMIZING: " + ho.name );
-                    //float delay = 10f;
-                    //while( delay > 0f )
-                    //{
-                    //    delay -= Time.deltaTime;
-                    //    yield return true;
-                    //}
-                    //Dev.Log( "DELAY DONE - ONTO NEXT" );
                 }
             }
 
-            //iterate over the loaded scenes
-            //for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
-            //{
-            //    Scene sceneAti = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
-
-            //    //iterate over the loaded game objects
-            //    GameObject[] rootGameObjects = sceneAti.GetRootGameObjects();
-
-            //    foreach( GameObject rootGameObject in rootGameObjects )
-            //    {
-            //        //and their children
-            //        if( rootGameObject == null )
-            //        {
-            //            Dev.Log( "Scene " + i + " has a null root game object! Skipping scene..." );
-            //            break;
-            //        }
-
-            //        //skip our mod root
-            //        if( rootGameObject.name == EnemyRandomizer.Instance.ModRoot.name )
-            //            continue;
-
-            //        if( rootGameObject.name.IsSkipRootString() )
-            //            continue;
-
-            //        int counter = 0;
-            //        foreach( Transform t in rootGameObject.GetComponentsInChildren<Transform>( true ) )
-            //        {
-            //            if( t.gameObject == null )
-            //                break;
-
-            //            counter++;
-            //            string name = t.gameObject.name;
-
-            //            //kill rando enemies that get outside the scene bounds
-            //            if( name.Contains( "Rando" ) && !name.Contains( "Replaced" ) )
-            //            {
-            //                if( !sceneBounds.Contains( t.position ) )
-            //                {
-            //                    Dev.Log( "Sending force kill for out of scene to " + name );
-            //                    if( t.gameObject.GetEnemyHealthManager() != null )
-            //                        t.gameObject.GetEnemyHealthManager().Die( null, AttackTypes.Splatter, true );// SendEvent( "INSTA KILL" );
-            //                    //if( t.gameObject.GetEnemyFSM() != null )
-            //                    //    t.gameObject.GetEnemyFSM().SendEvent( "INSTA KILL" );
-            //                }
-            //                continue;
-            //            }
-
-            //            //TODO: test fix for weird behavior in shrumal ogre arena
-            //            if( name.Contains( "Cap Hit" ) )
-            //            {
-            //                GameObject.Destroy( t.gameObject );
-            //                continue;
-            //            }
-
-            //            //if( name.Contains( "Battle Gate" ) )
-            //            //{
-            //            //    GameObject.Destroy( t.gameObject );
-            //            //    continue;
-            //            //}
-
-            //            if( counter % 500 == 0 )
-            //                yield return true;
-
-            //            //don't replace null/destroyed game objects
-            //            if( t == null || t.gameObject == null )
-            //                continue;
-
-            //            if( !sceneBounds.Contains( t.position ) )
-            //            {
-            //                //Dev.Log( "Skipping " + t.gameObject.name + " Because it is outside the bounds. " + t.position );
-            //                continue;
-            //            }
-
-            //            //don't replace inactive game objects
-            //            if( !t.gameObject.activeInHierarchy )
-            //                continue;
-
-            //            if( name.IsSkipRandomizingString() )
-            //                continue;
-
-            //            //skip child components of randomized enemies
-            //            foreach( Transform p in t.GetComponentsInParent<Transform>( true ) )
-            //            {
-            //                if( p.name.Contains( "Rando" ) )
-            //                    continue;
-            //            }
-
-            //            GameObject potentialEnemy = t.gameObject;
-
-            //            bool isRandoEnemy = potentialEnemy.IsRandomizerEnemy(database.loadedEnemyPrefabNames);
-
-            //            if( EnemyRandomizerDatabase.USE_TEST_SCENES )
-            //            {
-            //                isRandoEnemy = potentialEnemy.IsRandomizerEnemy( database.loadedEnemyPrefabNames );
-            //            }
-
-            //            if( isRandoEnemy && !potentialEnemy.IsEnemyDead() )
-            //                RandomizeEnemy( potentialEnemy );
-            //        }
-
-            //        yield return true;
-            //    }
-            //}
-
-            //Dev.Log( "Updating battle controls" );
-
             yield return null;
 
-            UpdateBattleControls();
-
-            //Dev.Log( "Printing list" );
-            ////if(needsList)
-            //{
-            //    List<GameObject> xList = allObjs.Select(x=>x).OrderBy(x=>x.transform.position.x).ToList();
-            //    List<GameObject> yList = allObjs.Select(x=>x).OrderBy(x=>x.transform.position.y).ToList();
-
-            //    foreach(var g in xList)
-            //    {
-            //        Dev.Log( "X: " + g.transform.position.x + " :::: " + g.name);
-            //    }
-
-            //    foreach( var g in yList )
-            //    {
-            //        Dev.Log( "Y: " + g.transform.position.y + " :::: " + g.name );
-            //    }
-
-            //    needsList = false;
-            //}
-
             randomizerReplacer = null;
+
             yield return false;
         }
 
@@ -756,145 +405,10 @@ namespace EnemyRandomizerMod
             {
                 RandomizeEnemy( potentialEnemy );
 
-                Dev.Log( "FINISHED RANDOMIZING: " + potentialEnemy.name );
+                //Dev.Log( "FINISHED RANDOMIZING: " + potentialEnemy.name );
             }
         }
-
-
-
-
-        //TODO: move into its own class...
-        //parent this to the meme
-        public class MemeController : MonoBehaviour
-        {
-            public BoxCollider2D collider;
-            public GameObject meme;
-
-            float memeCooldown = 10f;
-            int memeLimit = 0;
-
-            List<GameObject> memes = new List<GameObject>();
-
-            private IEnumerator Start()
-            {
-                collider = GetComponent<BoxCollider2D>();
-                meme = gameObject;
-
-                while( collider == null && meme == null )
-                {
-                    yield return null;
-                }
-
-                float timer = 0f;
-                while( true )
-                {
-                    yield return new WaitForEndOfFrame();
-                    timer += Time.deltaTime;
-                    if(timer > memeCooldown)
-                    {
-                        timer = 0f;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
-                    for(int i = 0; i < memes.Count; )
-                    {
-                        if(memes[i] == null)
-                        {
-                            memes.RemoveAt( i );
-                            i = 0;
-                            continue;
-                        }
-
-                        if( ( memes[ i ].transform.position - meme.transform.position ).magnitude > 20f )
-                            memes[ i ].transform.position = meme.transform.position;
-
-                        ++i;
-                    }
-
-                    memeLimit = (2000 - (meme.GetEnemyHP())) / 400;
-
-                    if( memes.Count >= memeLimit )
-                    {
-                        continue;
-                    }
-
-                    int replacementIndex = 0;
-                    GameObject enemyPrefab = EnemyRandomizerLogic.Instance.GetEnemyTypePrefab("Super Spitter", ref replacementIndex);
-                    if( enemyPrefab == null )
-                        continue;
-
-                    //Vector3 position = new Vector3(226.4f, 10.0f, 0.0f);
-                    Vector3 position = meme.transform.position;// + (Vector3)GameRNG.Rand(Vector2.one * -5f, Vector2.one * 5f);
-                    GameObject newEnemy = EnemyRandomizerLogic.Instance.PlaceEnemy( enemyPrefab, enemyPrefab, replacementIndex, position );
-
-                    newEnemy.name = "Rando Sub Enemy: Super Spitter";
-
-                    memes.Add( newEnemy );
-                }
-
-                yield break;
-            }
-
-            private void OnTriggerEnter2D( Collider2D collision )
-            {
-            }
-        }
-
-        void CreateMemeEnemy()
-        {
-            if( simulateReplacement )
-            {
-                Dev.Log( "Simulating meme " );
-                return;
-            }
-
-            if( GameObject.Find( "Rando Custom: Super Spitter" ) != null )
-                return;
-
-            int replacementIndex = 0;
-                        
-            GameObject enemyPrefab = GetEnemyTypePrefab("Super Spitter", ref replacementIndex);
-            if( enemyPrefab == null )
-                return;
-
-            Dev.Log( "Creating meme " );
-
-            Vector3 position = new Vector3(226.4f, 10.0f, 0.0f);
-            //Vector3 position = new Vector3(126.4f, 20.0f, 0.0f);
-            GameObject newEnemy = PlaceEnemy( enemyPrefab, enemyPrefab, replacementIndex, position );
-
-            memeEnemy = newEnemy;
-
-            newEnemy.name = "Rando Custom: Super Spitter";
-            newEnemy.SetEnemyGeoRates( 100, 75, 50 );
-
-            newEnemy.transform.localScale = new Vector3( 3.2f, 3.2f, 3.2f );
-            newEnemy.SetEnemyHP( 2000 );
-
-            newEnemy.AddComponent<MemeController>();
-
-            //TODO: copy the roar FSM from another enemy?
-
-            HutongGames.PlayMaker.Actions.DistanceFly df = newEnemy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.DistanceFly>("Distance Fly","spitter");
-            df.distance.Value *= 1.5f;
-            df.acceleration.Value *= 8f;
-            df.speedMax.Value *= 200f;
-
-            HutongGames.PlayMaker.Actions.FireAtTarget fa = newEnemy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.FireAtTarget>("Fire","spitter");
-            fa.speed.Value *= 2.24f;
-
-            GameObject bullet = newEnemy.FindGameObjectInChildren( "BulletSprite (1)" );
-            bullet.transform.localScale = Vector3.one * 3.2f;
-
-            //DebugOnWake d = EnemyRandomizerLoader.Instance.AddDebugOnWake(newEnemy);
-            //d.monitorFSMStates = false;
-
-            //newEnemy.PrintSceneHierarchyTree( true );
-        }
-
+        
 
         //TODO: change to return by ref?
         public GameObject CreateEnemy(string name, Vector3 position)
@@ -999,11 +513,25 @@ namespace EnemyRandomizerMod
 
             oldEnemy.gameObject.name = "Rando Replaced Enemy: " + oldEnemy.gameObject.name;
 
+            //hook up the old enemy's battle scene to the new enemy replacement
+            HealthManager oldHM = oldEnemy.GetComponent<HealthManager>();
+            HealthManager newHM = newEnemy.GetComponent<HealthManager>();
+            if(oldHM != null && newHM != null)
+            {
+                FieldInfo fi = oldHM.GetType().GetField("battleScene",BindingFlags.NonPublic|BindingFlags.Instance);
+                if( fi != null )
+                {
+                    GameObject battleScene = fi.GetValue(oldHM) as GameObject;
+                    if( battleScene != null )
+                        fi.SetValue( newHM, battleScene ); 
+                }
+            }
+
 
             //put replaced enemies in a "box of doom"
             //when tied enemy is kiled, kill the replaced enemy in the box
             Dev.Log( "Adding replacement pair: " + oldEnemy.gameObject.name + " replaced by " + newEnemy.gameObject.name );
-            replacements.Add( new ReplacementPair() { original = oldEnemy, replacement = newEnemy } );
+            //replacements.Add( new ReplacementPair() { original = oldEnemy, replacement = newEnemy } );
 
             //TODO: remove this 
             //newEnemy.PrintSceneHierarchyTree(true);
@@ -1052,8 +580,9 @@ namespace EnemyRandomizerMod
             Collider2D newC = newEnemy.GetComponent<Collider2D>();
             Collider2D oldC = oldEnemy.GetComponent<Collider2D>();
             
+            //TODO: create a settings bool for silly scaling
             //new scale logic, compare the size of the colliders and adjust the scale by the ratios
-            if(newC != null && oldC != null)
+            if(false && newC != null && oldC != null)
             {
                 //bounds returns null on colliders of uninstantiated and unactivated game objects
                 //so we need to determine the type of collider manually by downcasting and then query its bounds by hand
@@ -1097,19 +626,41 @@ namespace EnemyRandomizerMod
             else
             {
                 //adjust big enemies that replace small enemies
-                if( GetTypeSize( GetTypeFlags( newEnemy ) ) == FLAGS.BIG && GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.SMALL )
+                if( ( GetTypeFlags( newEnemy ) & FLAGS.BIG ) > 0 && ( GetTypeFlags( oldEnemy ) & FLAGS.BIG ) > 0 )
+                {
+                    newEnemy.transform.localScale = newEnemy.transform.localScale * 1f;
+                }
+                else if( ( GetTypeFlags( newEnemy ) & FLAGS.BIG ) > 0 && ( GetTypeFlags( oldEnemy ) & FLAGS.MED ) > 0 )
                 {
                     newEnemy.transform.localScale = newEnemy.transform.localScale * .5f;
                 }
-
-                if( GetTypeSize( GetTypeFlags( newEnemy ) ) == FLAGS.BIG && GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.MED )
+                else if( (GetTypeFlags( newEnemy ) & FLAGS.BIG) > 0 && (GetTypeFlags( oldEnemy ) & FLAGS.SMALL) > 0 )
                 {
-                    newEnemy.transform.localScale = newEnemy.transform.localScale * .7f;
+                    newEnemy.transform.localScale = newEnemy.transform.localScale * .25f;
                 }
-
-                if( GetTypeSize( GetTypeFlags( newEnemy ) ) == FLAGS.MED && GetTypeSize( GetTypeFlags( oldEnemy ) ) == FLAGS.SMALL )
+                else if( ( GetTypeFlags( newEnemy ) & FLAGS.MED ) > 0 && ( GetTypeFlags( oldEnemy ) & FLAGS.BIG ) > 0 )
                 {
-                    newEnemy.transform.localScale = newEnemy.transform.localScale * .75f;
+                    newEnemy.transform.localScale = newEnemy.transform.localScale * 1.5f;
+                }
+                else if( ( GetTypeFlags( newEnemy ) & FLAGS.MED ) > 0 && ( GetTypeFlags( oldEnemy ) & FLAGS.MED ) > 0 )
+                {
+                    newEnemy.transform.localScale = newEnemy.transform.localScale * 1f;
+                }
+                else if( ( GetTypeFlags( newEnemy ) & FLAGS.MED ) > 0 && ( GetTypeFlags( oldEnemy ) & FLAGS.SMALL ) > 0 )
+                {
+                    newEnemy.transform.localScale = newEnemy.transform.localScale * .5f;
+                }
+                else if( ( GetTypeFlags( newEnemy ) & FLAGS.SMALL ) > 0 && ( GetTypeFlags( oldEnemy ) & FLAGS.BIG ) > 0 )
+                {
+                    newEnemy.transform.localScale = newEnemy.transform.localScale * 2.0f;
+                }
+                else if( ( GetTypeFlags( newEnemy ) & FLAGS.SMALL ) > 0 && ( GetTypeFlags( oldEnemy ) & FLAGS.MED ) > 0 )
+                {
+                    newEnemy.transform.localScale = newEnemy.transform.localScale * 1.5f;
+                }
+                else if( ( GetTypeFlags( newEnemy ) & FLAGS.SMALL ) > 0 && ( GetTypeFlags( oldEnemy ) & FLAGS.SMALL ) > 0 )
+                {
+                    newEnemy.transform.localScale = newEnemy.transform.localScale * 1f;
                 }
 
                 if( newEnemy.name.Contains( "Mawlek Turret" ) )
@@ -1145,9 +696,46 @@ namespace EnemyRandomizerMod
                 }
             }
 
+            if( newEnemy.name == "Jar Collector" )
+            {
+                {//Keep the collector from jumping out of the scene
+                    List<FloatCompare> actions = newEnemy.GetFSMActionsOnStates<FloatCompare>( new List<string>() { "Jump" }, "Control" );
+                    foreach( var a in actions )
+                    {
+                        a.float2 = sceneBounds.max.y - 26f;
+                    }
+                }
+                {//Keep the collector from jumping out of the scene
+                    List<RandomFloat> actions = newEnemy.GetFSMActionsOnStates<RandomFloat>( new List<string>() { "Spawn", "Return Antic" }, "Control" );
+                    foreach( var a in actions )
+                    {
+                        a.min = newEnemy.transform.position.x - 10f;
+                        a.max = newEnemy.transform.position.x + 10f;
+                    }
+                }
+            }
+
             //TEST
             if(newEnemy.name == "Mage Lord" || newEnemy.name == "Dream Mage Lord")
             {
+                {//
+                    List<SetFloatValue> actions = newEnemy.GetFSMActionsOnStates<SetFloatValue>( new List<string>() { "Set Entry Point" }, "Mage Lord" );
+                    actions[ 0 ].floatValue = newEnemy.transform.position.y;
+                    actions[ 1 ].floatValue = newEnemy.transform.position.x;
+                    actions[ 2 ].floatValue = newEnemy.transform.position.y;
+                    //foreach( var a in actions )
+                    //{
+                    //    a.floatValue = newEnemy.transform.position.y + 20f;
+                    //}
+                }
+                {//
+                    List<FloatCompare> actions = newEnemy.GetFSMActionsOnStates<FloatCompare>( new List<string>() { "Set Entry Point" }, "Mage Lord" );
+                    actions[ 0 ].float2 = -100f;
+                    //foreach( var a in actions )
+                    //{
+                    //    a.floatValue = newEnemy.transform.position.y + 20f;
+                    //}
+                }
                 {//Tele Top Y
                     List<SetFloatValue> actions = newEnemy.GetFSMActionsOnStates<SetFloatValue>( new List<string>() { "Tele Top Y" }, "Mage Lord" );
                     foreach( var a in actions )
@@ -1190,33 +778,6 @@ namespace EnemyRandomizerMod
             //TODO: store this value off in our mod and set it to true in the scenes that care about it... but for now....
             if(newEnemy.name.Contains( "Mega Zombie Beam Miner" ) ) 
             {
-                //HeroController.instance.playerData.SetBoolInternal( "killedMegaBeamMiner", false );
-                //PersistentBoolItem pbi = newEnemy.GetComponent<PersistentBoolItem>();
-                //if( pbi != null )
-                //{
-                //    pbi.semiPersistent = true;
-                //    //pbi.persistentBoolData.activated = true;
-                //    pbi.persistentBoolData.sceneName = currentScene;
-                //}
-
-                //fix the GetAngleToTarget2D actions
-                //{
-                //    PlayMakerFSM fsm = FSMUtility.LocateFSM(newEnemy,"Beam Miner");
-                //    //fix the targetting angle
-                //    List<GetAngleToTarget2D> actions = newEnemy.GetFSMActionsOnStates<GetAngleToTarget2D>( new List<string>(){"Aim Left", "Aim Right", "Aim"},"Beam Miner");
-                //    foreach(var a in actions)
-                //    {
-                //        HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsm.Fsm.GameObject);
-                //        HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
-
-                //        HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
-                //        goTarget.GameObject = goa;
-                //        goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
-                //        a.gameObject = goTarget;
-                //        a.target = gob;
-                //    }
-                //}
-
                 //fix the targetting source?
                 {
                     List<GetPosition> actions = newEnemy.GetFSMActionsOnStates<GetPosition>( new List<string>(){"Aim Left", "Aim Right", "Aim"},"Beam Miner");
@@ -1276,24 +837,6 @@ namespace EnemyRandomizerMod
                     }
                 }
             }
-            //if( newEnemy.name.Contains( "Garden Zombie" ) )
-            //{
-            //    //HeroController.instance.playerData.SetBoolInternal( "killedMegaBeamMiner", false );
-            //    PersistentBoolItem pbi = newEnemy.GetComponent<PersistentBoolItem>();
-            //    if( pbi != null )
-            //    {
-            //        pbi.semiPersistent = true;
-            //        //pbi.persistentBoolData.activated = true;
-            //        pbi.persistentBoolData.sceneName = currentScene;
-            //    }
-
-            //    foreach(PlayMakerFSM p in newEnemy.GetComponents<PlayMakerFSM>())
-            //    {
-            //        p.Preprocess();
-            //    }
-
-            //    //FSMUtility.LocateFSM( newEnemy, "attack_range_detect" ).Preprocess();
-            //}
             //if( newEnemy.name == "Mage" )
             //{
             //    //TODO: modify the teleplanes?
@@ -1956,7 +1499,7 @@ namespace EnemyRandomizerMod
             return false;
         }
 
-        GameObject GetEnemyTypePrefab( string enemyTypeName, ref int randomReplacementIndex )
+        public GameObject GetEnemyTypePrefab( string enemyTypeName, ref int randomReplacementIndex )
         {
             string enemyName = enemyTypeName;
             string trimmedName = enemyName.TrimGameObjectName();
@@ -1982,7 +1525,7 @@ namespace EnemyRandomizerMod
         }
 
 
-        GameObject PlaceEnemy( GameObject oldEnemy, GameObject replacementPrefab, int prefabIndex, Vector3 pos )
+        public GameObject PlaceEnemy( GameObject oldEnemy, GameObject replacementPrefab, int prefabIndex, Vector3 pos )
         {
             GameObject newEnemy = InstantiateEnemy(replacementPrefab,oldEnemy);
 
@@ -2028,29 +1571,18 @@ namespace EnemyRandomizerMod
 
             //check to see if this enemy is allowed in this scene and do some special logic depending...
             //TODO: refactor this into a function
-            for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
+            if( GameManager.instance.GetCurrentMapZone() == "COLOSSEUM" )
             {
-                Scene loadedScene = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
-
-                if( !loadedScene.IsValid() )
-                    continue;
-
-                string sceneName = loadedScene.name;
-
-                if( sceneName.Contains( "Colosseum" ) )
+                if( trimmedName.Contains( "Ceiling Dropper" ) )
                 {
-                    if( trimmedName.Contains( "Ceiling Dropper" ) )
-                    {
-                        //remove wall type
-                        enemyFlags &= ~FLAGS.WALL;
+                    //remove wall type
+                    enemyFlags &= ~FLAGS.WALL;
 
-                        //add flying type, this will causing ceiling droppers in the colosseum to become random flying enemies
-                        //and hopefully avoid a softlock
-                        enemyFlags |= FLAGS.FLYING;
-                    }
+                    //add flying type, this will causing ceiling droppers in the colosseum to become random flying enemies
+                    //and hopefully avoid a softlock
+                    enemyFlags |= FLAGS.FLYING;
                 }
             }
-
 
 
             //if not set, enemy replacements will be completely random
@@ -2091,6 +1623,11 @@ namespace EnemyRandomizerMod
                 string tempName = database.loadedEnemyPrefabNames[temp];
 
                 Dev.Log( "Attempted replacement index: " + temp + " which is " + tempName );
+                
+                //this one is broken for now....
+                if( tempName.Contains( "Hatcher Baby" ) )
+                    continue;
+
                 Dev.Log( " with prefab name " + tempPrefab.name );
 
                 int tempFlags = GetTypeFlags(tempName);
@@ -2113,6 +1650,9 @@ namespace EnemyRandomizerMod
                 if( tempName == "Ceiling Dropper Col" )
                     isValid = false;
 
+                if( tempName == "Pigeon" )
+                    isValid = false;
+
                 //if you have the void charm, shade siblings are no longer enemies
                 if( HeroController.instance.playerData.royalCharmState > 2 )
                 {
@@ -2132,12 +1672,21 @@ namespace EnemyRandomizerMod
                     Dev.Log( "(wrong type of mawlek turret)." );
                 }
 
-                if( battleControls.Count > 0 )
+
+                if( GameManager.instance.GetCurrentMapZone() == "COLOSSEUM" )
                 {
-                    if( IsArenaExluded( GetTypeFlags( tempName ) ) )
-                    {
+                    if( EnemyRandomizerDatabase.excludeFromColosseum.Contains( tempName ) )
                         isValid = false;
-                        Dev.Log( "(Enemy not allowed in battle arena zones)." );
+                }
+                else
+                {
+                    if( battleControls.Count > 0 )
+                    {
+                        if( IsArenaExluded( GetTypeFlags( tempName ) ) )
+                        {
+                            isValid = false;
+                            Dev.Log( "(Enemy not allowed in battle arena zones)." );
+                        }
                     }
                 }
 
@@ -2219,135 +1768,3 @@ namespace EnemyRandomizerMod
         }
     }
 }
-
-
-
-//T CopyComponent<T>( T original, GameObject destination ) where T : Component
-//{
-//    System.Type type = original.GetType();
-//    var dst = destination.GetComponent(type) as T;
-//    if( !dst ) dst = destination.AddComponent( type ) as T;
-//    var fields = type.GetFields();
-//    foreach( var field in fields )
-//    {
-//        if( field.IsStatic ) continue;
-//        field.SetValue( dst, field.GetValue( original ) );
-//    }
-//    var props = type.GetProperties();
-//    foreach( var prop in props )
-//    {
-//        if( !prop.CanWrite || !prop.CanWrite || prop.Name == "name" ) continue;
-//        prop.SetValue( dst, prop.GetValue( original, null ), null );
-//    }
-//    return dst as T;
-//}
-
-
-//public void TryFixPlayMakerFSM( GameObject newEnemy, Component c )
-//{
-//    try
-//    {
-
-
-
-
-
-//        ////TODO: clean this up to use the new functions i made for getting actions and states....
-//        //PlayMakerFSM fsm = c as PlayMakerFSM;
-//        //if( fsm != null )
-//        //{
-//        //    foreach( var s in fsm.FsmStates )
-//        //    {
-//        //        foreach( var a in s.Actions )
-//        //        {
-//        //            if( a is HutongGames.PlayMaker.Actions.GetAngleToTarget2D ga2d )
-//        //            {
-//        //            }
-
-//        //            //HutongGames.PlayMaker.Actions.GetColliderRange gcr = a as HutongGames.PlayMaker.Actions.GetColliderRange;
-//        //            //if( gcr != null )
-//        //            //{
-//        //            //    if( gcr.gameObject == null )
-//        //            //    {
-//        //            //        Dev.Log( "TESTING PLAYMAKER FIX GetColliderRange" );
-//        //            //        PlayMakerFSM fsmProxy = ( c as PlayMakerFSM );
-//        //            //        //if( fsmProxy == null )
-//        //            //        //{
-//        //            //        //    continue;
-//        //            //        //}
-
-//        //            //        //testing...
-//        //            //        HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
-//        //            //        goTarget.GameObject = fsmProxy.Fsm.GameObject;
-//        //            //        goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
-//        //            //        //HutongGames.PlayMaker.FsmEventTarget fsmEventTarget = new HutongGames.PlayMaker.FsmEventTarget();
-//        //            //        //fsmEventTarget.excludeSelf = false;
-//        //            //        //fsmEventTarget.target = HutongGames.PlayMaker.FsmEventTarget.EventTarget.GameObject;
-//        //            //        //fsmEventTarget.gameObject = goTarget;
-//        //            //        //fsmEventTarget.sendToChildren = false;
-
-//        //            //        gcr.gameObject = goTarget;
-//        //            //        Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
-//        //            //    }
-//        //            //}
-
-//        //            //HutongGames.PlayMaker.Actions.ChaseObjectV2 doc = a as HutongGames.PlayMaker.Actions.ChaseObjectV2;
-//        //            //if( doc != null )
-//        //            //{
-//        //            //    Dev.Log( "TESTING PLAYMAKER FIX ChaseObjectV2" );
-//        //            //    //if( doc.target != null )
-//        //            //    //    continue;
-
-//        //            //    HutongGames.PlayMaker.FsmGameObject go = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
-
-//        //            //    doc.target = go;
-//        //            //    Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
-//        //            //}
-
-
-//        //            //HutongGames.PlayMaker.Actions.FaceObject fo = a as HutongGames.PlayMaker.Actions.FaceObject;
-//        //            //if( fo != null )
-//        //            //{
-//        //            //    Dev.Log( "TESTING PLAYMAKER FIX FaceObject" );
-//        //            //    //if( fo.objectA != null )
-//        //            //    //    continue;
-
-//        //            //    PlayMakerFSM fsmProxy = ( c as PlayMakerFSM );
-//        //            //    HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsmProxy.Fsm.GameObject);
-//        //            //    HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
-
-//        //            //    fo.objectA = goa;
-//        //            //    fo.objectB = gob;
-//        //            //    Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
-//        //            //}
-
-
-//        //            //HutongGames.PlayMaker.Actions.CheckTargetDirection ctd = a as HutongGames.PlayMaker.Actions.CheckTargetDirection;
-//        //            //if( ctd != null )
-//        //            //{
-//        //            //    Dev.Log( "TESTING PLAYMAKER FIX CheckTargetDirection" );
-//        //            //    //if( ctd.target != null )
-//        //            //    //    continue;
-
-//        //            //    PlayMakerFSM fsmProxy = ( c as PlayMakerFSM );
-//        //            //    HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsmProxy.Fsm.GameObject);
-//        //            //    HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
-
-//        //            //    HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
-//        //            //    goTarget.GameObject = goa;
-//        //            //    goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
-//        //            //    ctd.gameObject = goTarget;
-//        //            //    ctd.target = gob;
-//        //            //    Dev.Log( "ENDG TESTING PLAYMAKER FIX" );
-//        //            //}
-
-
-//        //        }
-//        //    }
-//        //}
-//    }
-//    catch( Exception e )
-//    {
-//        Dev.Log( "Exception:" + e.Message );
-//    }
-//}

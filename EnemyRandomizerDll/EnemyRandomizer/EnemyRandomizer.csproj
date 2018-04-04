@@ -33,7 +33,7 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>K:\Games\SteamApps\common\Hollow Knight\hollow_knight_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="PlayMaker, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -61,6 +61,7 @@
     <Compile Include="Common\Dev.cs" />
     <Compile Include="Common\DevLog.cs" />
     <Compile Include="Components\DebugOnWake.cs" />
+    <Compile Include="Components\MemeController.cs" />
     <Compile Include="Components\WakeUpMageKnight.cs" />
     <Compile Include="EnemyRandomizerDatabase.cs" />
     <Compile Include="EnemyRandomizer.cs" />

@@ -126,8 +126,17 @@ namespace EnemyRandomizerMod
                         database.loadedEnemyPrefabNames.Add( name );
                         Dev.Log( "Adding enemy type: " + prefab.name + " to list with search string " + name );
                     }//end if-enemy
-                    else
+                }//iterate over resources
+
+                //iterate over the the game objects in the scene
+                foreach(GameObject rootGo in sceneToLoad.GetRootGameObjects())
+                {
+                    foreach( Transform t in rootGo.GetComponentsInChildren<Transform>() )
                     {
+                        string name = t.gameObject.name;
+
+                        name = name.TrimGameObjectName();
+
                         bool isInLoadedEffectList = database.loadedEffectPrefabs.ContainsKey( name );
                         if( isInLoadedEffectList )
                             continue;
@@ -136,7 +145,7 @@ namespace EnemyRandomizerMod
                         if( !isInEffectList )
                             continue;
 
-                        GameObject effectPrefab = go.gameObject;
+                        GameObject effectPrefab = t.gameObject;
                         GameObject.DontDestroyOnLoad( effectPrefab );
                         effectPrefab.transform.SetParent( root.transform );
 
@@ -145,9 +154,10 @@ namespace EnemyRandomizerMod
 
                         database.loadedEffectPrefabs.Add( name, effectPrefab );
                         Dev.Log( "Adding enemy effect: " + effectPrefab.name + " to loaded effect list with key " + name );
+                        break;
                     }
-                }//iterate over resources
-            }//iterate over all LOADED scenes            
+                }//iterate over the game objects in the scene
+            }//iterate over all LOADED scenes       
         }//end LoadSceneData()
 
         GameObject ModifyGameObjectPrefab( GameObject randoPrefab, string name )
@@ -169,6 +179,15 @@ namespace EnemyRandomizerMod
                 if( pbi != null )
                 {
                     GameObject.Destroy( pbi );
+                }
+            }
+
+            //remove this, because it can deactivate some enemies....
+            {
+                DeactivateIfPlayerdataTrue toRemove = modifiedPrefab.GetComponent<DeactivateIfPlayerdataTrue>();
+                if( toRemove != null )
+                {
+                    GameObject.Destroy( toRemove );
                 }
             }
 
