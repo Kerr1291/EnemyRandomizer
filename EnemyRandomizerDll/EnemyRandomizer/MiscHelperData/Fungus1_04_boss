@@ -44,6 +44,12 @@ Dreamer Scene 1
  \----PFSM ---- CreateObject (networkInstantiate) = False
  \----PFSM ---- CreateObject (spawnPoint) = None
  \----PFSM ---- CreateObject (storeObject) = Cutscene Dreamer(Clone)
+ \----PFSM ---- SetFsmString (Name) = 
+ \----PFSM ---- SetFsmString (GameObject) = Cutscene Dreamer(Clone)
+ \----PFSM ---- SetFsmString (OwnerOption) = SpecifyGameObject
+ \----PFSM ---- SetFsmString (fsmName) = Control
+ \----PFSM ---- SetFsmString (variableName) = Name
+ \----PFSM ---- SetFsmString (setValue) = Hegemol
  \----PFSM ---- CreateObject (Name) = 
  \----PFSM ---- CreateObject (gameObject?.Name) = 
  \----PFSM ---- CreateObject (position) = (44.3, -2.9, 0.0)
@@ -52,6 +58,12 @@ Dreamer Scene 1
  \----PFSM ---- CreateObject (networkInstantiate) = False
  \----PFSM ---- CreateObject (spawnPoint) = None
  \----PFSM ---- CreateObject (storeObject) = Cutscene Dreamer(Clone)
+ \----PFSM ---- SetFsmString (Name) = 
+ \----PFSM ---- SetFsmString (GameObject) = Cutscene Dreamer(Clone)
+ \----PFSM ---- SetFsmString (OwnerOption) = SpecifyGameObject
+ \----PFSM ---- SetFsmString (fsmName) = Control
+ \----PFSM ---- SetFsmString (variableName) = Name
+ \----PFSM ---- SetFsmString (setValue) = Lurien
  \----PFSM ---- CreateObject (Name) = 
  \----PFSM ---- CreateObject (gameObject?.Name) = 
  \----PFSM ---- CreateObject (position) = (39.9, 1.0, 0.0)
@@ -60,6 +72,12 @@ Dreamer Scene 1
  \----PFSM ---- CreateObject (networkInstantiate) = False
  \----PFSM ---- CreateObject (spawnPoint) = None
  \----PFSM ---- CreateObject (storeObject) = Cutscene Dreamer(Clone)
+ \----PFSM ---- SetFsmString (Name) = 
+ \----PFSM ---- SetFsmString (GameObject) = Cutscene Dreamer(Clone)
+ \----PFSM ---- SetFsmString (OwnerOption) = SpecifyGameObject
+ \----PFSM ---- SetFsmString (fsmName) = Control
+ \----PFSM ---- SetFsmString (variableName) = Name
+ \----PFSM ---- SetFsmString (setValue) = Monomon
  \----PFSM StateName: Inert
  \----PFSM StateName: Idle
  \----PFSM ---- Transitions for state: Transition on ENTER to state Take Control
@@ -79,6 +97,7 @@ Dreamer Scene 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = Hero
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = FSM CANCEL
  \----PFSM StateName: Blast
  \----PFSM ---- Transitions for state: Transition on FINISHED to state Hero Fall
@@ -101,6 +120,20 @@ Dreamer Scene 1
  \----PFSM ---- CreateObject (networkInstantiate) = False
  \----PFSM ---- CreateObject (spawnPoint) = None
  \----PFSM ---- CreateObject (storeObject) = None
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(String, a?.audioClip?.Name) = 
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, ) = Audio Player Actor
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, Hero) = Knight
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0.85
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0.85
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(String, a?.audioClip?.Name) = 
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, ) = Audio Player Actor
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, Hero) = Knight
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0
  \----PFSM ---- GetPosition (Name) = 
  \----PFSM ---- GetPosition (GameObject) = Knight
  \----PFSM ---- GetPosition (OwnerOption) = SpecifyGameObject
@@ -121,6 +154,7 @@ Dreamer Scene 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = CameraParent
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = BigShake
  \----PFSM ---- Tk2dPlayAnimation (Name) = 
  \----PFSM ---- Tk2dPlayAnimation (animLibName) = 
@@ -172,6 +206,13 @@ Dreamer Scene 1
  \----PFSM ---- SetPosition (GameObject) = Cutscene Dreamer(Clone)
  \----PFSM ---- SetPosition (OwnerOption) = SpecifyGameObject
  \----PFSM ---- SetPosition (vector) = (0.0, 0.0, 0.0)
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(String, a?.audioClip?.Name) = 
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, ) = Audio Player Actor
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, Hero) = Knight
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0
  \----PFSM ---- SetScale (Name) = 
  \----PFSM ---- SetScale (GameObject) = Cutscene Dreamer(Clone)
  \----PFSM ---- SetScale (OwnerOption) = SpecifyGameObject
@@ -189,6 +230,7 @@ Dreamer Scene 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = Lurien
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = FORM
  \----PFSM ---- Wait(String, finishEvent) = FINISHED
  \----PFSM ---- Wait(Boolean, realTime) = False
@@ -205,6 +247,7 @@ Dreamer Scene 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = DialogueManager
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = BOX UP DREAM
  \----PFSM ---- Wait(String, finishEvent) = FINISHED
  \----PFSM ---- Wait(Boolean, realTime) = False
@@ -226,6 +269,7 @@ Dreamer Scene 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = DialogueManager
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = BOX DOWN DREAM
  \----PFSM ---- Wait(String, finishEvent) = FINISHED
  \----PFSM ---- Wait(Boolean, realTime) = False
@@ -241,6 +285,13 @@ Dreamer Scene 1
  \----PFSM ---- SetPosition (GameObject) = Cutscene Dreamer(Clone)
  \----PFSM ---- SetPosition (OwnerOption) = SpecifyGameObject
  \----PFSM ---- SetPosition (vector) = (0.0, 0.0, 0.0)
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(String, a?.audioClip?.Name) = 
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, ) = Audio Player Actor
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, Hero) = Knight
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1.15
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1.15
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0
  \----PFSM ---- SetScale (Name) = 
  \----PFSM ---- SetScale (GameObject) = Cutscene Dreamer(Clone)
  \----PFSM ---- SetScale (OwnerOption) = SpecifyGameObject
@@ -258,6 +309,7 @@ Dreamer Scene 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = Monomon
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = FORM
  \----PFSM ---- Wait(String, finishEvent) = FINISHED
  \----PFSM ---- Wait(Boolean, realTime) = False
@@ -273,6 +325,13 @@ Dreamer Scene 1
  \----PFSM ---- SetPosition (GameObject) = Cutscene Dreamer(Clone)
  \----PFSM ---- SetPosition (OwnerOption) = SpecifyGameObject
  \----PFSM ---- SetPosition (vector) = (0.0, 0.0, 0.0)
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(String, a?.audioClip?.Name) = 
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, ) = Audio Player Actor
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, Hero) = Knight
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0.85
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0.85
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0
  \----PFSM ---- SetScale (Name) = 
  \----PFSM ---- SetScale (GameObject) = Cutscene Dreamer(Clone)
  \----PFSM ---- SetScale (OwnerOption) = SpecifyGameObject
@@ -290,6 +349,7 @@ Dreamer Scene 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = Hegemol
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = FORM
  \----PFSM ---- Wait(String, finishEvent) = FINISHED
  \----PFSM ---- Wait(Boolean, realTime) = False
@@ -312,7 +372,15 @@ Dreamer Scene 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = Hegemol
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = CAST
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(String, a?.audioClip?.Name) = 
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, ) = Audio Player Actor
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, Hero) = Knight
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0
  \----PFSM ---- SendEventByName (Name) = 
  \----PFSM ---- SendEventByName (delay) = 0
  \----PFSM ---- SendEventByName (eventTarget?.excludeSelf) = False
@@ -321,6 +389,7 @@ Dreamer Scene 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = Lurien
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = CAST
  \----PFSM ---- SendEventByName (Name) = 
  \----PFSM ---- SendEventByName (delay) = 0
@@ -330,6 +399,7 @@ Dreamer Scene 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = Monomon
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = CAST
  \----PFSM ---- SetFsmBool (Name) = 
  \----PFSM ---- SetFsmBool (GameObject) = CameraParent
@@ -358,6 +428,7 @@ Dreamer Scene 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = HUD Blanker White
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = FADE IN
  \----PFSM ---- Wait(String, finishEvent) = FINISHED
  \----PFSM ---- Wait(Boolean, realTime) = False
@@ -377,6 +448,7 @@ Dreamer Scene 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = 
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = BroadcastAll
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = DREAM AREA DISABLE
  \----PFSM ---- SendEventByName (Name) = 
  \----PFSM ---- SendEventByName (delay) = 0
@@ -386,6 +458,7 @@ Dreamer Scene 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = HUD Blanker White
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = FADE OUT
  \----PFSM ---- Wait(String, finishEvent) = FINISHED
  \----PFSM ---- Wait(Boolean, realTime) = False
@@ -436,6 +509,13 @@ Dreamer Scene 1
  \----PFSM ---- Wait(String, finishEvent) = FINISHED
  \----PFSM ---- Wait(Boolean, realTime) = False
  \----PFSM ---- Wait(FsmFloat, ) = 0.2
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(String, a?.audioClip?.Name) = 
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, ) = Audio Player Actor
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, Hero) = Knight
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0
  \----PFSM StateName: Blast Impact
  \----PFSM ---- Transitions for state: Transition on FINISHED to state Fade Out
  \----PFSM ---- Actions for state: Actions on Blast Impact ::: SpawnObjectFromGlobalPool
@@ -452,6 +532,20 @@ Dreamer Scene 1
  \----PFSM ---- Wait(String, finishEvent) = FINISHED
  \----PFSM ---- Wait(Boolean, realTime) = False
  \----PFSM ---- Wait(FsmFloat, ) = 0.25
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(String, a?.audioClip?.Name) = 
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, ) = Audio Player Actor
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, Hero) = Knight
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(String, a?.audioClip?.Name) = 
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, ) = Audio Player Actor
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, Hero) = Knight
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1.15
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1.15
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0
  \--PFSM Active: True
  \--PFSM ActiveStateName: Idle
  \--Component: PlayMakerFixedUpdate
@@ -592,20 +686,20 @@ Hornet Saver\Colliders
               \--Component: BoxCollider2D
               \--BoxCollider2D Size: (8.0, 20.0)
               \--BoxCollider2D Offset: (11.0, 35.0)
-              \--BoxCollider2D Bounds-Min: (0.0, 0.0, 0.0)
-              \--BoxCollider2D Bounds-Max: (0.0, 0.0, 0.0)
+              \--BoxCollider2D Bounds-Min: (7.0, 25.0, 0.0)
+              \--BoxCollider2D Bounds-Max: (15.0, 45.0, 0.0)
               \--BoxCollider2D isTrigger: False
               \--Component: BoxCollider2D
               \--BoxCollider2D Size: (8.0, 20.0)
               \--BoxCollider2D Offset: (42.0, 35.0)
-              \--BoxCollider2D Bounds-Min: (0.0, 0.0, 0.0)
-              \--BoxCollider2D Bounds-Max: (0.0, 0.0, 0.0)
+              \--BoxCollider2D Bounds-Min: (38.0, 25.0, 0.0)
+              \--BoxCollider2D Bounds-Max: (46.0, 45.0, 0.0)
               \--BoxCollider2D isTrigger: False
               \--Component: BoxCollider2D
               \--BoxCollider2D Size: (27.6, 20.0)
               \--BoxCollider2D Offset: (26.4, 17.0)
-              \--BoxCollider2D Bounds-Min: (0.0, 0.0, 0.0)
-              \--BoxCollider2D Bounds-Max: (0.0, 0.0, 0.0)
+              \--BoxCollider2D Bounds-Min: (12.6, 7.0, 0.0)
+              \--BoxCollider2D Bounds-Max: (40.2, 27.0, 0.0)
               \--BoxCollider2D isTrigger: False
 END +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 START =====================================================
@@ -669,6 +763,7 @@ Dream Scene Activate
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = Battle Gate A
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = BG OPEN
  \--PFSM Active: True
  \--PFSM ActiveStateName: Idle
@@ -725,6 +820,7 @@ Cutscene Dreamer
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = CameraParent
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = AverageShake
  \----PFSM ---- ActivateGameObject (Name) = 
  \----PFSM ---- ActivateGameObject (GameObject) = White Flash
@@ -748,6 +844,7 @@ Cutscene Dreamer
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = CameraParent
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = AverageShake
  \----PFSM ---- ActivateGameObject (Name) = 
  \----PFSM ---- ActivateGameObject (GameObject) = White Flash
@@ -824,7 +921,7 @@ Cutscene Dreamer\Sprite
                   \--Component: Transform
                   \--GameObject layer: 0
                   \--GameObject tag: Untagged
-                  \--Transform Position: (18.9, 34.4, 0.0)
+                  \--Transform Position: (18.9, 34.5, 0.0)
                   \--Transform Rotation: (0.0, 0.0, 0.0)
                   \--Transform LocalScale: (1.6, 1.6, 1.6)
                   \--Component: MeshFilter
@@ -846,7 +943,7 @@ Cutscene Dreamer\Sprite\Idle Pt
                          \--Component: Transform
                          \--GameObject layer: 16
                          \--GameObject tag: Untagged
-                         \--Transform Position: (18.9, 34.0, 0.0)
+                         \--Transform Position: (18.9, 34.1, 0.0)
                          \--Transform Rotation: (0.0, 0.0, 0.0)
                          \--Transform LocalScale: (1.0, 2.3, 1.0)
                          \--Component: ParticleSystem
@@ -1036,6 +1133,9 @@ Hornet Boss 1
  \----PFSM ---- Actions for state: Actions on Init ::: GetOwner
  \----PFSM ---- Actions for state: Actions on Init ::: SetGameObject
  \----PFSM ---- Actions for state: Actions on Init ::: SetGravity2dScale
+ \----PFSM ---- SetGameObject(Boolean, everyFrame) = False
+ \----PFSM ---- SetGameObject(FsmGameObject, Hero) = Knight
+ \----PFSM ---- SetGameObject(FsmGameObject, Hero Obj) = Knight
  \----PFSM ---- SetGravity2dScale (Name) = 
  \----PFSM ---- SetGravity2dScale (gameObject?.GameObject?.Name) = 
  \----PFSM ---- SetGravity2dScale (gravityScale?.Value) = 1.5
@@ -1093,7 +1193,13 @@ Hornet Boss 1
  \----PFSM ---- SendRandomEventV2(String, Event) = IDLE
  \----PFSM ---- SendRandomEventV2(String, Event) = RUN
  \----PFSM ---- SendRandomEventV2(Single, Weight) = 0.5
+ \----PFSM ---- SendRandomEventV2(String, Weight Name) = 
  \----PFSM ---- SendRandomEventV2(Single, Weight) = 0.5
+ \----PFSM ---- SendRandomEventV2(String, Weight Name) = 
+ \----PFSM ---- SendRandomEventV2(Int32, eventMax) = 2
+ \----PFSM ---- SendRandomEventV2(String, eventMax Name) = 
+ \----PFSM ---- SendRandomEventV2(Int32, eventMax) = 2
+ \----PFSM ---- SendRandomEventV2(String, eventMax Name) = 
  \----PFSM ---- WaitRandom(String, finishEvent) = FINISHED
  \----PFSM ---- WaitRandom(Boolean, realTime) = False
  \----PFSM ---- WaitRandom(FsmFloat, Idle Wait Min) = 0.5
@@ -1167,6 +1273,7 @@ Hornet Boss 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = CameraParent
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = EnemyKillShake
  \----PFSM ---- SetBoxCollider2DSizeVector(FsmGameObject, ) = None
  \----PFSM ---- SetBoxCollider2DSizeVector(FsmVector2, Box Off Gdash) = (0.1, -0.8)
@@ -1200,22 +1307,22 @@ Hornet Boss 1
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
  \----PFSM ---- CheckCollisionSideEnter(, bottomHitEvent) = 
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSideEnter(String, bottomHitEvent) = FINISHED
+ \----PFSM ---- CheckCollisionSideEnter(String, leftHitEvent) = FINISHED
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSideEnter(String, bottomHitEvent) = FINISHED
+ \----PFSM ---- CheckCollisionSideEnter(String, rightHitEvent) = FINISHED
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSideEnter(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSideEnter(, topHitEvent) = 
  \----PFSM ---- CheckCollisionSideEnter(Boolean, otherLayer) = False
  \----PFSM ---- CheckCollisionSideEnter(Int32, otherLayerNumber) = 0
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = True
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
  \----PFSM ---- CheckCollisionSide(, bottomHitEvent) = 
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSide(String, bottomHitEvent) = FINISHED
+ \----PFSM ---- CheckCollisionSide(String, leftHitEvent) = FINISHED
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSide(String, bottomHitEvent) = FINISHED
+ \----PFSM ---- CheckCollisionSide(String, rightHitEvent) = FINISHED
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSide(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSide(, topHitEvent) = 
  \----PFSM ---- CheckCollisionSide(Boolean, otherLayer) = False
  \----PFSM ---- CheckCollisionSide(Int32, otherLayerNumber) = 0
  \----PFSM StateName: GDash Recover1
@@ -1373,22 +1480,22 @@ Hornet Boss 1
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
  \----PFSM ---- CheckCollisionSide(String, bottomHitEvent) = LAND
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSide(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSide(, leftHitEvent) = 
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSide(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSide(, rightHitEvent) = 
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSide(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSide(, topHitEvent) = 
  \----PFSM ---- CheckCollisionSide(Boolean, otherLayer) = False
  \----PFSM ---- CheckCollisionSide(Int32, otherLayerNumber) = 0
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
  \----PFSM ---- CheckCollisionSideEnter(String, bottomHitEvent) = LAND
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSideEnter(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSideEnter(, leftHitEvent) = 
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSideEnter(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSideEnter(, rightHitEvent) = 
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSideEnter(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSideEnter(, topHitEvent) = 
  \----PFSM ---- CheckCollisionSideEnter(Boolean, otherLayer) = False
  \----PFSM ---- CheckCollisionSideEnter(Int32, otherLayerNumber) = 0
  \----PFSM ---- GetPosition (Name) = 
@@ -1405,22 +1512,26 @@ Hornet Boss 1
  \----PFSM ---- Wait(String, finishEvent) = AIRDASH
  \----PFSM ---- Wait(Boolean, realTime) = False
  \----PFSM ---- Wait(FsmFloat, Air Dash Pause) = 0
- \----PFSM ---- BoolTest (Name) = 
- \----PFSM ---- BoolTest (equalBool) = False
- \----PFSM ---- BoolTest (everyFrame) = True
- \----PFSM ---- BoolTest (float1) = 0
- \----PFSM ---- BoolTest (float2) = 0
- \----PFSM ---- BoolTest (greaterThanBool) = False
- \----PFSM ---- BoolTest (lessThanBool) = False
- \----PFSM ---- BoolTest (tolerance) = 0
- \----PFSM ---- BoolTest (Name) = 
- \----PFSM ---- BoolTest (equalBool) = False
- \----PFSM ---- BoolTest (everyFrame) = True
- \----PFSM ---- BoolTest (float1) = 0
- \----PFSM ---- BoolTest (float2) = 33.8
- \----PFSM ---- BoolTest (greaterThanBool) = False
- \----PFSM ---- BoolTest (lessThanBool) = False
- \----PFSM ---- BoolTest (tolerance) = 0
+ \----PFSM ---- FloatTestToBool (Name) = 
+ \----PFSM ---- FloatTestToBool (everyFrame) = True
+ \----PFSM ---- FloatTestToBool (float1) = 0
+ \----PFSM ---- FloatTestToBool (float1 Name) = Y Velocity
+ \----PFSM ---- FloatTestToBool (float2) = 0
+ \----PFSM ---- FloatTestToBool (float2 Name) = 
+ \----PFSM ---- FloatTestToBool (greaterThanBool) = False
+ \----PFSM ---- FloatTestToBool (lessThanBool) = False
+ \----PFSM ---- FloatTestToBool (equalBool) = False
+ \----PFSM ---- FloatTestToBool (tolerance) = 0
+ \----PFSM ---- FloatTestToBool (Name) = 
+ \----PFSM ---- FloatTestToBool (everyFrame) = True
+ \----PFSM ---- FloatTestToBool (float1) = 0
+ \----PFSM ---- FloatTestToBool (float1 Name) = Self Y
+ \----PFSM ---- FloatTestToBool (float2) = 33.8
+ \----PFSM ---- FloatTestToBool (float2 Name) = Sphere Y
+ \----PFSM ---- FloatTestToBool (greaterThanBool) = False
+ \----PFSM ---- FloatTestToBool (lessThanBool) = False
+ \----PFSM ---- FloatTestToBool (equalBool) = False
+ \----PFSM ---- FloatTestToBool (tolerance) = 0
  \----PFSM ---- BoolTestMulti (Name) = 
  \----PFSM ---- BoolTestMulti(FsmBool, ) = True
  \----PFSM ---- BoolTestMulti(FsmBool, ) = True
@@ -1490,6 +1601,11 @@ Hornet Boss 1
  \----PFSM ---- RandomFloat (min) = 0.15
  \----PFSM ---- RandomFloat (max) = 0.4
  \----PFSM ---- RandomFloat (storeResult) = 0
+ \----PFSM ---- SetBoolValue (Name) = 
+ \----PFSM ---- SetBoolValue (boolValue) = False
+ \----PFSM ---- SetBoolValue (boolValue?.Name) = 
+ \----PFSM ---- SetBoolValue (boolVariable) = False
+ \----PFSM ---- SetBoolValue (boolVariable?.Name) = Will Sphere
  \----PFSM StateName: ADash Antic
  \----PFSM ---- Transitions for state: Transition on FINISHED to state Fire
  \----PFSM ---- Transitions for state: Transition on CANCEL to state In Air
@@ -1502,10 +1618,17 @@ Hornet Boss 1
  \----PFSM ---- Actions for state: Actions on ADash Antic ::: SetGravity2dScale
  \----PFSM ---- Actions for state: Actions on ADash Antic ::: AudioPlayerOneShot
  \----PFSM ---- BoolTest (Name) = 
- \----PFSM ---- BoolTest (boolVariable) = False
+ \----PFSM ---- BoolTest (boolVariable) = True
  \----PFSM ---- BoolTest (boolVariable?.Name) = A Dash Range
  \----PFSM ---- BoolTest (isFalse) = CANCEL
  \----PFSM ---- BoolTest (isTrue) = 
+ \----PFSM ---- GetAngleToTarget2D(FsmGameObject, ) = None
+ \----PFSM ---- GetAngleToTarget2D(FsmGameObject, Hero Obj) = Knight
+ \----PFSM ---- GetAngleToTarget2D(FsmFloat, Angle) = 0
+ \----PFSM ---- GetAngleToTarget2D(FsmFloat, ) = 0
+ \----PFSM ---- GetAngleToTarget2D(String, offsetX Name) = 
+ \----PFSM ---- GetAngleToTarget2D(FsmFloat, ) = -0.5
+ \----PFSM ---- GetAngleToTarget2D(String, offsetY Name) = 
  \----PFSM ---- SetBoxCollider2DSizeVector(FsmGameObject, ) = None
  \----PFSM ---- SetBoxCollider2DSizeVector(FsmVector2, Box Off Antic) = (1.1, -0.9)
  \----PFSM ---- SetBoxCollider2DSizeVector(FsmVector2, Box Size Antic) = (1.2, 1.4)
@@ -1563,6 +1686,7 @@ Hornet Boss 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = CameraParent
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = EnemyKillShake
  \----PFSM ---- GetPosition (Name) = 
  \----PFSM ---- GetPosition (GameObject) = None
@@ -1970,6 +2094,7 @@ Hornet Boss 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = CameraParent
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = EnemyKillShake
  \----PFSM ---- Tk2dPlayAnimation (Name) = 
  \----PFSM ---- Tk2dPlayAnimation (animLibName) = 
@@ -1998,10 +2123,20 @@ Hornet Boss 1
  \----PFSM ---- SetFloatValue (floatValue?.Name) = 
  \----PFSM ---- SetFloatValue (floatVariable) = 0
  \----PFSM ---- SetFloatValue (floatVariable?.Name) = Air Dash Pause
+ \----PFSM ---- SetBoolValue (Name) = 
+ \----PFSM ---- SetBoolValue (boolValue) = False
+ \----PFSM ---- SetBoolValue (boolValue?.Name) = 
+ \----PFSM ---- SetBoolValue (boolVariable) = False
+ \----PFSM ---- SetBoolValue (boolVariable?.Name) = Will Sphere
  \----PFSM StateName: Set Sphere A
  \----PFSM ---- Transitions for state: Transition on FINISHED to state Jump Antic
  \----PFSM ---- Actions for state: Actions on Set Sphere A ::: SetBoolValue
  \----PFSM ---- Actions for state: Actions on Set Sphere A ::: SetFloatValue
+ \----PFSM ---- SetBoolValue (Name) = 
+ \----PFSM ---- SetBoolValue (boolValue) = True
+ \----PFSM ---- SetBoolValue (boolValue?.Name) = 
+ \----PFSM ---- SetBoolValue (boolVariable) = False
+ \----PFSM ---- SetBoolValue (boolVariable?.Name) = Will Sphere
  \----PFSM ---- SetFloatValue (Name) = 
  \----PFSM ---- SetFloatValue (floatValue) = 999
  \----PFSM ---- SetFloatValue (floatValue?.Name) = 
@@ -2015,6 +2150,11 @@ Hornet Boss 1
  \----PFSM ---- Actions for state: Actions on Sphere Antic A ::: DecelerateV2
  \----PFSM ---- Actions for state: Actions on Sphere Antic A ::: FaceObject
  \----PFSM ---- Actions for state: Actions on Sphere Antic A ::: AudioPlayerOneShot
+ \----PFSM ---- SetBoolValue (Name) = 
+ \----PFSM ---- SetBoolValue (boolValue) = False
+ \----PFSM ---- SetBoolValue (boolValue?.Name) = 
+ \----PFSM ---- SetBoolValue (boolVariable) = False
+ \----PFSM ---- SetBoolValue (boolVariable?.Name) = Will Sphere
  \----PFSM ---- Tk2dPlayAnimationWithEvents(String, animationCompleteEvent) = FINISHED
  \----PFSM ---- Tk2dPlayAnimationWithEvents(, animationTriggerEvent) = 
  \----PFSM ---- Tk2dPlayAnimationWithEvents(FsmString, ) = Sphere Antic A
@@ -2071,6 +2211,7 @@ Hornet Boss 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = CameraParent
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = EnemyKillShake
  \----PFSM ---- Tk2dPlayAnimation (Name) = 
  \----PFSM ---- Tk2dPlayAnimation (animLibName) = 
@@ -2130,6 +2271,13 @@ Hornet Boss 1
  \----PFSM ---- Actions for state: Actions on Throw Antic ::: SetVelocity2d
  \----PFSM ---- Actions for state: Actions on Throw Antic ::: Tk2dPlayAnimationWithEvents
  \----PFSM ---- Actions for state: Actions on Throw Antic ::: AudioPlayerOneShot
+ \----PFSM ---- GetAngleToTarget2D(FsmGameObject, ) = None
+ \----PFSM ---- GetAngleToTarget2D(FsmGameObject, Hero Obj) = Knight
+ \----PFSM ---- GetAngleToTarget2D(FsmFloat, Angle) = 0
+ \----PFSM ---- GetAngleToTarget2D(FsmFloat, ) = 0
+ \----PFSM ---- GetAngleToTarget2D(String, offsetX Name) = 
+ \----PFSM ---- GetAngleToTarget2D(FsmFloat, ) = 0
+ \----PFSM ---- GetAngleToTarget2D(String, offsetY Name) = 
  \----PFSM ---- SendEventByName (Name) = 
  \----PFSM ---- SendEventByName (delay) = 0
  \----PFSM ---- SendEventByName (eventTarget?.excludeSelf) = False
@@ -2138,6 +2286,7 @@ Hornet Boss 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = 
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = STUN CONTROL STOP
  \----PFSM ---- SetBoxCollider2DSizeVector(FsmGameObject, ) = None
  \----PFSM ---- SetBoxCollider2DSizeVector(FsmVector2, Box Off Throw) = (1.0, -0.3)
@@ -2207,6 +2356,7 @@ Hornet Boss 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = CameraParent
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = EnemyKillShake
  \----PFSM ---- SetBoxCollider2DSizeVector(FsmGameObject, ) = None
  \----PFSM ---- SetBoxCollider2DSizeVector(FsmVector2, Box Off Throwing) = (0.1, -1.0)
@@ -2258,6 +2408,7 @@ Hornet Boss 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = 
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = STUN CONTROL START
  \----PFSM StateName: Lock?
  \----PFSM ---- Transitions for state: Transition on LOCK L to state Lock L
@@ -2350,6 +2501,8 @@ Hornet Boss 1
  \----PFSM ---- Actions for state: Actions on Run ::: SetVelocity2d
  \----PFSM ---- Actions for state: Actions on Run ::: WaitRandom
  \----PFSM ---- Actions for state: Actions on Run ::: CheckCollisionSide
+ \----PFSM ---- AudioPlayInState(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayInState(FsmGameObject, ) = None
  \----PFSM ---- BoolTest (Name) = 
  \----PFSM ---- BoolTest (boolVariable) = False
  \----PFSM ---- BoolTest (boolVariable?.Name) = Evade Range
@@ -2384,11 +2537,11 @@ Hornet Boss 1
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
  \----PFSM ---- CheckCollisionSide(, bottomHitEvent) = 
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSide(String, bottomHitEvent) = FINISHED
+ \----PFSM ---- CheckCollisionSide(String, leftHitEvent) = FINISHED
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSide(String, bottomHitEvent) = FINISHED
+ \----PFSM ---- CheckCollisionSide(String, rightHitEvent) = FINISHED
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSide(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSide(, topHitEvent) = 
  \----PFSM ---- CheckCollisionSide(Boolean, otherLayer) = False
  \----PFSM ---- CheckCollisionSide(Int32, otherLayerNumber) = 0
  \----PFSM StateName: Move Choice A
@@ -2398,6 +2551,52 @@ Hornet Boss 1
  \----PFSM ---- Transitions for state: Transition on THROW to state Throw Antic
  \----PFSM ---- Actions for state: Actions on Move Choice A ::: SendEvent
  \----PFSM ---- Actions for state: Actions on Move Choice A ::: SendRandomEventV3
+ \----PFSM ---- SendEvent(String, sendEvent) = THROW
+ \----PFSM ---- SendEvent(FsmFloat, ) = 0
+ \----PFSM ---- SendRandomEventV3(String, TrackingIntsName) = Ct Airdash
+ \----PFSM ---- SendRandomEventV3(Int32, TrackingIntsValue) = 0
+ \----PFSM ---- SendRandomEventV3(String, TrackingIntsName) = Ct A Sphere
+ \----PFSM ---- SendRandomEventV3(Int32, TrackingIntsValue) = 0
+ \----PFSM ---- SendRandomEventV3(String, TrackingIntsName) = Ct G Dash
+ \----PFSM ---- SendRandomEventV3(Int32, TrackingIntsValue) = 0
+ \----PFSM ---- SendRandomEventV3(String, TrackingIntsName) = Ct Throw
+ \----PFSM ---- SendRandomEventV3(Int32, TrackingIntsValue) = 0
+ \----PFSM ---- SendRandomEventV3(String, trackingIntsMissed) = Ms Airdash
+ \----PFSM ---- SendRandomEventV3(Int32, trackingIntsMissed) = 0
+ \----PFSM ---- SendRandomEventV3(String, trackingIntsMissed) = Ms A Sphere
+ \----PFSM ---- SendRandomEventV3(Int32, trackingIntsMissed) = 0
+ \----PFSM ---- SendRandomEventV3(String, trackingIntsMissed) = Ms G Dash
+ \----PFSM ---- SendRandomEventV3(Int32, trackingIntsMissed) = 0
+ \----PFSM ---- SendRandomEventV3(String, trackingIntsMissed) = Ms Throw
+ \----PFSM ---- SendRandomEventV3(Int32, trackingIntsMissed) = 0
+ \----PFSM ---- SendRandomEventV3(String, Event) = AIRDASH
+ \----PFSM ---- SendRandomEventV3(String, Event) = SPHERE A
+ \----PFSM ---- SendRandomEventV3(String, Event) = G DASH
+ \----PFSM ---- SendRandomEventV3(String, Event) = THROW
+ \----PFSM ---- SendRandomEventV3(Single, Weight) = 0.25
+ \----PFSM ---- SendRandomEventV3(String, Weight Name) = 
+ \----PFSM ---- SendRandomEventV3(Single, Weight) = 0.25
+ \----PFSM ---- SendRandomEventV3(String, Weight Name) = 
+ \----PFSM ---- SendRandomEventV3(Single, Weight) = 0.25
+ \----PFSM ---- SendRandomEventV3(String, Weight Name) = 
+ \----PFSM ---- SendRandomEventV3(Single, Weight) = 0.25
+ \----PFSM ---- SendRandomEventV3(String, Weight Name) = 
+ \----PFSM ---- SendRandomEventV3(Int32, eventMax) = 2
+ \----PFSM ---- SendRandomEventV3(String, eventMax Name) = 
+ \----PFSM ---- SendRandomEventV3(Int32, eventMax) = 1
+ \----PFSM ---- SendRandomEventV3(String, eventMax Name) = 
+ \----PFSM ---- SendRandomEventV3(Int32, eventMax) = 2
+ \----PFSM ---- SendRandomEventV3(String, eventMax Name) = 
+ \----PFSM ---- SendRandomEventV3(Int32, eventMax) = 1
+ \----PFSM ---- SendRandomEventV3(String, eventMax Name) = 
+ \----PFSM ---- SendRandomEventV3(Int32, missedMax) = 5
+ \----PFSM ---- SendRandomEventV3(String, missedMax Name) = 
+ \----PFSM ---- SendRandomEventV3(Int32, missedMax) = 7
+ \----PFSM ---- SendRandomEventV3(String, missedMax Name) = 
+ \----PFSM ---- SendRandomEventV3(Int32, missedMax) = 5
+ \----PFSM ---- SendRandomEventV3(String, missedMax Name) = 
+ \----PFSM ---- SendRandomEventV3(Int32, missedMax) = 3
+ \----PFSM ---- SendRandomEventV3(String, missedMax Name) = 
  \----PFSM StateName: Hard Land
  \----PFSM ---- Transitions for state: Transition on FINISHED to state Escalation
  \----PFSM ---- Actions for state: Actions on Hard Land ::: PlayParticleEmitter
@@ -2465,7 +2664,13 @@ Hornet Boss 1
  \----PFSM ---- SendRandomEventV2(String, Event) = SPHERE G
  \----PFSM ---- SendRandomEventV2(String, Event) = FINISHED
  \----PFSM ---- SendRandomEventV2(Single, Weight) = 0.2
+ \----PFSM ---- SendRandomEventV2(String, Weight Name) = 
  \----PFSM ---- SendRandomEventV2(Single, Weight) = 0.8
+ \----PFSM ---- SendRandomEventV2(String, Weight Name) = 
+ \----PFSM ---- SendRandomEventV2(Int32, eventMax) = 1
+ \----PFSM ---- SendRandomEventV2(String, eventMax Name) = 
+ \----PFSM ---- SendRandomEventV2(Int32, eventMax) = 5
+ \----PFSM ---- SendRandomEventV2(String, eventMax Name) = 
  \----PFSM StateName: Can Throw?
  \----PFSM ---- Transitions for state: Transition on CAN THROW to state Move Choice A
  \----PFSM ---- Transitions for state: Transition on CANT THROW to state Move Choice B
@@ -2479,22 +2684,36 @@ Hornet Boss 1
  \----PFSM ---- GetPosition (GameObject) = None
  \----PFSM ---- GetPosition (OwnerOption) = UseOwner
  \----PFSM ---- GetPosition (vector) = (0.0, 0.0, 0.0)
- \----PFSM ---- BoolTest (Name) = 
- \----PFSM ---- BoolTest (equalBool) = False
- \----PFSM ---- BoolTest (everyFrame) = False
- \----PFSM ---- BoolTest (float1) = 0
- \----PFSM ---- BoolTest (float2) = 30.16
- \----PFSM ---- BoolTest (greaterThanBool) = False
- \----PFSM ---- BoolTest (lessThanBool) = False
- \----PFSM ---- BoolTest (tolerance) = 0
- \----PFSM ---- BoolTest (Name) = 
- \----PFSM ---- BoolTest (equalBool) = False
- \----PFSM ---- BoolTest (everyFrame) = False
- \----PFSM ---- BoolTest (float1) = 0
- \----PFSM ---- BoolTest (float2) = 22.51
- \----PFSM ---- BoolTest (greaterThanBool) = False
- \----PFSM ---- BoolTest (lessThanBool) = False
- \----PFSM ---- BoolTest (tolerance) = 0
+ \----PFSM ---- FloatTestToBool (Name) = 
+ \----PFSM ---- FloatTestToBool (everyFrame) = False
+ \----PFSM ---- FloatTestToBool (float1) = 0
+ \----PFSM ---- FloatTestToBool (float1 Name) = Self X
+ \----PFSM ---- FloatTestToBool (float2) = 30.16
+ \----PFSM ---- FloatTestToBool (float2 Name) = Throw X R
+ \----PFSM ---- FloatTestToBool (greaterThanBool) = False
+ \----PFSM ---- FloatTestToBool (lessThanBool) = False
+ \----PFSM ---- FloatTestToBool (equalBool) = False
+ \----PFSM ---- FloatTestToBool (tolerance) = 0
+ \----PFSM ---- FloatTestToBool (Name) = 
+ \----PFSM ---- FloatTestToBool (everyFrame) = False
+ \----PFSM ---- FloatTestToBool (float1) = 0
+ \----PFSM ---- FloatTestToBool (float1 Name) = Self X
+ \----PFSM ---- FloatTestToBool (float2) = 22.51
+ \----PFSM ---- FloatTestToBool (float2 Name) = Throw X L
+ \----PFSM ---- FloatTestToBool (greaterThanBool) = False
+ \----PFSM ---- FloatTestToBool (lessThanBool) = False
+ \----PFSM ---- FloatTestToBool (equalBool) = False
+ \----PFSM ---- FloatTestToBool (tolerance) = 0
+ \----PFSM ---- CheckTargetDirection(FsmGameObject, ) = None
+ \----PFSM ---- CheckTargetDirection(FsmGameObject, Hero Obj) = Knight
+ \----PFSM ---- CheckTargetDirection(FsmBool, ) = False
+ \----PFSM ---- CheckTargetDirection(FsmBool, Hero Is Right) = False
+ \----PFSM ---- CheckTargetDirection(FsmBool, ) = False
+ \----PFSM ---- CheckTargetDirection(FsmBool, ) = False
+ \----PFSM ---- CheckTargetDirection(, aboveEvent) = 
+ \----PFSM ---- CheckTargetDirection(String, rightBool) = Hero Is Right
+ \----PFSM ---- CheckTargetDirection(String, leftBool) = 
+ \----PFSM ---- CheckTargetDirection(String, belowBool) = 
  \----PFSM ---- BoolTestMulti (Name) = 
  \----PFSM ---- BoolTestMulti(FsmBool, ) = True
  \----PFSM ---- BoolTestMulti(FsmBool, ) = False
@@ -2519,6 +2738,41 @@ Hornet Boss 1
  \----PFSM ---- Transitions for state: Transition on G DASH to state GDash Antic
  \----PFSM ---- Actions for state: Actions on Move Choice B ::: SendEvent
  \----PFSM ---- Actions for state: Actions on Move Choice B ::: SendRandomEventV3
+ \----PFSM ---- SendEvent(String, sendEvent) = SPHERE A
+ \----PFSM ---- SendEvent(FsmFloat, ) = 0
+ \----PFSM ---- SendRandomEventV3(String, TrackingIntsName) = Ct Airdash
+ \----PFSM ---- SendRandomEventV3(Int32, TrackingIntsValue) = 0
+ \----PFSM ---- SendRandomEventV3(String, TrackingIntsName) = Ct A Sphere
+ \----PFSM ---- SendRandomEventV3(Int32, TrackingIntsValue) = 0
+ \----PFSM ---- SendRandomEventV3(String, TrackingIntsName) = Ct G Dash
+ \----PFSM ---- SendRandomEventV3(Int32, TrackingIntsValue) = 0
+ \----PFSM ---- SendRandomEventV3(String, trackingIntsMissed) = Ms Airdash
+ \----PFSM ---- SendRandomEventV3(Int32, trackingIntsMissed) = 0
+ \----PFSM ---- SendRandomEventV3(String, trackingIntsMissed) = Ms A Sphere
+ \----PFSM ---- SendRandomEventV3(Int32, trackingIntsMissed) = 0
+ \----PFSM ---- SendRandomEventV3(String, trackingIntsMissed) = Ms G Dash
+ \----PFSM ---- SendRandomEventV3(Int32, trackingIntsMissed) = 0
+ \----PFSM ---- SendRandomEventV3(String, Event) = AIRDASH
+ \----PFSM ---- SendRandomEventV3(String, Event) = SPHERE A
+ \----PFSM ---- SendRandomEventV3(String, Event) = G DASH
+ \----PFSM ---- SendRandomEventV3(Single, Weight) = 0.33
+ \----PFSM ---- SendRandomEventV3(String, Weight Name) = 
+ \----PFSM ---- SendRandomEventV3(Single, Weight) = 0.33
+ \----PFSM ---- SendRandomEventV3(String, Weight Name) = 
+ \----PFSM ---- SendRandomEventV3(Single, Weight) = 0.34
+ \----PFSM ---- SendRandomEventV3(String, Weight Name) = 
+ \----PFSM ---- SendRandomEventV3(Int32, eventMax) = 2
+ \----PFSM ---- SendRandomEventV3(String, eventMax Name) = 
+ \----PFSM ---- SendRandomEventV3(Int32, eventMax) = 1
+ \----PFSM ---- SendRandomEventV3(String, eventMax Name) = 
+ \----PFSM ---- SendRandomEventV3(Int32, eventMax) = 2
+ \----PFSM ---- SendRandomEventV3(String, eventMax Name) = 
+ \----PFSM ---- SendRandomEventV3(Int32, missedMax) = 5
+ \----PFSM ---- SendRandomEventV3(String, missedMax Name) = 
+ \----PFSM ---- SendRandomEventV3(Int32, missedMax) = 7
+ \----PFSM ---- SendRandomEventV3(String, missedMax Name) = 
+ \----PFSM ---- SendRandomEventV3(Int32, missedMax) = 5
+ \----PFSM ---- SendRandomEventV3(String, missedMax Name) = 
  \----PFSM StateName: Evade Antic
  \----PFSM ---- Transitions for state: Transition on FINISHED to state Evade
  \----PFSM ---- Transitions for state: Transition on CANCEL to state G Sphere?
@@ -2534,6 +2788,11 @@ Hornet Boss 1
  \----PFSM ---- BoolTest (boolVariable?.Name) = Evade Check
  \----PFSM ---- BoolTest (isFalse) = 
  \----PFSM ---- BoolTest (isTrue) = CANCEL
+ \----PFSM ---- SetBoolValue (Name) = 
+ \----PFSM ---- SetBoolValue (boolValue) = False
+ \----PFSM ---- SetBoolValue (boolValue?.Name) = 
+ \----PFSM ---- SetBoolValue (boolVariable) = False
+ \----PFSM ---- SetBoolValue (boolVariable?.Name) = Evade Range
  \----PFSM ---- SendEventByName (Name) = 
  \----PFSM ---- SendEventByName (delay) = 0
  \----PFSM ---- SendEventByName (eventTarget?.excludeSelf) = False
@@ -2542,6 +2801,7 @@ Hornet Boss 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = 
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = True
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = EVADED
  \----PFSM ---- SetVelocity2d (Name) = 
  \----PFSM ---- SetVelocity2d (gameObject?.GameObject?.Name) = 
@@ -2611,11 +2871,11 @@ Hornet Boss 1
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
  \----PFSM ---- CheckCollisionSideEnter(, bottomHitEvent) = 
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSideEnter(String, bottomHitEvent) = FINISHED
+ \----PFSM ---- CheckCollisionSideEnter(String, leftHitEvent) = FINISHED
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSideEnter(String, bottomHitEvent) = FINISHED
+ \----PFSM ---- CheckCollisionSideEnter(String, rightHitEvent) = FINISHED
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSideEnter(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSideEnter(, topHitEvent) = 
  \----PFSM ---- CheckCollisionSideEnter(Boolean, otherLayer) = False
  \----PFSM ---- CheckCollisionSideEnter(Int32, otherLayerNumber) = 0
  \----PFSM StateName: Dmg Response
@@ -2646,11 +2906,11 @@ Hornet Boss 1
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
  \----PFSM ---- CheckCollisionSide(, bottomHitEvent) = 
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSide(String, bottomHitEvent) = FINISHED
+ \----PFSM ---- CheckCollisionSide(String, leftHitEvent) = FINISHED
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSide(String, bottomHitEvent) = FINISHED
+ \----PFSM ---- CheckCollisionSide(String, rightHitEvent) = FINISHED
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSide(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSide(, topHitEvent) = 
  \----PFSM ---- CheckCollisionSide(Boolean, otherLayer) = False
  \----PFSM ---- CheckCollisionSide(Int32, otherLayerNumber) = 0
  \----PFSM StateName: Run Away?
@@ -2803,22 +3063,22 @@ Hornet Boss 1
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
  \----PFSM ---- CheckCollisionSideEnter(String, bottomHitEvent) = LAND
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSideEnter(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSideEnter(, leftHitEvent) = 
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSideEnter(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSideEnter(, rightHitEvent) = 
  \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSideEnter(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSideEnter(, topHitEvent) = 
  \----PFSM ---- CheckCollisionSideEnter(Boolean, otherLayer) = False
  \----PFSM ---- CheckCollisionSideEnter(Int32, otherLayerNumber) = 0
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
  \----PFSM ---- CheckCollisionSide(String, bottomHitEvent) = LAND
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSide(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSide(, leftHitEvent) = 
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSide(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSide(, rightHitEvent) = 
  \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
- \----PFSM ---- CheckCollisionSide(, bottomHitEvent) = 
+ \----PFSM ---- CheckCollisionSide(, topHitEvent) = 
  \----PFSM ---- CheckCollisionSide(Boolean, otherLayer) = False
  \----PFSM ---- CheckCollisionSide(Int32, otherLayerNumber) = 0
  \----PFSM StateName: Stun Land
@@ -2888,6 +3148,11 @@ Hornet Boss 1
  \----PFSM ---- Transitions for state: Transition on CANCEL to state In Air
  \----PFSM ---- Actions for state: Actions on Do Sphere? ::: SetBoolValue
  \----PFSM ---- Actions for state: Actions on Do Sphere? ::: BoolTest
+ \----PFSM ---- SetBoolValue (Name) = 
+ \----PFSM ---- SetBoolValue (boolValue) = False
+ \----PFSM ---- SetBoolValue (boolValue?.Name) = 
+ \----PFSM ---- SetBoolValue (boolVariable) = False
+ \----PFSM ---- SetBoolValue (boolVariable?.Name) = Will Sphere
  \----PFSM ---- BoolTest (Name) = 
  \----PFSM ---- BoolTest (boolVariable) = False
  \----PFSM ---- BoolTest (boolVariable?.Name) = A Sphere Range
@@ -2915,7 +3180,7 @@ Hornet Boss 1
  \----PFSM ---- Tk2dPlayAnimation (animLibName) = 
  \----PFSM ---- Tk2dPlayAnimation (clipName) = Idle
  \----PFSM ---- BoolTest (Name) = 
- \----PFSM ---- BoolTest (boolVariable) = False
+ \----PFSM ---- BoolTest (boolVariable) = True
  \----PFSM ---- BoolTest (boolVariable?.Name) = Refight Range
  \----PFSM ---- BoolTest (isFalse) = 
  \----PFSM ---- BoolTest (isTrue) = WAKE
@@ -2940,6 +3205,7 @@ Hornet Boss 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = 
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = BroadcastAll
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = BG CLOSE
  \----PFSM StateName: Escalation
  \----PFSM ---- Transitions for state: Transition on FINISHED to state Idle
@@ -2956,12 +3222,24 @@ Hornet Boss 1
  \----PFSM ---- BoolTest (boolVariable?.Name) = Escalated
  \----PFSM ---- BoolTest (isFalse) = 
  \----PFSM ---- BoolTest (isTrue) = FINISHED
+ \----PFSM ---- GetFsmInt (Name) = 
+ \----PFSM ---- GetFsmInt (GameObject) = None
+ \----PFSM ---- GetFsmInt (OwnerOption) = UseOwner
+ \----PFSM ---- GetFsmInt (fsmName) = health_manager_enemy
+ \----PFSM ---- GetFsmInt (variableName) = HP
+ \----PFSM ---- GetFsmInt (everyFrame) = False
+ \----PFSM ---- GetFsmInt (storeValue) = 0
  \----PFSM ---- IntCompare (Name) = 
  \----PFSM ---- IntCompare (integer1) = 0
  \----PFSM ---- IntCompare (integer2) = 90
  \----PFSM ---- IntCompare (greaterThan) = FINISHED
  \----PFSM ---- IntCompare (lessThan) = 
  \----PFSM ---- IntCompare (equal) = 
+ \----PFSM ---- SetBoolValue (Name) = 
+ \----PFSM ---- SetBoolValue (boolValue) = True
+ \----PFSM ---- SetBoolValue (boolValue?.Name) = 
+ \----PFSM ---- SetBoolValue (boolVariable) = False
+ \----PFSM ---- SetBoolValue (boolVariable?.Name) = Escalated
  \----PFSM ---- SetFloatValue (Name) = 
  \----PFSM ---- SetFloatValue (floatValue) = 0.35
  \----PFSM ---- SetFloatValue (floatValue?.Name) = 
@@ -2997,12 +3275,22 @@ Hornet Boss 1
  \----PFSM ---- Tk2dPlayAnimationWithEvents(, animationTriggerEvent) = 
  \----PFSM ---- Tk2dPlayAnimationWithEvents(FsmString, ) = Flourish
  \----PFSM ---- Tk2dPlayAnimationWithEvents(FsmGameObject, ) = None
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(String, a?.audioClip?.Name) = 
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, ) = Audio Player Actor
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, Self) = Hornet Boss 1
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+ \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0
+ \----PFSM ---- SetGameObject(Boolean, everyFrame) = False
+ \----PFSM ---- SetGameObject(FsmGameObject, AreaTitle) = Area Title
+ \----PFSM ---- SetGameObject(FsmGameObject, Area Title) = Area Title
  \----PFSM ---- ActivateGameObject (Name) = 
- \----PFSM ---- ActivateGameObject (GameObject) = None
+ \----PFSM ---- ActivateGameObject (GameObject) = Area Title
  \----PFSM ---- ActivateGameObject (OwnerOption) = SpecifyGameObject
  \----PFSM ---- ActivateGameObject (activate) = True
  \----PFSM ---- SetFsmBool (Name) = 
- \----PFSM ---- SetFsmBool (GameObject) = None
+ \----PFSM ---- SetFsmBool (GameObject) = Area Title
  \----PFSM ---- SetFsmBool (OwnerOption) = SpecifyGameObject
  \----PFSM ---- SetFsmBool (fsmName) = 
  \----PFSM ---- SetFsmBool (variableName) = Visited
@@ -3015,7 +3303,23 @@ Hornet Boss 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = AudioManager
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = BOSS HORNET
+ \----PFSM ---- TransitionToAudioSnapshot(FsmObject, snapshot? ) = Normal (UnityEngine.AudioMixerSnapshot)
+ \----PFSM ---- TransitionToAudioSnapshot(String, snapshot?. type) = FsmObject
+ \----PFSM ---- TransitionToAudioSnapshot(String, snapshot?.Name) = 
+ \----PFSM ---- TransitionToAudioSnapshot(FsmFloat, ) = 0
+ \----PFSM ---- SetFsmString (Name) = 
+ \----PFSM ---- SetFsmString (GameObject) = Area Title
+ \----PFSM ---- SetFsmString (OwnerOption) = SpecifyGameObject
+ \----PFSM ---- SetFsmString (fsmName) = 
+ \----PFSM ---- SetFsmString (variableName) = Area Event
+ \----PFSM ---- SetFsmString (setValue) = HORNET
+ \----PFSM ---- ApplyMusicCue(FsmFloat, ) = 0
+ \----PFSM ---- ApplyMusicCue(String, musicCue?.Name) = 
+ \----PFSM ---- ApplyMusicCue(FsmObject, musicCue) = BossHornet (MusicCue)
+ \----PFSM ---- ApplyMusicCue(String, musicCue type) = FsmObject
+ \----PFSM ---- ApplyMusicCue(FsmFloat, ) = 0
  \----PFSM StateName: Run Antic
  \----PFSM ---- Transitions for state: Transition on FINISHED to state Run
  \----PFSM ---- Actions for state: Actions on Run Antic ::: Tk2dPlayAnimationWithEvents
@@ -3024,7 +3328,7 @@ Hornet Boss 1
  \----PFSM ---- Tk2dPlayAnimationWithEvents(FsmString, ) = Evade Antic
  \----PFSM ---- Tk2dPlayAnimationWithEvents(FsmGameObject, ) = None
  \--PFSM Active: True
- \--PFSM ActiveStateName: Refight Ready
+ \--PFSM ActiveStateName: Flourish
  \--Component: SpriteFlash
  \--Component: SetZ
  \--Component: PlayMakerFSM
@@ -3044,6 +3348,18 @@ Hornet Boss 1
  \----PFSM ---- Actions for state: Actions on In Combo ::: IntAdd
  \----PFSM ---- Actions for state: Actions on In Combo ::: IntCompare
  \----PFSM ---- Actions for state: Actions on In Combo ::: Wait
+ \----PFSM ---- IntAdd (Name) = 
+ \----PFSM ---- IntAdd (add) = 1
+ \----PFSM ---- IntAdd (add?.Name) = 
+ \----PFSM ---- IntAdd (everyFrame) = False
+ \----PFSM ---- IntAdd (intVariable) = 0
+ \----PFSM ---- IntAdd (intVariable?.Name) = Combo Counter
+ \----PFSM ---- IntAdd (Name) = 
+ \----PFSM ---- IntAdd (add) = 1
+ \----PFSM ---- IntAdd (add?.Name) = 
+ \----PFSM ---- IntAdd (everyFrame) = False
+ \----PFSM ---- IntAdd (intVariable) = 0
+ \----PFSM ---- IntAdd (intVariable?.Name) = Hits Total
  \----PFSM ---- IntCompare (Name) = 
  \----PFSM ---- IntCompare (integer1) = 0
  \----PFSM ---- IntCompare (integer2) = 6
@@ -3056,6 +3372,11 @@ Hornet Boss 1
  \----PFSM StateName: Reset Counter
  \----PFSM ---- Transitions for state: Transition on FINISHED to state Idle
  \----PFSM ---- Actions for state: Actions on Reset Counter ::: SetIntValue
+ \----PFSM ---- SetIntValue (Name) = 
+ \----PFSM ---- SetIntValue (intValue) = 0
+ \----PFSM ---- SetIntValue (intValue?.Name) = 
+ \----PFSM ---- SetIntValue (intVariable) = 0
+ \----PFSM ---- SetIntValue (intVariable?.Name) = Combo Counter
  \----PFSM StateName: Continue Combo
  \----PFSM ---- Transitions for state: Transition on FINISHED to state In Combo
  \----PFSM ---- Transitions for state: Transition on STUN to state Stun
@@ -3080,6 +3401,12 @@ Hornet Boss 1
  \----PFSM ---- IntCompare (greaterThan) = MAX
  \----PFSM ---- IntCompare (lessThan) = 
  \----PFSM ---- IntCompare (equal) = MAX
+ \----PFSM ---- IntAdd (Name) = 
+ \----PFSM ---- IntAdd (add) = 1
+ \----PFSM ---- IntAdd (add?.Name) = 
+ \----PFSM ---- IntAdd (everyFrame) = False
+ \----PFSM ---- IntAdd (intVariable) = 0
+ \----PFSM ---- IntAdd (intVariable?.Name) = Stuns Total
  \----PFSM ---- SendEventByName (Name) = 
  \----PFSM ---- SendEventByName (delay) = 0
  \----PFSM ---- SendEventByName (eventTarget?.excludeSelf) = False
@@ -3088,7 +3415,18 @@ Hornet Boss 1
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = 
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = STUN
+ \----PFSM ---- SetIntValue (Name) = 
+ \----PFSM ---- SetIntValue (intValue) = 0
+ \----PFSM ---- SetIntValue (intValue?.Name) = 
+ \----PFSM ---- SetIntValue (intVariable) = 0
+ \----PFSM ---- SetIntValue (intVariable?.Name) = Combo Counter
+ \----PFSM ---- SetIntValue (Name) = 
+ \----PFSM ---- SetIntValue (intValue) = 0
+ \----PFSM ---- SetIntValue (intValue?.Name) = 
+ \----PFSM ---- SetIntValue (intVariable) = 0
+ \----PFSM ---- SetIntValue (intVariable?.Name) = Hits Total
  \----PFSM StateName: Max Check
  \----PFSM ---- Transitions for state: Transition on FINISHED to state In Combo
  \----PFSM ---- Transitions for state: Transition on STUN to state Stun
@@ -3107,6 +3445,12 @@ Hornet Boss 1
  \----PFSM StateName: Unstun Increment
  \----PFSM ---- Transitions for state: Transition on FINISHED to state Stop
  \----PFSM ---- Actions for state: Actions on Unstun Increment ::: IntAdd
+ \----PFSM ---- IntAdd (Name) = 
+ \----PFSM ---- IntAdd (add) = 1
+ \----PFSM ---- IntAdd (add?.Name) = 
+ \----PFSM ---- IntAdd (everyFrame) = False
+ \----PFSM ---- IntAdd (intVariable) = 0
+ \----PFSM ---- IntAdd (intVariable?.Name) = Hits Total
  \----PFSM StateName: Reset
  \----PFSM ---- Transitions for state: Transition on STUN CONTROL START to state Reset Counter
  \--PFSM Active: True
@@ -3122,7 +3466,6 @@ Hornet Boss 1
  \--Component: EnemyDreamnailReaction
  \--Component: Recoil
  \--Component: DeactivateIfPlayerdataTrue
- \--Component: HornetBoss1
 Hornet Boss 1\Hit GDash
                \--Component: Transform
                \--GameObject layer: 22
@@ -3284,6 +3627,11 @@ Hornet Boss 1\Evade Check
                \----PFSM ---- Actions for state: Actions on Detect ::: IntAddV2
                \----PFSM ---- Actions for state: Actions on Detect ::: IntCompare
                \----PFSM ---- NextFrameEvent(String, sendEvent) = EXIT
+               \----PFSM ---- SetIntValue (Name) = 
+               \----PFSM ---- SetIntValue (intValue) = 0
+               \----PFSM ---- SetIntValue (intValue?.Name) = 
+               \----PFSM ---- SetIntValue (intVariable) = 1
+               \----PFSM ---- SetIntValue (intVariable?.Name) = Frames
                \----PFSM ---- IntCompare (Name) = 
                \----PFSM ---- IntCompare (integer1) = 1
                \----PFSM ---- IntCompare (integer2) = 2
@@ -3410,8 +3758,8 @@ Hornet Boss 1\Evade Range
                \--Component: BoxCollider2D
                \--BoxCollider2D Size: (7.6, 6.2)
                \--BoxCollider2D Offset: (0.0, 1.8)
-               \--BoxCollider2D Bounds-Min: (15.8, 27.3, 0.0)
-               \--BoxCollider2D Bounds-Max: (23.4, 33.5, 0.0)
+               \--BoxCollider2D Bounds-Min: (19.6, 28.6, 0.0)
+               \--BoxCollider2D Bounds-Max: (19.6, 28.6, 0.0)
                \--BoxCollider2D isTrigger: True
                \--Component: PlayMakerFSM
                \--PFSM Name: Fluctuate
@@ -3441,7 +3789,7 @@ Hornet Boss 1\Evade Range
                \----PFSM ---- SetCollider (gameObject?.GameObject?.Name) = 
                \----PFSM ---- SetCollider (active) = True
                \--PFSM Active: True
-               \--PFSM ActiveStateName: On
+               \--PFSM ActiveStateName: Off
                \--Component: PlayMakerUnity2DProxy
 Hornet Boss 1\A Dash Effect
                \--Component: Transform
@@ -4204,6 +4552,17 @@ Hornet Boss 1\Corpse Hornet 1(Clone)
                \----PFSM ---- Actions for state: Actions on Blow ::: CreateObject
                \----PFSM ---- Actions for state: Actions on Blow ::: SendMessage
                \----PFSM ---- Actions for state: Actions on Blow ::: SendEventByName
+               \----PFSM ---- TransitionToAudioSnapshot(FsmObject, snapshot? ) = Silent (UnityEngine.AudioMixerSnapshot)
+               \----PFSM ---- TransitionToAudioSnapshot(String, snapshot?. type) = FsmObject
+               \----PFSM ---- TransitionToAudioSnapshot(String, snapshot?.Name) = 
+               \----PFSM ---- TransitionToAudioSnapshot(FsmFloat, ) = 1
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+               \----PFSM ---- AudioPlayerOneShotSingle(String, a?.audioClip?.Name) = 
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, ) = Audio Player Actor
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, Self) = None
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0
                \----PFSM ---- AudioPlaySimple(FsmFloat, ) = 1
                \----PFSM ---- AudioPlaySimple(FsmGameObject, ) = None
                \----PFSM ---- AudioPlaySimple(FsmObject, ) = boss_explode_clean (UnityEngine.AudioClip)
@@ -4215,6 +4574,7 @@ Hornet Boss 1\Corpse Hornet 1(Clone)
                \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = 
                \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
                \----PFSM ---- SendEventByName (eventTarget?.target) = BroadcastAll
+               \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
                \----PFSM ---- SendEventByName (sendEvent) = HORNET KILLED
                \----PFSM ---- CreateObject (Name) = 
                \----PFSM ---- CreateObject (gameObject?.Name) = 
@@ -4232,6 +4592,7 @@ Hornet Boss 1\Corpse Hornet 1(Clone)
                \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = CameraParent
                \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
                \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+               \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
                \----PFSM ---- SendEventByName (sendEvent) = AverageShake
                \----PFSM StateName: Launch
                \----PFSM ---- Transitions for state: Transition on FINISHED to state In Air
@@ -4283,22 +4644,22 @@ Hornet Boss 1\Corpse Hornet 1(Clone)
                \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
                \----PFSM ---- CheckCollisionSideEnter(String, bottomHitEvent) = LAND
                \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
-               \----PFSM ---- CheckCollisionSideEnter(, bottomHitEvent) = 
+               \----PFSM ---- CheckCollisionSideEnter(, leftHitEvent) = 
                \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
-               \----PFSM ---- CheckCollisionSideEnter(, bottomHitEvent) = 
+               \----PFSM ---- CheckCollisionSideEnter(, rightHitEvent) = 
                \----PFSM ---- CheckCollisionSideEnter(FsmBool, ) = False
-               \----PFSM ---- CheckCollisionSideEnter(, bottomHitEvent) = 
+               \----PFSM ---- CheckCollisionSideEnter(, topHitEvent) = 
                \----PFSM ---- CheckCollisionSideEnter(Boolean, otherLayer) = False
                \----PFSM ---- CheckCollisionSideEnter(Int32, otherLayerNumber) = 0
                \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
                \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
                \----PFSM ---- CheckCollisionSide(String, bottomHitEvent) = LAND
                \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
-               \----PFSM ---- CheckCollisionSide(, bottomHitEvent) = 
+               \----PFSM ---- CheckCollisionSide(, leftHitEvent) = 
                \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
-               \----PFSM ---- CheckCollisionSide(, bottomHitEvent) = 
+               \----PFSM ---- CheckCollisionSide(, rightHitEvent) = 
                \----PFSM ---- CheckCollisionSide(FsmBool, ) = False
-               \----PFSM ---- CheckCollisionSide(, bottomHitEvent) = 
+               \----PFSM ---- CheckCollisionSide(, topHitEvent) = 
                \----PFSM ---- CheckCollisionSide(Boolean, otherLayer) = False
                \----PFSM ---- CheckCollisionSide(Int32, otherLayerNumber) = 0
                \----PFSM ---- SetRotation (Name) = 
@@ -4406,6 +4767,13 @@ Hornet Boss 1\Corpse Hornet 1(Clone)
                \----PFSM ---- Wait(String, finishEvent) = FINISHED
                \----PFSM ---- Wait(Boolean, realTime) = False
                \----PFSM ---- Wait(FsmFloat, ) = 0.415
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+               \----PFSM ---- AudioPlayerOneShotSingle(String, a?.audioClip?.Name) = 
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, ) = Audio Player Actor
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, Self) = None
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0
                \----PFSM ---- SetMeshRenderer (Name) = 
                \----PFSM ---- SetMeshRenderer (gameObject?.GameObject?.Name) = 
                \----PFSM ---- SetMeshRenderer (active) = False
@@ -4446,6 +4814,13 @@ Hornet Boss 1\Corpse Hornet 1(Clone)
                \----PFSM ---- Tk2dPlayAnimation (Name) = 
                \----PFSM ---- Tk2dPlayAnimation (animLibName) = 
                \----PFSM ---- Tk2dPlayAnimation (clipName) = Throw Side
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+               \----PFSM ---- AudioPlayerOneShotSingle(String, a?.audioClip?.Name) = 
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, ) = Audio Player Actor
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, Hero) = Knight
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0
                \----PFSM StateName: Yank
                \----PFSM ---- Transitions for state: Transition on FINISHED to state End
                \----PFSM ---- Actions for state: Actions on Yank ::: Tk2dPlayAnimation
@@ -4458,6 +4833,20 @@ Hornet Boss 1\Corpse Hornet 1(Clone)
                \----PFSM ---- Tk2dPlayAnimation (Name) = 
                \----PFSM ---- Tk2dPlayAnimation (animLibName) = 
                \----PFSM ---- Tk2dPlayAnimation (clipName) = Harpoon Side
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+               \----PFSM ---- AudioPlayerOneShotSingle(String, a?.audioClip?.Name) = 
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, ) = Audio Player Actor
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, Self) = None
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1
+               \----PFSM ---- AudioPlayerOneShotSingle(String, a?.audioClip?.Name) = 
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, ) = Audio Player Actor
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmGameObject, Hero) = Knight
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1.15
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 1.15
+               \----PFSM ---- AudioPlayerOneShotSingle(FsmFloat, ) = 0
                \----PFSM StateName: End
                \----PFSM ---- Transitions for state: Transition on FINISHED to state 
                \----PFSM ---- Actions for state: Actions on End ::: SendEventByName
@@ -4475,6 +4864,7 @@ Hornet Boss 1\Corpse Hornet 1(Clone)
                \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = CameraParent
                \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
                \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+               \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
                \----PFSM ---- SendEventByName (sendEvent) = EnemyKillShake
                \----PFSM ---- SetRotation (Name) = 
                \----PFSM ---- SetRotation (GameObject) = Grass Escape
@@ -4500,6 +4890,7 @@ Hornet Boss 1\Corpse Hornet 1(Clone)
                \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = 
                \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
                \----PFSM ---- SendEventByName (eventTarget?.target) = BroadcastAll
+               \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
                \----PFSM ---- SendEventByName (sendEvent) = HORNET LEAVE
                \----PFSM StateName: Set PD
                \----PFSM ---- Transitions for state: Transition on FINISHED to state Blow
@@ -4605,6 +4996,7 @@ Attack Detect
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = Parent
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = ATTACKED
  \--PFSM Active: True
  \--PFSM ActiveStateName: Detect
@@ -4645,6 +5037,7 @@ Attack Detect
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = Parent
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = GameObject
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = ATTACKED
  \--PFSM Active: True
  \--PFSM ActiveStateName: Detect
@@ -4803,6 +5196,7 @@ Needle
  \----PFSM ---- SendEventByName (eventTarget?.gameObject?.GameObject?.Name) = 
  \----PFSM ---- SendEventByName (eventTarget?.sendToChildren) = False
  \----PFSM ---- SendEventByName (eventTarget?.target) = BroadcastAll
+ \----PFSM ---- SendEventByName (eventTarget?.fsmComponent?.gameObject?.name ) = 
  \----PFSM ---- SendEventByName (sendEvent) = NEEDLE RETURN
  \----PFSM StateName: Destroy
  \----PFSM ---- Actions for state: Actions on Destroy ::: DestroySelf
