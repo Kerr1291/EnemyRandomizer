@@ -331,14 +331,14 @@ namespace EnemyRandomizerMod
 
 
             //TODO: temp, remove once we're done developing her
-            if( !modifiedHornet )
-            {
-                while( GameObject.Find( "Hornet Boss 1" ) == null )
-                    yield return new WaitForEndOfFrame();
+            //if( !modifiedHornet )
+            //{
+            //    while( GameObject.Find( "Hornet Boss 1" ) == null )
+            //        yield return new WaitForEndOfFrame();
 
-                GameObject.Find( "Hornet Boss 1" ).AddComponent<HornetBoss1>();
-                modifiedHornet = true;
-            }
+            //    GameObject.Find( "Hornet Boss 1" ).AddComponent<HornetBoss1>();
+            //    modifiedHornet = true;
+            //}
 
             foreach( HealthManager ho in GameObject.FindObjectsOfType<HealthManager>() )
             {

@@ -280,11 +280,99 @@ namespace EnemyRandomizerMod
                     }
                 }
 
-                //load sandbox
-                //if( UnityEngine.Input.GetKeyDown( KeyCode.S ) )
-                //{
-                //    yield return EnterSandbox();
-                //}
+                //print audio manager
+                if( UnityEngine.Input.GetKeyDown( KeyCode.A ) )
+                {
+
+                    var hornet = database.loadedEnemyPrefabs[0];
+                    ////var hornet = GameObject.Find("Hornet Boss 1");
+                    //var audioOneShot = hornet.GetFSMActionOnState<HutongGames.PlayMaker.Actions.AudioPlayerOneShotSingle>("Flourish","Control");
+                    //var up = Vector3.up;
+                    //var pos = HeroController.instance.transform.position;
+                    //var aPlayer = audioOneShot.audioPlayer.Value;
+                    //var go = aPlayer.Spawn(pos, Quaternion.Euler(up));
+                    //var audioSource = go.GetComponent<AudioSource>();
+                    //var clip = audioSource.clip;
+                    //float pitch = GameRNG.Rand(audioOneShot.pitchMin.Value,audioOneShot.pitchMax.Value);
+                    //audioSource.pitch = pitch;
+                    //audioSource.volume = audioOneShot.volume.Value;
+                    //if(clip != null)
+                    //{
+                    //    audioSource.PlayOneShot( clip );
+                    //}
+                    //else
+                    //{
+                    //    Dev.Log( "whyyy" );
+                    //}
+                    //System.IO.StreamWriter file = null;
+                    //file = new System.IO.StreamWriter( Application.dataPath + "/Managed/Mods/" + "HornetResource" );
+                    //hornet.PrintSceneHierarchyTree( true, file );
+                    //file.Close();
+
+                    Dev.Log( "trying snapshot" );
+                    var snapshot = hornet.GetFSMActionOnState<HutongGames.PlayMaker.Actions.TransitionToAudioSnapshot>("Flourish","Control");
+                    var mixerSnapshot = snapshot.snapshot.Value as UnityEngine.Audio.AudioMixerSnapshot;
+                    mixerSnapshot.TransitionTo( 1f );
+
+                    Dev.Log( "trying title" );
+                    //var areaTitle = hornet.GetFSMActionOnState<HutongGames.PlayMaker.Actions.SetGameObject>("Flourish","Control");
+
+                    //Dev.Log( ""+ areaTitle.gameObject.Value.transform.position );
+
+                    //foreach( Component c in areaTitle.gameObject.Value.GetComponents<Component>() )
+                    //{
+                    //    Dev.Log( "c = " + c.GetType().Name );
+                    //}
+
+                    //var title = areaTitle.gameObject.Value;
+                    GameObject title = GameObject.Instantiate( Resources.FindObjectsOfTypeAll<AreaTitle>()[0].gameObject );
+                    title.transform.position = HeroController.instance.transform.position;
+                    title.gameObject.SetActive( true );
+
+                    System.IO.StreamWriter file = null;
+                    file = new System.IO.StreamWriter( Application.dataPath + "/Managed/Mods/" + "AreaTitle" );
+                    title.gameObject.PrintSceneHierarchyTree( true, file );
+                    file.Close();
+
+                    PlayMakerFSM fsm = FSMUtility.GetFSM(title.gameObject);
+                    if( fsm )
+                    {
+                        FSMUtility.SetBool( fsm, "Visited", true );
+                        FSMUtility.SetBool( fsm, "NPC Title", true );
+                        FSMUtility.SetBool( fsm, "Display Right", false );
+                        FSMUtility.SetString( fsm, "Area Event", "HORNET" );
+                    }
+
+                    //Dev.Log( "trying title 2" );
+                    //PlayMakerFSM titleFSM = title.GetComponent<PlayMakerFSM>();
+                    //var fsmString = hornet.GetFSMActionOnState<HutongGames.PlayMaker.Actions.SetFsmString>("Flourish","Control");
+
+                    //Dev.Log( "trying title 3" );
+                    //HutongGames.PlayMaker.FsmString fString = titleFSM.Fsm.GetFsmString(fsmString.variableName.Value);
+                    //fString.Value = "NOPE"; //fsmString.setValue.Value;
+
+                    Dev.Log( "trying music" ); 
+                    var musicCue = hornet.GetFSMActionOnState<HutongGames.PlayMaker.Actions.ApplyMusicCue>("Flourish","Control");
+                    MusicCue mc = musicCue.musicCue.Value as MusicCue;
+                    GameManager instance = GameManager.instance;
+                    instance.AudioManager.ApplyMusicCue( mc, 0f, 0f, false );
+
+
+                    //GameObject h = GameObject.Find("Hornet Boss 1");
+                    //PlayMakerFSM p = h.GetMatchingFSMComponent("Control","Flourish","SendEventByName");
+                    //var e = h.GetFSMActionOnState<HutongGames.PlayMaker.Actions.SendEventByName>("Flourish","Control");
+                    //e.Fsm.Event( e.eventTarget, e.sendEvent.Value );
+
+                    //foreach(var a in h.GetComponents<AudioSource>())
+                    //{
+                    //    Dev.Log( a.clip.name );
+                    //}
+
+                    //System.IO.StreamWriter file = null;
+                    //file = new System.IO.StreamWriter( Application.dataPath + "/Managed/Mods/GameManager" );
+                    //GameManager.instance.gameObject.PrintSceneHierarchyTree( true, file );
+                    //file.Close();
+                }
                 //enter hornet
                 if( UnityEngine.Input.GetKeyDown( KeyCode.S ) )
                 {

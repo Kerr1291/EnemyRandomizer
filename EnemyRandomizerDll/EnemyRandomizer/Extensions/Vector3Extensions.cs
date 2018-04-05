@@ -29,26 +29,31 @@ namespace nv
             Quaternion pq = new Quaternion(p.x, p.y, p.z, 0);
             pq = localSpace.localRotation * pq * Quaternion.Inverse( localSpace.localRotation );
             input = new Vector3(pq.x, pq.y, pq.z);
-        }        
+        }
 
-        public static void Set( this Vector3 v, int componentIndex, float value )
+
+        public static Vector3 Set( this Vector3 v, int componentIndex, float value )
         {
             v[ componentIndex ] = value;
+            return v;
         }
 
-        public static void SetX( this Vector3 v, float value )
+        public static Vector3 SetX( this Vector3 v, float value )
         {
             v[ 0 ] = value;
+            return v;
         }
 
-        public static void SetY( this Vector3 v, float value )
+        public static Vector3 SetY( this Vector3 v, float value )
         {
             v[ 1 ] = value;
+            return v;
         }
 
-        public static void SetZ( this Vector3 v, float value )
+        public static Vector3 SetZ( this Vector3 v, float value )
         {
             v[ 2 ] = value;
+            return v;
         }
 
         public static Vector3 Sign( this Vector3 v )
