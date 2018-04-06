@@ -68,19 +68,21 @@ namespace EnemyRandomizerMod
         {
             fsmsOnObject = new Dictionary<PlayMakerFSM, string>();
 
-            foreach( var p in owner.GetComponentsInChildren<PlayMakerFSM>() )
+            foreach( var p in owner.GetComponentsInChildren<PlayMakerFSM>(true) )
             {
                 fsmsOnObject.Add( p, p.ActiveStateName );
                 if( logFSM )
                     Dev.Log( "Added FSM for " + owner.name + " had the fsm [" + p.FsmName + "] with initial state [" + p.ActiveStateName + "]" );
             }
-            
+
+            Dev.Where();
+
             while( monitorFSMStates )
             {
                 if( owner == null )
                     yield break;
                 
-                foreach( var p in owner.GetComponentsInChildren<PlayMakerFSM>() )
+                foreach( var p in owner.GetComponentsInChildren<PlayMakerFSM>(true) )
                 {
                     if( p == null )
                         continue;
@@ -117,19 +119,23 @@ namespace EnemyRandomizerMod
 
         private IEnumerator Start()
         {
-            while( collider == null && owner == null )
+            Dev.Where();
+            while( owner == null )
             {
                 yield return null;
             }
 
             if( logFSM )
             {
-                lines = new List<GameObject>();
-                lines = Dev.CreateBoxOfLineRenderers( collider.bounds, Color.green, -2.1f, .01f );
-                foreach( var go in lines )
+                if( collider != null )
                 {
-                    go.transform.SetParent( owner.transform );
-                    go.transform.localPosition = Vector3.zero;
+                    lines = new List<GameObject>();
+                    lines = Dev.CreateBoxOfLineRenderers( collider.bounds, Color.green, -2.1f, .01f );
+                    foreach( var go in lines )
+                    {
+                        go.transform.SetParent( owner.transform );
+                        go.transform.localPosition = Vector3.zero;
+                    }
                 }
             }
 

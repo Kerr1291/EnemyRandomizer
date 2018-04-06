@@ -336,18 +336,21 @@ namespace EnemyRandomizerMod
             }
             else if( name == "Hornet Boss 1" )
             {
-                Dev.Log( "TRYING " + ( i++ ).ToString() );
-                {
-                    DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Control", "Inert", new List<string>() { "REFIGHT" }, true, customWakeAreaSize, false );
-                }
-                {
-                    List<IntCompare> actions = modifiedPrefab.GetFSMActionsOnStates<IntCompare>( new List<string>() { "Inert" }, "Control" );
-                    foreach( var a in actions )
-                    {
-                        a.integer1 = 0;
-                        a.integer2 = 0;
-                    }
-                }
+                //TODO: add our custom component to her and her needle and thread
+                //modifiedPrefab.AddComponent<HornetBoss1>();
+
+                //Dev.Log( "TRYING " + ( i++ ).ToString() );
+                //{
+                //    DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Control", "Inert", new List<string>() { "REFIGHT" }, true, customWakeAreaSize, false );
+                //}
+                //{
+                //    List<IntCompare> actions = modifiedPrefab.GetFSMActionsOnStates<IntCompare>( new List<string>() { "Inert" }, "Control" );
+                //    foreach( var a in actions )
+                //    {
+                //        a.integer1 = 0;
+                //        a.integer2 = 0;
+                //    }
+                //}
             }
             else if( name == "Moss Charger" )
             {
@@ -403,11 +406,6 @@ namespace EnemyRandomizerMod
             {
                 Dev.Log( "TRYING " + ( i++ ).ToString() );
                 DebugOnWake d = DebugOnWake.AddDebugOnWake( modifiedPrefab, "Control", "Init", new List<string>() { "START" }, true, customWakeAreaSize, false );
-            }
-
-            if(name == "Hornet Boss 1")
-            {
-                modifiedPrefab.AddComponent<HornetBoss1>();
             }
 
             return modifiedPrefab;
@@ -479,6 +477,15 @@ namespace EnemyRandomizerMod
             //foreach( GameObject go in database.loadedEnemyPrefabs )
             //{
             //    go.PrintSceneHierarchyTree( true );
+            //}
+
+            //print em
+            //foreach(var r in Resources.FindObjectsOfTypeAll<Transform>() )
+            //{
+            //    System.IO.StreamWriter file = null;
+            //    file = new System.IO.StreamWriter( Application.dataPath + "/Managed/Mods/Resources/" + r.name );
+            //    r.gameObject.PrintSceneHierarchyTree( true, file );
+            //    file.Close();
             //}
 
             Dev.LogVarArray( "Resources", Resources.FindObjectsOfTypeAll<Transform>() );

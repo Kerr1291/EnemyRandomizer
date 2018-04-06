@@ -283,8 +283,33 @@ namespace EnemyRandomizerMod
                 //print audio manager
                 if( UnityEngine.Input.GetKeyDown( KeyCode.A ) )
                 {
-
                     var hornet = database.loadedEnemyPrefabs[0];
+
+                    //TODO: test title
+                    yield return HornetBoss1.GetGameObjectFromFSM( hornet, "Control", "Flourish", SetAreaTitleReference );
+                    areaTitleObject.SetActive( true );
+                    ShowBossTitle("#MODDING STRIKES BACK", "GET READY FOR", "PART 2: ELECTRIC BOOGALOO", "HORNET");
+                    yield return new WaitForSeconds( 2f );
+                    HideBossTitle();
+                    yield return new WaitForSeconds( 2f );
+                    areaTitleObject.SetActive( false );
+                    yield return new WaitForEndOfFrame();
+
+                    //System.IO.StreamWriter file = null;
+                    //file = new System.IO.StreamWriter( Application.dataPath + "/Managed/Mods/" + areaTitleObject.name );
+                    //areaTitleObject.gameObject.PrintSceneHierarchyTree( true, file );
+                    //file.Close();
+
+                    //float t = 10f;
+                    //while(t > 0f)
+                    //{
+                    //    t -= Time.deltaTime;
+                    //    HeroController.instance.transform.position = areaTitleObject.transform.position;
+                    //    yield return new WaitForEndOfFrame();
+                    //}
+
+                    //areaTitleObject.PrintSceneHierarchyTree( true );
+
                     ////var hornet = GameObject.Find("Hornet Boss 1");
                     //var audioOneShot = hornet.GetFSMActionOnState<HutongGames.PlayMaker.Actions.AudioPlayerOneShotSingle>("Flourish","Control");
                     //var up = Vector3.up;
@@ -309,12 +334,11 @@ namespace EnemyRandomizerMod
                     //hornet.PrintSceneHierarchyTree( true, file );
                     //file.Close();
 
-                    Dev.Log( "trying snapshot" );
-                    var snapshot = hornet.GetFSMActionOnState<HutongGames.PlayMaker.Actions.TransitionToAudioSnapshot>("Flourish","Control");
-                    var mixerSnapshot = snapshot.snapshot.Value as UnityEngine.Audio.AudioMixerSnapshot;
-                    mixerSnapshot.TransitionTo( 1f );
+                    //Dev.Log( "trying snapshot" );
+                    //var snapshot = hornet.GetFSMActionOnState<HutongGames.PlayMaker.Actions.TransitionToAudioSnapshot>("Flourish","Control");
+                    //var mixerSnapshot = snapshot.snapshot.Value as UnityEngine.Audio.AudioMixerSnapshot;
+                    //mixerSnapshot.TransitionTo( 1f );
 
-                    Dev.Log( "trying title" );
                     //var areaTitle = hornet.GetFSMActionOnState<HutongGames.PlayMaker.Actions.SetGameObject>("Flourish","Control");
 
                     //Dev.Log( ""+ areaTitle.gameObject.Value.transform.position );
@@ -325,6 +349,9 @@ namespace EnemyRandomizerMod
                     //}
 
                     //var title = areaTitle.gameObject.Value;
+
+                    /*
+                    Dev.Log( "trying title" );
                     GameObject title = GameObject.Instantiate( Resources.FindObjectsOfTypeAll<AreaTitle>()[0].gameObject );
                     title.transform.position = HeroController.instance.transform.position;
                     title.gameObject.SetActive( true );
@@ -342,6 +369,7 @@ namespace EnemyRandomizerMod
                         FSMUtility.SetBool( fsm, "Display Right", false );
                         FSMUtility.SetString( fsm, "Area Event", "HORNET" );
                     }
+                    */
 
                     //Dev.Log( "trying title 2" );
                     //PlayMakerFSM titleFSM = title.GetComponent<PlayMakerFSM>();
@@ -351,11 +379,11 @@ namespace EnemyRandomizerMod
                     //HutongGames.PlayMaker.FsmString fString = titleFSM.Fsm.GetFsmString(fsmString.variableName.Value);
                     //fString.Value = "NOPE"; //fsmString.setValue.Value;
 
-                    Dev.Log( "trying music" ); 
-                    var musicCue = hornet.GetFSMActionOnState<HutongGames.PlayMaker.Actions.ApplyMusicCue>("Flourish","Control");
-                    MusicCue mc = musicCue.musicCue.Value as MusicCue;
-                    GameManager instance = GameManager.instance;
-                    instance.AudioManager.ApplyMusicCue( mc, 0f, 0f, false );
+                    //Dev.Log( "trying music" ); 
+                    //var musicCue = hornet.GetFSMActionOnState<HutongGames.PlayMaker.Actions.ApplyMusicCue>("Flourish","Control");
+                    //MusicCue mc = musicCue.musicCue.Value as MusicCue;
+                    //GameManager instance = GameManager.instance;
+                    //instance.AudioManager.ApplyMusicCue( mc, 0f, 0f, false );
 
 
                     //GameObject h = GameObject.Find("Hornet Boss 1");
@@ -380,6 +408,79 @@ namespace EnemyRandomizerMod
                 }
             }
             yield break;
+        }
+
+        GameObject areaTitleObject;
+        void SetAreaTitleReference( GameObject areaTitle )
+        {
+            if( areaTitle == null )
+            {
+                Dev.Log( "Warning: Area Title GameObject failed to load and is null!" );
+                return;
+            }
+
+            AreaTitle title = areaTitle.GetComponent<AreaTitle>();
+
+            foreach(PlayMakerFSM p in areaTitle.GetComponentsInChildren<PlayMakerFSM>())
+            {
+                GameObject.DestroyImmediate( p );
+            }
+
+            GameObject.DestroyImmediate( title );
+
+            //TODO: find out what this should be parented to
+            areaTitleObject = areaTitle;
+            areaTitleObject.SetActive( false );
+        }
+
+        void ShowBossTitle(string largeMain = "", string largeSuper = "", string largeSub = "", string smallMain = "", string smallSuper = "", string smallSub = "" )
+        {
+            //show hornet title
+            if( areaTitleObject != null )
+            {
+#if UNITY_EDITOR
+#else
+                foreach( FadeGroup f in areaTitleObject.GetComponentsInChildren<FadeGroup>() )
+                {
+                    f.FadeUp();
+                }
+
+                areaTitleObject.FindGameObjectInChildren( "Title Small Main" ).GetComponent<Transform>().Translate( new Vector3( 4f, 0f, 0f ) );
+                areaTitleObject.FindGameObjectInChildren( "Title Small Sub" ).GetComponent<Transform>().Translate( new Vector3( 4f, 0f, 0f ) );
+                areaTitleObject.FindGameObjectInChildren( "Title Small Super" ).GetComponent<Transform>().Translate( new Vector3( 4f, 0f, 0f ) );
+
+                areaTitleObject.FindGameObjectInChildren( "Title Small Main" ).GetComponent<TMPro.TextMeshPro>().text = smallMain;
+                areaTitleObject.FindGameObjectInChildren( "Title Small Sub" ).GetComponent<TMPro.TextMeshPro>().text = smallSub;
+                areaTitleObject.FindGameObjectInChildren( "Title Small Super" ).GetComponent<TMPro.TextMeshPro>().text = smallSuper;
+
+                areaTitleObject.FindGameObjectInChildren( "Title Large Main" ).GetComponent<TMPro.TextMeshPro>().text = largeMain;
+                areaTitleObject.FindGameObjectInChildren( "Title Large Sub" ).GetComponent<TMPro.TextMeshPro>().text = largeSub;
+                areaTitleObject.FindGameObjectInChildren( "Title Large Super" ).GetComponent<TMPro.TextMeshPro>().text = largeSuper;
+#endif
+            }
+            else
+            {
+                Dev.Log( areaTitleObject + " is null! Cannot show the boss title." );
+            }
+        }
+
+        void HideBossTitle()
+        {
+            //show hornet title
+            if( areaTitleObject != null )
+            {
+#if UNITY_EDITOR
+#else
+                foreach( FadeGroup f in areaTitleObject.GetComponentsInChildren<FadeGroup>() )
+                {
+                    f.FadeDown();
+                }
+#endif
+            }
+            else
+            {
+                Dev.Log( areaTitleObject + " is null! Cannot hide the boss title." );
+            }
         }
 
         public IEnumerator EnterSandbox()

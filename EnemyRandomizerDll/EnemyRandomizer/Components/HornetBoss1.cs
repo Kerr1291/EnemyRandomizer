@@ -311,7 +311,7 @@ namespace nv
         {
             Dev.Where();
             int test = GameManager.instance.playerData.GetInt("hornetGreenpath");
-
+            
             if(test >= 4)
             {
                 currentState = RefightReady();
@@ -348,7 +348,9 @@ namespace nv
         {
             Dev.Where();
 
-            ShowBossTitle();
+            areaTitleObject.SetActive( true );
+            ShowBossTitle("","","","HORNET");
+            StartCoroutine( HideBossTitleAfter( 3f ) );
 
             tk2dAnimator.AnimationCompleted = OnAnimationComplete;
             tk2dAnimator.Play("Flourish");
@@ -369,6 +371,14 @@ namespace nv
             }
 
             yield break;
+        }
+
+        IEnumerator HideBossTitleAfter(float time)
+        {
+            yield return new WaitForSeconds( time );
+            HideBossTitle();
+            yield return new WaitForSeconds( 3f );
+            areaTitleObject.SetActive( false );
         }
 
         IEnumerator Idle()
@@ -1066,7 +1076,7 @@ namespace nv
 
         public void DoEnemyKillShakeEffect()
         {
-            //TODO: find out the real name of this gameobject
+            //grab the camera's parent and shake it
             GameObject cam = GameObject.Find("CameraParent");
             if(cam != null)
             {
@@ -1095,29 +1105,53 @@ namespace nv
             }
         }
 
-        void ShowBossTitle()
+        void ShowBossTitle( string largeMain = "", string largeSuper = "", string largeSub = "", string smallMain = "", string smallSuper = "", string smallSub = "" )
         {
             //show hornet title
-            if(areaTitleObject != null)
+            if( areaTitleObject != null )
             {
-                areaTitleObject.SetActive(true);
 #if UNITY_EDITOR
 #else
-                PlayMakerFSM fsm = FSMUtility.GetFSM(areaTitleObject);
-                if(fsm != null)
+                foreach( FadeGroup f in areaTitleObject.GetComponentsInChildren<FadeGroup>() )
                 {
-                    FSMUtility.SetString(areaTitleObject, "Area Event", "HORNET");
+                    f.FadeUp();
                 }
-                else
+
+                areaTitleObject.FindGameObjectInChildren( "Title Small Main" ).GetComponent<Transform>().Translate( new Vector3( 4f, 0f, 0f ) );
+                areaTitleObject.FindGameObjectInChildren( "Title Small Sub" ).GetComponent<Transform>().Translate( new Vector3( 4f, 0f, 0f ) );
+                areaTitleObject.FindGameObjectInChildren( "Title Small Super" ).GetComponent<Transform>().Translate( new Vector3( 4f, 0f, 0f ) );
+
+                areaTitleObject.FindGameObjectInChildren( "Title Small Main" ).GetComponent<TMPro.TextMeshPro>().text = smallMain;
+                areaTitleObject.FindGameObjectInChildren( "Title Small Sub" ).GetComponent<TMPro.TextMeshPro>().text = smallSub;
+                areaTitleObject.FindGameObjectInChildren( "Title Small Super" ).GetComponent<TMPro.TextMeshPro>().text = smallSuper;
+
+                areaTitleObject.FindGameObjectInChildren( "Title Large Main" ).GetComponent<TMPro.TextMeshPro>().text = largeMain;
+                areaTitleObject.FindGameObjectInChildren( "Title Large Sub" ).GetComponent<TMPro.TextMeshPro>().text = largeSub;
+                areaTitleObject.FindGameObjectInChildren( "Title Large Super" ).GetComponent<TMPro.TextMeshPro>().text = largeSuper;
+#endif
+            }
+            else
+            {
+                Dev.Log( areaTitleObject + " is null! Cannot show the boss title." );
+            }
+        }
+
+        void HideBossTitle()
+        {
+            //show hornet title
+            if( areaTitleObject != null )
+            {
+#if UNITY_EDITOR
+#else
+                foreach( FadeGroup f in areaTitleObject.GetComponentsInChildren<FadeGroup>() )
                 {
-                    Dev.Log(areaTitleObject.name + " has no PlayMakerFSM!");
-                    areaTitleObject.PrintSceneHierarchyTree(true);
+                    f.FadeDown();
                 }
 #endif
             }
             else
             {
-                Dev.Log(areaTitleObject + " is null! Cannot show the boss title.");
+                Dev.Log( areaTitleObject + " is null! Cannot hide the boss title." );
             }
         }
 
@@ -1138,10 +1172,10 @@ namespace nv
 
         const float RAYCAST_LENGTH = 0.08f;
 
-        List<Vector2> topRays;
-        List<Vector2> rightRays;
-        List<Vector2> bottomRays;
-        List<Vector2> leftRays;
+        List<Vector2> topRays = new List<Vector2>();
+        List<Vector2> rightRays = new List<Vector2>();
+        List<Vector2> bottomRays = new List<Vector2>();
+        List<Vector2> leftRays = new List<Vector2>();
 
         public struct DirectionSet
         {
@@ -1360,14 +1394,16 @@ namespace nv
             return num3;
         }
 
-        static IEnumerator GetAudioPlayerOneShotClipsFromFSM(GameObject go, string fsmName, string stateName, Action<List<AudioClip>> onAudioPlayerOneShotLoaded)
+        public static IEnumerator GetAudioPlayerOneShotClipsFromFSM(GameObject go, string fsmName, string stateName, Action<List<AudioClip>> onAudioPlayerOneShotLoaded)
         {
-            GameObject copy = GameObject.Instantiate(go) as GameObject;
-            copy.SetActive(true);
+            GameObject copy = go;
+            if( !go.activeInHierarchy )
+            {
+                copy = GameObject.Instantiate( go ) as GameObject;
+                copy.SetActive( true );
+            }
 
             //wait a few frames for the fsm to set up stuff
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
 #if UNITY_EDITOR
             onAudioPlayerOneShotLoaded(null);
@@ -1375,14 +1411,13 @@ namespace nv
             var audioPlayerOneShot = copy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.AudioPlayerOneShot>(stateName, fsmName);
             
             //this is a prefab
-            var clips = setGameObject.audioClips.ToList();
-
-            yield return new WaitForEndOfFrame();
+            var clips = audioPlayerOneShot.audioClips.ToList();
             
             //send the clips out
             onAudioPlayerOneShotLoaded(clips);
 #endif
-            GameObject.Destroy(copy);
+            if( copy != go )
+                GameObject.Destroy( copy );
 
             //let stuff get destroyed
             yield return new WaitForEndOfFrame();
@@ -1390,32 +1425,33 @@ namespace nv
             yield break;
         }
 
-        static IEnumerator GetGameObjectFromFSM(GameObject go, string fsmName, string stateName, Action<GameObject> onGameObjectLoaded)
+        public static IEnumerator GetGameObjectFromFSM(GameObject go, string fsmName, string stateName, Action<GameObject> onGameObjectLoaded)
         {
-            GameObject copy = GameObject.Instantiate(go) as GameObject;
-            copy.SetActive(true);
+            GameObject copy = go;
+            if( !go.activeInHierarchy )
+            {
+                copy = GameObject.Instantiate( go ) as GameObject;
+                copy.SetActive( true );
+            }
 
             //wait a few frames for the fsm to set up stuff
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
 #if UNITY_EDITOR
             onGameObjectLoaded(null);
 #else
-            var setGameObject = copy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.SetGameObject>(stateName, fsmName);
-            
+            var setGameObject = copy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.SetGameObject>(stateName, fsmName);            
+
             //this is a prefab
             var prefab = setGameObject.gameObject.Value;
             
             //so spawn one
             var spawnedCopy = GameObject.Instantiate(prefab) as GameObject;
 
-            yield return new WaitForEndOfFrame();
-            
             //send the loaded object out
             onGameObjectLoaded(spawnedCopy);
 #endif
-            GameObject.Destroy(copy);
+            if( copy != go )
+                GameObject.Destroy( copy );
 
             //let stuff get destroyed
             yield return new WaitForEndOfFrame();
@@ -1423,14 +1459,17 @@ namespace nv
             yield break;
         }
 
-        static IEnumerator GetAudioSourceObjectFromFSM(GameObject go, string fsmName, string stateName, Action<AudioSource> onSourceLoaded)
+        public static IEnumerator GetAudioSourceObjectFromFSM(GameObject go, string fsmName, string stateName, Action<AudioSource> onSourceLoaded)
         {
-            GameObject copy = GameObject.Instantiate(go) as GameObject;
-            copy.SetActive(true);
+            Dev.Where();
+            GameObject copy = go;
+            if( !go.activeInHierarchy )
+            {
+                copy = GameObject.Instantiate( go ) as GameObject;
+                copy.SetActive( true );
+            }
 
             //wait a few frames for the fsm to set up stuff
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
 #if UNITY_EDITOR
             onSourceLoaded(null);
@@ -1442,14 +1481,21 @@ namespace nv
             
             //so spawn one
             var spawnedCopy = GameObject.Instantiate(aPlayer) as GameObject;
+
             var audioSource = spawnedCopy.GetComponent<AudioSource>();
 
-            yield return new WaitForEndOfFrame();
-            
+            var recycleComponent = audioSource.GetComponent<PlayAudioAndRecycle>();
+
+            //stop it from killing itself
+            if( recycleComponent != null )
+                GameObject.DestroyImmediate( recycleComponent );
+
             //send the loaded object out
             onSourceLoaded(audioSource);
 #endif
-            GameObject.Destroy(copy);
+
+            if( copy != go )
+                GameObject.Destroy( copy );
 
             //let stuff get destroyed
             yield return new WaitForEndOfFrame();
@@ -1457,28 +1503,29 @@ namespace nv
             yield break;
         }
 
-        static IEnumerator GetAudioClipFromAudioPlaySimpleInFSM(GameObject go, string fsmName, string stateName, Action<AudioClip> onClipLoaded)
+        public static IEnumerator GetAudioClipFromAudioPlaySimpleInFSM(GameObject go, string fsmName, string stateName, Action<AudioClip> onClipLoaded)
         {
-            GameObject copy = GameObject.Instantiate(go) as GameObject;
-            copy.SetActive(true);
+            GameObject copy = go;
+            if( !go.activeInHierarchy )
+            {
+                copy = GameObject.Instantiate( go ) as GameObject;
+                copy.SetActive( true );
+            }
 
             //wait a few frames for the fsm to set up stuff
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
 #if UNITY_EDITOR
             onClipLoaded(null);
 #else
             var audioPlaySimple = copy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.AudioPlaySimple>(stateName, fsmName);
-            
-            yield return new WaitForEndOfFrame();
 
             var clip = audioPlaySimple.oneShotClip.Value as AudioClip;
 
             //send the loaded clip out
             onClipLoaded(clip);
 #endif
-            GameObject.Destroy(copy);
+            if( copy != go )
+                GameObject.Destroy( copy );
 
             //let stuff get destroyed
             yield return new WaitForEndOfFrame();
@@ -1486,37 +1533,30 @@ namespace nv
             yield break;
         }
 
-        static IEnumerator GetAudioClipFromFSM(GameObject go, string fsmName, string stateName, Action<AudioClip> onClipLoaded)
+        public static IEnumerator GetAudioClipFromFSM(GameObject go, string fsmName, string stateName, Action<AudioClip> onClipLoaded)
         {
-            GameObject copy = GameObject.Instantiate(go) as GameObject;
-            copy.SetActive(true);
+            Dev.Where();
+            GameObject copy = go;
+            if( !go.activeInHierarchy )
+            {
+                copy = GameObject.Instantiate( go ) as GameObject;
+                copy.SetActive( true );
+            }
 
             //wait a few frames for the fsm to set up stuff
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
 #if UNITY_EDITOR
             onClipLoaded(null);
 #else
             var audioOneShot = copy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.AudioPlayerOneShotSingle>(stateName, fsmName);
             
-            //this is a prefab
-            var aPlayer = audioOneShot.audioPlayer.Value;
-            
-            //so spawn one
-            var spawnedCopy = GameObject.Instantiate(aPlayer) as GameObject;
-            var audioSource = spawnedCopy.GetComponent<AudioSource>();
-
-            yield return new WaitForEndOfFrame();
-
-            var clip = audioSource.clip;
+            var clip = audioOneShot.audioClip.Value as AudioClip;
 
             //send the loaded clip out
             onClipLoaded(clip);
-            
-            GameObject.Destroy(spawnedCopy);
 #endif
-            GameObject.Destroy(copy);
+            if( copy != go )
+                GameObject.Destroy(copy);
 
             //let stuff get destroyed
             yield return new WaitForEndOfFrame();
@@ -1524,15 +1564,15 @@ namespace nv
             yield break;
         }
 
-            
+
 #if UNITY_EDITOR
         static UnityEngine.Audio.AudioMixerSnapshot GetSnapshotFromFSM(GameObject go, string fsmName, string stateName)
         {
             return null;
 #else
-        static UnityEngine.Audio.AudioMixerSnapshot GetSnapshotFromFSM(GameObject go, string fsmName, string stateName)
+        public static UnityEngine.Audio.AudioMixerSnapshot GetSnapshotFromFSM(GameObject go, string fsmName, string stateName)
         {
-            var snapshot = go.GetFSMActionOnState<HutongGames.PlayMaker.Actions.TransitionToAudioSnapshot>("Flourish", "Control");
+            var snapshot = go.GetFSMActionOnState<HutongGames.PlayMaker.Actions.TransitionToAudioSnapshot>(stateName, fsmName);
             var mixerSnapshot = snapshot.snapshot.Value as UnityEngine.Audio.AudioMixerSnapshot;
             return mixerSnapshot;
 #endif
@@ -1543,9 +1583,9 @@ namespace nv
         {
             return null;
 #else
-        static MusicCue GetMusicCueFromFSM(GameObject go, string fsmName, string stateName)
+        public static MusicCue GetMusicCueFromFSM(GameObject go, string fsmName, string stateName)
         {
-            var musicCue = go.GetFSMActionOnState<ApplyMusicCue>(stateName, fsmName);
+            var musicCue = go.GetFSMActionOnState<HutongGames.PlayMaker.Actions.ApplyMusicCue>(stateName, fsmName);
             MusicCue mc = musicCue.musicCue.Value as MusicCue;
             return mc;
 #endif
@@ -1571,6 +1611,7 @@ namespace nv
                 sphereRange = gameObject.FindGameObjectInChildren("Sphere Range").AddComponent<SphereRange>();
             if(gameObject.FindGameObjectInChildren("Throw Effect") != null)
                 throwEffect = gameObject.FindGameObjectInChildren("Throw Effect").AddComponent<ThrowEffect>();
+            
             //TODO: replace this with a load from the effects database
             if(GameObject.Find("Needle") != null)
                 needle = GameObject.Find("Needle").AddComponent<Needle>();
@@ -1663,86 +1704,48 @@ namespace nv
             hornetThrowYells = clips;
         }
 
-        void SetAreaTitleReference(GameObject areaTitle)
+        void SetAreaTitleReference( GameObject areaTitle )
         {
-            if(areaTitle == null)
+            if( areaTitle == null )
             {
-                Dev.Log("Warning: Area Title GameObject failed to load and is null!");
+                Dev.Log( "Warning: Area Title GameObject failed to load and is null!" );
                 return;
             }
 
+            AreaTitle title = areaTitle.GetComponent<AreaTitle>();
+
+            foreach( PlayMakerFSM p in areaTitle.GetComponentsInChildren<PlayMakerFSM>() )
+            {
+                GameObject.DestroyImmediate( p );
+            }
+
+            GameObject.DestroyImmediate( title );
+
             //TODO: find out what this should be parented to
             areaTitleObject = areaTitle;
-            areaTitleObject.SetActive(false);
+            areaTitleObject.SetActive( false );
         }
 
         void RemoveDeprecatedComponents()
         {
 #if UNITY_EDITOR
 #else
-            //remove her playmaker fsm for her main AI
+            foreach( PlayMakerFSM p in owner.GetComponentsInChildren<PlayMakerFSM>() )
             {
-                PlayMakerFSM deleteFSM = owner.GetMatchingFSMComponent("Control", "G Dash", "Tk2dPlayAnimation");
-            
-                if(deleteFSM != null)
-                {
-                    GameObject.Destroy(deleteFSM);
-                }
+                GameObject.DestroyImmediate( p );
             }
-
-            //remove her playmaker fsm for her evade range
+            foreach( PlayMakerUnity2DProxy p in owner.GetComponentsInChildren<PlayMakerUnity2DProxy>() )
             {
-                PlayMakerFSM deleteFSM = evadeRange.gameObject.GetMatchingFSMComponent("FSM", "Detect", "Trigger2dEvent");
-            
-                if(deleteFSM != null)
-                {
-                    GameObject.Destroy(deleteFSM);
-                }
-                PlayMakerUnity2DProxy proxy = evadeRange.gameObject.GetComponent<PlayMakerUnity2DProxy>();
-                if(proxy != null)
-                {
-                    GameObject.Destroy(proxy);
-                }
+                GameObject.DestroyImmediate( p );
             }
-            //remove her playmaker fsm for her sphere range
+            foreach( PlayMakerFixedUpdate p in owner.GetComponentsInChildren<PlayMakerFixedUpdate>() )
             {
-                PlayMakerFSM deleteFSM = sphereRange.gameObject.GetMatchingFSMComponent("FSM", "Detect", "Trigger2dEvent");
-            
-                if(deleteFSM != null)
-                {
-                    GameObject.Destroy(deleteFSM);
-                }
-                PlayMakerUnity2DProxy proxy = sphereRange.gameObject.GetComponent<PlayMakerUnity2DProxy>();
-                if(proxy != null)
-                {
-                    GameObject.Destroy(proxy);
-                }
+                GameObject.DestroyImmediate( p );
             }
-            
-            //remove the playmaker fsm for her throwEffect
+            foreach( DeactivateIfPlayerdataTrue p in owner.GetComponentsInChildren<DeactivateIfPlayerdataTrue>() )
             {
-                PlayMakerFSM deleteFSM = throwEffect.gameObject.GetMatchingFSMComponent("FSM", "Wait", "Wait");
-            
-                if(deleteFSM != null)
-                {
-                    GameObject.Destroy(deleteFSM);
-                }
-            }
-            
-            //remove the playmaker fsm for her Needle
-            {
-                PlayMakerFSM deleteFSM = needle.gameObject.GetMatchingFSMComponent("Control", "Out", "Wait");
-            
-                if(deleteFSM != null)
-                {
-                    GameObject.Destroy(deleteFSM);
-                }
-                PlayMakerFixedUpdate proxy = needle.gameObject.GetComponent<PlayMakerFixedUpdate>();
-                if(proxy != null)
-                {
-                    GameObject.Destroy(proxy);
-                }
-            }
+                GameObject.DestroyImmediate( p );
+            }            
 #endif
             //TODO: remove stun control
         }
