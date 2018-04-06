@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
-
-using Meisui.Random;
+using System.Collections.Generic;
 
 namespace nv
 {
@@ -155,6 +152,18 @@ namespace nv
         public static bool CoinToss()
         {
             return Instance.rng.CoinToss();
+        }
+
+        public static int WeightedRand( AnimationCurve distribution, int min, int max )
+        {
+            return Instance.rng.WeightedRand( distribution, min, max );
+        }
+
+        //uses a given distribution and a range to weight the outcomes
+        //returns the selected random index
+        public static int WeightedRand( List<float> distribution )
+        {
+            return Instance.rng.WeightedRand( distribution );
         }
     }
 }

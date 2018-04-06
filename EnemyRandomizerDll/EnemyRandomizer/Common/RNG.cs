@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 using Meisui.Random;
 
@@ -244,6 +245,30 @@ namespace nv
                     return min + i;
             }
             return max;
+        }
+
+        //uses a given distribution and a range to weight the outcomes
+        //returns the selected random index
+        public int WeightedRand( List<float> distribution )
+        {
+            //integrate the curve
+            float maxWeight = 0f;
+            for( int i = 0; i < distribution.Count; ++i )
+            {
+                maxWeight += distribution[i];
+            }
+
+            float rngValue = Rand(0f,maxWeight);
+
+            //find the outcome
+            float sum = 0f;
+            for( int i = 0; i < distribution.Count; ++i )
+            {
+                sum += distribution[ i ];
+                if( sum > rngValue )
+                    return i;
+            }
+            return distribution.Count - 1;
         }
     }
 }
