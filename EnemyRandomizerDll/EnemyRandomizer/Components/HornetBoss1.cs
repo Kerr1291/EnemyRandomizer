@@ -88,12 +88,16 @@ namespace nv
         public GameObject owner;
         IEnumerator currentState = null;
 
+        public bool isAnimating = false;
+
         public void Play(GameObject parent)
         {
             owner = parent;
             tk2dAnimator = owner.GetComponent<tk2dSpriteAnimator>();
 
             gameObject.SetActive(true);
+
+            isAnimating = true;
 
             StartCoroutine(MainAILoop());
         }
@@ -120,6 +124,21 @@ namespace nv
         IEnumerator Init()
         {
             Dev.Where();
+
+            //TODO: finish
+
+            currentState = Complete();
+
+            yield break;
+        }
+
+        IEnumerator Complete()
+        {
+            Dev.Where();
+
+            //TODO: finish
+
+            isAnimating = false;
 
             yield break;
         }
@@ -254,6 +273,8 @@ namespace nv
         public List<AudioClip> hornetLaughs;
         public AudioClip hornetSmallJumpSFX;
         public AudioClip hornetGroundLandSFX;
+        public AudioClip hornetJumpSFX;
+        public List<AudioClip> hornetJumpYells;
 #if UNITY_EDITOR
         public object fightMusic;
 #else
@@ -279,6 +300,9 @@ namespace nv
         public float evadeJumpAwaySpeed = 22f;
         public float evadeJumpAwayTimeLength = .25f;
         public float throwDistance = 10f;
+        public float jumpDistance = 10f;
+        public float jumpVelocityY = 41f;
+        public float minAirSphereHeight = 5f;
 
         public float escalationHPPercentage = .4f;
         public float chanceToThrow = .8f;
@@ -291,6 +315,8 @@ namespace nv
         public float normEvadeCooldownMax = 2f;
         public float normDmgIdleWaitMin = .25f;
         public float normDmgIdleWaitMax = .4f;
+        public float normAirDashPauseMin = .15f;
+        public float normAirDashPauseMax = .4f;
 
         public float esRunWaitMin = .35f;
         public float esRunWaitMax = .75f;
@@ -326,6 +352,7 @@ namespace nv
         //variables used by the state machine that the states set
         Func<IEnumerator> onAnimationCompleteNextState = null;
         float airDashPause;
+        float jumpPoint;
         float nextThrowAngle;
         float runWaitMin;
         float runWaitMax;
@@ -335,6 +362,8 @@ namespace nv
         float evadeCooldownMax;
         float dmgIdleWaitMin;
         float dmgIdleWaitMax;
+        float airDashPauseMin;
+        float airDashPauseMax;
 
         bool topHit = false;
         bool rightHit = false;
@@ -342,6 +371,7 @@ namespace nv
         bool leftHit = false;
         bool canStunRightNow = true;
         bool escalated = false;
+        bool willSphere = false;
 
         int ctIdle = 0;
         int ctRun = 0;
@@ -391,7 +421,7 @@ namespace nv
                 //Dev.Log("Next");
 
                 //TODO: remove as the states get implemented
-                yield return new WaitForEndOfFrame();
+                //yield return new WaitForEndOfFrame();
             }
         }
 
@@ -464,6 +494,9 @@ namespace nv
 
             dmgIdleWaitMin = normDmgIdleWaitMin;
             dmgIdleWaitMax = normDmgIdleWaitMax;
+
+            airDashPauseMin = normAirDashPauseMin;
+            airDashPauseMax = normAirDashPauseMax;
 
             //close the gates
             SetFightGates( true );
@@ -623,8 +656,7 @@ namespace nv
 
             tk2dAnimator.Play("Run");
             body.velocity = new Vector2(xVel, 0f);
-
-            //todo: move these into variables: RunWaitMin and RunWaitMax
+            
             float randomDelay = GameRNG.Rand(runWaitMin, runWaitMax);
             while(randomDelay > 0f)
             {
@@ -665,7 +697,6 @@ namespace nv
 
             if(sphereRange.objectIsInRange)
             {
-                //todo: move these into min/max variables
                 float randomChoice = GameRNG.Randf();
                 if(randomChoice > chanceToThrow)
                 {
@@ -1113,7 +1144,10 @@ namespace nv
         IEnumerator SetADash()
         {
             Dev.Where();
-            //TODO
+
+            airDashPause = GameRNG.Rand( airDashPauseMin, airDashPauseMax );
+            willSphere = false;
+
             currentState = JumpAntic();
 
             yield break;
@@ -1122,8 +1156,27 @@ namespace nv
         IEnumerator JumpAntic()
         {
             Dev.Where();
-            //TODO
-            currentState = AimJump();
+
+            bodyCollider.offset = new Vector2( .1f, -.3f );
+            bodyCollider.size = new Vector2( .9f, 2.6f );
+
+            body.velocity = Vector2.zero;
+
+            tk2dAnimator.AnimationCompleted = OnAnimationComplete;
+            tk2dAnimator.Play( "Jump Antic" );
+
+            onAnimationCompleteNextState = AimJump;
+            
+            FaceObject( HeroController.instance.gameObject );
+
+            //play until the callback fires and changes our state
+            for(; ; )
+            {
+                if( onAnimationCompleteNextState == null )
+                    break;
+                else
+                    yield return new WaitForEndOfFrame();
+            }
 
             yield break;
         }
@@ -1131,10 +1184,53 @@ namespace nv
         IEnumerator AimJump()
         {
             Dev.Where();
-            //TODO
-            currentState = Jump();
-            currentState = ReAim();
-            currentState = AimSphereJump();
+
+            if( willSphere )
+            {
+                currentState = AimSphereJump();
+            }
+            else
+            {
+                //TODO: enchancement: make hornet jump at/near/away from the player
+
+                Vector3 currentPosition = owner.transform.position;
+                Vector2 jumpOrigin = currentPosition;
+                Vector2 jumpDirectionL = Vector2.left;
+                Vector2 jumpDirectionR = Vector2.left;
+
+                float xMin = -jumpDistance;
+                float xMax = jumpDistance;
+
+                //get max L x jump distance
+                {
+                    RaycastHit2D raycastHit2D2 = Physics2D.Raycast(jumpOrigin, jumpDirectionL, jumpDistance, 1 << 8);
+                    if( raycastHit2D2.collider != null )
+                    {
+                        xMin = raycastHit2D2.transform.position.x;
+                    }
+                }
+
+                //get max R x jump distance
+                {
+                    RaycastHit2D raycastHit2D2 = Physics2D.Raycast(jumpOrigin, jumpDirectionR, jumpDistance, 1 << 8);
+                    if( raycastHit2D2.collider != null )
+                    {
+                        xMax = raycastHit2D2.transform.position.x;
+                    }
+                }
+
+                jumpPoint = GameRNG.Rand(xMin,xMax);
+
+                //if it's too close, don't jump
+                if(Mathf.Abs(jumpPoint - currentPosition.x) < 2.5f)
+                {
+                    currentState = ReAim();
+                }
+                else
+                {
+                    currentState = Jump();
+                }
+            }
 
             yield break;
         }
@@ -1143,6 +1239,14 @@ namespace nv
         {
             Dev.Where();
             //TODO
+            PlayRandomOneShot( hornetJumpYells );
+            PlayOneShot( hornetJumpSFX );
+
+            tk2dAnimator.Play( "Jump" );
+
+            //TODO: this seems weird, see how it turns out
+            body.velocity = new Vector2( jumpPoint, jumpVelocityY );
+
             currentState = InAir();
 
             yield break;
@@ -1151,10 +1255,60 @@ namespace nv
         IEnumerator InAir()
         {
             Dev.Where();
-            //TODO
-            currentState = Land();
-            currentState = ADashAntic();
-            currentState = MaybeDoSphere();
+
+            //change collision check directions for jumping
+            checkUp = false;
+            checkDown = true;
+            checkLeft = false;
+            checkRight = false;
+
+            float startHeight = owner.transform.position.y;
+
+            float waitTimer = airDashPause;
+            while( waitTimer > 0f )
+            {
+                yield return new WaitForEndOfFrame();
+
+                //did we hit a wall? end evade timer early
+                if( bottomHit )
+                {
+                    currentState = Land();
+                    break;
+                }
+
+                waitTimer -= Time.deltaTime;
+            }
+
+            if( waitTimer <= 0f )
+            {
+                currentState = ADashAntic();
+            }
+            else if( !bottomHit )
+            {
+                while( !bottomHit )
+                {
+                    if(body.velocity.y > 0f && Mathf.Abs(owner.transform.position.y - startHeight) > minAirSphereHeight)
+                    {
+                        currentState = MaybeDoSphere();
+                        break;
+                    }
+
+                    yield return new WaitForEndOfFrame();
+
+                    //did we hit a wall? end evade timer early
+                    if( bottomHit )
+                    {
+                        currentState = Land();
+                        break;
+                    }
+                }
+            }
+
+            //restore collision check directions
+            checkUp = false;
+            checkDown = false;
+            checkLeft = true;
+            checkRight = true;
 
             yield break;
         }
@@ -1579,28 +1733,6 @@ namespace nv
         }
 
 
-        IEnumerator Escalation()
-        {
-            Dev.Where();
-
-            //see if we're low on hp and should act faster
-            float hpRemainingPercent = (float)healthManager.hp / (float)maxHP;
-            if( !escalated && hpRemainingPercent < escalationHPPercentage )
-            {
-                runWaitMin = esRunWaitMin;
-                runWaitMax = esRunWaitMax;
-
-                idleWaitMax = esIdleWaitMax;
-                idleWaitMin = esIdleWaitMin;
-
-                //TODO: escalate her evade timers
-            }
-
-            currentState = Idle();
-
-            yield break;
-        }
-
         IEnumerator RefightReady()
         {
             Dev.Where();
@@ -1609,9 +1741,9 @@ namespace nv
             meshRenderer.enabled = true;
 
             tk2dAnimator.Play( "Idle" );
-            
+
             //wait for player to get close
-            while(!refightRange.objectIsInRange)
+            while( !refightRange.objectIsInRange )
             {
                 yield return new WaitForEndOfFrame();
             }
@@ -1666,6 +1798,28 @@ namespace nv
             Dev.Where();
             //TODO
             currentState = SetJumpOnly();
+
+            yield break;
+        }
+
+        IEnumerator Escalation()
+        {
+            Dev.Where();
+
+            //see if we're low on hp and should act faster
+            float hpRemainingPercent = (float)healthManager.hp / (float)maxHP;
+            if( !escalated && hpRemainingPercent < escalationHPPercentage )
+            {
+                runWaitMin = esRunWaitMin;
+                runWaitMax = esRunWaitMax;
+
+                idleWaitMax = esIdleWaitMax;
+                idleWaitMin = esIdleWaitMin;
+
+                //TODO: escalate her evade timers
+            }
+
+            currentState = Idle();
 
             yield break;
         }
@@ -2249,6 +2403,8 @@ namespace nv
         {
             //load resources for the boss
 
+            yield return GetAudioPlayerOneShotClipsFromFSM( owner, "Control", "Jump", SetHornetJumpYells );
+            yield return GetAudioClipFromAudioPlaySimpleInFSM( owner, "Control", "Jump", SetHornetJumpSFX );
             yield return GetAudioClipFromAudioPlaySimpleInFSM( owner, "Control", "Evade Land", SetHornetGroundLandSFX );
             yield return GetAudioClipFromAudioPlaySimpleInFSM( owner, "Control", "Evade", SetHornetSmallJumpSFX );
             yield return GetAudioPlayerOneShotClipsFromFSM( owner, "Control", "Evade", SetHornetLaughs );
@@ -2279,6 +2435,28 @@ namespace nv
             actorAudioSource = source;
             actorAudioSource.transform.SetParent(owner.transform);
             actorAudioSource.transform.localPosition = Vector3.zero;
+        }
+
+        void SetHornetJumpSFX( AudioClip clip )
+        {
+            if( clip == null )
+            {
+                Dev.Log( "Warning: hornet jump sfx clip is null!" );
+                return;
+            }
+
+            hornetJumpSFX = clip;
+        }
+
+        void SetHornetJumpYells( List<AudioClip> clips )
+        {
+            if( clips == null )
+            {
+                Dev.Log( "Warning: hornet jump yells are null clips!" );
+                return;
+            }
+
+            hornetJumpYells = clips;
         }
 
         void SetHornetSmallJumpSFX( AudioClip clip )
@@ -2374,8 +2552,7 @@ namespace nv
             }
 
             GameObject.DestroyImmediate( title );
-
-            //TODO: find out what this should be parented to
+            
             areaTitleObject = areaTitle;
             areaTitleObject.SetActive( false );
         }
@@ -2401,7 +2578,6 @@ namespace nv
                 GameObject.DestroyImmediate( p );
             }            
 #endif
-            //TODO: remove stun control
         }
 
         //end helpers /////////////////////////////
