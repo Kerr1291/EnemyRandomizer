@@ -656,7 +656,10 @@ namespace nv
 
             tk2dAnimator.Play("Run");
             body.velocity = new Vector2(xVel, 0f);
-            
+
+            //do this by default
+            currentState = MaybeGSphere();
+
             float randomDelay = GameRNG.Rand(runWaitMin, runWaitMax);
             while(randomDelay > 0f)
             {
