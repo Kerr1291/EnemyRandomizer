@@ -19,13 +19,13 @@ namespace nv
         public bool IsOnCooldown { get; private set; }
 
         BoxCollider2D bodyCollider;
-        
+
         public void DisableEvadeForTime(float disableTime)
         {
-            if( IsOnCooldown )
+            if(IsOnCooldown)
                 return;
 
-            StartCoroutine( EnableEvadeAfterTime( disableTime ) );
+            StartCoroutine(EnableEvadeAfterTime(disableTime));
         }
 
         IEnumerator EnableEvadeAfterTime(float time)
@@ -33,7 +33,7 @@ namespace nv
             IsOnCooldown = true;
             bodyCollider = GetComponent<BoxCollider2D>();
             bodyCollider.enabled = false;
-            yield return new WaitForSeconds( time );
+            yield return new WaitForSeconds(time);
             bodyCollider.enabled = true;
             IsOnCooldown = false;
         }
@@ -49,17 +49,17 @@ namespace nv
         }
     }
 
-    [RequireComponent( typeof( BoxCollider2D ) )]
+    [RequireComponent(typeof(BoxCollider2D))]
     public class RefightRange : MonoBehaviour
     {
         public bool objectIsInRange;
 
-        public void OnTriggerEnter2D( Collider2D collisionInfo )
+        public void OnTriggerEnter2D(Collider2D collisionInfo)
         {
             objectIsInRange = true;
         }
 
-        public void OnTriggerExit2D( Collider2D collisionInfo )
+        public void OnTriggerExit2D(Collider2D collisionInfo)
         {
             objectIsInRange = false;
         }
@@ -80,7 +80,213 @@ namespace nv
             objectIsInRange = false;
         }
     }
-    
+
+    [RequireComponent(typeof(CircleCollider2D))]
+    public class ADashRange : MonoBehaviour
+    {
+        public bool objectIsInRange;
+
+        public void OnTriggerEnter2D(Collider2D collisionInfo)
+        {
+            objectIsInRange = true;
+        }
+
+        public void OnTriggerExit2D(Collider2D collisionInfo)
+        {
+            objectIsInRange = false;
+        }
+    }
+
+    public class FlashEffect : MonoBehaviour
+    {
+        public tk2dSpriteAnimator tk2dAnimator;
+
+        public GameObject owner;
+        IEnumerator currentState = null;
+
+        public bool isAnimating = false;
+
+        public void Play(GameObject parent)
+        {
+            owner = parent;
+            tk2dAnimator = owner.GetComponent<tk2dSpriteAnimator>();
+
+            gameObject.SetActive(true);
+
+            isAnimating = true;
+
+            StartCoroutine(MainAILoop());
+        }
+
+        IEnumerator MainAILoop()
+        {
+            Dev.Where();
+            currentState = Init();
+
+            for(;;)
+            {
+                if(owner == null)
+                    yield break;
+
+                yield return currentState;
+
+                //Dev.Log("Next");
+
+                //TODO: remove as the states get implemented
+                yield return new WaitForEndOfFrame();
+            }
+        }
+
+        IEnumerator Init()
+        {
+            Dev.Where();
+
+            //TODO: finish
+
+            currentState = Complete();
+
+            yield break;
+        }
+
+        IEnumerator Complete()
+        {
+            Dev.Where();
+
+            //TODO: finish
+
+            isAnimating = false;
+
+            yield break;
+        }
+    }
+
+    public class ADashEffect : MonoBehaviour
+    {
+        public tk2dSpriteAnimator tk2dAnimator;
+
+        public GameObject owner;
+        IEnumerator currentState = null;
+
+        public bool isAnimating = false;
+
+        public void Play(GameObject parent)
+        {
+            owner = parent;
+            tk2dAnimator = owner.GetComponent<tk2dSpriteAnimator>();
+
+            gameObject.SetActive(true);
+
+            isAnimating = true;
+
+            StartCoroutine(MainAILoop());
+        }
+
+        IEnumerator MainAILoop()
+        {
+            Dev.Where();
+            currentState = Init();
+
+            for(;;)
+            {
+                if(owner == null)
+                    yield break;
+
+                yield return currentState;
+
+                //Dev.Log("Next");
+
+                //TODO: remove as the states get implemented
+                yield return new WaitForEndOfFrame();
+            }
+        }
+
+        IEnumerator Init()
+        {
+            Dev.Where();
+
+            //TODO: finish
+
+            currentState = Complete();
+
+            yield break;
+        }
+
+        IEnumerator Complete()
+        {
+            Dev.Where();
+
+            //TODO: finish
+
+            isAnimating = false;
+
+            yield break;
+        }
+    }
+
+
+    public class GDashEffect : MonoBehaviour
+    {
+        public tk2dSpriteAnimator tk2dAnimator;
+
+        public GameObject owner;
+        IEnumerator currentState = null;
+
+        public bool isAnimating = false;
+
+        public void Play(GameObject parent)
+        {
+            owner = parent;
+            tk2dAnimator = owner.GetComponent<tk2dSpriteAnimator>();
+
+            gameObject.SetActive(true);
+
+            isAnimating = true;
+
+            StartCoroutine(MainAILoop());
+        }
+
+        IEnumerator MainAILoop()
+        {
+            Dev.Where();
+            currentState = Init();
+
+            for(;;)
+            {
+                if(owner == null)
+                    yield break;
+
+                yield return currentState;
+
+                //Dev.Log("Next");
+
+                //TODO: remove as the states get implemented
+                yield return new WaitForEndOfFrame();
+            }
+        }
+
+        IEnumerator Init()
+        {
+            Dev.Where();
+
+            //TODO: finish
+
+            currentState = Complete();
+
+            yield break;
+        }
+
+        IEnumerator Complete()
+        {
+            Dev.Where();
+
+            //TODO: finish
+
+            isAnimating = false;
+
+            yield break;
+        }
+    }
+
     public class ThrowEffect : MonoBehaviour
     {
         public tk2dSpriteAnimator tk2dAnimator;
@@ -126,6 +332,82 @@ namespace nv
             Dev.Where();
 
             //TODO: finish
+
+            currentState = Complete();
+
+            yield break;
+        }
+
+        IEnumerator Complete()
+        {
+            Dev.Where();
+
+            //TODO: finish
+
+            isAnimating = false;
+
+            yield break;
+        }
+    }
+
+    public class SphereBall : MonoBehaviour
+    {
+        public tk2dSpriteAnimator tk2dAnimator;
+
+        public GameObject owner;
+        IEnumerator currentState = null;
+
+        public bool isAnimating = false;
+
+        public void Play(GameObject parent)
+        {
+            owner = parent;
+            tk2dAnimator = owner.GetComponent<tk2dSpriteAnimator>();
+
+            gameObject.SetActive(true);
+
+            isAnimating = true;
+
+            //TODO: move the sphere starting size and growing size/rate to variables
+            transform.localScale = new Vector3(.8f, .8f, 1f);
+
+            //TODO: check iTweenScaleTo to see what value's it's using for Sphere Ball
+
+            StartCoroutine(MainAILoop());
+        }
+
+        public void Stop()
+        {
+            isAnimating = false;
+            currentState = null;
+            gameObject.SetActive(false);
+        }
+
+        IEnumerator MainAILoop()
+        {
+            Dev.Where();
+            currentState = Init();
+
+            for(;;)
+            {
+                if(owner == null)
+                    yield break;
+
+                yield return currentState;
+
+                //Dev.Log("Next");
+
+                //TODO: remove as the states get implemented
+                yield return new WaitForEndOfFrame();
+            }
+        }
+
+        IEnumerator Init()
+        {
+            Dev.Where();
+
+            //TODO: finish
+            //TODO: tween to the final size
 
             currentState = Complete();
 
@@ -213,7 +495,7 @@ namespace nv
         }
     }
 
-    
+
     [RequireComponent(typeof(BoxCollider2D))]
     public class NeedleTink : MonoBehaviour
     {
@@ -247,14 +529,24 @@ namespace nv
         public BoxCollider2D bodyCollider;
         public Rigidbody2D body;
         public MeshRenderer meshRenderer;
+        public AudioSource runAudioSource;
+        public GameObject areaTitleObject;
+        public PolygonCollider2D hitADash;
+        public PolygonCollider2D hitGDash;
+        public ParticleSystem dustHardLand;
 
         public tk2dSpriteAnimator tk2dAnimator;
         public HealthManager healthManager;
+        public ThrowEffect throwEffect;
         public EvadeRange evadeRange;
         public SphereRange sphereRange;
-        public ThrowEffect throwEffect;
-        public AudioSource runAudioSource;
+        public SphereRange aSphereRange;
         public RefightRange refightRange;
+        public ADashRange aDashRange;
+        public ADashEffect aDashEffect;
+        public GDashEffect gDashEffect;
+        public SphereBall sphereBall;
+        public FlashEffect flashEffect;
 
         //hornet's projectile weapon & the tink effect that goes with it
         public Needle needle;
@@ -262,12 +554,11 @@ namespace nv
 
         //use for some sound effects
         public AudioSource actorAudioSource;
-        public GameObject areaTitleObject;
 
         //used to play the boss background music
         //TODO: uncomment in real build and remove the "object" version
         public AudioClip hornetYell;
-        public List<AudioClip> hornetThrowYells;
+        public List<AudioClip> hornetAttackYells;
         public AudioClip hornetThrowSFX;
         public AudioClip hornetCatchSFX;
         public List<AudioClip> hornetLaughs;
@@ -275,6 +566,11 @@ namespace nv
         public AudioClip hornetGroundLandSFX;
         public AudioClip hornetJumpSFX;
         public List<AudioClip> hornetJumpYells;
+        public AudioClip hornetLandSFX;
+        public List<AudioClip> hornetAGDashYells;
+        public AudioClip hornetDashSFX;
+        public AudioClip hornetWallLandSFX;
+        public AudioClip hornetSphereSFX;
 #if UNITY_EDITOR
         public object fightMusic;
 #else
@@ -303,6 +599,9 @@ namespace nv
         public float jumpDistance = 10f;
         public float jumpVelocityY = 41f;
         public float minAirSphereHeight = 5f;
+        public float normGravity2DScale = 1.5f;
+        public float normShortJumpGravity2DScale = 2f;
+        public float airFireSpeed = 12f; //TODO: look this up from state Fire in action FireAtTarget
 
         public float escalationHPPercentage = .4f;
         public float chanceToThrow = .8f;
@@ -328,16 +627,18 @@ namespace nv
         public int maxMissGDash = 5;
         public int maxMissThrow = 3;
 
-        Dictionary< Func<IEnumerator>, float > dmgResponseChoices;
-        public Dictionary< Func<IEnumerator>, float > DmgResponseChoices {
-            get {
-                if( dmgResponseChoices == null )
+        Dictionary<Func<IEnumerator>, float> dmgResponseChoices;
+        public Dictionary<Func<IEnumerator>, float> DmgResponseChoices
+        {
+            get
+            {
+                if(dmgResponseChoices == null)
                 {
                     dmgResponseChoices = new Dictionary<Func<IEnumerator>, float>();
-                    dmgResponseChoices.Add( EvadeAntic, .3f );
-                    dmgResponseChoices.Add( SetJumpOnly, .15f );
-                    dmgResponseChoices.Add( MaybeGSphere, .15f );
-                    dmgResponseChoices.Add( DmgIdle, .4f );
+                    dmgResponseChoices.Add(EvadeAntic, .3f);
+                    dmgResponseChoices.Add(SetJumpOnly, .15f);
+                    dmgResponseChoices.Add(MaybeGSphere, .15f);
+                    dmgResponseChoices.Add(DmgIdle, .4f);
                 }
                 return dmgResponseChoices;
             }
@@ -350,7 +651,7 @@ namespace nv
         public bool checkRight = true;
 
         //variables used by the state machine that the states set
-        Func<IEnumerator> onAnimationCompleteNextState = null;
+        bool blockingAnimationIsPlaying = false;
         float airDashPause;
         float jumpPoint;
         float nextThrowAngle;
@@ -364,6 +665,7 @@ namespace nv
         float dmgIdleWaitMax;
         float airDashPauseMin;
         float airDashPauseMax;
+        float returnXScale;
 
         bool topHit = false;
         bool rightHit = false;
@@ -387,6 +689,32 @@ namespace nv
         void SetFightGates(bool closed)
         {
             //TODO
+        }
+
+        void SetupDefaultParams()
+        {
+            //original setup logic that was duplicated in both wake states
+            owner.transform.localScale = owner.transform.localScale.SetX(-1f);
+            bodyCollider.offset = new Vector2(.1f, -.3f);
+            bodyCollider.size = new Vector2(.9f, 2.6f);
+
+            //setup our custom variables
+            healthManager.hp = maxHP;
+
+            idleWaitMin = normIdleWaitMin;
+            idleWaitMax = normIdleWaitMax;
+
+            runWaitMin = normRunWaitMin;
+            runWaitMax = normRunWaitMax;
+
+            evadeCooldownMin = normEvadeCooldownMin;
+            evadeCooldownMax = normEvadeCooldownMax;
+
+            dmgIdleWaitMin = normDmgIdleWaitMin;
+            dmgIdleWaitMax = normDmgIdleWaitMax;
+
+            airDashPauseMin = normAirDashPauseMin;
+            airDashPauseMax = normAirDashPauseMax;
         }
 
         //current state of the state machine
@@ -428,7 +756,7 @@ namespace nv
         IEnumerator Init()
         {
             Dev.Where();
-            body.gravityScale = 1.5f;
+            body.gravityScale = normGravity2DScale;
 
             currentState = Inert();
 
@@ -440,7 +768,7 @@ namespace nv
         {
             Dev.Where();
             int test = GameManager.instance.playerData.GetInt("hornetGreenpath");
-            
+
             if(test >= 4)
             {
                 currentState = RefightReady();
@@ -470,57 +798,26 @@ namespace nv
             yield break;
         }
 
+        //the start of the fight!
         IEnumerator Flourish()
         {
             Dev.Where();
 
-            //original setup logic that was duplicated in both wake states
-            //TODO: move this setup logic into a function
-            owner.transform.localScale = owner.transform.localScale.SetX( -1f );
-            bodyCollider.offset = new Vector2( .1f, -.3f );
-            bodyCollider.size = new Vector2( .9f, 2.6f );
-
-            //setup our custom variables
-            healthManager.hp = maxHP;
-
-            idleWaitMin = normIdleWaitMin;
-            idleWaitMax = normIdleWaitMax;
-
-            runWaitMin = normRunWaitMin;
-            runWaitMax = normRunWaitMax;
-
-            evadeCooldownMin = normEvadeCooldownMin;
-            evadeCooldownMax = normEvadeCooldownMax;
-
-            dmgIdleWaitMin = normDmgIdleWaitMin;
-            dmgIdleWaitMax = normDmgIdleWaitMax;
-
-            airDashPauseMin = normAirDashPauseMin;
-            airDashPauseMax = normAirDashPauseMax;
+            SetupDefaultParams();
 
             //close the gates
-            SetFightGates( true );
-            //end original setup logic
+            SetFightGates(true);
 
-            ShowBossTitle(3f,"","","","HORNET");
-
-            tk2dAnimator.AnimationCompleted = OnAnimationComplete;
-            tk2dAnimator.Play("Flourish");
-
+            ShowBossTitle(2f, "", "", "", "HORNET");
+            
             PlayOneShot(hornetYell);
 
             PlayBossMusic();
 
-            onAnimationCompleteNextState = Idle;
-
             //play until the callback fires and changes our state
-            for(;;)
-            {
-                if(onAnimationCompleteNextState == null)
-                    break;
-                else
-                    yield return new WaitForEndOfFrame();
-            }
+            yield return PlayAndWaitForEndOfAnimation("Flourish");
+
+            currentState = Idle();
 
             yield break;
         }
@@ -628,20 +925,11 @@ namespace nv
         IEnumerator RunAntic()
         {
             Dev.Where();
-
-            tk2dAnimator.AnimationCompleted = OnAnimationComplete;
-            tk2dAnimator.Play("Evade Antic");
-
-            onAnimationCompleteNextState = Run;
-
+                        
             //play until the callback fires and changes our state
-            for(;;)
-            {
-                if(onAnimationCompleteNextState == null)
-                    break;
-                else
-                    yield return new WaitForEndOfFrame();
-            }
+            yield return PlayAndWaitForEndOfAnimation("Evade Antic");
+
+            currentState = Run();
 
             yield break;
         }
@@ -651,7 +939,7 @@ namespace nv
             Dev.Where();
 
             runAudioSource.Play();
-            
+
             float xVel = owner.transform.localScale.x * runSpeed;
 
             tk2dAnimator.Play("Run");
@@ -969,7 +1257,7 @@ namespace nv
             Dev.Where();
 
             HeroController hero = HeroController.instance;
-            
+
             //disable stun control
             canStunRightNow = false;
 
@@ -982,24 +1270,14 @@ namespace nv
 
             //stop moving
             body.velocity = Vector2.zero;
+                        
+            PlayOneShotRandom(hornetAttackYells);
 
             //play throwing animation
-            tk2dAnimator.AnimationCompleted = OnAnimationComplete;
-            tk2dAnimator.Play("Throw Antic");
-
-            //setup the next state to fire after the animation is complete
-            onAnimationCompleteNextState = MaybeLock;
-
-            PlayRandomOneShot(hornetThrowYells);
-
             //wait here until the callback fires and changes our state
-            for(;;)
-            {
-                if(onAnimationCompleteNextState == null)
-                    break;
-                else
-                    yield return new WaitForEndOfFrame();
-            }
+            yield return PlayAndWaitForEndOfAnimation("Throw Antic");
+
+            currentState = MaybeLock();
 
             yield break;
         }
@@ -1138,7 +1416,7 @@ namespace nv
 
             //allow stunning again
             canStunRightNow = true;
-            
+
             currentState = Escalation();
 
             yield break;
@@ -1148,7 +1426,7 @@ namespace nv
         {
             Dev.Where();
 
-            airDashPause = GameRNG.Rand( airDashPauseMin, airDashPauseMax );
+            airDashPause = GameRNG.Rand(airDashPauseMin, airDashPauseMax);
             willSphere = false;
 
             currentState = JumpAntic();
@@ -1160,26 +1438,17 @@ namespace nv
         {
             Dev.Where();
 
-            bodyCollider.offset = new Vector2( .1f, -.3f );
-            bodyCollider.size = new Vector2( .9f, 2.6f );
+            bodyCollider.offset = new Vector2(.1f, -.3f);
+            bodyCollider.size = new Vector2(.9f, 2.6f);
 
             body.velocity = Vector2.zero;
-
-            tk2dAnimator.AnimationCompleted = OnAnimationComplete;
-            tk2dAnimator.Play( "Jump Antic" );
-
-            onAnimationCompleteNextState = AimJump;
-            
-            FaceObject( HeroController.instance.gameObject );
+                        
+            FaceObject(HeroController.instance.gameObject);
 
             //play until the callback fires and changes our state
-            for(; ; )
-            {
-                if( onAnimationCompleteNextState == null )
-                    break;
-                else
-                    yield return new WaitForEndOfFrame();
-            }
+            yield return PlayAndWaitForEndOfAnimation("Jump Antic");
+
+            currentState = AimJump();
 
             yield break;
         }
@@ -1188,7 +1457,7 @@ namespace nv
         {
             Dev.Where();
 
-            if( willSphere )
+            if(willSphere)
             {
                 currentState = AimSphereJump();
             }
@@ -1199,7 +1468,7 @@ namespace nv
                 Vector3 currentPosition = owner.transform.position;
                 Vector2 jumpOrigin = currentPosition;
                 Vector2 jumpDirectionL = Vector2.left;
-                Vector2 jumpDirectionR = Vector2.left;
+                Vector2 jumpDirectionR = Vector2.right;
 
                 float xMin = -jumpDistance;
                 float xMax = jumpDistance;
@@ -1207,7 +1476,7 @@ namespace nv
                 //get max L x jump distance
                 {
                     RaycastHit2D raycastHit2D2 = Physics2D.Raycast(jumpOrigin, jumpDirectionL, jumpDistance, 1 << 8);
-                    if( raycastHit2D2.collider != null )
+                    if(raycastHit2D2.collider != null)
                     {
                         xMin = raycastHit2D2.transform.position.x;
                     }
@@ -1216,13 +1485,13 @@ namespace nv
                 //get max R x jump distance
                 {
                     RaycastHit2D raycastHit2D2 = Physics2D.Raycast(jumpOrigin, jumpDirectionR, jumpDistance, 1 << 8);
-                    if( raycastHit2D2.collider != null )
+                    if(raycastHit2D2.collider != null)
                     {
                         xMax = raycastHit2D2.transform.position.x;
                     }
                 }
 
-                jumpPoint = GameRNG.Rand(xMin,xMax);
+                jumpPoint = GameRNG.Rand(xMin, xMax);
 
                 //if it's too close, don't jump
                 if(Mathf.Abs(jumpPoint - currentPosition.x) < 2.5f)
@@ -1242,13 +1511,13 @@ namespace nv
         {
             Dev.Where();
             //TODO
-            PlayRandomOneShot( hornetJumpYells );
-            PlayOneShot( hornetJumpSFX );
+            PlayOneShotRandom(hornetJumpYells);
+            PlayOneShot(hornetJumpSFX);
 
-            tk2dAnimator.Play( "Jump" );
+            tk2dAnimator.Play("Jump");
 
             //TODO: this seems weird, see how it turns out
-            body.velocity = new Vector2( jumpPoint, jumpVelocityY );
+            body.velocity = new Vector2(jumpPoint, jumpVelocityY);
 
             currentState = InAir();
 
@@ -1268,12 +1537,12 @@ namespace nv
             float startHeight = owner.transform.position.y;
 
             float waitTimer = airDashPause;
-            while( waitTimer > 0f )
+            while(waitTimer > 0f)
             {
                 yield return new WaitForEndOfFrame();
 
                 //did we hit a wall? end evade timer early
-                if( bottomHit )
+                if(bottomHit)
                 {
                     currentState = Land();
                     break;
@@ -1282,13 +1551,13 @@ namespace nv
                 waitTimer -= Time.deltaTime;
             }
 
-            if( waitTimer <= 0f )
+            if(waitTimer <= 0f)
             {
                 currentState = ADashAntic();
             }
-            else if( !bottomHit )
+            else if(!bottomHit)
             {
-                while( !bottomHit )
+                while(!bottomHit)
                 {
                     if(body.velocity.y > 0f && Mathf.Abs(owner.transform.position.y - startHeight) > minAirSphereHeight)
                     {
@@ -1299,7 +1568,7 @@ namespace nv
                     yield return new WaitForEndOfFrame();
 
                     //did we hit a wall? end evade timer early
-                    if( bottomHit )
+                    if(bottomHit)
                     {
                         currentState = Land();
                         break;
@@ -1316,10 +1585,11 @@ namespace nv
             yield break;
         }
 
+        //TODO: this looks redundant, look into changing all re-aims to just call AirJump() again
         IEnumerator ReAim()
         {
             Dev.Where();
-            //TODO
+            
             currentState = AimJump();
 
             yield break;
@@ -1328,7 +1598,21 @@ namespace nv
         IEnumerator Land()
         {
             Dev.Where();
-            //TODO
+
+            PlayOneShot(hornetLandSFX);
+                        
+            body.gravityScale = normGravity2DScale;
+
+            bodyCollider.offset = new Vector2(.1f, -.3f);
+            bodyCollider.size = new Vector2(.9f, 2.6f);
+
+            owner.transform.rotation = Quaternion.identity;
+
+            owner.transform.localScale = owner.transform.localScale.SetY(1f);
+
+            //play until the callback fires and changes our state
+            yield return PlayAndWaitForEndOfAnimation("Land");
+
             currentState = Escalation();
 
             yield break;
@@ -1337,19 +1621,78 @@ namespace nv
         IEnumerator ADashAntic()
         {
             Dev.Where();
-            //TODO
-            currentState = Fire();
-            currentState = InAir();
 
+            if(aDashRange.objectIsInRange)
+            {
+                HeroController hero = HeroController.instance;
+                float angleToTarget = GetAngleToTarget(hero.gameObject, 0f, -.5f);
+
+                bodyCollider.offset = new Vector2(1.1f, -.9f);
+                bodyCollider.size = new Vector2(1.2f, 1.4f);
+
+                body.gravityScale = 0f;
+
+                PlayOneShotRandom(hornetAGDashYells);
+
+                //play until the callback fires and changes our state
+                yield return PlayAndWaitForEndOfAnimation("A Dash Antic");
+
+                currentState = Fire();
+            }
+            else
+            {
+                currentState = InAir();
+            }
+            
             yield break;
         }
 
         IEnumerator Fire()
         {
             Dev.Where();
-            //TODO
-            currentState = FiringL();
-            currentState = FiringR();
+
+            PlayOneShot(hornetDashSFX);
+            
+            //TODO: check what SetBoxColliderTrigger is doing here
+            //it's getting a collider and enabling/disabling a trigger.... see which one and which value
+
+            GameObject hero = HeroController.instance.gameObject;
+
+            //TODO: check the spread and speed on FireAtTarget
+            Vector2 pos = owner.transform.position;
+            Vector2 fireVelocity = GetVelocityToTarget(pos, pos, hero.transform.position, airFireSpeed, 0f);
+
+            body.velocity = fireVelocity;
+
+            //TODO: check what SetVelocityAsAngle is doing and fill these in
+            float altFireSpeed = 10f;
+            float altAngle = 0f;
+            Vector2 otherVelocity = GetVelocityFromSpeedAndAngle(altFireSpeed, altAngle);
+            
+            bodyCollider.offset = new Vector2(.1f, 0f);
+            bodyCollider.size = new Vector2(1.5f, 1.0f);
+
+            hitADash.gameObject.SetActive(true);
+
+            //TODO: check to see if this is really applying to the owner
+            owner.transform.localScale = owner.transform.localScale.SetX(1f);
+            owner.transform.localScale = owner.transform.localScale.SetY(1f);
+            
+            //TODO: check FaceAngle to see what objects this is using....
+            FaceAngle(hero, 0f);
+
+            //TODO: check GetRotation to see what values/objects this is using....
+            Vector3 eulerAngles = owner.transform.eulerAngles;
+            float zAngle = eulerAngles.z;
+
+            if(zAngle > 90f && zAngle < 270f)
+            {
+                currentState = FiringR();
+            }
+            else
+            {
+                currentState = FiringL();
+            }
 
             yield break;
         }
@@ -1357,7 +1700,9 @@ namespace nv
         IEnumerator FiringL()
         {
             Dev.Where();
-            //TODO
+
+            returnXScale = 1f;
+
             currentState = ADash();
 
             yield break;
@@ -1366,7 +1711,11 @@ namespace nv
         IEnumerator FiringR()
         {
             Dev.Where();
-            //TODO
+
+            owner.transform.localScale = owner.transform.localScale.SetY(-1f);
+
+            returnXScale = -1f;
+
             currentState = ADash();
 
             yield break;
@@ -1375,19 +1724,96 @@ namespace nv
         IEnumerator ADash()
         {
             Dev.Where();
-            //TODO
-            currentState = WallL();
-            currentState = WallR();
+
+            aDashEffect.Play(owner);
+
+            PlayOneShot(hornetDashSFX);
+
+            DoEnemyKillShakeEffect();
+
+            airDashPause = 999;
+
+            Vector3 position = owner.transform.position;
+            Vector3 down = Vector3.down;
+            Vector3 up = Vector3.up;
+            Vector3 left = Vector3.up;
+            Vector3 right = Vector3.up;
+            float nearDist = 1f;
+
+            bool earlyOut = false;
+
             currentState = LandY();
-            currentState = HitRoof();
+
+            tk2dAnimator.Play("A Dash");
+
+            //TODO: check to see if these FloatCompare's are EveryFrame (and also check the GetPosition)
+            while(!earlyOut)
+            {
+                float closeToSurface = .55f;
+                if(!earlyOut)
+                {
+                    RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, down, nearDist, 1 << 8);
+                    if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.y - position.y) < closeToSurface)
+                    {
+                        currentState = LandY();
+                    }
+                }
+                if(!earlyOut)
+                {
+                    RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, up, nearDist, 1 << 8);
+                    if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.y - position.y) < closeToSurface)
+                    {
+                        currentState = HitRoof();
+                    }
+                }
+                if(!earlyOut)
+                {
+                    RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, left, nearDist, 1 << 8);
+                    if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.x - position.x) < closeToSurface)
+                    {
+                        currentState = WallL();
+                    }
+                }
+                if(!earlyOut)
+                {
+                    RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, right, nearDist, 1 << 8);
+                    if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.x - position.x) < closeToSurface)
+                    {
+                        currentState = WallR();
+                    }
+                }
+                yield return new WaitForEndOfFrame();
+            }
 
             yield break;
+        }
+
+        void DoWallLand(float xScale)
+        {
+            PlayOneShot(hornetWallLandSFX);
+
+            owner.transform.rotation = Quaternion.identity;
+
+            body.velocity = Vector2.zero;
+
+            owner.transform.localScale = owner.transform.localScale.SetX(xScale);
+
+            //TODO: check SetPosition to see what object name it's setting here....
+
+            hitADash.gameObject.SetActive(false);
+
+            bodyCollider.offset = new Vector2(.1f, -0.3f);
+            bodyCollider.size = new Vector2(.9f, 2.6f);
         }
 
         IEnumerator WallL()
         {
             Dev.Where();
-            //TODO
+
+            DoWallLand(1f);
+
+            yield return PlayAndWaitForEndOfAnimation("Wall Impact");
+
             currentState = JumpR();
 
             yield break;
@@ -1396,16 +1822,35 @@ namespace nv
         IEnumerator WallR()
         {
             Dev.Where();
-            //TODO
+
+            DoWallLand(-1f);
+
+            yield return PlayAndWaitForEndOfAnimation("Wall Impact");
+
             currentState = JumpL();
 
             yield break;
         }
 
+        void DoShortJump(float xDirection)
+        {
+            float xScale = -1f * Mathf.Sign(xDirection);
+
+            body.velocity = new Vector2(jumpDistance * xDirection, jumpVelocityY * .5f);
+
+            tk2dAnimator.Play("Jump");
+
+            body.gravityScale = normShortJumpGravity2DScale;
+
+            owner.transform.localScale = owner.transform.localScale.SetX(xScale);
+        }
+
         IEnumerator JumpL()
         {
             Dev.Where();
-            //TODO
+
+            DoShortJump(-1f);
+
             currentState = InAir();
 
             yield break;
@@ -1414,7 +1859,9 @@ namespace nv
         IEnumerator JumpR()
         {
             Dev.Where();
-            //TODO
+
+            DoShortJump(1f);
+
             currentState = InAir();
 
             yield break;
@@ -1423,7 +1870,13 @@ namespace nv
         IEnumerator LandY()
         {
             Dev.Where();
-            //TODO
+
+            //TODO: check the "SetPosition" action to see what object it's trying to set
+
+            //TODO: check the SetScale action to see what it's trying to set
+
+            hitADash.gameObject.SetActive(false);
+
             currentState = HardLand();
 
             yield break;
@@ -1432,7 +1885,26 @@ namespace nv
         IEnumerator HitRoof()
         {
             Dev.Where();
-            //TODO
+
+            //TODO: check the SetScale action to see what it's trying to set
+
+            hitADash.gameObject.SetActive(false);
+
+            //TODO: check the "SetPosition" action to see what object it's trying to set
+
+            //TODO: check the SetVelocity2d to see the name of the object/value it's trying to set
+
+            body.velocity = Vector2.zero;
+
+            //TODO: check SetBoxColliderTrigger to see what it's trying to set
+
+            body.gravityScale = normShortJumpGravity2DScale;
+            
+            bodyCollider.offset = new Vector2(.1f, -0.3f);
+            bodyCollider.size = new Vector2(.9f, 2.6f);
+
+            owner.transform.rotation = Quaternion.identity;
+            
             currentState = InAir();
 
             yield break;
@@ -1441,7 +1913,57 @@ namespace nv
         IEnumerator HardLand()
         {
             Dev.Where();
-            //TODO
+
+            //TODO: check PlayParticleEmitter the particle system and the emit value
+            dustHardLand.Play();
+
+            tk2dAnimator.AnimationCompleted = OnAnimationComplete;
+            tk2dAnimator.Play("Hard Land");
+
+            blockingAnimationIsPlaying = true;
+
+            body.gravityScale = normGravity2DScale;
+
+            bodyCollider.offset = new Vector2(.1f, -0.3f);
+            bodyCollider.size = new Vector2(.9f, 2.6f);
+
+            owner.transform.rotation = Quaternion.identity;
+
+            owner.transform.localScale = owner.transform.localScale.SetY(1f);
+
+            float decelerationX = .8f;
+            for(;;)
+            {
+                //TODO: add the "IsNone" check to the DecelerateXY printing
+
+                //TODO: check what SetVelocity2d is doing here
+
+                Vector2 velocity = body.velocity;
+                if(velocity.x < 0f)
+                {
+                    velocity.x *= decelerationX;
+                    if(velocity.x > 0f)
+                    {
+                        velocity.x = 0f;
+                    }
+                }
+                else if(velocity.x > 0f)
+                {
+                    velocity.x *= decelerationX;
+                    if(velocity.x < 0f)
+                    {
+                        velocity.x = 0f;
+                    }
+                }
+                body.velocity = velocity;
+
+                if(!blockingAnimationIsPlaying)
+                    break;
+                else
+                    yield return new WaitForFixedUpdate();
+            }
+
+
             currentState = Escalation();
 
             yield break;
@@ -1450,9 +1972,17 @@ namespace nv
         IEnumerator MaybeDoSphere()
         {
             Dev.Where();
-            //TODO
-            currentState = SphereAnticA();
-            currentState = InAir();
+
+            willSphere = false;
+
+            if(aSphereRange.objectIsInRange)
+            {
+                currentState = SphereAnticA();
+            }
+            else
+            {
+                currentState = InAir();
+            }
 
             yield break;
         }
@@ -1460,7 +1990,68 @@ namespace nv
         IEnumerator SphereAnticA()
         {
             Dev.Where();
-            //TODO
+
+            willSphere = false;
+
+            body.gravityScale = 0f;
+
+            //TODO: check DecelerateV2 to see what it's doing
+
+            FaceObject(HeroController.instance.gameObject);
+            
+            tk2dAnimator.AnimationCompleted = OnAnimationComplete;
+            tk2dAnimator.Play("Sphere Antic A");
+
+            blockingAnimationIsPlaying = true;
+
+            PlayOneShotRandom(hornetAttackYells);
+
+            float deceleration = .8f;
+            for(;;)
+            {
+                //TODO: add the "IsNone" check to the DecelerateV2 printing
+
+                Vector2 velocity = body.velocity;
+                if(velocity.x < 0f)
+                {
+                    velocity.x *= deceleration;
+                    if(velocity.x > 0f)
+                    {
+                        velocity.x = 0f;
+                    }
+                }
+                else if(velocity.x > 0f)
+                {
+                    velocity.x *= deceleration;
+                    if(velocity.x < 0f)
+                    {
+                        velocity.x = 0f;
+                    }
+                }
+                if(velocity.y < 0f)
+                {
+                    velocity.y *= deceleration;
+                    if(velocity.y > 0f)
+                    {
+                        velocity.y = 0f;
+                    }
+                }
+                else if(velocity.y > 0f)
+                {
+                    velocity.y *= deceleration;
+                    if(velocity.y < 0f)
+                    {
+                        velocity.y = 0f;
+                    }
+                }
+                body.velocity = velocity;
+
+                if(!blockingAnimationIsPlaying)
+                    break;
+                else
+                    yield return new WaitForFixedUpdate();
+            }
+
             currentState = SphereA();
 
             yield break;
@@ -1469,6 +2060,63 @@ namespace nv
         IEnumerator SphereA()
         {
             Dev.Where();
+
+            PlayOneShot(hornetSphereSFX);
+
+            sphereBall.Play(owner);
+            flashEffect.Play(owner);
+
+            DoEnemyKillShakeEffect();
+
+            tk2dAnimator.Play("Sphere Attack");
+
+            //TODO: move to variables
+            float waitTime = 1f;
+            float deceleration = .8f;
+            while(waitTime > 0f)
+            {
+                //TODO: add the "IsNone" check to the DecelerateV2 printing
+
+                waitTime -= Time.fixedDeltaTime;
+
+                Vector2 velocity = body.velocity;
+                if(velocity.x < 0f)
+                {
+                    velocity.x *= deceleration;
+                    if(velocity.x > 0f)
+                    {
+                        velocity.x = 0f;
+                    }
+                }
+                else if(velocity.x > 0f)
+                {
+                    velocity.x *= deceleration;
+                    if(velocity.x < 0f)
+                    {
+                        velocity.x = 0f;
+                    }
+                }
+                if(velocity.y < 0f)
+                {
+                    velocity.y *= deceleration;
+                    if(velocity.y > 0f)
+                    {
+                        velocity.y = 0f;
+                    }
+                }
+                else if(velocity.y > 0f)
+                {
+                    velocity.y *= deceleration;
+                    if(velocity.y < 0f)
+                    {
+                        velocity.y = 0f;
+                    }
+                }
+                body.velocity = velocity;
+                
+                yield return new WaitForFixedUpdate();
+            }
+
             //TODO
             currentState = SphereRecoverA();
 
@@ -1478,7 +2126,11 @@ namespace nv
         IEnumerator SphereRecoverA()
         {
             Dev.Where();
-            //TODO
+
+            yield return PlayAndWaitForEndOfAnimation("Sphere Recover A");
+
+            sphereBall.Stop();
+
             currentState = SphereAEnd();
 
             yield break;
@@ -1487,7 +2139,11 @@ namespace nv
         IEnumerator SphereAEnd()
         {
             Dev.Where();
-            //TODO
+
+            body.gravityScale = normGravity2DScale;
+
+            tk2dAnimator.Play("Fall");
+
             currentState = InAir();
 
             yield break;
@@ -1496,7 +2152,37 @@ namespace nv
         IEnumerator AimSphereJump()
         {
             Dev.Where();
-            //TODO
+
+            //TODO: enchancement: make hornet jump at/near/away from the player
+
+            Vector3 currentPosition = owner.transform.position;
+            Vector2 jumpOrigin = currentPosition;
+            Vector2 jumpDirectionL = Vector2.left;
+            Vector2 jumpDirectionR = Vector2.right;
+
+            float xMin = -jumpDistance;
+            float xMax = jumpDistance;
+
+            //get max L x jump distance
+            {
+                RaycastHit2D raycastHit2D2 = Physics2D.Raycast(jumpOrigin, jumpDirectionL, jumpDistance, 1 << 8);
+                if(raycastHit2D2.collider != null)
+                {
+                    xMin = raycastHit2D2.transform.position.x;
+                }
+            }
+
+            //get max R x jump distance
+            {
+                RaycastHit2D raycastHit2D2 = Physics2D.Raycast(jumpOrigin, jumpDirectionR, jumpDistance, 1 << 8);
+                if(raycastHit2D2.collider != null)
+                {
+                    xMax = raycastHit2D2.transform.position.x;
+                }
+            }
+
+            jumpPoint = GameRNG.Rand(xMin, xMax);            
+
             currentState = Jump();
 
             yield break;
@@ -1505,7 +2191,11 @@ namespace nv
         IEnumerator SetJumpOnly()
         {
             Dev.Where();
-            //TODO
+
+            airDashPause = 999f;
+
+            willSphere = false;
+
             currentState = JumpAntic();
 
             yield break;
@@ -1514,7 +2204,11 @@ namespace nv
         IEnumerator SetSphereA()
         {
             Dev.Where();
-            //TODO
+
+            willSphere = true;
+
+            airDashPause = 999f;
+
             currentState = JumpAntic();
 
             yield break;
@@ -1523,7 +2217,20 @@ namespace nv
         IEnumerator GDashAntic()
         {
             Dev.Where();
-            //TODO
+            
+            HeroController hero = HeroController.instance;
+            FaceObject(hero.gameObject);
+
+            bodyCollider.offset = new Vector2(1.1f, -.9f);
+            bodyCollider.size = new Vector2(1.2f, 1.4f);
+
+            body.velocity = Vector2.zero;
+
+            PlayOneShotRandom(hornetAGDashYells);
+
+            //play until the callback fires and changes our state
+            yield return PlayAndWaitForEndOfAnimation("G Dash Antic");
+            
             currentState = GDash();
 
             yield break;
@@ -1532,7 +2239,42 @@ namespace nv
         IEnumerator GDash()
         {
             Dev.Where();
-            //TODO
+
+            tk2dAnimator.Play("G Dash");
+            
+            PlayOneShot(hornetDashSFX);
+
+            DoEnemyKillShakeEffect();
+
+            gDashEffect.Play(owner);
+
+            bodyCollider.offset = new Vector2(0.1f, -.8f);
+            bodyCollider.size = new Vector2(1.6f, 1.5f);
+
+            hitGDash.gameObject.SetActive(true);
+
+            //TODO: see what get scale is doing here
+
+            //TODO: see what FloatOperator is doing here (-25?)
+
+            //TODO: see what BoolTest with Multiply is doing here?
+
+            body.velocity = new Vector2(-25f * owner.transform.localScale.x,0f);
+
+            float waitTimer = .35f;
+            while(waitTimer > 0f)
+            {
+                yield return new WaitForEndOfFrame();
+
+                //did we hit a wall? end dash timer early
+                if(rightHit || leftHit)
+                {
+                    break;
+                }
+
+                waitTimer -= Time.deltaTime;
+            }
+
             currentState = GDashRecover1();
 
             yield break;
@@ -1541,7 +2283,45 @@ namespace nv
         IEnumerator GDashRecover1()
         {
             Dev.Where();
-            //TODO
+            
+            bodyCollider.offset = new Vector2(1.1f, -0.9f);
+            bodyCollider.size = new Vector2(1.2f, 1.4f);
+
+            tk2dAnimator.AnimationCompleted = OnAnimationComplete;
+            tk2dAnimator.Play("G Dash Recover1");
+
+            blockingAnimationIsPlaying = true;
+
+            float decelerationX = .77f;
+            for(;;)
+            {
+                //TODO: add the "IsNone" check to the DecelerateXY printing
+
+                Vector2 velocity = body.velocity;
+                if(velocity.x < 0f)
+                {
+                    velocity.x *= decelerationX;
+                    if(velocity.x > 0f)
+                    {
+                        velocity.x = 0f;
+                    }
+                }
+                else if(velocity.x > 0f)
+                {
+                    velocity.x *= decelerationX;
+                    if(velocity.x < 0f)
+                    {
+                        velocity.x = 0f;
+                    }
+                }
+                body.velocity = velocity;
+
+                if(!blockingAnimationIsPlaying)
+                    break;
+                else
+                    yield return new WaitForFixedUpdate();
+            }
+
             currentState = GDashRecover2();
 
             yield break;
@@ -1550,7 +2330,47 @@ namespace nv
         IEnumerator GDashRecover2()
         {
             Dev.Where();
-            //TODO
+
+            tk2dAnimator.Play("G Dash Recover2");
+
+            bodyCollider.offset = new Vector2(.1f, -0.3f);
+            bodyCollider.size = new Vector2(.9f, 2.6f);
+
+            tk2dAnimator.AnimationCompleted = OnAnimationComplete;
+            tk2dAnimator.Play("G Dash Recover2");
+
+            blockingAnimationIsPlaying = true;
+
+            float decelerationX = .75f;
+            for(;;)
+            {
+                //TODO: add the "IsNone" check to the DecelerateXY printing
+
+                Vector2 velocity = body.velocity;
+                if(velocity.x < 0f)
+                {
+                    velocity.x *= decelerationX;
+                    if(velocity.x > 0f)
+                    {
+                        velocity.x = 0f;
+                    }
+                }
+                else if(velocity.x > 0f)
+                {
+                    velocity.x *= decelerationX;
+                    if(velocity.x < 0f)
+                    {
+                        velocity.x = 0f;
+                    }
+                }
+                body.velocity = velocity;
+
+                if(!blockingAnimationIsPlaying)
+                    break;
+                else
+                    yield return new WaitForFixedUpdate();
+            }
+
             currentState = Escalation();
 
             yield break;
@@ -1559,7 +2379,18 @@ namespace nv
         IEnumerator SphereAnticG()
         {
             Dev.Where();
-            //TODO
+            
+            body.velocity = Vector2.zero;
+            
+            bodyCollider.offset = new Vector2(0.1f, -.3f);
+            bodyCollider.size = new Vector2(.9f, 2.6f);
+            
+            FaceObject(HeroController.instance.gameObject);
+
+            PlayOneShotRandom(hornetAttackYells);
+
+            yield return PlayAndWaitForEndOfAnimation("Sphere Antic G");
+
             currentState = Sphere();
 
             yield break;
@@ -1568,7 +2399,18 @@ namespace nv
         IEnumerator Sphere()
         {
             Dev.Where();
-            //TODO
+            PlayOneShot(hornetSphereSFX);
+
+            sphereBall.Play(owner);
+            flashEffect.Play(owner);
+
+            DoEnemyKillShakeEffect();
+
+            tk2dAnimator.Play("Sphere Attack");
+
+            //TODO: move the wait value into a variable
+            yield return new WaitForSeconds(1f);
+
             currentState = SphereRecover();
 
             yield break;
@@ -1577,7 +2419,11 @@ namespace nv
         IEnumerator SphereRecover()
         {
             Dev.Where();
-            //TODO
+
+            yield return PlayAndWaitForEndOfAnimation("Sphere Recover G");
+
+            sphereBall.Stop();
+
             currentState = Escalation();
 
             yield break;
@@ -1593,29 +2439,20 @@ namespace nv
             {
                 //put her evade on cooldown
                 float randomDelay = GameRNG.Rand(evadeCooldownMin, evadeCooldownMax);
-                evadeRange.DisableEvadeForTime( randomDelay );
+                evadeRange.DisableEvadeForTime(randomDelay);
 
                 //stop her moving
                 body.velocity = Vector2.zero;
 
                 //make her face you
                 HeroController hero = HeroController.instance;
-                FaceObject( hero.gameObject );
+                FaceObject(hero.gameObject);
 
-                //animate the evade-anticipation
-                tk2dAnimator.AnimationCompleted = OnAnimationComplete;
-                tk2dAnimator.Play( "Evade Antic" );
-
-                onAnimationCompleteNextState = Evade;
-
+                //animate the evade-anticipation                
                 //play until the callback fires and changes our state
-                for(; ; )
-                {
-                    if( onAnimationCompleteNextState == null )
-                        break;
-                    else
-                        yield return new WaitForEndOfFrame();
-                }
+                yield return PlayAndWaitForEndOfAnimation("Evade Antic");
+
+                currentState = Evade();
             }
             else
             {
@@ -1629,22 +2466,22 @@ namespace nv
         {
             Dev.Where();
 
-            PlayRandomOneShot( hornetLaughs );
-            PlayOneShot( hornetSmallJumpSFX );
+            PlayOneShotRandom(hornetLaughs);
+            PlayOneShot(hornetSmallJumpSFX);
 
-            tk2dAnimator.Play( "Evade" );
+            tk2dAnimator.Play("Evade");
 
             float xScale = owner.transform.localScale.x;
             float jumpAwaySpeed = xScale * evadeJumpAwaySpeed;
 
-            body.velocity = new Vector2( jumpAwaySpeed, 0f );
+            body.velocity = new Vector2(jumpAwaySpeed, 0f);
             float waitTimer = evadeJumpAwayTimeLength;
-            while( waitTimer > 0f )
+            while(waitTimer > 0f)
             {
                 yield return new WaitForEndOfFrame();
 
                 //did we hit a wall? end evade timer early
-                if( rightHit || leftHit )
+                if(rightHit || leftHit)
                 {
                     break;
                 }
@@ -1661,24 +2498,15 @@ namespace nv
         {
             Dev.Where();
 
-            //animate the evade-landing
-            tk2dAnimator.AnimationCompleted = OnAnimationComplete;
-            tk2dAnimator.Play( "Evade Land" );
-
-            onAnimationCompleteNextState = AfterEvade;
-
+            //animate the evade-landing            
             body.velocity = Vector2.zero;
 
-            PlayOneShot( hornetGroundLandSFX );
+            PlayOneShot(hornetGroundLandSFX);
 
             //play until the callback fires and changes our state
-            for(; ; )
-            {
-                if( onAnimationCompleteNextState == null )
-                    break;
-                else
-                    yield return new WaitForEndOfFrame();
-            }
+            yield return PlayAndWaitForEndOfAnimation("Evade Land");
+
+            currentState = AfterEvade();
 
             yield break;
         }
@@ -1688,7 +2516,7 @@ namespace nv
             Dev.Where();
 
             bool attack = GameRNG.CoinToss();
-            if( attack )
+            if(attack)
             {
                 currentState = MaybeGSphere();
             }
@@ -1699,15 +2527,15 @@ namespace nv
 
             yield break;
         }
-        
+
         IEnumerator DmgResponse()
         {
             Dev.Where();
 
             runAudioSource.Stop();
 
-            int choice = GameRNG.WeightedRand( DmgResponseChoices.Values.ToList() );
-            currentState = DmgResponseChoices.Keys.ToList()[ choice ].Invoke();
+            int choice = GameRNG.WeightedRand(DmgResponseChoices.Values.ToList());
+            currentState = DmgResponseChoices.Keys.ToList()[choice].Invoke();
 
             yield break;
         }
@@ -1717,12 +2545,12 @@ namespace nv
             Dev.Where();
 
             float randomDelay = GameRNG.Rand(dmgIdleWaitMin, dmgIdleWaitMax);
-            while( randomDelay > 0f )
+            while(randomDelay > 0f)
             {
                 yield return new WaitForEndOfFrame();
 
                 //did we hit a wall? end evade timer early
-                if( rightHit || leftHit )
+                if(rightHit || leftHit)
                 {
                     break;
                 }
@@ -1743,10 +2571,10 @@ namespace nv
             bodyCollider.enabled = true;
             meshRenderer.enabled = true;
 
-            tk2dAnimator.Play( "Idle" );
+            tk2dAnimator.Play("Idle");
 
             //wait for player to get close
-            while( !refightRange.objectIsInRange )
+            while(!refightRange.objectIsInRange)
             {
                 yield return new WaitForEndOfFrame();
             }
@@ -1811,7 +2639,7 @@ namespace nv
 
             //see if we're low on hp and should act faster
             float hpRemainingPercent = (float)healthManager.hp / (float)maxHP;
-            if( !escalated && hpRemainingPercent < escalationHPPercentage )
+            if(!escalated && hpRemainingPercent < escalationHPPercentage)
             {
                 runWaitMin = esRunWaitMin;
                 runWaitMax = esRunWaitMax;
@@ -1849,7 +2677,7 @@ namespace nv
             }
         }
 
-        public void PlayRandomOneShot(List<AudioClip> clip)
+        public void PlayOneShotRandom(List<AudioClip> clip)
         {
             if(actorAudioSource != null && clip != null && clip.Count > 0)
             {
@@ -1858,14 +2686,14 @@ namespace nv
             }
         }
 
-        void ShowBossTitle( float hideInSeconds, string largeMain = "", string largeSuper = "", string largeSub = "", string smallMain = "", string smallSuper = "", string smallSub = "" )
+        void ShowBossTitle(float hideInSeconds, string largeMain = "", string largeSuper = "", string largeSub = "", string smallMain = "", string smallSuper = "", string smallSub = "")
         {
             //no point in doing this
-            if( hideInSeconds <= 0f )
+            if(hideInSeconds <= 0f)
                 hideInSeconds = 0f;
 
             //show hornet title
-            if( areaTitleObject != null )
+            if(areaTitleObject != null)
             {
 #if UNITY_EDITOR
 #else
@@ -1894,22 +2722,22 @@ namespace nv
             }
             else
             {
-                Dev.Log( areaTitleObject + " is null! Cannot show the boss title." );
+                Dev.Log(areaTitleObject + " is null! Cannot show the boss title.");
             }
         }
 
-        IEnumerator HideBossTitleAfter( float time )
+        IEnumerator HideBossTitleAfter(float time)
         {
-            yield return new WaitForSeconds( time );
+            yield return new WaitForSeconds(time);
             HideBossTitle();
-            yield return new WaitForSeconds( 3f );
-            areaTitleObject.SetActive( false );
+            yield return new WaitForSeconds(3f);
+            areaTitleObject.SetActive(false);
         }
 
         void HideBossTitle()
         {
             //show hornet title
-            if( areaTitleObject != null )
+            if(areaTitleObject != null)
             {
 #if UNITY_EDITOR
 #else
@@ -1921,7 +2749,7 @@ namespace nv
             }
             else
             {
-                Dev.Log( areaTitleObject + " is null! Cannot hide the boss title." );
+                Dev.Log(areaTitleObject + " is null! Cannot hide the boss title.");
             }
         }
 
@@ -2035,30 +2863,34 @@ namespace nv
             owner.transform.localScale = localScale;
         }
 
+        void FaceAngle(GameObject target, float offset)
+        {
+            Vector2 velocity = body.velocity;
+            float z = Mathf.Atan2(velocity.y, velocity.x) * 57.2957764f + offset;
+            target.transform.localEulerAngles = new Vector3(0f, 0f, z);
+        }
+
+        IEnumerator PlayAndWaitForEndOfAnimation(string animation)
+        {
+            tk2dAnimator.AnimationCompleted = OnAnimationComplete;
+            tk2dAnimator.Play("Flourish");
+
+            blockingAnimationIsPlaying = true;
+
+            for(;;)
+            {
+                if(!blockingAnimationIsPlaying)
+                    break;
+                else
+                    yield return new WaitForEndOfFrame();
+            }
+            yield break;
+        }
+
         void OnAnimationComplete(tk2dSpriteAnimator sprite, tk2dSpriteAnimationClip clip)
         {
-            Dev.Where();
-            int intData = -1;
-            tk2dSpriteAnimationClip[] array = (sprite.Library == null) ? null : sprite.Library.clips;
-            if(array != null)
-            {
-                for(int i = 0; i < array.Length; i++)
-                {
-                    if(array[i] == clip)
-                    {
-                        intData = i;
-                        break;
-                    }
-                }
-            }
-
-            if(onAnimationCompleteNextState != null)
-            {
-                currentState = onAnimationCompleteNextState();
-                Dev.Log("setting next state");
-            }
-
-            onAnimationCompleteNextState = null;
+            Dev.Where();            
+            blockingAnimationIsPlaying = false;
         }
 
         void CheckTouching(LayerMask layer)
@@ -2153,10 +2985,11 @@ namespace nv
             return direction;
         }
 
+        //TODO: change to a static function that takes 3 vectors, origin, target, and offsets
         float GetAngleToTarget(GameObject target, float offsetX, float offsetY)
         {
-            float num = target.transform.position.y + offsetY - transform.position.y;
-            float num2 = target.transform.position.x + offsetX - transform.position.x;
+            float num = target.transform.position.y + offsetY - owner.transform.position.y;
+            float num2 = target.transform.position.x + offsetX - owner.transform.position.x;
             float num3;
             for(num3 = Mathf.Atan2(num, num2) * 57.2957764f; num3 < 0f; num3 += 360f)
             {
@@ -2164,13 +2997,40 @@ namespace nv
             return num3;
         }
 
+        static Vector2 GetVelocityToTarget(Vector2 self, Vector2 projectile, Vector2 target, float speed, float spread = 0f)
+        {
+            float num = target.y + projectile.y - self.y;
+            float num2 = target.x + projectile.x - self.x;
+            float num3 = Mathf.Atan2(num, num2) * 57.2957764f;
+            if(Mathf.Abs(spread) > Mathf.Epsilon)
+            {
+                num3 += GameRNG.Rand(-spread, spread);
+            }
+            float x = speed * Mathf.Cos(num3 * 0.0174532924f);
+            float y = speed * Mathf.Sin(num3 * 0.0174532924f);
+            Vector2 velocity;
+            velocity.x = x;
+            velocity.y = y;
+            return velocity;
+        }
+
+        static Vector2 GetVelocityFromSpeedAndAngle(float speed, float angle)
+        {
+            float x = speed * Mathf.Cos(angle * 0.0174532924f);
+            float y = speed * Mathf.Sin(angle * 0.0174532924f);
+            Vector2 velocity;
+            velocity.x = x;
+            velocity.y = y;
+            return velocity;
+        }
+
         public static IEnumerator GetAudioPlayerOneShotClipsFromFSM(GameObject go, string fsmName, string stateName, Action<List<AudioClip>> onAudioPlayerOneShotLoaded)
         {
             GameObject copy = go;
-            if( !go.activeInHierarchy )
+            if(!go.activeInHierarchy)
             {
-                copy = GameObject.Instantiate( go ) as GameObject;
-                copy.SetActive( true );
+                copy = GameObject.Instantiate(go) as GameObject;
+                copy.SetActive(true);
             }
 
             //wait a few frames for the fsm to set up stuff
@@ -2186,8 +3046,8 @@ namespace nv
             //send the clips out
             onAudioPlayerOneShotLoaded(clips);
 #endif
-            if( copy != go )
-                GameObject.Destroy( copy );
+            if(copy != go)
+                GameObject.Destroy(copy);
 
             //let stuff get destroyed
             yield return new WaitForEndOfFrame();
@@ -2198,10 +3058,10 @@ namespace nv
         public static IEnumerator GetGameObjectFromFSM(GameObject go, string fsmName, string stateName, Action<GameObject> onGameObjectLoaded)
         {
             GameObject copy = go;
-            if( !go.activeInHierarchy )
+            if(!go.activeInHierarchy)
             {
-                copy = GameObject.Instantiate( go ) as GameObject;
-                copy.SetActive( true );
+                copy = GameObject.Instantiate(go) as GameObject;
+                copy.SetActive(true);
             }
 
             //wait a few frames for the fsm to set up stuff
@@ -2220,8 +3080,8 @@ namespace nv
             //send the loaded object out
             onGameObjectLoaded(spawnedCopy);
 #endif
-            if( copy != go )
-                GameObject.Destroy( copy );
+            if(copy != go)
+                GameObject.Destroy(copy);
 
             //let stuff get destroyed
             yield return new WaitForEndOfFrame();
@@ -2233,10 +3093,10 @@ namespace nv
         {
             Dev.Where();
             GameObject copy = go;
-            if( !go.activeInHierarchy )
+            if(!go.activeInHierarchy)
             {
-                copy = GameObject.Instantiate( go ) as GameObject;
-                copy.SetActive( true );
+                copy = GameObject.Instantiate(go) as GameObject;
+                copy.SetActive(true);
             }
 
             //wait a few frames for the fsm to set up stuff
@@ -2264,8 +3124,8 @@ namespace nv
             onSourceLoaded(audioSource);
 #endif
 
-            if( copy != go )
-                GameObject.Destroy( copy );
+            if(copy != go)
+                GameObject.Destroy(copy);
 
             //let stuff get destroyed
             yield return new WaitForEndOfFrame();
@@ -2276,10 +3136,10 @@ namespace nv
         public static IEnumerator GetAudioClipFromAudioPlaySimpleInFSM(GameObject go, string fsmName, string stateName, Action<AudioClip> onClipLoaded)
         {
             GameObject copy = go;
-            if( !go.activeInHierarchy )
+            if(!go.activeInHierarchy)
             {
-                copy = GameObject.Instantiate( go ) as GameObject;
-                copy.SetActive( true );
+                copy = GameObject.Instantiate(go) as GameObject;
+                copy.SetActive(true);
             }
 
             //wait a few frames for the fsm to set up stuff
@@ -2294,8 +3154,8 @@ namespace nv
             //send the loaded clip out
             onClipLoaded(clip);
 #endif
-            if( copy != go )
-                GameObject.Destroy( copy );
+            if(copy != go)
+                GameObject.Destroy(copy);
 
             //let stuff get destroyed
             yield return new WaitForEndOfFrame();
@@ -2307,10 +3167,10 @@ namespace nv
         {
             Dev.Where();
             GameObject copy = go;
-            if( !go.activeInHierarchy )
+            if(!go.activeInHierarchy)
             {
-                copy = GameObject.Instantiate( go ) as GameObject;
-                copy.SetActive( true );
+                copy = GameObject.Instantiate(go) as GameObject;
+                copy.SetActive(true);
             }
 
             //wait a few frames for the fsm to set up stuff
@@ -2325,7 +3185,7 @@ namespace nv
             //send the loaded clip out
             onClipLoaded(clip);
 #endif
-            if( copy != go )
+            if(copy != go)
                 GameObject.Destroy(copy);
 
             //let stuff get destroyed
@@ -2374,16 +3234,36 @@ namespace nv
 
             healthManager = GetComponent<HealthManager>();
             tk2dAnimator = GetComponent<tk2dSpriteAnimator>();
-            
+
             if(gameObject.FindGameObjectInChildren("Refight Range") != null)
                 refightRange = gameObject.FindGameObjectInChildren("Refight Range").AddComponent<RefightRange>();
             if(gameObject.FindGameObjectInChildren("Evade Range") != null)
                 evadeRange = gameObject.FindGameObjectInChildren("Evade Range").AddComponent<EvadeRange>();
             if(gameObject.FindGameObjectInChildren("Sphere Range") != null)
                 sphereRange = gameObject.FindGameObjectInChildren("Sphere Range").AddComponent<SphereRange>();
+            if(gameObject.FindGameObjectInChildren("A Sphere Range") != null)
+                aSphereRange = gameObject.FindGameObjectInChildren("A Sphere Range").AddComponent<SphereRange>();
+            if(gameObject.FindGameObjectInChildren("A Dash Range") != null)
+                aDashRange = gameObject.FindGameObjectInChildren("A Dash Range").AddComponent<ADashRange>();
+            if(gameObject.FindGameObjectInChildren("Hit ADash") != null)
+                hitADash = gameObject.FindGameObjectInChildren("Hit ADash").GetComponent<PolygonCollider2D>();
+            if(gameObject.FindGameObjectInChildren("Hit GDash") != null)
+                hitGDash = gameObject.FindGameObjectInChildren("Hit GDash").GetComponent<PolygonCollider2D>();
+            if(gameObject.FindGameObjectInChildren("Dust HardLand") != null)
+                dustHardLand = gameObject.FindGameObjectInChildren("Dust HardLand").GetComponent<ParticleSystem>();
+
+            
             if(gameObject.FindGameObjectInChildren("Throw Effect") != null)
                 throwEffect = gameObject.FindGameObjectInChildren("Throw Effect").AddComponent<ThrowEffect>();
-            
+            if(gameObject.FindGameObjectInChildren("A Dash Effect") != null)
+                aDashEffect = gameObject.FindGameObjectInChildren("A Dash Effect").AddComponent<ADashEffect>();
+            if(gameObject.FindGameObjectInChildren("G Dash Effect") != null)
+                gDashEffect = gameObject.FindGameObjectInChildren("G Dash Effect").AddComponent<GDashEffect>();
+            if(gameObject.FindGameObjectInChildren("Sphere Ball") != null)
+                sphereBall = gameObject.FindGameObjectInChildren("Sphere Ball").AddComponent<SphereBall>();
+            if(gameObject.FindGameObjectInChildren("Flash Effect") != null)
+                flashEffect = gameObject.FindGameObjectInChildren("Flash Effect").AddComponent<FlashEffect>();
+
             //TODO: replace this with a load from the effects database
             if(GameObject.Find("Needle") != null)
                 needle = GameObject.Find("Needle").AddComponent<Needle>();
@@ -2405,21 +3285,27 @@ namespace nv
         IEnumerator ExtractReferencesFromPlayMakerFSMs()
         {
             //load resources for the boss
+            string bossFSMName = "Control";
 
-            yield return GetAudioPlayerOneShotClipsFromFSM( owner, "Control", "Jump", SetHornetJumpYells );
-            yield return GetAudioClipFromAudioPlaySimpleInFSM( owner, "Control", "Jump", SetHornetJumpSFX );
-            yield return GetAudioClipFromAudioPlaySimpleInFSM( owner, "Control", "Evade Land", SetHornetGroundLandSFX );
-            yield return GetAudioClipFromAudioPlaySimpleInFSM( owner, "Control", "Evade", SetHornetSmallJumpSFX );
-            yield return GetAudioPlayerOneShotClipsFromFSM( owner, "Control", "Evade", SetHornetLaughs );
-            yield return GetAudioClipFromAudioPlaySimpleInFSM(owner, "Control", "Throw Recover", SetHornetCatchSFX);
-            yield return GetAudioClipFromAudioPlaySimpleInFSM(owner, "Control", "Throw", SetHornetThrowSFX);
-            yield return GetAudioPlayerOneShotClipsFromFSM(owner, "Control", "Throw Antic", SetHornetThrowYells);
-            yield return GetGameObjectFromFSM(owner, "Control", "Flourish", SetAreaTitleReference);
-            yield return GetAudioSourceObjectFromFSM(owner, "Control", "Flourish", SetActorAudioSource);
-            yield return GetAudioClipFromFSM(owner, "Control", "Flourish", SetHornetYell);
-            fightMusic = GetMusicCueFromFSM(owner, "Control", "Flourish");
-            fightMusicSnapshot = GetSnapshotFromFSM(owner, "Control", "Flourish");
-            
+            yield return GetAudioClipFromAudioPlaySimpleInFSM(owner, bossFSMName, "Sphere", SetHornetSphereSFX);
+            yield return GetAudioClipFromAudioPlaySimpleInFSM(owner, bossFSMName, "Wall L", SetHornetWallLandSFX);
+            yield return GetAudioClipFromAudioPlaySimpleInFSM(owner, bossFSMName, "Fire", SetHornetDashSFX);
+            yield return GetAudioPlayerOneShotClipsFromFSM(owner, bossFSMName, "ADash Antic", SetHornetAGDashYells);
+            yield return GetAudioClipFromAudioPlaySimpleInFSM(owner, bossFSMName, "Land", SetHornetLandSFX);
+            yield return GetAudioPlayerOneShotClipsFromFSM(owner, bossFSMName, "Jump", SetHornetJumpYells);
+            yield return GetAudioClipFromAudioPlaySimpleInFSM(owner, bossFSMName, "Jump", SetHornetJumpSFX);
+            yield return GetAudioClipFromAudioPlaySimpleInFSM(owner, bossFSMName, "Evade Land", SetHornetGroundLandSFX);
+            yield return GetAudioClipFromAudioPlaySimpleInFSM(owner, bossFSMName, "Evade", SetHornetSmallJumpSFX);
+            yield return GetAudioPlayerOneShotClipsFromFSM(owner, bossFSMName, "Evade", SetHornetLaughs);
+            yield return GetAudioClipFromAudioPlaySimpleInFSM(owner, bossFSMName, "Throw Recover", SetHornetCatchSFX);
+            yield return GetAudioClipFromAudioPlaySimpleInFSM(owner, bossFSMName, "Throw", SetHornetThrowSFX);
+            yield return GetAudioPlayerOneShotClipsFromFSM(owner, bossFSMName, "Throw Antic", SetHornetAttackYells);
+            yield return GetGameObjectFromFSM(owner, bossFSMName, "Flourish", SetAreaTitleReference);
+            yield return GetAudioSourceObjectFromFSM(owner, bossFSMName, "Flourish", SetActorAudioSource);
+            yield return GetAudioClipFromFSM(owner, bossFSMName, "Flourish", SetHornetYell);
+            fightMusic = GetMusicCueFromFSM(owner, bossFSMName, "Flourish");
+            fightMusicSnapshot = GetSnapshotFromFSM(owner, bossFSMName, "Flourish");
+
             //load resources for additional objects
 
             //TODO: load the things for the needle (i think)
@@ -2440,44 +3326,99 @@ namespace nv
             actorAudioSource.transform.localPosition = Vector3.zero;
         }
 
-        void SetHornetJumpSFX( AudioClip clip )
+        void SetHornetSphereSFX(AudioClip clip)
         {
-            if( clip == null )
+            if(clip == null)
             {
-                Dev.Log( "Warning: hornet jump sfx clip is null!" );
+                Dev.Log("Warning: hornet sphere sfx clip is null!");
+                return;
+            }
+
+            hornetSphereSFX = clip;
+        }
+
+        void SetHornetWallLandSFX(AudioClip clip)
+        {
+            if(clip == null)
+            {
+                Dev.Log("Warning: hornet wall land sfx clip is null!");
+                return;
+            }
+
+            hornetWallLandSFX = clip;
+        }
+
+        void SetHornetDashSFX(AudioClip clip)
+        {
+            if(clip == null)
+            {
+                Dev.Log("Warning: hornet dash sfx clip is null!");
+                return;
+            }
+
+            hornetDashSFX = clip;
+        }
+
+        void SetHornetAGDashYells(List<AudioClip> clips)
+        {
+            if(clips == null)
+            {
+                Dev.Log("Warning: hornet ag dash yells are null clips!");
+                return;
+            }
+
+            hornetAGDashYells = clips;
+        }
+
+        void SetHornetLandSFX(AudioClip clip)
+        {
+            if(clip == null)
+            {
+                Dev.Log("Warning: hornet land sfx clip is null!");
+                return;
+            }
+
+            hornetLandSFX = clip;
+        }
+
+        void SetHornetJumpSFX(AudioClip clip)
+        {
+            if(clip == null)
+            {
+                Dev.Log("Warning: hornet jump sfx clip is null!");
                 return;
             }
 
             hornetJumpSFX = clip;
         }
 
-        void SetHornetJumpYells( List<AudioClip> clips )
+        void SetHornetJumpYells(List<AudioClip> clips)
         {
-            if( clips == null )
+            if(clips == null)
             {
-                Dev.Log( "Warning: hornet jump yells are null clips!" );
+                Dev.Log("Warning: hornet jump yells are null clips!");
                 return;
             }
 
             hornetJumpYells = clips;
         }
 
-        void SetHornetSmallJumpSFX( AudioClip clip )
+        void SetHornetSmallJumpSFX(AudioClip clip)
         {
-            if( clip == null )
+            if(clip == null)
             {
-                Dev.Log( "Warning: hornet small jump sfx clip is null!" );
+                Dev.Log("Warning: hornet small jump sfx clip is null!");
                 return;
             }
 
             hornetSmallJumpSFX = clip;
         }
 
-        void SetHornetGroundLandSFX( AudioClip clip )
+        void SetHornetGroundLandSFX(AudioClip clip)
         {
-            if( clip == null )
+            if(clip == null)
             {
-                Dev.Log( "Warning: hornet ground land sfx clip is null!" );
+                Dev.Log("Warning: hornet ground land sfx clip is null!");
                 return;
             }
 
@@ -2517,7 +3458,7 @@ namespace nv
             hornetYell = clip;
         }
 
-        void SetHornetThrowYells(List<AudioClip> clips)
+        void SetHornetAttackYells(List<AudioClip> clips)
         {
             if(clips == null)
             {
@@ -2525,39 +3466,39 @@ namespace nv
                 return;
             }
 
-            hornetThrowYells = clips;
+            hornetAttackYells = clips;
         }
 
-        void SetHornetLaughs( List<AudioClip> clips )
+        void SetHornetLaughs(List<AudioClip> clips)
         {
-            if( clips == null )
+            if(clips == null)
             {
-                Dev.Log( "Warning: hornet laughs are null clips!" );
+                Dev.Log("Warning: hornet laughs are null clips!");
                 return;
             }
 
             hornetLaughs = clips;
         }
 
-        void SetAreaTitleReference( GameObject areaTitle )
+        void SetAreaTitleReference(GameObject areaTitle)
         {
-            if( areaTitle == null )
+            if(areaTitle == null)
             {
-                Dev.Log( "Warning: Area Title GameObject failed to load and is null!" );
+                Dev.Log("Warning: Area Title GameObject failed to load and is null!");
                 return;
             }
 
             AreaTitle title = areaTitle.GetComponent<AreaTitle>();
 
-            foreach( PlayMakerFSM p in areaTitle.GetComponentsInChildren<PlayMakerFSM>() )
+            foreach(PlayMakerFSM p in areaTitle.GetComponentsInChildren<PlayMakerFSM>())
             {
-                GameObject.DestroyImmediate( p );
+                GameObject.DestroyImmediate(p);
             }
 
-            GameObject.DestroyImmediate( title );
-            
+            GameObject.DestroyImmediate(title);
+
             areaTitleObject = areaTitle;
-            areaTitleObject.SetActive( false );
+            areaTitleObject.SetActive(false);
         }
 
         void RemoveDeprecatedComponents()
