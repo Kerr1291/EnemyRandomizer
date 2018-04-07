@@ -50,6 +50,22 @@ namespace nv
     }
 
     [RequireComponent(typeof(BoxCollider2D))]
+    public class RunAwayCheck : MonoBehaviour
+    {
+        public bool objectIsInRange;
+
+        public void OnTriggerEnter2D(Collider2D collisionInfo)
+        {
+            objectIsInRange = true;
+        }
+
+        public void OnTriggerExit2D(Collider2D collisionInfo)
+        {
+            objectIsInRange = false;
+        }
+    }
+
+    [RequireComponent(typeof(BoxCollider2D))]
     public class RefightRange : MonoBehaviour
     {
         public bool objectIsInRange;
@@ -539,6 +555,7 @@ namespace nv
         public HealthManager healthManager;
         public ThrowEffect throwEffect;
         public EvadeRange evadeRange;
+        public RunAwayCheck runAwayCheck;
         public SphereRange sphereRange;
         public SphereRange aSphereRange;
         public RefightRange refightRange;
@@ -909,13 +926,17 @@ namespace nv
         IEnumerator RunAway()
         {
             Dev.Where();
+            
+            //TODO: play around with this, something seems off about it
+            if(runAwayCheck.objectIsInRange)
+            {
+                //face the knight
+                HeroController hero = HeroController.instance;
+                FaceObject(hero.gameObject, false, false);
 
-            //face the knight
-            HeroController hero = HeroController.instance;
-            FaceObject(hero.gameObject, false, false);
-
-            //then flip the other way
-            FlipScale();
+                //then flip the other way
+                FlipScale();
+            }
 
             currentState = RunAntic();
 
@@ -3251,6 +3272,8 @@ namespace nv
                 hitGDash = gameObject.FindGameObjectInChildren("Hit GDash").GetComponent<PolygonCollider2D>();
             if(gameObject.FindGameObjectInChildren("Dust HardLand") != null)
                 dustHardLand = gameObject.FindGameObjectInChildren("Dust HardLand").GetComponent<ParticleSystem>();
+            if(gameObject.FindGameObjectInChildren("Run Away Check") != null)
+                runAwayCheck = gameObject.FindGameObjectInChildren("Run Away Check").AddComponent<RunAwayCheck>();
 
             
             if(gameObject.FindGameObjectInChildren("Throw Effect") != null)
