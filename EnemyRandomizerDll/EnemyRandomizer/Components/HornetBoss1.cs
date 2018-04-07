@@ -3348,18 +3348,17 @@ namespace nv
             float z = Mathf.Atan2(velocity.y, velocity.x) * 57.2957764f + offset;
             owner.transform.localEulerAngles = new Vector3(0f, 0f, z);
         }
-
-
-        //string lastPlayedAnimation;
             
         void PlayAnimation(string animation)
         {
             Dev.Where();
-            //if( lastPlayedAnimation == animation )
-            //    return;
 
-            //Dev.Log( "Playing " + animation );
-            //lastPlayedAnimation = animation;
+            if( tk2dAnimator.GetClipByName( animation ) == null )
+            {
+                Dev.Log( "Warning: " + animation + " clip not found" );
+                return;
+            }
+
             tk2dAnimator.AnimationCompleted = null;
             tk2dAnimator.Play( animation );
         }
@@ -3367,29 +3366,20 @@ namespace nv
         IEnumerator PlayAndWaitForEndOfAnimation(string animation)
         {
             Dev.Where();
-            //if( lastPlayedAnimation == animation )
-            //    yield break;
 
-            //Dev.Log( "Playing " + animation );
-            //lastPlayedAnimation = animation;
+            if( tk2dAnimator.GetClipByName( animation ) == null )
+            {
+                Dev.Log( "Warning: " + animation + " clip not found" );
+                yield break;
+            }
+
             tk2dAnimator.AnimationCompleted = OnAnimationComplete;
             tk2dAnimator.Play( animation );
             
             blockingAnimationIsPlaying = true;
-
-            //float timeout = 5f;
+            
             for(;;)
             {
-                //timeout -= Time.deltaTime;
-                //if(timeout <= 0f)
-                //{
-                //    Dev.Log( animation + " was stuck! Forcing timeout" );
-                //    blockingAnimationIsPlaying = false;
-                //    break;
-                //}
-
-                //Dev.Log( "blockingAnimationIsPlaying " + blockingAnimationIsPlaying );
-
                 if(!blockingAnimationIsPlaying)
                     break;
                 else
@@ -3401,13 +3391,8 @@ namespace nv
         void OnAnimationComplete(tk2dSpriteAnimator sprite, tk2dSpriteAnimationClip clip)
         {
             Dev.Where();
-            //Dev.Log( clip.name + " just finished " );
-            //if( lastPlayedAnimation == clip.name )
-            //{
-                blockingAnimationIsPlaying = false;
-                tk2dAnimator.AnimationCompleted = null;
-            //}
-            //Dev.Log( "blockingAnimationIsPlaying is now " + blockingAnimationIsPlaying );
+            blockingAnimationIsPlaying = false;
+            tk2dAnimator.AnimationCompleted = null;
         }
 
         void CheckTouching(LayerMask layer)
