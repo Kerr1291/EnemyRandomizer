@@ -15,10 +15,18 @@ namespace nv
     [RequireComponent(typeof(BoxCollider2D))]
     public class EvadeRange : MonoBehaviour
     {
-        public bool objectIsInRange;
+        public bool ObjectIsInRange { get; private set; }
         public bool IsOnCooldown { get; private set; }
 
+        public float onTimeMin = 1f;
+        public float onTimeMax = 2f;
+
+        public float offTimeMin = 2f;
+        public float offTimeMax = 3f;
+
         BoxCollider2D bodyCollider;
+
+        IEnumerator currentState = null;
 
         public void DisableEvadeForTime(float disableTime)
         {
@@ -31,7 +39,8 @@ namespace nv
         IEnumerator EnableEvadeAfterTime(float time)
         {
             IsOnCooldown = true;
-            bodyCollider = GetComponent<BoxCollider2D>();
+            if( bodyCollider == null )
+                bodyCollider = GetComponent<BoxCollider2D>();
             bodyCollider.enabled = false;
             yield return new WaitForSeconds(time);
             bodyCollider.enabled = true;
@@ -40,98 +49,142 @@ namespace nv
 
         public void OnTriggerEnter2D(Collider2D collisionInfo)
         {
-            objectIsInRange = true;
+            ObjectIsInRange = true;
         }
 
         public void OnTriggerExit2D(Collider2D collisionInfo)
         {
-            objectIsInRange = false;
+            ObjectIsInRange = false;
+        }
+        
+        IEnumerator Start()
+        {
+            bodyCollider = GetComponent<BoxCollider2D>();
+            currentState = On();
+            for( ; ;)
+            {
+                yield return new WaitForEndOfFrame();
+
+                if( IsOnCooldown )
+                    continue;
+
+                yield return currentState;
+            }
+
+            yield break;
+        }
+
+        IEnumerator On()
+        {
+            float time = GameRNG.Rand(onTimeMin,onTimeMax);
+            yield return new WaitForSeconds( time );
+            bodyCollider.enabled = true;
+            currentState = Off();
+            yield break;
+        }
+
+        IEnumerator Off()
+        {
+            float time = GameRNG.Rand(offTimeMin,offTimeMax);
+            yield return new WaitForSeconds( time );
+            ObjectIsInRange = false;
+            bodyCollider.enabled = false;
+            currentState = On();
+            yield break;
         }
     }
 
     [RequireComponent(typeof(BoxCollider2D))]
     public class RunAwayCheck : MonoBehaviour
     {
-        public bool objectIsInRange;
+        public bool ObjectIsInRange { get; private set; }
 
         public void OnTriggerEnter2D(Collider2D collisionInfo)
         {
-            objectIsInRange = true;
+            ObjectIsInRange = true;
         }
 
         public void OnTriggerExit2D(Collider2D collisionInfo)
         {
-            objectIsInRange = false;
+            ObjectIsInRange = false;
         }
     }
 
     [RequireComponent(typeof(BoxCollider2D))]
     public class RefightRange : MonoBehaviour
     {
-        public bool objectIsInRange;
+        public bool ObjectIsInRange { get; private set; }
 
         public void OnTriggerEnter2D(Collider2D collisionInfo)
         {
-            objectIsInRange = true;
+            ObjectIsInRange = true;
         }
 
         public void OnTriggerExit2D(Collider2D collisionInfo)
         {
-            objectIsInRange = false;
+            ObjectIsInRange = false;
         }
     }
 
     [RequireComponent(typeof(CircleCollider2D))]
     public class SphereRange : MonoBehaviour
     {
-        public bool objectIsInRange;
+        public bool ObjectIsInRange { get; private set; }
 
         public void OnTriggerEnter2D(Collider2D collisionInfo)
         {
-            objectIsInRange = true;
+            ObjectIsInRange = true;
         }
 
         public void OnTriggerExit2D(Collider2D collisionInfo)
         {
-            objectIsInRange = false;
+            ObjectIsInRange = false;
         }
     }
 
     [RequireComponent(typeof(CircleCollider2D))]
     public class ADashRange : MonoBehaviour
     {
-        public bool objectIsInRange;
+        public bool ObjectIsInRange { get; private set; }
 
         public void OnTriggerEnter2D(Collider2D collisionInfo)
         {
-            objectIsInRange = true;
+            ObjectIsInRange = true;
         }
 
         public void OnTriggerExit2D(Collider2D collisionInfo)
         {
-            objectIsInRange = false;
+            ObjectIsInRange = false;
         }
     }
 
     public class FlashEffect : MonoBehaviour
     {
         public tk2dSpriteAnimator tk2dAnimator;
+        MeshRenderer meshRenderer;
 
-        public GameObject owner;
+        public GameObject parent;
         IEnumerator currentState = null;
 
         public bool isAnimating = false;
 
         public void Play(GameObject parent)
         {
-            owner = parent;
-            tk2dAnimator = owner.GetComponent<tk2dSpriteAnimator>();
+            this.parent = parent;
+            tk2dAnimator = GetComponent<tk2dSpriteAnimator>();
+            meshRenderer = GetComponent<MeshRenderer>();
 
             gameObject.SetActive(true);
 
             isAnimating = true;
 
             StartCoroutine(MainAILoop());
+        }
+
+        public void Stop()
+        {
+            isAnimating = false;
+            tk2dAnimator.Stop();
         }
 
         IEnumerator MainAILoop()
@@ -141,15 +194,10 @@ namespace nv
 
             for(;;)
             {
-                if(owner == null)
+                if(parent == null)
                     yield break;
 
                 yield return currentState;
-
-                //Dev.Log("Next");
-
-                //TODO: remove as the states get implemented
-                yield return new WaitForEndOfFrame();
             }
         }
 
@@ -157,21 +205,53 @@ namespace nv
         {
             Dev.Where();
 
-            //TODO: finish
+            meshRenderer.enabled = true;
 
-            currentState = Complete();
+            //TODO: figure out how Reposition is being set?, if Reposition is true, set this
+            transform.localPosition = new Vector3( 0f, 0f, 0f );
+
+            //TODO: figure out how Reset Rotation bool is being set, if true set the rotation to identity
+            transform.localRotation = Quaternion.identity;
+
+            Vector3 localScale = transform.localScale;
+            Vector3 lossyScale = transform.lossyScale;
+
+            //TODO: figure out how "Unparent" bool is being set, if true, unparent this
+            transform.SetParent( null );
+
+            transform.localScale = lossyScale;
+
+            yield return PlayFromFrameAndWaitForEndOfAnimation( 0 );
+
+            isAnimating = false;
+
+            transform.SetParent( parent.transform );
+
+            transform.localScale = localScale;
+
+            meshRenderer.enabled = false;
+
+            currentState = null;
+
+            gameObject.SetActive( false );
 
             yield break;
         }
 
-        IEnumerator Complete()
+        IEnumerator PlayFromFrameAndWaitForEndOfAnimation( int frame )
         {
-            Dev.Where();
+            bool blockingAnimationIsPlaying = true;
+            tk2dAnimator.AnimationCompleted = ( tk2dSpriteAnimator sprite, tk2dSpriteAnimationClip clip ) => { blockingAnimationIsPlaying = false; };
 
-            //TODO: finish
+            tk2dAnimator.PlayFromFrame( frame );
 
-            isAnimating = false;
-
+            for(; ; )
+            {
+                if( !blockingAnimationIsPlaying )
+                    break;
+                else
+                    yield return new WaitForEndOfFrame();
+            }
             yield break;
         }
     }
@@ -179,22 +259,30 @@ namespace nv
     public class ADashEffect : MonoBehaviour
     {
         public tk2dSpriteAnimator tk2dAnimator;
+        MeshRenderer meshRenderer;
 
-        public GameObject owner;
+        public GameObject parent;
         IEnumerator currentState = null;
 
         public bool isAnimating = false;
 
         public void Play(GameObject parent)
         {
-            owner = parent;
-            tk2dAnimator = owner.GetComponent<tk2dSpriteAnimator>();
+            this.parent = parent;
+            tk2dAnimator = GetComponent<tk2dSpriteAnimator>();
+            meshRenderer = GetComponent<MeshRenderer>();
 
             gameObject.SetActive(true);
 
             isAnimating = true;
 
             StartCoroutine(MainAILoop());
+        }
+
+        public void Stop()
+        {
+            isAnimating = false;
+            tk2dAnimator.Stop();
         }
 
         IEnumerator MainAILoop()
@@ -204,15 +292,10 @@ namespace nv
 
             for(;;)
             {
-                if(owner == null)
+                if(parent == null)
                     yield break;
 
                 yield return currentState;
-
-                //Dev.Log("Next");
-
-                //TODO: remove as the states get implemented
-                yield return new WaitForEndOfFrame();
             }
         }
 
@@ -220,21 +303,53 @@ namespace nv
         {
             Dev.Where();
 
-            //TODO: finish
+            meshRenderer.enabled = true;
 
-            currentState = Complete();
+            //TODO: figure out how Reposition is being set?, if Reposition is true, set this
+            transform.localPosition = new Vector3( 3f, .3f, 0f );
+
+            //TODO: figure out how Reset Rotation bool is being set, if true set the rotation to identity
+            transform.localRotation = Quaternion.identity;
+
+            Vector3 localScale = transform.localScale;
+            Vector3 lossyScale = transform.lossyScale;
+            
+            //TODO: figure out how "Unparent" bool is being set, if true, unparent this
+            transform.SetParent( null );
+
+            transform.localScale = lossyScale;
+
+            yield return PlayFromFrameAndWaitForEndOfAnimation( 0 );
+
+            isAnimating = false;
+
+            transform.SetParent( parent.transform );
+
+            transform.localScale = localScale;
+
+            meshRenderer.enabled = false;
+
+            currentState = null;
+
+            gameObject.SetActive( false );
 
             yield break;
         }
 
-        IEnumerator Complete()
+        IEnumerator PlayFromFrameAndWaitForEndOfAnimation( int frame )
         {
-            Dev.Where();
+            bool blockingAnimationIsPlaying = true;
+            tk2dAnimator.AnimationCompleted = ( tk2dSpriteAnimator sprite, tk2dSpriteAnimationClip clip ) => { blockingAnimationIsPlaying = false; };
 
-            //TODO: finish
+            tk2dAnimator.PlayFromFrame( frame );
 
-            isAnimating = false;
-
+            for(; ; )
+            {
+                if( !blockingAnimationIsPlaying )
+                    break;
+                else
+                    yield return new WaitForEndOfFrame();
+            }
             yield break;
         }
     }
@@ -243,22 +358,29 @@ namespace nv
     public class GDashEffect : MonoBehaviour
     {
         public tk2dSpriteAnimator tk2dAnimator;
+        MeshRenderer meshRenderer;
 
-        public GameObject owner;
+        public GameObject parent;
         IEnumerator currentState = null;
 
         public bool isAnimating = false;
 
         public void Play(GameObject parent)
         {
-            owner = parent;
-            tk2dAnimator = owner.GetComponent<tk2dSpriteAnimator>();
+            this.parent = parent;
+            tk2dAnimator = GetComponent<tk2dSpriteAnimator>();
+            meshRenderer = GetComponent<MeshRenderer>();
 
             gameObject.SetActive(true);
 
             isAnimating = true;
 
             StartCoroutine(MainAILoop());
+        }
+
+        public void Stop()
+        {
+            isAnimating = false;
         }
 
         IEnumerator MainAILoop()
@@ -268,15 +390,10 @@ namespace nv
 
             for(;;)
             {
-                if(owner == null)
+                if(parent == null)
                     yield break;
 
                 yield return currentState;
-
-                //Dev.Log("Next");
-
-                //TODO: remove as the states get implemented
-                yield return new WaitForEndOfFrame();
             }
         }
 
@@ -284,21 +401,53 @@ namespace nv
         {
             Dev.Where();
 
-            //TODO: finish
+            meshRenderer.enabled = true;
 
-            currentState = Complete();
+            //TODO: figure out how Reposition is being set?, if Reposition is true, set this
+            transform.localPosition = new Vector3( 6.7f, 1f, 0f );
+
+            //TODO: figure out how Reset Rotation bool is being set, if true set the rotation to identity
+            transform.localRotation = Quaternion.identity;
+
+            Vector3 localScale = transform.localScale;
+            Vector3 lossyScale = transform.lossyScale;
+            
+            //TODO: figure out how "Unparent" bool is being set, if true, unparent this
+            transform.SetParent( null );
+
+            transform.localScale = lossyScale;
+            
+            yield return PlayFromFrameAndWaitForEndOfAnimation( 0 );
+
+            isAnimating = false;
+
+            transform.SetParent( parent.transform );
+
+            transform.localScale = localScale;
+
+            meshRenderer.enabled = false;
+
+            currentState = null;
+
+            gameObject.SetActive( false );
 
             yield break;
         }
 
-        IEnumerator Complete()
+        IEnumerator PlayFromFrameAndWaitForEndOfAnimation( int frame )
         {
-            Dev.Where();
+            bool blockingAnimationIsPlaying = true;
+            tk2dAnimator.AnimationCompleted = (tk2dSpriteAnimator sprite, tk2dSpriteAnimationClip clip) => { blockingAnimationIsPlaying = false; };
 
-            //TODO: finish
+            tk2dAnimator.PlayFromFrame( frame );
 
-            isAnimating = false;
-
+            for(; ; )
+            {
+                if( !blockingAnimationIsPlaying )
+                    break;
+                else
+                    yield return new WaitForEndOfFrame();
+            }
             yield break;
         }
     }
@@ -306,16 +455,18 @@ namespace nv
     public class ThrowEffect : MonoBehaviour
     {
         public tk2dSpriteAnimator tk2dAnimator;
+        MeshRenderer meshRenderer;
 
-        public GameObject owner;
+        public GameObject parent;
         IEnumerator currentState = null;
 
         public bool isAnimating = false;
 
         public void Play(GameObject parent)
         {
-            owner = parent;
-            tk2dAnimator = owner.GetComponent<tk2dSpriteAnimator>();
+            this.parent = parent;
+            tk2dAnimator = GetComponent<tk2dSpriteAnimator>();
+            meshRenderer = GetComponent<MeshRenderer>();
 
             gameObject.SetActive(true);
 
@@ -331,15 +482,10 @@ namespace nv
 
             for(;;)
             {
-                if(owner == null)
+                if(parent == null)
                     yield break;
 
                 yield return currentState;
-
-                //Dev.Log("Next");
-
-                //TODO: remove as the states get implemented
-                yield return new WaitForEndOfFrame();
             }
         }
 
@@ -347,21 +493,53 @@ namespace nv
         {
             Dev.Where();
 
-            //TODO: finish
+            meshRenderer.enabled = true;
 
-            currentState = Complete();
+            //TODO: figure out how Reposition is being set?, if Reposition is true, set this
+            transform.localPosition = new Vector3( 1.3f, -.1f, 0f );
+
+            //TODO: figure out how Reset Rotation bool is being set, if true set the rotation to identity
+            transform.localRotation = Quaternion.identity;
+
+            Vector3 localScale = transform.localScale;
+            Vector3 lossyScale = transform.lossyScale;
+
+            //TODO: figure out how "Unparent" bool is being set, if true, unparent this
+            transform.SetParent( null );
+
+            transform.localScale = lossyScale;
+
+            yield return PlayFromFrameAndWaitForEndOfAnimation( 0 );
+
+            isAnimating = false;
+
+            transform.SetParent( parent.transform );
+
+            transform.localScale = localScale;
+
+            meshRenderer.enabled = false;
+
+            currentState = null;
+
+            gameObject.SetActive( false );
 
             yield break;
         }
 
-        IEnumerator Complete()
+        IEnumerator PlayFromFrameAndWaitForEndOfAnimation( int frame )
         {
-            Dev.Where();
+            bool blockingAnimationIsPlaying = true;
+            tk2dAnimator.AnimationCompleted = ( tk2dSpriteAnimator sprite, tk2dSpriteAnimationClip clip ) => { blockingAnimationIsPlaying = false; };
 
-            //TODO: finish
+            tk2dAnimator.PlayFromFrame( frame );
 
-            isAnimating = false;
-
+            for(; ; )
+            {
+                if( !blockingAnimationIsPlaying )
+                    break;
+                else
+                    yield return new WaitForEndOfFrame();
+            }
             yield break;
         }
     }
@@ -370,22 +548,30 @@ namespace nv
     {
         public tk2dSpriteAnimator tk2dAnimator;
 
-        public GameObject owner;
+        public GameObject parent;
         IEnumerator currentState = null;
 
         public bool isAnimating = false;
 
-        public void Play(GameObject parent)
+        float sphereTime;
+        float sphereStartSize;
+        float sphereEndSize;
+
+        public void Play(GameObject parent, float sphereTime, float sphereStartSize, float sphereEndSize)
         {
-            owner = parent;
-            tk2dAnimator = owner.GetComponent<tk2dSpriteAnimator>();
+            this.parent = parent;
+            tk2dAnimator = GetComponent<tk2dSpriteAnimator>();
 
             gameObject.SetActive(true);
 
             isAnimating = true;
 
+            this.sphereTime = sphereTime;
+            this.sphereStartSize = sphereStartSize;
+            this.sphereEndSize = sphereEndSize;
+
             //TODO: move the sphere starting size and growing size/rate to variables
-            transform.localScale = new Vector3(.8f, .8f, 1f);
+            transform.localScale = new Vector3( sphereStartSize, sphereStartSize, 0f );
 
             //TODO: check iTweenScaleTo to see what value's it's using for Sphere Ball
 
@@ -406,15 +592,10 @@ namespace nv
 
             for(;;)
             {
-                if(owner == null)
+                if(parent == null)
                     yield break;
 
                 yield return currentState;
-
-                //Dev.Log("Next");
-
-                //TODO: remove as the states get implemented
-                yield return new WaitForEndOfFrame();
             }
         }
 
@@ -426,6 +607,23 @@ namespace nv
             //TODO: tween to the final size
 
             currentState = Complete();
+
+            yield break;
+        }
+
+        IEnumerator Grow()
+        {
+            Dev.Where();
+
+            Vector3 targetScale = new Vector3(sphereEndSize,sphereEndSize,1f);
+            Vector3 velocity = Vector3.zero;
+
+            float time = 0f;
+            while(time < sphereTime)
+            {
+                Vector3 scale = transform.localScale;
+                scale = Vector3.SmoothDamp( scale, targetScale, ref velocity, sphereTime );
+            }
 
             yield break;
         }
@@ -450,21 +648,35 @@ namespace nv
         public PolygonCollider2D bodyCollider;
         public Rigidbody2D body;
 
-        public GameObject parent;
+        public GameObject owner;
+        public GameObject thread;
         IEnumerator currentState = null;
 
         public bool isAnimating = false;
 
-        public void Play(GameObject parent)
+        float startDelay;
+        Vector2 throwVelocity;
+        float throwAngle;
+        float returnSpeed;
+
+        //TODO: improvement: change to not use the throw angle and just use the throw velocity
+        public void Play(GameObject owner, float startDelay, Vector2 throwVelocity, float throwAngle, float returnSpeed )
         {
-            this.parent = parent;
+            this.owner = owner;
             tk2dAnimator = gameObject.GetComponent<tk2dSpriteAnimator>();
             bodyCollider = gameObject.GetComponent<PolygonCollider2D>();
             body = gameObject.GetComponent<Rigidbody2D>();
 
             gameObject.SetActive(true);
 
+            thread = gameObject.FindGameObjectInChildren( "Thread" );
+
             isAnimating = true;
+
+            this.startDelay = startDelay;
+            this.throwVelocity = throwVelocity;
+            this.throwAngle = throwAngle;
+            this.returnSpeed = returnSpeed;
 
             StartCoroutine(MainAILoop());
         }
@@ -472,27 +684,147 @@ namespace nv
         IEnumerator MainAILoop()
         {
             Dev.Where();
-            currentState = Init();
+            currentState = Out();
 
             for(;;)
             {
-                if(parent == null)
+                if(owner == null)
                     yield break;
 
                 yield return currentState;
-
-                //Dev.Log("Next");
-
-                //TODO: remove as the states get implemented
-                yield return new WaitForEndOfFrame();
             }
         }
 
-        IEnumerator Init()
+        IEnumerator Out()
         {
             Dev.Where();
 
-            //TODO: finish
+            yield return new WaitForSeconds( startDelay );
+
+            transform.localRotation = Quaternion.identity;
+
+            FaceAngle( throwAngle );
+            //FaceAngle( 180f ); //not sure what the point of this one is 
+
+            body.velocity = throwVelocity;
+
+            //TODO: make a variable for this
+            float deceleration = .8f;
+            for(; ; )
+            {
+                Vector2 velocity = body.velocity;
+                if( velocity.x < 0f )
+                {
+                    velocity.x *= deceleration;
+                    if( velocity.x > 0f )
+                    {
+                        velocity.x = 0f;
+                    }
+                }
+                else if( velocity.x > 0f )
+                {
+                    velocity.x *= deceleration;
+                    if( velocity.x < 0f )
+                    {
+                        velocity.x = 0f;
+                    }
+                }
+                if( velocity.y < 0f )
+                {
+                    velocity.y *= deceleration;
+                    if( velocity.y > 0f )
+                    {
+                        velocity.y = 0f;
+                    }
+                }
+                else if( velocity.y > 0f )
+                {
+                    velocity.y *= deceleration;
+                    if( velocity.y < 0f )
+                    {
+                        velocity.y = 0f;
+                    }
+                }
+                body.velocity = velocity;
+
+                if( velocity.magnitude <= 0f )
+                    break;
+                else
+                    yield return new WaitForFixedUpdate();
+            }
+
+            currentState = Return();
+
+            yield break;
+        }
+
+        bool isReturnComplete = false;
+
+        void iTweenOnComplete( int aniTweenID )
+        {
+            isReturnComplete = true;
+        }
+
+        IEnumerator Return()
+        {
+            Dev.Where();
+            isReturnComplete = false;
+
+            Hashtable hashtable = new Hashtable();
+            hashtable.Add( "position", owner.transform.position );
+            hashtable.Add( "speed", returnSpeed );
+            hashtable.Add( "easetype", iTween.EaseType.easeInSine );
+            hashtable.Add( "looptype", iTween.LoopType.none );
+            hashtable.Add( "oncomplete", "iTweenOnComplete" );
+            hashtable.Add( "oncompleteparams", 0 );
+            iTween.MoveTo( gameObject, hashtable );
+
+            thread.SetActive( true );
+
+            //TODO: make a variable for this
+            float deceleration = .8f;
+            for(; ; )
+            {
+                Vector2 velocity = body.velocity;
+                if( velocity.x < 0f )
+                {
+                    velocity.x *= deceleration;
+                    if( velocity.x > 0f )
+                    {
+                        velocity.x = 0f;
+                    }
+                }
+                else if( velocity.x > 0f )
+                {
+                    velocity.x *= deceleration;
+                    if( velocity.x < 0f )
+                    {
+                        velocity.x = 0f;
+                    }
+                }
+                if( velocity.y < 0f )
+                {
+                    velocity.y *= deceleration;
+                    if( velocity.y > 0f )
+                    {
+                        velocity.y = 0f;
+                    }
+                }
+                else if( velocity.y > 0f )
+                {
+                    velocity.y *= deceleration;
+                    if( velocity.y < 0f )
+                    {
+                        velocity.y = 0f;
+                    }
+                }
+                body.velocity = velocity;
+
+                if( isReturnComplete )
+                    break;
+                else
+                    yield return new WaitForFixedUpdate();
+            }
 
             currentState = Complete();
 
@@ -503,11 +835,17 @@ namespace nv
         {
             Dev.Where();
 
-            //TODO: finish
-
             isAnimating = false;
+            gameObject.SetActive( false );
 
             yield break;
+        }
+
+        void FaceAngle( float offset )
+        {
+            Vector2 velocity = body.velocity;
+            float z = Mathf.Atan2(velocity.y, velocity.x) * 57.2957764f + offset;
+            transform.localEulerAngles = new Vector3( 0f, 0f, z );
         }
     }
 
@@ -613,12 +951,21 @@ namespace nv
         public float evadeJumpAwaySpeed = 22f;
         public float evadeJumpAwayTimeLength = .25f;
         public float throwDistance = 10f;
+        public float throwSpeed = 40f;
+        public float throwReturnSpeed = 30f;
+        public float throwWindUpTime = .3f;
         public float jumpDistance = 10f;
         public float jumpVelocityY = 41f;
         public float minAirSphereHeight = 5f;
         public float normGravity2DScale = 1.5f;
         public float normShortJumpGravity2DScale = 2f;
-        public float airFireSpeed = 12f; //TODO: look this up from state Fire in action FireAtTarget
+        public float airFireSpeed = 30f;
+        public float gDashSpeed = 25f;
+        public float maxGDashTime = .35f;
+        public float aSphereTime = 1f;
+        public float gSphereTime = 1f;
+        public float aSphereSize = 1.5f;
+        public float gSphereSize = 1.5f;
 
         public float escalationHPPercentage = .4f;
         public float chanceToThrow = .8f;
@@ -644,6 +991,7 @@ namespace nv
         public int maxMissGDash = 5;
         public int maxMissThrow = 3;
 
+        //TODO: convert to a weighted table type
         Dictionary<Func<IEnumerator>, float> dmgResponseChoices;
         public Dictionary<Func<IEnumerator>, float> DmgResponseChoices
         {
@@ -668,7 +1016,16 @@ namespace nv
         public bool checkRight = true;
 
         //variables used by the state machine that the states set
-        bool blockingAnimationIsPlaying = false;
+        bool blockingAnimationIsPlaying {
+            get {
+                return _blockingAnimationIsPlaying;
+            }
+            set {
+                Dev.Log( "Setting _blockingAnimationIsPlaying to " + value );
+                _blockingAnimationIsPlaying = value;
+            }
+        }
+        bool _blockingAnimationIsPlaying = false;
         float airDashPause;
         float jumpPoint;
         float nextThrowAngle;
@@ -703,6 +1060,8 @@ namespace nv
         int msGDash = 0;
         int msThrow = 0;
 
+        Vector2 aDashVelocity;
+
         void SetFightGates(bool closed)
         {
             //TODO
@@ -735,8 +1094,8 @@ namespace nv
         }
 
         //current state of the state machine
-        IEnumerator currentState = null;
-
+        Func<IEnumerator> nextState = null;
+        
         IEnumerator Start()
         {
             SetupRequiredReferences();
@@ -754,28 +1113,45 @@ namespace nv
         IEnumerator MainAILoop()
         {
             Dev.Where();
-            currentState = Init();
+
+            nextState = Init;
+
+            IEnumerator currentState = nextState();
+            nextState = null;
 
             for(;;)
             {
                 if(owner == null)
                     yield break;
-
+                
                 yield return currentState;
 
-                //Dev.Log("Next");
+                if(nextState != null)
+                {
+                    //TODO: remove as the states get implemented
+                    //Dev.Log( "State Complete - Hit N to advance" );
+                    //while( !Input.GetKeyDown( KeyCode.N ) )
+                    //{
+                    //    yield return new WaitForEndOfFrame();
+                    //}
+                    //Dev.Log( "Next" );
+
+                    currentState = nextState();
+                    nextState = null;
+                }
 
                 //TODO: remove as the states get implemented
                 //yield return new WaitForEndOfFrame();
             }
+            yield break;
         }
-
+        
         IEnumerator Init()
         {
             Dev.Where();
             body.gravityScale = normGravity2DScale;
 
-            currentState = Inert();
+            nextState = Inert;
 
             yield break;
         }
@@ -784,12 +1160,14 @@ namespace nv
         IEnumerator Inert()
         {
             Dev.Where();
+            //TODO: move this check into a helper function and replace constants with variables
             int test = GameManager.instance.playerData.GetInt("hornetGreenpath");
 
             if(test >= 4)
             {
-                currentState = RefightReady();
+                nextState = RefightReady;
             }
+            //UNTESTED CODEPATH
             else
             {
                 while(!wake)
@@ -797,7 +1175,7 @@ namespace nv
                     yield return new WaitForEndOfFrame();
                 }
 
-                currentState = Wake();
+                nextState = Wake;
             }
 
             yield break;
@@ -810,7 +1188,7 @@ namespace nv
             bodyCollider.enabled = true;
             meshRenderer.enabled = true;
 
-            currentState = Flourish();
+            nextState = Flourish;
 
             yield break;
         }
@@ -825,16 +1203,16 @@ namespace nv
             //close the gates
             SetFightGates(true);
 
-            ShowBossTitle(2f, "", "", "", "HORNET");
+            ShowBossTitle(2f, "", "", "", "HORNET", "", "THE GUARDIAN");
             
             PlayOneShot(hornetYell);
 
             PlayBossMusic();
 
             //play until the callback fires and changes our state
-            yield return PlayAndWaitForEndOfAnimation("Flourish");
+            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Flourish") );
 
-            currentState = Idle();
+            nextState = Idle;
 
             yield break;
         }
@@ -844,6 +1222,8 @@ namespace nv
             Dev.Where();
 
             HeroController hero = HeroController.instance;
+
+            //TODO: test this
             FaceObject(hero.gameObject, false, false);
 
             airDashPause = 999f;
@@ -851,13 +1231,13 @@ namespace nv
             bodyCollider.offset = new Vector2(.1f, -.3f);
             bodyCollider.size = new Vector2(.9f, 2.6f);
 
-            tk2dAnimator.Play("Idle");
+            PlayAnimation( "Idle");
 
             body.velocity = Vector2.zero;
 
-            if(evadeRange.objectIsInRange)
+            if(evadeRange.ObjectIsInRange)
             {
-                currentState = EvadeAntic();
+                nextState = EvadeAntic;
             }
             else
             {
@@ -870,7 +1250,8 @@ namespace nv
                     //did something hit us?
                     if(wasHitRecently)
                     {
-                        currentState = DmgResponse();
+                        //CODEPATH UNTESTED
+                        nextState = DmgResponse;
                         yield break;
                     }
 
@@ -883,22 +1264,34 @@ namespace nv
                     MaybeFlip, MaybeGSphere
                 };
 
+                //TODO: look into why it gets stuck here, something is wrong with the logic...
+                int saveCounter = 0;
                 bool flag = false;
                 while(!flag)
                 {
+                    //TODO: create a weighted table type that has max hit/miss settings
                     int randomWeightedIndex = GameRNG.Rand(0, nextStates.Count - 1);
+                    Dev.Log( "Idle next choice " + randomWeightedIndex );
                     if(randomWeightedIndex == 0 && ctIdle < 2)
                     {
                         ctIdle += 1;
                         ctRun = 0;
-                        currentState = nextStates[0].Invoke();
+                        Dev.Log( "idle chosen and is now " + ctIdle );
+                        nextState = nextStates[0];
                         flag = true;
                     }
                     else if(randomWeightedIndex == 1 && ctRun < 2)
                     {
                         ctIdle = 0;
                         ctRun += 1;
-                        currentState = nextStates[1].Invoke();
+                        Dev.Log( "run chosen and is now " + ctIdle );
+                        nextState = nextStates[1];
+                        flag = true;
+                    }
+                    saveCounter++;
+                    if( saveCounter > 100 )
+                    {
+                        nextState = nextStates[ 0 ];
                         flag = true;
                     }
                 }
@@ -912,13 +1305,14 @@ namespace nv
             Dev.Where();
 
             //50/50 chance to flip
-            bool nextState = GameRNG.CoinToss();
-            if(nextState)
+            bool shouldFlip = GameRNG.CoinToss();
+            if(shouldFlip)
             {
                 FlipScale();
             }
+            Dev.Log( "flipped?" + shouldFlip );
 
-            currentState = RunAway();
+            nextState = RunAway;
 
             yield break;
         }
@@ -926,9 +1320,10 @@ namespace nv
         IEnumerator RunAway()
         {
             Dev.Where();
-            
+
+            Dev.Log( "runAwayCheck.ObjectIsInRange" + runAwayCheck.ObjectIsInRange );
             //TODO: play around with this, something seems off about it
-            if(runAwayCheck.objectIsInRange)
+            if(runAwayCheck.ObjectIsInRange)
             {
                 //face the knight
                 HeroController hero = HeroController.instance;
@@ -936,9 +1331,10 @@ namespace nv
 
                 //then flip the other way
                 FlipScale();
+                Dev.Log( "x scale = " + transform.localScale.x );
             }
 
-            currentState = RunAntic();
+            nextState = RunAntic;
 
             yield break;
         }
@@ -948,9 +1344,9 @@ namespace nv
             Dev.Where();
                         
             //play until the callback fires and changes our state
-            yield return PlayAndWaitForEndOfAnimation("Evade Antic");
+            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Evade Antic") );
 
-            currentState = Run();
+            nextState = Run;
 
             yield break;
         }
@@ -961,14 +1357,13 @@ namespace nv
 
             runAudioSource.Play();
 
-            float xVel = owner.transform.localScale.x * runSpeed;
+            float xVel = owner.transform.localScale.x * -runSpeed;
 
-            tk2dAnimator.Play("Run");
+            PlayAnimation( "Run");
+
+            //TODO: maybe continually set this?
             body.velocity = new Vector2(xVel, 0f);
-
-            //do this by default
-            currentState = MaybeGSphere();
-
+            
             float randomDelay = GameRNG.Rand(runWaitMin, runWaitMax);
             while(randomDelay > 0f)
             {
@@ -977,24 +1372,28 @@ namespace nv
                 //did something hit us?
                 if(wasHitRecently)
                 {
-                    currentState = DmgResponse();
+                    nextState = DmgResponse;
                     break;
                 }
 
-                if(evadeRange.objectIsInRange)
+                if(evadeRange.ObjectIsInRange)
                 {
-                    currentState = EvadeAntic();
+                    nextState = EvadeAntic;
                     break;
                 }
 
                 if(rightHit || leftHit)
                 {
-                    currentState = MaybeGSphere();
+                    nextState = MaybeGSphere;
                     break;
                 }
 
                 randomDelay -= Time.deltaTime;
             }
+
+            //do this by default
+            if( nextState == null )
+                nextState = MaybeGSphere;
 
             runAudioSource.Stop();
 
@@ -1007,21 +1406,21 @@ namespace nv
 
             runAudioSource.Stop();
 
-            if(sphereRange.objectIsInRange)
+            if(sphereRange.ObjectIsInRange)
             {
                 float randomChoice = GameRNG.Randf();
                 if(randomChoice > chanceToThrow)
                 {
-                    currentState = SphereAnticG();
+                    nextState = SphereAnticG;
                 }
                 else
                 {
-                    currentState = CanThrow();
+                    nextState = CanThrow;
                 }
             }
             else
             {
-                currentState = CanThrow();
+                nextState = CanThrow;
             }
 
             yield break;
@@ -1049,12 +1448,12 @@ namespace nv
             if(raycastHit2D2.collider != null)
             {
                 //there's a wall, we cannot throw!
-                currentState = MoveChoiceB();
+                nextState = MoveChoiceB;
             }
             else
             {
                 //we can throw!
-                currentState = MoveChoiceA();
+                nextState = MoveChoiceA;
             }
 
             yield break;
@@ -1064,8 +1463,6 @@ namespace nv
         IEnumerator MoveChoiceA()
         {
             Dev.Where();
-
-            currentState = ThrowAntic();
 
             bool flag = false;
             bool flag2 = false;
@@ -1114,25 +1511,25 @@ namespace nv
                     {
                         msAirdash = 0;
                         ctAirDash = 1;
-                        currentState = SetADash();
+                        nextState = SetADash;
                     }
                     if(num == 1)
                     {
                         msASphere = 0;
                         ctASphere = 1;
-                        currentState = SetSphereA();
+                        nextState = SetSphereA;
                     }
                     if(num == 2)
                     {
                         msGDash = 0;
                         ctGDash = 1;
-                        currentState = GDashAntic();
+                        nextState = GDashAntic;
                     }
                     if(num == 3)
                     {
                         msThrow = 0;
                         ctThrow = 1;
-                        currentState = ThrowAntic();
+                        nextState = ThrowAntic;
                     }
                 }
                 //else, randomly pick a skill to use
@@ -1142,7 +1539,7 @@ namespace nv
                     ctASphere = 0;
                     ctGDash = 0;
                     ctThrow = 0;
-                    currentState = SetADash();
+                    nextState = SetADash;
                     flag = true;
                 }
                 else if(randomWeightedIndex == 1 && ctASphere < 1)
@@ -1151,7 +1548,7 @@ namespace nv
                     ctASphere += 1;
                     ctGDash = 0;
                     ctThrow = 0;
-                    currentState = SetSphereA();
+                    nextState = SetSphereA;
                     flag = true;
                 }
                 else if(randomWeightedIndex == 2 && ctGDash < 2)
@@ -1160,7 +1557,7 @@ namespace nv
                     ctASphere = 0;
                     ctGDash += 1;
                     ctThrow = 0;
-                    currentState = GDashAntic();
+                    nextState = GDashAntic;
                     flag = true;
                 }
                 else if(randomWeightedIndex == 3 && ctThrow < 1)
@@ -1169,10 +1566,13 @@ namespace nv
                     ctASphere = 0;
                     ctGDash = 0;
                     ctThrow += 1;
-                    currentState = ThrowAntic();
+                    nextState = ThrowAntic;
                     flag = true;
                 }
             }
+
+            if(nextState == null )
+                nextState = ThrowAntic;
 
             yield break;
         }
@@ -1182,7 +1582,6 @@ namespace nv
         {
             Dev.Where();
 
-            currentState = SetSphereA();
 
             int maxMissADash = 5;
             int maxMissASphere = 7;
@@ -1228,19 +1627,19 @@ namespace nv
                     {
                         msAirdash = 0;
                         ctAirDash = 1;
-                        currentState = SetADash();
+                        nextState = SetADash;
                     }
                     if(num == 1)
                     {
                         msASphere = 0;
                         ctASphere = 1;
-                        currentState = SetSphereA();
+                        nextState = SetSphereA;
                     }
                     if(num == 2)
                     {
                         msGDash = 0;
                         ctGDash = 1;
-                        currentState = GDashAntic();
+                        nextState = GDashAntic;
                     }
                 }
                 //else, randomly pick a skill to use
@@ -1249,7 +1648,7 @@ namespace nv
                     ctAirDash += 1;
                     ctASphere = 0;
                     ctGDash = 0;
-                    currentState = SetADash();
+                    nextState = SetADash;
                     flag = true;
                 }
                 else if(randomWeightedIndex == 1 && ctASphere < 1)
@@ -1257,7 +1656,7 @@ namespace nv
                     ctAirDash = 0;
                     ctASphere += 1;
                     ctGDash = 0;
-                    currentState = SetSphereA();
+                    nextState = SetSphereA;
                     flag = true;
                 }
                 else if(randomWeightedIndex == 2 && ctGDash < 2)
@@ -1265,10 +1664,13 @@ namespace nv
                     ctAirDash = 0;
                     ctASphere = 0;
                     ctGDash += 1;
-                    currentState = GDashAntic();
+                    nextState = GDashAntic;
                     flag = true;
                 }
             }
+
+            if( nextState == null )
+                nextState = SetSphereA;
 
             yield break;
         }
@@ -1287,7 +1689,7 @@ namespace nv
             bodyCollider.size = new Vector2(1f, 2.6f);
 
             //face the hero
-            FaceObject(hero.gameObject);
+            FaceObject(hero.gameObject, false );
 
             //stop moving
             body.velocity = Vector2.zero;
@@ -1296,9 +1698,9 @@ namespace nv
 
             //play throwing animation
             //wait here until the callback fires and changes our state
-            yield return PlayAndWaitForEndOfAnimation("Throw Antic");
+            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Throw Antic") );
 
-            currentState = MaybeLock();
+            nextState = MaybeLock;
 
             yield break;
         }
@@ -1314,23 +1716,23 @@ namespace nv
 
             if(angleToTarget <= 90f)
             {
-                currentState = LockR();
+                nextState = LockR;
             }
             else if(angleToTarget <= 180f)
             {
-                currentState = LockL();
+                nextState = LockL;
             }
             else if(angleToTarget <= 270f)
             {
-                currentState = LockUL();
+                nextState = LockUL;
             }
             else if(angleToTarget <= 360f)
             {
-                currentState = LockUR();
+                nextState = LockUR;
             }
             else
             {
-                currentState = Throw();
+                nextState = Throw;
             }
 
             yield break;
@@ -1341,7 +1743,7 @@ namespace nv
             Dev.Where();
 
             nextThrowAngle = 180f;
-            currentState = Throw();
+            nextState = Throw;
 
             yield break;
         }
@@ -1351,7 +1753,7 @@ namespace nv
             Dev.Where();
 
             nextThrowAngle = 0f;
-            currentState = Throw();
+            nextState = Throw;
 
             yield break;
         }
@@ -1361,7 +1763,7 @@ namespace nv
             Dev.Where();
 
             nextThrowAngle = 180f;
-            currentState = Throw();
+            nextState = Throw;
 
             yield break;
         }
@@ -1371,7 +1773,7 @@ namespace nv
             Dev.Where();
 
             nextThrowAngle = 0f;
-            currentState = Throw();
+            nextState = Throw;
 
             yield break;
         }
@@ -1393,19 +1795,26 @@ namespace nv
             bodyCollider.offset = new Vector2(.1f, -1.0f);
             bodyCollider.size = new Vector2(1.4f, 1.2f);
 
+            //TODO: make the throw direction more dynamic
+            Vector2 throwDirection = Vector2.right;
+            if( owner.transform.localScale.x > 0f )
+                throwDirection = Vector2.left;
+
+            Vector2 throwVelocity = throwDirection * throwSpeed;
+
             //start throwing the needle
-            needle.Play(owner);
+            needle.Play( owner, throwWindUpTime, throwVelocity, nextThrowAngle, throwReturnSpeed );
 
             //put the needle tink on the needle
             needleTink.SetParent(needle.transform);
 
             //start the throw animation
-            tk2dAnimator.Play("Throw");
+            PlayAnimation( "Throw");
 
             //wait one frame before ending
             yield return new WaitForEndOfFrame();
 
-            currentState = Thrown();
+            nextState = Thrown;
 
             yield break;
         }
@@ -1420,7 +1829,7 @@ namespace nv
                 yield return new WaitForEndOfFrame();
             }
 
-            currentState = ThrowRecover();
+            nextState = ThrowRecover;
 
             yield break;
         }
@@ -1438,7 +1847,7 @@ namespace nv
             //allow stunning again
             canStunRightNow = true;
 
-            currentState = Escalation();
+            nextState = Escalation;
 
             yield break;
         }
@@ -1450,7 +1859,7 @@ namespace nv
             airDashPause = GameRNG.Rand(airDashPauseMin, airDashPauseMax);
             willSphere = false;
 
-            currentState = JumpAntic();
+            nextState = JumpAntic;
 
             yield break;
         }
@@ -1464,12 +1873,12 @@ namespace nv
 
             body.velocity = Vector2.zero;
                         
-            FaceObject(HeroController.instance.gameObject);
+            FaceObject(HeroController.instance.gameObject, true );
 
             //play until the callback fires and changes our state
-            yield return PlayAndWaitForEndOfAnimation("Jump Antic");
+            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Jump Antic") );
 
-            currentState = AimJump();
+            nextState = AimJump;
 
             yield break;
         }
@@ -1480,7 +1889,7 @@ namespace nv
 
             if(willSphere)
             {
-                currentState = AimSphereJump();
+                nextState = AimSphereJump;
             }
             else
             {
@@ -1517,11 +1926,11 @@ namespace nv
                 //if it's too close, don't jump
                 if(Mathf.Abs(jumpPoint - currentPosition.x) < 2.5f)
                 {
-                    currentState = ReAim();
+                    nextState = ReAim;
                 }
                 else
                 {
-                    currentState = Jump();
+                    nextState = Jump;
                 }
             }
 
@@ -1535,12 +1944,12 @@ namespace nv
             PlayOneShotRandom(hornetJumpYells);
             PlayOneShot(hornetJumpSFX);
 
-            tk2dAnimator.Play("Jump");
+            PlayAnimation( "Jump");
 
             //TODO: this seems weird, see how it turns out
             body.velocity = new Vector2(jumpPoint, jumpVelocityY);
 
-            currentState = InAir();
+            nextState = InAir;
 
             yield break;
         }
@@ -1565,7 +1974,7 @@ namespace nv
                 //did we hit a wall? end evade timer early
                 if(bottomHit)
                 {
-                    currentState = Land();
+                    nextState = Land;
                     break;
                 }
 
@@ -1574,24 +1983,27 @@ namespace nv
 
             if(waitTimer <= 0f)
             {
-                currentState = ADashAntic();
+                nextState = ADashAntic;
             }
             else if(!bottomHit)
             {
                 while(!bottomHit)
                 {
-                    if(body.velocity.y > 0f && Mathf.Abs(owner.transform.position.y - startHeight) > minAirSphereHeight)
+                    yield return new WaitForEndOfFrame();
+
+                    bool withinSphereHeightRange = Mathf.Abs(owner.transform.position.y - startHeight) < minAirSphereHeight;
+                    bool isFalling = body.velocity.y < 0f;
+
+                    if( willSphere && isFalling && withinSphereHeightRange )
                     {
-                        currentState = MaybeDoSphere();
+                        nextState = MaybeDoSphere;
                         break;
                     }
-
-                    yield return new WaitForEndOfFrame();
 
                     //did we hit a wall? end evade timer early
                     if(bottomHit)
                     {
-                        currentState = Land();
+                        nextState = Land;
                         break;
                     }
                 }
@@ -1611,7 +2023,7 @@ namespace nv
         {
             Dev.Where();
             
-            currentState = AimJump();
+            nextState = AimJump;
 
             yield break;
         }
@@ -1632,9 +2044,9 @@ namespace nv
             owner.transform.localScale = owner.transform.localScale.SetY(1f);
 
             //play until the callback fires and changes our state
-            yield return PlayAndWaitForEndOfAnimation("Land");
+            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Land") );
 
-            currentState = Escalation();
+            nextState = Escalation;
 
             yield break;
         }
@@ -1643,26 +2055,29 @@ namespace nv
         {
             Dev.Where();
 
-            if(aDashRange.objectIsInRange)
+            if(aDashRange.ObjectIsInRange)
             {
                 HeroController hero = HeroController.instance;
-                float angleToTarget = GetAngleToTarget(hero.gameObject, 0f, -.5f);
+
+                FaceObject( hero.gameObject );
 
                 bodyCollider.offset = new Vector2(1.1f, -.9f);
                 bodyCollider.size = new Vector2(1.2f, 1.4f);
+
+                body.velocity = Vector2.zero;
 
                 body.gravityScale = 0f;
 
                 PlayOneShotRandom(hornetAGDashYells);
 
                 //play until the callback fires and changes our state
-                yield return PlayAndWaitForEndOfAnimation("A Dash Antic");
+                yield return StartCoroutine( PlayAndWaitForEndOfAnimation("A Dash Antic") );
 
-                currentState = Fire();
+                nextState = Fire;
             }
             else
             {
-                currentState = InAir();
+                nextState = InAir;
             }
             
             yield break;
@@ -1674,45 +2089,43 @@ namespace nv
 
             PlayOneShot(hornetDashSFX);
             
-            //TODO: check what SetBoxColliderTrigger is doing here
-            //it's getting a collider and enabling/disabling a trigger.... see which one and which value
+            //TEST THIS
+            hitADash.isTrigger = true;
 
             GameObject hero = HeroController.instance.gameObject;
+            
+            float angleToTarget = GetAngleToTarget(hero, 0f, -.5f);
 
-            //TODO: check the spread and speed on FireAtTarget
+            //TODO: see if this even works
             Vector2 pos = owner.transform.position;
-            Vector2 fireVelocity = GetVelocityToTarget(pos, pos, hero.transform.position, airFireSpeed, 0f);
+            Vector2 fireVelocity = GetVelocityToTarget(pos, new Vector3(0f,-5f * owner.transform.localScale.x,0f), hero.transform.position, airFireSpeed, 0f);
 
             body.velocity = fireVelocity;
-
-            //TODO: check what SetVelocityAsAngle is doing and fill these in
-            float altFireSpeed = 10f;
-            float altAngle = 0f;
-            Vector2 otherVelocity = GetVelocityFromSpeedAndAngle(altFireSpeed, altAngle);
             
+            Vector2 otherVelocity = GetVelocityFromSpeedAndAngle(airFireSpeed, angleToTarget);
+
+            body.velocity = otherVelocity;
+            aDashVelocity = body.velocity;
+
             bodyCollider.offset = new Vector2(.1f, 0f);
             bodyCollider.size = new Vector2(1.5f, 1.0f);
 
             hitADash.gameObject.SetActive(true);
-
-            //TODO: check to see if this is really applying to the owner
-            owner.transform.localScale = owner.transform.localScale.SetX(1f);
-            owner.transform.localScale = owner.transform.localScale.SetY(1f);
             
-            //TODO: check FaceAngle to see what objects this is using....
-            FaceAngle(hero, 0f);
-
-            //TODO: check GetRotation to see what values/objects this is using....
+            //owner.transform.localScale = owner.transform.localScale.SetY(1f);
+            
+            FaceAngle(0f);
+            
             Vector3 eulerAngles = owner.transform.eulerAngles;
             float zAngle = eulerAngles.z;
 
             if(zAngle > 90f && zAngle < 270f)
             {
-                currentState = FiringR();
+                nextState = FiringR;
             }
             else
             {
-                currentState = FiringL();
+                nextState = FiringL;
             }
 
             yield break;
@@ -1720,11 +2133,13 @@ namespace nv
 
         IEnumerator FiringL()
         {
-            Dev.Where();
+            Dev.Where(); 
 
             returnXScale = 1f;
 
-            currentState = ADash();
+            owner.transform.localScale = owner.transform.localScale.SetX( 1f );
+
+            nextState = ADash;
 
             yield break;
         }
@@ -1733,11 +2148,11 @@ namespace nv
         {
             Dev.Where();
 
-            owner.transform.localScale = owner.transform.localScale.SetY(-1f);
-
             returnXScale = -1f;
 
-            currentState = ADash();
+            owner.transform.localScale = owner.transform.localScale.SetX( -1f );
+
+            nextState = ADash;
 
             yield break;
         }
@@ -1754,57 +2169,107 @@ namespace nv
 
             airDashPause = 999;
 
-            Vector3 position = owner.transform.position;
-            Vector3 down = Vector3.down;
-            Vector3 up = Vector3.up;
-            Vector3 left = Vector3.up;
-            Vector3 right = Vector3.up;
-            float nearDist = 1f;
+            PlayAnimation( "A Dash");
+            
+            //change collision check directions for jumping
+            checkUp = true;
+            checkDown = true;
+            checkLeft = true;
+            checkRight = true;
 
-            bool earlyOut = false;
-
-            currentState = LandY();
-
-            tk2dAnimator.Play("A Dash");
-
-            //TODO: check to see if these FloatCompare's are EveryFrame (and also check the GetPosition)
-            while(!earlyOut)
+            while( !bottomHit && !rightHit && !leftHit && !topHit )
             {
-                float closeToSurface = .55f;
-                if(!earlyOut)
-                {
-                    RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, down, nearDist, 1 << 8);
-                    if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.y - position.y) < closeToSurface)
-                    {
-                        currentState = LandY();
-                    }
-                }
-                if(!earlyOut)
-                {
-                    RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, up, nearDist, 1 << 8);
-                    if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.y - position.y) < closeToSurface)
-                    {
-                        currentState = HitRoof();
-                    }
-                }
-                if(!earlyOut)
-                {
-                    RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, left, nearDist, 1 << 8);
-                    if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.x - position.x) < closeToSurface)
-                    {
-                        currentState = WallL();
-                    }
-                }
-                if(!earlyOut)
-                {
-                    RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, right, nearDist, 1 << 8);
-                    if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.x - position.x) < closeToSurface)
-                    {
-                        currentState = WallR();
-                    }
-                }
                 yield return new WaitForEndOfFrame();
+
+                body.velocity = aDashVelocity;
+
+                //did we hit a wall? end evade timer early
+                if( bottomHit )
+                {
+                    nextState = LandY;
+                    break;
+                }
+                if( topHit )
+                {
+                    nextState = HitRoof;
+                    break;
+                }
+                if( leftHit )
+                {
+                    nextState = WallL;
+                    break;
+                }
+                if( rightHit )
+                {
+                    nextState = WallR;
+                    break;
+                }
             }
+
+            //restore collision check directions
+            checkUp = false;
+            checkDown = false;
+            checkLeft = true;
+            checkRight = true;
+
+            //float startHeight = owner.transform.position.y;
+
+            //Vector3 down = Vector3.down;
+            //Vector3 up = Vector3.up;
+            //Vector3 left = Vector3.up;
+            //Vector3 right = Vector3.up;
+            //float nearDist = 1f;
+
+            //bool earlyOut = false;
+
+            //while(!earlyOut)
+            //{
+            //    Vector3 position = owner.transform.position;
+            //    float closeToSurface = .55f;//TODO: add collider sizes to this
+            //    if(!earlyOut)
+            //    {
+            //        RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, down, nearDist, 1 << 8);
+            //        if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.y - position.y) < closeToSurface)
+            //        {
+            //            nextState = LandY;
+            //            earlyOut = true;
+            //        }
+            //    }
+            //    if(!earlyOut)
+            //    {
+            //        RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, up, nearDist, 1 << 8);
+            //        if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.y - position.y) < closeToSurface)
+            //        {
+            //            nextState = HitRoof;
+            //            earlyOut = true;
+            //        }
+            //    }
+            //    if(!earlyOut)
+            //    {
+            //        RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, left, nearDist, 1 << 8);
+            //        if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.x - position.x) < closeToSurface)
+            //        {
+            //            nextState = WallL;
+            //            earlyOut = true;
+            //        }
+            //    }
+            //    if(!earlyOut)
+            //    {
+            //        RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, right, nearDist, 1 << 8);
+            //        if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.x - position.x) < closeToSurface)
+            //        {
+            //            nextState = WallR;
+            //            earlyOut = true;
+            //        }
+            //    }
+            //    if( !earlyOut )
+            //        yield return new WaitForEndOfFrame();
+            //    else
+            //        break;
+            //}
+
+            if( nextState == null )
+                nextState = LandY;
 
             yield break;
         }
@@ -1833,9 +2298,9 @@ namespace nv
 
             DoWallLand(1f);
 
-            yield return PlayAndWaitForEndOfAnimation("Wall Impact");
+            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Wall Impact") );
 
-            currentState = JumpR();
+            nextState = JumpR;
 
             yield break;
         }
@@ -1846,9 +2311,9 @@ namespace nv
 
             DoWallLand(-1f);
 
-            yield return PlayAndWaitForEndOfAnimation("Wall Impact");
+            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Wall Impact") );
 
-            currentState = JumpL();
+            nextState = JumpL;
 
             yield break;
         }
@@ -1859,7 +2324,7 @@ namespace nv
 
             body.velocity = new Vector2(jumpDistance * xDirection, jumpVelocityY * .5f);
 
-            tk2dAnimator.Play("Jump");
+            PlayAnimation( "Jump");
 
             body.gravityScale = normShortJumpGravity2DScale;
 
@@ -1872,7 +2337,7 @@ namespace nv
 
             DoShortJump(-1f);
 
-            currentState = InAir();
+            nextState = InAir;
 
             yield break;
         }
@@ -1883,7 +2348,7 @@ namespace nv
 
             DoShortJump(1f);
 
-            currentState = InAir();
+            nextState = InAir;
 
             yield break;
         }
@@ -1898,7 +2363,7 @@ namespace nv
 
             hitADash.gameObject.SetActive(false);
 
-            currentState = HardLand();
+            nextState = HardLand;
 
             yield break;
         }
@@ -1926,7 +2391,7 @@ namespace nv
 
             owner.transform.rotation = Quaternion.identity;
             
-            currentState = InAir();
+            nextState = InAir;
 
             yield break;
         }
@@ -1934,8 +2399,7 @@ namespace nv
         IEnumerator HardLand()
         {
             Dev.Where();
-
-            //TODO: check PlayParticleEmitter the particle system and the emit value
+            
             dustHardLand.Play();
 
             tk2dAnimator.AnimationCompleted = OnAnimationComplete;
@@ -1985,7 +2449,7 @@ namespace nv
             }
 
 
-            currentState = Escalation();
+            nextState = Escalation;
 
             yield break;
         }
@@ -1996,13 +2460,13 @@ namespace nv
 
             willSphere = false;
 
-            if(aSphereRange.objectIsInRange)
+            if(aSphereRange.ObjectIsInRange)
             {
-                currentState = SphereAnticA();
+                nextState = SphereAnticA;
             }
             else
             {
-                currentState = InAir();
+                nextState = InAir;
             }
 
             yield break;
@@ -2018,7 +2482,7 @@ namespace nv
 
             //TODO: check DecelerateV2 to see what it's doing
 
-            FaceObject(HeroController.instance.gameObject);
+            FaceObject(HeroController.instance.gameObject, false );
             
             tk2dAnimator.AnimationCompleted = OnAnimationComplete;
             tk2dAnimator.Play("Sphere Antic A");
@@ -2073,7 +2537,7 @@ namespace nv
                     yield return new WaitForFixedUpdate();
             }
 
-            currentState = SphereA();
+            nextState = SphereA;
 
             yield break;
         }
@@ -2084,15 +2548,15 @@ namespace nv
 
             PlayOneShot(hornetSphereSFX);
 
-            sphereBall.Play(owner);
+            sphereBall.Play(owner, aSphereTime, .8f, aSphereSize);
             flashEffect.Play(owner);
 
             DoEnemyKillShakeEffect();
 
-            tk2dAnimator.Play("Sphere Attack");
+            PlayAnimation( "Sphere Attack");
 
             //TODO: move to variables
-            float waitTime = 1f;
+            float waitTime = aSphereTime;
             float deceleration = .8f;
             while(waitTime > 0f)
             {
@@ -2139,7 +2603,7 @@ namespace nv
             }
 
             //TODO
-            currentState = SphereRecoverA();
+            nextState = SphereRecoverA;
 
             yield break;
         }
@@ -2148,11 +2612,11 @@ namespace nv
         {
             Dev.Where();
 
-            yield return PlayAndWaitForEndOfAnimation("Sphere Recover A");
+            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Sphere Recover A") );
 
             sphereBall.Stop();
 
-            currentState = SphereAEnd();
+            nextState = SphereAEnd;
 
             yield break;
         }
@@ -2163,9 +2627,9 @@ namespace nv
 
             body.gravityScale = normGravity2DScale;
 
-            tk2dAnimator.Play("Fall");
+            PlayAnimation( "Fall");
 
-            currentState = InAir();
+            nextState = InAir;
 
             yield break;
         }
@@ -2204,7 +2668,7 @@ namespace nv
 
             jumpPoint = GameRNG.Rand(xMin, xMax);            
 
-            currentState = Jump();
+            nextState = Jump;
 
             yield break;
         }
@@ -2217,7 +2681,7 @@ namespace nv
 
             willSphere = false;
 
-            currentState = JumpAntic();
+            nextState = JumpAntic;
 
             yield break;
         }
@@ -2230,7 +2694,7 @@ namespace nv
 
             airDashPause = 999f;
 
-            currentState = JumpAntic();
+            nextState = JumpAntic;
 
             yield break;
         }
@@ -2250,9 +2714,9 @@ namespace nv
             PlayOneShotRandom(hornetAGDashYells);
 
             //play until the callback fires and changes our state
-            yield return PlayAndWaitForEndOfAnimation("G Dash Antic");
+            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("G Dash Antic") );
             
-            currentState = GDash();
+            nextState = GDash;
 
             yield break;
         }
@@ -2261,7 +2725,7 @@ namespace nv
         {
             Dev.Where();
 
-            tk2dAnimator.Play("G Dash");
+            PlayAnimation( "G Dash");
             
             PlayOneShot(hornetDashSFX);
 
@@ -2274,20 +2738,16 @@ namespace nv
 
             hitGDash.gameObject.SetActive(true);
 
-            //TODO: see what get scale is doing here
+            float xScale = owner.transform.localScale.x;
 
-            //TODO: see what FloatOperator is doing here (-25?)
+            body.velocity = new Vector2(-gDashSpeed * xScale, 0f);
 
-            //TODO: see what BoolTest with Multiply is doing here?
-
-            body.velocity = new Vector2(-25f * owner.transform.localScale.x,0f);
-
-            float waitTimer = .35f;
+            float waitTimer = maxGDashTime;
             while(waitTimer > 0f)
             {
                 yield return new WaitForEndOfFrame();
 
-                //did we hit a wall? end dash timer early
+                //did we hit a wall? then end the dash.
                 if(rightHit || leftHit)
                 {
                     break;
@@ -2296,7 +2756,7 @@ namespace nv
                 waitTimer -= Time.deltaTime;
             }
 
-            currentState = GDashRecover1();
+            nextState = GDashRecover1;
 
             yield break;
         }
@@ -2313,6 +2773,7 @@ namespace nv
 
             blockingAnimationIsPlaying = true;
 
+            //TODO: move into a variable
             float decelerationX = .77f;
             for(;;)
             {
@@ -2343,7 +2804,7 @@ namespace nv
                     yield return new WaitForFixedUpdate();
             }
 
-            currentState = GDashRecover2();
+            nextState = GDashRecover2;
 
             yield break;
         }
@@ -2351,9 +2812,7 @@ namespace nv
         IEnumerator GDashRecover2()
         {
             Dev.Where();
-
-            tk2dAnimator.Play("G Dash Recover2");
-
+            
             bodyCollider.offset = new Vector2(.1f, -0.3f);
             bodyCollider.size = new Vector2(.9f, 2.6f);
 
@@ -2392,7 +2851,7 @@ namespace nv
                     yield return new WaitForFixedUpdate();
             }
 
-            currentState = Escalation();
+            nextState = Escalation;
 
             yield break;
         }
@@ -2406,13 +2865,13 @@ namespace nv
             bodyCollider.offset = new Vector2(0.1f, -.3f);
             bodyCollider.size = new Vector2(.9f, 2.6f);
             
-            FaceObject(HeroController.instance.gameObject);
+            FaceObject(HeroController.instance.gameObject, false );
 
             PlayOneShotRandom(hornetAttackYells);
 
-            yield return PlayAndWaitForEndOfAnimation("Sphere Antic G");
+            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Sphere Antic G") );
 
-            currentState = Sphere();
+            nextState = Sphere;
 
             yield break;
         }
@@ -2422,17 +2881,17 @@ namespace nv
             Dev.Where();
             PlayOneShot(hornetSphereSFX);
 
-            sphereBall.Play(owner);
+            sphereBall.Play(owner, gSphereTime, .8f, gSphereSize);
             flashEffect.Play(owner);
 
             DoEnemyKillShakeEffect();
 
-            tk2dAnimator.Play("Sphere Attack");
+            PlayAnimation( "Sphere Attack");
 
             //TODO: move the wait value into a variable
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(gSphereTime);
 
-            currentState = SphereRecover();
+            nextState = SphereRecover;
 
             yield break;
         }
@@ -2441,11 +2900,11 @@ namespace nv
         {
             Dev.Where();
 
-            yield return PlayAndWaitForEndOfAnimation("Sphere Recover G");
+            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Sphere Recover G") );
 
             sphereBall.Stop();
 
-            currentState = Escalation();
+            nextState = Escalation;
 
             yield break;
         }
@@ -2456,7 +2915,7 @@ namespace nv
 
             runAudioSource.Stop();
 
-            if(evadeRange.objectIsInRange)
+            if(evadeRange.ObjectIsInRange)
             {
                 //put her evade on cooldown
                 float randomDelay = GameRNG.Rand(evadeCooldownMin, evadeCooldownMax);
@@ -2467,17 +2926,17 @@ namespace nv
 
                 //make her face you
                 HeroController hero = HeroController.instance;
-                FaceObject(hero.gameObject);
+                FaceObject( hero.gameObject, true );
 
                 //animate the evade-anticipation                
                 //play until the callback fires and changes our state
-                yield return PlayAndWaitForEndOfAnimation("Evade Antic");
+                yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Evade Antic") );
 
-                currentState = Evade();
+                nextState = Evade;
             }
             else
             {
-                currentState = MaybeGSphere();
+                nextState = MaybeGSphere;
             }
 
             yield break;
@@ -2490,7 +2949,7 @@ namespace nv
             PlayOneShotRandom(hornetLaughs);
             PlayOneShot(hornetSmallJumpSFX);
 
-            tk2dAnimator.Play("Evade");
+            PlayAnimation("Evade");
 
             float xScale = owner.transform.localScale.x;
             float jumpAwaySpeed = xScale * evadeJumpAwaySpeed;
@@ -2510,7 +2969,7 @@ namespace nv
                 waitTimer -= Time.deltaTime;
             }
 
-            currentState = EvadeLand();
+            nextState = EvadeLand;
 
             yield break;
         }
@@ -2525,9 +2984,9 @@ namespace nv
             PlayOneShot(hornetGroundLandSFX);
 
             //play until the callback fires and changes our state
-            yield return PlayAndWaitForEndOfAnimation("Evade Land");
+            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Land") );
 
-            currentState = AfterEvade();
+            nextState = AfterEvade;
 
             yield break;
         }
@@ -2539,11 +2998,11 @@ namespace nv
             bool attack = GameRNG.CoinToss();
             if(attack)
             {
-                currentState = MaybeGSphere();
+                nextState = MaybeGSphere;
             }
             else
             {
-                currentState = Idle();
+                nextState = Idle;
             }
 
             yield break;
@@ -2556,7 +3015,7 @@ namespace nv
             runAudioSource.Stop();
 
             int choice = GameRNG.WeightedRand(DmgResponseChoices.Values.ToList());
-            currentState = DmgResponseChoices.Keys.ToList()[choice].Invoke();
+            nextState = DmgResponseChoices.Keys.ToList()[choice];
 
             yield break;
         }
@@ -2579,7 +3038,7 @@ namespace nv
                 randomDelay -= Time.deltaTime;
             }
 
-            currentState = MaybeGSphere();
+            nextState = MaybeGSphere;
 
             yield break;
         }
@@ -2592,15 +3051,15 @@ namespace nv
             bodyCollider.enabled = true;
             meshRenderer.enabled = true;
 
-            tk2dAnimator.Play("Idle");
+            PlayAnimation( "Idle");
 
             //wait for player to get close
-            while(!refightRange.objectIsInRange)
+            while(!refightRange.ObjectIsInRange)
             {
                 yield return new WaitForEndOfFrame();
             }
 
-            currentState = RefightWake();
+            nextState = RefightWake;
 
             yield break;
         }
@@ -2612,7 +3071,7 @@ namespace nv
 
             //TODO: activate all children? this is probably a state machine thing that we don't need anymore
 
-            currentState = Flourish();
+            nextState = Flourish;
 
             yield break;
         }
@@ -2622,7 +3081,7 @@ namespace nv
         {
             Dev.Where();
             //TODO
-            currentState = StunAir();
+            nextState = StunAir;
 
             yield break;
         }
@@ -2631,7 +3090,7 @@ namespace nv
         {
             Dev.Where();
             //TODO
-            currentState = StunLand();
+            nextState = StunLand;
 
             yield break;
         }
@@ -2640,7 +3099,7 @@ namespace nv
         {
             Dev.Where();
             //TODO
-            currentState = StunRecover();
+            nextState = StunRecover;
 
             yield break;
         }
@@ -2649,7 +3108,7 @@ namespace nv
         {
             Dev.Where();
             //TODO
-            currentState = SetJumpOnly();
+            nextState = SetJumpOnly;
 
             yield break;
         }
@@ -2671,7 +3130,7 @@ namespace nv
                 //TODO: escalate her evade timers
             }
 
-            currentState = Idle();
+            nextState = Idle;
 
             yield break;
         }
@@ -2820,7 +3279,6 @@ namespace nv
         void FaceObject(GameObject objectToFace, bool spriteFacesRight = false, bool resetFrame = false, string playNewAnimation = "")
         {
             Dev.Where();
-
             Vector3 localScale = owner.transform.localScale;
             float xScale = localScale.x;
 
@@ -2884,22 +3342,54 @@ namespace nv
             owner.transform.localScale = localScale;
         }
 
-        void FaceAngle(GameObject target, float offset)
+        void FaceAngle(float offset)
         {
             Vector2 velocity = body.velocity;
             float z = Mathf.Atan2(velocity.y, velocity.x) * 57.2957764f + offset;
-            target.transform.localEulerAngles = new Vector3(0f, 0f, z);
+            owner.transform.localEulerAngles = new Vector3(0f, 0f, z);
+        }
+
+
+        //string lastPlayedAnimation;
+            
+        void PlayAnimation(string animation)
+        {
+            Dev.Where();
+            //if( lastPlayedAnimation == animation )
+            //    return;
+
+            //Dev.Log( "Playing " + animation );
+            //lastPlayedAnimation = animation;
+            tk2dAnimator.AnimationCompleted = null;
+            tk2dAnimator.Play( animation );
         }
 
         IEnumerator PlayAndWaitForEndOfAnimation(string animation)
         {
-            tk2dAnimator.AnimationCompleted = OnAnimationComplete;
-            tk2dAnimator.Play("Flourish");
+            Dev.Where();
+            //if( lastPlayedAnimation == animation )
+            //    yield break;
 
+            //Dev.Log( "Playing " + animation );
+            //lastPlayedAnimation = animation;
+            tk2dAnimator.AnimationCompleted = OnAnimationComplete;
+            tk2dAnimator.Play( animation );
+            
             blockingAnimationIsPlaying = true;
 
+            //float timeout = 5f;
             for(;;)
             {
+                //timeout -= Time.deltaTime;
+                //if(timeout <= 0f)
+                //{
+                //    Dev.Log( animation + " was stuck! Forcing timeout" );
+                //    blockingAnimationIsPlaying = false;
+                //    break;
+                //}
+
+                //Dev.Log( "blockingAnimationIsPlaying " + blockingAnimationIsPlaying );
+
                 if(!blockingAnimationIsPlaying)
                     break;
                 else
@@ -2910,8 +3400,14 @@ namespace nv
 
         void OnAnimationComplete(tk2dSpriteAnimator sprite, tk2dSpriteAnimationClip clip)
         {
-            Dev.Where();            
-            blockingAnimationIsPlaying = false;
+            Dev.Where();
+            //Dev.Log( clip.name + " just finished " );
+            //if( lastPlayedAnimation == clip.name )
+            //{
+                blockingAnimationIsPlaying = false;
+                tk2dAnimator.AnimationCompleted = null;
+            //}
+            //Dev.Log( "blockingAnimationIsPlaying is now " + blockingAnimationIsPlaying );
         }
 
         void CheckTouching(LayerMask layer)
@@ -2990,7 +3486,8 @@ namespace nv
             }
         }//end CheckTouching
 
-        DirectionSet DoCheckDirection(GameObject target)
+        //if the values are within the tolerance, the object is not enough in that direction to be considered offset from us
+        DirectionSet DoCheckDirection(GameObject target, float toleranceX = 0.1f, float toleranceY = 0.5f )
         {
             DirectionSet direction = new DirectionSet();
             float num = owner.transform.position.x;
@@ -2998,10 +3495,10 @@ namespace nv
             float num3 = target.transform.position.x;
             float num4 = target.transform.position.y;
 
-            direction.right = (num < num3);
-            direction.left = (num > num3);
-            direction.above = (num2 < num4);
-            direction.below = (num2 > num4);
+            direction.right = (num < num3) && Mathf.Abs( num - num3 ) > toleranceX;
+            direction.left = (num > num3 ) && Mathf.Abs( num - num3 ) > toleranceX;
+            direction.above = (num2 < num4 ) && Mathf.Abs( num2 - num4 ) > toleranceY;
+            direction.below = (num2 > num4 ) && Mathf.Abs( num2 - num4 ) > toleranceY;
 
             return direction;
         }
@@ -3288,8 +3785,8 @@ namespace nv
                 flashEffect = gameObject.FindGameObjectInChildren("Flash Effect").AddComponent<FlashEffect>();
 
             //TODO: replace this with a load from the effects database
-            if(GameObject.Find("Needle") != null)
-                needle = GameObject.Find("Needle").AddComponent<Needle>();
+            if(UnityEngine.SceneManagement.SceneManager.GetSceneByName("Fungus1_04_boss").FindGameObject("Needle") != null)
+                needle = UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Needle" ).AddComponent<Needle>();
 
             if(GameObject.Find("Needle Tink") != null)
                 needleTink = GameObject.Find("Needle Tink").AddComponent<NeedleTink>();
@@ -3528,22 +4025,50 @@ namespace nv
         {
 #if UNITY_EDITOR
 #else
-            foreach( PlayMakerFSM p in owner.GetComponentsInChildren<PlayMakerFSM>() )
+            foreach( PlayMakerFSM p in owner.GetComponentsInChildren<PlayMakerFSM>( true ) )
             {
                 GameObject.DestroyImmediate( p );
             }
-            foreach( PlayMakerUnity2DProxy p in owner.GetComponentsInChildren<PlayMakerUnity2DProxy>() )
+            foreach( PlayMakerUnity2DProxy p in owner.GetComponentsInChildren<PlayMakerUnity2DProxy>( true ) )
             {
                 GameObject.DestroyImmediate( p );
             }
-            foreach( PlayMakerFixedUpdate p in owner.GetComponentsInChildren<PlayMakerFixedUpdate>() )
+            foreach( PlayMakerFixedUpdate p in owner.GetComponentsInChildren<PlayMakerFixedUpdate>( true ) )
             {
                 GameObject.DestroyImmediate( p );
             }
-            foreach( DeactivateIfPlayerdataTrue p in owner.GetComponentsInChildren<DeactivateIfPlayerdataTrue>() )
+            foreach( DeactivateIfPlayerdataTrue p in owner.GetComponentsInChildren<DeactivateIfPlayerdataTrue>( true ) )
             {
                 GameObject.DestroyImmediate( p );
-            }            
+            }
+            foreach( PlayMakerFSM p in needle.GetComponentsInChildren<PlayMakerFSM>( true ) )
+            {
+                GameObject.DestroyImmediate( p );
+            }
+            foreach( PlayMakerFSM p in needleTink.GetComponentsInChildren<PlayMakerFSM>( true ) )
+            {
+                GameObject.DestroyImmediate( p );
+            }
+            foreach( PlayMakerFixedUpdate p in needle.GetComponentsInChildren<PlayMakerFixedUpdate>( true ) )
+            {
+                GameObject.DestroyImmediate( p );
+            }
+            foreach( DeactivateIfPlayerdataTrue p in needleTink.GetComponentsInChildren<DeactivateIfPlayerdataTrue>( true ) )
+            {
+                GameObject.DestroyImmediate( p );
+            }
+            foreach( iTweenFSMEvents p in owner.GetComponentsInChildren<iTweenFSMEvents>( true ) )
+            {
+                GameObject.DestroyImmediate( p );
+            }
+            foreach( iTween p in owner.GetComponentsInChildren<iTween>( true ) )
+            {
+                GameObject.DestroyImmediate( p );
+            }
+            foreach( iTween p in owner.GetComponentsInChildren<iTween>( true ) )
+            {
+                GameObject.DestroyImmediate( p );
+            }
 #endif
         }
 
