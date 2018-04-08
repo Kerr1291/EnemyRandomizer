@@ -618,8 +618,7 @@ namespace nv
         float throwDistance;
         float needleYOffset = .2f;
         Vector3 startPos;
-
-        //TODO: improvement: change to not use the throw angle and just use the throw velocity
+        
         public void Play(GameObject owner, float startDelay, float throwMaxTravelTime, Ray throwRay, float throwDistance )
         {
             this.owner = owner;
@@ -999,7 +998,7 @@ namespace nv
             bodyCollider.offset = new Vector2(.1f, -.3f);
             bodyCollider.size = new Vector2(.9f, 2.6f);
 
-            //TODO: test
+            //NOTE: I added this to try fixing a problem with hornet ocassionally ending up in walls. I think it might help, so I'm leaving it.
             body.interpolation = RigidbodyInterpolation2D.Extrapolate;
 
             //setup our custom variables
@@ -1259,7 +1258,6 @@ namespace nv
             Dev.Where();
 
             Dev.Log( "runAwayCheck.ObjectIsInRange" + runAwayCheck.ObjectIsInRange );
-            //TODO: play around with this, something seems off about it
             if(runAwayCheck.ObjectIsInRange)
             {
                 //face the knight
@@ -1300,14 +1298,15 @@ namespace nv
             float xVel = owner.transform.localScale.x * -runSpeed;
 
             PlayAnimation( "Run");
-
-            //TODO: maybe continually set this?
+            
             body.velocity = new Vector2(xVel, 0f);
             
             float randomDelay = GameRNG.Rand(runWaitMin, runWaitMax);
             while(randomDelay > 0f)
             {
                 yield return new WaitForEndOfFrame();
+
+                body.velocity = new Vector2( xVel, 0f );
 
                 //did something hit us?
                 if(wasHitRecently)
@@ -2345,8 +2344,6 @@ namespace nv
             float deceleration = .8f;
             while(waitTime > 0f)
             {
-                //TODO: add the "IsNone" check to the DecelerateV2 printing
-
                 waitTime -= Time.fixedDeltaTime;
 
                 Vector2 velocity = body.velocity;
@@ -2570,8 +2567,6 @@ namespace nv
             float decelerationX = .77f;
             for(;;)
             {
-                //TODO: add the "IsNone" check to the DecelerateXY printing
-
                 Vector2 velocity = body.velocity;
                 if(velocity.x < 0f)
                 {
@@ -2614,11 +2609,10 @@ namespace nv
 
             blockingAnimationIsPlaying = true;
 
+            //TODO: move into a variable
             float decelerationX = .75f;
             for(;;)
             {
-                //TODO: add the "IsNone" check to the DecelerateXY printing
-
                 Vector2 velocity = body.velocity;
                 if(velocity.x < 0f)
                 {
@@ -2678,14 +2672,14 @@ namespace nv
             Dev.Where();
             PlayOneShot(hornetSphereSFX);
 
+            //TODO: move the start value into a variable
             sphereBall.Play(owner, gSphereTime, .8f, gSphereSize);
             flashEffect.Play(owner);
 
             DoEnemyKillShakeEffect();
 
             PlayAnimation( "Sphere Attack");
-
-            //TODO: move the wait value into a variable
+            
             yield return new WaitForSeconds(gSphereTime);
 
             nextState = SphereRecover;
@@ -2868,8 +2862,6 @@ namespace nv
         IEnumerator RefightWake()
         {
             Dev.Where();
-
-            //TODO: activate all children? this is probably a state machine thing that we don't need anymore
 
             nextState = Flourish;
 
@@ -3794,10 +3786,6 @@ namespace nv
             yield return GetAudioClipFromFSM(owner, bossFSMName, "Flourish", SetHornetYell);
             fightMusic = GetMusicCueFromFSM(owner, bossFSMName, "Flourish");
             fightMusicSnapshot = GetSnapshotFromFSM(owner, bossFSMName, "Flourish");
-
-            //load resources for additional objects
-
-            //TODO: load the things for the needle (i think)
 
             yield break;
         }
