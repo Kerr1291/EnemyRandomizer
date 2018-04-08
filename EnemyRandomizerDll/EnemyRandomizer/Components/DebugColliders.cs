@@ -105,14 +105,30 @@ namespace nv
 
         List<Vector2> GetPointsFromCollider( PolygonCollider2D col )
         {
-            List<Vector2> points = col.points.Select( x => { return x + (Vector2)col.transform.position; } ).ToList();
-            points.Add( col.points[ 0 ] + (Vector2)col.transform.position );
+            List<Vector2> points = col.points.ToList();
+            points.Add( col.points[ 0 ] );
+
+            for( int i = 0; i < points.Count; ++i )
+            {
+                Vector3 result = col.transform.TransformPoint( (Vector3)points[ i ] );
+                points[ i ] = (Vector2)result;
+            }
+
             return points;
         }
 
         List<Vector2> GetPointsFromCollider( EdgeCollider2D col )
         {
-            return col.points.Select( x => { return x + (Vector2)col.transform.position; } ).ToList();
+            List<Vector2> points = col.points.ToList();
+
+            for( int i = 0; i < points.Count; ++i )
+            {
+                Vector3 result = col.transform.TransformPoint( (Vector3)points[ i ] );
+                points[ i ] = (Vector2)result;
+            }
+
+            return points;
+            //return col.points.Select( x => { return x + (Vector2)col.transform.position; } ).ToList();
         }
 
         List<Vector2> GetPointsHelper( Collider2D collider )
