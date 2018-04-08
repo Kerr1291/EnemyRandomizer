@@ -242,16 +242,13 @@ namespace nv
         {
             bool blockingAnimationIsPlaying = true;
             tk2dAnimator.AnimationCompleted = ( tk2dSpriteAnimator sprite, tk2dSpriteAnimationClip clip ) => { blockingAnimationIsPlaying = false; };
-
             tk2dAnimator.PlayFromFrame( frame );
 
-            for(; ; )
+            while( blockingAnimationIsPlaying )
             {
-                if( !blockingAnimationIsPlaying )
-                    break;
-                else
-                    yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
             }
+
             yield break;
         }
     }
@@ -343,12 +340,9 @@ namespace nv
 
             tk2dAnimator.PlayFromFrame( frame );
 
-            for(; ; )
+            while( blockingAnimationIsPlaying )
             {
-                if( !blockingAnimationIsPlaying )
-                    break;
-                else
-                    yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
             }
             yield break;
         }
@@ -441,12 +435,9 @@ namespace nv
 
             tk2dAnimator.PlayFromFrame( frame );
 
-            for(; ; )
+            while( blockingAnimationIsPlaying )
             {
-                if( !blockingAnimationIsPlaying )
-                    break;
-                else
-                    yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
             }
             yield break;
         }
@@ -533,12 +524,9 @@ namespace nv
 
             tk2dAnimator.PlayFromFrame( frame );
 
-            for(; ; )
+            while( blockingAnimationIsPlaying )
             {
-                if( !blockingAnimationIsPlaying )
-                    break;
-                else
-                    yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
             }
             yield break;
         }
@@ -1016,16 +1004,7 @@ namespace nv
         public bool checkRight = true;
 
         //variables used by the state machine that the states set
-        bool blockingAnimationIsPlaying {
-            get {
-                return _blockingAnimationIsPlaying;
-            }
-            set {
-                Dev.Log( "Setting _blockingAnimationIsPlaying to " + value );
-                _blockingAnimationIsPlaying = value;
-            }
-        }
-        bool _blockingAnimationIsPlaying = false;
+        bool blockingAnimationIsPlaying = false;
         float airDashPause;
         float jumpPoint;
         float nextThrowAngle;
@@ -1210,7 +1189,7 @@ namespace nv
             PlayBossMusic();
 
             //play until the callback fires and changes our state
-            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Flourish") );
+            yield return PlayAndWaitForEndOfAnimation("Flourish");
 
             nextState = Idle;
 
@@ -1270,7 +1249,7 @@ namespace nv
                 while(!flag)
                 {
                     //TODO: create a weighted table type that has max hit/miss settings
-                    int randomWeightedIndex = GameRNG.Rand(0, nextStates.Count - 1);
+                    int randomWeightedIndex = GameRNG.Rand(0, nextStates.Count);
                     Dev.Log( "Idle next choice " + randomWeightedIndex );
                     if(randomWeightedIndex == 0 && ctIdle < 2)
                     {
@@ -1284,7 +1263,7 @@ namespace nv
                     {
                         ctIdle = 0;
                         ctRun += 1;
-                        Dev.Log( "run chosen and is now " + ctIdle );
+                        Dev.Log( "run chosen and is now " + ctRun );
                         nextState = nextStates[1];
                         flag = true;
                     }
@@ -1344,7 +1323,7 @@ namespace nv
             Dev.Where();
                         
             //play until the callback fires and changes our state
-            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Evade Antic") );
+            yield return PlayAndWaitForEndOfAnimation("Evade Antic");
 
             nextState = Run;
 
@@ -1698,7 +1677,7 @@ namespace nv
 
             //play throwing animation
             //wait here until the callback fires and changes our state
-            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Throw Antic") );
+            yield return PlayAndWaitForEndOfAnimation("Throw Antic");
 
             nextState = MaybeLock;
 
@@ -1876,7 +1855,7 @@ namespace nv
             FaceObject(HeroController.instance.gameObject, true );
 
             //play until the callback fires and changes our state
-            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Jump Antic") );
+            yield return PlayAndWaitForEndOfAnimation("Jump Antic");
 
             nextState = AimJump;
 
@@ -1940,7 +1919,7 @@ namespace nv
         IEnumerator Jump()
         {
             Dev.Where();
-            //TODO
+
             PlayOneShotRandom(hornetJumpYells);
             PlayOneShot(hornetJumpSFX);
 
@@ -1958,18 +1937,34 @@ namespace nv
         {
             Dev.Where();
 
-            //change collision check directions for jumping
-            checkUp = false;
-            checkDown = true;
-            checkLeft = false;
-            checkRight = false;
-
             float startHeight = owner.transform.position.y;
+            
+            //TODO: debug and figure out why we're instantly "landing" mid jump sometimes
 
-            float waitTimer = airDashPause;
-            while(waitTimer > 0f)
+            //change collision check directions for jumping
+            EnableCollisionsInDirection( false, true, false, false );
+
+            Dev.Log( "Enabled downward collisions" );
+
+            float airDashTimer = airDashPause;
+            for(;;)
             {
                 yield return new WaitForEndOfFrame();
+
+                bool withinSphereHeightRange = Mathf.Abs(owner.transform.position.y - startHeight) < minAirSphereHeight;
+                bool isFalling = body.velocity.y < 0f;
+
+                if( willSphere && isFalling && withinSphereHeightRange )
+                {
+                    nextState = MaybeDoSphere;
+                    break;
+                }
+
+                if( airDashTimer <= 0f )
+                {
+                    nextState = ADashAntic;
+                    break;
+                }
 
                 //did we hit a wall? end evade timer early
                 if(bottomHit)
@@ -1978,42 +1973,11 @@ namespace nv
                     break;
                 }
 
-                waitTimer -= Time.deltaTime;
-            }
-
-            if(waitTimer <= 0f)
-            {
-                nextState = ADashAntic;
-            }
-            else if(!bottomHit)
-            {
-                while(!bottomHit)
-                {
-                    yield return new WaitForEndOfFrame();
-
-                    bool withinSphereHeightRange = Mathf.Abs(owner.transform.position.y - startHeight) < minAirSphereHeight;
-                    bool isFalling = body.velocity.y < 0f;
-
-                    if( willSphere && isFalling && withinSphereHeightRange )
-                    {
-                        nextState = MaybeDoSphere;
-                        break;
-                    }
-
-                    //did we hit a wall? end evade timer early
-                    if(bottomHit)
-                    {
-                        nextState = Land;
-                        break;
-                    }
-                }
+                airDashTimer -= Time.deltaTime;
             }
 
             //restore collision check directions
-            checkUp = false;
-            checkDown = false;
-            checkLeft = true;
-            checkRight = true;
+            EnableCollisionsInDirection( false, false, true, true );
 
             yield break;
         }
@@ -2044,7 +2008,7 @@ namespace nv
             owner.transform.localScale = owner.transform.localScale.SetY(1f);
 
             //play until the callback fires and changes our state
-            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Land") );
+            yield return PlayAndWaitForEndOfAnimation("Land");
 
             nextState = Escalation;
 
@@ -2071,7 +2035,7 @@ namespace nv
                 PlayOneShotRandom(hornetAGDashYells);
 
                 //play until the callback fires and changes our state
-                yield return StartCoroutine( PlayAndWaitForEndOfAnimation("A Dash Antic") );
+                yield return PlayAndWaitForEndOfAnimation("A Dash Antic");
 
                 nextState = Fire;
             }
@@ -2171,11 +2135,8 @@ namespace nv
 
             PlayAnimation( "A Dash");
             
-            //change collision check directions for jumping
-            checkUp = true;
-            checkDown = true;
-            checkLeft = true;
-            checkRight = true;
+            //change collision check directions for air dashing
+            EnableCollisionsInDirection( true, true, true, true );
 
             while( !bottomHit && !rightHit && !leftHit && !topHit )
             {
@@ -2207,10 +2168,9 @@ namespace nv
             }
 
             //restore collision check directions
-            checkUp = false;
-            checkDown = false;
-            checkLeft = true;
-            checkRight = true;
+            EnableCollisionsInDirection( false, false, true, true );
+
+
 
             //float startHeight = owner.transform.position.y;
 
@@ -2284,8 +2244,6 @@ namespace nv
 
             owner.transform.localScale = owner.transform.localScale.SetX(xScale);
 
-            //TODO: check SetPosition to see what object name it's setting here....
-
             hitADash.gameObject.SetActive(false);
 
             bodyCollider.offset = new Vector2(.1f, -0.3f);
@@ -2298,7 +2256,7 @@ namespace nv
 
             DoWallLand(1f);
 
-            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Wall Impact") );
+            yield return  PlayAndWaitForEndOfAnimation("Wall Impact");
 
             nextState = JumpR;
 
@@ -2311,7 +2269,7 @@ namespace nv
 
             DoWallLand(-1f);
 
-            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Wall Impact") );
+            yield return  PlayAndWaitForEndOfAnimation("Wall Impact");
 
             nextState = JumpL;
 
@@ -2324,7 +2282,7 @@ namespace nv
 
             body.velocity = new Vector2(jumpDistance * xDirection, jumpVelocityY * .5f);
 
-            PlayAnimation( "Jump");
+            PlayAnimation( "Jump" );
 
             body.gravityScale = normShortJumpGravity2DScale;
 
@@ -2357,9 +2315,7 @@ namespace nv
         {
             Dev.Where();
 
-            //TODO: check the "SetPosition" action to see what object it's trying to set
-
-            //TODO: check the SetScale action to see what it's trying to set
+            owner.transform.localScale = owner.transform.localScale.SetX( returnXScale );
 
             hitADash.gameObject.SetActive(false);
 
@@ -2371,18 +2327,14 @@ namespace nv
         IEnumerator HitRoof()
         {
             Dev.Where();
-
-            //TODO: check the SetScale action to see what it's trying to set
+            
+            owner.transform.localScale = owner.transform.localScale.SetX( returnXScale );
 
             hitADash.gameObject.SetActive(false);
 
-            //TODO: check the "SetPosition" action to see what object it's trying to set
-
-            //TODO: check the SetVelocity2d to see the name of the object/value it's trying to set
-
             body.velocity = Vector2.zero;
 
-            //TODO: check SetBoxColliderTrigger to see what it's trying to set
+            hitADash.enabled = false;
 
             body.gravityScale = normShortJumpGravity2DScale;
             
@@ -2419,10 +2371,6 @@ namespace nv
             float decelerationX = .8f;
             for(;;)
             {
-                //TODO: add the "IsNone" check to the DecelerateXY printing
-
-                //TODO: check what SetVelocity2d is doing here
-
                 Vector2 velocity = body.velocity;
                 if(velocity.x < 0f)
                 {
@@ -2480,8 +2428,6 @@ namespace nv
 
             body.gravityScale = 0f;
 
-            //TODO: check DecelerateV2 to see what it's doing
-
             FaceObject(HeroController.instance.gameObject, false );
             
             tk2dAnimator.AnimationCompleted = OnAnimationComplete;
@@ -2494,8 +2440,6 @@ namespace nv
             float deceleration = .8f;
             for(;;)
             {
-                //TODO: add the "IsNone" check to the DecelerateV2 printing
-
                 Vector2 velocity = body.velocity;
                 if(velocity.x < 0f)
                 {
@@ -2601,8 +2545,7 @@ namespace nv
                 
                 yield return new WaitForFixedUpdate();
             }
-
-            //TODO
+            
             nextState = SphereRecoverA;
 
             yield break;
@@ -2612,7 +2555,7 @@ namespace nv
         {
             Dev.Where();
 
-            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Sphere Recover A") );
+            yield return PlayAndWaitForEndOfAnimation("Sphere Recover A");
 
             sphereBall.Stop();
 
@@ -2714,7 +2657,7 @@ namespace nv
             PlayOneShotRandom(hornetAGDashYells);
 
             //play until the callback fires and changes our state
-            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("G Dash Antic") );
+            yield return PlayAndWaitForEndOfAnimation("G Dash Antic");
             
             nextState = GDash;
 
@@ -2869,7 +2812,7 @@ namespace nv
 
             PlayOneShotRandom(hornetAttackYells);
 
-            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Sphere Antic G") );
+            yield return PlayAndWaitForEndOfAnimation("Sphere Antic G");
 
             nextState = Sphere;
 
@@ -2900,7 +2843,7 @@ namespace nv
         {
             Dev.Where();
 
-            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Sphere Recover G") );
+            yield return PlayAndWaitForEndOfAnimation("Sphere Recover G");
 
             sphereBall.Stop();
 
@@ -2930,7 +2873,7 @@ namespace nv
 
                 //animate the evade-anticipation                
                 //play until the callback fires and changes our state
-                yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Evade Antic") );
+                yield return PlayAndWaitForEndOfAnimation("Evade Antic");
 
                 nextState = Evade;
             }
@@ -2984,7 +2927,7 @@ namespace nv
             PlayOneShot(hornetGroundLandSFX);
 
             //play until the callback fires and changes our state
-            yield return StartCoroutine( PlayAndWaitForEndOfAnimation("Land") );
+            yield return PlayAndWaitForEndOfAnimation("Land" );
 
             nextState = AfterEvade;
 
@@ -3265,9 +3208,25 @@ namespace nv
 
         void OnCollisionStay2D(Collision2D collision)
         {
-            if(collision.gameObject.layer == 8)
+            if( collision.gameObject.layer == 8 )
             {
-                CheckTouching(8);
+                CheckTouching( 8 );
+            }
+        }
+
+        void OnCollisionEnter2D( Collision2D collision )
+        {
+            if( collision.gameObject.layer == 8 )
+            {
+                CheckTouching( 8 );
+            }
+        }
+
+        void OnCollisionExit2D( Collision2D collision )
+        {
+            if( collision.gameObject.layer == 8 )
+            {
+                CheckTouching( 8 );
             }
         }
 
@@ -3378,12 +3337,9 @@ namespace nv
             
             blockingAnimationIsPlaying = true;
             
-            for(;;)
+            while( blockingAnimationIsPlaying )
             {
-                if(!blockingAnimationIsPlaying)
-                    break;
-                else
-                    yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
             }
             yield break;
         }
@@ -3393,6 +3349,24 @@ namespace nv
             Dev.Where();
             blockingAnimationIsPlaying = false;
             tk2dAnimator.AnimationCompleted = null;
+        }
+        
+        void EnableCollisionsInDirection( bool up, bool down, bool left, bool right )
+        {
+            checkUp = up;
+            checkDown = down;
+            checkLeft = left;
+            checkRight = right;
+
+            //clear any hit flags we're no longer colliding with
+            if( !up )
+                topHit = false;
+            if( !down )
+                bottomHit = false;
+            if( !left )
+                leftHit = false;
+            if( !right )
+                rightHit = false;
         }
 
         void CheckTouching(LayerMask layer)
@@ -3435,20 +3409,27 @@ namespace nv
             }
             if(this.checkDown)
             {
+                Dev.Log( "Checking for downward collisions" );
                 this.bottomRays.Clear();
                 this.bottomRays.Add(new Vector2(this.bodyCollider.bounds.max.x, this.bodyCollider.bounds.min.y));
                 this.bottomRays.Add(new Vector2(this.bodyCollider.bounds.center.x, this.bodyCollider.bounds.min.y));
                 this.bottomRays.Add(this.bodyCollider.bounds.min);
                 this.bottomHit = false;
+                
                 for(int k = 0; k < 3; k++)
                 {
                     RaycastHit2D raycastHit2D3 = Physics2D.Raycast(this.bottomRays[k], -Vector2.up, 0.08f, 1 << layer);
                     if(raycastHit2D3.collider != null)
                     {
+                        Dev.Log( "Raycast down hit "+ raycastHit2D3.collider?.gameObject?.name );
                         this.bottomHit = true;
                         //TODO: call a callback here
                         break;
                     }
+                }
+                if(!bottomHit)
+                {
+                    Dev.Log( "Raycast down missed" );
                 }
             }
             if(this.checkLeft)
