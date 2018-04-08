@@ -213,6 +213,7 @@ namespace EnemyRandomizerMod
             ContractorManager.Instance.StartCoroutine( DebugInput() );
         }
 
+        bool suspended = false;
         IEnumerator DebugInput()
         {
             yield return new WaitForSeconds( 2f );
@@ -223,7 +224,7 @@ namespace EnemyRandomizerMod
             int i = 0;
             while( true )
             {
-                yield return new WaitForEndOfFrame();
+                yield return null;
 
                 if( HeroController.instance != null )
                 {
@@ -233,42 +234,42 @@ namespace EnemyRandomizerMod
                     }
                 }
 
-                if( UnityEngine.Input.GetKeyDown( KeyCode.N ) )
-                {
-                    //MenuStyles.Instance.SetStyle( i, true, false );
-                    i = ( i + 1 ) % database.loadedEnemyPrefabs.Count;
-                    Dev.Log( "Index is now " + i + " = " + database.loadedEnemyPrefabNames[i] );
-                }
-                if( UnityEngine.Input.GetKeyDown( KeyCode.M ) )
-                {
-                    Vector3 worldPos = Vector3.zero;
-                    Vector2 mousePos = Input.mousePosition;
-                    Camera c = GameManager.instance.cameraCtrl.cam;
+                //if( UnityEngine.Input.GetKeyDown( KeyCode.N ) )
+                //{
+                //    //MenuStyles.Instance.SetStyle( i, true, false );
+                //    i = ( i + 1 ) % database.loadedEnemyPrefabs.Count;
+                //    Dev.Log( "Index is now " + i + " = " + database.loadedEnemyPrefabNames[i] );
+                //}
+                //if( UnityEngine.Input.GetKeyDown( KeyCode.M ) )
+                //{
+                //    Vector3 worldPos = Vector3.zero;
+                //    Vector2 mousePos = Input.mousePosition;
+                //    Camera c = GameManager.instance.cameraCtrl.cam;
 
-                    Ray ray = c.ScreenPointToRay(new Vector3(mousePos.x,mousePos.y, c.nearClipPlane));
-                    worldPos = ray.origin + ray.direction * 26f;
+                //    Ray ray = c.ScreenPointToRay(new Vector3(mousePos.x,mousePos.y, c.nearClipPlane));
+                //    worldPos = ray.origin + ray.direction * 26f;
                     
-                    {
-                        Dev.Log( "Creating " + database.loadedEnemyPrefabNames[ i ] + " at " + worldPos );
-                        worldPos = new Vector3( worldPos.x, worldPos.y, 0f );
-                        prev = EnemyRandomizerLogic.Instance.CreateEnemy( database.loadedEnemyPrefabNames[ i ], worldPos );
+                //    {
+                //        Dev.Log( "Creating " + database.loadedEnemyPrefabNames[ i ] + " at " + worldPos );
+                //        worldPos = new Vector3( worldPos.x, worldPos.y, 0f );
+                //        prev = EnemyRandomizerLogic.Instance.CreateEnemy( database.loadedEnemyPrefabNames[ i ], worldPos );
 
-                        Scene s = UnityEngine.SceneManagement.SceneManager.GetSceneByName("Room_Sly_Storeroom");
-                        GameObject enemyRoot = s.FindGameObject("_Enemies");
-                        if(enemyRoot != null)
-                        {
-                            prev.transform.SetParent( enemyRoot.transform );
-                        }
-                    }
-                }
-                if( UnityEngine.Input.GetKeyDown( KeyCode.K ) )
-                {
-                    if( prev != null )
-                    {
-                        HealthManager hm = prev.GetComponent<HealthManager>();
-                        hm.Die( null, AttackTypes.Generic, true );
-                    }
-                }
+                //        Scene s = UnityEngine.SceneManagement.SceneManager.GetSceneByName("Room_Sly_Storeroom");
+                //        GameObject enemyRoot = s.FindGameObject("_Enemies");
+                //        if(enemyRoot != null)
+                //        {
+                //            prev.transform.SetParent( enemyRoot.transform );
+                //        }
+                //    }
+                //}
+                //if( UnityEngine.Input.GetKeyDown( KeyCode.K ) )
+                //{
+                //    if( prev != null )
+                //    {
+                //        HealthManager hm = prev.GetComponent<HealthManager>();
+                //        hm.Die( null, AttackTypes.Generic, true );
+                //    }
+                //}
                 if( UnityEngine.Input.GetKeyDown( KeyCode.P ) )
                 {
                     if( prev != null )
@@ -280,7 +281,34 @@ namespace EnemyRandomizerMod
                     }
                 }
 
-                //print audio manager
+                //if( suspended )
+                //    Time.timeScale = 0f;
+
+                //if( UnityEngine.Input.GetKeyDown( KeyCode.Q ) )
+                //{
+                //    Time.timeScale = 0f;
+                //    suspended = true;
+                //}
+                //if( UnityEngine.Input.GetKeyDown( KeyCode.W ) )
+                //{
+                //    Time.timeScale = 1f;
+                //    yield return new WaitForEndOfFrame();
+                //    yield return new WaitForEndOfFrame();
+                //    Time.timeScale = 0f;
+                //}
+                //if( UnityEngine.Input.GetKey( KeyCode.R ) )
+                //{
+                //    Time.timeScale = 1f;
+                //    yield return new WaitForEndOfFrame();
+                //    yield return new WaitForEndOfFrame();
+                //    Time.timeScale = 0f;
+                //}
+                //if( UnityEngine.Input.GetKeyDown( KeyCode.E ) )
+                //{
+                //    Time.timeScale = 1f;
+                //    suspended = false;
+                //}
+
                 if( UnityEngine.Input.GetKeyDown( KeyCode.A ) )
                 {
                     //var hornet = database.loadedEnemyPrefabs[0];
@@ -405,6 +433,8 @@ namespace EnemyRandomizerMod
                 if( UnityEngine.Input.GetKeyDown( KeyCode.S ) )
                 {
                     yield return EnterZone( "Fungus1_04", "right1", "Hornet Boss 1" );
+                    yield return new WaitForSeconds( 2f );
+                    HeroController.instance.transform.position = GameObject.Find("Hornet Boss 1").transform.position + new Vector3(5f,0f,0f);
                 }
             }
             yield break;

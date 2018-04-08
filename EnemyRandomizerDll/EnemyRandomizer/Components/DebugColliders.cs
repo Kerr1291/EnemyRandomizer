@@ -22,6 +22,7 @@ namespace nv
         public Color disabledColor = Color.red;
         public Color gameObjectDisabledColor = Color.gray;
         public bool renderDisabledColliders = true;
+        public bool runDebugInput = true;
 
         Dictionary<Collider2D,LineRenderer> lines;
         
@@ -134,6 +135,75 @@ namespace nv
             }
 
             return new List<Vector2>();
+        }
+
+        //use this static bool to keep the input only running on one component 
+        static bool forceSingleEntry = false;
+        static IEnumerator debugInput = null;
+        static IEnumerator DebugInput()
+        {
+            bool suspended = false;
+            for(; ; )
+            {
+                if( suspended )
+                    Time.timeScale = 0f;
+
+                //suspend
+                if( !forceSingleEntry && UnityEngine.Input.GetKeyDown( KeyCode.Q ) )
+                {
+                    forceSingleEntry = true;
+                    Time.timeScale = 0f;
+                    suspended = true;
+                }
+                //advance by about one frame
+                if( !forceSingleEntry && UnityEngine.Input.GetKeyDown( KeyCode.W ) )
+                {
+                    forceSingleEntry = true;
+                    Time.timeScale = 1f;
+                    yield return new WaitForEndOfFrame();
+                    yield return new WaitForEndOfFrame();
+                    Time.timeScale = 0f;
+                }
+                //advance by many frames (hold R)
+                if( !forceSingleEntry && UnityEngine.Input.GetKey( KeyCode.R ) )
+                {
+                    forceSingleEntry = true;
+                    Time.timeScale = 1f;
+                    yield return new WaitForEndOfFrame();
+                    yield return new WaitForEndOfFrame();
+                    Time.timeScale = 0f;
+                }
+                //resume from suspend
+                if( !forceSingleEntry && UnityEngine.Input.GetKeyDown( KeyCode.E ) )
+                {
+                    forceSingleEntry = true;
+                    Time.timeScale = 1f;
+                    suspended = false;
+                }
+                yield return new WaitForEndOfFrame();
+                forceSingleEntry = false;
+            }
+            yield break;
+        }
+
+        private void OnEnable()
+        {
+            if( runDebugInput )
+            {
+                if( debugInput == null )
+                    debugInput = DebugInput();
+                StartCoroutine( debugInput );
+            }
+        }
+
+        private void OnDisable()
+        {
+            if( runDebugInput )
+            {
+                if( debugInput != null )
+                    StopCoroutine( debugInput );
+                debugInput = null;
+            }
         }
 
         private IEnumerator Start()

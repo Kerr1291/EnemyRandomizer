@@ -60,6 +60,7 @@
     <Compile Include="Common\Contractor.cs" />
     <Compile Include="Common\Dev.cs" />
     <Compile Include="Common\DevLog.cs" />
+    <Compile Include="Components\DebugColliders.cs" />
     <Compile Include="Components\DebugOnWake.cs" />
     <Compile Include="Components\HornetBoss1.cs" />
     <Compile Include="Components\MemeController.cs" />

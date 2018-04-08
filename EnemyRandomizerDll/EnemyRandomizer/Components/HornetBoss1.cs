@@ -12,7 +12,6 @@ using nv.Tests;
 
 namespace nv
 {
-    [RequireComponent(typeof(BoxCollider2D))]
     public class EvadeRange : MonoBehaviour
     {
         public bool ObjectIsInRange { get; private set; }
@@ -94,7 +93,6 @@ namespace nv
         }
     }
 
-    [RequireComponent(typeof(BoxCollider2D))]
     public class RunAwayCheck : MonoBehaviour
     {
         public bool ObjectIsInRange { get; private set; }
@@ -110,7 +108,6 @@ namespace nv
         }
     }
 
-    [RequireComponent(typeof(BoxCollider2D))]
     public class RefightRange : MonoBehaviour
     {
         public bool ObjectIsInRange { get; private set; }
@@ -126,7 +123,6 @@ namespace nv
         }
     }
 
-    [RequireComponent(typeof(CircleCollider2D))]
     public class SphereRange : MonoBehaviour
     {
         public bool ObjectIsInRange { get; private set; }
@@ -141,8 +137,7 @@ namespace nv
             ObjectIsInRange = false;
         }
     }
-
-    [RequireComponent(typeof(CircleCollider2D))]
+    
     public class ADashRange : MonoBehaviour
     {
         public bool ObjectIsInRange { get; private set; }
@@ -604,8 +599,6 @@ namespace nv
         }
     }
 
-    [RequireComponent(typeof(Rigidbody2D))]
-    [RequireComponent(typeof(PolygonCollider2D))]
     public class Needle : MonoBehaviour
     {
         public tk2dSpriteAnimator tk2dAnimator;
@@ -775,7 +768,6 @@ namespace nv
     }
 
 
-    [RequireComponent(typeof(BoxCollider2D))]
     public class NeedleTink : MonoBehaviour
     {
         public void SetParent(Transform t)
@@ -795,12 +787,7 @@ namespace nv
             gameObject.transform.localPosition = Vector2.zero;
         }
     }
-
-    [RequireComponent(typeof(BoxCollider2D))]
-    [RequireComponent(typeof(Rigidbody2D))]
-    [RequireComponent(typeof(MeshRenderer))]
-    [RequireComponent(typeof(MeshFilter))]
-    [RequireComponent(typeof(AudioSource))]
+    
     public class HornetBoss1 : MonoBehaviour
     {
         //components used by the boss
@@ -910,6 +897,12 @@ namespace nv
         public float esRunWaitMax = .75f;
         public float esIdleWaitMin = .1f;
         public float esIdleWaitMax = .4f;
+        public float esEvadeCooldownMin = .5f;
+        public float esEvadeCooldownMax = 1f;
+        public float esDmgIdleWaitMin = .05f;
+        public float esDmgIdleWaitMax = .2f;
+        public float esAirDashPauseMin = .05f;
+        public float esAirDashPauseMax = .2f;
 
         public int maxMissADash = 5;
         public int maxMissASphere = 7;
@@ -980,6 +973,7 @@ namespace nv
         int msGDash = 0;
         int msThrow = 0;
 
+        Vector2 gDashVelocity;
         Vector2 aDashVelocity;
         Ray throwRay;
         RaycastHit2D throwRaycast;
@@ -1004,6 +998,9 @@ namespace nv
             owner.transform.localScale = owner.transform.localScale.SetX(-1f);
             bodyCollider.offset = new Vector2(.1f, -.3f);
             bodyCollider.size = new Vector2(.9f, 2.6f);
+
+            //TODO: test
+            body.interpolation = RigidbodyInterpolation2D.Extrapolate;
 
             //setup our custom variables
             healthManager.hp = maxHP;
@@ -1151,7 +1148,8 @@ namespace nv
 
             //close the gates
             SetFightGates(true);
-            ShowBossTitle(2f, "", "", "", "HORNET", "", "THE MYSTERY");
+
+            ShowBossTitle(2f, "", "", "", "HORNET", "", "");
             
             PlayOneShot(hornetYell);
 
@@ -1180,7 +1178,7 @@ namespace nv
             bodyCollider.offset = new Vector2(.1f, -.3f);
             bodyCollider.size = new Vector2(.9f, 2.6f);
 
-            PlayAnimation( "Idle");
+            PlayAnimation( "Idle" );
 
             body.velocity = Vector2.zero;
 
@@ -1195,6 +1193,8 @@ namespace nv
                 while(randomDelay > 0f)
                 {
                     yield return new WaitForEndOfFrame();
+
+                    KeepXVelocityZero();
 
                     //did something hit us?
                     if(wasHitRecently)
@@ -1638,7 +1638,7 @@ namespace nv
 
             //play throwing animation
             //wait here until the callback fires and changes our state
-            yield return PlayAndWaitForEndOfAnimation("Throw Antic");
+            yield return PlayAndWaitForEndOfAnimation("Throw Antic", KeepXVelocityZero);
 
             nextState = Throw;
 
@@ -1740,7 +1740,7 @@ namespace nv
                 owner.transform.localScale = owner.transform.localScale.SetX( 1f );
 
             //play until the callback fires and changes our state
-            yield return PlayAndWaitForEndOfAnimation("Jump Antic");
+            yield return PlayAndWaitForEndOfAnimation("Jump Antic", KeepXVelocityZero);
 
             nextState = AimJump;
 
@@ -2012,6 +2012,8 @@ namespace nv
         {
             Dev.Where();
 
+            ClearPreviousCollisions();
+
             aDashEffect.Play(owner);
 
             PlayOneShot(hornetDashSFX);
@@ -2029,25 +2031,29 @@ namespace nv
             {
                 yield return new WaitForEndOfFrame();
 
+                //lock the velocity for the duration of the dash
                 body.velocity = aDashVelocity;
 
+                //added this in to keep hornet from clipping into walls
+                DirectionSet nextFrame = RaycastAlongCurrentVelocity(8,Time.deltaTime);
+
                 //did we hit a wall? end evade timer early
-                if( bottomHit )
+                if( bottomHit || nextFrame.below )
                 {
                     nextState = LandY;
                     break;
                 }
-                if( topHit )
+                if( topHit || nextFrame.above )
                 {
                     nextState = HitRoof;
                     break;
                 }
-                if( leftHit )
+                if( leftHit || nextFrame.left )
                 {
                     nextState = WallL;
                     break;
                 }
-                if( rightHit )
+                if( rightHit || nextFrame.right )
                 {
                     nextState = WallR;
                     break;
@@ -2071,9 +2077,11 @@ namespace nv
 
             body.velocity = Vector2.zero;
 
-            owner.transform.localScale = owner.transform.localScale.SetX(xScale);
+            owner.transform.localScale = owner.transform.localScale.SetX( xScale );
+            owner.transform.localScale = owner.transform.localScale.SetY( 1f );
 
             hitADash.gameObject.SetActive(false);
+            hitADash.enabled = false;
 
             bodyCollider.offset = new Vector2(.1f, -0.3f);
             bodyCollider.size = new Vector2(.9f, 2.6f);
@@ -2493,7 +2501,7 @@ namespace nv
             PlayOneShotRandom(hornetAGDashYells);
 
             //play until the callback fires and changes our state
-            yield return PlayAndWaitForEndOfAnimation("G Dash Antic");
+            yield return PlayAndWaitForEndOfAnimation("G Dash Antic",KeepXVelocityZero);
             
             nextState = GDash;
 
@@ -2510,6 +2518,8 @@ namespace nv
 
             DoEnemyKillShakeEffect();
 
+            ClearPreviousCollisions();
+
             gDashEffect.Play(owner);
 
             bodyCollider.offset = new Vector2(0.1f, -.8f);
@@ -2520,11 +2530,15 @@ namespace nv
             float xScale = owner.transform.localScale.x;
 
             body.velocity = new Vector2(-gDashSpeed * xScale, 0f);
+            gDashVelocity = body.velocity;
 
             float waitTimer = maxGDashTime;
             while(waitTimer > 0f)
             {
                 yield return new WaitForEndOfFrame();
+
+                //lock the velocity for the duration of the dash
+                body.velocity = gDashVelocity;
 
                 //did we hit a wall? then end the dash.
                 if(rightHit || leftHit)
@@ -2652,7 +2666,7 @@ namespace nv
 
             PlayOneShotRandom(hornetAttackYells);
 
-            yield return PlayAndWaitForEndOfAnimation("Sphere Antic G");
+            yield return PlayAndWaitForEndOfAnimation("Sphere Antic G",KeepXVelocityZero);
 
             nextState = Sphere;
 
@@ -2716,7 +2730,7 @@ namespace nv
 
                 //animate the evade-anticipation                
                 //play until the callback fires and changes our state
-                yield return PlayAndWaitForEndOfAnimation("Evade Antic");
+                yield return PlayAndWaitForEndOfAnimation("Evade Antic",KeepXVelocityZero);
 
                 nextState = Evade;
             }
@@ -2770,7 +2784,7 @@ namespace nv
             PlayOneShot(hornetGroundLandSFX);
 
             //play until the callback fires and changes our state
-            yield return PlayAndWaitForEndOfAnimation("Land" );
+            yield return PlayAndWaitForEndOfAnimation( "Land", KeepXVelocityZero );
 
             nextState = AfterEvade;
 
@@ -2913,12 +2927,25 @@ namespace nv
                 idleWaitMax = esIdleWaitMax;
                 idleWaitMin = esIdleWaitMin;
 
-                //TODO: escalate her evade timers
+                evadeCooldownMin = esEvadeCooldownMin;
+                evadeCooldownMax = esEvadeCooldownMax;
+
+                dmgIdleWaitMin = esDmgIdleWaitMin;
+                dmgIdleWaitMax = esDmgIdleWaitMax;
+
+                airDashPauseMin = esAirDashPauseMin;
+                airDashPauseMax = esAirDashPauseMax;
             }
 
             nextState = Idle;
 
             yield break;
+        }
+
+
+        void KeepXVelocityZero()
+        {
+            body.velocity = new Vector2(0f, body.velocity.y);
         }
 
         public void DoEnemyKillShakeEffect()
@@ -3165,7 +3192,7 @@ namespace nv
             tk2dAnimator.Play( animation );
         }
 
-        IEnumerator PlayAndWaitForEndOfAnimation(string animation)
+        IEnumerator PlayAndWaitForEndOfAnimation(string animation, Action doWhileWaiting = null)
         {
             Dev.Where();
 
@@ -3182,6 +3209,8 @@ namespace nv
             
             while( blockingAnimationIsPlaying )
             {
+                doWhileWaiting?.Invoke();
+
                 yield return new WaitForEndOfFrame();
             }
             yield break;
@@ -3211,6 +3240,136 @@ namespace nv
             if( !right )
                 rightHit = false;
         }
+
+        void ClearPreviousCollisions()
+        {
+            topHit = false;
+            bottomHit = false;
+            leftHit = false;
+            rightHit = false;
+        }
+
+        DirectionSet RaycastAlongCurrentVelocity( LayerMask layer, float timeStep )
+        {
+            DirectionSet directionSet = new DirectionSet();
+
+            Vector2 origin = owner.transform.position;
+            Vector2 direction = body.velocity.normalized;
+            float distanceNextTimeStep = body.velocity.magnitude * timeStep;
+
+            RaycastHit2D raycastHit2D = Physics2D.Raycast( origin, direction, distanceNextTimeStep, 1 << layer );
+
+            //we're not going to hit anything
+            if( raycastHit2D.collider == null )
+                return directionSet;
+
+            float x = owner.transform.position.x;
+            float y = owner.transform.position.y;
+            float px = raycastHit2D.point.x;
+            float py = raycastHit2D.point.y;
+
+            float dx = Mathf.Abs( x - px );
+            float dy = Mathf.Abs( y - py );
+
+            //is it an x collision or a y collision?
+            if(dx > dy)
+            {
+                //x collision, hitting left or right from us?
+                if( px < x )
+                    directionSet.left = true;
+                else
+                    directionSet.right = true;
+            }
+            else
+            {
+                if( py < y )
+                    directionSet.below = true;
+                else
+                    directionSet.above = true;
+            }
+
+            return directionSet;
+        }
+
+        void CheckTouchingNextFrame( Vector2 velocity, LayerMask layer )
+        {
+            float oneFrame = 0.016f;
+            Vector2 distanceNextFrame = oneFrame * velocity;
+
+            if( this.checkUp )
+            {
+                this.topRays.Clear();
+                this.topRays.Add( new Vector2( this.bodyCollider.bounds.min.x, this.bodyCollider.bounds.max.y ) + distanceNextFrame );
+                this.topRays.Add( new Vector2( this.bodyCollider.bounds.center.x, this.bodyCollider.bounds.max.y ) + distanceNextFrame );
+                this.topRays.Add( distanceNextFrame + ( Vector2 )this.bodyCollider.bounds.max );
+                this.topHit = false;
+                for( int i = 0; i < 3; i++ )
+                {
+                    RaycastHit2D raycastHit2D = Physics2D.Raycast(this.topRays[i], Vector2.up, 0.08f, 1 << layer);
+                    if( raycastHit2D.collider != null )
+                    {
+                        this.topHit = true;
+                        //TODO: call a callback here
+                        break;
+                    }
+                }
+            }
+            if( this.checkRight )
+            {
+                this.rightRays.Clear();
+                this.rightRays.Add( distanceNextFrame + (Vector2)this.bodyCollider.bounds.max );
+                this.rightRays.Add( new Vector2( this.bodyCollider.bounds.max.x, this.bodyCollider.bounds.center.y ) + distanceNextFrame );
+                this.rightRays.Add( new Vector2( this.bodyCollider.bounds.max.x, this.bodyCollider.bounds.min.y ) + distanceNextFrame );
+                this.rightHit = false;
+                for( int j = 0; j < 3; j++ )
+                {
+                    RaycastHit2D raycastHit2D2 = Physics2D.Raycast(this.rightRays[j], Vector2.right, 0.08f, 1 << layer);
+                    if( raycastHit2D2.collider != null )
+                    {
+                        this.rightHit = true;
+                        //TODO: call a callback here
+                        break;
+                    }
+                }
+            }
+            if( this.checkDown )
+            {
+                this.bottomRays.Clear();
+                this.bottomRays.Add( new Vector2( this.bodyCollider.bounds.max.x, this.bodyCollider.bounds.min.y ) + distanceNextFrame );
+                this.bottomRays.Add( new Vector2( this.bodyCollider.bounds.center.x, this.bodyCollider.bounds.min.y ) + distanceNextFrame );
+                this.bottomRays.Add( distanceNextFrame + (Vector2)this.bodyCollider.bounds.min );
+                this.bottomHit = false;
+
+                for( int k = 0; k < 3; k++ )
+                {
+                    RaycastHit2D raycastHit2D3 = Physics2D.Raycast(this.bottomRays[k], -Vector2.up, 0.08f, 1 << layer);
+                    if( raycastHit2D3.collider != null )
+                    {
+                        this.bottomHit = true;
+                        //TODO: call a callback here
+                        break;
+                    }
+                }
+            }
+            if( this.checkLeft )
+            {
+                this.leftRays.Clear();
+                this.leftRays.Add( distanceNextFrame + (Vector2)this.bodyCollider.bounds.min );
+                this.leftRays.Add( new Vector2( this.bodyCollider.bounds.min.x, this.bodyCollider.bounds.center.y ) + distanceNextFrame );
+                this.leftRays.Add( new Vector2( this.bodyCollider.bounds.min.x, this.bodyCollider.bounds.max.y ) + distanceNextFrame );
+                this.leftHit = false;
+                for( int l = 0; l < 3; l++ )
+                {
+                    RaycastHit2D raycastHit2D4 = Physics2D.Raycast(this.leftRays[l], -Vector2.right, 0.08f, 1 << layer);
+                    if( raycastHit2D4.collider != null )
+                    {
+                        this.leftHit = true;
+                        //TODO: call a callback here
+                        break;
+                    }
+                }
+            }
+        }//end CheckTouchingNextFrame
 
         void CheckTouching(LayerMask layer)
         {
@@ -3586,7 +3745,7 @@ namespace nv
                 sphereBall = gameObject.FindGameObjectInChildren("Sphere Ball").AddComponent<SphereBall>();
             if(gameObject.FindGameObjectInChildren("Flash Effect") != null)
                 flashEffect = gameObject.FindGameObjectInChildren("Flash Effect").AddComponent<FlashEffect>();
-
+            
             //TODO: replace this with a load from the effects database
             if(UnityEngine.SceneManagement.SceneManager.GetSceneByName("Fungus1_04_boss").FindGameObject("Needle") != null)
                 needle = UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Needle" ).AddComponent<Needle>();
@@ -3597,6 +3756,9 @@ namespace nv
             if( UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Corpse Hornet 1(Clone)" ) != null )
                 hornetCorpse = UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Corpse Hornet 1(Clone)" );
 
+            gameObject.AddComponent<DebugColliders>();
+            needle.gameObject.AddComponent<DebugColliders>();
+            needleTink.gameObject.AddComponent<DebugColliders>();
 
 #if UNITY_EDITOR
             healthManager = gameObject.AddComponent<HealthManager>();

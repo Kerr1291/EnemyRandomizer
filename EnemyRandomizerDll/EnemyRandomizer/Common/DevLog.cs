@@ -154,6 +154,7 @@ namespace nv
         {
             //get stacktrace info
             StackTrace stackTrace = new StackTrace();
+            //string calling_class_name = stackTrace.GetFrame( BaseFunctionHeader + frame + 2 )?.GetMethod()?.ReflectedType.Name;
             string class_name = stackTrace.GetFrame( BaseFunctionHeader + frame ).GetMethod().ReflectedType.Name;
 
             //build parameters string
@@ -175,7 +176,9 @@ namespace nv
             }
 
             //build function header
+            //string calling_function_name = stackTrace.GetFrame( BaseFunctionHeader + frame + 2 )?.GetMethod()?.Name + "(" + parameters_name + ")";
             string function_name = stackTrace.GetFrame( BaseFunctionHeader + frame ).GetMethod().Name + "(" + parameters_name + ")";
+            //return calling_class_name +"."+ calling_function_name +" Invoked "+ class_name + "." + function_name;
             return class_name + "." + function_name;
         }
 

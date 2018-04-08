@@ -134,6 +134,7 @@ namespace nv
                         c.PrintBoxCollider2D( componentHeader, file );
                         c.PrintPlayMakerFSM( componentHeader, file );
                         c.PrintPersistentBoolItem( componentHeader, file );
+                        c.PrintRigidbody2D( componentHeader, file );
                     }
                 }
             }
