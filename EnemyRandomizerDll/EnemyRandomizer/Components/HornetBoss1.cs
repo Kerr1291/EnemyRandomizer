@@ -207,16 +207,13 @@ namespace nv
 
             meshRenderer.enabled = true;
 
-            //TODO: figure out how Reposition is being set?, if Reposition is true, set this
             transform.localPosition = new Vector3( 0f, 0f, 0f );
 
-            //TODO: figure out how Reset Rotation bool is being set, if true set the rotation to identity
             transform.localRotation = Quaternion.identity;
 
             Vector3 localScale = transform.localScale;
             Vector3 lossyScale = transform.lossyScale;
 
-            //TODO: figure out how "Unparent" bool is being set, if true, unparent this
             transform.SetParent( null );
 
             transform.localScale = lossyScale;
@@ -302,16 +299,13 @@ namespace nv
 
             meshRenderer.enabled = true;
 
-            //TODO: figure out how Reposition is being set?, if Reposition is true, set this
             transform.localPosition = new Vector3( 3f, .3f, 0f );
 
-            //TODO: figure out how Reset Rotation bool is being set, if true set the rotation to identity
             transform.localRotation = Quaternion.identity;
 
             Vector3 localScale = transform.localScale;
             Vector3 lossyScale = transform.lossyScale;
             
-            //TODO: figure out how "Unparent" bool is being set, if true, unparent this
             transform.SetParent( null );
 
             transform.localScale = lossyScale;
@@ -397,16 +391,13 @@ namespace nv
 
             meshRenderer.enabled = true;
 
-            //TODO: figure out how Reposition is being set?, if Reposition is true, set this
             transform.localPosition = new Vector3( 6.7f, 1f, 0f );
 
-            //TODO: figure out how Reset Rotation bool is being set, if true set the rotation to identity
             transform.localRotation = Quaternion.identity;
 
             Vector3 localScale = transform.localScale;
             Vector3 lossyScale = transform.lossyScale;
             
-            //TODO: figure out how "Unparent" bool is being set, if true, unparent this
             transform.SetParent( null );
 
             transform.localScale = lossyScale;
@@ -486,16 +477,13 @@ namespace nv
 
             meshRenderer.enabled = true;
 
-            //TODO: figure out how Reposition is being set?, if Reposition is true, set this
             transform.localPosition = new Vector3( 1.3f, -.1f, 0f );
 
-            //TODO: figure out how Reset Rotation bool is being set, if true set the rotation to identity
             transform.localRotation = Quaternion.identity;
 
             Vector3 localScale = transform.localScale;
             Vector3 lossyScale = transform.lossyScale;
 
-            //TODO: figure out how "Unparent" bool is being set, if true, unparent this
             transform.SetParent( null );
 
             transform.localScale = lossyScale;
@@ -557,11 +545,8 @@ namespace nv
             this.sphereTime = sphereTime;
             this.sphereStartSize = sphereStartSize;
             this.sphereEndSize = sphereEndSize;
-
-            //TODO: move the sphere starting size and growing size/rate to variables
+            
             transform.localScale = new Vector3( sphereStartSize, sphereStartSize, 0f );
-
-            //TODO: check iTweenScaleTo to see what value's it's using for Sphere Ball
 
             StartCoroutine(MainAILoop());
         }
@@ -576,7 +561,7 @@ namespace nv
         IEnumerator MainAILoop()
         {
             Dev.Where();
-            currentState = Init();
+            currentState = Grow();
 
             for(;;)
             {
@@ -585,18 +570,6 @@ namespace nv
 
                 yield return currentState;
             }
-        }
-
-        IEnumerator Init()
-        {
-            Dev.Where();
-
-            //TODO: finish
-            //TODO: tween to the final size
-
-            currentState = Complete();
-
-            yield break;
         }
 
         IEnumerator Grow()
@@ -611,7 +584,12 @@ namespace nv
             {
                 Vector3 scale = transform.localScale;
                 scale = Vector3.SmoothDamp( scale, targetScale, ref velocity, sphereTime );
+                transform.localScale = scale;
+                time += Time.deltaTime;
+                yield return new WaitForEndOfFrame();
             }
+
+            currentState = Complete();
 
             yield break;
         }
@@ -620,9 +598,7 @@ namespace nv
         {
             Dev.Where();
 
-            //TODO: finish
-
-            isAnimating = false;
+            Stop();
 
             yield break;
         }
@@ -635,6 +611,7 @@ namespace nv
         public tk2dSpriteAnimator tk2dAnimator;
         public PolygonCollider2D bodyCollider;
         public Rigidbody2D body;
+        public MeshRenderer meshRenderer;
 
         public GameObject owner;
         public GameObject thread;
@@ -643,18 +620,24 @@ namespace nv
         public bool isAnimating = false;
 
         float startDelay;
-        Vector2 throwVelocity;
-        float throwAngle;
-        float returnSpeed;
+        float throwMaxTravelTime;
+        Ray throwRay;
+        float throwDistance;
+        float needleYOffset = .2f;
+        Vector3 startPos;
 
         //TODO: improvement: change to not use the throw angle and just use the throw velocity
-        public void Play(GameObject owner, float startDelay, Vector2 throwVelocity, float throwAngle, float returnSpeed )
+        public void Play(GameObject owner, float startDelay, float throwMaxTravelTime, Ray throwRay, float throwDistance )
         {
             this.owner = owner;
             tk2dAnimator = gameObject.GetComponent<tk2dSpriteAnimator>();
             bodyCollider = gameObject.GetComponent<PolygonCollider2D>();
             body = gameObject.GetComponent<Rigidbody2D>();
+            meshRenderer = gameObject.GetComponent<MeshRenderer>();
 
+            meshRenderer.enabled = false;
+            startPos = throwRay.origin + new Vector3(0f,-needleYOffset,0f);
+            transform.position = startPos;
             gameObject.SetActive(true);
 
             thread = gameObject.FindGameObjectInChildren( "Thread" );
@@ -662,9 +645,9 @@ namespace nv
             isAnimating = true;
 
             this.startDelay = startDelay;
-            this.throwVelocity = throwVelocity;
-            this.throwAngle = throwAngle;
-            this.returnSpeed = returnSpeed;
+            this.throwMaxTravelTime = throwMaxTravelTime;
+            this.throwRay = throwRay;
+            this.throwDistance = throwDistance;
 
             StartCoroutine(MainAILoop());
         }
@@ -689,130 +672,83 @@ namespace nv
 
             yield return new WaitForSeconds( startDelay );
 
+            meshRenderer.enabled = true;
+
             transform.localRotation = Quaternion.identity;
+            
+            Vector2 throwTarget = throwRay.direction * throwDistance;
 
-            FaceAngle( throwAngle );
-            //FaceAngle( 180f ); //not sure what the point of this one is 
-
-            body.velocity = throwVelocity;
-
-            //TODO: make a variable for this
-            float deceleration = .8f;
-            for(; ; )
+            Vector3 throwDirection = ((Vector3)throwTarget + throwRay.origin) - transform.position;
+            if( throwDirection != Vector3.zero )
             {
-                Vector2 velocity = body.velocity;
-                if( velocity.x < 0f )
-                {
-                    velocity.x *= deceleration;
-                    if( velocity.x > 0f )
-                    {
-                        velocity.x = 0f;
-                    }
-                }
-                else if( velocity.x > 0f )
-                {
-                    velocity.x *= deceleration;
-                    if( velocity.x < 0f )
-                    {
-                        velocity.x = 0f;
-                    }
-                }
-                if( velocity.y < 0f )
-                {
-                    velocity.y *= deceleration;
-                    if( velocity.y > 0f )
-                    {
-                        velocity.y = 0f;
-                    }
-                }
-                else if( velocity.y > 0f )
-                {
-                    velocity.y *= deceleration;
-                    if( velocity.y < 0f )
-                    {
-                        velocity.y = 0f;
-                    }
-                }
-                body.velocity = velocity;
-
-                if( velocity.magnitude <= 0f )
-                    break;
-                else
-                    yield return new WaitForFixedUpdate();
+                float angle = Mathf.Atan2(throwDirection.y, throwDirection.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.AngleAxis( angle + 180f, Vector3.forward );
             }
+
+            AnimationCurve throwCurve = new AnimationCurve();
+            throwCurve.AddKey(  0f,  0f );
+            throwCurve.AddKey( .1f, .2f );
+            throwCurve.AddKey( .2f, .4f );
+            throwCurve.AddKey( .3f, .6f );
+            throwCurve.AddKey( .4f, .75f );
+            throwCurve.AddKey( .5f, .85f );
+            throwCurve.AddKey( .6f, .92f );
+            throwCurve.AddKey( .7f, .95f );
+            throwCurve.AddKey( .8f, .97f );
+            throwCurve.AddKey( .9f, .98f );
+            throwCurve.AddKey(  1f,  1f );
+
+            float throwTime = throwMaxTravelTime;
+            float time = 0f;
+
+            while( time < throwTime )
+            {
+                float t = time/throwTime;
+
+                transform.position = throwCurve.Evaluate( t ) * (Vector3)throwTarget + startPos;
+                
+                time += Time.fixedDeltaTime;
+                yield return new WaitForFixedUpdate();
+            }            
 
             currentState = Return();
 
             yield break;
         }
 
-        bool isReturnComplete = false;
-
-        void iTweenOnComplete( int aniTweenID )
-        {
-            isReturnComplete = true;
-        }
-
         IEnumerator Return()
         {
             Dev.Where();
-            isReturnComplete = false;
-
-            Hashtable hashtable = new Hashtable();
-            hashtable.Add( "position", owner.transform.position );
-            hashtable.Add( "speed", returnSpeed );
-            hashtable.Add( "easetype", iTween.EaseType.easeInSine );
-            hashtable.Add( "looptype", iTween.LoopType.none );
-            hashtable.Add( "oncomplete", "iTweenOnComplete" );
-            hashtable.Add( "oncompleteparams", 0 );
-            iTween.MoveTo( gameObject, hashtable );
 
             thread.SetActive( true );
 
-            //TODO: make a variable for this
-            float deceleration = .8f;
-            for(; ; )
-            {
-                Vector2 velocity = body.velocity;
-                if( velocity.x < 0f )
-                {
-                    velocity.x *= deceleration;
-                    if( velocity.x > 0f )
-                    {
-                        velocity.x = 0f;
-                    }
-                }
-                else if( velocity.x > 0f )
-                {
-                    velocity.x *= deceleration;
-                    if( velocity.x < 0f )
-                    {
-                        velocity.x = 0f;
-                    }
-                }
-                if( velocity.y < 0f )
-                {
-                    velocity.y *= deceleration;
-                    if( velocity.y > 0f )
-                    {
-                        velocity.y = 0f;
-                    }
-                }
-                else if( velocity.y > 0f )
-                {
-                    velocity.y *= deceleration;
-                    if( velocity.y < 0f )
-                    {
-                        velocity.y = 0f;
-                    }
-                }
-                body.velocity = velocity;
+            Vector2 returnTarget = startPos;
 
-                if( isReturnComplete )
-                    break;
-                else
-                    yield return new WaitForFixedUpdate();
-            }
+            float time = 0f;
+
+            float returnTimeRatio = .6f;
+
+            AnimationCurve returnCurve = new AnimationCurve();
+            returnCurve.AddKey( 0f, 0f );
+            returnCurve.AddKey( .2f, .1f );
+            returnCurve.AddKey( .4f, .2f );
+            returnCurve.AddKey( .6f, .4f );
+            returnCurve.AddKey( .8f, .6f );
+            returnCurve.AddKey(  1f, 1f );
+
+            float returnTime = throwMaxTravelTime * returnTimeRatio;
+            Vector3 returnStartPos = transform.position;
+            Vector3 returnVector = (Vector3)returnTarget - transform.position;
+
+            while( time < returnTime )
+            {
+                float t = time/returnTime;
+
+                transform.position = returnCurve.Evaluate( t ) * returnVector + returnStartPos;
+
+                time += Time.fixedDeltaTime;
+                yield return new WaitForFixedUpdate();
+            }            
 
             currentState = Complete();
 
@@ -823,6 +759,7 @@ namespace nv
         {
             Dev.Where();
 
+            meshRenderer.enabled = false;
             isAnimating = false;
             gameObject.SetActive( false );
 
@@ -898,8 +835,7 @@ namespace nv
         //use for some sound effects
         public AudioSource actorAudioSource;
 
-        //used to play the boss background music
-        //TODO: uncomment in real build and remove the "object" version
+        //audio clips for hornet's various moves
         public AudioClip hornetYell;
         public List<AudioClip> hornetAttackYells;
         public AudioClip hornetThrowSFX;
@@ -938,10 +874,9 @@ namespace nv
         public float runSpeed = 8f;
         public float evadeJumpAwaySpeed = 22f;
         public float evadeJumpAwayTimeLength = .25f;
-        public float throwDistance = 10f;
-        public float throwSpeed = 40f;
-        public float throwReturnSpeed = 30f;
-        public float throwWindUpTime = .3f;
+        public float throwDistance = 12f;
+        public float throwMaxTravelTime = .8f;
+        public float throwWindUpTime = .03f;
         public float jumpDistance = 10f;
         public float jumpVelocityY = 41f;
         public float minAirSphereHeight = 5f;
@@ -979,6 +914,11 @@ namespace nv
         public int maxMissGDash = 5;
         public int maxMissThrow = 3;
 
+        public int maxChosenADash = 2;
+        public int maxChosenASphere = 1;
+        public int maxChosenGDash = 2;
+        public int maxChosenThrow = 1;
+
         //TODO: convert to a weighted table type
         Dictionary<Func<IEnumerator>, float> dmgResponseChoices;
         public Dictionary<Func<IEnumerator>, float> DmgResponseChoices
@@ -1007,7 +947,6 @@ namespace nv
         bool blockingAnimationIsPlaying = false;
         float airDashPause;
         float jumpPoint;
-        float nextThrowAngle;
         float runWaitMin;
         float runWaitMax;
         float idleWaitMin;
@@ -1040,6 +979,8 @@ namespace nv
         int msThrow = 0;
 
         Vector2 aDashVelocity;
+        Ray throwRay;
+        RaycastHit2D throwRaycast;
 
         void SetFightGates(bool closed)
         {
@@ -1118,9 +1059,6 @@ namespace nv
                     currentState = nextState();
                     nextState = null;
                 }
-
-                //TODO: remove as the states get implemented
-                //yield return new WaitForEndOfFrame();
             }
             yield break;
         }
@@ -1199,11 +1137,12 @@ namespace nv
         IEnumerator Idle()
         {
             Dev.Where();
-
-            HeroController hero = HeroController.instance;
-
-            //TODO: test this
-            FaceObject(hero.gameObject, false, false);
+            
+            GameObject hero = HeroController.instance.gameObject;
+            if( hero.transform.position.x > owner.transform.position.x )
+                owner.transform.localScale = owner.transform.localScale.SetX( -1f );
+            else
+                owner.transform.localScale = owner.transform.localScale.SetX( 1f );
 
             airDashPause = 999f;
 
@@ -1229,7 +1168,6 @@ namespace nv
                     //did something hit us?
                     if(wasHitRecently)
                     {
-                        //CODEPATH UNTESTED
                         nextState = DmgResponse;
                         yield break;
                     }
@@ -1242,20 +1180,16 @@ namespace nv
                 {
                     MaybeFlip, MaybeGSphere
                 };
-
-                //TODO: look into why it gets stuck here, something is wrong with the logic...
-                int saveCounter = 0;
+                
                 bool flag = false;
                 while(!flag)
                 {
                     //TODO: create a weighted table type that has max hit/miss settings
                     int randomWeightedIndex = GameRNG.Rand(0, nextStates.Count);
-                    Dev.Log( "Idle next choice " + randomWeightedIndex );
                     if(randomWeightedIndex == 0 && ctIdle < 2)
                     {
                         ctIdle += 1;
                         ctRun = 0;
-                        Dev.Log( "idle chosen and is now " + ctIdle );
                         nextState = nextStates[0];
                         flag = true;
                     }
@@ -1263,14 +1197,7 @@ namespace nv
                     {
                         ctIdle = 0;
                         ctRun += 1;
-                        Dev.Log( "run chosen and is now " + ctRun );
                         nextState = nextStates[1];
-                        flag = true;
-                    }
-                    saveCounter++;
-                    if( saveCounter > 100 )
-                    {
-                        nextState = nextStates[ 0 ];
                         flag = true;
                     }
                 }
@@ -1305,8 +1232,11 @@ namespace nv
             if(runAwayCheck.ObjectIsInRange)
             {
                 //face the knight
-                HeroController hero = HeroController.instance;
-                FaceObject(hero.gameObject, false, false);
+                GameObject hero = HeroController.instance.gameObject;
+                if( hero.transform.position.x > owner.transform.position.x )
+                    owner.transform.localScale = owner.transform.localScale.SetX( -1f );
+                else
+                    owner.transform.localScale = owner.transform.localScale.SetX( 1f );
 
                 //then flip the other way
                 FlipScale();
@@ -1423,9 +1353,11 @@ namespace nv
                 throwDirection = Vector2.right;
             }
 
-            RaycastHit2D raycastHit2D2 = Physics2D.Raycast(throwOrigin, throwDirection, throwDistance, 1 << 8);
-            if(raycastHit2D2.collider != null)
+            throwRay = new Ray(throwOrigin, throwDirection);
+            throwRaycast = Physics2D.Raycast( throwOrigin, throwDirection, throwDistance, 1 << 8);
+            if( throwRaycast.collider != null)
             {
+                //TODO: alter this code so that we can throw, but make it shorter and/or have hornet grapple
                 //there's a wall, we cannot throw!
                 nextState = MoveChoiceB;
             }
@@ -1449,7 +1381,7 @@ namespace nv
             while(!flag)
             {
                 //have any of our abilities not been used enough? then we're forced to use one
-                int randomWeightedIndex = GameRNG.Rand(0, 3);
+                int randomWeightedIndex = GameRNG.Rand(0, 4);
                 if(ctAirDash >= maxMissADash)
                 {
                     flag2 = true;
@@ -1512,7 +1444,7 @@ namespace nv
                     }
                 }
                 //else, randomly pick a skill to use
-                else if(randomWeightedIndex == 0 && ctAirDash < 2)
+                else if(randomWeightedIndex == 0 && ctAirDash < maxChosenADash )
                 {
                     ctAirDash += 1;
                     ctASphere = 0;
@@ -1521,7 +1453,7 @@ namespace nv
                     nextState = SetADash;
                     flag = true;
                 }
-                else if(randomWeightedIndex == 1 && ctASphere < 1)
+                else if(randomWeightedIndex == 1 && ctASphere < maxChosenASphere )
                 {
                     ctAirDash = 0;
                     ctASphere += 1;
@@ -1530,7 +1462,7 @@ namespace nv
                     nextState = SetSphereA;
                     flag = true;
                 }
-                else if(randomWeightedIndex == 2 && ctGDash < 2)
+                else if(randomWeightedIndex == 2 && ctGDash < maxChosenGDash )
                 {
                     ctAirDash = 0;
                     ctASphere = 0;
@@ -1539,7 +1471,7 @@ namespace nv
                     nextState = GDashAntic;
                     flag = true;
                 }
-                else if(randomWeightedIndex == 3 && ctThrow < 1)
+                else if(randomWeightedIndex == 3 && ctThrow < maxChosenThrow )
                 {
                     ctAirDash = 0;
                     ctASphere = 0;
@@ -1561,18 +1493,13 @@ namespace nv
         {
             Dev.Where();
 
-
-            int maxMissADash = 5;
-            int maxMissASphere = 7;
-            int maxMissGDash = 5;
-
             bool flag = false;
             bool flag2 = false;
             int num = 0;
             while(!flag)
             {
                 //have any of our abilities not been used enough? then we're forced to use one
-                int randomWeightedIndex = GameRNG.Rand(0, 2);
+                int randomWeightedIndex = GameRNG.Rand(0, 3);
                 if(ctAirDash >= maxMissADash)
                 {
                     flag2 = true;
@@ -1622,7 +1549,7 @@ namespace nv
                     }
                 }
                 //else, randomly pick a skill to use
-                else if(randomWeightedIndex == 0 && ctAirDash < 2)
+                else if(randomWeightedIndex == 0 && ctAirDash < maxChosenADash )
                 {
                     ctAirDash += 1;
                     ctASphere = 0;
@@ -1630,7 +1557,7 @@ namespace nv
                     nextState = SetADash;
                     flag = true;
                 }
-                else if(randomWeightedIndex == 1 && ctASphere < 1)
+                else if(randomWeightedIndex == 1 && ctASphere < maxChosenASphere )
                 {
                     ctAirDash = 0;
                     ctASphere += 1;
@@ -1638,7 +1565,7 @@ namespace nv
                     nextState = SetSphereA;
                     flag = true;
                 }
-                else if(randomWeightedIndex == 2 && ctGDash < 2)
+                else if(randomWeightedIndex == 2 && ctGDash < maxChosenGDash )
                 {
                     ctAirDash = 0;
                     ctASphere = 0;
@@ -1668,7 +1595,10 @@ namespace nv
             bodyCollider.size = new Vector2(1f, 2.6f);
 
             //face the hero
-            FaceObject(hero.gameObject, false );
+            if(hero.transform.position.x > owner.transform.position.x )
+                owner.transform.localScale = owner.transform.localScale.SetX( -1f );
+            else
+                owner.transform.localScale = owner.transform.localScale.SetX( 1f );
 
             //stop moving
             body.velocity = Vector2.zero;
@@ -1679,84 +1609,11 @@ namespace nv
             //wait here until the callback fires and changes our state
             yield return PlayAndWaitForEndOfAnimation("Throw Antic");
 
-            nextState = MaybeLock;
-
-            yield break;
-        }
-
-        IEnumerator MaybeLock()
-        {
-            Dev.Where();
-
-            HeroController hero = HeroController.instance;
-
-            //get the angle to our hero
-            float angleToTarget = GetAngleToTarget(hero.gameObject, 0f, 0f);
-
-            if(angleToTarget <= 90f)
-            {
-                nextState = LockR;
-            }
-            else if(angleToTarget <= 180f)
-            {
-                nextState = LockL;
-            }
-            else if(angleToTarget <= 270f)
-            {
-                nextState = LockUL;
-            }
-            else if(angleToTarget <= 360f)
-            {
-                nextState = LockUR;
-            }
-            else
-            {
-                nextState = Throw;
-            }
-
-            yield break;
-        }
-
-        IEnumerator LockL()
-        {
-            Dev.Where();
-
-            nextThrowAngle = 180f;
             nextState = Throw;
 
             yield break;
         }
-
-        IEnumerator LockR()
-        {
-            Dev.Where();
-
-            nextThrowAngle = 0f;
-            nextState = Throw;
-
-            yield break;
-        }
-
-        IEnumerator LockUL()
-        {
-            Dev.Where();
-
-            nextThrowAngle = 180f;
-            nextState = Throw;
-
-            yield break;
-        }
-
-        IEnumerator LockUR()
-        {
-            Dev.Where();
-
-            nextThrowAngle = 0f;
-            nextState = Throw;
-
-            yield break;
-        }
-
+        
         IEnumerator Throw()
         {
             Dev.Where();
@@ -1774,21 +1631,14 @@ namespace nv
             bodyCollider.offset = new Vector2(.1f, -1.0f);
             bodyCollider.size = new Vector2(1.4f, 1.2f);
 
-            //TODO: make the throw direction more dynamic
-            Vector2 throwDirection = Vector2.right;
-            if( owner.transform.localScale.x > 0f )
-                throwDirection = Vector2.left;
-
-            Vector2 throwVelocity = throwDirection * throwSpeed;
-
             //start throwing the needle
-            needle.Play( owner, throwWindUpTime, throwVelocity, nextThrowAngle, throwReturnSpeed );
+            needle.Play( owner, throwWindUpTime, throwMaxTravelTime, throwRay, throwDistance );
 
             //put the needle tink on the needle
             needleTink.SetParent(needle.transform);
 
             //start the throw animation
-            PlayAnimation( "Throw");
+            PlayAnimation("Throw");
 
             //wait one frame before ending
             yield return new WaitForEndOfFrame();
@@ -1851,8 +1701,12 @@ namespace nv
             bodyCollider.size = new Vector2(.9f, 2.6f);
 
             body.velocity = Vector2.zero;
-                        
-            FaceObject(HeroController.instance.gameObject, true );
+
+            GameObject hero = HeroController.instance.gameObject;
+            if( hero.transform.position.x > owner.transform.position.x )
+                owner.transform.localScale = owner.transform.localScale.SetX( -1f );
+            else
+                owner.transform.localScale = owner.transform.localScale.SetX( 1f );
 
             //play until the callback fires and changes our state
             yield return PlayAndWaitForEndOfAnimation("Jump Antic");
@@ -1938,8 +1792,6 @@ namespace nv
             Dev.Where();
 
             float startHeight = owner.transform.position.y;
-            
-            //TODO: debug and figure out why we're instantly "landing" mid jump sometimes
 
             //change collision check directions for jumping
             EnableCollisionsInDirection( false, true, false, false );
@@ -2021,9 +1873,11 @@ namespace nv
 
             if(aDashRange.ObjectIsInRange)
             {
-                HeroController hero = HeroController.instance;
-
-                FaceObject( hero.gameObject );
+                GameObject hero = HeroController.instance.gameObject;
+                if( hero.transform.position.x > owner.transform.position.x )
+                    owner.transform.localScale = owner.transform.localScale.SetX( -1f );
+                else
+                    owner.transform.localScale = owner.transform.localScale.SetX( 1f );
 
                 bodyCollider.offset = new Vector2(1.1f, -.9f);
                 bodyCollider.size = new Vector2(1.2f, 1.4f);
@@ -2053,14 +1907,12 @@ namespace nv
 
             PlayOneShot(hornetDashSFX);
             
-            //TEST THIS
             hitADash.isTrigger = true;
 
             GameObject hero = HeroController.instance.gameObject;
             
             float angleToTarget = GetAngleToTarget(hero, 0f, -.5f);
-
-            //TODO: see if this even works
+            
             Vector2 pos = owner.transform.position;
             Vector2 fireVelocity = GetVelocityToTarget(pos, new Vector3(0f,-5f * owner.transform.localScale.x,0f), hero.transform.position, airFireSpeed, 0f);
 
@@ -2075,11 +1927,14 @@ namespace nv
             bodyCollider.size = new Vector2(1.5f, 1.0f);
 
             hitADash.gameObject.SetActive(true);
-            
-            //owner.transform.localScale = owner.transform.localScale.SetY(1f);
-            
-            FaceAngle(0f);
-            
+
+            Vector3 directionToHero = hero.transform.position - (Vector3)pos;
+            if( directionToHero != Vector3.zero )
+            {
+                float angle = Mathf.Atan2(directionToHero.y, directionToHero.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.AngleAxis( angle + 180f, Vector3.forward );
+            }
+
             Vector3 eulerAngles = owner.transform.eulerAngles;
             float zAngle = eulerAngles.z;
 
@@ -2092,6 +1947,9 @@ namespace nv
                 nextState = FiringL;
             }
 
+            owner.transform.localScale = owner.transform.localScale.SetX( 1f );
+            owner.transform.localScale = owner.transform.localScale.SetY( 1f );
+
             yield break;
         }
 
@@ -2100,8 +1958,6 @@ namespace nv
             Dev.Where(); 
 
             returnXScale = 1f;
-
-            owner.transform.localScale = owner.transform.localScale.SetX( 1f );
 
             nextState = ADash;
 
@@ -2114,7 +1970,7 @@ namespace nv
 
             returnXScale = -1f;
 
-            owner.transform.localScale = owner.transform.localScale.SetX( -1f );
+            owner.transform.localScale = owner.transform.localScale.SetY( -1f );
 
             nextState = ADash;
 
@@ -2169,64 +2025,6 @@ namespace nv
 
             //restore collision check directions
             EnableCollisionsInDirection( false, false, true, true );
-
-
-
-            //float startHeight = owner.transform.position.y;
-
-            //Vector3 down = Vector3.down;
-            //Vector3 up = Vector3.up;
-            //Vector3 left = Vector3.up;
-            //Vector3 right = Vector3.up;
-            //float nearDist = 1f;
-
-            //bool earlyOut = false;
-
-            //while(!earlyOut)
-            //{
-            //    Vector3 position = owner.transform.position;
-            //    float closeToSurface = .55f;//TODO: add collider sizes to this
-            //    if(!earlyOut)
-            //    {
-            //        RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, down, nearDist, 1 << 8);
-            //        if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.y - position.y) < closeToSurface)
-            //        {
-            //            nextState = LandY;
-            //            earlyOut = true;
-            //        }
-            //    }
-            //    if(!earlyOut)
-            //    {
-            //        RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, up, nearDist, 1 << 8);
-            //        if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.y - position.y) < closeToSurface)
-            //        {
-            //            nextState = HitRoof;
-            //            earlyOut = true;
-            //        }
-            //    }
-            //    if(!earlyOut)
-            //    {
-            //        RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, left, nearDist, 1 << 8);
-            //        if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.x - position.x) < closeToSurface)
-            //        {
-            //            nextState = WallL;
-            //            earlyOut = true;
-            //        }
-            //    }
-            //    if(!earlyOut)
-            //    {
-            //        RaycastHit2D raycastHit2D2 = Physics2D.Raycast(position, right, nearDist, 1 << 8);
-            //        if(raycastHit2D2.collider != null && Mathf.Abs(raycastHit2D2.collider.transform.position.x - position.x) < closeToSurface)
-            //        {
-            //            nextState = WallR;
-            //            earlyOut = true;
-            //        }
-            //    }
-            //    if( !earlyOut )
-            //        yield return new WaitForEndOfFrame();
-            //    else
-            //        break;
-            //}
 
             if( nextState == null )
                 nextState = LandY;
@@ -2428,8 +2226,12 @@ namespace nv
 
             body.gravityScale = 0f;
 
-            FaceObject(HeroController.instance.gameObject, false );
-            
+            GameObject hero = HeroController.instance.gameObject;
+            if( hero.transform.position.x > owner.transform.position.x )
+                owner.transform.localScale = owner.transform.localScale.SetX( -1f );
+            else
+                owner.transform.localScale = owner.transform.localScale.SetX( 1f );
+
             tk2dAnimator.AnimationCompleted = OnAnimationComplete;
             tk2dAnimator.Play("Sphere Antic A");
 
@@ -2645,9 +2447,12 @@ namespace nv
         IEnumerator GDashAntic()
         {
             Dev.Where();
-            
-            HeroController hero = HeroController.instance;
-            FaceObject(hero.gameObject);
+
+            GameObject hero = HeroController.instance.gameObject;
+            if( hero.transform.position.x > owner.transform.position.x )
+                owner.transform.localScale = owner.transform.localScale.SetX( -1f );
+            else
+                owner.transform.localScale = owner.transform.localScale.SetX( 1f );
 
             bodyCollider.offset = new Vector2(1.1f, -.9f);
             bodyCollider.size = new Vector2(1.2f, 1.4f);
@@ -2807,8 +2612,12 @@ namespace nv
             
             bodyCollider.offset = new Vector2(0.1f, -.3f);
             bodyCollider.size = new Vector2(.9f, 2.6f);
-            
-            FaceObject(HeroController.instance.gameObject, false );
+
+            GameObject hero = HeroController.instance.gameObject;
+            if( hero.transform.position.x > owner.transform.position.x )
+                owner.transform.localScale = owner.transform.localScale.SetX( -1f );
+            else
+                owner.transform.localScale = owner.transform.localScale.SetX( 1f );
 
             PlayOneShotRandom(hornetAttackYells);
 
@@ -2868,8 +2677,11 @@ namespace nv
                 body.velocity = Vector2.zero;
 
                 //make her face you
-                HeroController hero = HeroController.instance;
-                FaceObject( hero.gameObject, true );
+                GameObject hero = HeroController.instance.gameObject;
+                if( hero.transform.position.x > owner.transform.position.x )
+                    owner.transform.localScale = owner.transform.localScale.SetX( -1f );
+                else
+                    owner.transform.localScale = owner.transform.localScale.SetX( 1f );
 
                 //animate the evade-anticipation                
                 //play until the callback fires and changes our state
@@ -3409,7 +3221,6 @@ namespace nv
             }
             if(this.checkDown)
             {
-                Dev.Log( "Checking for downward collisions" );
                 this.bottomRays.Clear();
                 this.bottomRays.Add(new Vector2(this.bodyCollider.bounds.max.x, this.bodyCollider.bounds.min.y));
                 this.bottomRays.Add(new Vector2(this.bodyCollider.bounds.center.x, this.bodyCollider.bounds.min.y));
@@ -3421,15 +3232,10 @@ namespace nv
                     RaycastHit2D raycastHit2D3 = Physics2D.Raycast(this.bottomRays[k], -Vector2.up, 0.08f, 1 << layer);
                     if(raycastHit2D3.collider != null)
                     {
-                        Dev.Log( "Raycast down hit "+ raycastHit2D3.collider?.gameObject?.name );
                         this.bottomHit = true;
                         //TODO: call a callback here
                         break;
                     }
-                }
-                if(!bottomHit)
-                {
-                    Dev.Log( "Raycast down missed" );
                 }
             }
             if(this.checkLeft)
@@ -3481,7 +3287,7 @@ namespace nv
             return num3;
         }
 
-        static Vector2 GetVelocityToTarget(Vector2 self, Vector2 projectile, Vector2 target, float speed, float spread = 0f)
+        static public Vector2 GetVelocityToTarget(Vector2 self, Vector2 projectile, Vector2 target, float speed, float spread = 0f)
         {
             float num = target.y + projectile.y - self.y;
             float num2 = target.x + projectile.x - self.x;
