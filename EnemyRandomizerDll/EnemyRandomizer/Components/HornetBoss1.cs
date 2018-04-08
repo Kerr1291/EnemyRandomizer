@@ -828,6 +828,8 @@ namespace nv
         public SphereBall sphereBall;
         public FlashEffect flashEffect;
 
+        public GameObject hornetCorpse;
+
         //hornet's projectile weapon & the tink effect that goes with it
         public Needle needle;
         public NeedleTink needleTink;
@@ -984,7 +986,16 @@ namespace nv
 
         void SetFightGates(bool closed)
         {
-            //TODO
+            if( closed )
+            {
+                FSMUtility.LocateFSM( GameObject.Find( "Battle Gate A" ), "BG Control" )?.SendEvent( "BG CLOSE" );
+                FSMUtility.LocateFSM( GameObject.Find( "Battle Gate (1)" ), "BG Control" )?.SendEvent( "BG CLOSE" );
+            }
+            else
+            {
+                FSMUtility.LocateFSM( GameObject.Find( "Battle Gate A" ), "BG Control" )?.SendEvent( "BG OPEN" );
+                FSMUtility.LocateFSM( GameObject.Find( "Battle Gate (1)" ), "BG Control" )?.SendEvent( "BG OPEN" );
+            }
         }
 
         void SetupDefaultParams()
@@ -1015,7 +1026,8 @@ namespace nv
 
         //current state of the state machine
         Func<IEnumerator> nextState = null;
-        
+        IEnumerator mainLoop;
+
         IEnumerator Start()
         {
             SetupRequiredReferences();
@@ -1025,7 +1037,23 @@ namespace nv
 
             RemoveDeprecatedComponents();
 
-            StartCoroutine(MainAILoop());
+            mainLoop = MainAILoop();
+            StartCoroutine( mainLoop );
+
+            //TODO: figure out why the fight gates don't open after the battle
+            for( ; ;)
+            {
+                yield return new WaitForEndOfFrame();
+
+                if( healthManager.hp <= 0 || healthManager.isDead )
+                    break;
+
+                if( hornetCorpse.activeInHierarchy )
+                    break;
+            }
+
+            StopCoroutine( mainLoop );
+            SetFightGates( false );
 
             yield break;
         }
@@ -1042,7 +1070,10 @@ namespace nv
             for(;;)
             {
                 if(owner == null)
-                    yield break;
+                    break;
+
+                if( healthManager.hp <= 0 || healthManager.isDead )
+                    break;
                 
                 yield return currentState;
 
@@ -1060,6 +1091,7 @@ namespace nv
                     nextState = null;
                 }
             }
+
             yield break;
         }
         
@@ -1119,8 +1151,7 @@ namespace nv
 
             //close the gates
             SetFightGates(true);
-
-            ShowBossTitle(2f, "", "", "", "HORNET", "", "THE GUARDIAN");
+            ShowBossTitle(2f, "", "", "", "HORNET", "", "THE MYSTERY");
             
             PlayOneShot(hornetYell);
 
@@ -3562,6 +3593,10 @@ namespace nv
 
             if(GameObject.Find("Needle Tink") != null)
                 needleTink = GameObject.Find("Needle Tink").AddComponent<NeedleTink>();
+
+            if( UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Corpse Hornet 1(Clone)" ) != null )
+                hornetCorpse = UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Corpse Hornet 1(Clone)" );
+
 
 #if UNITY_EDITOR
             healthManager = gameObject.AddComponent<HealthManager>();
