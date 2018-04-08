@@ -287,7 +287,8 @@ namespace nv
                     }
                 }
 
-                labels[ pair.Key ].transform.position = labels[ pair.Key ].transform.position.SetZ( -.1f );
+                Vector3 labelPos = new Vector3(labels[ pair.Key ].transform.position.x,labels[ pair.Key ].transform.position.y,-.1f);
+                labels[ pair.Key ].transform.position = labelPos;
                 labels[ pair.Key ].transform.localScale = Vector3.one * .2f;
 
                 pair.Value.enabled = true;
