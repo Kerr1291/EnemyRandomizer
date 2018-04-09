@@ -1298,13 +1298,24 @@ namespace nv
             //UNTESTED CODEPATH
             else
             {
-                while(!wake)
+                //make use of the refight range to trigger the first encounter
+                while( !refightRange.ObjectIsInRange )
                 {
                     yield return new WaitForEndOfFrame();
                 }
 
-                nextState = Wake;
+                nextState = FirstEncounter;
             }
+
+            yield break;
+        }
+
+        IEnumerator FirstEncounter()
+        {
+            Dev.Where();
+            meshRenderer.enabled = true;
+
+            nextState = Flourish;
 
             yield break;
         }
@@ -4086,6 +4097,25 @@ namespace nv
             yield return GetAudioClipFromFSM(owner, bossFSMName, "Flourish", SetHornetYell);
             fightMusic = GetMusicCueFromFSM(owner, bossFSMName, "Flourish");
             fightMusicSnapshot = GetSnapshotFromFSM(owner, bossFSMName, "Flourish");
+
+            //load additional resources from other things
+
+            //load the required references for a first encounter
+            GameObject encounter = null;
+            if( UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Hornet Infected Knight Encounter" ) != null )
+                encounter = UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Hornet Infected Knight Encounter" );
+
+            //TODO: get "Grass Escape" game object for a particle effect
+
+
+
+            //and remove it when done
+            GameObject.Destroy( encounter );
+
+            //System.IO.StreamWriter file = null;
+            //file = new System.IO.StreamWriter( Application.dataPath + "/Managed/Mods/" + encounter.name );
+            //encounter.PrintSceneHierarchyTree( true, file );
+            //file.Close();
 
             yield break;
         }

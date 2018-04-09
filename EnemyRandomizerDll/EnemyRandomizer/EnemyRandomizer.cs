@@ -846,7 +846,7 @@ namespace EnemyRandomizerMod
                 }
             }
         }
-
+        static PhysicsMaterial2D hbMat;
         //used while testing to record things hit by a player's nail
         static string debugRecentHit = "";
         static void DebugPrintObjectOnHit( Collider2D otherCollider, GameObject gameObject )
@@ -855,6 +855,90 @@ namespace EnemyRandomizerMod
             {
                 Dev.Log( "Hero at "+HeroController.instance.transform.position+" HIT: " + otherCollider.gameObject.name + " at (" + otherCollider.gameObject.transform.position + ")");
                 debugRecentHit = otherCollider.gameObject.name;
+            }
+
+            if( hbMat == null )
+            {
+                hbMat = new PhysicsMaterial2D( "hb" );
+                hbMat.bounciness = .9f;
+                hbMat.friction = 0f;
+            }
+
+            if(HeroController.instance.playerData.equippedCharm_15)
+            {
+                Rigidbody2D body = otherCollider.GetComponentInParent<Rigidbody2D>();
+                if( body != null )
+                {
+                    Vector2 blowDirection = otherCollider.transform.position - HeroController.instance.transform.position;
+                    float blowPower = 80f;
+                    body.sharedMaterial = hbMat;
+                    body.velocity += blowDirection.normalized * blowPower;
+                    body.isKinematic = false;
+                    body.interpolation = RigidbodyInterpolation2D.Interpolate;
+                    body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+                    body.angularVelocity = 20f;
+                    body.gameObject.AddComponent<TakeDamageFromImpact>().blowVelocity = blowDirection.normalized * blowPower;
+                    body.gameObject.AddComponent<PreventOutOfBounds>();
+                }
+            }
+        }
+    }
+
+    public class TakeDamageFromImpact : MonoBehaviour
+    {
+        public Vector2 blowVelocity;
+        HealthManager healthManager;
+        Rigidbody2D body;
+        void OnEnable()
+        {
+            healthManager = GetComponent<HealthManager>();
+            body = GetComponent<Rigidbody2D>();
+        }
+
+        void Update()
+        {
+            body.position += blowVelocity;
+            body.rotation += 5f;
+            blowVelocity = blowVelocity * .92f;
+            if( blowVelocity.magnitude <= 0.1f )
+                Destroy( this );
+        }
+
+        void OnCollisionEnter2D( Collision2D collision )
+        {
+            HitInstance hit = new HitInstance()
+            {
+                AttackType = AttackTypes.Splatter,
+                CircleDirection = false,
+                DamageDealt = (int)blowVelocity.magnitude,
+                Direction = 0f,
+                IgnoreInvulnerable = false,
+                IsExtraDamage = false,
+                MagnitudeMultiplier = 1f,
+                MoveAngle = 0f,
+                MoveDirection = false,
+                Multiplier = 1f,
+                Source = HeroController.instance.gameObject,
+                SpecialType = SpecialTypes.None
+            };
+
+            if( collision.gameObject.layer == 8 )
+            {
+                healthManager.Hit( hit );
+                blowVelocity = collision.contacts[ 0 ].normal * blowVelocity.magnitude;
+            }
+
+            if( collision.gameObject.layer == 11 )
+            {
+                Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
+                if(rb != null)
+                {
+                    blowVelocity = collision.contacts[ 0 ].normal * blowVelocity.magnitude;
+                    collision.gameObject.AddComponent<TakeDamageFromImpact>().blowVelocity = blowVelocity;
+                    collision.gameObject.AddComponent<PreventOutOfBounds>();
+                    //rb.velocity += body.velocity;
+                    healthManager.Hit( hit );
+                }
             }
         }
     }
