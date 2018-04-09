@@ -98,6 +98,54 @@ namespace nv
             }
         }
 
+        public static void PrintCircleCollider2D( this Component c, string componentHeader = "", System.IO.StreamWriter file = null )
+        {
+            if( c as CircleCollider2D != null )
+            {
+                if( file != null )
+                {
+                    file.WriteLine( componentHeader + @" \--CircleCollider2D radius: " + ( c as CircleCollider2D ).radius );
+                    file.WriteLine( componentHeader + @" \--CircleCollider2D Offset: " + ( c as CircleCollider2D ).offset );
+                    file.WriteLine( componentHeader + @" \--CircleCollider2D Bounds-Min: " + ( c as CircleCollider2D ).bounds.min );
+                    file.WriteLine( componentHeader + @" \--CircleCollider2D Bounds-Max: " + ( c as CircleCollider2D ).bounds.max );
+                    file.WriteLine( componentHeader + @" \--CircleCollider2D isTrigger: " + ( c as CircleCollider2D ).isTrigger );
+                }
+                else
+                {
+                    Dev.Log( componentHeader + @" \--CircleCollider2D radius: " + ( c as CircleCollider2D ).radius );
+                    Dev.Log( componentHeader + @" \--CircleCollider2D Offset: " + ( c as CircleCollider2D ).offset );
+                    Dev.Log( componentHeader + @" \--CircleCollider2D Bounds-Min: " + ( c as CircleCollider2D ).bounds.min );
+                    Dev.Log( componentHeader + @" \--CircleCollider2D Bounds-Max: " + ( c as CircleCollider2D ).bounds.max );
+                    Dev.Log( componentHeader + @" \--CircleCollider2D isTrigger: " + ( c as CircleCollider2D ).isTrigger );
+                }
+            }
+        }
+
+        public static void PrintPolygonCollider2D( this Component c, string componentHeader = "", System.IO.StreamWriter file = null )
+        {
+            if( c as PolygonCollider2D != null )
+            {
+                if( file != null )
+                {
+                    foreach(var p in ( c as PolygonCollider2D ).points )
+                        file.WriteLine( componentHeader + @" \--PolygonCollider2D points: " + p );
+                    file.WriteLine( componentHeader + @" \--PolygonCollider2D Offset: " + ( c as PolygonCollider2D ).offset );
+                    file.WriteLine( componentHeader + @" \--PolygonCollider2D Bounds-Min: " + ( c as PolygonCollider2D ).bounds.min );
+                    file.WriteLine( componentHeader + @" \--PolygonCollider2D Bounds-Max: " + ( c as PolygonCollider2D ).bounds.max );
+                    file.WriteLine( componentHeader + @" \--PolygonCollider2D isTrigger: " + ( c as PolygonCollider2D ).isTrigger );
+                }
+                else
+                {
+                    foreach( var p in ( c as PolygonCollider2D ).points )
+                        Dev.Log( componentHeader + @" \--PolygonCollider2D points: " + p );
+                    Dev.Log( componentHeader + @" \--PolygonCollider2D Offset: " + ( c as PolygonCollider2D ).offset );
+                    Dev.Log( componentHeader + @" \--PolygonCollider2D Bounds-Min: " + ( c as PolygonCollider2D ).bounds.min );
+                    Dev.Log( componentHeader + @" \--PolygonCollider2D Bounds-Max: " + ( c as PolygonCollider2D ).bounds.max );
+                    Dev.Log( componentHeader + @" \--PolygonCollider2D isTrigger: " + ( c as PolygonCollider2D ).isTrigger );
+                }
+            }
+        }
+
         public static void PrintRigidbody2D( this Component c, string componentHeader = "", System.IO.StreamWriter file = null )
         {
             if( c as Rigidbody2D != null )

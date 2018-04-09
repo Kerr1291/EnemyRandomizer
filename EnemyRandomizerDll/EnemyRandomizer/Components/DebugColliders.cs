@@ -81,8 +81,11 @@ namespace nv
                 float y = sin + cos;
 
                 Vector2 point = new Vector2( x, y );
+                
+                point.x = point.x * radius * col.transform.localScale.x;
+                point.y = point.y * radius * col.transform.localScale.y;
 
-                points.Add( point * radius + center );
+                points.Add( point + center );
             }
 
             //add the start point to complete the shape
@@ -97,7 +100,10 @@ namespace nv
 
                 Vector2 point = new Vector2( x, y );
 
-                points.Add( point * radius + center );
+                point.x = point.x * radius * col.transform.localScale.x;
+                point.y = point.y * radius * col.transform.localScale.y;
+
+                points.Add( point + center );
             }
 
             return points;
@@ -110,7 +116,7 @@ namespace nv
 
             for( int i = 0; i < points.Count; ++i )
             {
-                Vector3 result = col.transform.TransformPoint( (Vector3)points[ i ] );
+                Vector3 result = col.transform.TransformPoint( (Vector3)points[ i ] + (Vector3)col.offset );
                 points[ i ] = (Vector2)result;
             }
 
@@ -123,7 +129,7 @@ namespace nv
 
             for( int i = 0; i < points.Count; ++i )
             {
-                Vector3 result = col.transform.TransformPoint( (Vector3)points[ i ] );
+                Vector3 result = col.transform.TransformPoint( (Vector3)points[ i ] + (Vector3)col.offset );
                 points[ i ] = (Vector2)result;
             }
 
@@ -207,8 +213,10 @@ namespace nv
             if( runDebugInput )
             {
                 if( debugInput == null )
+                {
                     debugInput = DebugInput();
-                StartCoroutine( debugInput );
+                    StartCoroutine( debugInput );
+                }
             }
         }
 
@@ -217,8 +225,10 @@ namespace nv
             if( runDebugInput )
             {
                 if( debugInput != null )
+                {
                     StopCoroutine( debugInput );
-                debugInput = null;
+                    debugInput = null;
+                }
             }
         }
 

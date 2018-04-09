@@ -132,9 +132,11 @@ namespace nv
                         c.PrintComponentType( componentHeader, file );
                         c.PrintTransform( componentHeader, file );
                         c.PrintBoxCollider2D( componentHeader, file );
-                        c.PrintPlayMakerFSM( componentHeader, file );
-                        c.PrintPersistentBoolItem( componentHeader, file );
+                        c.PrintCircleCollider2D( componentHeader, file );
+                        c.PrintPolygonCollider2D( componentHeader, file );
                         c.PrintRigidbody2D( componentHeader, file );
+                        c.PrintPersistentBoolItem( componentHeader, file );
+                        c.PrintPlayMakerFSM( componentHeader, file );
                     }
                 }
             }

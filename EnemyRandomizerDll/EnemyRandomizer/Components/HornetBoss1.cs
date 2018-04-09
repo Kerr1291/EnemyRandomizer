@@ -12,6 +12,51 @@ using nv.Tests;
 
 namespace nv
 {
+    public class PreventOutOfBounds : MonoBehaviour
+    {
+        Vector3 previousLocation;
+        Rigidbody2D body;
+        BoxCollider2D bodyCollider;
+
+        private void OnEnable()
+        {
+            previousLocation = transform.position;
+            body = GetComponent<Rigidbody2D>();
+            bodyCollider = GetComponent<BoxCollider2D>();
+        }
+
+        private void LateUpdate()
+        {
+            Vector3 currentLocation = transform.position;
+            Vector3 movementVector = (currentLocation - previousLocation);
+            float distance = movementVector.magnitude;
+
+            if( distance <= Mathf.Epsilon )
+                return;
+
+            var result = Physics2D.Raycast( previousLocation, movementVector.normalized, distance, 1 << 8 );
+            if(result.collider != null)
+            {
+                //somehow we passed through a wall, fix it
+                Dev.Log( "Out of bounds prevention triggered!" );
+
+                Vector3 collisionPoint = result.point;
+                Vector3 collisionNormal = result.normal;
+
+                Vector3 size = bodyCollider.size;
+
+                transform.position = collisionPoint + new Vector3( collisionNormal.x * size.x * 0.5f, collisionNormal.y * size.y * 0.5f );
+                previousLocation = transform.position;
+            }
+            else
+            {
+                previousLocation = currentLocation;
+            }
+        }
+    }
+
+
+
     public class EvadeRange : MonoBehaviour
     {
         public bool ObjectIsInRange { get; private set; }
@@ -616,9 +661,15 @@ namespace nv
         float throwMaxTravelTime;
         Ray throwRay;
         float throwDistance;
-        float needleYOffset = .2f;
+        float needleYOffset = -.35f;
         Vector3 startPos;
-        
+
+        void Awake()
+        {
+            bodyCollider = gameObject.GetComponent<PolygonCollider2D>();
+            bodyCollider.offset = new Vector2( 0f, -.3f );
+        }
+
         public void Play(GameObject owner, float startDelay, float throwMaxTravelTime, Ray throwRay, float throwDistance )
         {
             this.owner = owner;
@@ -628,7 +679,7 @@ namespace nv
             meshRenderer = gameObject.GetComponent<MeshRenderer>();
 
             meshRenderer.enabled = false;
-            startPos = throwRay.origin + new Vector3(0f,-needleYOffset,0f);
+            startPos = throwRay.origin + new Vector3(0f,needleYOffset,0f);
             transform.position = startPos;
             gameObject.SetActive(true);
 
@@ -644,10 +695,36 @@ namespace nv
             StartCoroutine(MainAILoop());
         }
 
+        float offset = -.3f;
+        IEnumerator Debug()
+        {
+            for(; ; )
+            {
+                if( owner == null )
+                    yield break;
+
+                if( UnityEngine.Input.GetKeyDown( KeyCode.V ) )
+                {
+                    offset -= .1f;
+                    bodyCollider.offset = new Vector2( 0f, offset );
+                    Dev.Log( "offset is now " + offset );
+                }
+                if( UnityEngine.Input.GetKeyDown( KeyCode.B ) )
+                {
+                    offset += .1f;
+                    bodyCollider.offset = new Vector2( 0f, offset );
+                    Dev.Log( "offset is now " + offset );
+                }
+
+                yield return null;
+            }
+        }
+
         IEnumerator MainAILoop()
         {
             Dev.Where();
             currentState = Out();
+            StartCoroutine( Debug() );
 
             for(;;)
             {
@@ -757,18 +834,16 @@ namespace nv
 
             yield break;
         }
-
-        void FaceAngle( float offset )
-        {
-            Vector2 velocity = body.velocity;
-            float z = Mathf.Atan2(velocity.y, velocity.x) * 57.2957764f + offset;
-            transform.localEulerAngles = new Vector3( 0f, 0f, z );
-        }
     }
 
 
     public class NeedleTink : MonoBehaviour
     {
+        private void Awake()
+        {
+            gameObject.GetComponent<Collider2D>().offset = new Vector2( 0f, -.3f );
+        }
+
         public void SetParent(Transform t)
         {
             //if deparenting, hide the parent
@@ -997,6 +1072,9 @@ namespace nv
             owner.transform.localScale = owner.transform.localScale.SetX(-1f);
             bodyCollider.offset = new Vector2(.1f, -.3f);
             bodyCollider.size = new Vector2(.9f, 2.6f);
+
+            hitGDash.offset = new Vector2( .15f, .3f );
+            hitADash.offset = new Vector2( -.2f, .175f );
 
             //NOTE: I added this to try fixing a problem with hornet ocassionally ending up in walls. I think it might help, so I'm leaving it.
             body.interpolation = RigidbodyInterpolation2D.Extrapolate;
@@ -1621,8 +1699,10 @@ namespace nv
             canStunRightNow = false;
 
             //change our collider size to match the throw attack
-            bodyCollider.offset = new Vector2(1f, -.3f);
-            bodyCollider.size = new Vector2(1f, 2.6f);
+            bodyCollider.offset = new Vector2( .5f, -.3f );
+            bodyCollider.size = new Vector2( 1.2f, 2.6f ); 
+            //bodyCollider.offset = new Vector2(1f, -.3f);
+            //bodyCollider.size = new Vector2(1f, 2.6f);
 
             //face the hero
             if(hero.transform.position.x > owner.transform.position.x )
@@ -1909,8 +1989,10 @@ namespace nv
                 else
                     owner.transform.localScale = owner.transform.localScale.SetX( 1f );
 
-                bodyCollider.offset = new Vector2(1.1f, -.9f);
-                bodyCollider.size = new Vector2(1.2f, 1.4f);
+                bodyCollider.offset = new Vector2( -0.2f, -.7f );
+                bodyCollider.size = new Vector2( 1.2f, 1.4f );
+                //bodyCollider.offset = new Vector2(1.1f, -.9f);
+                //bodyCollider.size = new Vector2(1.2f, 1.4f);
 
                 body.velocity = Vector2.zero;
 
@@ -1937,7 +2019,7 @@ namespace nv
 
             PlayOneShot(hornetDashSFX);
             
-            hitADash.isTrigger = true;
+            hitADash.enabled = true;
 
             GameObject hero = HeroController.instance.gameObject;
             
@@ -2034,7 +2116,10 @@ namespace nv
                 body.velocity = aDashVelocity;
 
                 //added this in to keep hornet from clipping into walls
-                DirectionSet nextFrame = RaycastAlongCurrentVelocity(8,Time.deltaTime);
+                DirectionSet nextFrame = RaycastAlongCurrentVelocity(8,Time.deltaTime * 4f);
+
+                Dev.Log( "next frame collisions (local checking):" + bottomHit + " " + rightHit + " " + leftHit + " " + topHit );
+                Dev.Log( "next frame collisions (my checking):" + nextFrame.below + " " + nextFrame.above + " " + nextFrame.left + " " + nextFrame.right );
 
                 //did we hit a wall? end evade timer early
                 if( bottomHit || nextFrame.below )
@@ -2490,8 +2575,10 @@ namespace nv
             else
                 owner.transform.localScale = owner.transform.localScale.SetX( 1f );
 
-            bodyCollider.offset = new Vector2(1.1f, -.9f);
-            bodyCollider.size = new Vector2(1.2f, 1.4f);
+            bodyCollider.offset = new Vector2( 0.5f, -.9f );
+            bodyCollider.size = new Vector2( 1.2f, 1.4f );
+            //bodyCollider.offset = new Vector2(1.1f, -.9f);
+            //bodyCollider.size = new Vector2(1.2f, 1.4f);
 
             body.velocity = Vector2.zero;
 
@@ -2518,6 +2605,7 @@ namespace nv
             ClearPreviousCollisions();
 
             gDashEffect.Play(owner);
+            hitGDash.gameObject.SetActive( true );
 
             bodyCollider.offset = new Vector2(0.1f, -.8f);
             bodyCollider.size = new Vector2(1.6f, 1.5f);
@@ -2554,7 +2642,9 @@ namespace nv
         IEnumerator GDashRecover1()
         {
             Dev.Where();
-            
+
+            hitGDash.gameObject.SetActive( false );
+
             bodyCollider.offset = new Vector2(1.1f, -0.9f);
             bodyCollider.size = new Vector2(1.2f, 1.4f);
 
@@ -2944,13 +3034,13 @@ namespace nv
         {
             //grab the camera's parent and shake it
             GameObject cam = GameObject.Find("CameraParent");
-            if(cam != null)
+            if( cam != null )
             {
-                cam.GetComponent<PlayMakerFSM>().SendEvent("EnemyKillShake");
+                cam.GetComponent<PlayMakerFSM>().SendEvent( "EnemyKillShake" );
             }
             else
             {
-                Dev.Log("Cannot find camera to send shake event!");
+                Dev.Log( "Cannot find camera to send shake event!" );
             }
         }
 
@@ -3096,80 +3186,7 @@ namespace nv
         {
             owner.transform.localScale = owner.transform.localScale.SetX(-owner.transform.localScale.x);
         }
-
-        void FaceObject(GameObject objectToFace, bool spriteFacesRight = false, bool resetFrame = false, string playNewAnimation = "")
-        {
-            Dev.Where();
-            Vector3 localScale = owner.transform.localScale;
-            float xScale = localScale.x;
-
-            if(owner.transform.position.x < objectToFace.transform.position.x)
-            {
-                if(spriteFacesRight)
-                {
-                    if(localScale.x != xScale)
-                    {
-                        localScale.x = xScale;
-                        if(resetFrame)
-                        {
-                            this.tk2dAnimator.PlayFromFrame(0);
-                        }
-                        if(!string.IsNullOrEmpty(playNewAnimation))
-                        {
-                            this.tk2dAnimator.Play(playNewAnimation);
-                        }
-                    }
-                }
-                else if(localScale.x != -xScale)
-                {
-                    localScale.x = -xScale;
-                    if(resetFrame)
-                    {
-                        this.tk2dAnimator.PlayFromFrame(0);
-                    }
-                    if(!string.IsNullOrEmpty(playNewAnimation))
-                    {
-                        this.tk2dAnimator.Play(playNewAnimation);
-                    }
-                }
-            }
-            else if(spriteFacesRight)
-            {
-                if(localScale.x != -xScale)
-                {
-                    localScale.x = -xScale;
-                    if(resetFrame)
-                    {
-                        this.tk2dAnimator.PlayFromFrame(0);
-                    }
-                    if(!string.IsNullOrEmpty(playNewAnimation))
-                    {
-                        this.tk2dAnimator.Play(playNewAnimation);
-                    }
-                }
-            }
-            else if(localScale.x != xScale)
-            {
-                localScale.x = xScale;
-                if(resetFrame)
-                {
-                    this.tk2dAnimator.PlayFromFrame(0);
-                }
-                if(!string.IsNullOrEmpty(playNewAnimation))
-                {
-                    this.tk2dAnimator.Play(playNewAnimation);
-                }
-            }
-            owner.transform.localScale = localScale;
-        }
-
-        void FaceAngle(float offset)
-        {
-            Vector2 velocity = body.velocity;
-            float z = Mathf.Atan2(velocity.y, velocity.x) * 57.2957764f + offset;
-            owner.transform.localEulerAngles = new Vector3(0f, 0f, z);
-        }
-            
+                    
         void PlayAnimation(string animation)
         {
             Dev.Where();
@@ -3255,6 +3272,7 @@ namespace nv
             if( raycastHit2D.collider == null )
                 return directionSet;
 
+            Dev.Log( "We're about to hit a wall!" );
             float x = owner.transform.position.x;
             float y = owner.transform.position.y;
             float px = raycastHit2D.point.x;
@@ -3748,9 +3766,11 @@ namespace nv
             if( UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Corpse Hornet 1(Clone)" ) != null )
                 hornetCorpse = UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Corpse Hornet 1(Clone)" );
 
-            gameObject.AddComponent<DebugColliders>();
-            needle.gameObject.AddComponent<DebugColliders>();
-            needleTink.gameObject.AddComponent<DebugColliders>();
+            gameObject.AddComponent<PreventOutOfBounds>();
+            //gameObject.AddComponent<DebugColliders>();
+            //needle.gameObject.AddComponent<DebugColliders>();
+            //needleTink.gameObject.AddComponent<DebugColliders>();
+            //HeroController.instance.gameObject.AddComponent<DebugColliders>();
 
 #if UNITY_EDITOR
             healthManager = gameObject.AddComponent<HealthManager>();
