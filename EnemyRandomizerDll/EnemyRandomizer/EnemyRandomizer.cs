@@ -213,7 +213,7 @@ namespace EnemyRandomizerMod
             ContractorManager.Instance.StartCoroutine( DebugInput() );
         }
 
-        bool suspended = false;
+        //bool suspended = false;
         IEnumerator DebugInput()
         {
             yield return new WaitForSeconds( 2f );
@@ -234,6 +234,14 @@ namespace EnemyRandomizerMod
                     }
                 }
 
+                //if( UnityEngine.Input.GetKeyDown( KeyCode.V ) )
+                //{
+                //    while( GameObject.Find( "Hornet Boss 1" ) == null )
+                //        yield return new WaitForEndOfFrame();
+
+                //    GameObject.Find( "Hornet Boss 1" ).AddComponent<HornetBoss1>();
+                //}
+
                 //if( UnityEngine.Input.GetKeyDown( KeyCode.N ) )
                 //{
                 //    //MenuStyles.Instance.SetStyle( i, true, false );
@@ -248,7 +256,7 @@ namespace EnemyRandomizerMod
 
                 //    Ray ray = c.ScreenPointToRay(new Vector3(mousePos.x,mousePos.y, c.nearClipPlane));
                 //    worldPos = ray.origin + ray.direction * 26f;
-                    
+
                 //    {
                 //        Dev.Log( "Creating " + database.loadedEnemyPrefabNames[ i ] + " at " + worldPos );
                 //        worldPos = new Vector3( worldPos.x, worldPos.y, 0f );

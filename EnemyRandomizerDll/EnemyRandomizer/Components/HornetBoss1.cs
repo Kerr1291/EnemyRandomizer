@@ -12,6 +12,93 @@ using nv.Tests;
 
 namespace nv
 {
+    public class StunController : MonoBehaviour
+    {
+        public HealthManager healthManager;
+        public Action onStun;
+
+        public bool isSuspended = false;
+        
+        public int hitsToStun = 10;
+        public int maxStuns = 5;
+        public int stuns = 0;
+
+        //temporary patch to not having an 'onhit' hook, ignore any damage under this amount
+        public int ignoreDamageDeltaUnder = 5;
+
+        int hitsTaken = 0;
+        int previousHP = 0;
+
+        void OnHit(int damageTaken)
+        {
+            hitsTaken++;
+        }
+
+        void OnEnable()
+        {
+            healthManager = GetComponent<HealthManager>();
+
+            hitsTaken = 0;
+            stuns = 0;
+            previousHP = healthManager.hp;
+
+            StartCoroutine( MainAILoop() );
+        }
+
+        public void SetSuspend(bool suspended)
+        {
+            isSuspended = suspended;
+        }
+
+        //TODO: add a hook for when a health manager takes a hit, for now just poll the difference in hp
+        //the side effect of this is that things that damage enemies but aren't player hits may cause stuns depending on the value of ignoreDamageDeltaUnder
+        private void Update()
+        {
+            if( healthManager.hp != previousHP && healthManager.hp < previousHP )
+            {
+                int damage = previousHP - healthManager.hp;
+                if(damage >= ignoreDamageDeltaUnder )
+                    OnHit( damage );
+            }
+
+            previousHP = healthManager.hp;
+        }
+
+        IEnumerator MainAILoop()
+        {
+            Dev.Where();
+
+            for(; ; )
+            {
+                yield return new WaitForEndOfFrame();
+
+                if( stuns >= maxStuns )
+                    break;
+
+                if(isSuspended)
+                    continue;
+                
+                if( hitsTaken < hitsToStun )
+                    continue;
+
+                yield return Stun();
+            }
+
+            this.enabled = false;
+        }
+
+        IEnumerator Stun()
+        {
+            Dev.Where();
+
+            stuns++;
+            hitsTaken = 0;
+            onStun?.Invoke();
+
+            yield break;
+        }
+    }
+
     public class PreventOutOfBounds : MonoBehaviour
     {
         Vector3 previousLocation;
@@ -38,7 +125,7 @@ namespace nv
             if(result.collider != null)
             {
                 //somehow we passed through a wall, fix it
-                Dev.Log( "Out of bounds prevention triggered!" );
+                //Dev.Log( "Out of bounds prevention triggered!" );
 
                 Vector3 collisionPoint = result.point;
                 Vector3 collisionNormal = result.normal;
@@ -54,8 +141,6 @@ namespace nv
             }
         }
     }
-
-
 
     public class EvadeRange : MonoBehaviour
     {
@@ -695,36 +780,19 @@ namespace nv
             StartCoroutine(MainAILoop());
         }
 
-        float offset = -.3f;
-        IEnumerator Debug()
+        public void Stop()
         {
-            for(; ; )
-            {
-                if( owner == null )
-                    yield break;
-
-                if( UnityEngine.Input.GetKeyDown( KeyCode.V ) )
-                {
-                    offset -= .1f;
-                    bodyCollider.offset = new Vector2( 0f, offset );
-                    Dev.Log( "offset is now " + offset );
-                }
-                if( UnityEngine.Input.GetKeyDown( KeyCode.B ) )
-                {
-                    offset += .1f;
-                    bodyCollider.offset = new Vector2( 0f, offset );
-                    Dev.Log( "offset is now " + offset );
-                }
-
-                yield return null;
-            }
+            if( meshRenderer != null )
+                meshRenderer.enabled = false;
+            isAnimating = false;
+            gameObject.SetActive( false );
         }
 
         IEnumerator MainAILoop()
         {
             Dev.Where();
             currentState = Out();
-            StartCoroutine( Debug() );
+            //StartCoroutine( Debug() );
 
             for(;;)
             {
@@ -888,8 +956,10 @@ namespace nv
         public GDashEffect gDashEffect;
         public SphereBall sphereBall;
         public FlashEffect flashEffect;
+        public StunController stunControl;
 
         public GameObject hornetCorpse;
+        public GameObject stunEffectPrefab;
 
         //hornet's projectile weapon & the tink effect that goes with it
         public Needle needle;
@@ -913,6 +983,8 @@ namespace nv
         public AudioClip hornetDashSFX;
         public AudioClip hornetWallLandSFX;
         public AudioClip hornetSphereSFX;
+        public List<AudioClip> hornetStunYells;
+        
 #if UNITY_EDITOR
         public object fightMusic;
 #else
@@ -922,8 +994,6 @@ namespace nv
 
         //have this set by an outside controller to start the fight
         public bool wake = false;
-
-        //TODO: set when hit
         public bool wasHitRecently;
 
 #if UNITY_EDITOR
@@ -952,6 +1022,8 @@ namespace nv
         public float gSphereTime = 1f;
         public float aSphereSize = 1.5f;
         public float gSphereSize = 1.5f;
+        public float stunAirXVelocity = 10f;
+        public float stunAirYVelocity = 20f;
 
         public float escalationHPPercentage = .4f;
         public float chanceToThrow = .8f;
@@ -966,6 +1038,7 @@ namespace nv
         public float normDmgIdleWaitMax = .4f;
         public float normAirDashPauseMin = .15f;
         public float normAirDashPauseMax = .4f;
+        public float stunTime = 3f;
 
         public float esRunWaitMin = .35f;
         public float esRunWaitMax = .75f;
@@ -987,6 +1060,10 @@ namespace nv
         public int maxChosenASphere = 1;
         public int maxChosenGDash = 2;
         public int maxChosenThrow = 1;
+
+        //temporary patch to not having an 'onhit' hook, ignore any damage under this amount
+        public int ignoreDamageDeltaUnder = 5;
+        public Action<int> OnHit { get; set; }
 
         //TODO: convert to a weighted table type
         Dictionary<Func<IEnumerator>, float> dmgResponseChoices;
@@ -1032,9 +1109,10 @@ namespace nv
         bool rightHit = false;
         bool bottomHit = false;
         bool leftHit = false;
-        bool canStunRightNow = true;
         bool escalated = false;
         bool willSphere = false;
+        
+        int previousHP = 0;
 
         int ctIdle = 0;
         int ctRun = 0;
@@ -1096,10 +1174,32 @@ namespace nv
 
             airDashPauseMin = normAirDashPauseMin;
             airDashPauseMax = normAirDashPauseMax;
+
+            OnHit -= DefaultOnHit;
+            OnHit += DefaultOnHit;
+        }
+
+        void Update()
+        {
+            if( healthManager.hp != previousHP && healthManager.hp < previousHP )
+            {
+                int damage = previousHP - healthManager.hp;
+                if( damage >= ignoreDamageDeltaUnder )
+                    OnHit?.Invoke( damage );
+            }
+
+            previousHP = healthManager.hp;
+        }
+
+        void DefaultOnHit(int damage)
+        {
+            wasHitRecently = true;
         }
 
         //current state of the state machine
         Func<IEnumerator> nextState = null;
+        Func<IEnumerator> overrideNextState = null;
+        IEnumerator currentState;
         IEnumerator mainLoop;
 
         IEnumerator Start()
@@ -1138,7 +1238,7 @@ namespace nv
 
             nextState = Init;
 
-            IEnumerator currentState = nextState();
+            currentState = nextState();
             nextState = null;
 
             for(;;)
@@ -1160,6 +1260,11 @@ namespace nv
                     //    yield return new WaitForEndOfFrame();
                     //}
                     //Dev.Log( "Next" );
+                    if( overrideNextState != null )
+                    {
+                        nextState = overrideNextState;
+                        overrideNextState = null;
+                    }
 
                     currentState = nextState();
                     nextState = null;
@@ -1696,7 +1801,7 @@ namespace nv
             HeroController hero = HeroController.instance;
 
             //disable stun control
-            canStunRightNow = false;
+            stunControl.isSuspended = true;
 
             //change our collider size to match the throw attack
             bodyCollider.offset = new Vector2( .5f, -.3f );
@@ -1784,7 +1889,7 @@ namespace nv
             needleTink.SetParent(null);
 
             //allow stunning again
-            canStunRightNow = true;
+            stunControl.isSuspended = false;
 
             nextState = Escalation;
 
@@ -2896,6 +3001,7 @@ namespace nv
         {
             Dev.Where();
 
+            wasHitRecently = false;
             runAudioSource.Stop();
 
             int choice = GameRNG.WeightedRand(DmgResponseChoices.Values.ToList());
@@ -2958,11 +3064,65 @@ namespace nv
             yield break;
         }
 
-        //TODO: hook something up to cause a transition to here
+        //called by the stun controller when a stun happens
+        void OnStun()
+        {
+            Dev.Where();
+            blockingAnimationIsPlaying = false;
+            currentState = null;
+            overrideNextState = StunStart;
+        }
+        
+        //transition here when the next state is set to this by OnStun
         IEnumerator StunStart()
         {
             Dev.Where();
-            //TODO
+
+            //play stun yell
+            PlayOneShotRandom( hornetStunYells );
+
+            //reset collider
+            bodyCollider.offset = new Vector2( 0.1f, -.3f );
+            bodyCollider.size = new Vector2( .9f, 2.6f );
+
+            //stop ball
+            sphereBall.Stop();
+
+            //create stun effect
+            //NOTE: this could probably be replaced by GameObject.Instantiate, but for now we're following hollow knight's way of doing things
+            stunEffectPrefab.Spawn( Vector3.zero, Quaternion.identity );
+
+            //reset gravity
+            body.gravityScale = 1.5f;
+
+            //reset rotation
+            owner.transform.rotation = Quaternion.identity;
+
+            //reset Y scale
+            owner.transform.localScale = owner.transform.localScale.SetY( 1f );
+
+            //face hero
+            GameObject hero = HeroController.instance.gameObject;
+            if( hero.transform.position.x > owner.transform.position.x )
+                owner.transform.localScale = owner.transform.localScale.SetX( -1f );
+            else
+                owner.transform.localScale = owner.transform.localScale.SetX( 1f );
+
+            float stunAirVelocity = owner.transform.localScale.x * stunAirXVelocity;
+
+            PlayAnimation( "Stun Air" );
+
+            //launch the boss
+            body.velocity = new Vector2( stunAirVelocity, stunAirYVelocity );
+
+            //disable the attacks
+            needle.Stop();
+            hitADash.gameObject.SetActive( false );
+            hitGDash.gameObject.SetActive( false );
+            needleTink.SetParent( null );
+
+            wasHitRecently = false;
+
             nextState = StunAir;
 
             yield break;
@@ -2971,16 +3131,53 @@ namespace nv
         IEnumerator StunAir()
         {
             Dev.Where();
-            //TODO
-            nextState = StunLand;
+            
+            //change collision check directions for jumping
+            EnableCollisionsInDirection( false, true, false, false );
+            
+            for(; ; )
+            {
+                yield return new WaitForEndOfFrame();
 
+                //did we hit a wall? end evade timer early
+                if( bottomHit )
+                {
+                    nextState = StunLand;
+                    break;
+                }
+            }
+
+            //restore collision check directions
+            EnableCollisionsInDirection( false, false, true, true );
+            
             yield break;
         }
 
         IEnumerator StunLand()
         {
             Dev.Where();
-            //TODO
+
+            PlayAnimation( "Stun" );
+
+            float waitTimer = stunTime;
+            while( waitTimer > 0f )
+            {
+                yield return new WaitForEndOfFrame();
+
+                //lock the velocity for the duration of the stun
+                body.velocity = Vector2.zero;
+
+                //did we hit a wall? then end the dash.
+                if( wasHitRecently )
+                {
+                    break;
+                }
+
+                waitTimer -= Time.deltaTime;
+            }
+
+            wasHitRecently = false;
+
             nextState = StunRecover;
 
             yield break;
@@ -2989,7 +3186,7 @@ namespace nv
         IEnumerator StunRecover()
         {
             Dev.Where();
-            //TODO
+
             nextState = SetJumpOnly;
 
             yield break;
@@ -3032,16 +3229,18 @@ namespace nv
 
         public void DoEnemyKillShakeEffect()
         {
+            //NOTE: taken from the game's health manager as a nice way to get the game camera
+            GameCameras.instance.cameraShakeFSM.SendEvent( "EnemyKillShake" );
             //grab the camera's parent and shake it
-            GameObject cam = GameObject.Find("CameraParent");
-            if( cam != null )
-            {
-                cam.GetComponent<PlayMakerFSM>().SendEvent( "EnemyKillShake" );
-            }
-            else
-            {
-                Dev.Log( "Cannot find camera to send shake event!" );
-            }
+            //GameObject cam = GameObject.Find("CameraParent");
+            //if( cam != null )
+            //{
+            //    cam.GetComponent<PlayMakerFSM>().SendEvent( "EnemyKillShake" );
+            //}
+            //else
+            //{
+            //    Dev.Log( "Cannot find camera to send shake event!" );
+            //}
         }
 
         public void PlayOneShot(AudioClip clip)
@@ -3514,6 +3713,37 @@ namespace nv
             return velocity;
         }
 
+        public static IEnumerator GetAudioPlayRandomClipsFromFSM( GameObject go, string fsmName, string stateName, Action<List<AudioClip>> onAudioPlayRandomLoaded )
+        {
+            GameObject copy = go;
+            if( !go.activeInHierarchy )
+            {
+                copy = GameObject.Instantiate( go ) as GameObject;
+                copy.SetActive( true );
+            }
+
+            //wait a few frames for the fsm to set up stuff
+            yield return new WaitForEndOfFrame();
+#if UNITY_EDITOR
+            onAudioPlayRandomLoaded(null);
+#else
+            var audioPlayRandom = copy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.AudioPlayRandom>(stateName, fsmName);
+
+            //this is a prefab
+            var clips = audioPlayRandom.audioClips.ToList();
+
+            //send the clips out
+            onAudioPlayRandomLoaded( clips );
+#endif
+            if( copy != go )
+                GameObject.Destroy( copy );
+
+            //let stuff get destroyed
+            yield return new WaitForEndOfFrame();
+
+            yield break;
+        }
+
         public static IEnumerator GetAudioPlayerOneShotClipsFromFSM(GameObject go, string fsmName, string stateName, Action<List<AudioClip>> onAudioPlayerOneShotLoaded)
         {
             GameObject copy = go;
@@ -3541,9 +3771,53 @@ namespace nv
 
             //let stuff get destroyed
             yield return new WaitForEndOfFrame();
+            
+            yield break;
+        }
+
+
+        public static IEnumerator GetGameObjectFromSpawnObjectFromGlobalPoolInFSM( GameObject go, string fsmName, string stateName, Action<GameObject> onGameObjectLoaded, bool returnCopyOfPrefab )
+        {
+            GameObject copy = go;
+            if( !go.activeInHierarchy )
+            {
+                copy = GameObject.Instantiate( go ) as GameObject;
+                copy.SetActive( true );
+            }
+
+            //wait a few frames for the fsm to set up stuff
+            yield return new WaitForEndOfFrame();
+#if UNITY_EDITOR
+            onGameObjectLoaded(null);
+#else
+            var spawnObjectFromGlobalPool = copy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.SpawnObjectFromGlobalPool>(stateName, fsmName);
+
+            //this is a prefab
+            var prefab = spawnObjectFromGlobalPool.gameObject.Value;
+
+            if( returnCopyOfPrefab )
+            {
+                //so spawn one
+                var spawnedCopy = GameObject.Instantiate(prefab) as GameObject;
+
+                //send the loaded object out
+                onGameObjectLoaded( spawnedCopy );
+            }
+            else
+            {
+                onGameObjectLoaded( prefab );
+            }
+#endif
+            if( copy != go )
+                GameObject.Destroy( copy );
+
+            //let stuff get destroyed
+            yield return new WaitForEndOfFrame();
 
             yield break;
         }
+
+
 
         public static IEnumerator GetGameObjectFromFSM(GameObject go, string fsmName, string stateName, Action<GameObject> onGameObjectLoaded)
         {
@@ -3767,6 +4041,9 @@ namespace nv
                 hornetCorpse = UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Corpse Hornet 1(Clone)" );
 
             gameObject.AddComponent<PreventOutOfBounds>();
+            stunControl = gameObject.AddComponent<StunController>();
+            stunControl.onStun += OnStun;
+
             //gameObject.AddComponent<DebugColliders>();
             //needle.gameObject.AddComponent<DebugColliders>();
             //needleTink.gameObject.AddComponent<DebugColliders>();
@@ -3788,6 +4065,8 @@ namespace nv
             //load resources for the boss
             string bossFSMName = "Control";
 
+            yield return GetAudioPlayRandomClipsFromFSM( owner, bossFSMName, "Stun Start", SetHornetStunYells );
+
             yield return GetAudioClipFromAudioPlaySimpleInFSM(owner, bossFSMName, "Sphere", SetHornetSphereSFX);
             yield return GetAudioClipFromAudioPlaySimpleInFSM(owner, bossFSMName, "Wall L", SetHornetWallLandSFX);
             yield return GetAudioClipFromAudioPlaySimpleInFSM(owner, bossFSMName, "Fire", SetHornetDashSFX);
@@ -3802,6 +4081,7 @@ namespace nv
             yield return GetAudioClipFromAudioPlaySimpleInFSM(owner, bossFSMName, "Throw", SetHornetThrowSFX);
             yield return GetAudioPlayerOneShotClipsFromFSM(owner, bossFSMName, "Throw Antic", SetHornetAttackYells);
             yield return GetGameObjectFromFSM(owner, bossFSMName, "Flourish", SetAreaTitleReference);
+            yield return GetGameObjectFromSpawnObjectFromGlobalPoolInFSM( owner, bossFSMName, "Stun Start", SetStunEffect, false );
             yield return GetAudioSourceObjectFromFSM(owner, bossFSMName, "Flourish", SetActorAudioSource);
             yield return GetAudioClipFromFSM(owner, bossFSMName, "Flourish", SetHornetYell);
             fightMusic = GetMusicCueFromFSM(owner, bossFSMName, "Flourish");
@@ -3821,6 +4101,17 @@ namespace nv
             actorAudioSource = source;
             actorAudioSource.transform.SetParent(owner.transform);
             actorAudioSource.transform.localPosition = Vector3.zero;
+        }
+
+        void SetHornetStunYells( List<AudioClip> clips )
+        {
+            if( clips == null )
+            {
+                Dev.Log( "Warning: hornet stun yells are null clips!" );
+                return;
+            }
+
+            hornetStunYells = clips;
         }
 
         void SetHornetSphereSFX(AudioClip clip)
@@ -3975,6 +4266,17 @@ namespace nv
             }
 
             hornetLaughs = clips;
+        }
+
+        void SetStunEffect( GameObject stunEffect )
+        {
+            if( stunEffect == null )
+            {
+                Dev.Log( "Warning: Stun Effect GameObject failed to load and is null!" );
+                return;
+            }
+
+            stunEffectPrefab = stunEffect;
         }
 
         void SetAreaTitleReference(GameObject areaTitle)

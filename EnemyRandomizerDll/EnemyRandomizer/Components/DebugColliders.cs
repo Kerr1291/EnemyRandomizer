@@ -162,13 +162,32 @@ namespace nv
         //use this static bool to keep the input only running on one component 
         static bool forceSingleEntry = false;
         static IEnumerator debugInput = null;
-        static IEnumerator DebugInput()
+        IEnumerator DebugInput()
         {
             bool suspended = false;
             for(; ; )
             {
                 if( suspended )
                     Time.timeScale = 0f;
+
+                //toggle renderers on/off
+                if( UnityEngine.Input.GetKeyDown( KeyCode.Slash ) )
+                {
+                    foreach(var v in lines)
+                    {
+                        v.Value.GetComponent<Renderer>().enabled = !v.Value.GetComponent<Renderer>().enabled;
+                    }
+                    foreach( var v in labels )
+                    {
+                        v.Value.gameObject.SetActive( !v.Value.gameObject.activeInHierarchy );
+                    }
+                }
+
+                //toggle the rendering of 
+                if( UnityEngine.Input.GetKeyDown( KeyCode.Backslash ) )
+                {
+                    renderDisabledColliders = !renderDisabledColliders;
+                }
 
                 //suspend
                 if( !forceSingleEntry && UnityEngine.Input.GetKeyDown( KeyCode.Q ) )

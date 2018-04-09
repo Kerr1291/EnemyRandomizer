@@ -520,11 +520,11 @@ namespace nv
                                     if( a != null )
                                     {
                                         file.WriteLine( componentHeader + @" \----PFSM ---- SpawnObjectFromGlobalPool (Name) = " + a?.Name );
-                                        file.WriteLine( componentHeader + @" \----PFSM ---- SpawnObjectFromGlobalPool (gameObject?.Name) = " + a?.gameObject?.Name );
-                                        file.WriteLine( componentHeader + @" \----PFSM ---- SpawnObjectFromGlobalPool (position) = " + a?.position );
-                                        file.WriteLine( componentHeader + @" \----PFSM ---- SpawnObjectFromGlobalPool (rotation) = " + a?.rotation );
-                                        file.WriteLine( componentHeader + @" \----PFSM ---- SpawnObjectFromGlobalPool (spawnPoint) = " + a?.spawnPoint );
-                                        file.WriteLine( componentHeader + @" \----PFSM ---- SpawnObjectFromGlobalPool (storeObject) = " + a?.storeObject );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.gameObject ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.position ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.rotation ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.spawnPoint ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.storeObject ) );
                                     }
                                 }
 
@@ -533,11 +533,12 @@ namespace nv
                                     if( a != null )
                                     {
                                         file.WriteLine( componentHeader + @" \----PFSM ---- FlingObjectsFromGlobalPool (Name) = " + a?.Name );
-                                        file.WriteLine( componentHeader + @" \----PFSM ---- FlingObjectsFromGlobalPool (gameObject?.Name) = " + a?.gameObject?.Name );
-                                        file.WriteLine( componentHeader + @" \----PFSM ---- FlingObjectsFromGlobalPool (position) = " + a?.position );
-                                        file.WriteLine( componentHeader + @" \----PFSM ---- FlingObjectsFromGlobalPool (FSM) = " + a?.FSM );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.gameObject ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.position ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.FSM ) );
+                                        //file.WriteLine( componentHeader + @" \----PFSM ---- FlingObjectsFromGlobalPool (FSM) = " + a?.FSM );
                                         file.WriteLine( componentHeader + @" \----PFSM ---- FlingObjectsFromGlobalPool (FSMEvent) = " + a?.FSMEvent );
-                                        file.WriteLine( componentHeader + @" \----PFSM ---- FlingObjectsFromGlobalPool (spawnPoint) = " + a?.spawnPoint );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.spawnPoint ) );
                                     }
                                 }
 
@@ -545,14 +546,13 @@ namespace nv
                                     var a = ( x as HutongGames.PlayMaker.Actions.CreateObject );
                                     if( a != null )
                                     {
-                                        file.WriteLine( componentHeader + @" \----PFSM ---- CreateObject (Name) = " + a?.Name );
-                                        file.WriteLine( componentHeader + @" \----PFSM ---- CreateObject (gameObject?.Name) = " + a?.gameObject?.Name );
-                                        file.WriteLine( componentHeader + @" \----PFSM ---- CreateObject (position) = " + a?.position );
-                                        file.WriteLine( componentHeader + @" \----PFSM ---- CreateObject (position) = " + a?.rotation );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.gameObject ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.position ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.rotation ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.spawnPoint ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.storeObject ) );
                                         file.WriteLine( componentHeader + @" \----PFSM ---- CreateObject (networkGroup) = " + a?.networkGroup );
                                         file.WriteLine( componentHeader + @" \----PFSM ---- CreateObject (networkInstantiate) = " + a?.networkInstantiate );
-                                        file.WriteLine( componentHeader + @" \----PFSM ---- CreateObject (spawnPoint) = " + a?.spawnPoint );
-                                        file.WriteLine( componentHeader + @" \----PFSM ---- CreateObject (storeObject) = " + a?.storeObject );
                                     }
                                 }
 
