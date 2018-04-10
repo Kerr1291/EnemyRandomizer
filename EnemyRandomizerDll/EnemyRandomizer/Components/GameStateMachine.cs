@@ -22,7 +22,7 @@ namespace nv
 
         public virtual bool BlockingAnimationIsPlaying
         {
-            get; private set;
+            get; protected set;
         }
         
         //current state of the state machine
@@ -141,7 +141,7 @@ namespace nv
             DoCameraEffect("EnemyKillShake");
         }
 
-        protected static void PlayBossMusic(UnityEngine.Audio.AudioMixerSnapshot mixerSnapshot, object musicCue)
+        protected static void PlayBossMusic(UnityEngine.Audio.AudioMixerSnapshot mixerSnapshot, MusicCue musicCue)
         {
             //set the audio mixer snapshot
             if(mixerSnapshot != null)
@@ -224,7 +224,7 @@ namespace nv
             }
         }
 
-        static public void ShowBossTitle(GameObject areaTitleObject, float hideInSeconds, string largeMain = "", string largeSuper = "", string largeSub = "", string smallMain = "", string smallSuper = "", string smallSub = "")
+        static public void ShowBossTitle(MonoBehaviour owner, GameObject areaTitleObject, float hideInSeconds, string largeMain = "", string largeSuper = "", string largeSub = "", string smallMain = "", string smallSuper = "", string smallSub = "")
         {
             //no point in doing this
             if(hideInSeconds <= 0f)
@@ -255,7 +255,7 @@ namespace nv
                 areaTitleObject.FindGameObjectInChildren( "Title Large Super" ).GetComponent<TMPro.TextMeshPro>().text = largeSuper;
 
                 //give it 3 seconds to fade in
-                StartCoroutine( HideBossTitleAfter( areaTitleObject, hideInSeconds + 3f ) );
+                owner.StartCoroutine( GameStateMachine.HideBossTitleAfter( areaTitleObject, hideInSeconds + 3f ) );
 #endif
             }
             else
@@ -555,7 +555,7 @@ namespace nv
         {
             return null;
 #else
-        public static static MusicCue GetMusicCueFromFSM(GameObject go, string fsmName, string stateName)
+        public static MusicCue GetMusicCueFromFSM(GameObject go, string fsmName, string stateName)
         {
             var musicCue = go.GetFSMActionOnState<HutongGames.PlayMaker.Actions.ApplyMusicCue>(stateName, fsmName);
             MusicCue mc = musicCue.musicCue.Value as MusicCue;

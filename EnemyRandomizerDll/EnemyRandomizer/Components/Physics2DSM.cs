@@ -15,15 +15,30 @@ namespace nv
 
     public class Physics2DSM : GameStateMachine
     {
-        Rigidbody2D body;
-        LayerMask collisionLayer = 8;
-        BoxCollider2D bodyCollider;
+        protected Rigidbody2D body;
+        protected BoxCollider2D bodyCollider;
+        protected LayerMask collisionLayer = 8;
 
         //do we respond to world collisions in these directions?
         public bool checkUp = false;
         public bool checkDown = false;
         public bool checkLeft = true;
         public bool checkRight = true;
+
+        //current status of collisions
+        protected bool topHit = false;
+        protected bool rightHit = false;
+        protected bool bottomHit = false;
+        protected bool leftHit = false;
+
+        //distance of collision raycasts
+        protected float raycastLength = .08f;
+
+        //used by collision raycasts
+        protected List<Vector2> topRays = new List<Vector2>();
+        protected List<Vector2> rightRays = new List<Vector2>();
+        protected List<Vector2> bottomRays = new List<Vector2>();
+        protected List<Vector2> leftRays = new List<Vector2>();
 
         public override bool Running
         {
@@ -37,28 +52,6 @@ namespace nv
                 gameObject.SetActive(value);
             }
         }
-
-        protected bool topHit = false;
-        protected bool rightHit = false;
-        protected bool bottomHit = false;
-        protected bool leftHit = false;
-
-        //Variables used by helper functions
-
-        const float RAYCAST_LENGTH = 0.08f;
-
-        List<Vector2> topRays = new List<Vector2>();
-        List<Vector2> rightRays = new List<Vector2>();
-        List<Vector2> bottomRays = new List<Vector2>();
-        List<Vector2> leftRays = new List<Vector2>();
-
-        //void OnCollisionStay2D(Collision2D collision)
-        //{
-        //    if(collision.gameObject.layer == 8)
-        //    {
-        //        CheckTouching(8);
-        //    }
-        //}
 
         protected override void SetupRequiredReferences()
         {
@@ -82,7 +75,15 @@ namespace nv
                 CheckTouching(collisionLayer);
             }
         }
-        
+
+        //void OnCollisionStay2D(Collision2D collision)
+        //{
+        //    if(collision.gameObject.layer == 8)
+        //    {
+        //        CheckTouching(8);
+        //    }
+        //}
+
         protected virtual void EnableCollisionsInDirection(bool up, bool down, bool left, bool right)
         {
             checkUp = up;
@@ -109,7 +110,7 @@ namespace nv
             rightHit = false;
         }
 
-        protected virtual CollisionDirection RaycastAlongCurrentVelocity(LayerMask layer, float timeStep)
+        protected virtual CollisionDirection GetCollisionAlongCurrentVelocity(LayerMask layer, float timeStep)
         {
             CollisionDirection directionSet = new CollisionDirection();
 
@@ -166,7 +167,7 @@ namespace nv
                 this.topHit = false;
                 for(int i = 0; i < 3; i++)
                 {
-                    RaycastHit2D raycastHit2D = Physics2D.Raycast(this.topRays[i], Vector2.up, RAYCAST_LENGTH, 1 << layer);
+                    RaycastHit2D raycastHit2D = Physics2D.Raycast(this.topRays[i], Vector2.up, raycastLength, 1 << layer);
                     if(raycastHit2D.collider != null)
                     {
                         this.topHit = true;
@@ -184,7 +185,7 @@ namespace nv
                 this.rightHit = false;
                 for(int j = 0; j < 3; j++)
                 {
-                    RaycastHit2D raycastHit2D2 = Physics2D.Raycast(this.rightRays[j], Vector2.right, 0.08f, 1 << layer);
+                    RaycastHit2D raycastHit2D2 = Physics2D.Raycast(this.rightRays[j], Vector2.right, raycastLength, 1 << layer);
                     if(raycastHit2D2.collider != null)
                     {
                         this.rightHit = true;
@@ -203,7 +204,7 @@ namespace nv
 
                 for(int k = 0; k < 3; k++)
                 {
-                    RaycastHit2D raycastHit2D3 = Physics2D.Raycast(this.bottomRays[k], -Vector2.up, 0.08f, 1 << layer);
+                    RaycastHit2D raycastHit2D3 = Physics2D.Raycast(this.bottomRays[k], -Vector2.up, raycastLength, 1 << layer);
                     if(raycastHit2D3.collider != null)
                     {
                         this.bottomHit = true;
@@ -221,7 +222,7 @@ namespace nv
                 this.leftHit = false;
                 for(int l = 0; l < 3; l++)
                 {
-                    RaycastHit2D raycastHit2D4 = Physics2D.Raycast(this.leftRays[l], -Vector2.right, 0.08f, 1 << layer);
+                    RaycastHit2D raycastHit2D4 = Physics2D.Raycast(this.leftRays[l], -Vector2.right, raycastLength, 1 << layer);
                     if(raycastHit2D4.collider != null)
                     {
                         this.leftHit = true;
@@ -243,7 +244,7 @@ namespace nv
                 this.topHit = false;
                 for(int i = 0; i < 3; i++)
                 {
-                    RaycastHit2D raycastHit2D = Physics2D.Raycast(this.topRays[i], Vector2.up, 0.08f, 1 << layer);
+                    RaycastHit2D raycastHit2D = Physics2D.Raycast(this.topRays[i], Vector2.up, raycastLength, 1 << layer);
                     if(raycastHit2D.collider != null)
                     {
                         this.topHit = true;
@@ -261,7 +262,7 @@ namespace nv
                 this.rightHit = false;
                 for(int j = 0; j < 3; j++)
                 {
-                    RaycastHit2D raycastHit2D2 = Physics2D.Raycast(this.rightRays[j], Vector2.right, 0.08f, 1 << layer);
+                    RaycastHit2D raycastHit2D2 = Physics2D.Raycast(this.rightRays[j], Vector2.right, raycastLength, 1 << layer);
                     if(raycastHit2D2.collider != null)
                     {
                         this.rightHit = true;
@@ -280,7 +281,7 @@ namespace nv
 
                 for(int k = 0; k < 3; k++)
                 {
-                    RaycastHit2D raycastHit2D3 = Physics2D.Raycast(this.bottomRays[k], -Vector2.up, 0.08f, 1 << layer);
+                    RaycastHit2D raycastHit2D3 = Physics2D.Raycast(this.bottomRays[k], -Vector2.up, raycastLength, 1 << layer);
                     if(raycastHit2D3.collider != null)
                     {
                         this.bottomHit = true;
@@ -298,7 +299,7 @@ namespace nv
                 this.leftHit = false;
                 for(int l = 0; l < 3; l++)
                 {
-                    RaycastHit2D raycastHit2D4 = Physics2D.Raycast(this.leftRays[l], -Vector2.right, 0.08f, 1 << layer);
+                    RaycastHit2D raycastHit2D4 = Physics2D.Raycast(this.leftRays[l], -Vector2.right, raycastLength, 1 << layer);
                     if(raycastHit2D4.collider != null)
                     {
                         this.leftHit = true;
@@ -310,7 +311,7 @@ namespace nv
         }//end CheckTouching
 
         //if the values are within the tolerance, the object is not enough in that direction to be considered offset from us
-        static protected CollisionDirection DoCheckDirection(GameObject self, GameObject target, float toleranceX = 0.1f, float toleranceY = 0.5f)
+        static protected CollisionDirection GetDirectionToTarget(GameObject self, GameObject target, float toleranceX = 0.1f, float toleranceY = 0.5f)
         {
             CollisionDirection direction = new CollisionDirection();
             float num = self.transform.position.x;

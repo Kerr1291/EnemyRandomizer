@@ -336,7 +336,7 @@ namespace EnemyRandomizerMod
                 while( GameObject.Find( "Hornet Boss 1" ) == null )
                     yield return new WaitForEndOfFrame();
 
-                GameObject.Find( "Hornet Boss 1" ).AddComponent<HornetBoss1>();
+                GameObject.Find( "Hornet Boss 1" ).AddComponent<HornetBoss>();
                 modifiedHornet = true;
             }
 
