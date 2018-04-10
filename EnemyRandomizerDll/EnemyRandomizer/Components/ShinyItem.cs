@@ -38,5 +38,11 @@ namespace nv
         {
             yield return base.ExtractReferencesFromExternalSources();
         }
+
+        protected override void RemoveDeprecatedComponents()
+        {
+            //TODO: uncomment to remove a lot of stuff on this object and all its children
+            //base.RemoveDeprecatedComponents();
+        }
     }
 }

@@ -23,7 +23,8 @@ namespace EnemyRandomizerMod
 
         public UnityEngine.Audio.AudioMixerSnapshot audioSnapshot;
         public Dictionary<string, AudioClip> audioClips;
-        public Dictionary<string, GameObject> prefabs;
+        public Dictionary<string, GameObject> gameObjects;
+        public Dictionary<string, ParticleSystem> particleSystems;
 
         //use for some sound effects
         public AudioSource actorAudioSource;
@@ -47,7 +48,8 @@ namespace EnemyRandomizerMod
             meshRenderer = GetComponent<MeshRenderer>();
             tk2dAnimator = GetComponent<tk2dSpriteAnimator>();
             audioClips = new Dictionary<string, AudioClip>();
-            prefabs = new Dictionary<string, GameObject>();
+            gameObjects = new Dictionary<string, GameObject>();
+            particleSystems = new Dictionary<string, ParticleSystem>();
         }
 
         protected virtual void OnCollisionStay2D(Collision2D collision)
@@ -56,7 +58,7 @@ namespace EnemyRandomizerMod
             {
                 CheckTouching(collisionLayer);
             }
-        }
+        }        
 
         protected override IEnumerator Init()
         {
@@ -159,21 +161,21 @@ namespace EnemyRandomizerMod
 
             string bossFSMName = "Control";
 
-            yield return GetGameObjectFromCreateObjectInFSM(gameObject, bossFSMName, "Blow", SetPrefab, false);//???
-
-            //TODO: give this a way to get the 2nd action
-            yield return GetGameObjectsFromSpawnRandomObjectsV2InFSM(gameObject, bossFSMName, "Blow", SetPrefab);//???
-            yield return GetGameObjectsFromSpawnRandomObjectsV2InFSM(gameObject, bossFSMName, "Blow", SetPrefab);//???
-            yield return GetAudioSourceObjectFromFSM(gameObject, bossFSMName, "Blow", SetActorAudioSource);
-            yield return GetAudioClipFromFSM(gameObject, bossFSMName, "Blow", SetAudioClip);//Hornet_Fight_Death_01
+            yield return GetGameObjectFromCreateObjectInFSM(gameObject, bossFSMName, "Blow", SetGameObject, false);//???
+            
+            yield return GetGameObjectsFromSpawnRandomObjectsV2InFSM(gameObject, bossFSMName, "Blow", SetGameObject);//???
+            yield return GetGameObjectsFromSpawnRandomObjectsV2InFSM(gameObject, bossFSMName, "Blow", SetGameObject, 1);//???
+            yield return GetAudioSourceFromAudioPlayerOneShotSingleInFSM(gameObject, bossFSMName, "Blow", SetActorAudioSource);
+            yield return GetAudioClipFromAudioPlayerOneShotSingleInFSM(gameObject, bossFSMName, "Blow", SetAudioClip);//Hornet_Fight_Death_01
             yield return GetAudioClipFromAudioPlaySimpleInFSM(gameObject, bossFSMName, "Blow", SetAudioClip);//boss_explode_clean
-            yield return GetAudioClipFromFSM(gameObject, bossFSMName, "Jump", SetAudioClip);//Hornet_Fight_Stun_02
-            yield return GetAudioClipFromFSM(gameObject, bossFSMName, "Throw", SetAudioClip);//hornet_needle_thow_spin
+            yield return GetAudioClipFromAudioPlayerOneShotSingleInFSM(gameObject, bossFSMName, "Jump", SetAudioClip);//Hornet_Fight_Stun_02
+            yield return GetAudioClipFromAudioPlayerOneShotSingleInFSM(gameObject, bossFSMName, "Throw", SetAudioClip);//hornet_needle_thow_spin
 
             //TODO: give this a way to get the 2nd action
-            yield return GetAudioClipFromFSM(gameObject, bossFSMName, "Yank", SetAudioClip);//Hornet_Fight_Yell_03
-            yield return GetAudioClipFromFSM(gameObject, bossFSMName, "Yank", SetAudioClip);//hornet_dash
-            audioSnapshot = GetSnapshotFromFSM(gameObject, bossFSMName, "Blow");//Silent
+
+            yield return GetValueFromAction<AudioClip, AudioPlayerOneShotSingle>(gameObject, bossFSMName, "Yank", "audioClip", SetAudioClip, 0);//Hornet_Fight_Yell_03
+            yield return GetValueFromAction<AudioClip, AudioPlayerOneShotSingle>(gameObject, bossFSMName, "Yank", "audioClip", SetAudioClip, 1);//hornet_dash
+            audioSnapshot = GetSnapshotFromTransitionToAudioSnapshotInFSM(gameObject, bossFSMName, "Blow");//Silent
 
             //load child references
             if(gameObject.FindGameObjectInChildren("Thread") != null)
@@ -188,16 +190,24 @@ namespace EnemyRandomizerMod
                 grassEscape = gameObject.FindGameObjectInChildren("Grass Escape").GetComponent<ParticleSystem>();
         }
 
-        void SetPrefab(GameObject prefab)
+        protected override void RemoveDeprecatedComponents()
         {
-            if(prefab == null)
+            //base.RemoveDeprecatedComponents();
+            //TODO: 
+            //PlayMakerFSM fsm = FSMUtility.LocateFSM(gameObject, "Superdash");
+            //Destroy(fsm);
+        }
+
+        void SetGameObject(GameObject go)
+        {
+            if(go == null)
             {
                 Dev.Log("Warning: prefab is null!");
                 return;
             }
 
-            Dev.Log("Added: " + prefab.name + " to prefabs!");
-            prefabs.Add(prefab.name, prefab);
+            Dev.Log("Added: " + go.name + " to gameObjects!");
+            gameObjects.Add(go.name, go);
         }
 
         void SetAudioClip(AudioClip clip)
@@ -223,6 +233,60 @@ namespace EnemyRandomizerMod
             actorAudioSource = source;
             actorAudioSource.transform.SetParent(gameObject.transform);
             actorAudioSource.transform.localPosition = Vector3.zero;
+        }
+
+        protected virtual void SetAudioSource(AudioSource value)
+        {
+            if(value == null)
+            {
+                Dev.Log("Warning: SetAudioSource is null!");
+                return;
+            }
+            actorAudioSource = value;
+        }
+
+        protected virtual void SetStateMachineValue<T>(T value)
+        {
+            if(value as AudioClip != null)
+            {
+                var v = value as AudioClip;
+                SetStateMachineValue(audioClips, v.name, v);
+            }
+            else if(value as ParticleSystem != null)
+            {
+                var v = value as ParticleSystem;
+                SetStateMachineValue(particleSystems, v.name, v);
+            }
+            else if(value as GameObject != null)
+            {
+                var v = value as GameObject;
+                SetStateMachineValue(gameObjects, v.name, v);
+            }
+            else
+            {
+                if(value != null)
+                {
+                    Dev.Log("Warning: No handler defined for SetStateMachineValue for type " + value.GetType().Name);
+                }
+                else
+                {
+                    Dev.Log("Warning: value is null!");
+                }
+            }
+        }
+
+        void SetStateMachineValue<D, T>(D dictionary, string name, T value)
+            where D : Dictionary<string, T>
+            where T : class
+        {
+            if(value == null)
+            {
+                Dev.Log("Warning: " + name + " is null!");
+                return;
+            }
+
+            Dev.Log("Added: " + name + " to dictionary of " + dictionary.GetType().Name + "!");
+            dictionary.Add(name, value);
         }
     }
 }

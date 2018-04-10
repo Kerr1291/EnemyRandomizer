@@ -8,6 +8,8 @@ using UnityEngine;
 
 #if UNITY_EDITOR
 using nv.Tests;
+#else
+using HutongGames.PlayMaker.Actions;
 #endif
 
 namespace nv
@@ -435,7 +437,7 @@ namespace nv
             yield break;
         }
 
-        public static IEnumerator GetGameObjectsFromSpawnRandomObjectsV2InFSM( GameObject go, string fsmName, string stateName, Action<GameObject> onGameObjectLoaded )
+        public static IEnumerator GetGameObjectsFromSpawnRandomObjectsV2InFSM( GameObject go, string fsmName, string stateName, Action<GameObject> onGameObjectLoaded, int? actionIndex = null )
         {
             GameObject copy = go;
             if( !go.activeInHierarchy )
@@ -449,10 +451,17 @@ namespace nv
 #if UNITY_EDITOR
             onGameObjectLoaded(null);
 #else
-            var spawnRandomObjectsV2 = copy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.SpawnRandomObjectsV2>( stateName, fsmName );
+            var[] spawnRandomObjectsV2 = copy.GetFSMActionsOnState<HutongGames.PlayMaker.Actions.SpawnRandomObjectsV2>( stateName, fsmName );
 
-            //this is a prefab
-            var prefab = spawnRandomObjectsV2.gameObject.Value;
+            var action = spawnRandomObjectsV2[0];
+
+            if(actionIndex != null && actionIndex.HasValue)
+            {
+                action = spawnRandomObjectsV2[actionIndex.Value];
+            }
+
+            //get the game object
+            var prefab = action.gameObject.Value;
 
             onGameObjectLoaded( prefab );
 #endif
@@ -584,7 +593,7 @@ namespace nv
             yield break;
         }
 
-        public static IEnumerator GetAudioSourceObjectFromFSM(GameObject go, string fsmName, string stateName, Action<AudioSource> onSourceLoaded)
+        public static IEnumerator GetAudioSourceFromAudioPlayerOneShotSingleInFSM(GameObject go, string fsmName, string stateName, Action<AudioSource> onSourceLoaded)
         {
             Dev.Where();
             GameObject copy = go;
@@ -658,7 +667,7 @@ namespace nv
             yield break;
         }
 
-        public static IEnumerator GetAudioClipFromFSM(GameObject go, string fsmName, string stateName, Action<AudioClip> onClipLoaded)
+        public static IEnumerator GetAudioClipFromAudioPlayerOneShotSingleInFSM(GameObject go, string fsmName, string stateName, Action<AudioClip> onClipLoaded, int? actionIndex = null)
         {
             Dev.Where();
             GameObject copy = go;
@@ -673,9 +682,16 @@ namespace nv
 #if UNITY_EDITOR
             onClipLoaded(null);
 #else
-            var audioOneShot = copy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.AudioPlayerOneShotSingle>(stateName, fsmName);
+            var[] audioOneShot = copy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.AudioPlayerOneShotSingle>(stateName, fsmName);
             
-            var clip = audioOneShot.audioClip.Value as AudioClip;
+            var action = audioOneShot[0];
+
+            if(actionIndex != null && actionIndex.HasValue)
+            {
+                action = audioOneShot[actionIndex.Value];
+            }
+
+            var clip = action.audioClip.Value as AudioClip;
 
             //send the loaded clip out
             onClipLoaded(clip);
@@ -690,14 +706,15 @@ namespace nv
         }
 
         
-        public static UnityEngine.Audio.AudioMixerSnapshot GetSnapshotFromFSM(GameObject go, string fsmName, string stateName)
+        public static UnityEngine.Audio.AudioMixerSnapshot GetSnapshotFromTransitionToAudioSnapshotInFSM(GameObject go, string fsmName, string stateName)
         {
 #if UNITY_EDITOR
             return null;
 #else
-            var snapshot = go.GetFSMActionOnState<HutongGames.PlayMaker.Actions.TransitionToAudioSnapshot>(stateName, fsmName);
-            var mixerSnapshot = snapshot.snapshot.Value as UnityEngine.Audio.AudioMixerSnapshot;
-            return mixerSnapshot;
+            return GetValueFromAction<AudioMixerSnapshot, TransitionToAudioSnapshot>(go, fsmName, stateName, "snapshot");
+            //var snapshot = go.GetFSMActionOnState<HutongGames.PlayMaker.Actions.TransitionToAudioSnapshot>(stateName, fsmName);
+            //var mixerSnapshot = snapshot.snapshot.Value as UnityEngine.Audio.AudioMixerSnapshot;
+            //return mixerSnapshot;
 #endif
         }
 
@@ -706,11 +723,91 @@ namespace nv
 #if UNITY_EDITOR
             return null;
 #else
-            var musicCue = go.GetFSMActionOnState<HutongGames.PlayMaker.Actions.ApplyMusicCue>(stateName, fsmName);
-            MusicCue mc = musicCue.musicCue.Value as MusicCue;
-            return mc;
+            return GetValueFromAction<MusicCue,ApplyMusicCue>(go,fsmName,stateName, "musicCue");
+            //var musicCue = go.GetFSMActionOnState<HutongGames.PlayMaker.Actions.ApplyMusicCue>(stateName, fsmName);
+            //MusicCue mc = musicCue.musicCue.Value as MusicCue;
+            //return mc;
 #endif
         }
+
+        public static T GetValueFromAction<T, U>(GameObject go, string fsmName, string stateName, string valueName, int? actionIndex = null)
+            where U : FsmStateAction
+        {
+            List<U> actions = go.GetFSMActionsOnState<U>(stateName, fsmName);
+
+            U action = actions[0];
+
+            if(actionIndex != null && actionIndex.HasValue)
+            {
+                action = actions[actionIndex.Value];
+            }
+
+            FieldInfo fi = action.GetType().GetField("valueName", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if(fi == null)
+            {
+                Dev.Log(valueName + " not found on action " + action.GetType().Name + " in state " + stateName + " in fsm " + fsmName);
+
+                Dev.Log("Valid valueName's on action: ");
+
+                foreach(FieldInfo f in action.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+                {
+                    Dev.Log(f.Name);
+                }
+
+                return default(T);
+            }
+
+            var fieldValue = fi.GetValue(action);
+            T realValue;
+
+            if(fieldValue as NamedVariable != null)
+            {
+                realValue = (T)(fieldValue as NamedVariable).Value;
+            }
+#if UNITY_EDITOR
+#else
+            else if(fieldValue as FsmOwnerDefault)
+            {
+                realValue = (T)(fieldValue as FsmOwnerDefault).GameObject.Value;
+            }
+#endif
+            else
+            {
+                realValue = (T)(fieldValue);
+            }
+
+
+            return realValue;
+        }
+
+        public static IEnumerator GetValueFromAction<T, U>(GameObject go, string fsmName, string stateName, string valueName, Action<T> onValueLoaded, int? actionIndex = null)
+            where U : FsmStateAction
+        {
+            GameObject copy = go;
+            if(!go.activeInHierarchy)
+            {
+                copy = GameObject.Instantiate(go) as GameObject;
+                copy.SetActive(true);
+            }
+
+            //wait a few frames for the fsm to set up stuff
+            yield return new WaitForEndOfFrame();
+
+            T realValue = GetValueFromAction<T, U>(copy, fsmName, stateName, valueName, actionIndex);
+
+            //send the loaded value out
+            onValueLoaded(realValue);
+
+            if(copy != go)
+                GameObject.Destroy(copy);
+
+            //let stuff get destroyed
+            yield return new WaitForEndOfFrame();
+
+            yield break;
+        }
+
 
         //Setup functions///////////////////////////////////////////////////////////////////////////
 
