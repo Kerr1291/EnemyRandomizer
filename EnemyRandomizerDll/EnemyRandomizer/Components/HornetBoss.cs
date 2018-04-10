@@ -357,7 +357,8 @@ namespace nv
             
             PlayOneShot( hornetDialogueSFX );
 
-            tmp.text = "Whomst. " + tmp.text;
+            //TODO: make a helper function to edit the text pages
+            //tmp.text = "Whomst. " + tmp.text;
             
             //wait for the player to finish the dialogue
             while( dialogue.currentPage <= tmp.textInfo.pageCount )
@@ -1302,6 +1303,11 @@ namespace nv
 
             returnXScale = 1f;
 
+            ClearPreviousCollisions();
+
+            //change collision check directions for air dashing
+            EnableCollisionsInDirection( true, true, true, false );
+
             nextState = ADash;
 
             yield break;
@@ -1315,6 +1321,11 @@ namespace nv
 
             gameObject.transform.localScale = gameObject.transform.localScale.SetY( -1f );
 
+            ClearPreviousCollisions();
+
+            //change collision check directions for air dashing
+            EnableCollisionsInDirection( true, true, false, true );
+
             nextState = ADash;
 
             yield break;
@@ -1323,8 +1334,6 @@ namespace nv
         protected virtual IEnumerator ADash()
         {
             Dev.Where();
-
-            ClearPreviousCollisions();
 
             aDashEffect.Play( gameObject );
 
@@ -1335,9 +1344,6 @@ namespace nv
             airDashPause = 999;
 
             PlayAnimation( "A Dash" );
-
-            //change collision check directions for air dashing
-            EnableCollisionsInDirection( true, true, true, true );
 
             while( !bottomHit && !rightHit && !leftHit && !topHit )
             {
