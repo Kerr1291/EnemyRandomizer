@@ -631,7 +631,7 @@ namespace nv
                     break;
                 }
 
-                if( rightHit || leftHit )
+                if( ( body.velocity.x > 0f && rightHit ) || ( body.velocity.x < 0f && leftHit ) )
                 {
                     nextState = MaybeGSphere;
                     break;
@@ -1863,7 +1863,7 @@ namespace nv
                 body.velocity = gDashVelocity;
 
                 //did we hit a wall? then end the dash.
-                if( rightHit || leftHit )
+                if( ( body.velocity.x > 0f && rightHit ) || ( body.velocity.x < 0f && leftHit ) )
                 {
                     break;
                 }
