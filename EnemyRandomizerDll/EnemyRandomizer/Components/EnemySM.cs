@@ -22,7 +22,7 @@ namespace nv
 
         public override bool Running {
             get {
-                return gameObject.activeInHierarchy;
+                return healthManager.hp > 0 && !healthManager.isDead;
             }
 
             set {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using UnityEngine;
+using TMPro;
 
 #if UNITY_EDITOR
 using nv.Tests;
@@ -22,17 +23,18 @@ namespace nv
         public ParticleSystem dustHardLand;
         
         public ThrowEffect throwEffect;
-        public EvadeRange evadeRange;
-        public RangeCheck runAwayCheck;
-        public RangeCheck sphereRange;
-        public RangeCheck aSphereRange;
-        public RangeCheck refightRange;
-        public RangeCheck aDashRange;
         public ADashEffect aDashEffect;
         public GDashEffect gDashEffect;
         public SphereBall sphereBall;
         public FlashEffect flashEffect;
         public StunController stunControl;
+
+        public RangeCheck runAwayCheck;
+        public RangeCheck sphereRange;
+        public RangeCheck aSphereRange;
+        public RangeCheck refightRange;
+        public RangeCheck aDashRange;
+        public EvadeRange evadeRange;
 
         public GameObject hornetCorpse;
         public GameObject stunEffectPrefab;
@@ -59,7 +61,12 @@ namespace nv
         public AudioClip hornetDashSFX;
         public AudioClip hornetWallLandSFX;
         public AudioClip hornetSphereSFX;
-        public List<AudioClip> hornetStunYells;
+        public List<AudioClip> hornetStunYells; 
+        public AudioClip hornetDialogueSFX;
+
+        public tk2dSpriteAnimationClip hornetPointClip;
+        public tk2dSpriteAnimationClip hornetSoftLandClip;
+        public tk2dSpriteAnimationClip hornetJumpFullClip;
 
 #if UNITY_EDITOR
         public object fightMusic;
@@ -67,9 +74,8 @@ namespace nv
         public MusicCue fightMusic;
 #endif
         public UnityEngine.Audio.AudioMixerSnapshot fightMusicSnapshot;
-
-        //have this set by an outside controller to start the fight
-        public bool wake = false;
+        
+        public bool checkPlayerData = false;
 
 #if UNITY_EDITOR
         //stuff used by the testing framework
@@ -184,8 +190,16 @@ namespace nv
         protected Ray throwRay;
         protected RaycastHit2D throwRaycast;
 
+        protected GameObject dialogueManager;
+
         public override bool Running {
             get {
+                if(checkPlayerData)
+                {
+                    if( GameManager.instance.playerData.GetBool( "hornet1Defeated" ) )
+                        return false;
+                }
+
                 return healthManager.hp > 0 && !healthManager.isDead;
             }
 
@@ -257,7 +271,7 @@ namespace nv
 
         protected virtual IEnumerator Inert()
         {
-            Dev.Where();
+            Dev.Where(); 
             //TODO: move this check into a helper function and replace constants with variables
             int test = GameManager.instance.playerData.GetInt("hornetGreenpath");
 
@@ -265,7 +279,6 @@ namespace nv
             {
                 nextState = RefightReady;
             }
-            //UNTESTED CODEPATH
             else
             {
                 //make use of the refight range to trigger the first encounter
@@ -285,19 +298,159 @@ namespace nv
             Dev.Where();
             meshRenderer.enabled = true;
 
-            //TODO: finish
+            FlipScale( gameObject );
 
-            nextState = Wake;
+            PlayAnimation( "Idle" );
+            PlayAnimation( hornetPointClip );
+
+            HeroController.instance.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            if( checkPlayerData )
+            {
+                HeroController.instance.playerData.SetInt( "hornetGreenpath", 4 );
+            }
+            HeroController.instance.playerData.SetBool( "disablePause", true );
+
+            HeroController.instance.RelinquishControl();
+
+            nextState = BoxUp;
 
             yield break;
         }
 
-        protected virtual IEnumerator Wake()
+        protected virtual IEnumerator BoxUp()
+        {
+            Dev.Where();
+
+            System.IO.StreamWriter file = null;
+            file = new System.IO.StreamWriter( Application.dataPath + "/Managed/Mods/" + dialogueManager.name );
+            dialogueManager.PrintSceneHierarchyTree( true, file );
+            file.Close();
+
+            dialogueManager.GetComponent<PlayMakerFSM>()?.SendEvent( "BOX UP" );
+
+            ShowBossTitle( this, areaTitleObject, -1f, "", "", "", "HORNET", "", "" );
+
+            yield return new WaitForSeconds( .3f );
+
+            nextState = Dialogue;
+
+            yield break;
+        }
+
+        TextMeshPro GetDialogueTextMesh()
+        {
+            DialogueBox dialogue = dialogueManager.GetComponentInChildren<DialogueBox>();
+
+            FieldInfo fi = dialogue.GetType().GetField("textMesh", BindingFlags.NonPublic|BindingFlags.Instance);
+            TextMeshPro tm = fi.GetValue(dialogue) as TextMeshPro;
+            return tm;
+        }
+
+        protected virtual IEnumerator Dialogue()
+        {
+            Dev.Where();
+
+            dialogueManager.GetComponentInChildren<DialogueBox>().StartConversation( "HORNET_GREENPATH", "Hornet" );
+            
+            DialogueBox dialogue = dialogueManager.GetComponentInChildren<DialogueBox>();
+            TextMeshPro tmp = GetDialogueTextMesh();
+            
+            PlayOneShot( hornetDialogueSFX );
+
+            tmp.text = "Whomst. " + tmp.text;
+            
+            //wait for the player to finish the dialogue
+            while( dialogue.currentPage <= tmp.textInfo.pageCount )
+            {
+                yield return new WaitForEndOfFrame();
+            }
+
+            nextState = BoxDown;
+
+            yield break;
+        }
+
+        protected virtual IEnumerator BoxDown()
+        {
+            Dev.Where();
+
+            HideBossTitle( areaTitleObject );
+            
+            dialogueManager.GetComponent<PlayMakerFSM>()?.SendEvent( "BOX DOWN" );
+
+            nextState = SetHeroActive;
+
+            yield break;
+        }
+
+        protected virtual IEnumerator SetHeroActive()
+        {
+            Dev.Where();
+
+            HeroController.instance.RegainControl();
+            HeroController.instance.playerData.SetBool( "disablePause", false );
+            nextState = LeapAntic;
+
+            yield break;
+        }
+
+        protected virtual IEnumerator LeapAntic()
+        {
+            Dev.Where();
+
+            SetFightGates( true );
+
+            PlayOneShot( hornetJumpYells[ 0 ] );
+
+            yield return PlayAndWaitForEndOfAnimation( "Evade Antic" );
+
+            nextState = LeapBack;
+
+            yield break;
+        }
+
+        protected virtual IEnumerator LeapBack()
         {
             Dev.Where();
             body.isKinematic = false;
             bodyCollider.enabled = true;
             meshRenderer.enabled = true;
+
+            gameObject.transform.localScale = gameObject.transform.localScale.SetX( -1f );
+
+            float xScale = gameObject.transform.localScale.x;
+            float jumpAwaySpeed = xScale * evadeJumpAwaySpeed;
+
+            body.velocity = new Vector2( jumpAwaySpeed, 0f );
+
+            PlayAnimation( "Evade" );
+
+            float waitTimer = evadeJumpAwayTimeLength;
+            while( waitTimer > 0f )
+            {
+                yield return new WaitForEndOfFrame();
+
+                //did we hit a wall? end evade timer early
+                if( rightHit || leftHit )
+                {
+                    break;
+                }
+
+                waitTimer -= Time.deltaTime;
+            }
+
+            nextState = CinematicLand;
+
+            yield break;
+        }
+
+        protected virtual IEnumerator CinematicLand()
+        {
+            Dev.Where();
+
+            PlayAnimation( hornetSoftLandClip );
+
+            yield return new WaitForSeconds( hornetSoftLandClip.Duration );
 
             nextState = Flourish;
 
@@ -308,11 +461,6 @@ namespace nv
         protected virtual IEnumerator Flourish()
         {
             Dev.Where();
-
-            //close the gates
-            SetFightGates( true );
-
-            ShowBossTitle( this, areaTitleObject, 2f, "", "", "", "HORNET", "", "" );
 
             PlayOneShot( hornetYell );
 
@@ -410,7 +558,6 @@ namespace nv
             {
                 FlipScale( gameObject );
             }
-            Dev.Log( "flipped?" + shouldFlip );
 
             nextState = RunAway;
 
@@ -421,7 +568,6 @@ namespace nv
         {
             Dev.Where();
 
-            Dev.Log( "runAwayCheck.ObjectIsInRange" + runAwayCheck.ObjectIsInRange );
             if( runAwayCheck.ObjectIsInRange )
             {
                 //face the knight
@@ -433,7 +579,6 @@ namespace nv
 
                 //then flip the other way
                 FlipScale(gameObject);
-                Dev.Log( "x scale = " + transform.localScale.x );
             }
 
             nextState = RunAntic;
@@ -2030,6 +2175,11 @@ namespace nv
                 yield return new WaitForEndOfFrame();
             }
 
+            //close the gates
+            SetFightGates( true );
+
+            ShowBossTitle( this, areaTitleObject, 2f, "", "", "", "HORNET", "", "" );
+
             nextState = Flourish;
 
             yield break;
@@ -2202,6 +2352,11 @@ namespace nv
             PlayAnimation( tk2dAnimator, animation );
         }
 
+        protected virtual void PlayAnimation( tk2dSpriteAnimationClip animation )
+        {
+            tk2dAnimator.Play( animation );
+        }
+
         protected virtual IEnumerator PlayAndWaitForEndOfAnimation( string animation, Action doWhileWaiting = null )
         {
             yield return PlayAndWaitForEndOfAnimation( tk2dAnimator, animation, doWhileWaiting );
@@ -2314,21 +2469,31 @@ namespace nv
             //load additional resources from other things
 
             //load the required references for a first encounter
-            GameObject encounter = null;
+            GameObject encounter = null; 
             if( UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Hornet Infected Knight Encounter" ) != null )
                 encounter = UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Hornet Infected Knight Encounter" );
 
+            if( encounter != null )
+            {
+                //System.IO.StreamWriter file = null;
+                //file = new System.IO.StreamWriter( Application.dataPath + "/Managed/Mods/" + encounter.name );
+                //encounter.PrintSceneHierarchyTree( true, file );
+                //file.Close();
+                string introFSMName = "Encounter";
+
+                tk2dSpriteAnimator otherAnim = encounter.GetComponent<tk2dSpriteAnimator>();
+                hornetPointClip = otherAnim.GetClipByName( "Point" );
+                hornetSoftLandClip = otherAnim.GetClipByName( "Soft Land" );
+                hornetJumpFullClip = otherAnim.GetClipByName( "Jump Full" );
+
+                yield return GetAudioClipFromAudioPlaySimpleInFSM( encounter, introFSMName, "Dialogue", SetHornetDialogueSFX );
+                yield return GetGameObjectFromSendEvent( encounter, introFSMName, "Box Up", SetDialogueManager, false );
+
+                //and remove it when done
+                GameObject.DestroyImmediate( encounter );
+            }
+
             //TODO: get "Grass Escape" game object for a particle effect
-
-
-
-            //and remove it when done
-            GameObject.Destroy( encounter );
-
-            //System.IO.StreamWriter file = null;
-            //file = new System.IO.StreamWriter( Application.dataPath + "/Managed/Mods/" + encounter.name );
-            //encounter.PrintSceneHierarchyTree( true, file );
-            //file.Close();
 
             yield break;
         }
@@ -2344,6 +2509,28 @@ namespace nv
             actorAudioSource = source;
             actorAudioSource.transform.SetParent( gameObject.transform );
             actorAudioSource.transform.localPosition = Vector3.zero;
+        }
+
+        void SetDialogueManager( GameObject dialogueManagerObject )
+        {
+            if( dialogueManagerObject == null )
+            {
+                Dev.Log( "Warning: Stun Effect GameObject failed to load and is null!" );
+                return;
+            }
+
+            dialogueManager = dialogueManagerObject;
+        }
+
+        void SetHornetDialogueSFX( AudioClip clip )
+        {
+            if( clip == null )
+            {
+                Dev.Log( "Warning: hornet sphere sfx clip is null!" );
+                return;
+            }
+
+            hornetDialogueSFX = clip;
         }
 
         void SetHornetStunYells( List<AudioClip> clips )

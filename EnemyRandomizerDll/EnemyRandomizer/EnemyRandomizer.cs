@@ -440,6 +440,9 @@ namespace EnemyRandomizerMod
                 //enter hornet
                 if( UnityEngine.Input.GetKeyDown( KeyCode.S ) )
                 {
+                    GameManager.instance.playerData.SetInt( "hornetGreenpath", 0 );
+                    GameManager.instance.playerData.SetBool( "hornet1Defeated", false );
+                    GameManager.instance.playerData.SetBool( "disablePause", true );
                     yield return EnterZone( "Fungus1_04", "right1", "Hornet Boss 1" );
                     yield return new WaitForSeconds( 2f );
                     HeroController.instance.transform.position = GameObject.Find("Hornet Boss 1").transform.position + new Vector3(5f,0f,0f);

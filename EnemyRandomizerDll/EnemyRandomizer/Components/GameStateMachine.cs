@@ -226,10 +226,6 @@ namespace nv
 
         static public void ShowBossTitle(MonoBehaviour owner, GameObject areaTitleObject, float hideInSeconds, string largeMain = "", string largeSuper = "", string largeSub = "", string smallMain = "", string smallSuper = "", string smallSub = "")
         {
-            //no point in doing this
-            if(hideInSeconds <= 0f)
-                hideInSeconds = 0f;
-
             //show hornet title
             if(areaTitleObject != null)
             {
@@ -254,8 +250,11 @@ namespace nv
                 areaTitleObject.FindGameObjectInChildren( "Title Large Sub" ).GetComponent<TMPro.TextMeshPro>().text = largeSub;
                 areaTitleObject.FindGameObjectInChildren( "Title Large Super" ).GetComponent<TMPro.TextMeshPro>().text = largeSuper;
 
-                //give it 3 seconds to fade in
-                owner.StartCoroutine( GameStateMachine.HideBossTitleAfter( areaTitleObject, hideInSeconds + 3f ) );
+                if( hideInSeconds > 0f )
+                {
+                    //give it 3 seconds to fade in
+                    owner.StartCoroutine( GameStateMachine.HideBossTitleAfter( areaTitleObject, hideInSeconds + 3f ) );
+                }
 #endif
             }
             else
@@ -424,6 +423,50 @@ namespace nv
 #endif
             if(copy != go)
                 GameObject.Destroy(copy);
+
+            //let stuff get destroyed
+            yield return new WaitForEndOfFrame();
+
+            yield break;
+        }
+
+
+        public static IEnumerator GetGameObjectFromSendEvent( GameObject go, string fsmName, string stateName, Action<GameObject> onGameObjectLoaded, bool returnCopyOfObject )
+        {
+            GameObject copy = go;
+            if( !go.activeInHierarchy )
+            {
+                copy = GameObject.Instantiate( go ) as GameObject;
+                copy.SetActive( true );
+            }
+
+            //wait a few frames for the fsm to set up stuff
+            yield return new WaitForEndOfFrame();
+#if UNITY_EDITOR
+            onGameObjectLoaded(null);
+#else
+            var sendEventByName = copy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.SendEventByName>(stateName, fsmName);
+
+            //this might be a prefab
+            if( returnCopyOfObject )
+            {
+                var prefab = sendEventByName.eventTarget.gameObject.GameObject.Value;
+
+                //so spawn one
+                var spawnedCopy = GameObject.Instantiate(prefab) as GameObject;
+
+                //send the loaded object out
+                onGameObjectLoaded( spawnedCopy );
+            }
+            else
+            {
+                var foundGO = sendEventByName.eventTarget.gameObject.GameObject.Value;
+
+                onGameObjectLoaded( foundGO );
+            }
+#endif
+            if( copy != go )
+                GameObject.Destroy( copy );
 
             //let stuff get destroyed
             yield return new WaitForEndOfFrame();

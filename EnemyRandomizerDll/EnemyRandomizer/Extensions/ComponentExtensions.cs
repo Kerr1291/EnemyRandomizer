@@ -758,6 +758,28 @@ namespace nv
                                 }
 
                                 {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.SetPlayerDataBool );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetPlayerDataBool (Name) = " + a?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetPlayerDataInt (boolName) = " + a?.value );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetPlayerDataBool (boolName) = " + a?.boolName );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetPlayerDataBool (storeValue) = " + a?.boolName?.Name );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.SetPlayerDataInt );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetPlayerDataInt (Name) = " + a?.Name );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetPlayerDataInt (boolName) = " + a?.value );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetPlayerDataInt (boolName) = " + a?.intName );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- SetPlayerDataInt (storeValue) = " + a?.intName?.Name );
+                                    }
+                                }
+
+                                {
                                     var a = ( x as HutongGames.PlayMaker.Actions.SetFsmGameObject );
                                     if( a != null )
                                     {
@@ -786,6 +808,18 @@ namespace nv
                                         file.WriteLine( componentHeader + @" \----PFSM ---- GameObjectIsNull (gameObject?.Name) = " + a?.gameObject?.Name );
                                         file.WriteLine( componentHeader + @" \----PFSM ---- GameObjectIsNull (isNotNull?.Name) = " + a?.isNotNull?.Name );
                                         file.WriteLine( componentHeader + @" \----PFSM ---- GameObjectIsNull (isNull?.Name) = " + a?.isNull?.Name );
+                                    }
+                                }
+
+                                {
+                                    var a = ( x as HutongGames.PlayMaker.Actions.CallMethodProper );
+                                    if( a != null )
+                                    {
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.behaviour ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.gameObject?.GameObject ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerTypeToString( a?.methodName ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerVarToString( a?.parameters ) );
+                                        file.WriteLine( componentHeader + @" \----PFSM ---- " + a.GetType().Name + PlaymakerVarToString( a?.storeResult ) );
                                     }
                                 }
 
@@ -1431,10 +1465,49 @@ namespace nv
             return "(" + var?.GetType()?.Name + ", " + var?.Name + ") = " + var + "      :: IsGlobal? = " + var?.IsGlobal;
         }
 
+        static string PlaymakerVarToString<T>( T var ) where T : HutongGames.PlayMaker.FsmVar
+        {
+            return "(" + var?.GetType()?.Name + ", " + var?.variableName + ") = " + var
+                + "      :: IsNone? = " + var?.IsNone
+                + "      :: useVariable? = " + var?.useVariable
+                + "      :: objectType? = " + var?.objectType
+                + "      :: intValue? = " + var?.intValue
+                + "      :: floatValue? = " + var?.floatValue
+                + "      :: objectReference? = " + var?.objectReference
+                + "      :: vector2Value? = " + var?.vector2Value
+                + "      :: vector3Value? = " + var?.vector3Value
+                + "      :: vector4Value? = " + var?.vector4Value
+                + "      :: quaternionValue? = " + var?.quaternionValue
+                + "      :: stringValue? = " + var?.stringValue;
+        }
+
+        static string PlaymakerVarToString<T>( T[] vars ) where T : HutongGames.PlayMaker.FsmVar
+        {
+            string result = "";
+            foreach( T var in vars )
+            {
+                result += "(" + var?.GetType()?.Name + ", " + var?.variableName + ") = " + var
+                    + "      :: IsNone? = " + var?.IsNone
+                    + "      :: useVariable? = " + var?.useVariable
+                    + "      :: objectType? = " + var?.objectType
+                    + "      :: intValue? = " + var?.intValue
+                    + "      :: floatValue? = " + var?.floatValue
+                    + "      :: objectReference? = " + var?.objectReference
+                    + "      :: vector2Value? = " + var?.vector2Value
+                    + "      :: vector3Value? = " + var?.vector3Value
+                    + "      :: vector4Value? = " + var?.vector4Value
+                    + "      :: quaternionValue? = " + var?.quaternionValue
+                    + "      :: stringValue? = " + var?.stringValue
+                    + "      :::::::::::::::::::";
+            }
+            return result;
+        }
+
         static string PlaymakerTypeToString<T>(T var) where T : HutongGames.PlayMaker.NamedVariable
         {
             return "("+var?.GetType()?.Name +", "+var?.Name+") = "+var + "      :: IsNone? = "+var?.IsNone;
         }
+
         static string PlaymakerTypeToString<T>( string label, T var )
         {
             return "(" + var?.GetType()?.Name + ", " + label + ") = " + var;
