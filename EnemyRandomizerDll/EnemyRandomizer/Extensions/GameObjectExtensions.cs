@@ -87,6 +87,14 @@ namespace nv
 
             return objStr;
         }
+        
+        public static void PrintSceneHierarchyTree( this GameObject gameObject, string fileName )
+        {
+            System.IO.StreamWriter file = null;
+            file = new System.IO.StreamWriter( Application.dataPath + "/Managed/Mods/" + fileName );
+            gameObject.PrintSceneHierarchyTree( true, file );
+            file.Close();
+        }
 
         public static void PrintSceneHierarchyTree( this GameObject gameObject, bool printComponents = false, System.IO.StreamWriter file = null )
         {

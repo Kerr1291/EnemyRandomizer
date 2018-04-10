@@ -321,10 +321,10 @@ namespace nv
         {
             Dev.Where();
 
-            System.IO.StreamWriter file = null;
-            file = new System.IO.StreamWriter( Application.dataPath + "/Managed/Mods/" + dialogueManager.name );
-            dialogueManager.PrintSceneHierarchyTree( true, file );
-            file.Close();
+            //System.IO.StreamWriter file = null;
+            //file = new System.IO.StreamWriter( Application.dataPath + "/Managed/Mods/" + dialogueManager.name );
+            //dialogueManager.PrintSceneHierarchyTree( true, file );
+            //file.Close();
 
             dialogueManager.GetComponent<PlayMakerFSM>()?.SendEvent( "BOX UP" );
 
@@ -2421,8 +2421,11 @@ namespace nv
                 needleTink = GameObject.Find( "Needle Tink" ).AddComponent<NeedleTink>();
 
             if( UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Corpse Hornet 1(Clone)" ) != null )
+            {
                 hornetCorpse = UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Corpse Hornet 1(Clone)" );
-
+                hornetCorpse.PrintSceneHierarchyTree( hornetCorpse.name );
+                hornetCorpse.AddComponent<HornetCorpse>();
+            }
             gameObject.AddComponent<PreventOutOfBounds>();
             stunControl = gameObject.AddComponent<StunController>();
             stunControl.onStun += OnStun;
@@ -2475,9 +2478,7 @@ namespace nv
             //load additional resources from other things
 
             //load the required references for a first encounter
-            GameObject encounter = null; 
-            if( UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Hornet Infected Knight Encounter" ) != null )
-                encounter = UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Hornet Infected Knight Encounter" );
+            GameObject encounter = UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Hornet Infected Knight Encounter" );
 
             if( encounter != null )
             {
@@ -2499,9 +2500,31 @@ namespace nv
                 GameObject.DestroyImmediate( encounter );
             }
 
+            GameObject item = UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04" ).FindGameObject( "Shiny Item" );
+            if( item != null )
+            {
+                item.PrintSceneHierarchyTree( item.name );
+                item.AddComponent<ShinyItem>();
+            }
             //TODO: get "Grass Escape" game object for a particle effect
 
             yield break;
+        }
+
+        protected override void RemoveDeprecatedComponents()
+        {
+            //preserve the fsms on the corpse so that their data may be extracted by the corpse components
+            if( hornetCorpse != null )
+            {
+                hornetCorpse.transform.SetParent( null );
+            }
+
+            base.RemoveDeprecatedComponents();
+
+            if( hornetCorpse != null )
+            {
+                hornetCorpse.transform.SetParent( transform );
+            }
         }
 
         void SetActorAudioSource( AudioSource source )

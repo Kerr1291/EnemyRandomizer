@@ -71,10 +71,12 @@
     <Compile Include="Components\GameStateMachine.cs" />
     <Compile Include="Components\GDashEffect.cs" />
     <Compile Include="Components\HornetBoss.cs" />
+    <Compile Include="Components\HornetCorpse.cs" />
     <Compile Include="Components\MemeController.cs" />
     <Compile Include="Components\Needle.cs" />
     <Compile Include="Components\NeedleTink.cs" />
     <Compile Include="Components\Physics2DSM.cs" />
+    <Compile Include="Components\ShinyItem.cs" />
     <Compile Include="Components\SphereBall.cs" />
     <Compile Include="Components\StunController.cs" />
     <Compile Include="Components\ThrowEffect.cs" />

@@ -394,7 +394,76 @@ namespace nv
             yield break;
         }
 
+        public static IEnumerator GetGameObjectsFromSpawnRandomObjectsV2InFSM( GameObject go, string fsmName, string stateName, Action<GameObject> onGameObjectLoaded )
+        {
+            GameObject copy = go;
+            if( !go.activeInHierarchy )
+            {
+                copy = GameObject.Instantiate( go ) as GameObject;
+                copy.SetActive( true );
+            }
 
+            //wait a few frames for the fsm to set up stuff
+            yield return new WaitForEndOfFrame();
+#if UNITY_EDITOR
+            onGameObjectLoaded(null);
+#else
+            var spawnRandomObjectsV2 = copy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.SpawnRandomObjectsV2>( stateName, fsmName );
+
+            //this is a prefab
+            var prefab = spawnRandomObjectsV2.gameObject.Value;
+
+            onGameObjectLoaded( prefab );
+#endif
+            if( copy != go )
+                GameObject.Destroy( copy );
+
+            //let stuff get destroyed
+            yield return new WaitForEndOfFrame();
+
+            yield break;
+        }
+
+        public static IEnumerator GetGameObjectFromCreateObjectInFSM( GameObject go, string fsmName, string stateName, Action<GameObject> onGameObjectLoaded, bool returnCopyOfPrefab )
+        {
+            GameObject copy = go;
+            if( !go.activeInHierarchy )
+            {
+                copy = GameObject.Instantiate( go ) as GameObject;
+                copy.SetActive( true );
+            }
+
+            //wait a few frames for the fsm to set up stuff
+            yield return new WaitForEndOfFrame();
+#if UNITY_EDITOR
+            onGameObjectLoaded(null);
+#else
+            var createObject = copy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.CreateObject>( stateName, fsmName );
+
+            //this is a prefab
+            var prefab = createObject.gameObject.Value;
+
+            if( returnCopyOfPrefab )
+            {
+                //so spawn one
+                var spawnedCopy = GameObject.Instantiate( prefab ) as GameObject;
+
+                //send the loaded object out
+                onGameObjectLoaded( spawnedCopy );
+            }
+            else
+            {
+                onGameObjectLoaded( prefab );
+            }
+#endif
+            if( copy != go )
+                GameObject.Destroy( copy );
+
+            //let stuff get destroyed
+            yield return new WaitForEndOfFrame();
+
+            yield break;
+        }
 
         public static IEnumerator GetGameObjectFromFSM(GameObject go, string fsmName, string stateName, Action<GameObject> onGameObjectLoaded)
         {
