@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using nv.Tests;
+#endif
+
 namespace nv
 {
     public class EnemySM : Physics2DSM
@@ -59,7 +63,10 @@ namespace nv
             {
                 int damage = previousHP - healthManager.hp;
                 if( damage >= ignoreDamageDeltaUnder )
-                    OnHit?.Invoke( damage );
+                {
+                    if(OnHit != null)
+                        OnHit.Invoke(damage);
+                }
             }
 
             previousHP = healthManager.hp;

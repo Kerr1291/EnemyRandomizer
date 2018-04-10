@@ -5,13 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using UnityEngine;
-using TMPro;
+
+using nv;
 
 #if UNITY_EDITOR
 using nv.Tests;
+#else
+using TMPro;
 #endif
 
-namespace nv
+namespace EnemyRandomizerMod
 {
     public class HornetBoss : EnemySM
     {
@@ -67,12 +70,8 @@ namespace nv
         public tk2dSpriteAnimationClip hornetPointClip;
         public tk2dSpriteAnimationClip hornetSoftLandClip;
         public tk2dSpriteAnimationClip hornetJumpFullClip;
-
-#if UNITY_EDITOR
-        public object fightMusic;
-#else
+        
         public MusicCue fightMusic;
-#endif
         public UnityEngine.Audio.AudioMixerSnapshot fightMusicSnapshot;
         
         public bool checkPlayerData = false;
@@ -208,17 +207,17 @@ namespace nv
             }
         }
 
-        protected void SetFightGates( bool closed )
+        protected virtual void SetFightGates( bool closed )
         {
             if( closed )
             {
-                FSMUtility.LocateFSM( GameObject.Find( "Battle Gate A" ), "BG Control" )?.SendEvent( "BG CLOSE" );
-                FSMUtility.LocateFSM( GameObject.Find( "Battle Gate (1)" ), "BG Control" )?.SendEvent( "BG CLOSE" );
+                SendEventToFSM("Battle Gate A", "BG Control", "BG CLOSE");
+                SendEventToFSM("Battle Gate A (1)", "BG Control", "BG CLOSE");
             }
             else
             {
-                FSMUtility.LocateFSM( GameObject.Find( "Battle Gate A" ), "BG Control" )?.SendEvent( "BG OPEN" );
-                FSMUtility.LocateFSM( GameObject.Find( "Battle Gate (1)" ), "BG Control" )?.SendEvent( "BG OPEN" );
+                SendEventToFSM("Battle Gate A", "BG Control", "BG OPEN");
+                SendEventToFSM("Battle Gate A (1)", "BG Control", "BG OPEN");
             }
         }
 
@@ -306,9 +305,9 @@ namespace nv
             HeroController.instance.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             if( checkPlayerData )
             {
-                HeroController.instance.playerData.SetInt( "hornetGreenpath", 4 );
+                GameManager.instance.playerData.SetInt( "hornetGreenpath", 4 );
             }
-            HeroController.instance.playerData.SetBool( "disablePause", true );
+            GameManager.instance.playerData.SetBool( "disablePause", true );
 
             HeroController.instance.RelinquishControl();
 
@@ -320,13 +319,8 @@ namespace nv
         protected virtual IEnumerator BoxUp()
         {
             Dev.Where();
-
-            //System.IO.StreamWriter file = null;
-            //file = new System.IO.StreamWriter( Application.dataPath + "/Managed/Mods/" + dialogueManager.name );
-            //dialogueManager.PrintSceneHierarchyTree( true, file );
-            //file.Close();
-
-            dialogueManager.GetComponent<PlayMakerFSM>()?.SendEvent( "BOX UP" );
+            
+            SendEventToFirstFSM(dialogueManager, "BOX UP");
 
             ShowBossTitle( this, areaTitleObject, -1f, "", "", "", "HORNET", "", "" );
 
@@ -376,8 +370,8 @@ namespace nv
             Dev.Where();
 
             HideBossTitle( areaTitleObject );
-            
-            dialogueManager.GetComponent<PlayMakerFSM>()?.SendEvent( "BOX DOWN" );
+
+            SendEventToFirstFSM(dialogueManager, "BOX DOWN");
 
             nextState = SetHeroActive;
 
@@ -389,7 +383,7 @@ namespace nv
             Dev.Where();
 
             HeroController.instance.RegainControl();
-            HeroController.instance.playerData.SetBool( "disablePause", false );
+            GameManager.instance.playerData.SetBool( "disablePause", false );
             nextState = LeapAntic;
 
             yield break;
@@ -2451,7 +2445,10 @@ namespace nv
             if( UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Corpse Hornet 1(Clone)" ) != null )
             {
                 hornetCorpse = UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04_boss" ).FindGameObject( "Corpse Hornet 1(Clone)" );
+#if UNITY_EDITOR
+#else
                 hornetCorpse.PrintSceneHierarchyTree( hornetCorpse.name );
+#endif
                 hornetCorpse.AddComponent<HornetCorpse>();
             }
             gameObject.AddComponent<PreventOutOfBounds>();
@@ -2461,17 +2458,7 @@ namespace nv
             //gameObject.AddComponent<DebugColliders>();
             //needle.gameObject.AddComponent<DebugColliders>();
             //needleTink.gameObject.AddComponent<DebugColliders>();
-            //HeroController.instance.gameObject.AddComponent<DebugColliders>();
-
-#if UNITY_EDITOR
-            healthManager = gameObject.AddComponent<HealthManager>();
-            tk2dAnimator = gameObject.AddComponent<tk2dSpriteAnimator>();
-            evadeRange = gameObject.AddComponent<EvadeRange>();
-            sphereRange = gameObject.AddComponent<SphereRange>();
-            refightRange = gameObject.AddComponent<RefightRange>();
-            needle = new GameObject("Needle").AddComponent<Needle>();
-            needleTink = new GameObject("Needle Tink").AddComponent<NeedleTink>();
-#endif
+            //HeroController.instance.gameObject.AddComponent<DebugColliders>();            
         }
 
         protected override IEnumerator ExtractReferencesFromExternalSources()
@@ -2531,7 +2518,10 @@ namespace nv
             GameObject item = UnityEngine.SceneManagement.SceneManager.GetSceneByName( "Fungus1_04" ).FindGameObject( "Shiny Item" );
             if( item != null )
             {
+#if UNITY_EDITOR
+#else
                 item.PrintSceneHierarchyTree( item.name );
+#endif
                 item.AddComponent<ShinyItem>();
             }
             //TODO: get "Grass Escape" game object for a particle effect

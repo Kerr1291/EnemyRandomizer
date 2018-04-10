@@ -141,6 +141,47 @@ namespace nv
             DoCameraEffect("EnemyKillShake");
         }
 
+        protected static void SendEventToFirstFSM(GameObject gameObject, string eventName)
+        {
+            if(gameObject == null)
+                return;
+
+            PlayMakerFSM fsm = gameObject.GetComponent<PlayMakerFSM>();
+            if(fsm != null)
+            {
+                fsm.SendEvent(eventName);
+            }
+        }
+
+        protected static void SendEventToAllFSMsOn(GameObject gameObject, string eventName)
+        {
+            if(gameObject == null)
+                return;
+
+            PlayMakerFSM[] fsms = gameObject.GetComponents<PlayMakerFSM>();
+            foreach(var fsm in fsms)
+            {
+                fsm.SendEvent(eventName);
+            }
+        }
+
+        protected static void SendEventToFSM(GameObject gameObject, string fsmName, string eventName)
+        {
+            if(gameObject == null)
+                return;
+
+            PlayMakerFSM fsm = FSMUtility.LocateFSM(gameObject, fsmName);
+            if(fsm != null)
+            {
+                fsm.SendEvent(eventName);
+            }
+        }
+
+        protected static void SendEventToFSM(string gameObjectName, string fsmName, string eventName)
+        {
+            SendEventToFSM(GameObject.Find(gameObjectName), fsmName, eventName);
+        }
+
         protected static void PlayBossMusic(UnityEngine.Audio.AudioMixerSnapshot mixerSnapshot, MusicCue musicCue)
         {
             //set the audio mixer snapshot
@@ -648,27 +689,23 @@ namespace nv
             yield break;
         }
 
-
-#if UNITY_EDITOR
+        
         public static UnityEngine.Audio.AudioMixerSnapshot GetSnapshotFromFSM(GameObject go, string fsmName, string stateName)
         {
+#if UNITY_EDITOR
             return null;
 #else
-        public static UnityEngine.Audio.AudioMixerSnapshot GetSnapshotFromFSM(GameObject go, string fsmName, string stateName)
-        {
             var snapshot = go.GetFSMActionOnState<HutongGames.PlayMaker.Actions.TransitionToAudioSnapshot>(stateName, fsmName);
             var mixerSnapshot = snapshot.snapshot.Value as UnityEngine.Audio.AudioMixerSnapshot;
             return mixerSnapshot;
 #endif
         }
 
-#if UNITY_EDITOR
-        public static object GetMusicCueFromFSM(GameObject go, string fsmName, string stateName)
-        {
-            return null;
-#else
         public static MusicCue GetMusicCueFromFSM(GameObject go, string fsmName, string stateName)
         {
+#if UNITY_EDITOR
+            return null;
+#else
             var musicCue = go.GetFSMActionOnState<HutongGames.PlayMaker.Actions.ApplyMusicCue>(stateName, fsmName);
             MusicCue mc = musicCue.musicCue.Value as MusicCue;
             return mc;

@@ -4,10 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using nv;
-using EnemyRandomizerMod;
 
-//namespace nv
-//{
+#if UNITY_EDITOR
+using nv.Tests;
+#endif
+
+namespace EnemyRandomizerMod
+{
     public class HornetCorpse : Physics2DSM
     {
         public MeshRenderer meshRenderer;
@@ -25,13 +28,16 @@ using EnemyRandomizerMod;
         //use for some sound effects
         public AudioSource actorAudioSource;
 
-        public override bool Running {
-            get {
+        public override bool Running
+        {
+            get
+            {
                 return gameObject.activeInHierarchy;
             }
 
-            set {
-                gameObject.SetActive( value );
+            set
+            {
+                gameObject.SetActive(value);
             }
         }
 
@@ -44,11 +50,11 @@ using EnemyRandomizerMod;
             prefabs = new Dictionary<string, GameObject>();
         }
 
-        protected virtual void OnCollisionStay2D( Collision2D collision )
+        protected virtual void OnCollisionStay2D(Collision2D collision)
         {
-            if( collision.gameObject.layer == collisionLayer )
+            if(collision.gameObject.layer == collisionLayer)
             {
-                CheckTouching( collisionLayer );
+                CheckTouching(collisionLayer);
             }
         }
 
@@ -133,17 +139,17 @@ using EnemyRandomizerMod;
             yield break;
         }
 
-        protected void SetFightGates( bool closed )
+        protected virtual void SetFightGates(bool closed)
         {
-            if( closed )
+            if(closed)
             {
-                FSMUtility.LocateFSM( GameObject.Find( "Battle Gate A" ), "BG Control" )?.SendEvent( "BG CLOSE" );
-                FSMUtility.LocateFSM( GameObject.Find( "Battle Gate (1)" ), "BG Control" )?.SendEvent( "BG CLOSE" );
+                SendEventToFSM("Battle Gate A", "BG Control", "BG CLOSE");
+                SendEventToFSM("Battle Gate A (1)", "BG Control", "BG CLOSE");
             }
             else
             {
-                FSMUtility.LocateFSM( GameObject.Find( "Battle Gate A" ), "BG Control" )?.SendEvent( "BG OPEN" );
-                FSMUtility.LocateFSM( GameObject.Find( "Battle Gate (1)" ), "BG Control" )?.SendEvent( "BG OPEN" );
+                SendEventToFSM("Battle Gate A", "BG Control", "BG OPEN");
+                SendEventToFSM("Battle Gate A (1)", "BG Control", "BG OPEN");
             }
         }
 
@@ -153,70 +159,70 @@ using EnemyRandomizerMod;
 
             string bossFSMName = "Control";
 
-            yield return GetGameObjectFromCreateObjectInFSM( gameObject, bossFSMName, "Blow", SetPrefab, false );//???
+            yield return GetGameObjectFromCreateObjectInFSM(gameObject, bossFSMName, "Blow", SetPrefab, false);//???
 
             //TODO: give this a way to get the 2nd action
-            yield return GetGameObjectsFromSpawnRandomObjectsV2InFSM( gameObject, bossFSMName, "Blow", SetPrefab );//???
-            yield return GetGameObjectsFromSpawnRandomObjectsV2InFSM( gameObject, bossFSMName, "Blow", SetPrefab );//???
-            yield return GetAudioSourceObjectFromFSM( gameObject, bossFSMName, "Blow", SetActorAudioSource );
-            yield return GetAudioClipFromFSM( gameObject, bossFSMName, "Blow", SetAudioClip );//Hornet_Fight_Death_01
-            yield return GetAudioClipFromAudioPlaySimpleInFSM( gameObject, bossFSMName, "Blow", SetAudioClip );//boss_explode_clean
-            yield return GetAudioClipFromFSM( gameObject, bossFSMName, "Jump", SetAudioClip );//Hornet_Fight_Stun_02
-            yield return GetAudioClipFromFSM( gameObject, bossFSMName, "Throw", SetAudioClip );//hornet_needle_thow_spin
+            yield return GetGameObjectsFromSpawnRandomObjectsV2InFSM(gameObject, bossFSMName, "Blow", SetPrefab);//???
+            yield return GetGameObjectsFromSpawnRandomObjectsV2InFSM(gameObject, bossFSMName, "Blow", SetPrefab);//???
+            yield return GetAudioSourceObjectFromFSM(gameObject, bossFSMName, "Blow", SetActorAudioSource);
+            yield return GetAudioClipFromFSM(gameObject, bossFSMName, "Blow", SetAudioClip);//Hornet_Fight_Death_01
+            yield return GetAudioClipFromAudioPlaySimpleInFSM(gameObject, bossFSMName, "Blow", SetAudioClip);//boss_explode_clean
+            yield return GetAudioClipFromFSM(gameObject, bossFSMName, "Jump", SetAudioClip);//Hornet_Fight_Stun_02
+            yield return GetAudioClipFromFSM(gameObject, bossFSMName, "Throw", SetAudioClip);//hornet_needle_thow_spin
 
             //TODO: give this a way to get the 2nd action
-            yield return GetAudioClipFromFSM( gameObject, bossFSMName, "Yank", SetAudioClip );//Hornet_Fight_Yell_03
-            yield return GetAudioClipFromFSM( gameObject, bossFSMName, "Yank", SetAudioClip );//hornet_dash
-            audioSnapshot = GetSnapshotFromFSM( gameObject, bossFSMName, "Blow" );//Silent
-        
+            yield return GetAudioClipFromFSM(gameObject, bossFSMName, "Yank", SetAudioClip);//Hornet_Fight_Yell_03
+            yield return GetAudioClipFromFSM(gameObject, bossFSMName, "Yank", SetAudioClip);//hornet_dash
+            audioSnapshot = GetSnapshotFromFSM(gameObject, bossFSMName, "Blow");//Silent
+
             //load child references
-            if(gameObject.FindGameObjectInChildren( "Thread" ) != null )
-                thread = gameObject.FindGameObjectInChildren( "Thread" ).GetComponent<tk2dSpriteAnimator>();
-            if(gameObject.FindGameObjectInChildren( "Grass" ) != null )
-                grass = gameObject.FindGameObjectInChildren( "Grass" ).GetComponent<ParticleSystem>();
-            if( gameObject.FindGameObjectInChildren( "Start Pt" ) != null )
-                startPt = gameObject.FindGameObjectInChildren( "Start Pt" );
-            if(gameObject.FindGameObjectInChildren( "Leave Anim" ) != null )
-                leaveAnim = gameObject.FindGameObjectInChildren( "Leave Anim" ).GetComponent<tk2dSpriteAnimator>();
-            if( gameObject.FindGameObjectInChildren( "Grass Escape" ) != null )
-                grassEscape = gameObject.FindGameObjectInChildren( "Grass Escape" ).GetComponent<ParticleSystem>();
+            if(gameObject.FindGameObjectInChildren("Thread") != null)
+                thread = gameObject.FindGameObjectInChildren("Thread").GetComponent<tk2dSpriteAnimator>();
+            if(gameObject.FindGameObjectInChildren("Grass") != null)
+                grass = gameObject.FindGameObjectInChildren("Grass").GetComponent<ParticleSystem>();
+            if(gameObject.FindGameObjectInChildren("Start Pt") != null)
+                startPt = gameObject.FindGameObjectInChildren("Start Pt");
+            if(gameObject.FindGameObjectInChildren("Leave Anim") != null)
+                leaveAnim = gameObject.FindGameObjectInChildren("Leave Anim").GetComponent<tk2dSpriteAnimator>();
+            if(gameObject.FindGameObjectInChildren("Grass Escape") != null)
+                grassEscape = gameObject.FindGameObjectInChildren("Grass Escape").GetComponent<ParticleSystem>();
         }
 
-        void SetPrefab( GameObject prefab )
+        void SetPrefab(GameObject prefab)
         {
-            if( prefab == null )
+            if(prefab == null)
             {
-                Dev.Log( "Warning: prefab is null!" );
+                Dev.Log("Warning: prefab is null!");
                 return;
             }
 
-            Dev.Log( "Added: "+ prefab.name + " to prefabs!" );
-            prefabs.Add( prefab.name, prefab );
+            Dev.Log("Added: " + prefab.name + " to prefabs!");
+            prefabs.Add(prefab.name, prefab);
         }
 
-        void SetAudioClip( AudioClip clip )
+        void SetAudioClip(AudioClip clip)
         {
-            if( clip == null )
+            if(clip == null)
             {
-                Dev.Log( "Warning: audio clip is null!" );
+                Dev.Log("Warning: audio clip is null!");
                 return;
             }
 
-            Dev.Log( "Added: " + clip.name + " to audioClips!" );
-            audioClips.Add( clip.name, clip );
+            Dev.Log("Added: " + clip.name + " to audioClips!");
+            audioClips.Add(clip.name, clip);
         }
 
-        void SetActorAudioSource( AudioSource source )
+        void SetActorAudioSource(AudioSource source)
         {
-            if( source == null )
+            if(source == null)
             {
-                Dev.Log( "Warning: Actor AudioSource failed to load and is null!" );
+                Dev.Log("Warning: Actor AudioSource failed to load and is null!");
                 return;
             }
 
             actorAudioSource = source;
-            actorAudioSource.transform.SetParent( gameObject.transform );
+            actorAudioSource.transform.SetParent(gameObject.transform);
             actorAudioSource.transform.localPosition = Vector3.zero;
         }
     }
-//}
+}

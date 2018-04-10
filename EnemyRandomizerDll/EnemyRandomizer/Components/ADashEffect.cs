@@ -5,6 +5,10 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using nv.Tests;
+#endif
+
 namespace nv
 {
     public class ADashEffect : MonoBehaviour
