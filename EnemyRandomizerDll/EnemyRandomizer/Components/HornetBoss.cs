@@ -1546,6 +1546,10 @@ namespace nv
                         velocity.x = 0f;
                     }
                 }
+                if( velocity.x < 0.001f && velocity.x > -0.001f )
+                {
+                    velocity.x = 0f;
+                }
                 body.velocity = velocity;
 
                 if( !BlockingAnimationIsPlaying )
@@ -1635,6 +1639,14 @@ namespace nv
                         velocity.y = 0f;
                     }
                 }
+                if( velocity.x < 0.001f && velocity.x > -0.001f )
+                {
+                    velocity.x = 0f;
+                }
+                if( velocity.y < 0.001f && velocity.y > -0.001f )
+                {
+                    velocity.y = 0f;
+                }
                 body.velocity = velocity;
 
                 if( !BlockingAnimationIsPlaying )
@@ -1700,6 +1712,14 @@ namespace nv
                     {
                         velocity.y = 0f;
                     }
+                }
+                if( velocity.x < 0.001f && velocity.x > -0.001f )
+                {
+                    velocity.x = 0f;
+                }
+                if( velocity.y < 0.001f && velocity.y > -0.001f )
+                {
+                    velocity.y = 0f;
                 }
                 body.velocity = velocity;
 
@@ -1911,6 +1931,10 @@ namespace nv
                         velocity.x = 0f;
                     }
                 }
+                if( velocity.x < 0.001f && velocity.x > -0.001f )
+                {
+                    velocity.x = 0f;
+                }
                 body.velocity = velocity;
 
                 if( !BlockingAnimationIsPlaying )
@@ -1937,7 +1961,7 @@ namespace nv
             BlockingAnimationIsPlaying = true;
 
             //TODO: move into a variable
-            float decelerationX = .75f;
+            float decelerationX = .75f; 
             for(; ; )
             {
                 Vector2 velocity = body.velocity;
@@ -1956,6 +1980,10 @@ namespace nv
                     {
                         velocity.x = 0f;
                     }
+                }
+                if( velocity.x < 0.001f && velocity.x > -0.001f )
+                {
+                    velocity.x = 0f;
                 }
                 body.velocity = velocity;
 

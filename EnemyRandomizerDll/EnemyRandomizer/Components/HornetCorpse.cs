@@ -3,8 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace nv
-{
+using nv;
+using EnemyRandomizerMod;
+
+//namespace nv
+//{
     public class HornetCorpse : Physics2DSM
     {
         public MeshRenderer meshRenderer;
@@ -216,4 +219,4 @@ namespace nv
             actorAudioSource.transform.localPosition = Vector3.zero;
         }
     }
-}
+//}

@@ -353,7 +353,7 @@ namespace EnemyRandomizerMod
         }
 
         //enable this to only load scenes from the "testTypeScenes" list for faster debugging
-        public const bool USE_TEST_SCENES = true;
+        public const bool USE_TEST_SCENES = false;
 
         public static List<int> EnemyTypeScenes {
             get {
