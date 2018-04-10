@@ -2485,10 +2485,10 @@ namespace EnemyRandomizerMod
             yield return GetAudioPlayerOneShotClipsFromFSM( gameObject, bossFSMName, "Throw Antic", SetHornetAttackYells );
             yield return GetGameObjectFromFSM( gameObject, bossFSMName, "Flourish", SetAreaTitleReference );
             yield return GetGameObjectFromSpawnObjectFromGlobalPoolInFSM( gameObject, bossFSMName, "Stun Start", SetStunEffect, false );
-            yield return GetAudioSourceObjectFromFSM( gameObject, bossFSMName, "Flourish", SetActorAudioSource );
-            yield return GetAudioClipFromFSM( gameObject, bossFSMName, "Flourish", SetHornetYell );
+            yield return GetAudioSourceFromAudioPlayerOneShotSingleInFSM( gameObject, bossFSMName, "Flourish", SetActorAudioSource );
+            yield return GetAudioClipFromAudioPlayerOneShotSingleInFSM( gameObject, bossFSMName, "Flourish", SetHornetYell );
             fightMusic = GetMusicCueFromFSM( gameObject, bossFSMName, "Flourish" );
-            fightMusicSnapshot = GetSnapshotFromFSM( gameObject, bossFSMName, "Flourish" );
+            fightMusicSnapshot = GetSnapshotFromTransitionToAudioSnapshotInFSM( gameObject, bossFSMName, "Flourish" );
 
             //load additional resources from other things
 
