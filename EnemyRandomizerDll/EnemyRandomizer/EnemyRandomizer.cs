@@ -426,6 +426,7 @@ namespace EnemyRandomizerMod
 
         void RegisterCallbacks()
         {
+            Dev.Where();
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= CheckAndDisableLogicInMenu;
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged += CheckAndDisableLogicInMenu;
             ModHooks.Instance.AfterSavegameLoadHook += TryEnableEnemyRandomizerFromSave;
@@ -435,6 +436,7 @@ namespace EnemyRandomizerMod
 
         void UnRegisterCallbacks()
         {
+            Dev.Where();
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= CheckAndDisableLogicInMenu;
             ModHooks.Instance.AfterSavegameLoadHook -= TryEnableEnemyRandomizerFromSave;
             ModHooks.Instance.NewGameHook -= EnableEnemyRandomizerFromNewGame;
@@ -445,7 +447,7 @@ namespace EnemyRandomizerMod
         static string debugRecentHit = "";
         static void DebugPrintObjectOnHit( Collider2D otherCollider, GameObject gameObject )
         {
-            Dev.Where();
+            //Dev.Where();
             if( otherCollider.gameObject.name != debugRecentHit )
             {
                 Dev.Log( "Hero at " + HeroController.instance.transform.position + " HIT: " + otherCollider.gameObject.name + " at (" + otherCollider.gameObject.transform.position + ")" );
@@ -503,6 +505,7 @@ namespace EnemyRandomizerMod
 
         void EnableEnemyRandomizer()
         {
+            Dev.Where();
             Tools.SetNoclip( false );
             RandomizerReady = true;
 
