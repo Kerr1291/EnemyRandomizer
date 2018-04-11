@@ -61,12 +61,13 @@
     <Compile Include="Common\Contractor.cs" />
     <Compile Include="Common\Dev.cs" />
     <Compile Include="Common\DevLog.cs" />
+    <Compile Include="Components\SuperDash.cs" />
     <Compile Include="Components\ADashEffect.cs" />
     <Compile Include="Components\EnemySM.cs" />
     <Compile Include="Components\EvadeRange.cs" />
     <Compile Include="Components\FlashEffect.cs" />
-    <Compile Include="Common\PreventOutOfBounds.cs" />
-    <Compile Include="Common\RangeCheck.cs" />
+    <Compile Include="Components\PreventOutOfBounds.cs" />
+    <Compile Include="Components\RangeCheck.cs" />
     <Compile Include="Components\DebugColliders.cs" />
     <Compile Include="Components\DebugOnWake.cs" />
     <Compile Include="Components\GameStateMachine.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Components\ShinyItem.cs" />
     <Compile Include="Components\SphereBall.cs" />
     <Compile Include="Components\StunController.cs" />
+    <Compile Include="Components\TemplateSM.cs" />
     <Compile Include="Components\ThrowEffect.cs" />
     <Compile Include="Components\WakeUpMageKnight.cs" />
     <Compile Include="EnemyRandomizerDatabase.cs" />

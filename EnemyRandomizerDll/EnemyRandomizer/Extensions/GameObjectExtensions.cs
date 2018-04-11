@@ -415,7 +415,7 @@ namespace nv
                 }
             }
 
-            return actions;
+            return actions; 
         }
 
         public static List<T> GetFSMActionsOnState<T>( this GameObject gameObject, string stateName, string fsmName = "" ) where T : HutongGames.PlayMaker.FsmStateAction
@@ -431,6 +431,10 @@ namespace nv
                         actions.Add( action as T );
                     }
                 }
+            }
+            else
+            {
+                Dev.Log( "Warning: No state named "+ stateName + "found in fsm " + fsmName );
             }
 
             return actions;

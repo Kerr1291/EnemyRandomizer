@@ -2380,6 +2380,11 @@ namespace EnemyRandomizerMod
             PlayAnimation( tk2dAnimator, animation );
         }
 
+        protected virtual void PlayAnimation( string animation, int frame )
+        {
+            PlayAnimation( tk2dAnimator, animation, frame );
+        }
+
         protected virtual void PlayAnimation( tk2dSpriteAnimationClip animation )
         {
             tk2dAnimator.Play( animation );
@@ -2487,6 +2492,7 @@ namespace EnemyRandomizerMod
             yield return GetGameObjectFromSpawnObjectFromGlobalPoolInFSM( gameObject, bossFSMName, "Stun Start", SetStunEffect, false );
             yield return GetAudioSourceFromAudioPlayerOneShotSingleInFSM( gameObject, bossFSMName, "Flourish", SetActorAudioSource );
             yield return GetAudioClipFromAudioPlayerOneShotSingleInFSM( gameObject, bossFSMName, "Flourish", SetHornetYell );
+            
             fightMusic = GetMusicCueFromFSM( gameObject, bossFSMName, "Flourish" );
             fightMusicSnapshot = GetSnapshotFromTransitionToAudioSnapshotInFSM( gameObject, bossFSMName, "Flourish" );
 

@@ -9,6 +9,7 @@ using UnityEngine;
 #if UNITY_EDITOR
 using nv.Tests;
 #else
+using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 #endif
 
@@ -202,6 +203,20 @@ namespace nv
             owner.transform.localScale = owner.transform.localScale.SetX(-owner.transform.localScale.x);
         }
 
+        protected virtual void PlayAnimation( tk2dSpriteAnimator tk2dAnimator, string animation, int frame )
+        {
+            Dev.Where();
+
+            if( tk2dAnimator.GetClipByName( animation ) == null )
+            {
+                Dev.Log( "Warning: " + animation + " clip not found" );
+                return;
+            }
+
+            tk2dAnimator.AnimationCompleted = null;
+            tk2dAnimator.PlayFromFrame( tk2dAnimator.GetClipByName( animation ), frame );
+        }
+
         protected virtual void PlayAnimation(tk2dSpriteAnimator tk2dAnimator, string animation)
         {
             Dev.Where();
@@ -256,6 +271,13 @@ namespace nv
             {
                 source.PlayOneShot(clip);
             }
+            else
+            {
+                if( source == null )
+                    Dev.Log( "Audio source is null! Cannot play sounds." );
+                if( clip == null )
+                    Dev.Log( "Audio clip is null! Cannot play sound." );
+            }
         }
 
         static public void PlayOneShotRandom(AudioSource source, List<AudioClip> clip)
@@ -264,6 +286,15 @@ namespace nv
             {
                 AudioClip randomClip = clip.GetRandomElementFromList();
                 source.PlayOneShot(randomClip);
+            }
+            else
+            {
+                if( source == null )
+                    Dev.Log( "Audio source is null! Cannot play sounds." );
+                if( clip == null )
+                    Dev.Log( "Audio clip is null! Cannot play sound." );
+                if( clip != null && clip.Count <= 0 )
+                    Dev.Log( "Audio clip list is empty! No sounds to play." );
             }
         }
 
@@ -451,7 +482,7 @@ namespace nv
 #if UNITY_EDITOR
             onGameObjectLoaded(null);
 #else
-            var[] spawnRandomObjectsV2 = copy.GetFSMActionsOnState<HutongGames.PlayMaker.Actions.SpawnRandomObjectsV2>( stateName, fsmName );
+            var spawnRandomObjectsV2 = copy.GetFSMActionsOnState<HutongGames.PlayMaker.Actions.SpawnRandomObjectsV2>( stateName, fsmName );
 
             var action = spawnRandomObjectsV2[0];
 
@@ -682,7 +713,7 @@ namespace nv
 #if UNITY_EDITOR
             onClipLoaded(null);
 #else
-            var[] audioOneShot = copy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.AudioPlayerOneShotSingle>(stateName, fsmName);
+            var audioOneShot = copy.GetFSMActionsOnState<HutongGames.PlayMaker.Actions.AudioPlayerOneShotSingle>(stateName, fsmName);
             
             var action = audioOneShot[0];
 
@@ -711,7 +742,7 @@ namespace nv
 #if UNITY_EDITOR
             return null;
 #else
-            return GetValueFromAction<AudioMixerSnapshot, TransitionToAudioSnapshot>(go, fsmName, stateName, "snapshot");
+            return GetValueFromAction<UnityEngine.Audio.AudioMixerSnapshot, TransitionToAudioSnapshot>(go, fsmName, stateName, "snapshot");
             //var snapshot = go.GetFSMActionOnState<HutongGames.PlayMaker.Actions.TransitionToAudioSnapshot>(stateName, fsmName);
             //var mixerSnapshot = snapshot.snapshot.Value as UnityEngine.Audio.AudioMixerSnapshot;
             //return mixerSnapshot;
@@ -735,6 +766,12 @@ namespace nv
         {
             List<U> actions = go.GetFSMActionsOnState<U>(stateName, fsmName);
 
+            if(actions == null)
+            {
+                Dev.Log( "Warning: No actions of type " + typeof( U ).GetType().Name + " found on state " + stateName + " in fsm " + fsmName );
+                return default( T );
+            }
+
             U action = actions[0];
 
             if(actionIndex != null && actionIndex.HasValue)
@@ -742,7 +779,7 @@ namespace nv
                 action = actions[actionIndex.Value];
             }
 
-            FieldInfo fi = action.GetType().GetField("valueName", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo fi = action.GetType().GetField(valueName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
             if(fi == null)
             {
@@ -758,20 +795,93 @@ namespace nv
                 return default(T);
             }
 
-            var fieldValue = fi.GetValue(action);
+            object fieldValue = fi.GetValue(action);
+            
             T realValue;
 
-            if(fieldValue as NamedVariable != null)
+            if( fieldValue as FsmObject != null )
             {
-                realValue = (T)(fieldValue as NamedVariable).Value;
+                object val = (fieldValue as FsmObject).Value;
+                realValue = (T)( val );
+            }
+            else if( fieldValue as FsmRect != null )
+            {
+                object val = (fieldValue as FsmRect).Value;
+                realValue = (T)( val );
+            }
+            else if( fieldValue as FsmColor != null )
+            {
+                object val = (fieldValue as FsmColor).Value;
+                realValue = (T)( val );
+            }
+            else if( fieldValue as FsmEnum != null )
+            {
+                object val = (fieldValue as FsmEnum).Value;
+                realValue = (T)( val );
+            }
+            else if( fieldValue as FsmArray != null )
+            {
+                object val = (fieldValue as FsmArray).Values;
+                realValue = (T)( val );
+            }
+            else if( fieldValue as FsmBool != null )
+            {
+                object val = (fieldValue as FsmBool).Value;
+                realValue = (T)( val );
+            }
+            else if( fieldValue as FsmFloat != null )
+            {
+                object val = (fieldValue as FsmFloat).Value;
+                realValue = (T)( val );
+            }
+            else if( fieldValue as FsmInt != null )
+            {
+                object val = (fieldValue as FsmInt).Value;
+                realValue = (T)( val );
+            }
+            else if( fieldValue as FsmMaterial != null )
+            {
+                object val = (fieldValue as FsmMaterial).Value;
+                realValue = (T)( val );
+            }
+            else if( fieldValue as FsmQuaternion != null )
+            {
+                object val = (fieldValue as FsmQuaternion).Value;
+                realValue = (T)( val );
+            }
+            else if( fieldValue as FsmString != null )
+            {
+                object val = (fieldValue as FsmString).Value;
+                realValue = (T)( val );
+            }
+            else if( fieldValue as FsmTexture != null )
+            {
+                object val = (fieldValue as FsmTexture).Value;
+                realValue = (T)( val );
+            }
+            else if( fieldValue as FsmVector2 != null )
+            {
+                object val = (fieldValue as FsmVector2).Value;
+                realValue = (T)( val );
+            }
+            else if( fieldValue as FsmVector3 != null )
+            {
+                object val = (fieldValue as FsmVector3).Value;
+                realValue = (T)( val );
             }
 #if UNITY_EDITOR
 #else
-            else if(fieldValue as FsmOwnerDefault)
+            else if(fieldValue as FsmOwnerDefault != null)
             {
-                realValue = (T)(fieldValue as FsmOwnerDefault).GameObject.Value;
+                object val = (fieldValue as FsmOwnerDefault).GameObject.Value;
+                realValue = (T)( val );
             }
 #endif
+            else if( fieldValue as NamedVariable != null )
+            {
+                object val = (fieldValue as NamedVariable).RawValue;
+                realValue = (T)( val );
+            }
             else
             {
                 realValue = (T)(fieldValue);

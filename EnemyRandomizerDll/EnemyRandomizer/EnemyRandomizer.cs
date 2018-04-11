@@ -855,6 +855,7 @@ namespace EnemyRandomizerMod
         static string debugRecentHit = "";
         static void DebugPrintObjectOnHit( Collider2D otherCollider, GameObject gameObject )
         {
+            Dev.Where();
             if( otherCollider.gameObject.name != debugRecentHit )
             {
                 Dev.Log( "Hero at "+HeroController.instance.transform.position+" HIT: " + otherCollider.gameObject.name + " at (" + otherCollider.gameObject.transform.position + ")");
@@ -867,6 +868,9 @@ namespace EnemyRandomizerMod
                 hbMat.bounciness = .6f;
                 hbMat.friction = .2f;
             }
+
+            if( HeroController.instance.GetComponent<SuperDashHandler>() == null )
+                HeroController.instance.gameObject.AddComponent<SuperDashHandler>();
 
             if( HeroController.instance.playerData.equippedCharm_15 )
             {
