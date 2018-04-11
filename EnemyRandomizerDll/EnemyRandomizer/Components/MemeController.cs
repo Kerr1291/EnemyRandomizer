@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-using nv;
+using ModCommon;
 
 namespace EnemyRandomizerMod
 {
-    //TODO: move into its own class...
     //parent this to the meme
     public class MemeController : MonoBehaviour
     {

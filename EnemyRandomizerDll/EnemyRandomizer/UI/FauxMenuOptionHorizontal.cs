@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-using nv;
+using ModCommon;
 
 namespace EnemyRandomizerMod.Menu
 {

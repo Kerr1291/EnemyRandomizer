@@ -14,7 +14,7 @@ using HutongGames.PlayMaker.Actions;
 
 using Bounds = UnityEngine.Bounds;
 
-using nv;
+using ModCommon;
 
 namespace EnemyRandomizerMod
 {
@@ -35,10 +35,10 @@ namespace EnemyRandomizerMod
 
         string currentScene = "";
         string randoEnemyNamePrefix = "Rando Enemy: ";
-        nv.Contractor randomEnemyLocator = new nv.Contractor();
+        Contractor randomEnemyLocator = new Contractor();
         IEnumerator randomizerReplacer = null;
 
-        nv.Contractor replacementController = new nv.Contractor();
+        Contractor replacementController = new Contractor();
 
         class ReplacementPair
         {
@@ -131,7 +131,7 @@ namespace EnemyRandomizerMod
 
             if( randomEnemyLocator != null )
                 randomEnemyLocator.Reset();
-            randomEnemyLocator = new nv.Contractor();
+            randomEnemyLocator = new Contractor();
 
             replacementController.Reset();
 
@@ -163,7 +163,7 @@ namespace EnemyRandomizerMod
 
             replacementController.OnUpdate = ControlReplacementRoot;
             replacementController.Looping = true;
-            replacementController.SetUpdateRate( nv.Contractor.UpdateRateType.Frame );
+            replacementController.SetUpdateRate( Contractor.UpdateRateType.Frame );
             replacementController.Start();
 
             currentScene = to.name;
@@ -182,7 +182,7 @@ namespace EnemyRandomizerMod
 
             randomEnemyLocator.OnUpdate = LocateAndRandomizeEnemies;
             randomEnemyLocator.Looping = true;
-            randomEnemyLocator.SetUpdateRate( nv.Contractor.UpdateRateType.Frame );
+            randomEnemyLocator.SetUpdateRate( Contractor.UpdateRateType.Frame );
 
             randomEnemyLocator.Start();
 

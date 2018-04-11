@@ -35,6 +35,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>K:\Games\SteamApps\common\Hollow Knight\hollow_knight_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="ModCommon">
+      <HintPath>K:\Games\SteamApps\common\Hollow Knight\hollow_knight_Data\Managed\Mods\ModCommon.dll</HintPath>
+    </Reference>
     <Reference Include="PlayMaker, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\PlayMaker.dll</HintPath>
@@ -55,34 +58,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\Communication\CommunicationNode.cs" />
-    <Compile Include="Common\Communication\SerializableMethodInfo.cs" />
-    <Compile Include="Common\Communication\SerializableType.cs" />
-    <Compile Include="Common\Contractor.cs" />
-    <Compile Include="Common\Dev.cs" />
-    <Compile Include="Common\DevLog.cs" />
-    <Compile Include="Components\SuperDash.cs" />
-    <Compile Include="Components\ADashEffect.cs" />
-    <Compile Include="Components\EnemySM.cs" />
-    <Compile Include="Components\EvadeRange.cs" />
-    <Compile Include="Components\FlashEffect.cs" />
-    <Compile Include="Components\PreventOutOfBounds.cs" />
-    <Compile Include="Components\RangeCheck.cs" />
-    <Compile Include="Components\DebugColliders.cs" />
-    <Compile Include="Components\DebugOnWake.cs" />
-    <Compile Include="Components\GameStateMachine.cs" />
-    <Compile Include="Components\GDashEffect.cs" />
-    <Compile Include="Components\HornetBoss.cs" />
-    <Compile Include="Components\HornetCorpse.cs" />
     <Compile Include="Components\MemeController.cs" />
-    <Compile Include="Components\Needle.cs" />
-    <Compile Include="Components\NeedleTink.cs" />
-    <Compile Include="Components\Physics2DSM.cs" />
-    <Compile Include="Components\ShinyItem.cs" />
-    <Compile Include="Components\SphereBall.cs" />
-    <Compile Include="Components\StunController.cs" />
-    <Compile Include="Components\TemplateSM.cs" />
-    <Compile Include="Components\ThrowEffect.cs" />
     <Compile Include="Components\WakeUpMageKnight.cs" />
     <Compile Include="EnemyRandomizerDatabase.cs" />
     <Compile Include="EnemyRandomizer.cs" />
@@ -90,20 +66,8 @@
     <Compile Include="EnemyRandomizerLogic.cs" />
     <Compile Include="EnemyRandomizerSettings.cs" />
     <Compile Include="Events\LoadingEvents.cs" />
-    <Compile Include="Extensions\ComponentExtensions.cs" />
     <Compile Include="Extensions\GameObjectExtensions.cs" />
-    <Compile Include="Extensions\LayerMaskExtensions.cs" />
-    <Compile Include="Extensions\ListExtensions.cs" />
-    <Compile Include="Extensions\RectExtensions.cs" />
-    <Compile Include="Extensions\SceneExtensions.cs" />
-    <Compile Include="Extensions\Vector2Extensions.cs" />
-    <Compile Include="Extensions\Vector3Extensions.cs" />
-    <Compile Include="Common\GameRNG.cs" />
-    <Compile Include="Common\GameSingleton.cs" />
-    <Compile Include="Common\Math.cs" />
-    <Compile Include="Common\mt19937.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Common\RNG.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="UI\FauxMenuOptionHorizontal.cs" />
     <Compile Include="UI\FauxUIManager.cs" />

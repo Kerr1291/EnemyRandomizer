@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using System.Linq;
 
-using nv;
+using ModCommon;
 using HutongGames.PlayMaker.Actions;
 
 namespace EnemyRandomizerMod
@@ -18,7 +18,7 @@ namespace EnemyRandomizerMod
 
         EnemyRandomizerDatabase database;
 
-        nv.Contractor databaseLoader;
+        Contractor databaseLoader;
 
         IEnumerator randomizerSceneProcessor = null;
 
@@ -416,12 +416,12 @@ namespace EnemyRandomizerMod
             Dev.Where();
             randomizerSceneProcessor = DoBuildDatabase();
 
-            databaseLoader = new nv.Contractor
+            databaseLoader = new Contractor
             {
                 OnUpdate = BuildDatabase,
                 Looping = true
             };
-            databaseLoader.SetUpdateRate( nv.Contractor.UpdateRateType.Frame );
+            databaseLoader.SetUpdateRate( Contractor.UpdateRateType.Frame );
             databaseLoader.Start();
         }
 

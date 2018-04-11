@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 using ModType = EnemyRandomizerMod.EnemyRandomizer;
 using Object = UnityEngine.Object;
-using nv;
+using ModCommon;
 
 namespace EnemyRandomizerMod.Menu
 {
@@ -269,7 +269,7 @@ namespace EnemyRandomizerMod.Menu
             //don't try to "enable" the UI after it's already "enabled"
             if( rootUIManager == null )
             {
-                nv.Contractor enableUI = new nv.Contractor( LoadOptionsMenu, 0.4f );
+                Contractor enableUI = new Contractor( LoadOptionsMenu, 0.4f );
                 enableUI.Start();
             }
         }
@@ -327,7 +327,7 @@ namespace EnemyRandomizerMod.Menu
             {
                 uiManagerCanvasRoot.SetActive( false );
 
-                nv.Contractor reEnableUI = new nv.Contractor( ShowOptionsUI, 0.4f );
+                Contractor reEnableUI = new Contractor( ShowOptionsUI, 0.4f );
                 reEnableUI.Start();
             }
         }
@@ -595,7 +595,7 @@ namespace EnemyRandomizerMod.Menu
                             {
                                 if( optionName == EnemyRandomizerSettingsVars.Seed )
                                 {
-                                    int seed = nv.GameRNG.Randi();
+                                    int seed = GameRNG.Randi();
                                     EnemyRandomizer.Instance.OptionsMenuSeed = seed;
 
                                     menuItem.OptionList[ 0 ] = seed.ToString();

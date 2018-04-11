@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Modding;
+using ModCommon;
 
 namespace EnemyRandomizerMod.Menu
 {

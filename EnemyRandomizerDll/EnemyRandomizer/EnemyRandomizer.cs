@@ -12,7 +12,7 @@ using UnityEngine;
 
 using System.IO;
 
-using nv;
+using ModCommon;
 
 namespace EnemyRandomizerMod
 {

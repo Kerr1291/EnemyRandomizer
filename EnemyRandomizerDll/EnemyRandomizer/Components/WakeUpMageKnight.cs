@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-using nv;
+using ModCommon;
 
 namespace EnemyRandomizerMod
 {
