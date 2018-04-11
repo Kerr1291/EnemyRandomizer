@@ -73,7 +73,7 @@ namespace EnemyRandomizerMod
             while( true )
             {
                 yield return new WaitForEndOfFrame();
-                if( UnityEngine.Input.GetKeyDown( KeyCode.T ) )
+                if( UnityEngine.Input.GetKeyDown( KeyCode.O ) )
                 {
                     for( int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i )
                     {
@@ -851,43 +851,6 @@ namespace EnemyRandomizerMod
                     }
                 }
             }
-            //if( newEnemy.name == "Mage" )
-            //{
-            //    //TODO: modify the teleplanes?
-
-            //    //foreach(BoxCollider2D b in EnemyRandomizer.Instance.ModRoot.GetComponentsInChildren<BoxCollider2D>())
-            //    //{
-            //    //    if(b.gameObject.name.Contains("Teleplanes"))
-            //    //    {
-            //    //        b.size = sceneBounds.size;
-            //    //        b.offset = sceneBounds.center;
-            //    //    }
-            //    //}
-
-            //    //Dev.Log( "DebugFSMS -- FIXING MAGE" );
-
-
-            //    //PlayMakerFSM fsm = FSMUtility.LocateFSM( newEnemy, "Mage" );
-            //    //if( fsm != null && gcr != null )
-            //    //{
-            //    //    if( gcr.gameObject != null )
-            //    //    {
-            //    //        Dev.Log( "DebugFSMS OO -- " + gcr.gameObject.OwnerOption );
-            //    //        Dev.Log( "DebugFSMS GO -- " + gcr.gameObject.GameObject );
-            //    //    }
-            //    //    if( gcr.gameObject.GameObject != null )
-            //    //    {
-            //    //        Dev.Log( "DebugFSMS GON -- " + gcr.gameObject.GameObject.Name );
-            //    //    }
-            //    //    HutongGames.PlayMaker.FsmGameObject goa = new HutongGames.PlayMaker.FsmGameObject(fsm.Fsm.GameObject);
-            //    //    //HutongGames.PlayMaker.FsmGameObject gob = new HutongGames.PlayMaker.FsmGameObject(HeroController.instance.proxyFSM.Fsm.GameObject);
-
-            //    //    HutongGames.PlayMaker.FsmOwnerDefault goTarget = new HutongGames.PlayMaker.FsmOwnerDefault();
-            //    //    goTarget.GameObject = goa;
-            //    //    goTarget.OwnerOption = HutongGames.PlayMaker.OwnerDefaultOption.UseOwner;
-            //    //    gcr.gameObject = goTarget;
-            //    //}
-            //}
         }
 
 

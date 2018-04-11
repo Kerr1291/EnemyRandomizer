@@ -614,7 +614,7 @@ namespace EnemyRandomizerMod.Menu
                                         if( optionName == EnemyRandomizerSettingsVars.RNGRoomMode )
                                             EnemyRandomizer.Instance.RoomRNG = false;
                                         if( optionName == EnemyRandomizerSettingsVars.CheatNoclip )
-                                            EnemyRandomizer.Instance.SetNoclip( false );
+                                            Tools.SetNoclip( false );
                                         if( optionName == EnemyRandomizerSettingsVars.RandomizeGeo )
                                             EnemyRandomizer.Instance.RandomizeGeo = false;
                                         if( optionName == EnemyRandomizerSettingsVars.CustomEnemies )
@@ -632,7 +632,7 @@ namespace EnemyRandomizerMod.Menu
                                         if( optionName == EnemyRandomizerSettingsVars.RNGRoomMode )
                                             EnemyRandomizer.Instance.RoomRNG = true;
                                         if( optionName == EnemyRandomizerSettingsVars.CheatNoclip )
-                                            EnemyRandomizer.Instance.SetNoclip( true );
+                                            Tools.SetNoclip( true );
                                         if( optionName == EnemyRandomizerSettingsVars.RandomizeGeo )
                                             EnemyRandomizer.Instance.RandomizeGeo = true;
                                         if( optionName == EnemyRandomizerSettingsVars.CustomEnemies )
@@ -652,7 +652,7 @@ namespace EnemyRandomizerMod.Menu
                             else if( optionName == EnemyRandomizerSettingsVars.CheatNoclip )
                             {
                                 menuItem.OptionList = new[] { "On", "Off" };
-                                menuItem.SelectedOptionIndex = EnemyRandomizer.Instance.NoClipState ? 0 : 1;
+                                menuItem.SelectedOptionIndex = Tools.NoClipState ? 0 : 1;
                             }
                             else
                             {
