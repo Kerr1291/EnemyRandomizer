@@ -67,6 +67,7 @@
     <Compile Include="EnemyRandomizerSettings.cs" />
     <Compile Include="Events\LoadingEvents.cs" />
     <Compile Include="Extensions\GameObjectExtensions.cs" />
+    <Compile Include="HKRL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="UI\FauxMenuOptionHorizontal.cs" />

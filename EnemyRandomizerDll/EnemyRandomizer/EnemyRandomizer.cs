@@ -503,6 +503,8 @@ namespace EnemyRandomizerMod
             EnableEnemyRandomizer();
         }
 
+        Roguelike roguelike;
+
         void EnableEnemyRandomizer()
         {
             Dev.Where();
@@ -516,6 +518,9 @@ namespace EnemyRandomizerMod
             RandomizeGeo = GlobalSettings.RandomizeGeo;
             CustomEnemies = GlobalSettings.CustomEnemies;
 
+            roguelike = new Roguelike(); 
+            GameManager.instance.StartCoroutine( roguelike.Init( GameSeed ) );
+             
             //if( kmode )
             //{
             //    PlayerData instance = PlayerData.instance;
