@@ -4,69 +4,33 @@ https://github.com/Kerr1291/EnemyRandomizer
 
 This is a mod for [Hollow Knight](http://hollowknight.com/) that randomizes the Enemies.
 
-This mod is still in the early stages of development! Use at your own risk!
-
-## Other mods that pair well with this
-
-RandomizerMod ( https://github.com/MyEyes/RandomizerMod ) - Randomizes Spells and Charms in the game
-
-Debug Mod ( https://github.com/seanpr96/DebugMod ) - A life saver in case anything breaks, also fun to have around.
-
-## Example of what this mod does
-
-https://clips.twitch.tv/HeadstrongThoughtfulEmuSoonerLater
-
-https://clips.twitch.tv/CrazyFamousSheepShadyLulu
-
-https://clips.twitch.tv/SingleObliqueMomNotLikeThis
-
-https://clips.twitch.tv/PreciousCleverPeanutGOWSkull
-
-https://clips.twitch.tv/RichDeterminedCakeMingLee
-
-Twitch clips courtesy of 56 from #modding.
+It can be quite jank, but very fun.
 
 ## Release Installation
 
-Copy the "EnemyRandomizer.dll" to Folder: `<Path-To-Hollow Knight>\Hollow Knight\hollow_knight_Data\Managed\Mods`
+Get via one of the mod installers (will link here soon)
 
-OR 
+## Usage
+Click the [LOAD ENEMY RANDOMIZER] button in the top-left of the main menu to load the randomizer.
 
-Go to https://github.com/Kerr1291/Crossroads and download and run the installer :)
+By default, the randomizer will change each enemy type into another random type, and this will remain constant between rooms. This behaviour can be changed, as below.
 
-## Dependencies
+## Settings
+ - Chaos Mode - Each enemy will be fully randomized with no restrictions when you enter a new room. Enemies of the same type can be changed into different things.
+ - Room Mode - Each enemy type will be re-randomized each time you enter a new room, but it will still change every enemy of that type.
+ - Randomize Geo - Randomizes amount of geo dropped by enemies
+ - Custom Enemies - Allows custom enemies to be added to the randomizer
+ - Godmaster Enemies - Allows enemies from the Godmaster expansion to be included in the randomizer. This includes Absolute Radiance, Pure Vessel, Winged Nosk, Mato, Oro, Sheo, Sly and Eternal Ordeal enemies.
+ - (Cheat) No Clip - Turns on no clip - to be used in case of a bug that blocks progression by normal means, e.g. a door not opening after a boss has been killed.
 
-This mod depends on the Modding API by Seanpr and Firzen, which is a modified `Assembly-CSharp.dll`.
-There is currently no public download link for the Modding API.
-For now, check the pinned messages in the #modding channel in the Hollow Knight discord.
+## Known Bugs
+Certain bosses will not spawn if they have been killed elsewhere, such as Flukemarm, but their item drops will still function as normal and be found in the empty boss arena.
 
-## Development setup
+Trial of the Fool is broken - don't do it.
 
-After installing the Modding API, open this solution in Visual Studio.
-You will get many errors for missing assembly references.
-Here's how to resolve them:
 
-1. Right click the **EnemyRandomizer** project in the Solution Explorer.
-2. Properties
-3. Referenced Paths
-4. Folder: `<Path-To-Hollow Knight>\Hollow Knight\hollow_knight_Data\Managed\`
-5. Add Folder
+## Credits
 
-Now if you open up EnemyRandomizer.cs, you should see no errors.
 
-Note: install_built.bat is currently set to run as a post-build step. Open the file and configure "MOD_DEST" to automatically copy in the dll to your game's mod path after building.
-
-### Debugging
-
-Printf-style debugging is done through calls to `Modding.ModHooks.ModLog()`,
-which outputs text to `%APPDATA%\..\LocalLow\Team Cherry\Hollow Knight\ModLog.txt`.
-
-There is currently no easy way to use the Visual Studio debugger while Hollow Knight is running.
-Please let someone know if you manage to get this working, and we'll update these instructions.
-
-#### Thanks
-
-Special thanks to 56 ( https://www.twitch.tv/5fiftysix6 ) for doing a TON of play testing and bug reporting for me. The help has been huge and really accelerated the development.
-
-Big thanks to the RandomizerMod ( https://github.com/MyEyes/RandomizerMod ) which the code of which I used as a starting point/inspiration to make this mod.
-Additional thanks to everyone at #modding in hollow knight discord for their hard work. The modding API is fantastic.
+Special thanks to Fireball248, TheGreatGallus, and anyone else who kept this mod going in my absense.
+Additional thanks to everyone in the hollow knight modding community for their hard work.

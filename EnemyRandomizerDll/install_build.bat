@@ -1,6 +1,6 @@
 @echo off
-SET DLL_SOURCE="..\EnemyRandomizer\bin\Debug\EnemyRandomizer.dll"
-SET MOD_DEST="K:\Games\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\Mods"
+SET DLL_SOURCE="..\EnemyRandomizer\EnemyRandomizer.dll"
+SET MOD_DEST="K:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\Mods\EnemyRandomizer"
 echo Copying build from
 echo %DLL_SOURCE%
 echo to
