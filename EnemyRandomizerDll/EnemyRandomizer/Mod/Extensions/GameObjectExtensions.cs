@@ -3,7 +3,7 @@ using UnityEngine;
 using nv;
  
 
-namespace EnemyRandomizerMod.Extensions
+namespace EnemyRandomizerMod
 {
     public static class GameObjectExtensions
     { 
@@ -47,6 +47,7 @@ namespace EnemyRandomizerMod.Extensions
 
             return gameObject.GetComponent<HealthManager>() != null;
         }
+
         public static HealthManager GetEnemyHealthManager(this GameObject gameObject)
         {
             HealthManager hm = null;

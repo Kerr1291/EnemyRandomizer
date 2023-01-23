@@ -1,0 +1,50 @@
+﻿<exclusionList>
+  <exclusion name="169-MushroomBrawler">
+    <room>169</room>
+    <roomName></roomName>
+    <enemy>Mushroom Brawler</enemy>
+    <isUniqueEnemy>false</isUniqueEnemy>
+    <doNotReplace>true</doNotReplace>
+    <doNotUse>false</doNotUse>
+  </exclusion>
+  <exclusion name="32-ZoteBoss">
+    <room>32</room>
+    <roomName></roomName>
+    <enemy>Zote Boss</enemy>
+    <isUniqueEnemy>true</isUniqueEnemy>
+    <doNotReplace>true</doNotReplace>
+    <doNotUse>false</doNotUse>
+  </exclusion>
+  <exclusion name="33-GrubMimic">
+    <room>33</room>
+    <roomName></roomName>
+    <enemy>Grub Mimic</enemy>
+    <isUniqueEnemy>false</isUniqueEnemy>
+    <doNotReplace>true</doNotReplace>
+    <doNotUse>true</doNotUse>
+  </exclusion>
+  <exclusion name="34-BabyCentipede">
+    <room>34</room>
+    <roomName></roomName>
+    <enemy>Baby Centipede</enemy>
+    <isUniqueEnemy>false</isUniqueEnemy>
+    <doNotReplace>true</doNotReplace>
+    <doNotUse>false</doNotUse>
+  </exclusion>
+  <exclusion name="34-MantisTraitorLord">
+    <room>34</room>
+    <roomName></roomName>
+    <enemy>Mantis Traitor Lord</enemy>
+    <isUniqueEnemy>true</isUniqueEnemy>
+    <doNotReplace>true</doNotReplace>
+    <doNotUse>false</doNotUse>
+  </exclusion>
+  <exclusion name="-BigBee(3)">
+    <room>-1</room>
+    <roomName>Hive_04</roomName>
+    <enemy>Big Bee (3)</enemy>
+    <isUniqueEnemy>true</isUniqueEnemy>
+    <doNotReplace>true</doNotReplace>
+    <doNotUse>false</doNotUse>
+  </exclusion>
+</exclusionList>

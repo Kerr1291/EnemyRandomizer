@@ -7,779 +7,455 @@ using UnityEngine;
 using Language; 
 using On;
 using nv;
+using System.Linq;
+using UniRx;
+using System;
+
+
+
+/*
+ * GENERAL TODO: * 
+ * FOR BATTLE SCENES -- logic to manage waves and events to progress them
+ * 
+ * FIX SPAWN ISSUE:
+ * cyrstal laser bug still in ground
+ * shrumal ogre in ground too?
+ * all 6 FLY enemies didn't spawn from gruz mother (and didn't randomize)
+ * PREVENT white palace fly from replacing them (and from being replaced in white palace).....
+ * also need to fix the boss arena so it opens after the adds are dead
+ * EGG SAC needs better options for randomized replacement (right now there's none)
+ * 
+ * FIX BEHAVIOUR ISSUE:
+ * --when crystal bug crawls through spikes it causes big lag -- find way to kill it
+ * Mawlek Turret: see if i can randomize the projectile velocity when placed in a smaller room so the spray gets around more
+ * NOTES: Mushroom turret seems busted. Doesn't shoot or open up -- not even randomizing properly
+ * 
+ * 
+ * 
+ */
 
 namespace EnemyRandomizerMod
 {
-    public partial class EnemyRandomizer : Mod, ITogglableMod, IGlobalSettings<EnemyRandomizerSettings>, ILocalSettings<EnemyRandomizerPlayerSettings>, IMenuMod
+    public partial class EnemyRandomizer : Mod, ITogglableMod, IGlobalSettings<EnemyRandomizerSettings>, ILocalSettings<EnemyRandomizerPlayerSettings>
     {
-        public static EnemyRandomizer Instance { get; private set; }
-
-        CommunicationNode comms;
-
-        public static EnemyRandomizerSettings GlobalSettings = new EnemyRandomizerSettings();
-        public void OnLoadGlobal(EnemyRandomizerSettings s) => GlobalSettings = s;
-        public EnemyRandomizerSettings OnSaveGlobal() => GlobalSettings;
-
-        public static EnemyRandomizerPlayerSettings PlayerSettings = new EnemyRandomizerPlayerSettings();
-        public void OnLoadLocal(EnemyRandomizerPlayerSettings s) => PlayerSettings = s;
-        public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
-
-        Menu.RandomizerMenu menu;
-        EnemyRandomizerLoader loader;
-        EnemyRandomizerDatabase database;
-        EnemyRandomizerLogic logic;
-
-        string fullVersionName = "2023.1.17";
-        string modRootName = "RandoRoot";
-        bool loadedGame = false;
-
-        //public const bool kmode = true;
-        
-        GameObject modRoot;
-        public GameObject ModRoot {
-            get {
-                if( modRoot == null )
-                {
-                    modRoot = new GameObject(modRootName);
-                    GameObject.DontDestroyOnLoad( modRoot );
-                }
-                return modRoot;
-            }
-            set {
-                if( modRoot != null && value != modRoot )
-                {
-                    GameObject.Destroy( modRoot );
-                }
-                modRoot = value;  
-            }
-        }
-
-        //For debugging, the scene replacer will run its logic without doing anything
-        //(Useful for testing without needing to wait through the load times)
-        //This is set to true if the game is started without loading the database
-        bool simulateReplacement = false;
-
-        bool randomizerReady = false;
-        bool RandomizerReady {
-            get {
-                return randomizerReady || simulateReplacement;
-            }
-            set {
-                if(value && value != randomizerReady)
-                {
-                    logic.Setup( simulateReplacement );
-                }
-                if( !value && value != randomizerReady )
-                {
-                    logic.Unload();
-                }
-                randomizerReady = value;
-            }
-        }
-
-        //value that can be set if a player enters the options menu
-        //on startup, this value is randomized
-        public int OptionsMenuSeed { get; set; }
-
-        //the user configurable seed for the randomizer
-        public int GameSeed { get; set; }
-
-        //nice access to the player settings seed
-        public int PlayerSettingsSeed {
-            get {
-                if (PlayerSettings == null)
-                    return -1;
-                return PlayerSettings.Seed;
-            }
-            set {
-                if (PlayerSettings != null)
-                    PlayerSettings.Seed = value;
-            }
-        }
-        
-        //set to false then the seed will be based on the type of enemy we're going to randomize
-        //this will make each enemy type randomize into the same kind of enemy
-        //if set to true, it also disables roomRNG and all enemies will be totally randomized
-        bool chaosRNG = false;
-        public bool ChaosRNG {
-            get {
-                return chaosRNG;
-            }
-            set {
-                if( GlobalSettings != null )
-                    GlobalSettings.RNGChaosMode = value;
-                chaosRNG = value;
-            }
-        }
-
-        //if roomRNG is enabled, then we will also offset the seed based on the room's hash code
-        //this will cause enemy types within the same room to be randomized the same
-        //Example: all Spitters could be randomized into Flys in one room, and Fat Flys in another
-        bool roomRNG = true;
-        public bool RoomRNG {
-            get {
-                return roomRNG;
-            }
-            set {
-                if( GlobalSettings != null )
-                    GlobalSettings.RNGRoomMode = value;
-                roomRNG = value;
-            }
-        }
-
-        //if randomizeGeo is enabled, then we will put a random amount of geo on enemies
-        bool randomizeGeo = false;
-        public bool RandomizeGeo {
-            get {
-                return randomizeGeo;
-            }
-            set {
-                if( GlobalSettings != null )
-                    GlobalSettings.RandomizeGeo = value;
-                randomizeGeo = value;
-            }
-        }
-
-        //if custom enemies is enabled, then we are allowed to add custom enemies that don't exist in the base game
-        bool customEnemies = false;
-        public bool CustomEnemies {
-            get {
-                return customEnemies;
-            }
-            set {
-                if( GlobalSettings != null )
-                    GlobalSettings.CustomEnemies = value;
-                customEnemies = value;
-            }
-        }
-
-        //if godmaster enemies is enabled, then we are allowed to use bosses from godmaster such as sly or pure vessel
-        bool godmasterEnemies = false;
-        public bool GodmasterEnemies {
-            get {
-                return godmasterEnemies;
-            }
-            set {
-                if (GlobalSettings != null)
-                    GlobalSettings.GodmasterEnemies = value;
-                godmasterEnemies = value;
-            }
-        }
-
-        public string[] toggle = new string[]
-        {   
-            Language.Language.Get("MOH_ON", "MainMenu"),
-            Language.Language.Get("MOH_OFF", "MainMenu")
-        };
-
-        public bool ToggleButtonInsideMenu
+        public static EnemyRandomizer Instance
         {
             get
             {
-                return false;
+                if (instance == null)
+                    instance = new EnemyRandomizer();
+                return instance;
             }
         }
+        static EnemyRandomizer instance;
 
-        public List<IMenuMod.MenuEntry> GetMenuData(IMenuMod.MenuEntry? menue)
+        public static string ENEMY_RANDO_PREFIX = "RANDOSKIP";
+
+        //DONT USE THIS FOR ENEMY REPLACEMENTS
+        public static RNG pRNG = new RNG();
+
+        static SmartRoutine debugInputRoutine = new SmartRoutine();
+        static SmartRoutine noClipRoutine = new SmartRoutine();
+        static string debugRecentHit = "";
+        public UnityEngine.Bounds sceneBounds;
+        List<GameObject> sceneBoundry = new List<GameObject>();
+        List<GameObject> battleControls = new List<GameObject>();
+        bool disabledRoarEffectOnPlayer = false;
+
+        //NOTE: call this from GetPreloadNames() because that's the first method to execute....
+        public virtual void PreInitialize()
         {
-            return new List<IMenuMod.MenuEntry>
-            {
-                new IMenuMod.MenuEntry
-                {
-                    Name = "Chaos Mode",
-                    Description = "Each enemy will be randomized each time you enter a new room. Expect literally anything.",
-                    Values = this.toggle,
-                    Saver = delegate(int i)
-                    {
-                        this.SaverChao(i);
-                    },
-                    Loader = () => this.Loader(EnemyRandomizer.GlobalSettings.RNGChaosMode)
-                },
-                new IMenuMod.MenuEntry
-                {
-                    Name = "Room Mode",
-                    Description = "Each enemy type will be re-randomized each time you enter a new room, but it will still change every enemy of that type.",
-                    Values = this.toggle,
-                    Saver = delegate(int i)
-                    {
-                        this.SaverRoom(i);
-                    },
-                    Loader = () => this.Loader(EnemyRandomizer.GlobalSettings.RNGRoomMode)
-                },
-                new IMenuMod.MenuEntry
-                {
-                    Name = "Randomize Geo",
-                    Description = " - Randomizes amount of geo dropped by enemies",
-                    Values = this.toggle,
-                    Saver = delegate(int i)
-                    {
-                        this.SaverGeo(i);
-                    },
-                    Loader = () => this.Loader(EnemyRandomizer.GlobalSettings.RandomizeGeo)
-                },
-                new IMenuMod.MenuEntry
-                {
-                    Name = "Custom Enemies",
-                    Description = " - Allows custom enemies to be added to the randomizer",
-                    Values = this.toggle,
-                    Saver = delegate(int i)
-                    {
-                        this.SaverCustom(i);
-                    },
-                    Loader = () => this.Loader(EnemyRandomizer.GlobalSettings.CustomEnemies)
-                },
-                new IMenuMod.MenuEntry
-                {
-                    Name = "Godmaster Enemies",
-                    Description = " Allows enemies from the Godmaster expansion to be included in the randomizer. This includes Absolute Radiance, Pure Vessel, Winged Nosk, Mato, Oro, Sheo, Sly and Eternal Ordeal enemies.",
-                    Values = this.toggle,
-                    Saver = delegate(int i)
-                    {
-                        this.SaverGod(i);
-                    },
-                    Loader = () => this.Loader(EnemyRandomizer.GlobalSettings.GodmasterEnemies)
-                },
-                new IMenuMod.MenuEntry
-                {
-                    Name = "(Cheat) No Clip",
-                    Description = "  - Turns on no clip - to be used in case of a bug that blocks progression by normal means, e.g. a door not opening after a boss has been killed.",
-                    Values = this.toggle,
-                    Saver = delegate(int i)
-                    {
-                        this.SaverNoClip(i);
-                    },
-                    Loader = () => this.Loader(EnemyRandomizer.GlobalSettings.NoClip)
-                }
-            };
-        }
+            pRNG.Reset();
 
-        public override void Initialize()
-        {
-            if(Instance != null)
-            {
-                Log("Warning: EnemyRandomizer is a singleton. Trying to create more than one may cause issues!");
-                return;
-            }
-
-            Instance = this;
-            comms = new CommunicationNode();
-            comms.EnableNode( this );
-
-            Log("Enemy Randomizer Mod initializing!");
-
-            SetupDefaultSettings();
-
-            UnRegisterCallbacks();
-            RegisterCallbacks();
-
+            //enable debugging
             Dev.Logger.GuiLoggingEnabled = true;
             DevLogger.Instance.ShowSlider();
 
-            //create the database that will hold all the loaded enemies
-            if (database == null)
-                database = new EnemyRandomizerDatabase ();
+            //the specific type here doesn't matter, as long as it's from the same assembly as enemy types
+            //we want to register
+            RandomizerEnemyFactory.RegisterValidTypesInAssembly(typeof(EnemyRandomizer));
 
-            if ( logic == null )
-                logic = new EnemyRandomizerLogic( database );
+            //load data from XML
+            LoadEnemyData();
+            LoadArenaData();
+            LoadExclusionData();
 
-            //create the loader which will handle loading all the enemy types in the game
-            if( loader == null )
-                loader = new EnemyRandomizerLoader( database );
-
-            //Create all mod UI elements and their manager
-            if( menu == null )
-                menu = new Menu.RandomizerMenu();
-
-            database.Setup();
-            loader.Setup();
-            menu.Setup();
-
-            debugInput = new SmartRoutine(DebugInput());
-            //ContractorManager.Instance.StartCoroutine( DebugInput() );
+            RegisterCallbacks();
         }
 
-        SmartRoutine debugInput;
-        IEnumerator DebugInput()
+        public override void Initialize(Dictionary<string, Dictionary<string, GameObject>> preloadedObjects)
         {
-            yield return new WaitForSeconds(2f);
+            if (instance == null)
+                instance = this;
 
-            DevLogger.Instance.Show(false);
-            DevLogger.Instance.Show(false);
-            //MenuStyles.Instance.SetStyle(4, true, false);
+            base.Initialize(preloadedObjects);
 
-            while (true)
+            //local helper function
+            GameObject GetPrefabObject(EnemyData data)
             {
-                yield return null;
+                string sceneName = data.sceneName;
+                string scenePath = data.gameObjectPath;
 
-                if (HeroController.instance != null)
+                if (!preloadedObjects.TryGetValue(sceneName, out var sceneObjects))
+                    return null;
+
+                if (!sceneObjects.TryGetValue(scenePath, out GameObject prefabObject))
+                    return null;
+
+                return prefabObject;
+            }
+
+            //hide the debug window
+            var logHider = Observable.Timer(TimeSpan.FromSeconds(2f)).DoOnCompleted(() =>
+            {
+                DevLogger.Instance.Show(false);
+                DevLogger.Instance.Show(false);
+            }).Subscribe();
+
+            //load the enemy prefabs
+            try
+            {
+                //load the enemy game objects
+                randomizerEnemies.enemyData.ForEach(thisEnemy =>
                 {
-                    if (HeroController.instance.playerData.health < 4)
-                    {
-                        HeroController.instance.MaxHealth();
-                    }
-                }
-
-                //enter hornet
-                //if (false && UnityEngine.Input.GetKeyDown(KeyCode.L))
-                //{
-                //    GameManager.instance.playerData.SetInt("hornetGreenpath", 0);
-                //    GameManager.instance.playerData.SetBool("hornet1Defeated", false);
-                //    GameManager.instance.playerData.SetBool("disablePause", true);
-                //    yield return EnterZone("Fungus1_04", "right1", "Hornet Boss 1");
-                //    yield return new WaitForSeconds(2f);
-                //    var hornet = GameObject.Find("Hornet Boss 1");
-                //    HeroController.instance.transform.position = hornet.transform.position + new Vector3(5f, 0f, 0f);
-
-                //    //broken -- probably not worth fixing but maybe i'll look into it one day
-                //    try
-                //    {
-                //        HornetBoss hornetboss = hornet.AddComponent<HornetBoss>();
-                //    }
-                //    catch (System.NullReferenceException e)
-                //    {
-                //        Dev.LogError(e.Message);
-                //        Dev.LogError(e.StackTrace);
-                //    }
-                //}
-
-                //if (UnityEngine.Input.GetKeyDown(KeyCode.F3))
-                //{
-                //    //SmartRoutine sb = new SmartRoutine(EnterSandbox());
-
-                //    //works but then you're trapped there.... attempting to leave the sandbox will nullref lock the game
-                //    Sandbox.EnterSandbox();
-                //}
-
-                if (UnityEngine.Input.GetKeyDown(KeyCode.F2))
-                {
-                    DevLogger.Instance.Show(!DevLogger.Instance.LogWindow.gameObject.activeInHierarchy);
-                }
+                    //does the loaded enemy data contain a configuration type name and is it valid?
+                    //if not, use the default loader
+                    //else, use the custom loader
+                    thisEnemy.loadedEnemy = (string.IsNullOrEmpty(thisEnemy.configurationTypeName) || !RandomizerEnemyFactory.IsValid(thisEnemy.configurationTypeName)) ?
+                            RandomizerEnemyFactory.Create<DefaultEnemy>(thisEnemy, randomizerEnemies.enemyData, GetPrefabObject(thisEnemy)) :
+                            RandomizerEnemyFactory.Create(thisEnemy.configurationTypeName, thisEnemy, randomizerEnemies.enemyData, GetPrefabObject(thisEnemy));
+                });
             }
-            yield break;
+            catch (Exception e)
+            {
+                logHider.Dispose();
+                //DevLogger.Instance.Show(true);
+
+                Dev.LogError("Failed to preload enemies for allow for randomization. Error: " + e.Message);
+                Dev.LogError("Stacktrace: " + e.StackTrace);
+            }
+
         }
 
-
-        public IEnumerator EnterSandbox()
-        {
-            //find a source transition
-            string currentSceneTransition = GameObject.FindObjectOfType<TransitionPoint>().gameObject.name;
-            string currentScene = GameManager.instance.sceneName;
-
-            //update the last entered
-            TransitionPoint.lastEntered = currentSceneTransition;
-
-            //place us in sly's storeroom
-            GameManager.instance.BeginSceneTransition( new GameManager.SceneLoadInfo
-            {
-                SceneName = "Room_Sly_Storeroom",
-                EntryGateName = "top1",
-                HeroLeaveDirection = new GlobalEnums.GatePosition?( GlobalEnums.GatePosition.door ),
-                EntryDelay = 1f,
-                WaitForSceneTransitionCameraFade = true,
-                Visualization = GameManager.SceneLoadVisualizations.Default,
-                AlwaysUnloadUnusedAssets = false
-            } );
-
-            while( GameObject.Find( "Sly Basement NPC" ) == null )
-                yield return new WaitForEndOfFrame();
-
-            foreach( var roof in GameObject.FindObjectsOfType<Roof>() )
-            {
-                GameObject.Destroy( roof );
-            }
-
-            //remove the roofs
-            GameObject.Destroy( GameObject.Find( "Chunk 0 0" ).GetComponents<EdgeCollider2D>()[ 1 ] );
-            GameObject.Destroy( GameObject.Find( "Chunk 0 1" ).GetComponents<EdgeCollider2D>()[ 1 ] );
-
-            
-            GameObject.Destroy( GameObject.Find( "wall collider" ) );
-
-
-            GameObject.Destroy( GameObject.Find( "Walk Area" ) );
-            GameObject.Destroy( GameObject.Find( "Shop Menu" ) );
-            GameObject.Destroy( GameObject.Find( "Sly Basement NPC" ) );
-            GameObject.Destroy( GameObject.Find( "Roof Collider (2)" ) );
-            GameObject.Destroy( GameObject.Find( "Roof Collider (1)" ) );
-            GameObject.Destroy( GameObject.Find( "Sly_Storeroom_0008_18" ) );
-            GameObject.Destroy( GameObject.Find( "Sly_Storeroom_0004_21" ) );
-            GameObject.Destroy( GameObject.Find( "Sly_Storeroom_0003_22" ) );
-            GameObject.Destroy( GameObject.Find( "Sly_Storeroom_0027_1 (3)" ) );
-            GameObject.Destroy( GameObject.Find( "Sly_Storeroom_0009_17 (3)" ) );
-            GameObject.Destroy( GameObject.Find( "Sly_Storeroom_0027_1 (2)" ) );
-
-
-            Scene s = UnityEngine.SceneManagement.SceneManager.GetSceneByName("Room_Sly_Storeroom");
-
-            GameObject.Destroy( s.FindGameObject( "Shop Item ShellFrag Sly1(Clone)" ) );
-            GameObject.Destroy( s.FindGameObject( "Shop Item VesselFrag Sly1" ) );
-            GameObject.Destroy( s.FindGameObject( "Shop Item Ch GeoGatherer(Clone)" ) );
-            GameObject.Destroy( s.FindGameObject( "Shop Item Ch Wayward Compass(Clone)" ) );
-            GameObject.Destroy( s.FindGameObject( "Shop Item Lantern(Clone)" ) );
-            GameObject.Destroy( s.FindGameObject( "Shop Item White Key(Clone)" ) );
-            GameObject.Destroy( s.FindGameObject( "Shop Item VesselFrag Sly1" ) );
-            GameObject.Destroy( s.FindGameObject( "Shop Item VesselFrag Sly1(Clone)" ) );
-
-            GameObject.Destroy( s.FindGameObject( "Dream Dialogue" ) );
-
-            foreach( var roof in GameObject.FindObjectsOfType<SpriteRenderer>() )
-            {
-                if( roof.transform.position.x < 80f && roof.transform.position.x > -1f )
-                {
-                    if( roof.transform.position.y > 5f )
-                        GameObject.Destroy( roof.gameObject );
-
-                    else if( roof.transform.position.z < -2f )
-                        GameObject.Destroy( roof.gameObject );
-                }
-            }
-
-            foreach( var roof in GameObject.FindObjectsOfType<MeshRenderer>() )
-            {
-                GameObject.Destroy( roof );
-            }
-
-            SpawnLevelPart( "Platform_Block", new Vector3( 75f, 10f, 0f ) );
-            SpawnLevelPart( "Platform_Long", new Vector3( 50f, 7.5f, 0f ) );
-            SpawnLevelPart( "Platform_Block", new Vector3( 25f, 5f, 0f ) );
-
-            //Good ground spawn: 64, 6, 0
-
-            //TODO: Make the exit back to the previous scene work
-            TransitionPoint exit = GameObject.Find( "door1" ).GetComponent<TransitionPoint>();
-            exit.targetScene = currentScene;
-            exit.entryPoint = currentSceneTransition;
-        }
-
-        //copied and modified from "TransitionPoint.cs"
-        public GlobalEnums.GatePosition GetGatePosition(string name)
-        {
-            if( name.Contains( "top" ) )
-            {
-                return GlobalEnums.GatePosition.top;
-            }
-            if( name.Contains( "right" ) )
-            {
-                return GlobalEnums.GatePosition.right;
-            }
-            if( name.Contains( "left" ) )
-            {
-                return GlobalEnums.GatePosition.left;
-            }
-            if( name.Contains( "bot" ) )
-            {
-                return GlobalEnums.GatePosition.bottom;
-            }
-            if( name.Contains( "door" ) )
-            {
-                return GlobalEnums.GatePosition.door;
-            }
-            Dev.LogError( "Gate name " + name + "does not conform to a valid gate position type. Make sure gate name has the form 'left1'" );
-            return GlobalEnums.GatePosition.unknown;
-        }
-
-        //from will be top1,left1,right1,door1,etc...
-        public IEnumerator EnterZone(string name, string from, string waitUntilGameObjectIsLoaded = "", List<string> removeList = null )
-        {
-            //find a source transition
-            string currentSceneTransition = GameObject.FindObjectOfType<TransitionPoint>().gameObject.name;
-            string currentScene = GameManager.instance.sceneName;
-
-            //update the last entered
-            TransitionPoint.lastEntered = currentSceneTransition;
-
-            //place us in sly's storeroom
-            GameManager.instance.BeginSceneTransition( new GameManager.SceneLoadInfo
-            {
-                SceneName = name,
-                EntryGateName = from,
-                HeroLeaveDirection = new GlobalEnums.GatePosition?( GlobalEnums.GatePosition.door ),
-                EntryDelay = 1f,
-                WaitForSceneTransitionCameraFade = true,
-                Visualization = GameManager.SceneLoadVisualizations.Default,
-                AlwaysUnloadUnusedAssets = false
-            } );
-
-            if( !string.IsNullOrEmpty( waitUntilGameObjectIsLoaded ) )
-            {
-                while( GameObject.Find( waitUntilGameObjectIsLoaded ) == null )
-                    yield return new WaitForEndOfFrame();
-            }
-            else
-            {
-                yield return new WaitForEndOfFrame();
-            }
-
-            if( removeList != null )
-            {
-                Scene scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(name);
-                foreach( string s in removeList )
-                {
-                    GameObject.Destroy( scene.FindGameObject( s ) );
-                }
-            }
-        }
-
-        public GameObject SpawnLevelPart(string name, Vector3 position)
-        {
-            GameObject go = (GameObject)GameObject.Instantiate( database.levelParts[name], position, Quaternion.identity );
-            go.SetActive( true );
-            return go;
-        }
-        public void MSaveGlobal()
-        {
-            base.SaveGlobalSettings();
-        }
-
-        void SetupDefaultSettings()
-        {
-            string globalSettingsFilename = Application.persistentDataPath + "/" + GetType().Name + ".GlobalSettings.json";
-
-            bool forceReloadGlobalSettings = false;
-            if( GlobalSettings != null && GlobalSettings.SettingsVersion != EnemyRandomizerSettingsVars.GlobalSettingsVersion )
-            {
-                forceReloadGlobalSettings = true;
-            }
-            else
-            {
-                Log( "Global settings version match!" );
-            }
-
-            if( forceReloadGlobalSettings || !File.Exists( globalSettingsFilename ) )
-            {
-                if( forceReloadGlobalSettings )
-                {
-                    Log( "Global settings are outdated! Reloading global settings" );
-                }
-                else
-                {
-                    Log( "Global settings file not found, generating new one... File was not found at: " + globalSettingsFilename );
-                }
-
-                GlobalSettings.Reset();
-                GlobalSettings.SettingsVersion = EnemyRandomizerSettingsVars.GlobalSettingsVersion;
-
-                ChaosRNG = false;
-                RoomRNG = true;
-                RandomizeGeo = false;
-                CustomEnemies = false;
-                GodmasterEnemies = false;
-            }
-
-            OptionsMenuSeed = GameRNG.Randi();
-
-            SaveGlobalSettings();
-        }
 
         void RegisterCallbacks()
         {
-            Dev.Where();
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= CheckAndDisableLogicInMenu;
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += CheckAndDisableLogicInMenu;
+            ModHooks.AfterSavegameLoadHook -= MODHOOK_LoadFromSave;
+            ModHooks.AfterSavegameLoadHook += MODHOOK_LoadFromSave;
 
-            ModHooks.AfterSavegameLoadHook += TryEnableEnemyRandomizerFromSave;
-            ModHooks.NewGameHook += EnableEnemyRandomizerFromNewGame;
+            ModHooks.NewGameHook -= MODHOOK_LoadFromNewGame;
+            ModHooks.NewGameHook += MODHOOK_LoadFromNewGame;
+
+            ModHooks.OnEnableEnemyHook -= MODHOOK_RandomizeEnemyOnEnable;
+            ModHooks.OnEnableEnemyHook += MODHOOK_RandomizeEnemyOnEnable;
+
+            On.UIManager.UIClosePauseMenu -= new On.UIManager.hook_UIClosePauseMenu(SetNoClip);
+            On.UIManager.UIClosePauseMenu += new On.UIManager.hook_UIClosePauseMenu(SetNoClip);
+
+            ModHooks.DrawBlackBordersHook -= OnSceneBoardersCreated;
+            ModHooks.DrawBlackBordersHook += OnSceneBoardersCreated;
+
+            ModHooks.SlashHitHook -= DebugPrintObjectOnHit;
             ModHooks.SlashHitHook += DebugPrintObjectOnHit;
-            On.UIManager.UIClosePauseMenu += new On.UIManager.hook_UIClosePauseMenu(this.SetNoClip);
         }
 
         void UnRegisterCallbacks()
         {
-            Dev.Where();
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= CheckAndDisableLogicInMenu;
-            ModHooks.AfterSavegameLoadHook -= TryEnableEnemyRandomizerFromSave;
-            ModHooks.NewGameHook -= EnableEnemyRandomizerFromNewGame;
+            ModHooks.AfterSavegameLoadHook -= MODHOOK_LoadFromSave;
+
+            ModHooks.NewGameHook -= MODHOOK_LoadFromNewGame;
+
+            ModHooks.OnEnableEnemyHook -= MODHOOK_RandomizeEnemyOnEnable;
+
+            On.UIManager.UIClosePauseMenu -= new On.UIManager.hook_UIClosePauseMenu(SetNoClip);
+
+            ModHooks.DrawBlackBordersHook -= OnSceneBoardersCreated;
+
             ModHooks.SlashHitHook -= DebugPrintObjectOnHit;
-            On.UIManager.UIClosePauseMenu -= new On.UIManager.hook_UIClosePauseMenu(this.SetNoClip);
-        }
-
-        void SetNoClip(On.UIManager.orig_UIClosePauseMenu orig, UIManager self)
-        {
-            orig.Invoke(self);
-            bool noClip = EnemyRandomizer.GlobalSettings.NoClip;
-            if (noClip)
-            {
-                Sandbox.SetNoclip(true);
-            }
-            else
-            {
-                Sandbox.SetNoclip(false);
-            }
-        }
-
-        //used while testing to record things hit by a player's nail
-        static string debugRecentHit = "";
-        static void DebugPrintObjectOnHit( Collider2D otherCollider, GameObject gameObject )
-        {
-            //Dev.Where();
-            if( otherCollider.gameObject.name != debugRecentHit )
-            {
-                Dev.Log( "Hero at " + HeroController.instance.transform.position + " HIT: " + otherCollider.gameObject.name + " at (" + otherCollider.gameObject.transform.position + ")" );
-                debugRecentHit = otherCollider.gameObject.name;
-            }
-        }
-
-        void CheckAndDisableLogicInMenu( Scene from, Scene to )
-        {
-            if (EnemyRandomizerLoader.Instance.DatabaseGenerated && !loadedGame)           // Force start of StartRandomEnemyLocator to prevent Item Randomizer interrupt
-            {
-                EnableEnemyRandomizer();
-                loadedGame = true;
-                EnemyRandomizerLogic.Instance.StartRandomEnemyLocator(from, to);
-            }
-            if( to.name == Menu.RandomizerMenu.MainMenuSceneName )
-            {
-                DisableEnemyRandomizer();
-                loadedGame = false;
-            }
         }
 
         ///Revert all changes the mod has made
         public void Unload()
         {
-            DisableEnemyRandomizer();
-
             UnRegisterCallbacks();
-
-            menu.Unload();
-            loader.Unload();
-            database.Unload();
-
-            ModRoot = null;
-
-            comms.DisableNode();
-            Instance = null;
         }
 
-        //Called when loading a save game
-        void TryEnableEnemyRandomizerFromSave(SaveGameData data)
+        void MODHOOK_LoadFromSave(SaveGameData data)
         {
-            if( PlayerSettings != null )
-            {
-                GameSeed = PlayerSettingsSeed;
-            }
-            else
-            {
-                GameSeed = OptionsMenuSeed;
-            }
-            loadedGame = true;
+            disabledRoarEffectOnPlayer = false;
 
-            EnableEnemyRandomizer();
+            //TODO: setup the seed
         }
 
         //Call from New Game
-        void EnableEnemyRandomizerFromNewGame()
+        void MODHOOK_LoadFromNewGame()
         {
-            GameSeed = OptionsMenuSeed;
-            PlayerSettingsSeed = GameSeed;
-            EnableEnemyRandomizer();
+            disabledRoarEffectOnPlayer = false;
+
+            //TODO: setup the seed
         }
 
-        //Roguelike roguelike;
-
-        void EnableEnemyRandomizer()
+        public bool MODHOOK_RandomizeEnemyOnEnable(GameObject oldEnemy, bool isAlreadyDead)
         {
-            if (!loadedGame || PlayerSettingsSeed == -1)             // Grab OptionMenuSeed on new game or if current file does not have variable in settings
-            {
-                GameSeed = OptionsMenuSeed;
-                PlayerSettingsSeed = GameSeed;
-            }
-            Dev.Where();
-            Sandbox.SetNoclip( false );
-            RandomizerReady = true;
+            string enemyName = oldEnemy.name;
 
-            simulateReplacement = !loader.DatabaseGenerated;
+            if (isAlreadyDead)
+                return isAlreadyDead;
 
-            ChaosRNG = GlobalSettings.RNGChaosMode;
-            RoomRNG = GlobalSettings.RNGRoomMode;
-            RandomizeGeo = GlobalSettings.RandomizeGeo;
-            CustomEnemies = GlobalSettings.CustomEnemies;
+            if (!oldEnemy.activeSelf)
+                return isAlreadyDead;
 
-            //roguelike = new Roguelike(); 
-            //GameManager.instance.StartCoroutine( roguelike.Init( GameSeed ) );
-			GodmasterEnemies = GlobalSettings.GodmasterEnemies;
-             
-            //if( kmode )
-            //{
-            //    PlayerData instance = PlayerData.instance;
-            //    if( instance != null )
-            //    {
-            //        instance.hasCharm = true;
-            //        instance.hasQuill = true;
-            //        instance.equippedCharm_2 = true;
-            //        instance.hasMap = true;
-            //        instance.mapDirtmouth = true;
-            //        instance.mapCrossroads = true;
-            //        instance.mapGreenpath = true;
-            //        instance.mapFogCanyon = false;
-            //        instance.mapRoyalGardens = true;
-            //        instance.mapFungalWastes = false;
-            //        instance.mapCity = true;
-            //        instance.mapWaterways = false;
-            //        instance.mapMines = true;
-            //        instance.mapDeepnest = true;
-            //        instance.mapCliffs = true;
-            //        instance.mapOutskirts = true;
-            //        instance.mapRestingGrounds = true;
-            //        instance.mapAbyss = true;
-            //        instance.openedMapperShop = true;
-            //    }
-            //}
+            if (enemyName.StartsWith(EnemyRandomizer.ENEMY_RANDO_PREFIX))
+                return isAlreadyDead;
+
+            if (oldEnemy.IsEnemyDead())
+                return oldEnemy.IsEnemyDead();
+
+            ReplaceEnemy(oldEnemy);
+            return isAlreadyDead;
         }
 
-        //call when returning to the main menu
-        void DisableEnemyRandomizer()
+        /// <summary>
+        /// Returns the objects to preload in order for the mod to work.
+        /// </summary>
+        /// <returns>A List of tuples containing scene name, object name</returns>
+        public override List<(string, string)> GetPreloadNames()
         {
-            Sandbox.SetNoclip( false );
-            RandomizerReady = false;
-            Dev.Log( "Play Time was " + GameManager.instance.PlayTime );
+            PreInitialize();
+            return GetPreloadDataFromXML(randomizerEnemies);
         }
 
-        //TODO: update when version checker is fixed in new modding API version
-        public override string GetVersion()
+        /// <summary>
+        /// Route base class override here to allow for our return type to contain a more descriptive return tuple
+        /// </summary>
+        public static List<(string SceneName, string GameObjectPath)> GetPreloadDataFromXML(ISceneDataProvider sceneDataProvider)
         {
-            return fullVersionName;
+            return sceneDataProvider.GetSceneDataList();
         }
 
-        public void SaverChao(int i)
-        {
-            EnemyRandomizer.GlobalSettings.RNGChaosMode = i == 0;
-        }
-
-        public void SaverRoom(int i)
-        {
-            EnemyRandomizer.GlobalSettings.RNGRoomMode = i == 0;
-        }
-
-        public void SaverGeo(int i)
-        {
-            EnemyRandomizer.GlobalSettings.RandomizeGeo = i == 0;
-        }
-
-        public void SaverGod(int i)
-        {
-            EnemyRandomizer.GlobalSettings.GodmasterEnemies = i == 0;
-        }
-
-        public void SaverCustom(int i)
-        {
-            EnemyRandomizer.GlobalSettings.CustomEnemies = i == 0;
-        }
-
-        public void SaverNoClip(int i)
-        {
-            EnemyRandomizer.GlobalSettings.NoClip = i == 0;
-        }
-
-        public int Loader(bool value)
-        {
-            return value ? 0 : 1;
-        }
-
-        //TODO: update when version checker is fixed in new modding API version
-        //public override bool IsCurrent()
+        ////NOTE: Executes AFTER get preload names
+        //public override (string, Func<IEnumerator>)[] PreloadSceneHooks()
         //{
-        //    return true;        
+        //    return base.PreloadSceneHooks();
         //}
+
+        public static void SetDebugInput(bool enabled)
+        {
+            if (enabled)
+                debugInputRoutine = new SmartRoutine(DebugInput());
+            else
+                debugInputRoutine.Reset();
+        }
+        static void DebugPrintObjectOnHit(Collider2D otherCollider, GameObject gameObject)
+        {
+            //Dev.Where();
+            if (otherCollider.gameObject.name != debugRecentHit)
+            {
+                Dev.Log("Hero at " + HeroController.instance.transform.position + " HIT: " + otherCollider.gameObject.name + " at (" + otherCollider.gameObject.transform.position + ")");
+                debugRecentHit = otherCollider.gameObject.name;
+            }
+        }
+
+        static void SetNoClip(On.UIManager.orig_UIClosePauseMenu orig, UIManager self)
+        {
+            orig.Invoke(self);
+            bool noClip = EnemyRandomizer.GlobalSettings.NoClip;
+            if (!noClip)
+                noClipRoutine.Reset();
+            else
+                noClipRoutine = new SmartRoutine(DoNoClip());
+        }
+
+        static IEnumerator DoNoClip()
+        {
+            Vector3 noclipPos = HeroController.instance.gameObject.transform.position;
+            while (EnemyRandomizer.GlobalSettings.NoClip)
+            {
+                yield return null;
+
+                if (HeroController.instance == null || HeroController.instance.gameObject == null || !HeroController.instance.gameObject.activeInHierarchy)
+                    continue;
+
+                if (EnemyRandomizer.GlobalSettings.NoClip)
+                {
+                    if (GameManager.instance.inputHandler.inputActions.left.IsPressed)
+                    {
+                        noclipPos = new Vector3(noclipPos.x - Time.deltaTime * 20f, noclipPos.y, noclipPos.z);
+                    }
+
+                    if (GameManager.instance.inputHandler.inputActions.right.IsPressed)
+                    {
+                        noclipPos = new Vector3(noclipPos.x + Time.deltaTime * 20f, noclipPos.y, noclipPos.z);
+                    }
+
+                    if (GameManager.instance.inputHandler.inputActions.up.IsPressed)
+                    {
+                        noclipPos = new Vector3(noclipPos.x, noclipPos.y + Time.deltaTime * 20f, noclipPos.z);
+                    }
+
+                    if (GameManager.instance.inputHandler.inputActions.down.IsPressed)
+                    {
+                        noclipPos = new Vector3(noclipPos.x, noclipPos.y - Time.deltaTime * 20f, noclipPos.z);
+                    }
+
+                    if (HeroController.instance.transitionState.ToString() == "WAITING_TO_TRANSITION")
+                    {
+                        HeroController.instance.gameObject.transform.position = noclipPos;
+                    }
+                    else
+                    {
+                        noclipPos = HeroController.instance.gameObject.transform.position;
+                    }
+                }
+            }
+        }
+
+        static IEnumerator DebugInput()
+        {
+            for (; ; )
+            {
+                yield return new WaitForEndOfFrame();
+                if (UnityEngine.Input.GetKeyDown(KeyCode.O))
+                {
+                    for (int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; ++i)
+                    {
+                        Scene s = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
+                        bool status = s.IsValid();
+                        if (status)
+                        {
+                            string outputPath = Application.dataPath + "/Managed/Mods/EnemyRandomizer/" + s.name;
+                            Dev.Log("Dumping Loaded Scene to " + outputPath);
+                            s.PrintHierarchy(outputPath, true);
+                        }
+                    }
+                }
+            }
+
+            yield break;
+        }
+
+
+        public bool IsInBounds(GameObject target)
+        {
+            return (sceneBounds.Contains(target.transform.position));
+        }
+
+        public void OnSceneBoardersCreated(List<GameObject> borders)
+        {
+            //TODO: have this reset when reloading a save
+            if (!disabledRoarEffectOnPlayer)
+            {
+                var roarfsm = HeroController.instance.GetComponentsInChildren<PlayMakerFSM>(true).Where(x => x.FsmName.Contains("Roar Lock")).First();
+                roarfsm.ChangeTransition("Roar Allowed?", "FINISHED", "Regain Control");
+                disabledRoarEffectOnPlayer = true;
+            }
+
+            sceneBoundry.Clear();
+            sceneBoundry.AddRange(borders);
+
+            List<GameObject> xList = sceneBoundry.Select(x => x).OrderBy(x => x.transform.position.x).ToList();
+            List<GameObject> yList = sceneBoundry.Select(x => x).OrderBy(x => x.transform.position.y).ToList();
+
+            sceneBounds = new UnityEngine.Bounds
+            {
+                min = new Vector3(xList[0].transform.position.x, yList[0].transform.position.y, -10f),
+                max = new Vector3(xList[xList.Count - 1].transform.position.x, yList[yList.Count - 1].transform.position.y, 10f)
+            };
+
+            PreProcessScene();
+        }
+
+        void PreProcessScene()
+        {
+            //get the battle controls by checking the FSMS 
+            foreach (PlayMakerFSM pfsm in GameObject.FindObjectsOfType<PlayMakerFSM>())
+            {
+                if (pfsm == null)
+                    continue;
+
+                if (battleControls.Contains(pfsm.gameObject))
+                    continue;
+
+                PlayMakerFSM playMakerFSM = FSMUtility.LocateFSM(pfsm.gameObject, "Battle Control");
+                if (playMakerFSM != null)
+                {
+                    battleControls.Add(playMakerFSM.gameObject);
+                }
+            }
+        }
+
+        public static GameObject DebugSpawnEnemy(string enemyName)
+        {
+            try
+            {
+                if (EnemyRandomizer.Instance.EnemyDataMap.TryGetValue(enemyName, out EnemyData data))
+                {
+                    var pos = HeroController.instance.transform.position + Vector3.right * 5f;
+                    string originalName = data.loadedEnemy.EnemyObject.name;
+                    data.loadedEnemy.EnemyObject.name = EnemyRandomizer.ENEMY_RANDO_PREFIX + originalName;
+                    var enemy = data.loadedEnemy.Instantiate(data, null, null);
+                    data.loadedEnemy.EnemyObject.name = originalName;
+                    enemy.transform.position = pos;
+                    enemy.SetActive(true);
+                    enemy.name = originalName;
+                    return enemy;
+                }
+            }
+            catch(Exception e)
+            {
+                Dev.LogError("Error: " + e.Message);
+            }
+
+            return null;
+        }
+
+        public static GameObject DebugReplaceEnemy(string enemyName, GameObject enemyToReplace)
+        {
+            try 
+            {
+                while (enemyToReplace.name.StartsWith(EnemyRandomizer.ENEMY_RANDO_PREFIX))
+                {
+                    enemyToReplace.name = enemyToReplace.name.TrimStart(EnemyRandomizer.ENEMY_RANDO_PREFIX);
+                    enemyToReplace.name = enemyToReplace.name.Trim();
+                }
+
+                if (EnemyRandomizer.Instance.EnemyDataMap.TryGetValue(enemyName, out EnemyData data))
+                {
+                    string trimmedName = enemyToReplace.name.TrimGameObjectName();
+                    if (EnemyRandomizer.Instance.EnemyDataMap.TryGetValue(trimmedName, out EnemyData replaceData))
+                    {
+                        enemyToReplace.SetActive(false);
+                        var enemy = data.loadedEnemy.Instantiate(data, enemyToReplace, replaceData);
+                        string originalName = enemy.name;
+                        enemy.name = EnemyRandomizer.ENEMY_RANDO_PREFIX + enemy.name;
+                        enemy.SetActive(true);
+                        enemy.name = originalName;
+                        return enemy;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                Dev.LogError("Error: " + e.Message);
+            }
+
+            return null;
+        }
+
+        public static void DebugSpawnThenReplaceEnemy(string spawnName, string replaceName)
+        {
+            try
+            { 
+                DebugReplaceEnemy(replaceName, DebugSpawnEnemy(spawnName));
+            }
+            catch(Exception e)
+            {
+                Dev.LogError("Error: " + e.Message);
+            }
+        }
     }
+
+    //EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Crawler");
+    //EnemyRandomizerMod.EnemyRandomizer.DebugSpawnThenReplaceEnemy("Crawler","Roller");
+
 }

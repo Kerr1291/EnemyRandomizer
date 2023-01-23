@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Reflection;
 
-namespace EnemyRandomizerMod.Extensions
+namespace EnemyRandomizerMod
 {
     public static class HealthManagerExtensions
     {

@@ -5,7 +5,7 @@ using System.Text;
 using nv;
  
 
-namespace EnemyRandomizerMod.Extensions
+namespace EnemyRandomizerMod
 {
     public static class StringExtensions
     {
@@ -20,20 +20,27 @@ namespace EnemyRandomizerMod.Extensions
             if (trimmedString.Contains("Spawn Roller v2"))
                 return "Roller";
 
-            //trim off "(Clone)" from the word, if it's there
-            int index = trimmedString.LastIndexOf("(Clone)");
-            if (index > 0)
-                trimmedString = trimmedString.Substring(0, index);
+            //trim off "(Clone)" from the word, if it's there. may need multiple iterations
+            //int index = trimmedString.LastIndexOf("(Clone)");
+            int index = 0;
+            while (trimmedString.Contains("(Clone)"))
+            {
+                trimmedString = trimmedString.Remove("(Clone)");
+            }
 
-            index = trimmedString.LastIndexOf(" Fixed");
-            if (index > 0)
-                trimmedString = trimmedString.Substring(0, index);
+            trimmedString = trimmedString.Trim();
+
+            //{
+                trimmedString = trimmedString.Remove(" Fixed");
+            //    index = trimmedString.LastIndexOf(" Fixed");
+            //if (index > 0)
+            //    trimmedString = trimmedString.Substring(0, index);
 
             int indexOfStartParethesis = trimmedString.IndexOf(" (");
             if (indexOfStartParethesis > 0)
                 trimmedString = trimmedString.Substring(0, indexOfStartParethesis);
 
-
+            trimmedString = trimmedString.Trim();
 
             if (trimmedString != "Zombie Spider 1" && trimmedString != "Zombie Spider 2" && trimmedString != "Hornet Boss 1" && trimmedString != "Hornet Boss 2")
             {
