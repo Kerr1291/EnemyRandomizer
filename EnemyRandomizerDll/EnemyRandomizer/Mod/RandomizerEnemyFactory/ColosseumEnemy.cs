@@ -60,7 +60,7 @@ namespace EnemyRandomizerMod
                 EnemyObject = prefabObject.LocateMyFSM("Spawn").Fsm.GetFsmGameObject("Enemy Type").Value;
             }
 
-            base.Setup(enemy, knownEnemyTypes, EnemyObject);
+            //base.Setup(enemy, knownEnemyTypes, EnemyObject);
         }
     }
 }

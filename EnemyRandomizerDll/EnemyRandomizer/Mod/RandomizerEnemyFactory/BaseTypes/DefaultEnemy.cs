@@ -142,11 +142,12 @@ namespace EnemyRandomizerMod
             Collider2D newC = newEnemy.GetComponent<Collider2D>();
             Collider2D oldC = enemyToReplace == null ? null : enemyToReplace.GetComponent<Collider2D>();
             tk2dSprite newS = newEnemy.GetComponent<tk2dSprite>();
+            tk2dSprite oldS = enemyToReplace == null ? null : enemyToReplace.GetComponent<tk2dSprite>();
 
             //TODO: this logic still seems broken so disable it for now
             //TODO: create a settings bool for silly scaling
             //new scale logic, compare the size of the colliders and adjust the scale by the ratios
-            if (false && newC != null && oldC != null && newS != null)
+            if (newC != null && oldC != null && newS != null && oldS != null)
             {
                 //bounds returns null on colliders of uninstantiated and unactivated game objects
                 //so we need to determine the type of collider manually by downcasting and then query its bounds by hand
@@ -155,36 +156,44 @@ namespace EnemyRandomizerMod
 
                 {
                     PolygonCollider2D newCPoly = newC as PolygonCollider2D;
+                    CircleCollider2D newCCircle = newC as CircleCollider2D;
+                    BoxCollider2D newCBox = newC as BoxCollider2D;
                     if (newCPoly != null)
                     {
                         newSize = new Vector2(newCPoly.points.Select(x => x.x).Max() - newCPoly.points.Select(x => x.x).Min(), newCPoly.points.Select(x => x.y).Max() - newCPoly.points.Select(x => x.y).Min());
                     }
-                    CircleCollider2D newCCircle = newC as CircleCollider2D;
-                    if (newCCircle != null)
+                    else if(newCCircle != null)
                     {
                         newSize = Vector2.one * newCCircle.radius;
                     }
-                    BoxCollider2D newCBox = newC as BoxCollider2D;
-                    if (newCBox != null)
+                    else if(newCBox != null)
                     {
                         newSize = newCBox.size;
+                    }
+                    else if(newS != null)
+                    {
+                        newSize = newS.GetBounds().size;
                     }
                 }
                 {
                     PolygonCollider2D oldCPoly = oldC as PolygonCollider2D;
+                    CircleCollider2D oldCCircle = oldC as CircleCollider2D;
+                    BoxCollider2D oldCBox = oldC as BoxCollider2D;
                     if (oldCPoly != null)
                     {
                         oldSize = new Vector2(oldCPoly.points.Select(x => x.x).Max() - oldCPoly.points.Select(x => x.x).Min(), oldCPoly.points.Select(x => x.y).Max() - oldCPoly.points.Select(x => x.y).Min());
                     }
-                    CircleCollider2D oldCCircle = oldC as CircleCollider2D;
-                    if (oldCCircle != null)
+                    else if(oldCCircle != null)
                     {
                         oldSize = Vector2.one * oldCCircle.radius;
                     }
-                    BoxCollider2D oldCBox = oldC as BoxCollider2D;
-                    if (oldCBox != null)
+                    else if(oldCBox != null)
                     {
                         oldSize = oldCBox.size;
+                    }
+                    else if (newS != null)
+                    {
+                        newSize = newS.GetBounds().size;
                     }
                 }
 
@@ -193,17 +202,23 @@ namespace EnemyRandomizerMod
 
                 float scaleX = oldSize.x / newSize.x;
                 float scaleY = oldSize.y / newSize.y;
-                //float scale = scaleX > scaleY ? scaleY : scaleX;
+                float scale = scaleX > scaleY ? scaleY : scaleX;
+
+                if (scale < .1f)
+                    scale = .1f;
+
+                if (scale > 2.5f)
+                    scale = 2.5f;
 
                 bool tryAlternate = false;
                 try
                 {
                     if (newS.boxCollider2D != null)
                     {
-                        newS.scale = new Vector3(newS.scale.x * scaleX, newS.scale.y * scaleY, 1.0f);
+                        newS.scale = new Vector3(newS.scale.x * scale, newS.scale.y * scale, 1.0f);
                         Vector2 b = newS.boxCollider2D.size;
-                        b.x *= scaleX;
-                        b.y *= scaleY;
+                        b.x *= scale;
+                        b.y *= scale;
                         newS.boxCollider2D.size = b;
                     }
                     else
@@ -219,8 +234,8 @@ namespace EnemyRandomizerMod
 
                 if (tryAlternate)
                 {
-                    newEnemy.transform.localScale = new Vector3(newEnemy.transform.localScale.x * scaleX,
-                        newEnemy.transform.localScale.y * scaleY, 1f);
+                    newEnemy.transform.localScale = new Vector3(newEnemy.transform.localScale.x * scale,
+                        newEnemy.transform.localScale.y * scale, 1f);
                 }
             }
             //no two colliders to compare? then do old logic (until it's removed....)
@@ -272,6 +287,12 @@ namespace EnemyRandomizerMod
                     newEnemy.transform.rotation = Quaternion.identity;
                 }
 
+                if(newEnemy.name.Contains("Mawlek Turret"))
+                {
+                    Quaternion rotate = Quaternion.Euler(new Vector3(0f, 0f, -180f));
+                    newEnemy.transform.rotation = rotate * enemyToReplace.transform.rotation;
+                }
+
                 //mosquitos rotate, so spawn replacements with default rotation
                 if (enemyToReplace.name.Contains("Mosquito"))
                 {
@@ -279,15 +300,13 @@ namespace EnemyRandomizerMod
                 }
 
                 //TODO: look up what's going on with this
-                if (newEnemy.name.Contains("Crystallised Lazer Bug"))
+                if (newEnemy.name.Contains("Crystallised Lazer Bug") && enemyToReplace != null)
                 {
-                    //Dev.Log( "Old rotation = " + newEnemy.transform.rotation.eulerAngles );
-                    //Quaternion rotate = Quaternion.Euler(new Vector3(0f,0f,-180f));
-                    //newEnemy.transform.rotation = rotate * oldEnemy.transform.rotation;
-                    //Dev.Log( "New rotation = " + newEnemy.transform.rotation.eulerAngles );
-                    //( SmartRoutineManager.Instance ).StartCoroutine( RotationCorrector( newEnemy, oldEnemy.transform.rotation, 1.5f ) );
+                    //Dev.Log("Old rotation = " + newEnemy.transform.rotation.eulerAngles);
+                    Quaternion rotate = Quaternion.Euler(new Vector3(0f, 0f, -180f));
+                    newEnemy.transform.rotation = rotate * enemyToReplace.transform.rotation;
+                    //Dev.Log("New rotation = " + newEnemy.transform.rotation.eulerAngles);
                     //newEnemy.PrintSceneHierarchyTree(true);
-                    //crawler = newEnemy;
                 }
 
                 if (newEnemy.name.Contains("Mines Crawler"))
@@ -321,18 +340,18 @@ namespace EnemyRandomizerMod
                 newEnemy.transform.position = enemyToReplace.transform.position;
             }
 
+            BoxCollider2D collider = newEnemy.GetComponent<BoxCollider2D>();
             Vector3 positionOffset = Vector3.zero;
+            Vector3 onGround = Vector3.zero;
+            Vector2 scale = newEnemy.transform.localScale;
 
             if (sourceData.IsGroundEnemy())
             {
                 Vector3 toGround = newEnemy.GetNearestVectorToGround(50f);
-                Vector3 onGround = newEnemy.GetNearestPointOnGround(50f);
+                onGround = newEnemy.GetNearestPointOnGround(50f);
 
                 newEnemy.transform.position = onGround;
 
-                Vector2 scale = newEnemy.transform.localScale;
-
-                BoxCollider2D collider = newEnemy.GetComponent<BoxCollider2D>();
                 positionOffset = new Vector3(0f, collider.size.y * scale.y, 0f);
 
                 if (newEnemy.name.Contains("Lobster"))
@@ -352,27 +371,36 @@ namespace EnemyRandomizerMod
                     positionOffset = positionOffset + (Vector3)(Vector2.up * -0.5f) * scale.y;
                 }
             }
+            else
+            {
+                onGround = Vector3.zero;
+            }
+
+            Vector2 originalUp = (enemyToReplace == null) ? Vector2.up : new Vector2(enemyToReplace.transform.up.normalized.x, enemyToReplace.transform.up.normalized.y);
+
+            Vector2 ePos = newEnemy.transform.position;
+
+            Vector2 upOffset = ePos + originalUp * 5f;
+
+            Vector2 originalDown = -originalUp;
+
+            float projectionDistance = 500f;
+
+            Vector3 toSurface = IRandomizerEnemyGameObjectExtensions.GetNearestVectorToChunk(ePos, projectionDistance);
+
+            Vector2 finalDir = toSurface.normalized;
 
             bool newEnemyIsMantisFlyerChild = newEnemy.name.Contains("Mantis Flyer Child");
 
-            if (newEnemyIsMantisFlyerChild || sourceData.IsWallEnemy() || sourceData.IsCrawlerEnemy())
+            bool wasCrawlerEnemy = matchingData != null && matchingData.IsCrawlerEnemy();
+
+            if (enemyToReplace != null && enemyToReplace.name.Contains("Moss Walker"))
             {
-                Vector2 scale = newEnemy.transform.localScale;
+                positionOffset = originalUp * collider.size.y * scale.y;
+            }
 
-                Vector2 originalUp = (enemyToReplace == null) ? Vector2.up : new Vector2(enemyToReplace.transform.up.normalized.x, enemyToReplace.transform.up.normalized.y);
-
-                Vector2 ePos = newEnemy.transform.position;
-
-                Vector2 upOffset = ePos + originalUp * 5f;
-
-                Vector2 originalDown = -originalUp;
-
-                float projectionDistance = 500f;
-
-                Vector3 toSurface = IRandomizerEnemyGameObjectExtensions.GetNearestVectorToChunk(ePos, projectionDistance);
-
-                Vector2 finalDir = toSurface.normalized;
-                Vector3 onGround = Vector3.zero;
+            if (newEnemyIsMantisFlyerChild || sourceData.IsWallEnemy() || sourceData.IsCrawlerEnemy() || wasCrawlerEnemy)
+            {
 
                 //project the ceiling droppers onto the ceiling
                 if (newEnemy.name.Contains("Ceiling Dropper"))
@@ -389,7 +417,6 @@ namespace EnemyRandomizerMod
 
                 newEnemy.transform.position = onGround;
 
-                BoxCollider2D collider = newEnemy.GetComponent<BoxCollider2D>();
                 if (newEnemy.name.Contains("Plant Trap"))
                 {
                     positionOffset = originalUp * 2f * scale.y;
@@ -421,7 +448,7 @@ namespace EnemyRandomizerMod
                     positionOffset = Vector3.down * 2f * scale.y;
                 }
 
-                if (sourceData.IsCrawlerEnemy())
+                if (sourceData.IsCrawlerEnemy() || wasCrawlerEnemy)
                 {
                     //positionOffset =  * 1f;
                     //BoxCollider2D collider = newEnemy.GetComponent<BoxCollider2D>();
@@ -433,7 +460,7 @@ namespace EnemyRandomizerMod
                     {
                         //suppposedly 1/2 their Y collider space offset should be 1.25
                         //but whatever we set it at, they spawn pretty broken, so spawn them out of the ground a bit so they're still a threat
-                        positionOffset = -finalDir * collider.size.y * .5f * scale.y;
+                        positionOffset = -finalDir * collider.size.y * 1.5f * scale.y;
                     }
 
                     //TODO: Testing new values
@@ -445,19 +472,19 @@ namespace EnemyRandomizerMod
                     //TODO: Testing new values
                     if (newEnemy.name.Contains("Spider Mini"))
                     {
-                        positionOffset = -finalDir * collider.size.y * .5f * scale.y; ;
+                        positionOffset = -finalDir * collider.size.y * 1.5f * scale.y; ;
                     }
 
                     //TODO: Testing new values
                     if (newEnemy.name.Contains("Abyss Crawler"))
                     {
-                        positionOffset = -finalDir * collider.size.y * .5f * scale.y; ;
+                        positionOffset = -finalDir * collider.size.y * 1.5f * scale.y; ;
                     }
 
                     //TODO: Testing new values
-                    if (newEnemy.name.Contains("Climber"))
+                    if (newEnemy.name.Contains("Climber") || wasCrawlerEnemy)
                     {
-                        positionOffset = -finalDir * collider.size.y * .5f * scale.y; ;
+                        positionOffset = -finalDir * collider.size.y * 1.5f * scale.y;
                     }
                 }
 

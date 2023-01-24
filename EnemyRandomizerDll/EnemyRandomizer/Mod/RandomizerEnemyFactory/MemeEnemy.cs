@@ -87,7 +87,8 @@ namespace EnemyRandomizerMod
                 superSpitterData.loadedEnemy.EnemyObject.name = EnemyRandomizer.ENEMY_RANDO_PREFIX + originalName;
 
                 GameObject newEnemy = superSpitterData.loadedEnemy.Instantiate(superSpitterData, null, null);
-                newEnemy.SafeSetActive(true);
+                newEnemy.name = EnemyRandomizer.ENEMY_RANDO_PREFIX + newEnemy.name;
+                newEnemy.SetActive(true);
 
                 //fix the data...
                 superSpitterData.loadedEnemy.EnemyObject.name = originalName;
@@ -113,12 +114,13 @@ namespace EnemyRandomizerMod
             EnemyObject = prefabObject;
             try
             {
-                var alt = prefabObject.LocateMyFSM("Spawn").Fsm.GetFsmGameObject("Enemy Type").Value;
+                base.Setup(enemy, knownEnemyTypes, prefabObject);
+                //var alt = prefabObject.LocateMyFSM("Spawn").Fsm.GetFsmGameObject("Enemy Type").Value;
 
-                if (alt != null)
-                {
-                    EnemyObject = alt;
-                }
+                //if (alt != null)
+                //{
+                //    EnemyObject = alt;
+                //}
             }
             catch(Exception)
             {

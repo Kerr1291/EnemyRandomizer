@@ -75,7 +75,8 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    fsm.SendEvent("PLAYER_FAR");
+                    if (fsm.ActiveStateName == "Out")
+                        fsm.SendEvent("PLAYER_FAR");
                 }
 
                 yield return new WaitForEndOfFrame();
@@ -95,7 +96,8 @@ namespace EnemyRandomizerMod
 
             //remove the transitions related to chain spawning zotes for the event
             fsm.RemoveTransition("Break", "FINISHED");
-            fsm.AddGlobalTransition("PLAYER_FAR", "Dormant");
+            fsm.AddTransition("Out", "PLAYER_FAR", "Dormant");
+            //fsm.AddGlobalTransition("PLAYER_FAR", "Dormant");
 
             //change the start transition to just begin the spawn antics
             //fsm.ChangeTransition("Init", "FINISHED", "Set Pos");

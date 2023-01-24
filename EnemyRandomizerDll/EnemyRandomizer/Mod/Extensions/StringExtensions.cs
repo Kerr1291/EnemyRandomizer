@@ -137,6 +137,11 @@ namespace EnemyRandomizerMod
                     trimmedString = trimmedString.Substring(0, index);
             }
 
+            if (trimmedString.Contains("Super Spitter Col"))
+                trimmedString = "Super Spitter";
+
+            trimmedString = trimmedString.Trim();
+
             return trimmedString;
         }
 

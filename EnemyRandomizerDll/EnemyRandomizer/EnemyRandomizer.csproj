@@ -177,13 +177,12 @@
     <Compile Include="Common\Scripts\Logic\SmartRoutineStarts.cs" />
     <Compile Include="Common\Scripts\Logic\TimedRoutine.cs" />
     <Compile Include="Mod\Extensions\FSMUtils.cs" />
-    <Compile Include="Mod\Main\EnemyDataExtensions.cs" />
-    <Compile Include="Mod\Main\EnemyRandomizerArenaLogic.cs" />
-    <Compile Include="Mod\Main\EnemyRandomizerNotes.cs" />
+    <Compile Include="Mod\Extensions\EnemyDataExtensions.cs" />
     <Compile Include="Mod\Main\EnemyRandomizerReplacementLogic.cs" />
-    <Compile Include="Mod\Main\StoredPair.cs" />
+    <Compile Include="Mod\RandomizerEnemyFactory\CrystalLazerBugController.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\Working\GGZoteBoss.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\MemeEnemy.cs" />
+    <Compile Include="Mod\RandomizerEnemyFactory\ZombieSpiderController.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\ZoteBalloon.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\ZoteCrewNormal.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\ZoteFluke.cs" />
@@ -425,8 +424,7 @@
     <Compile Include="UniRx\UnityEngineBridge\YieldInstructionCache.cs" />
     <Compile Include="UniRx\UnityWinRTBridge\Thread.cs" />
     <Compile Include="UniRx\UnityWinRTBridge\ThreadPoolScheduler_UnityWinRT.cs" />
-    <Compile Include="Mod\Main\DebugOnWake.cs" />
-    <Compile Include="Mod\Main\WakeUpMageKnight.cs" />
+    <Compile Include="Common\Scripts\Debug\DebugOnWake.cs" />
     <Compile Include="Mod\Extensions\HealthManagerExtensions.cs" />
     <Compile Include="Mod\Main\EnemyRandomizerMenu.cs" />
     <Compile Include="Mod\Main\EnemyRandomizerSettings.cs" />
@@ -437,7 +435,6 @@
     <Compile Include="Mod\RandomizerEnemyFactory\BaseTypes\IRandomizerEnemy.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\BaseTypes\RandomizerEnemyFactory.cs" />
     <Compile Include="Mod\Main\EnemyRandomizer.cs" />
-    <Compile Include="Mod\Main\EnemyRandomizerModSettings.cs" />
     <Compile Include="Mod\Extensions\GameObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mod\Extensions\StringExtensions.cs" />

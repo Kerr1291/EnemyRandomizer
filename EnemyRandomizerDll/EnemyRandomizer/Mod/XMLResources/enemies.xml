@@ -1,14 +1,285 @@
 ﻿<enemyList>
-  <enemy name="Absolute Radiance">
-    <sceneName>GG_Radiance</sceneName>
-    <gameObjectPath>Boss Control/Absolute Radiance</gameObjectPath>
+  <!--<enemy name="Hatcher">
+    <sceneName></sceneName>
+		<gameObjectPath></gameObjectPath>
+		<typePool>GROUND</typePool>
+     
+    <isHard>false</isHard>
+		<isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>true</excludeBeingReplacement>
+  </enemy>-->
+  <!--TEST ME!! This is the bomb object that pops out of them i think?-->
+  <enemy name="Lil Jellyfish">
+    <sceneName>Fungus3_27</sceneName>
+    <gameObjectPath>Lil Jellyfish</gameObjectPath>
     <typePool>FLYER</typePool>
 
+    <isLargeEnemy>false</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Egg Sac">
+    <sceneName>Mines_20</sceneName>
+    <gameObjectPath>Egg Sac</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>false</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>true</excludeBeingReplacement>
+  </enemy>
+  <!--<enemy name="Colosseum_Worm">
+    <sceneName></sceneName>
+		<gameObjectPath></gameObjectPath>
+		<typePool>GROUND</typePool>
+     
+    <isLargeEnemy>true</isLargeEnemy>
+		<isColosseum>true</isColosseum>
+		<isGodmaster>false</isGodmaster>
+    <isHard>false</isHard>
+		<isBoss>false</isBoss>
+		<isGhostWarrior>false</isGhostWarrior>
+		<hasSpecialEnding>false</hasSpecialEnding>
+		<excludeFromBattleArenas>false</excludeFromBattleArenas>
+		<excludeFromColosseum>false</excludeFromColosseum>
+		<excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>-->
+  <!--<enemy name="Enemy">
+    <sceneName>White_Palace_03_hub</sceneName>
+		<gameObjectPath>Enemy</gameObjectPath>
+		<typePool>GROUND</typePool>
+     
+    <isHard>false</isHard>
+		<isBoss>false</isBoss>
+		<isGhostWarrior>false</isGhostWarrior>
+		<hasSpecialEnding>false</hasSpecialEnding>
+		<excludeFromBattleArenas>false</excludeFromBattleArenas>
+		<excludeFromColosseum>false</excludeFromColosseum>
+		<excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>-->
+  <!--<enemy name="Worm">
+    <sceneName></sceneName>
+		<gameObjectPath></gameObjectPath>
+		<typePool>WALL</typePool>
+     
+    <isLargeEnemy>false</isLargeEnemy>
+    <isHard>false</isHard>
+		<isBoss>false</isBoss>
+		<isGhostWarrior>false</isGhostWarrior>
+		<hasSpecialEnding>false</hasSpecialEnding>
+		<excludeFromBattleArenas>true</excludeFromBattleArenas>
+		<excludeFromColosseum>true</excludeFromColosseum>
+		<excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>-->
+  <enemy name="Shell">
+    <sceneName>Mines_20</sceneName>
+		<gameObjectPath>Shell</gameObjectPath>
+		<typePool>GROUND</typePool>
+    <isHard>false</isHard>
+		<isBoss>false</isBoss>
+		<isGhostWarrior>false</isGhostWarrior>
+		<hasSpecialEnding>false</hasSpecialEnding>
+		<excludeFromBattleArenas>false</excludeFromBattleArenas>
+		<excludeFromColosseum>false</excludeFromColosseum>
+		<excludeBeingReplacement>true</excludeBeingReplacement>
+  </enemy>
+  <!--<enemy name="Jellyfish Baby">
+    <sceneName></sceneName>
+		<gameObjectPath></gameObjectPath>
+		<typePool>GROUND</typePool>
+     
+    <isHard>false</isHard>
+		<isBoss>false</isBoss>
+		<isGhostWarrior>false</isGhostWarrior>
+		<hasSpecialEnding>false</hasSpecialEnding>
+		<excludeFromBattleArenas>false</excludeFromBattleArenas>
+		<excludeFromColosseum>false</excludeFromColosseum>
+		<excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>-->
+  <enemy name="Zote Balloon">
+    <configurationTypeName>ZoteBalloon</configurationTypeName>
+    <sceneName>GG_Mighty_Zote</sceneName>
+    <gameObjectPath>Battle Control/Zote Balloon Ordeal</gameObjectPath>
+    <typePool>FLYER</typePool>
+    <isLargeEnemy>false</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Zote Salubra">
+    <configurationTypeName>ZoteSalubra</configurationTypeName>
+    <sceneName>GG_Mighty_Zote</sceneName>
+    <gameObjectPath>Battle Control/Zote Salubra</gameObjectPath>
+    <typePool>FLYER</typePool>
+    <isLargeEnemy>false</isLargeEnemy>
+    <isColosseum>false</isColosseum>
+    <isGodmaster>true</isGodmaster>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Zoteling">
+    <configurationTypeName>Zoteling</configurationTypeName>
+    <sceneName>GG_Mighty_Zote</sceneName>
+    <gameObjectPath>Battle Control/Zotelings/Ordeal Zoteling</gameObjectPath>
+    <typePool>FLYER</typePool>
+    <isLargeEnemy>false</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Zote Crew Tall">
+    <configurationTypeName>ZoteCrewNormal</configurationTypeName>
+    <sceneName>GG_Mighty_Zote</sceneName>
+    <gameObjectPath>Battle Control/Tall Zotes/Zote Crew Tall</gameObjectPath>
+    <typePool>GROUND</typePool>
     <isLargeEnemy>true</isLargeEnemy>
     <isColosseum>false</isColosseum>
     <isGodmaster>true</isGodmaster>
-    <isHard>true</isHard>
+    <isHard>false</isHard>
     <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Zote Crew Normal">
+    <configurationTypeName>ZoteCrewNormal</configurationTypeName>
+    <sceneName>GG_Mighty_Zote</sceneName>
+    <gameObjectPath>Battle Control/Dormant Warriors/Zote Crew Normal (1)</gameObjectPath>
+    <typePool>GROUND</typePool>
+    <isLargeEnemy>false</isLargeEnemy>
+    <isColosseum>false</isColosseum>
+    <isGodmaster>true</isGodmaster>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>true</excludeFromBattleArenas>
+    <excludeFromColosseum>true</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Zote Boss">
+    <configurationTypeName>GGZoteBoss</configurationTypeName>
+    <sceneName>GG_Mighty_Zote</sceneName>
+    <gameObjectPath>Battle Control/First Zote/Zote Boss</gameObjectPath>
+    <typePool>GROUND</typePool>
+    <isColosseum>false</isColosseum>
+    <isGodmaster>true</isGodmaster>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>true</excludeFromBattleArenas>
+    <excludeFromColosseum>true</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Zote Crew Fat">
+    <configurationTypeName>ZoteCrewNormal</configurationTypeName>
+    <sceneName>GG_Mighty_Zote</sceneName>
+    <gameObjectPath>Battle Control/Fat Zotes/Zote Crew Fat (1)</gameObjectPath>
+    <typePool>GROUND</typePool>
+    <isLargeEnemy>true</isLargeEnemy>
+    <isColosseum>false</isColosseum>
+    <isGodmaster>true</isGodmaster>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Zote Thwomp">
+    <configurationTypeName>ZoteThwomp</configurationTypeName>
+    <sceneName>GG_Mighty_Zote</sceneName>
+    <gameObjectPath>Battle Control/Zote Thwomp</gameObjectPath>
+    <typePool>GROUND</typePool>
+    <isLargeEnemy>true</isLargeEnemy>
+    <isColosseum>false</isColosseum>
+    <isGodmaster>true</isGodmaster>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>true</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Zote Fluke">
+    <configurationTypeName>ZoteFluke</configurationTypeName>
+    <sceneName>GG_Mighty_Zote</sceneName>
+    <gameObjectPath>Battle Control/Zote Fluke</gameObjectPath>
+    <typePool>GROUND</typePool>
+    <isLargeEnemy>true</isLargeEnemy>
+    <isColosseum>false</isColosseum>
+    <isGodmaster>true</isGodmaster>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>true</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Grey Prince">
+    <configurationTypeName>ZotePrince</configurationTypeName>
+    <sceneName>GG_Grey_Prince_Zote</sceneName>
+    <gameObjectPath>Grey Prince</gameObjectPath>
+    <typePool>GROUND</typePool>
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>true</excludeFromBattleArenas>
+    <excludeFromColosseum>true</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>1200</baseHP>
+    <attunedHP>1400</attunedHP>
+    <ascendedHP>1400</ascendedHP>
+  </enemy>
+  <enemy name="Zote Turret">
+    <sceneName>GG_Mighty_Zote</sceneName>
+    <gameObjectPath>Battle Control/Extra Zotes/Zote Turret</gameObjectPath>
+    <typePool>WALL</typePool>
+
+    <isLargeEnemy>false</isLargeEnemy>
+    <isColosseum>false</isColosseum>
+    <isGodmaster>true</isGodmaster>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>true</excludeFromBattleArenas>
+    <excludeFromColosseum>true</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
   <enemy name="Acid Flyer">
     <sceneName>Fungus1_09</sceneName>
@@ -215,22 +486,8 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <!--<enemy name="Dream Mage Lord Phase2">
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>FLYER</typePool>
-     
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-		<isBoss>true</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>true</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
   <enemy name="Dream Mage Lord">
-    <sceneName>GG_Soul_Tyrant</sceneName>
+    <sceneName>Dream_02_Mage_Lord</sceneName>
     <gameObjectPath>Dream Mage Lord</gameObjectPath>
     <typePool>FLYER</typePool>
 
@@ -291,36 +548,6 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <enemy name="Fat Fluke">
-    <sceneName>GG_Pipeway</sceneName>
-    <gameObjectPath>Fat Fluke</gameObjectPath>
-    <typePool>FLYER</typePool>
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Fluke Mother">
-    <sceneName>GG_Flukemarm</sceneName>
-    <gameObjectPath>Fluke Mother</gameObjectPath>
-    <typePool>FLYER</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>350</baseHP>
-    <attunedHP>500</attunedHP>
-    <ascendedHP>900</ascendedHP>
-  </enemy>
   <enemy name="Fly">
     <sceneName>Crossroads_07</sceneName>
     <gameObjectPath>Uninfected Parent/Fly</gameObjectPath>
@@ -362,111 +589,6 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <enemy name="Ghost Warrior Galien">
-    <sceneName>GG_Ghost_Galien</sceneName>
-    <gameObjectPath>Warrior/Ghost Warrior Galien</gameObjectPath>
-    <typePool>FLYER</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>true</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>230</baseHP>
-    <attunedHP>650</attunedHP>
-    <ascendedHP>1000</ascendedHP>
-    <nail1HP>368</nail1HP>
-    <nail2HP>479</nail2HP>
-    <nail3HP>570</nail3HP>
-    <nail4HP>640</nail4HP>
-  </enemy>
-  <enemy name="Ghost Warrior Hu">
-    <sceneName>GG_Ghost_Hu</sceneName>
-    <gameObjectPath>Warrior/Ghost Warrior Hu</gameObjectPath>
-    <typePool>FLYER</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>true</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>250</baseHP>
-    <attunedHP>600</attunedHP>
-    <ascendedHP>800</ascendedHP>
-    <nail1HP>420</nail1HP>
-    <nail2HP>550</nail2HP>
-    <nail3HP>600</nail3HP>
-    <nail4HP>650</nail4HP>
-  </enemy>
-  <enemy name="Ghost Warrior Markoth">
-    <sceneName>GG_Ghost_Markoth</sceneName>
-    <gameObjectPath>Warrior/Ghost Warrior Markoth</gameObjectPath>
-    <typePool>FLYER</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>true</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>250</baseHP>
-    <attunedHP>650</attunedHP>
-    <ascendedHP>950</ascendedHP>
-    <nail1HP>400</nail1HP>
-    <nail2HP>520</nail2HP>
-    <nail3HP>624</nail3HP>
-    <nail4HP>705</nail4HP>
-  </enemy>
-  <enemy name="Ghost Warrior Marmu">
-    <sceneName>GG_Ghost_Marmu</sceneName>
-    <gameObjectPath>Warrior/Ghost Warrior Marmu</gameObjectPath>
-    <typePool>FLYER</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>true</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>true</excludeBeingReplacement>
-    <baseHP>200</baseHP>
-    <attunedHP>416</attunedHP>
-    <ascendedHP>600</ascendedHP>
-    <nail1HP>320</nail1HP>
-    <nail2HP>416</nail2HP>
-    <nail3HP>500</nail3HP>
-    <nail4HP>570</nail4HP>
-  </enemy>
-  <enemy name="Ghost Warrior No Eyes">
-    <sceneName>GG_Ghost_No_Eyes</sceneName>
-    <gameObjectPath>Warrior/Ghost Warrior No Eyes</gameObjectPath>
-    <typePool>FLYER</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>true</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>200</baseHP>
-    <attunedHP>570</attunedHP>
-    <ascendedHP>800</ascendedHP>
-    <nail1HP>320</nail1HP>
-    <nail2HP>416</nail2HP>
-    <nail3HP>500</nail3HP>
-    <nail4HP>570</nail4HP>
-  </enemy>
   <enemy name="Ghost Warrior Slug">
     <sceneName>Cliffs_02_boss</sceneName>
     <gameObjectPath>Warrior/Ghost Warrior Slug</gameObjectPath>
@@ -488,74 +610,6 @@
     <nail3HP>570</nail3HP>
     <nail4HP>640</nail4HP>
   </enemy>
-  <enemy name="Ghost Warrior Xero">
-    <sceneName>GG_Ghost_Xero</sceneName>
-    <gameObjectPath>Warrior/Ghost Warrior Xero</gameObjectPath>
-    <typePool>FLYER</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>true</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>200</baseHP>
-    <attunedHP>650</attunedHP>
-    <ascendedHP>900</ascendedHP>
-    <nail1HP>320</nail1HP>
-    <nail2HP>416</nail2HP>
-    <nail3HP>500</nail3HP>
-    <nail4HP>570</nail4HP>
-  </enemy>
-  <!--<enemy name="Giant Buzzer Col">
-    <sceneName>GG_Vengefly</sceneName>
-		<gameObjectPath>Giant Buzzer Col</gameObjectPath>
-		<typePool>FLYER</typePool>
-     
-		<isColosseum>true</isColosseum>
-		<isGodmaster>false</isGodmaster>
-    <isHard>true</isHard>
-		<isBoss>true</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
-  <enemy name="Giant Buzzer">
-    <sceneName>GG_Vengefly</sceneName>
-    <gameObjectPath>Giant Buzzer Col</gameObjectPath>
-    <typePool>FLYER</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>false</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>55</baseHP>
-    <coloHP>100</coloHP>
-    <attunedHP>450</attunedHP>
-    <ascendedHP>735</ascendedHP>
-  </enemy>
-  <!--<enemy name="Giant Fly Col">
-    <altName>Giant Fly</altName>
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>FLYER</typePool>
-     
-    <isHard>true</isHard>
-		<isBoss>true</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
   <enemy name="Hatcher">
     <sceneName>Crossroads_19</sceneName>
     <gameObjectPath>_Enemies/Hatcher</gameObjectPath>
@@ -569,38 +623,6 @@
     <excludeFromBattleArenas>false</excludeFromBattleArenas>
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <!--<enemy name="Hatcher">
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>GROUND</typePool>
-     
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>true</excludeBeingReplacement>
-  </enemy>-->
-  <enemy name="Hornet Nosk">
-    <sceneName>GG_Nosk_Hornet</sceneName>
-    <gameObjectPath>Battle Scene/Hornet Nosk</gameObjectPath>
-    <typePool>FLYER</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isColosseum>false</isColosseum>
-    <isGodmaster>true</isGodmaster>
-    <isHard>true</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>750</baseHP>
-    <attunedHP>750</attunedHP>
-    <ascendedHP>1050</ascendedHP>
   </enemy>
   <enemy name="Inflater">
     <sceneName>Waterways_04b</sceneName>
@@ -620,21 +642,6 @@
   <enemy name="Jellyfish Baby">
     <sceneName>Fungus3_27</sceneName>
     <gameObjectPath>Jellyfish Baby</gameObjectPath>
-    <typePool>FLYER</typePool>
-
-    <isLargeEnemy>false</isLargeEnemy>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <!--TEST ME!! This is the bomb object that pops out of them i think?-->
-  <enemy name="Lil Jellyfish">
-    <sceneName>Fungus3_27</sceneName>
-    <gameObjectPath>Lil Jellyfish</gameObjectPath>
     <typePool>FLYER</typePool>
 
     <isLargeEnemy>false</isLargeEnemy>
@@ -690,22 +697,8 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <!--<enemy name="Mage Lord Phase2">
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>FLYER</typePool>
-     
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-		<isBoss>true</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>true</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
   <enemy name="Mage Lord">
-    <sceneName>GG_Soul_Master</sceneName>
+    <sceneName>Ruins1_24_boss</sceneName>
     <gameObjectPath>Mage Lord</gameObjectPath>
     <typePool>FLYER</typePool>
 
@@ -753,46 +746,6 @@
     <excludeFromBattleArenas>false</excludeFromBattleArenas>
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Mega Fat Bee">
-    <sceneName>GG_Oblobbles</sceneName>
-    <gameObjectPath>Mega Fat Bee</gameObjectPath>
-    <typePool>FLYER</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isColosseum>true</isColosseum>
-    <isGodmaster>false</isGodmaster>
-    <isHard>false</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>260</baseHP>
-    <attunedHP>450</attunedHP>
-    <ascendedHP>750</ascendedHP>
-    <nail1HP>750</nail1HP>
-    <nail2HP>800</nail2HP>
-    <nail3HP>850</nail3HP>
-    <nail4HP>900</nail4HP>
-  </enemy>
-  <enemy name="Mega Jellyfish">
-    <sceneName>GG_Uumuu</sceneName>
-    <gameObjectPath>Mega Jellyfish GG</gameObjectPath>
-    <typePool>FLYER</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>300</baseHP>
-    <attunedHP>350</attunedHP>
-    <ascendedHP>700</ascendedHP>
   </enemy>
   <enemy name="Mosquito">
     <sceneName>Fungus1_07</sceneName>
@@ -880,20 +833,6 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <!--<enemy name="Ruins Flying SentryB">
-    <altName>Ruins Flying Sentry</altName>
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>FLYER</typePool>
-     
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
   <enemy name="Shade Sibling">
     <sceneName>Abyss_15</sceneName>
     <gameObjectPath>Shade Sibling (14)</gameObjectPath>
@@ -937,12 +876,11 @@
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
   <enemy name="Super Spitter">
-    <configurationTypeName>ColosseumEnemy</configurationTypeName>
-    <sceneName>Room_Colosseum_Gold</sceneName>
-    <gameObjectPath>Colosseum Manager/Waves/Wave 17/Colosseum Cage Small (2)</gameObjectPath>
+    <sceneName>Deepnest_East_06</sceneName>
+    <gameObjectPath>Super Spitter</gameObjectPath>
     <typePool>FLYER</typePool>
     <isLargeEnemy>false</isLargeEnemy>
-    <isColosseum>true</isColosseum>
+    <isColosseum>false</isColosseum>
     <isGodmaster>false</isGodmaster>
     <isHard>false</isHard>
     <isBoss>false</isBoss>
@@ -954,8 +892,8 @@
   </enemy>
   <enemy name="Meme Boss">
     <configurationTypeName>MemeEnemy</configurationTypeName>
-    <sceneName>Room_Colosseum_Gold</sceneName>
-    <gameObjectPath>Colosseum Manager/Waves/Wave 17/Colosseum Cage Small (2)</gameObjectPath>
+    <sceneName>Deepnest_East_06</sceneName>
+    <gameObjectPath>Super Spitter</gameObjectPath>
     <typePool>FLYER</typePool>
     <isCustom>true</isCustom>
     <isLargeEnemy>true</isLargeEnemy>
@@ -982,175 +920,6 @@
     <excludeFromBattleArenas>true</excludeFromBattleArenas>
     <excludeFromColosseum>true</excludeFromColosseum>
     <excludeBeingReplacement>true</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Pale Lurker">
-    <sceneName>GG_Lurker</sceneName>
-    <gameObjectPath>Lurker Control/Pale Lurker</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isHard>false</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>true</excludeFromBattleArenas>
-    <excludeFromColosseum>true</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Zote Balloon">
-    <configurationTypeName>ZoteBalloon</configurationTypeName>
-    <sceneName>GG_Mighty_Zote</sceneName>
-    <gameObjectPath>Battle Control/Zote Balloon Ordeal</gameObjectPath>
-    <typePool>FLYER</typePool>
-    <isLargeEnemy>false</isLargeEnemy>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Zote Salubra">
-    <configurationTypeName>ZoteSalubra</configurationTypeName>
-    <sceneName>GG_Mighty_Zote</sceneName>
-    <gameObjectPath>Battle Control/Zote Salubra</gameObjectPath>
-    <typePool>FLYER</typePool>
-    <isLargeEnemy>false</isLargeEnemy>
-    <isColosseum>false</isColosseum>
-    <isGodmaster>true</isGodmaster>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Zoteling">
-    <configurationTypeName>Zoteling</configurationTypeName>
-    <sceneName>GG_Mighty_Zote</sceneName>
-    <gameObjectPath>Battle Control/Zotelings/Ordeal Zoteling</gameObjectPath>
-    <typePool>FLYER</typePool>
-    <isLargeEnemy>false</isLargeEnemy>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Zote Crew Tall">
-    <configurationTypeName>ZoteCrewNormal</configurationTypeName>
-    <sceneName>GG_Mighty_Zote</sceneName>
-    <gameObjectPath>Battle Control/Tall Zotes/Zote Crew Tall</gameObjectPath>
-    <typePool>GROUND</typePool>
-    <isLargeEnemy>true</isLargeEnemy>
-    <isColosseum>false</isColosseum>
-    <isGodmaster>true</isGodmaster>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Zote Crew Normal">
-    <configurationTypeName>ZoteCrewNormal</configurationTypeName>
-    <sceneName>GG_Mighty_Zote</sceneName>
-    <gameObjectPath>Battle Control/Dormant Warriors/Zote Crew Normal (1)</gameObjectPath>
-    <typePool>GROUND</typePool>
-    <isLargeEnemy>false</isLargeEnemy>
-    <isColosseum>false</isColosseum>
-    <isGodmaster>true</isGodmaster>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>true</excludeFromBattleArenas>
-    <excludeFromColosseum>true</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Zote Boss">
-    <configurationTypeName>GGZoteBoss</configurationTypeName>
-    <sceneName>GG_Mighty_Zote</sceneName>
-    <gameObjectPath>Battle Control/First Zote/Zote Boss</gameObjectPath>
-    <typePool>GROUND</typePool>
-    <isColosseum>false</isColosseum>
-    <isGodmaster>true</isGodmaster>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>true</excludeFromBattleArenas>
-    <excludeFromColosseum>true</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Zote Crew Fat">
-    <configurationTypeName>ZoteCrewNormal</configurationTypeName>
-    <sceneName>GG_Mighty_Zote</sceneName>
-    <gameObjectPath>Battle Control/Fat Zotes/Zote Crew Fat (1)</gameObjectPath>
-    <typePool>GROUND</typePool>
-    <isLargeEnemy>true</isLargeEnemy>
-    <isColosseum>false</isColosseum>
-    <isGodmaster>true</isGodmaster>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Zote Thwomp">
-    <configurationTypeName>ZoteThwomp</configurationTypeName>
-    <sceneName>GG_Mighty_Zote</sceneName>
-    <gameObjectPath>Battle Control/Zote Thwomp</gameObjectPath>
-    <typePool>GROUND</typePool>
-    <isLargeEnemy>true</isLargeEnemy>
-    <isColosseum>false</isColosseum>
-    <isGodmaster>true</isGodmaster>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>true</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Zote Fluke">
-    <configurationTypeName>ZoteFluke</configurationTypeName>
-    <sceneName>GG_Mighty_Zote</sceneName>
-    <gameObjectPath>Battle Control/Zote Fluke</gameObjectPath>
-    <typePool>GROUND</typePool>
-    <isLargeEnemy>true</isLargeEnemy>
-    <isColosseum>false</isColosseum>
-    <isGodmaster>true</isGodmaster>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>true</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Grey Prince">
-    <configurationTypeName>ZotePrince</configurationTypeName>
-    <sceneName>GG_Grey_Prince_Zote</sceneName>
-    <gameObjectPath>Grey Prince</gameObjectPath>
-    <typePool>GROUND</typePool>
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>true</excludeFromBattleArenas>
-    <excludeFromColosseum>true</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>1200</baseHP>
-    <attunedHP>1400</attunedHP>
-    <ascendedHP>1400</ascendedHP>
   </enemy>
   <enemy name="Colosseum_Miner">
     <configurationTypeName>ColosseumEnemy</configurationTypeName>
@@ -1202,40 +971,6 @@
     <excludeFromBattleArenas>false</excludeFromBattleArenas>
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <!--<enemy name="Colosseum_Worm">
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>GROUND</typePool>
-     
-    <isLargeEnemy>true</isLargeEnemy>
-		<isColosseum>true</isColosseum>
-		<isGodmaster>false</isGodmaster>
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
-  <enemy name="Giant Fly">
-    <sceneName>GG_Gruz_Mother</sceneName>
-    <gameObjectPath>_Enemies/Giant Fly</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>false</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>90</baseHP>
-    <coloHP>140</coloHP>
-    <attunedHP>650</attunedHP>
-    <ascendedHP>945</ascendedHP>
   </enemy>
   <enemy name="Lancer">
     <configurationTypeName>ColosseumEnemy</configurationTypeName>
@@ -1293,26 +1028,6 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <enemy name="Mage Knight">
-    <sceneName>GG_Mage_Knight</sceneName>
-    <gameObjectPath>Mage Knight</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isColosseum>true</isColosseum>
-    <isGodmaster>false</isGodmaster>
-    <isHard>true</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>180</baseHP>
-    <coloHP>300</coloHP>
-    <attunedHP>750</attunedHP>
-    <ascendedHP>1000</ascendedHP>
-  </enemy>
   <enemy name="Zombie Runner">
     <sceneName>Crossroads_19</sceneName>
     <gameObjectPath>_Enemies/Zombie Runner</gameObjectPath>
@@ -1369,20 +1084,6 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <!--<enemy name="Crawler Fixed">
-    <altName>Crawler</altName>
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>GROUND</typePool>
-     
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
   <enemy name="Mines Crawler">
     <sceneName>Mines_11</sceneName>
     <gameObjectPath>Mines Crawler</gameObjectPath>
@@ -1438,23 +1139,6 @@
     <excludeFromBattleArenas>false</excludeFromBattleArenas>
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Mawlek Body">
-    <sceneName>GG_Brooding_Mawlek</sceneName>
-    <gameObjectPath>Battle Scene/Mawlek Body</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>300</baseHP>
-    <attunedHP>1050</attunedHP>
-    <ascendedHP>1050</ascendedHP>
   </enemy>
   <enemy name="Prayer Slug">
     <sceneName>Crossroads_10_boss_defeated</sceneName>
@@ -1636,48 +1320,6 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <!--<enemy name="Ruins Sentry FatB">
-    <altName>Ruins Sentry Fat</altName>
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>GROUND</typePool>
-     
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Ruins SentryB">
-    <altName>Ruins Sentry</altName>
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>GROUND</typePool>
-     
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Ruins Sentry Fat B">
-    <altName>Ruins Sentry Fat</altName>
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>GROUND</typePool>
-     
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
   <enemy name="Ruins Sentry Fat">
     <sceneName>Ruins2_09</sceneName>
     <gameObjectPath>Battle Scene/Wave 1/Ruins Sentry Fat</gameObjectPath>
@@ -1691,62 +1333,6 @@
     <excludeFromBattleArenas>false</excludeFromBattleArenas>
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <!--<enemy name="Great Shield Zombie bottom">
-    <altName>Great Shield Zombie</altName>
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>GROUND</typePool>
-     
-    <isHard>true</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
-  <enemy name="Black Knight">
-    <sceneName>GG_Watcher_Knights</sceneName>
-    <gameObjectPath>Battle Control/Black Knight 1</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>220</baseHP>
-    <attunedHP>350</attunedHP>
-    <ascendedHP>600</ascendedHP>
-    <nail1HP>220</nail1HP>
-    <nail2HP>220</nail2HP>
-    <nail3HP>240</nail3HP>
-    <nail4HP>260</nail4HP>
-  </enemy>
-  <enemy name="Jar Collector">
-    <sceneName>GG_Collector_V</sceneName>
-    <gameObjectPath>Battle Scene/Jar Collector</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>750</baseHP>
-    <attunedHP>900</attunedHP>
-    <ascendedHP>1200</ascendedHP>
-    <nail1HP>750</nail1HP>
-    <nail2HP>750</nail2HP>
-    <nail3HP>800</nail3HP>
-    <nail4HP>850</nail4HP>
   </enemy>
   <enemy name="Pigeon">
     <sceneName>Fungus1_12</sceneName>
@@ -1804,58 +1390,10 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <!--<enemy name="Hornet Boss">
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>GROUND</typePool>
-     
-    <isHard>true</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
-  <enemy name="Hornet Boss 1">
-    <sceneName>GG_Hornet_1</sceneName>
-    <gameObjectPath>Boss Holder/Hornet Boss 1</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>false</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>225</baseHP>
-    <attunedHP>900</attunedHP>
-    <ascendedHP>1250</ascendedHP>
-  </enemy>
-  <enemy name="Hornet Boss 2">
-    <sceneName>GG_Hornet_2</sceneName>
-    <gameObjectPath>Boss Holder/Hornet Boss 2</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>false</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>700</baseHP>
-    <attunedHP>800</attunedHP>
-    <ascendedHP>1200</ascendedHP>
-  </enemy>
   <enemy name="Moss Charger">
-    <sceneName>Fungus1_21</sceneName>
+    <sceneName>Fungus1_10</sceneName>
     <gameObjectPath>Moss Charger</gameObjectPath>
     <typePool>GROUND</typePool>
-
     <isLargeEnemy>true</isLargeEnemy>
     <isHard>false</isHard>
     <isBoss>false</isBoss>
@@ -1865,18 +1403,6 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <!--<enemy name="Shell">
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>GROUND</typePool>
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
   <enemy name="Moss Knight">
     <sceneName>Fungus1_21</sceneName>
     <gameObjectPath>Battle Scene/Moss Knight</gameObjectPath>
@@ -1904,51 +1430,6 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <enemy name="Mega Moss Charger">
-    <sceneName>GG_Mega_Moss_Charger</sceneName>
-    <gameObjectPath>Mega Moss Charger</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>true</excludeFromBattleArenas>
-    <excludeFromColosseum>true</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>100</baseHP>
-    <attunedHP>480</attunedHP>
-    <ascendedHP>850</ascendedHP>
-  </enemy>
-  <!--<enemy name="Moss Knight C">
-    <altName>Moss Knight</altName>
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>GROUND</typePool>
-     
-    <isHard>true</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>true</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Moss Knight B">
-    <altName>Moss Knight</altName>
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>GROUND</typePool>
-     
-    <isHard>true</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>true</excludeBeingReplacement>
-  </enemy>-->
   <enemy name="Zombie Fungus">
     <sceneName>Fungus2_18</sceneName>
     <gameObjectPath>Zombie Fungus A</gameObjectPath>
@@ -2019,20 +1500,6 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <!--<enemy name="Zombie Fungus A">
-    <altName>Zombie Fungus</altName>
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>GROUND</typePool>
-     
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
   <enemy name="Mantis">
     <sceneName>Fungus2_12</sceneName>
     <gameObjectPath>Mantis</gameObjectPath>
@@ -2060,19 +1527,6 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <!--<enemy name="Jellyfish Baby">
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>GROUND</typePool>
-     
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
   <enemy name="Mantis Heavy">
     <configurationTypeName>ColosseumEnemy</configurationTypeName>
     <sceneName>Room_Colosseum_Gold</sceneName>
@@ -2104,40 +1558,6 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <enemy name="Mantis Traitor Lord">
-    <sceneName>GG_Traitor_Lord</sceneName>
-    <gameObjectPath>Battle Scene/Wave 3/Mantis Traitor Lord</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>true</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>800</baseHP>
-    <attunedHP>800</attunedHP>
-    <ascendedHP>1300</ascendedHP>
-  </enemy>
-  <enemy name="Mantis Lord">
-    <sceneName>GG_Mantis_Lords</sceneName>
-    <gameObjectPath>Mantis Battle/Battle Main/Mantis Lord</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>true</excludeFromBattleArenas>
-    <excludeFromColosseum>true</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>210</baseHP>
-    <attunedHP>400</attunedHP>
-    <ascendedHP>500</ascendedHP>
-  </enemy>
   <enemy name="Moss Knight Fat">
     <sceneName>Fungus3_39</sceneName>
     <gameObjectPath>Moss Knight Fat</gameObjectPath>
@@ -2153,10 +1573,9 @@
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
   <enemy name="Mantis Heavy Spawn">
-    <sceneName></sceneName>
-    <gameObjectPath></gameObjectPath>
+    <sceneName>Fungus3_39</sceneName>
+    <gameObjectPath>Shiny Spawner/Mantis Heavy Spawn</gameObjectPath>
     <typePool>GROUND</typePool>
-
     <isLargeEnemy>true</isLargeEnemy>
     <isHard>false</isHard>
     <isBoss>false</isBoss>
@@ -2238,6 +1657,263 @@
     <excludeFromColosseum>true</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
+  <enemy name="Absolute Radiance">
+    <sceneName>GG_Radiance</sceneName>
+    <gameObjectPath>Boss Control/Absolute Radiance</gameObjectPath>
+    <typePool>FLYER</typePool>
+    <isLargeEnemy>true</isLargeEnemy>
+    <isColosseum>false</isColosseum>
+    <isGodmaster>true</isGodmaster>
+    <isHard>true</isHard>
+    <isBoss>false</isBoss>
+  </enemy>
+  <enemy name="Fat Fluke">
+    <sceneName>GG_Pipeway</sceneName>
+    <gameObjectPath>Fat Fluke</gameObjectPath>
+    <typePool>FLYER</typePool>
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Fluke Mother">
+    <sceneName>GG_Flukemarm</sceneName>
+    <gameObjectPath>Fluke Mother</gameObjectPath>
+    <typePool>FLYER</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>350</baseHP>
+    <attunedHP>500</attunedHP>
+    <ascendedHP>900</ascendedHP>
+  </enemy>
+  <enemy name="Pale Lurker">
+    <sceneName>GG_Lurker</sceneName>
+    <gameObjectPath>Lurker Control/Pale Lurker</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isHard>false</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>true</excludeFromBattleArenas>
+    <excludeFromColosseum>true</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Mega Fat Bee">
+    <sceneName>GG_Oblobbles</sceneName>
+    <gameObjectPath>Mega Fat Bee</gameObjectPath>
+    <typePool>FLYER</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isColosseum>true</isColosseum>
+    <isGodmaster>false</isGodmaster>
+    <isHard>false</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>260</baseHP>
+    <attunedHP>450</attunedHP>
+    <ascendedHP>750</ascendedHP>
+    <nail1HP>750</nail1HP>
+    <nail2HP>800</nail2HP>
+    <nail3HP>850</nail3HP>
+    <nail4HP>900</nail4HP>
+  </enemy>
+  <enemy name="Mega Jellyfish">
+    <sceneName>GG_Uumuu</sceneName>
+    <gameObjectPath>Mega Jellyfish GG</gameObjectPath>
+    <typePool>FLYER</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>300</baseHP>
+    <attunedHP>350</attunedHP>
+    <ascendedHP>700</ascendedHP>
+  </enemy>
+  <enemy name="Mage Knight">
+    <sceneName>GG_Mage_Knight</sceneName>
+    <gameObjectPath>Mage Knight</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isColosseum>true</isColosseum>
+    <isGodmaster>false</isGodmaster>
+    <isHard>true</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>180</baseHP>
+    <coloHP>300</coloHP>
+    <attunedHP>750</attunedHP>
+    <ascendedHP>1000</ascendedHP>
+  </enemy>
+  <enemy name="Mawlek Body">
+    <sceneName>GG_Brooding_Mawlek</sceneName>
+    <gameObjectPath>Battle Scene/Mawlek Body</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>300</baseHP>
+    <attunedHP>1050</attunedHP>
+    <ascendedHP>1050</ascendedHP>
+  </enemy>
+  <enemy name="Black Knight">
+    <sceneName>GG_Watcher_Knights</sceneName>
+    <gameObjectPath>Battle Control/Black Knight 1</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>220</baseHP>
+    <attunedHP>350</attunedHP>
+    <ascendedHP>600</ascendedHP>
+    <nail1HP>220</nail1HP>
+    <nail2HP>220</nail2HP>
+    <nail3HP>240</nail3HP>
+    <nail4HP>260</nail4HP>
+  </enemy>
+  <enemy name="Jar Collector">
+    <sceneName>GG_Collector_V</sceneName>
+    <gameObjectPath>Battle Scene/Jar Collector</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>750</baseHP>
+    <attunedHP>900</attunedHP>
+    <ascendedHP>1200</ascendedHP>
+    <nail1HP>750</nail1HP>
+    <nail2HP>750</nail2HP>
+    <nail3HP>800</nail3HP>
+    <nail4HP>850</nail4HP>
+  </enemy>
+  <enemy name="Hornet Boss 1">
+    <sceneName>GG_Hornet_1</sceneName>
+    <gameObjectPath>Boss Holder/Hornet Boss 1</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>false</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>225</baseHP>
+    <attunedHP>900</attunedHP>
+    <ascendedHP>1250</ascendedHP>
+  </enemy>
+  <enemy name="Hornet Boss 2">
+    <sceneName>GG_Hornet_2</sceneName>
+    <gameObjectPath>Boss Holder/Hornet Boss 2</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>false</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>700</baseHP>
+    <attunedHP>800</attunedHP>
+    <ascendedHP>1200</ascendedHP>
+  </enemy>
+  <enemy name="Mega Moss Charger">
+    <sceneName>GG_Mega_Moss_Charger</sceneName>
+    <gameObjectPath>Mega Moss Charger</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>true</excludeFromBattleArenas>
+    <excludeFromColosseum>true</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>100</baseHP>
+    <attunedHP>480</attunedHP>
+    <ascendedHP>850</ascendedHP>
+  </enemy>
+  <enemy name="Mantis Traitor Lord">
+    <sceneName>GG_Traitor_Lord</sceneName>
+    <gameObjectPath>Battle Scene/Wave 3/Mantis Traitor Lord</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>true</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>800</baseHP>
+    <attunedHP>800</attunedHP>
+    <ascendedHP>1300</ascendedHP>
+  </enemy>
+  <enemy name="Mantis Lord">
+    <sceneName>GG_Mantis_Lords</sceneName>
+    <gameObjectPath>Mantis Battle/Battle Main/Mantis Lord</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>true</excludeFromBattleArenas>
+    <excludeFromColosseum>true</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>210</baseHP>
+    <attunedHP>400</attunedHP>
+    <ascendedHP>500</ascendedHP>
+  </enemy>
   <enemy name="Mega Zombie Beam Miner (1)">
     <sceneName>GG_Crystal_Guardian</sceneName>
     <gameObjectPath>Mega Zombie Beam Miner (1)</gameObjectPath>
@@ -2254,20 +1930,6 @@
     <baseHP>280</baseHP>
     <attunedHP>650</attunedHP>
     <ascendedHP>900</ascendedHP>
-  </enemy>
-  <enemy name="Zombie Beam Miner">
-    <sceneName>Mines_23</sceneName>
-    <gameObjectPath>Zombie Beam Miner</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>false</isLargeEnemy>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
   <enemy name="Zombie Beam Miner Rematch">
     <sceneName>GG_Crystal_Guardian_2</sceneName>
@@ -2290,77 +1952,6 @@
     <nail3HP>550</nail3HP>
     <nail4HP>600</nail4HP>
   </enemy>
-  <enemy name="Baby Centipede">
-    <sceneName>Deepnest_17</sceneName>
-    <gameObjectPath>Baby Centipede</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>false</isLargeEnemy>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>true</excludeFromBattleArenas>
-    <excludeFromColosseum>true</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <!--<enemy name="Zombie Runner Sp">
-    <altName>Zombie Runner</altName>
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>GROUND</typePool>
-     
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
-  <enemy name="Zombie Spider">
-    <!--<altName>Zombie Spider</altName>-->
-    <sceneName>Deepnest_33</sceneName>
-    <gameObjectPath>Battle Scene v2/Wave 1/Zombie Spider 1</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>false</isLargeEnemy>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>true</excludeFromBattleArenas>
-    <excludeFromColosseum>true</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Zombie Hornhead Sp">
-    <sceneName>Deepnest_34</sceneName>
-    <gameObjectPath>Zombie Hornhead Sp</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>false</isLargeEnemy>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <!--<enemy name="Zombie Spider 2">
-    <altName>Zombie Spider</altName>
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>GROUND</typePool>
-     
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>true</excludeFromBattleArenas>
-		<excludeFromColosseum>true</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
   <enemy name="Mimic Spider">
     <sceneName>GG_Nosk</sceneName>
     <gameObjectPath>Mimic Spider</gameObjectPath>
@@ -2378,130 +1969,9 @@
     <attunedHP>680</attunedHP>
     <ascendedHP>980</ascendedHP>
   </enemy>
-  <enemy name="Slash Spider">
-    <sceneName>Deepnest_34</sceneName>
-    <gameObjectPath>Slash Spider</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Tiny Spider">
-    <sceneName>Deepnest_41</sceneName>
-    <gameObjectPath>Tiny Spider</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>false</isLargeEnemy>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Giant Hopper">
-    <sceneName>Deepnest_East_06</sceneName>
-    <gameObjectPath>Hopper Spawn/Giant Hopper</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isColosseum>true</isColosseum>
-    <isGodmaster>false</isGodmaster>
-    <isHard>true</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Hopper">
-    <sceneName>Deepnest_East_06</sceneName>
-    <gameObjectPath>Hopper</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>false</isLargeEnemy>
-    <isColosseum>true</isColosseum>
-    <isGodmaster>false</isGodmaster>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Abyss Crawler">
-    <sceneName>Abyss_20</sceneName>
-    <gameObjectPath>Abyss Crawler</gameObjectPath>
-    <typePool>WALL</typePool>
-
-    <isLargeEnemy>false</isLargeEnemy>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>true</excludeFromBattleArenas>
-    <excludeFromColosseum>true</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Lesser Mawlek">
-    <configurationTypeName>ColosseumEnemy</configurationTypeName>
-    <sceneName>Room_Colosseum_Gold</sceneName>
-    <gameObjectPath>Colosseum Manager/Waves/Wave 31/Colosseum Cage Large (4)</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>false</isLargeEnemy>
-    <isColosseum>true</isColosseum>
-    <isGodmaster>false</isGodmaster>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Infected Knight">
-    <sceneName>GG_Broken_Vessel</sceneName>
-    <gameObjectPath>Infected Knight</gameObjectPath>
-    <typePool>GROUND</typePool>
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>true</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>true</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-    <baseHP>525</baseHP>
-    <attunedHP>700</attunedHP>
-    <ascendedHP>1000</ascendedHP>
-  </enemy>
-  <enemy name="Flip Hopper">
-    <sceneName>Waterways_02</sceneName>
-    <gameObjectPath>Flip Hopper</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>false</isLargeEnemy>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <enemy name="Flukeman">
-    <sceneName>Waterways_04b</sceneName>
-    <gameObjectPath>Flukeman</gameObjectPath>
+  <enemy name="Zombie Beam Miner">
+    <sceneName>Mines_23</sceneName>
+    <gameObjectPath>Zombie Beam Miner</gameObjectPath>
     <typePool>GROUND</typePool>
 
     <isLargeEnemy>false</isLargeEnemy>
@@ -2535,47 +2005,6 @@
     <nail2HP>800</nail2HP>
     <nail3HP>850</nail3HP>
     <nail4HP>900</nail4HP>
-  </enemy>
-  <enemy name="Royal Gaurd">
-    <sceneName>White_Palace_11</sceneName>
-    <gameObjectPath>Royal Gaurd</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>true</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <!--<enemy name="Enemy">
-    <sceneName>White_Palace_03_hub</sceneName>
-		<gameObjectPath>Enemy</gameObjectPath>
-		<typePool>GROUND</typePool>
-     
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
-  <enemy name="Zombie Hive">
-    <sceneName>Hive_01</sceneName>
-    <gameObjectPath>Zombie Hive</gameObjectPath>
-    <typePool>GROUND</typePool>
-
-    <isLargeEnemy>true</isLargeEnemy>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>false</excludeFromBattleArenas>
-    <excludeFromColosseum>false</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
   <enemy name="Hive Knight">
     <sceneName>GG_Hive_Knight</sceneName>
@@ -2750,7 +2179,6 @@
     <sceneName>GG_Nailmasters</sceneName>
     <gameObjectPath>Brothers/Mato</gameObjectPath>
     <typePool>GROUND</typePool>
-
     <isLargeEnemy>true</isLargeEnemy>
     <isColosseum>false</isColosseum>
     <isGodmaster>true</isGodmaster>
@@ -2769,7 +2197,6 @@
     <sceneName>GG_Painter</sceneName>
     <gameObjectPath>Battle Scene/Sheo Boss</gameObjectPath>
     <typePool>GROUND</typePool>
-
     <isLargeEnemy>true</isLargeEnemy>
     <isColosseum>false</isColosseum>
     <isGodmaster>true</isGodmaster>
@@ -2802,6 +2229,408 @@
     <attunedHP>1050</attunedHP>
     <ascendedHP>1200</ascendedHP>
   </enemy>
+  <enemy name="Hornet Nosk">
+    <sceneName>GG_Nosk_Hornet</sceneName>
+    <gameObjectPath>Battle Scene/Hornet Nosk</gameObjectPath>
+    <typePool>FLYER</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isColosseum>false</isColosseum>
+    <isGodmaster>true</isGodmaster>
+    <isHard>true</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>750</baseHP>
+    <attunedHP>750</attunedHP>
+    <ascendedHP>1050</ascendedHP>
+  </enemy>
+  <enemy name="Ghost Warrior Xero">
+    <sceneName>GG_Ghost_Xero</sceneName>
+    <gameObjectPath>Warrior/Ghost Warrior Xero</gameObjectPath>
+    <typePool>FLYER</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>true</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>200</baseHP>
+    <attunedHP>650</attunedHP>
+    <ascendedHP>900</ascendedHP>
+    <nail1HP>320</nail1HP>
+    <nail2HP>416</nail2HP>
+    <nail3HP>500</nail3HP>
+    <nail4HP>570</nail4HP>
+  </enemy>
+  <enemy name="Giant Buzzer">
+    <sceneName>GG_Vengefly</sceneName>
+    <gameObjectPath>Giant Buzzer Col</gameObjectPath>
+    <typePool>FLYER</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>55</baseHP>
+    <coloHP>100</coloHP>
+    <attunedHP>450</attunedHP>
+    <ascendedHP>735</ascendedHP>
+  </enemy>
+  <enemy name="Ghost Warrior Galien">
+    <sceneName>GG_Ghost_Galien</sceneName>
+    <gameObjectPath>Warrior/Ghost Warrior Galien</gameObjectPath>
+    <typePool>FLYER</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>true</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>230</baseHP>
+    <attunedHP>650</attunedHP>
+    <ascendedHP>1000</ascendedHP>
+    <nail1HP>368</nail1HP>
+    <nail2HP>479</nail2HP>
+    <nail3HP>570</nail3HP>
+    <nail4HP>640</nail4HP>
+  </enemy>
+  <enemy name="Ghost Warrior Hu">
+    <sceneName>GG_Ghost_Hu</sceneName>
+    <gameObjectPath>Warrior/Ghost Warrior Hu</gameObjectPath>
+    <typePool>FLYER</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>true</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>250</baseHP>
+    <attunedHP>600</attunedHP>
+    <ascendedHP>800</ascendedHP>
+    <nail1HP>420</nail1HP>
+    <nail2HP>550</nail2HP>
+    <nail3HP>600</nail3HP>
+    <nail4HP>650</nail4HP>
+  </enemy>
+  <enemy name="Ghost Warrior Markoth">
+    <sceneName>GG_Ghost_Markoth</sceneName>
+    <gameObjectPath>Warrior/Ghost Warrior Markoth</gameObjectPath>
+    <typePool>FLYER</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>true</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>250</baseHP>
+    <attunedHP>650</attunedHP>
+    <ascendedHP>950</ascendedHP>
+    <nail1HP>400</nail1HP>
+    <nail2HP>520</nail2HP>
+    <nail3HP>624</nail3HP>
+    <nail4HP>705</nail4HP>
+  </enemy>
+  <enemy name="Ghost Warrior Marmu">
+    <sceneName>GG_Ghost_Marmu</sceneName>
+    <gameObjectPath>Warrior/Ghost Warrior Marmu</gameObjectPath>
+    <typePool>FLYER</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>true</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>true</excludeBeingReplacement>
+    <baseHP>200</baseHP>
+    <attunedHP>416</attunedHP>
+    <ascendedHP>600</ascendedHP>
+    <nail1HP>320</nail1HP>
+    <nail2HP>416</nail2HP>
+    <nail3HP>500</nail3HP>
+    <nail4HP>570</nail4HP>
+  </enemy>
+  <enemy name="Ghost Warrior No Eyes">
+    <sceneName>GG_Ghost_No_Eyes</sceneName>
+    <gameObjectPath>Warrior/Ghost Warrior No Eyes</gameObjectPath>
+    <typePool>FLYER</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>true</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>200</baseHP>
+    <attunedHP>570</attunedHP>
+    <ascendedHP>800</ascendedHP>
+    <nail1HP>320</nail1HP>
+    <nail2HP>416</nail2HP>
+    <nail3HP>500</nail3HP>
+    <nail4HP>570</nail4HP>
+  </enemy>
+  <enemy name="Giant Fly">
+    <sceneName>GG_Gruz_Mother</sceneName>
+    <gameObjectPath>_Enemies/Giant Fly</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>90</baseHP>
+    <coloHP>140</coloHP>
+    <attunedHP>650</attunedHP>
+    <ascendedHP>945</ascendedHP>
+  </enemy>
+  <enemy name="Infected Knight">
+    <sceneName>GG_Broken_Vessel</sceneName>
+    <gameObjectPath>Infected Knight</gameObjectPath>
+    <typePool>GROUND</typePool>
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>true</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>true</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+    <baseHP>525</baseHP>
+    <attunedHP>700</attunedHP>
+    <ascendedHP>1000</ascendedHP>
+  </enemy>
+  <enemy name="Baby Centipede">
+    <sceneName>Deepnest_17</sceneName>
+    <gameObjectPath>Baby Centipede</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>false</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>true</excludeFromBattleArenas>
+    <excludeFromColosseum>true</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Zombie Spider">
+    <sceneName>Deepnest_33</sceneName>
+    <gameObjectPath>Battle Scene v2/Wave 1/Zombie Spider 1</gameObjectPath>
+    <configurationTypeName>ZombieSpiderController</configurationTypeName>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>false</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>true</excludeFromBattleArenas>
+    <excludeFromColosseum>true</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Zombie Spider 2">
+    <sceneName>Deepnest_33</sceneName>
+    <gameObjectPath>Battle Scene v2/Wave 1/Zombie Spider 2</gameObjectPath>
+    <configurationTypeName>ZombieSpiderController</configurationTypeName>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>false</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>true</excludeFromBattleArenas>
+    <excludeFromColosseum>true</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Zombie Hornhead Sp">
+    <sceneName>Deepnest_34</sceneName>
+    <gameObjectPath>Zombie Hornhead Sp</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>false</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Slash Spider">
+    <sceneName>Deepnest_34</sceneName>
+    <gameObjectPath>Slash Spider</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Tiny Spider">
+    <sceneName>Deepnest_41</sceneName>
+    <gameObjectPath>Tiny Spider</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>false</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Giant Hopper">
+    <sceneName>Deepnest_East_06</sceneName>
+    <gameObjectPath>Hopper Spawn/Giant Hopper</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isColosseum>true</isColosseum>
+    <isGodmaster>false</isGodmaster>
+    <isHard>true</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Hopper">
+    <sceneName>Deepnest_East_06</sceneName>
+    <gameObjectPath>Hopper</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>false</isLargeEnemy>
+    <isColosseum>true</isColosseum>
+    <isGodmaster>false</isGodmaster>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Abyss Crawler">
+    <sceneName>Abyss_20</sceneName>
+    <gameObjectPath>Abyss Crawler</gameObjectPath>
+    <typePool>WALL</typePool>
+
+    <isLargeEnemy>false</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>true</excludeFromBattleArenas>
+    <excludeFromColosseum>true</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Lesser Mawlek">
+    <configurationTypeName>ColosseumEnemy</configurationTypeName>
+    <sceneName>Room_Colosseum_Gold</sceneName>
+    <gameObjectPath>Colosseum Manager/Waves/Wave 31/Colosseum Cage Large (4)</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>false</isLargeEnemy>
+    <isColosseum>true</isColosseum>
+    <isGodmaster>false</isGodmaster>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Flip Hopper">
+    <sceneName>Waterways_02</sceneName>
+    <gameObjectPath>Flip Hopper</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>false</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Flukeman">
+    <sceneName>Waterways_04b</sceneName>
+    <gameObjectPath>Flukeman</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>false</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Royal Gaurd">
+    <sceneName>White_Palace_11</sceneName>
+    <gameObjectPath>Royal Gaurd</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>true</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
+  <enemy name="Zombie Hive">
+    <sceneName>Hive_01</sceneName>
+    <gameObjectPath>Zombie Hive</gameObjectPath>
+    <typePool>GROUND</typePool>
+
+    <isLargeEnemy>true</isLargeEnemy>
+    <isHard>false</isHard>
+    <isBoss>false</isBoss>
+    <isGhostWarrior>false</isGhostWarrior>
+    <hasSpecialEnding>false</hasSpecialEnding>
+    <excludeFromBattleArenas>false</excludeFromBattleArenas>
+    <excludeFromColosseum>false</excludeFromColosseum>
+    <excludeBeingReplacement>false</excludeBeingReplacement>
+  </enemy>
   <enemy name="Colosseum Grass Hopper">
     <configurationTypeName>ColosseumEnemy</configurationTypeName>
     <sceneName>Room_Colosseum_Gold</sceneName>
@@ -2819,7 +2648,6 @@
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
   <enemy name="Ceiling Dropper">
-    <!--<altName>Ceiling Dropper Col</altName>-->
     <configurationTypeName>ColosseumEnemy</configurationTypeName>
     <sceneName>Room_Colosseum_Gold</sceneName>
     <gameObjectPath>Colosseum Manager/Waves/Wave 8/Colosseum Cage Small (4)</gameObjectPath>
@@ -2838,7 +2666,6 @@
     <sceneName>Fungus3_48</sceneName>
     <gameObjectPath>Plant Trap</gameObjectPath>
     <typePool>WALL</typePool>
-
     <isLargeEnemy>false</isLargeEnemy>
     <isHard>false</isHard>
     <isBoss>false</isBoss>
@@ -2848,11 +2675,10 @@
     <excludeFromColosseum>true</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <!--<enemy name="Plant Turret">  broken, fix it
+  <enemy name="Plant Turret">
     <sceneName>Fungus1_12</sceneName>
 		<gameObjectPath>Plant Turret</gameObjectPath>
-		<typePool>WALL</typePool>
-     
+		<typePool>WALL</typePool>     
     <isLargeEnemy>false</isLargeEnemy>
     <isHard>false</isHard>
 		<isBoss>false</isBoss>
@@ -2861,12 +2687,11 @@
 		<excludeFromBattleArenas>true</excludeFromBattleArenas>
 		<excludeFromColosseum>true</excludeFromColosseum>
 		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
-  <enemy name="Laser Turret Frames">
-    <sceneName></sceneName>
-    <gameObjectPath></gameObjectPath>
+  </enemy>
+  <enemy name="Laser Turret Frames"><!--Aims up-->
+    <sceneName>Mines_06</sceneName>
+    <gameObjectPath>Laser Turret Frames</gameObjectPath>
     <typePool>WALL</typePool>
-
     <isLargeEnemy>false</isLargeEnemy>
     <isHard>false</isHard>
     <isBoss>false</isBoss>
@@ -2876,11 +2701,10 @@
     <excludeFromColosseum>true</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <enemy name="Laser Turret">
-    <sceneName></sceneName>
-    <gameObjectPath></gameObjectPath>
+  <enemy name="Laser Turret"><!--Aims down-->
+    <sceneName>Mines_06</sceneName>
+    <gameObjectPath>Laser Turret</gameObjectPath>
     <typePool>WALL</typePool>
-
     <isLargeEnemy>false</isLargeEnemy>
     <isHard>false</isHard>
     <isBoss>false</isBoss>
@@ -2890,11 +2714,10 @@
     <excludeFromColosseum>true</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <enemy name="Laser Turret Mega">
-    <sceneName></sceneName>
-    <gameObjectPath></gameObjectPath>
+  <enemy name="Laser Turret Mega"><!--Aims ???-->
+    <sceneName>Mines_32</sceneName>
+    <gameObjectPath>Laser Turret Mega</gameObjectPath>
     <typePool>WALL</typePool>
-
     <isLargeEnemy>false</isLargeEnemy>
     <isHard>false</isHard>
     <isBoss>false</isBoss>
@@ -2908,7 +2731,6 @@
     <sceneName>Abyss_20</sceneName>
     <gameObjectPath>Mawlek Turret Ceiling</gameObjectPath>
     <typePool>WALL</typePool>
-
     <isHard>false</isHard>
     <isBoss>false</isBoss>
     <isGhostWarrior>false</isGhostWarrior>
@@ -2931,20 +2753,6 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <!--<enemy name="Worm">
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>WALL</typePool>
-     
-    <isLargeEnemy>false</isLargeEnemy>
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>true</excludeFromBattleArenas>
-		<excludeFromColosseum>true</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
   <enemy name="Mushroom Turret">
     <sceneName>Fungus2_30</sceneName>
     <gameObjectPath>Mushroom Turret</gameObjectPath>
@@ -2959,50 +2767,6 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <!--<enemy name="Plant Turret Right">
-    <altName>Plant Turret</altName>
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>WALL</typePool>
-     
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
-  <enemy name="Zote Turret">
-    <sceneName>GG_Mighty_Zote</sceneName>
-    <gameObjectPath>Battle Control/Extra Zotes/Zote Turret</gameObjectPath>
-    <typePool>WALL</typePool>
-
-    <isLargeEnemy>false</isLargeEnemy>
-    <isColosseum>false</isColosseum>
-    <isGodmaster>true</isGodmaster>
-    <isHard>false</isHard>
-    <isBoss>false</isBoss>
-    <isGhostWarrior>false</isGhostWarrior>
-    <hasSpecialEnding>false</hasSpecialEnding>
-    <excludeFromBattleArenas>true</excludeFromBattleArenas>
-    <excludeFromColosseum>true</excludeFromColosseum>
-    <excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>
-  <!--<enemy name="Mines Crawler">
-    <sceneName></sceneName>
-		<gameObjectPath></gameObjectPath>
-		<typePool>CRAWLER</typePool>
-     
-    <isLargeEnemy>false</isLargeEnemy>
-    <isHard>false</isHard>
-		<isBoss>false</isBoss>
-		<isGhostWarrior>false</isGhostWarrior>
-		<hasSpecialEnding>false</hasSpecialEnding>
-		<excludeFromBattleArenas>false</excludeFromBattleArenas>
-		<excludeFromColosseum>false</excludeFromColosseum>
-		<excludeBeingReplacement>false</excludeBeingReplacement>
-  </enemy>-->
   <enemy name="Climber">
     <sceneName>Crossroads_03</sceneName>
     <gameObjectPath>_Enemies/Climber 1</gameObjectPath>
@@ -3017,8 +2781,8 @@
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
-  <enemy name="Crystallised Laser Bug">
-    <sceneName>Mines_11</sceneName>
+  <enemy name="Crystallised Lazer Bug">
+    <sceneName>Mines_05</sceneName>
     <gameObjectPath>Crystallised Lazer Bug</gameObjectPath>
     <typePool>CRAWLER</typePool>
 

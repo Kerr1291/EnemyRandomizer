@@ -80,8 +80,11 @@ namespace EnemyRandomizerMod
             //First process skips or exclusions
             List<string> defaultExclusions = new List<string>()
             {
+                "Hatcher Baby Spawner",
                 "Hollow Knight Boss",
                 "Radiance",
+                "Ghost Warrior Marmu",
+                "Cap Hit",
                 "Hollow Shade"
                 //"Big Bee (3)" //TODO: improve this so it only happens in scene: Hive_04
             };
@@ -139,6 +142,11 @@ namespace EnemyRandomizerMod
             {
                 Dev.Log($"Original enemy {enemyName} processed name {trimmedName} has data entry: {hasMatchingData}");
             }
+            else
+            {
+                //DevLogger.Instance.Show(true);
+                Dev.LogError($"Cannot find {trimmedName} (Originally named {enemyName}) in data map. Will proceeed without performing a matching replacement on {enemyName}.");
+            }
 
             List<EnemyData> possibleEnemyReplacements;
 
@@ -149,9 +157,6 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                //DevLogger.Instance.Show(true);
-                Dev.LogError($"Cannot find {trimmedName} (Originally named {enemyName}) in data map. Will proceeed without performing a matching replacement on {enemyName}.");
-
                 possibleEnemyReplacements = GetPotentialEnemyReplacements(oldEnemy);
             }
 
@@ -173,6 +178,11 @@ namespace EnemyRandomizerMod
             if (matchingData != null)
             {
                 possibleEnemyReplacements = possibleEnemyReplacements.Where(x => x.name != matchingData.name).ToList();
+            }
+
+            //no marmu until it's fixed
+            {
+                possibleEnemyReplacements = possibleEnemyReplacements.Where(x => !x.name.Contains("Marmu")).ToList();
             }
 
             if (possibleEnemyReplacements == null || possibleEnemyReplacements.Count <= 0)
