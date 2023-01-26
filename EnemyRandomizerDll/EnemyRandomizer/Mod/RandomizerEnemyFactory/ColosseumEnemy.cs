@@ -31,36 +31,29 @@ namespace EnemyRandomizerMod
             "Mantis Heavy"
         };
 
-        public override void Setup(EnemyData enemy, List<EnemyData> knownEnemyTypes, GameObject prefabObject)
+        public override void LinkDataObjects(EnemyData enemyDataType, List<EnemyData> knownEnemyTypes, GameObject prefabObject)
         {
-            EnemyObject = prefabObject;
+            Dev.Where();
+            base.LinkDataObjects(enemyDataType, knownEnemyTypes, prefabObject);
 
-            //if (!enemy.gameObjectPath.Contains("Colosseum"))
-            //    return;
+            Dev.Log($"Loading nested enemy {enemyDataType.name}");
 
-            //not sure why this line is needed? leaving here for now to preserve original algorithm
-            //EnemyData data = knownEnemyTypes.FirstOrDefault(ed => ed.gameObjectPath == enemy.gameObjectPath);
-
-            Dev.Log($"Loading nested enemy {enemy.name}");
-
-            if(string.IsNullOrEmpty(enemy.name))
+            if(string.IsNullOrEmpty(enemyDataType.name))
             {
-                EnemyObject = prefabObject.LocateMyFSM("Spawn").Fsm.GetFsmGameObject("Enemy").Value;
+                Prefab = prefabObject.LocateMyFSM("Spawn").Fsm.GetFsmGameObject("Enemy").Value;
             }
-            else if(DefaultLoading.Contains(enemy.name))
+            else if(DefaultLoading.Contains(enemyDataType.name))
             {
                 //leave it default?
             }
-            else if(CorpseFSMLoading.Contains(enemy.name))
+            else if(CorpseFSMLoading.Contains(enemyDataType.name))
             {
-                EnemyObject = prefabObject.LocateMyFSM("Spawn").Fsm.GetFsmGameObject("Corpse to Instantiate").Value;
+                Prefab = prefabObject.LocateMyFSM("Spawn").Fsm.GetFsmGameObject("Corpse to Instantiate").Value;
             }
             else
             {
-                EnemyObject = prefabObject.LocateMyFSM("Spawn").Fsm.GetFsmGameObject("Enemy Type").Value;
+                Prefab = prefabObject.LocateMyFSM("Spawn").Fsm.GetFsmGameObject("Enemy Type").Value;
             }
-
-            //base.Setup(enemy, knownEnemyTypes, EnemyObject);
         }
     }
 }

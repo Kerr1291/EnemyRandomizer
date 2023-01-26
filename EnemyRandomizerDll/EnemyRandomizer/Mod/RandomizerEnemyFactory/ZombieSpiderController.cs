@@ -14,19 +14,18 @@ namespace EnemyRandomizerMod
 {
     public class ZombieSpiderController : DefaultEnemy
     {
-        public override void Setup(EnemyData enemy, List<EnemyData> knownEnemyTypes, GameObject prefabObject)
+        public override void SetupPrefab()
         {
-            EnemyObject = prefabObject;
+            Dev.Where();
+            base.SetupPrefab();
 
-            var fsm = prefabObject.LocateMyFSM("Chase");
+            var fsm = Prefab.LocateMyFSM("Chase");
 
             //change the start transition to just begin the spawn antics
             fsm.ChangeTransition("Check Battle", "BATTLE", "Wait 2");
 
             fsm.RemoveTransition("Battle Inert", "BATTLE START");
             fsm.Fsm.RemoveState("Battle Inert");
-
-            //base.Setup(enemy, knownEnemyTypes, EnemyObject);
         }
     }
 }

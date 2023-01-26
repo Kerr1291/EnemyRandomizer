@@ -29,5 +29,16 @@ namespace EnemyRandomizerMod
             int value = (temp == null ? 0 : (int)temp);
             return value;
         }
+
+        public static GameObject GetBattleScene(this HealthManager healthManager)
+        {
+            FieldInfo fi = typeof(HealthManager).GetField("battleScene", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fi != null)
+            {
+                return fi.GetValue(healthManager) as GameObject;
+            }
+
+            return null;
+        }
     }
 }

@@ -14,10 +14,9 @@ using System.Collections;
 
 namespace EnemyRandomizerMod
 {
-    public class MemeController : MonoBehaviour
+    public class MemeController : DefaultEnemyController
     {
         public BoxCollider2D collider;
-        public GameObject meme;
 
         RNG memerng;
         float memeCooldown = 10f;
@@ -28,10 +27,10 @@ namespace EnemyRandomizerMod
         private IEnumerator Start()
         {
             Dev.Where();
-            while (collider == null && meme == null)
+            while (collider == null && Instance == null)
             {
                 collider = GetComponent<BoxCollider2D>();
-                meme = gameObject;
+                Instance = gameObject;
                 yield return null;
             }
 
@@ -62,14 +61,14 @@ namespace EnemyRandomizerMod
                         continue;
                     }
 
-                    if ((memes[i].transform.position - meme.transform.position).magnitude > 20f)
-                        memes[i].transform.position = meme.transform.position;
+                    if ((memes[i].transform.position - Instance.transform.position).magnitude > 20f)
+                        memes[i].transform.position = Instance.transform.position;
 
                     ++i;
                 }
 
                 //max hp is 2000, so 2000/400 = 5 memes at full hp
-                memeLimit = (2000 - (meme.GetEnemyHP())) / 400;
+                memeLimit = (2000 - (this.GetEnemyHP().Value)) / 400;
 
                 if (memes.Count >= memeLimit)
                 {
@@ -80,18 +79,13 @@ namespace EnemyRandomizerMod
                 if (superSpitterData == null)
                     continue;
 
-                Vector3 position = meme.transform.position;
-                string originalName = superSpitterData.loadedEnemy.EnemyObject.name;
+                Vector3 position = Instance.transform.position;
 
-                //prevent the randomizer from shuffling our new guy
-                superSpitterData.loadedEnemy.EnemyObject.name = EnemyRandomizer.ENEMY_RANDO_PREFIX + originalName;
-
-                GameObject newEnemy = superSpitterData.loadedEnemy.Instantiate(superSpitterData, null, null);
-                newEnemy.name = EnemyRandomizer.ENEMY_RANDO_PREFIX + newEnemy.name;
+                GameObject newEnemy = superSpitterData.loadedEnemy.Instantiate();
+                newEnemy.SetupRandomizerComponents(superSpitterData.loadedEnemy);
                 newEnemy.SetActive(true);
 
                 //fix the data...
-                superSpitterData.loadedEnemy.EnemyObject.name = originalName;
                 newEnemy.transform.position = position;
 
                 memes.Add(newEnemy);
@@ -108,57 +102,24 @@ namespace EnemyRandomizerMod
 
     public class MemeEnemy : DefaultEnemy
     {
-        public override void Setup(EnemyData enemy, List<EnemyData> knownEnemyTypes, GameObject prefabObject)
+        public override void SetupPrefab()
         {
-            Dev.Log("Creating meme");
-            EnemyObject = prefabObject;
-            try
-            {
-                base.Setup(enemy, knownEnemyTypes, prefabObject);
-                //var alt = prefabObject.LocateMyFSM("Spawn").Fsm.GetFsmGameObject("Enemy Type").Value;
+            Dev.Where();
+            Prefab.transform.localScale = new Vector3(3.2f, 3.2f, 3.2f);
+            Prefab.GetComponent<HealthManager>().hp = 2000;
 
-                //if (alt != null)
-                //{
-                //    EnemyObject = alt;
-                //}
-            }
-            catch(Exception)
-            {
-                Dev.LogError("Failed to load meme boss");
-            }
-        }
-
-        public override void ModifyNewEnemyGeo(GameObject newEnemy, EnemyData sourceData, GameObject oldEnemy = null, EnemyData matchingData = null)
-        {
-            newEnemy.SetEnemyGeoRates(100, 75, 50);
-        }
-
-        public override void FinalizeNewEnemy(GameObject newEnemy, EnemyData sourceData, GameObject oldEnemy = null, EnemyData matchingData = null)
-        {
-            base.FinalizeNewEnemy(newEnemy, sourceData, oldEnemy, matchingData);
-
-            newEnemy.transform.localScale = new Vector3(3.2f, 3.2f, 3.2f);
-            newEnemy.SetEnemyHP(2000);
-
-            HutongGames.PlayMaker.Actions.DistanceFly df = newEnemy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.DistanceFly>("Distance Fly", "spitter");
+            HutongGames.PlayMaker.Actions.DistanceFly df = Prefab.GetFSMActionOnState<HutongGames.PlayMaker.Actions.DistanceFly>("Distance Fly", "spitter");
             df.distance.Value *= 1.5f;
             df.acceleration.Value *= 8f;
             df.speedMax.Value *= 200f;
 
-            HutongGames.PlayMaker.Actions.FireAtTarget fa = newEnemy.GetFSMActionOnState<HutongGames.PlayMaker.Actions.FireAtTarget>("Fire", "spitter");
+            HutongGames.PlayMaker.Actions.FireAtTarget fa = Prefab.GetFSMActionOnState<HutongGames.PlayMaker.Actions.FireAtTarget>("Fire", "spitter");
             fa.speed.Value *= 2.24f;
 
-            GameObject bullet = newEnemy.FindGameObjectInChildrenWithName("BulletSprite (1)");
+            GameObject bullet = Prefab.FindGameObjectInChildrenWithName("BulletSprite (1)");
             bullet.transform.localScale = Vector3.one * 3.2f;
-        }
 
-        public override GameObject Instantiate(EnemyData sourceData, GameObject enemyToReplace = null, EnemyData matchingData = null)
-        {
-            var newEnemy = base.Instantiate(sourceData, enemyToReplace, matchingData);
-
-            newEnemy.AddComponent<MemeController>();
-
-            return newEnemy;
+            Prefab.AddComponent<MemeController>();
         }
     }
 }

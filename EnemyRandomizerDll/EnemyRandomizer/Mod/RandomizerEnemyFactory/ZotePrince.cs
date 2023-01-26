@@ -14,11 +14,10 @@ namespace EnemyRandomizerMod
 {
     public class ZotePrince : DefaultEnemy
     {
-        public override void Setup(EnemyData enemy, List<EnemyData> knownEnemyTypes, GameObject prefabObject)
+        public override void SetupPrefab()
         {
-            EnemyObject = prefabObject;
-
-            var fsm = prefabObject.LocateMyFSM("Control");
+            Dev.Where();
+            var fsm = Prefab.LocateMyFSM("Control");
 
             //remove the transitions related to chain spawning zotes for the event
             fsm.RemoveTransition("Dormant", "ZOTE APPEAR");
@@ -34,8 +33,6 @@ namespace EnemyRandomizerMod
             //remove the states that were also part of that
             fsm.Fsm.RemoveState("Dormant");
             fsm.Fsm.RemoveState("GG Pause");
-
-            base.Setup(enemy, knownEnemyTypes, EnemyObject);
         }
     }
 }

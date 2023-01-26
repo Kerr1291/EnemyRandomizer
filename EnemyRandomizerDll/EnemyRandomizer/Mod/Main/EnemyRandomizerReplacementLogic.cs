@@ -75,7 +75,7 @@ namespace EnemyRandomizerMod
 
 
         //TODO: make a new exclusion list (check the string extensions stuff)
-        GameObject ReplaceEnemy(GameObject oldEnemy, List<string> exclusions = null)
+        public GameObject ReplaceEnemy(GameObject oldEnemy, List<string> exclusions = null)
         {
             //First process skips or exclusions
             List<string> defaultExclusions = new List<string>()
@@ -85,7 +85,8 @@ namespace EnemyRandomizerMod
                 "Radiance",
                 "Ghost Warrior Marmu",
                 "Cap Hit",
-                "Hollow Shade"
+                "Hollow Shade",
+                "Shell"
                 //"Big Bee (3)" //TODO: improve this so it only happens in scene: Hive_04
             };
 
@@ -105,20 +106,18 @@ namespace EnemyRandomizerMod
                 return oldEnemy;
             }
 
-            if (enemyName.StartsWith(EnemyRandomizer.ENEMY_RANDO_PREFIX))
+            if (oldEnemy.IsRandomizerEnemy())
                 return oldEnemy;
 
             string trimmedName = enemyName.TrimGameObjectName();
 
             if ((exclusions != null && exclusions.Contains(trimmedName)) || defaultExclusions.Contains(trimmedName))
             {
-                oldEnemy.name = EnemyRandomizer.ENEMY_RANDO_PREFIX + enemyName;
                 return oldEnemy;
             }
 
             if (trimmedName == "Big Bee (3)" && oldEnemy.scene.name == "Hive_04")
             {
-                oldEnemy.name = EnemyRandomizer.ENEMY_RANDO_PREFIX + enemyName;
                 return oldEnemy;
             }
 
@@ -180,6 +179,8 @@ namespace EnemyRandomizerMod
                 possibleEnemyReplacements = possibleEnemyReplacements.Where(x => x.name != matchingData.name).ToList();
             }
 
+            //TODO: filter the spawn exclusion list
+
             //no marmu until it's fixed
             {
                 possibleEnemyReplacements = possibleEnemyReplacements.Where(x => !x.name.Contains("Marmu")).ToList();
@@ -198,7 +199,8 @@ namespace EnemyRandomizerMod
 
             try
             {
-                newEnemy = selectedReplacementData.loadedEnemy.Instantiate(selectedReplacementData, oldEnemy, isMatchingReplacement ? matchingData : null);
+                newEnemy = selectedReplacementData.loadedEnemy.Instantiate();
+                newEnemy.SetupRandomizerComponents(selectedReplacementData.loadedEnemy, oldEnemy, matchingData);
             }
             catch (System.Exception e)
             {
@@ -273,18 +275,26 @@ namespace EnemyRandomizerMod
         {
             Dev.Log("Seeking replacement for : " + sourceData.name);
 
-            var subset = randomizerEnemies.enemyData.Where(x =>
+            IEnumerable<EnemyData> subset;
+            if (sourceData == null)
             {
-                return sourceData.IsValidTypeReplacement(x);
-            });
-
-            Dev.Log("Possible replacements after type matching: " + subset.ToList().Count);
-            subset.ToList().ForEach(x => Dev.Log(x.name));
-
-            subset = subset.Where(y =>
+                subset = randomizerEnemies.enemyData.AsEnumerable();
+            }
+            else
             {
-                return sourceData.IsValidSizeReplacement(y);
-            });
+                subset = randomizerEnemies.enemyData.Where(x =>
+                {
+                    return sourceData.loadedEnemy.IsValidTypeReplacement(x);
+                });
+
+                Dev.Log("Possible replacements after type matching: " + subset.ToList().Count);
+                subset.ToList().ForEach(x => Dev.Log(x.name));
+
+                subset = subset.Where(y =>
+                {
+                    return sourceData.loadedEnemy.IsValidDifficultyReplacement(y);
+                });
+            }
 
             Dev.Log("Possible replacements after size matching: " + subset.ToList().Count);
             subset.ToList().ForEach(x => Dev.Log(x.name));

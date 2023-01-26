@@ -13,24 +13,17 @@ using System;
 
 
 
-/*
- * GENERAL TODO: * 
- * FOR BATTLE SCENES -- logic to manage waves and events to progress them
- * 
+/* 
  * FIX SPAWN ISSUE:
  * cyrstal laser bug still in ground
  * shrumal ogre in ground too?
- * all 6 FLY enemies didn't spawn from gruz mother (and didn't randomize)
- * PREVENT white palace fly from replacing them (and from being replaced in white palace).....
- * also need to fix the boss arena so it opens after the adds are dead
- * EGG SAC needs better options for randomized replacement (right now there's none)
+ * all 6 FLY enemies didn't spawn from gruz mother (and didn't randomize) -- SOLVED: bosses were set to use the GG versions in the enemy rando port. need to fix that
+ * PREVENT white palace fly from replacing arena enemies (and from being replaced in white palace by things that can be killed).....
+ * EGG SAC -- needs to copy the item out of it onto the replacement
+ * new enemies that drop items need them removed if their replacement didn't drop them
  * 
  * FIX BEHAVIOUR ISSUE:
- * --when crystal bug crawls through spikes it causes big lag -- find way to kill it
  * Mawlek Turret: see if i can randomize the projectile velocity when placed in a smaller room so the spray gets around more
- * NOTES: Mushroom turret seems busted. Doesn't shoot or open up -- not even randomizing properly
- * 
- * 
  * 
  */
 
@@ -49,7 +42,7 @@ namespace EnemyRandomizerMod
         }
         static EnemyRandomizer instance;
 
-        public static string ENEMY_RANDO_PREFIX = "RANDOSKIP";
+        //public static string ENEMY_RANDO_PREFIX = "RANDOSKIP";
 
         //DONT USE THIS FOR ENEMY REPLACEMENTS
         public static RNG pRNG = new RNG();
@@ -59,7 +52,7 @@ namespace EnemyRandomizerMod
         static string debugRecentHit = "";
         public UnityEngine.Bounds sceneBounds;
         List<GameObject> sceneBoundry = new List<GameObject>();
-        List<GameObject> battleControls = new List<GameObject>();
+        //List<GameObject> battleControls = new List<GameObject>();
         bool disabledRoarEffectOnPlayer = false;
 
         //NOTE: call this from GetPreloadNames() because that's the first method to execute....
@@ -68,8 +61,8 @@ namespace EnemyRandomizerMod
             pRNG.Reset();
 
             //enable debugging
-            Dev.Logger.GuiLoggingEnabled = true;
-            DevLogger.Instance.ShowSlider();
+            //Dev.Logger.GuiLoggingEnabled = true;
+            //DevLogger.Instance.ShowSlider();
 
             //the specific type here doesn't matter, as long as it's from the same assembly as enemy types
             //we want to register
@@ -197,23 +190,20 @@ namespace EnemyRandomizerMod
 
         public bool MODHOOK_RandomizeEnemyOnEnable(GameObject oldEnemy, bool isAlreadyDead)
         {
-            string enemyName = oldEnemy.name;
-
             if (isAlreadyDead)
                 return isAlreadyDead;
 
-            if (!oldEnemy.activeSelf)
+            if (oldEnemy.IsRandomizerEnemy())
                 return isAlreadyDead;
 
-            if (enemyName.StartsWith(EnemyRandomizer.ENEMY_RANDO_PREFIX))
-                return isAlreadyDead;
+            if (oldEnemy.IsVisible())
+                ReplaceEnemy(oldEnemy);
+            else
+                oldEnemy.AddComponent<RandomizeWhenVisible>();
 
-            if (oldEnemy.IsEnemyDead())
-                return oldEnemy.IsEnemyDead();
-
-            ReplaceEnemy(oldEnemy);
             return isAlreadyDead;
         }
+
 
         /// <summary>
         /// Returns the objects to preload in order for the mod to work.
@@ -246,6 +236,7 @@ namespace EnemyRandomizerMod
             else
                 debugInputRoutine.Reset();
         }
+
         static void DebugPrintObjectOnHit(Collider2D otherCollider, GameObject gameObject)
         {
             //Dev.Where();
@@ -342,6 +333,9 @@ namespace EnemyRandomizerMod
 
         public void OnSceneBoardersCreated(List<GameObject> borders)
         {
+            if (GameManager.instance.IsMenuScene())
+                return;
+
             //TODO: have this reset when reloading a save
             if (!disabledRoarEffectOnPlayer)
             {
@@ -361,27 +355,6 @@ namespace EnemyRandomizerMod
                 min = new Vector3(xList[0].transform.position.x, yList[0].transform.position.y, -10f),
                 max = new Vector3(xList[xList.Count - 1].transform.position.x, yList[yList.Count - 1].transform.position.y, 10f)
             };
-
-            PreProcessScene();
-        }
-
-        void PreProcessScene()
-        {
-            //get the battle controls by checking the FSMS 
-            foreach (PlayMakerFSM pfsm in GameObject.FindObjectsOfType<PlayMakerFSM>())
-            {
-                if (pfsm == null)
-                    continue;
-
-                if (battleControls.Contains(pfsm.gameObject))
-                    continue;
-
-                PlayMakerFSM playMakerFSM = FSMUtility.LocateFSM(pfsm.gameObject, "Battle Control");
-                if (playMakerFSM != null)
-                {
-                    battleControls.Add(playMakerFSM.gameObject);
-                }
-            }
         }
 
         public static GameObject DebugSpawnEnemy(string enemyName)
@@ -391,13 +364,10 @@ namespace EnemyRandomizerMod
                 if (EnemyRandomizer.Instance.EnemyDataMap.TryGetValue(enemyName, out EnemyData data))
                 {
                     var pos = HeroController.instance.transform.position + Vector3.right * 5f;
-                    string originalName = data.loadedEnemy.EnemyObject.name;
-                    data.loadedEnemy.EnemyObject.name = EnemyRandomizer.ENEMY_RANDO_PREFIX + originalName;
-                    var enemy = data.loadedEnemy.Instantiate(data, null, null);
-                    data.loadedEnemy.EnemyObject.name = originalName;
+                    var enemy = data.loadedEnemy.Instantiate();
+                    enemy.SetupRandomizerComponents(data.loadedEnemy, null, null);
                     enemy.transform.position = pos;
                     enemy.SetActive(true);
-                    enemy.name = originalName;
                     return enemy;
                 }
             }
@@ -413,23 +383,15 @@ namespace EnemyRandomizerMod
         {
             try 
             {
-                while (enemyToReplace.name.StartsWith(EnemyRandomizer.ENEMY_RANDO_PREFIX))
-                {
-                    enemyToReplace.name = enemyToReplace.name.TrimStart(EnemyRandomizer.ENEMY_RANDO_PREFIX);
-                    enemyToReplace.name = enemyToReplace.name.Trim();
-                }
-
                 if (EnemyRandomizer.Instance.EnemyDataMap.TryGetValue(enemyName, out EnemyData data))
                 {
                     string trimmedName = enemyToReplace.name.TrimGameObjectName();
                     if (EnemyRandomizer.Instance.EnemyDataMap.TryGetValue(trimmedName, out EnemyData replaceData))
                     {
                         enemyToReplace.SetActive(false);
-                        var enemy = data.loadedEnemy.Instantiate(data, enemyToReplace, replaceData);
-                        string originalName = enemy.name;
-                        enemy.name = EnemyRandomizer.ENEMY_RANDO_PREFIX + enemy.name;
+                        var enemy = data.loadedEnemy.Instantiate();
+                        enemy.SetupRandomizerComponents(data.loadedEnemy, enemyToReplace, replaceData);
                         enemy.SetActive(true);
-                        enemy.name = originalName;
                         return enemy;
                     }
                 }
@@ -453,7 +415,49 @@ namespace EnemyRandomizerMod
                 Dev.LogError("Error: " + e.Message);
             }
         }
+
+        //TODO: load these from an xml file
+        public static bool IsSurfaceOrPlatform(GameObject gameObject)
+        {
+            //First process skips or exclusions
+            List<string> groundOrPlatformName = new List<string>()
+            {
+                "Chunk",
+                "Platform",
+                "plat_",
+                "Roof"
+            };
+
+            return groundOrPlatformName.Any(x => gameObject.name.Contains(x));
+        }
     }
+
+    public class RandomizeWhenVisible : MonoBehaviour
+    {
+        IEnumerator Start()
+        {
+            if (gameObject == null)
+                yield break;
+
+            Collider2D collider = gameObject.GetComponent<Collider2D>();
+            MeshRenderer renderer = gameObject.GetComponent<MeshRenderer>();
+            if (collider == null && renderer == null)
+                yield break;
+
+            yield return new WaitUntil(() => {
+                if (collider != null && renderer == null)
+                    return collider.enabled;
+                else if (collider == null && renderer != null)
+                    return renderer.enabled;
+                else //if (collider != null && renderer != null)
+                    return collider.enabled && renderer.enabled;
+            });
+
+            EnemyRandomizer.Instance.ReplaceEnemy(gameObject);
+            GameObject.Destroy(this);
+        }
+    }
+
 
     //EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Crawler");
     //EnemyRandomizerMod.EnemyRandomizer.DebugSpawnThenReplaceEnemy("Crawler","Roller");

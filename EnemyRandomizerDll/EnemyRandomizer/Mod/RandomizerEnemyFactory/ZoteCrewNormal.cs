@@ -30,6 +30,11 @@ namespace EnemyRandomizerMod
 
         public bool hasSpawned;
 
+        void Awake()
+        {
+            spawnLocation = transform.position;
+        }
+
         IEnumerator Start()
         {
             Dev.Where();
@@ -92,11 +97,11 @@ namespace EnemyRandomizerMod
 
     public class ZoteCrewNormal : DefaultEnemy
     {
-        public override void Setup(EnemyData enemy, List<EnemyData> knownEnemyTypes, GameObject prefabObject)
+        public override void SetupPrefab()
         {
-            EnemyObject = prefabObject;
-
-            var fsm = prefabObject.LocateMyFSM("Control");
+            Dev.Where();
+            base.SetupPrefab();
+            var fsm = Prefab.LocateMyFSM("Control");
 
             //var initState = fsm.Fsm.GetState("Init");
             //var spawnState = fsm.Fsm.GetState("Spawn Antic");
@@ -119,14 +124,7 @@ namespace EnemyRandomizerMod
             fsm.AddGlobalTransition("PLAYER_FAR", "Idle");
 
             //base.Setup(enemy, knownEnemyTypes, EnemyObject);
-        }
-
-        public override GameObject Instantiate(EnemyData sourceData, GameObject enemyToReplace = null, EnemyData matchingData = null)
-        {
-            var enemy = base.Instantiate(sourceData, enemyToReplace, matchingData);
-            var controller = enemy.AddComponent<ZoteCrewNormalController>();
-            controller.spawnLocation = enemy.transform.position;
-            return enemy;
+            var controller = Prefab.AddComponent<ZoteCrewNormalController>();
         }
     }
 }

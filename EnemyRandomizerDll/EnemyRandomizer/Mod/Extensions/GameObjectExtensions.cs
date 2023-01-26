@@ -1,303 +1,88 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using nv;
- 
+using System.Linq;
 
 namespace EnemyRandomizerMod
 {
     public static class GameObjectExtensions
-    { 
-        public static bool IsRandomizerEnemy( this GameObject gameObject, List<string> enemyTypes )
-        {
-            if( gameObject == null )
-                return false;
-
-            if( !gameObject.IsGameEnemy() )
-                return false;
-
-            if( gameObject.name.Contains( "Corpse" ) )
-                return false;
-
-            if( gameObject.name.Contains( "Lil Jellyfish" ) )
-                return false;
-
-            //TEST: should randomize spawn rollers
-            if( gameObject.name.Contains( "Spawn Roller v2" ) )
-                return true;
-
-            string enemyName = gameObject.name;
-            string trimmedName = enemyName.TrimGameObjectName();
-
-            bool isRandoEnemyType = enemyTypes.Contains( trimmedName );
-
-            return isRandoEnemyType;
-        }
-
-        public static bool IsEnemyDead(this GameObject enemy)
-        {
-            return enemy == null
-                || enemy.activeInHierarchy == false
-                || (enemy.IsGameEnemy() && enemy.GetEnemyHP() <= 0)
-                || (enemy.IsGameEnemy() && enemy.GetEnemyHealthManager().isDead);
-        }
-        public static bool IsGameEnemy(this GameObject gameObject)
+    {
+        /// <summary>
+        /// Check to see if there's at least one custom component on the object
+        /// </summary>
+        public static bool IsRandomizerEnemy(this GameObject gameObject)
         {
             if (gameObject == null)
                 return false;
 
-            return gameObject.GetComponent<HealthManager>() != null;
+            return gameObject.GetComponents<MonoBehaviour>().FirstOrDefault(x => typeof(IRandomizerEnemyController).IsAssignableFrom(x.GetType())) != null;
         }
 
-        public static HealthManager GetEnemyHealthManager(this GameObject gameObject)
+        /// <summary>
+        /// Get all the custom components on the enemy object
+        /// </summary>
+        public static IEnumerable<IRandomizerEnemyController> GetRandomizerEnemyComponents(this GameObject gameObject)
         {
-            HealthManager hm = null;
-            if (gameObject == null)
-                return hm;
-
-            hm = gameObject.GetComponent<HealthManager>();
-
-            return hm;
+            return gameObject.GetComponents<MonoBehaviour>().Where(x => typeof(IRandomizerEnemyController).IsAssignableFrom(x.GetType())).Cast<IRandomizerEnemyController>();
         }
-        public static void ChangeEnemyGeoRates(this GameObject gameObject, float multiplier)
+
+        public static void SetupRandomizerComponents(this GameObject gameObject, IRandomizerEnemy enemyData, GameObject enemyToReplace = null, EnemyData dataOfEnemyToReplace = null)
         {
-            if (gameObject == null)
-                return;
-
-            if (!gameObject.IsGameEnemy())
-                return;
-
-            HealthManager hm = gameObject.GetEnemyHealthManager();
-            if (hm != null)
+            var randoComponents = gameObject.GetRandomizerEnemyComponents().ToList();
+            randoComponents.ForEach(x =>
             {
-                hm.SetGeoSmall(hm.GetGeoSmall() * (int)multiplier);
-                hm.SetGeoMedium(hm.GetGeoMedium() * (int)multiplier);
-                hm.SetGeoLarge(hm.GetGeoLarge() * (int)multiplier);
-            }
+                x.LinkDataObjects(gameObject, enemyData);
+            });
+            randoComponents.ForEach(x =>
+            {
+                x.SetupInstance(enemyToReplace, dataOfEnemyToReplace);
+            });
         }
 
-        public static void SetEnemyGeoRates(this GameObject gameObject, int smallValue, int medValue, int largeValue)
+        public static bool IsVisible(this GameObject enemy)
         {
-            if (gameObject == null)
-                return;
+            Collider2D collider = enemy.GetComponent<Collider2D>();
+            MeshRenderer renderer = enemy.GetComponent<MeshRenderer>();
+            if (collider == null && renderer == null)
+                return false;
 
-            if (!gameObject.IsGameEnemy())
-                return;
-
-            HealthManager hm = gameObject.GetEnemyHealthManager();
-            if (hm != null)
-            {
-                hm.SetGeoSmall(smallValue);
-                hm.SetGeoMedium(medValue);
-                hm.SetGeoLarge(largeValue);
-            }
+            if (collider != null && renderer == null)
+                return collider.enabled;
+            else if (collider == null && renderer != null)
+                return renderer.enabled;
+            else //if (collider != null && renderer != null)
+                return collider.enabled && renderer.enabled;
         }
 
-        public static void SetEnemyGeoRates(this GameObject gameObject, GameObject copyFrom)
+        public static Vector3 GetVectorTo(this GameObject entitiy, Vector2 dir, float max)
         {
-            if (gameObject == null)
-                return;
-
-            if (!gameObject.IsGameEnemy())
-                return;
-
-            if (copyFrom == null)
-                return;
-
-            if (!copyFrom.IsGameEnemy())
-                return;
-
-            HealthManager hm = gameObject.GetEnemyHealthManager();
-            HealthManager otherHM = gameObject.GetEnemyHealthManager();
-            if (hm != null && otherHM != null)
-            {
-                hm.SetGeoSmall(otherHM.GetGeoSmall());
-                hm.SetGeoMedium(otherHM.GetGeoMedium());
-                hm.SetGeoLarge(otherHM.GetGeoLarge());
-            }
+            return Mathnv.GetVectorTo(entitiy.transform.position, dir, max, EnemyRandomizer.IsSurfaceOrPlatform);
         }
-        public static int GetEnemyHP(this GameObject gameObject)
+
+        public static Vector3 GetPointOn(this GameObject entitiy, Vector2 dir, float max)
         {
-            int hp = 0;
-            HealthManager hm = gameObject.GetEnemyHealthManager();
-            if (hm != null)
-            {
-                hp = hm.hp;
-            }
-            return hp;
+            return Mathnv.GetPointOn(entitiy.transform.position, dir, max, EnemyRandomizer.IsSurfaceOrPlatform);
         }
 
-        public static void SetEnemyHP(this GameObject gameObject, int newHP)
+        public static Vector3 GetNearestVectorToSurface(this GameObject entitiy, float max)
         {
-            HealthManager hm = gameObject.GetEnemyHealthManager();
-            if (hm != null)
-            {
-                hm.hp = newHP;
-            }
+            return Mathnv.GetNearestVectorTo(entitiy.transform.position, max, EnemyRandomizer.IsSurfaceOrPlatform);
         }
 
-
-        //public static int GetEnemyHP(this GameObject gameObject)
-        //{
-        //    int hp = 0;
-        //    HealthManager hm = gameObject.GetEnemyHealthManager();
-        //    if (hm != null)
-        //    {
-        //        hp = hm.hp;
-        //    }
-        //    return hp;
-        //}
-        //public static void SetEnemyHP(this GameObject gameObject, int newHP)
-        //{
-        //    HealthManager hm = gameObject.GetEnemyHealthManager();
-        //    if (hm != null)
-        //    {
-        //        hm.hp = newHP;
-        //    }
-        //}
-
-        public static PlayMakerFSM GetMatchingFSMComponent(this GameObject gameObject, string fsmName, string stateName, string actionName)
+        public static Vector3 GetNearestPointOnSurface(this GameObject entitiy, float max)
         {
-            PlayMakerFSM foundFSM = null;
-            for (int i = 0; i < gameObject.GetComponentsInChildren<PlayMakerFSM>().Length; ++i)
-            {
-                PlayMakerFSM fsm = gameObject.GetComponentsInChildren<PlayMakerFSM>()[i];
-                if (fsm.FsmName == fsmName)
-                {
-                    foreach (var s in fsm.FsmStates)
-                    {
-                        if (s.Name == stateName)
-                        {
-                            foreach (var a in s.Actions)
-                            {
-                                if (a.GetType().Name == actionName)
-                                {
-                                    foundFSM = fsm;
-                                    break;
-                                }
-                            }
-
-                            if (foundFSM != null)
-                                break;
-                        }
-                    }
-                }
-
-                if (foundFSM != null)
-                    break;
-            }
-            return foundFSM;
+            return Mathnv.GetNearestPointOn(entitiy.transform.position, max, EnemyRandomizer.IsSurfaceOrPlatform);
         }
 
-        //if fsmName is empty, try every state on all fsms
-        public static HutongGames.PlayMaker.FsmState GetFSMState(this GameObject gameObject, string stateName, string fsmName = "")
+        public static Vector3 GetNearestVectorDown(this GameObject entitiy, float max)
         {
-            foreach (PlayMakerFSM fsm in gameObject.GetComponents<PlayMakerFSM>())
-            {
-                if (string.IsNullOrEmpty(fsmName) || fsmName == fsm.FsmName)
-                {
-                    foreach (var s in fsm.FsmStates)
-                    {
-                        if (s.Name == stateName)
-                            return s;
-                    }
-                }
-            }
-            return null;
+            return Mathnv.GetNearestVectorDown(entitiy.transform.position, max, EnemyRandomizer.IsSurfaceOrPlatform);
         }
 
-        public static T GetFSMActionOnState<T>(this GameObject gameObject, string actionName, string stateName, string fsmName = "") where T : HutongGames.PlayMaker.FsmStateAction
+        public static Vector3 GetNearestPointDown(this GameObject entitiy, float max)
         {
-            var state = gameObject.GetFSMState(stateName, fsmName);
-            if (state != null)
-            {
-                foreach (var action in state.Actions)
-                {
-                    if (action.Name == actionName)
-                    {
-                        return action as T;
-                    }
-                }
-            }
-
-            return null;
+            return Mathnv.GetNearestPointDown(entitiy.transform.position, max, EnemyRandomizer.IsSurfaceOrPlatform);
         }
 
-        public static T GetFSMActionOnState<T>(this GameObject gameObject, string stateName, string fsmName = "") where T : HutongGames.PlayMaker.FsmStateAction
-        {
-            var state = gameObject.GetFSMState(stateName, fsmName);
-            if (state != null)
-            {
-                foreach (var action in state.Actions)
-                {
-                    if (action.GetType() == typeof(T))
-                    {
-                        return action as T;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        public static List<T> GetFSMActionsOnState<T>(this GameObject gameObject, string actionName, string stateName, string fsmName = "") where T : HutongGames.PlayMaker.FsmStateAction
-        {
-            List<T> actions = new List<T>();
-            var state = gameObject.GetFSMState(stateName, fsmName);
-            if (state != null)
-            {
-                foreach (var action in state.Actions)
-                {
-                    if (action.Name == actionName)
-                    {
-                        actions.Add(action as T);
-                    }
-                }
-            }
-
-            return actions;
-        }
-
-        public static List<T> GetFSMActionsOnState<T>(this GameObject gameObject, string stateName, string fsmName = "") where T : HutongGames.PlayMaker.FsmStateAction
-        {
-            List<T> actions = new List<T>();
-            var state = gameObject.GetFSMState(stateName, fsmName);
-            if (state != null)
-            {
-                foreach (var action in state.Actions)
-                {
-                    if (action.GetType() == typeof(T))
-                    {
-                        actions.Add(action as T);
-                    }
-                }
-            }
-            else
-            {
-                Dev.Log("Warning: No state named " + stateName + "found in fsm " + fsmName);
-            }
-
-            return actions;
-        }
-
-        public static List<T> GetFSMActionsOnStates<T>(this GameObject gameObject, List<string> stateNames, string fsmName = "") where T : HutongGames.PlayMaker.FsmStateAction
-        {
-            List<T> actions = new List<T>();
-            foreach (string stateName in stateNames)
-            {
-                var state = gameObject.GetFSMState(stateName, fsmName);
-                if (state != null)
-                {
-                    foreach (var action in state.Actions)
-                    {
-                        if (action.GetType() == typeof(T))
-                        {
-                            actions.Add(action as T);
-                        }
-                    }
-                }
-            }
-
-            return actions;
-        }
     }
 }

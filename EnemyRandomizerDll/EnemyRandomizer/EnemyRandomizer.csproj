@@ -179,8 +179,10 @@
     <Compile Include="Mod\Extensions\FSMUtils.cs" />
     <Compile Include="Mod\Extensions\EnemyDataExtensions.cs" />
     <Compile Include="Mod\Main\EnemyRandomizerReplacementLogic.cs" />
+    <Compile Include="Mod\RandomizerEnemyFactory\BaseTypes\IRandomizerEnemyController.cs" />
+    <Compile Include="Mod\RandomizerEnemyFactory\BaseTypes\DefaultEnemyController.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\CrystalLazerBugController.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\Working\GGZoteBoss.cs" />
+    <Compile Include="Mod\RandomizerEnemyFactory\GGZoteBoss.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\MemeEnemy.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\ZombieSpiderController.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\ZoteBalloon.cs" />
@@ -429,7 +431,7 @@
     <Compile Include="Mod\Main\EnemyRandomizerMenu.cs" />
     <Compile Include="Mod\Main\EnemyRandomizerSettings.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\ColosseumEnemy.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\Working\GrimmkinEnemy.cs" />
+    <Compile Include="Mod\RandomizerEnemyFactory\GrimmkinEnemy.cs" />
     <Compile Include="Mod\Main\EnemyRandomizerXMLTypes.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\BaseTypes\DefaultEnemy.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\BaseTypes\IRandomizerEnemy.cs" />
@@ -704,6 +706,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mod\RandomizerEnemyFactory\Testing\" />
+    <Folder Include="Mod\RandomizerEnemyFactory\Working\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

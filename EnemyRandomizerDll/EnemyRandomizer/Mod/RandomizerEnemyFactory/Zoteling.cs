@@ -14,11 +14,10 @@ namespace EnemyRandomizerMod
 {
     public class Zoteling : DefaultEnemy
     {
-        public override void Setup(EnemyData enemy, List<EnemyData> knownEnemyTypes, GameObject prefabObject)
+        public override void SetupPrefab()
         {
-            EnemyObject = prefabObject;
-
-            var fsm = prefabObject.LocateMyFSM("Control");
+            Dev.Where();
+            var fsm = Prefab.LocateMyFSM("Control");
 
             //remove the transitions related to chain spawning zotes for the event
             fsm.RemoveTransition("Dormant", "SPAWN");

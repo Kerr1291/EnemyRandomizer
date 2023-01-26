@@ -73,25 +73,13 @@ namespace EnemyRandomizerMod
 
     public class GGZoteBoss : DefaultEnemy
     {
-        public override void Setup(EnemyData enemy, List<EnemyData> knownEnemyTypes, GameObject prefabObject)
+        public override void SetupPrefab()
         {
-            EnemyObject = prefabObject;
+            Dev.Where();
+            base.SetupPrefab();
 
-            base.Setup(enemy, knownEnemyTypes, EnemyObject);
-        }
-
-        public override GameObject Instantiate(EnemyData sourceData, GameObject enemyToReplace = null, EnemyData matchingData = null)
-        {
-            var newZote = base.Instantiate(sourceData, enemyToReplace, matchingData);
-            newZote.SetActive(true);
-
-            var deathEffects = newZote.GetComponentInChildren<EnemyDeathEffects>(true);
+            var deathEffects = Prefab.GetComponentInChildren<EnemyDeathEffects>(true);
             deathEffects.doKillFreeze = false;
-
-            if (deathEffects == null)
-                Dev.LogError("Failed to find death effects on zote boss");
-            else
-                Dev.Log("found corpse holder");
 
             //load the corpse
             deathEffects.PreInstantiate();
@@ -102,8 +90,6 @@ namespace EnemyRandomizerMod
                 Dev.LogError("Failed to find corpse zote boss");
             else
                 corpse.AddComponent<GGZoteCorpseFixer>();
-
-            return newZote;
         }
     }
 }

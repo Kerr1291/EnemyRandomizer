@@ -28,6 +28,11 @@ namespace EnemyRandomizerMod
         FsmFloat xpos;
         FsmFloat ypos;
 
+        void Awake()
+        {
+            spawnLocation = transform.position;
+        }
+
         IEnumerator Start()
         {
             Dev.Where();
@@ -88,11 +93,10 @@ namespace EnemyRandomizerMod
 
     public class ZoteThwomp : DefaultEnemy
     {
-        public override void Setup(EnemyData enemy, List<EnemyData> knownEnemyTypes, GameObject prefabObject)
+        public override void SetupPrefab()
         {
-            EnemyObject = prefabObject;
-
-            var fsm = prefabObject.LocateMyFSM("Control");
+            Dev.Where();
+            var fsm = Prefab.LocateMyFSM("Control");
 
             //remove the transitions related to chain spawning zotes for the event
             fsm.RemoveTransition("Break", "FINISHED");
@@ -106,14 +110,7 @@ namespace EnemyRandomizerMod
             //fsm.Fsm.RemoveState("Dormant");
 
             //base.Setup(enemy, knownEnemyTypes, EnemyObject);
-        }
-
-        public override GameObject Instantiate(EnemyData sourceData, GameObject enemyToReplace = null, EnemyData matchingData = null)
-        {
-            var enemy = base.Instantiate(sourceData, enemyToReplace, matchingData);
-            var controller = enemy.AddComponent<ZoteThwompController>();
-            controller.spawnLocation = enemy.transform.position;
-            return enemy;
+            var controller = Prefab.AddComponent<ZoteThwompController>();
         }
     }
 }

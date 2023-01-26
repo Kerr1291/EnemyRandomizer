@@ -27,6 +27,11 @@ namespace EnemyRandomizerMod
 
         PlayMakerFSM fsm;
 
+        void Awake()
+        {
+            spawnLocation = transform.position;
+        }
+
         IEnumerator Start()
         {
             Dev.Where();
@@ -129,11 +134,10 @@ namespace EnemyRandomizerMod
 
     public class ZoteSalubra : DefaultEnemy
     {
-        public override void Setup(EnemyData enemy, List<EnemyData> knownEnemyTypes, GameObject prefabObject)
+        public override void SetupPrefab()
         {
-            EnemyObject = prefabObject;
-
-            var fsm = prefabObject.LocateMyFSM("Control");
+            Dev.Where();
+            var fsm = Prefab.LocateMyFSM("Control");
 
             //remove the transitions related to chain spawning zotes for the event
             fsm.RemoveTransition("Dormant", "START");
@@ -152,7 +156,7 @@ namespace EnemyRandomizerMod
             var appearState = fsm.GetState("Appear");
             appearState.Actions = appearState.Actions.Where(x =>
             {
-                return 
+                return
                    !typeof(SetCircleCollider).IsAssignableFrom(x.GetType())
                 && !typeof(RandomFloat).IsAssignableFrom(x.GetType())
                 && !typeof(GetXDistance).IsAssignableFrom(x.GetType())
@@ -171,15 +175,7 @@ namespace EnemyRandomizerMod
             fsm.RemoveTransition("Idle", "FINISHED");
 
             //base.Setup(enemy, knownEnemyTypes, EnemyObject);
-        }
-
-        public override GameObject Instantiate(EnemyData sourceData, GameObject enemyToReplace = null, EnemyData matchingData = null)
-        {
-            var newEnemy = base.Instantiate(sourceData, enemyToReplace, matchingData);
-            var controller = newEnemy.AddComponent<ZoteSalubraController>();
-            controller.spawnLocation = newEnemy.gameObject.transform.position;
-            
-            return newEnemy;
+            var controller = Prefab.AddComponent<ZoteSalubraController>();
         }
     }
 }

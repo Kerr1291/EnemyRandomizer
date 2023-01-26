@@ -13,7 +13,7 @@
     <excludeBeingReplacement>true</excludeBeingReplacement>
   </enemy>-->
   <!--TEST ME!! This is the bomb object that pops out of them i think?-->
-  <enemy name="Lil Jellyfish">
+  <!--<enemy name="Lil Jellyfish">
     <sceneName>Fungus3_27</sceneName>
     <gameObjectPath>Lil Jellyfish</gameObjectPath>
     <typePool>FLYER</typePool>
@@ -40,7 +40,7 @@
     <excludeFromBattleArenas>false</excludeFromBattleArenas>
     <excludeFromColosseum>false</excludeFromColosseum>
     <excludeBeingReplacement>true</excludeBeingReplacement>
-  </enemy>
+  </enemy>-->
   <!--<enemy name="Colosseum_Worm">
     <sceneName></sceneName>
 		<gameObjectPath></gameObjectPath>
@@ -84,7 +84,7 @@
 		<excludeFromColosseum>true</excludeFromColosseum>
 		<excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>-->
-  <enemy name="Shell">
+  <!--<enemy name="Shell">
     <sceneName>Mines_20</sceneName>
 		<gameObjectPath>Shell</gameObjectPath>
 		<typePool>GROUND</typePool>
@@ -95,7 +95,7 @@
 		<excludeFromBattleArenas>false</excludeFromBattleArenas>
 		<excludeFromColosseum>false</excludeFromColosseum>
 		<excludeBeingReplacement>true</excludeBeingReplacement>
-  </enemy>
+  </enemy>-->
   <!--<enemy name="Jellyfish Baby">
     <sceneName></sceneName>
 		<gameObjectPath></gameObjectPath>
@@ -715,9 +715,9 @@
     <ascendedHP>900</ascendedHP>
   </enemy>
   <enemy name="Mage">
-    <configurationTypeName>ColosseumEnemy</configurationTypeName>
-    <sceneName>Room_Colosseum_Gold</sceneName>
-    <gameObjectPath>Colosseum Manager/Waves/Wave 22/Mage</gameObjectPath>
+    <!--<configurationTypeName>ColosseumEnemy</configurationTypeName>-->
+    <sceneName>Ruins1_23</sceneName>
+    <gameObjectPath>Mage</gameObjectPath>
     <typePool>FLYER</typePool>
     <isLargeEnemy>true</isLargeEnemy>
     <isColosseum>true</isColosseum>
@@ -731,9 +731,9 @@
     <excludeBeingReplacement>false</excludeBeingReplacement>
   </enemy>
   <enemy name="Mantis Heavy Flyer">
-    <configurationTypeName>ColosseumEnemy</configurationTypeName>
-    <sceneName>Room_Colosseum_Gold</sceneName>
-    <gameObjectPath>Colosseum Manager/Waves/Wave 45/Colosseum Cage Small 1</gameObjectPath>
+    <!--<configurationTypeName>ColosseumEnemy</configurationTypeName>-->
+    <sceneName>Fungus3_08</sceneName>
+    <gameObjectPath>Mantis Heavy Flyer</gameObjectPath>
     <typePool>FLYER</typePool>
 
     <isLargeEnemy>true</isLargeEnemy>
@@ -1751,7 +1751,7 @@
     <ascendedHP>700</ascendedHP>
   </enemy>
   <enemy name="Mage Knight">
-    <sceneName>GG_Mage_Knight</sceneName>
+    <sceneName>Ruins1_23</sceneName>
     <gameObjectPath>Mage Knight</gameObjectPath>
     <typePool>GROUND</typePool>
 
@@ -2430,7 +2430,6 @@
     <sceneName>Deepnest_17</sceneName>
     <gameObjectPath>Baby Centipede</gameObjectPath>
     <typePool>GROUND</typePool>
-
     <isLargeEnemy>false</isLargeEnemy>
     <isHard>false</isHard>
     <isBoss>false</isBoss>

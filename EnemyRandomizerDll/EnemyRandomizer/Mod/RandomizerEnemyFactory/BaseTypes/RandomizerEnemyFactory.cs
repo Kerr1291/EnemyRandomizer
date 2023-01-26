@@ -61,7 +61,9 @@ namespace EnemyRandomizerMod
             if (validEnemyTypes.TryGetValue(typeName, out var enemyType))
             {
                 var newEnemy = (IRandomizerEnemy)Activator.CreateInstance(enemyType);
-                newEnemy.Setup(thisEnemy, knownEnemyTypes, prefabObject);
+                newEnemy.LinkDataObjects(thisEnemy, knownEnemyTypes, prefabObject);
+                newEnemy.SetupPrefab();
+                newEnemy.DebugPrefab();
                 return newEnemy;
             }
 
@@ -74,7 +76,9 @@ namespace EnemyRandomizerMod
             if (validEnemyTypes.TryGetValue(typeof(TEnemyType).Name, out var enemyType))
             {
                 var newEnemy = (TEnemyType)Activator.CreateInstance(enemyType);
-                newEnemy.Setup(thisEnemy, knownEnemyTypes, prefabObject);
+                newEnemy.LinkDataObjects(thisEnemy, knownEnemyTypes, prefabObject);
+                newEnemy.SetupPrefab();
+                newEnemy.DebugPrefab();
                 return newEnemy;
             }
 
