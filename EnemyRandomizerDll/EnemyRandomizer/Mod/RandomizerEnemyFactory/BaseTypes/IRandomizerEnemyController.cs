@@ -15,6 +15,10 @@ namespace EnemyRandomizerMod
     public interface IRandomizerEnemyController
     {
         /// <summary>
+        /// Mostly for display or debug purposes, the real name of the object contained in Instance
+        /// </summary>
+        string InstanceDefinitionName { get; }
+        /// <summary>
         /// A reference to the source data loaded to be loaded after LinkDataObjects has been called
         /// </summary>
         IRandomizerEnemy EnemyDefinition { get; }
