@@ -61,8 +61,8 @@ namespace EnemyRandomizerMod
             pRNG.Reset();
 
             //enable debugging
-            //Dev.Logger.GuiLoggingEnabled = true;
-            //DevLogger.Instance.ShowSlider();
+            Dev.Logger.GuiLoggingEnabled = true;
+            DevLogger.Instance.ShowSlider();
 
             //the specific type here doesn't matter, as long as it's from the same assembly as enemy types
             //we want to register
@@ -357,7 +357,7 @@ namespace EnemyRandomizerMod
             };
         }
 
-        public static GameObject DebugSpawnEnemy(string enemyName)
+        public static GameObject DebugSpawnEnemy(string enemyName, bool forcePlaceOnGround = false)
         {
             try
             {
@@ -365,6 +365,8 @@ namespace EnemyRandomizerMod
                 {
                     var pos = HeroController.instance.transform.position + Vector3.right * 5f;
                     var enemy = data.loadedEnemy.Instantiate();
+                    if(forcePlaceOnGround || data.loadedEnemy.IsFlyer)
+                        pos = Mathnv.GetPointOn(pos, Vector2.down, 500f, EnemyRandomizer.IsSurfaceOrPlatform);                    
                     enemy.SetupRandomizerComponents(data.loadedEnemy, null, null);
                     enemy.transform.position = pos;
                     enemy.SetActive(true);
@@ -436,6 +438,7 @@ namespace EnemyRandomizerMod
     {
         IEnumerator Start()
         {
+            Dev.Log("Waiting to randomize " + gameObject);
             if (gameObject == null)
                 yield break;
 
@@ -453,6 +456,7 @@ namespace EnemyRandomizerMod
                     return collider.enabled && renderer.enabled;
             });
 
+            Dev.Log("Randomizng newly activated " + gameObject);
             EnemyRandomizer.Instance.ReplaceEnemy(gameObject);
             GameObject.Destroy(this);
         }
