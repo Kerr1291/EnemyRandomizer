@@ -17,6 +17,7 @@ namespace EnemyRandomizerMod
         public override void SetupPrefab()
         {
             Dev.Where();
+            base.SetupPrefab();
             var fsm = Prefab.LocateMyFSM("Control");
 
             //remove the transitions related to chain spawning zotes for the event
@@ -35,7 +36,6 @@ namespace EnemyRandomizerMod
             fsm.Fsm.RemoveState("Respawn Pause");
             fsm.Fsm.RemoveState("Ball");
 
-            //base.Setup(enemy, knownEnemyTypes, EnemyObject);
         }
     }
 }

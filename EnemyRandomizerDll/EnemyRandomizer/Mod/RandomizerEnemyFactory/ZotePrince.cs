@@ -17,6 +17,7 @@ namespace EnemyRandomizerMod
         public override void SetupPrefab()
         {
             Dev.Where();
+            base.SetupPrefab();
             var fsm = Prefab.LocateMyFSM("Control");
 
             //remove the transitions related to chain spawning zotes for the event

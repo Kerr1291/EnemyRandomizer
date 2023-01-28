@@ -15,7 +15,7 @@ using HutongGames.PlayMaker;
 
 namespace EnemyRandomizerMod
 {
-    public class ZoteSalubraController : MonoBehaviour
+    public class ZoteSalubraController : DefaultEnemyController
     {
         public Vector3 spawnLocation;
 
@@ -137,6 +137,7 @@ namespace EnemyRandomizerMod
         public override void SetupPrefab()
         {
             Dev.Where();
+            Prefab.AddComponent<ZoteSalubraController>();
             var fsm = Prefab.LocateMyFSM("Control");
 
             //remove the transitions related to chain spawning zotes for the event
@@ -173,9 +174,6 @@ namespace EnemyRandomizerMod
             fsm.AddTransition("Idle", "PLAYER_NEAR", "Sucking");
             fsm.AddTransition("Sucking", "PLAYER_FAR", "Idle");
             fsm.RemoveTransition("Idle", "FINISHED");
-
-            //base.Setup(enemy, knownEnemyTypes, EnemyObject);
-            var controller = Prefab.AddComponent<ZoteSalubraController>();
         }
     }
 }

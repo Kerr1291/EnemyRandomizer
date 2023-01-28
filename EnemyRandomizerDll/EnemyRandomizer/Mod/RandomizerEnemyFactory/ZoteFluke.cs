@@ -15,7 +15,7 @@ using System.Collections;
 
 namespace EnemyRandomizerMod
 {
-    public class ZoteFlukeController : MonoBehaviour
+    public class ZoteFlukeController : DefaultEnemyController
     {
         public Vector3 spawnLocation;
 
@@ -89,6 +89,7 @@ namespace EnemyRandomizerMod
         public override void SetupPrefab()
         {
             Dev.Where();
+            Prefab.AddComponent<ZoteFlukeController>();
             var fsm = Prefab.LocateMyFSM("Control");
 
             //remove the transitions related to chain spawning zotes for the event
@@ -101,9 +102,6 @@ namespace EnemyRandomizerMod
             //remove the states that were also part of that
             fsm.AddGlobalTransition("PLAYER_FAR", "Dormant");
             //fsm.Fsm.RemoveState("Dormant");
-
-            //base.Setup(enemy, knownEnemyTypes, EnemyObject);
-            var controller = Prefab.AddComponent<ZoteFlukeController>();
         }
     }
 }

@@ -92,6 +92,7 @@ namespace EnemyRandomizerMod
         public override void SetupPrefab()
         {
             Dev.Where();
+            Prefab.AddComponent<ZoteBalloonController>();
             var fsm = Prefab.LocateMyFSM("Control");
 
             //remove the transitions related to chain spawning zotes for the event
@@ -109,7 +110,6 @@ namespace EnemyRandomizerMod
             }).ToArray();
 
             //base.Setup(enemy, knownEnemyTypes, EnemyObject);
-            var controller = Prefab.AddComponent<ZoteBalloonController>();
         }
     }
 }

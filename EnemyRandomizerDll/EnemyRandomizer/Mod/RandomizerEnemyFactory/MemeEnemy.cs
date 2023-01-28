@@ -105,6 +105,7 @@ namespace EnemyRandomizerMod
         public override void SetupPrefab()
         {
             Dev.Where();
+            Prefab.AddComponent<MemeController>();
             Prefab.transform.localScale = new Vector3(3.2f, 3.2f, 3.2f);
             Prefab.GetComponent<HealthManager>().hp = 2000;
 
@@ -118,8 +119,6 @@ namespace EnemyRandomizerMod
 
             GameObject bullet = Prefab.FindGameObjectInChildrenWithName("BulletSprite (1)");
             bullet.transform.localScale = Vector3.one * 3.2f;
-
-            Prefab.AddComponent<MemeController>();
         }
     }
 }

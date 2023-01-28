@@ -1751,7 +1751,7 @@
     <ascendedHP>700</ascendedHP>
   </enemy>
   <enemy name="Mage Knight">
-    <sceneName>Ruins1_23</sceneName>
+    <sceneName>GG_Mage_Knight</sceneName>
     <gameObjectPath>Mage Knight</gameObjectPath>
     <typePool>GROUND</typePool>
 
@@ -2729,6 +2729,7 @@
   <enemy name="Mawlek Turret Ceiling">
     <sceneName>Abyss_20</sceneName>
     <gameObjectPath>Mawlek Turret Ceiling</gameObjectPath>
+    <configurationTypeName>MawlekTurretControl</configurationTypeName>
     <typePool>WALL</typePool>
     <isHard>false</isHard>
     <isBoss>false</isBoss>

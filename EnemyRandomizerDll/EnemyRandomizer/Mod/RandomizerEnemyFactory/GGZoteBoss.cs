@@ -76,7 +76,6 @@ namespace EnemyRandomizerMod
         public override void SetupPrefab()
         {
             Dev.Where();
-            base.SetupPrefab();
 
             var deathEffects = Prefab.GetComponentInChildren<EnemyDeathEffects>(true);
             deathEffects.doKillFreeze = false;

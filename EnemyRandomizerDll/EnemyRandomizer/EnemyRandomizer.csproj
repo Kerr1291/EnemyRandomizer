@@ -183,6 +183,7 @@
     <Compile Include="Mod\RandomizerEnemyFactory\BaseTypes\DefaultEnemyController.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\CrystalLazerBugController.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\GGZoteBoss.cs" />
+    <Compile Include="Mod\RandomizerEnemyFactory\MawlekTurret.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\MemeEnemy.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\ZombieSpiderController.cs" />
     <Compile Include="Mod\RandomizerEnemyFactory\ZoteBalloon.cs" />

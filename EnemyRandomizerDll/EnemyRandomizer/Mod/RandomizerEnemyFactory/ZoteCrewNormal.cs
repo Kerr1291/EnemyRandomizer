@@ -100,7 +100,7 @@ namespace EnemyRandomizerMod
         public override void SetupPrefab()
         {
             Dev.Where();
-            base.SetupPrefab();
+            Prefab.AddComponent<ZoteCrewNormalController>();
             var fsm = Prefab.LocateMyFSM("Control");
 
             //var initState = fsm.Fsm.GetState("Init");
@@ -122,9 +122,6 @@ namespace EnemyRandomizerMod
             fsm.Fsm.RemoveState("Multiply");
 
             fsm.AddGlobalTransition("PLAYER_FAR", "Idle");
-
-            //base.Setup(enemy, knownEnemyTypes, EnemyObject);
-            var controller = Prefab.AddComponent<ZoteCrewNormalController>();
         }
     }
 }

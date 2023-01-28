@@ -15,7 +15,7 @@ using System.Collections;
 
 namespace EnemyRandomizerMod
 {
-    public class ZoteThwompController : MonoBehaviour
+    public class ZoteThwompController : DefaultEnemyController
     {
         public Vector3 spawnLocation;
 
@@ -96,6 +96,7 @@ namespace EnemyRandomizerMod
         public override void SetupPrefab()
         {
             Dev.Where();
+            Prefab.AddComponent<ZoteThwompController>();
             var fsm = Prefab.LocateMyFSM("Control");
 
             //remove the transitions related to chain spawning zotes for the event
@@ -110,7 +111,6 @@ namespace EnemyRandomizerMod
             //fsm.Fsm.RemoveState("Dormant");
 
             //base.Setup(enemy, knownEnemyTypes, EnemyObject);
-            var controller = Prefab.AddComponent<ZoteThwompController>();
         }
     }
 }
