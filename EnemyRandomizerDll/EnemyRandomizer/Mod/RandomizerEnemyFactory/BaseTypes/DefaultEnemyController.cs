@@ -18,6 +18,8 @@ namespace EnemyRandomizerMod
 {
     public class DefaultEnemyController : MonoBehaviour, IRandomizerEnemyController
     {
+        public string InstanceDefinitionName { get; protected set; }
+
         public IRandomizerEnemy EnemyDefinition { get; protected set; }
 
         public GameObject Instance { get; protected set; }
@@ -124,7 +126,7 @@ namespace EnemyRandomizerMod
                     }
                     else if (newS != null)
                     {
-                        newSize = newS.GetBounds().size;
+                        oldSize = newS.GetBounds().size;
                     }
                 }
 
@@ -144,32 +146,51 @@ namespace EnemyRandomizerMod
                 bool tryAlternate = false;
                 try
                 {
+                    //tryAlternate = true;
+                    if (newS.boxCollider2D != null)
+                    {
+                        var allSprites = newS.GetComponentsInChildren<tk2dSprite>(true);
+                        {
+                            allSprites.ToList().ForEach(x =>
+                            {
+                                x.scale = new Vector3(x.scale.x * scale, x.scale.y * scale, 1.0f);
+                                if (x.boxCollider2D != null)
+                                {
+                                    Vector2 b = x.boxCollider2D.size;
+                                    b.x *= scale;
+                                    b.y *= scale;
+                                    x.boxCollider2D.size = b;
+                                }
+                            });
+                        }
 
-                    tryAlternate = true;
-                    //if (newS.boxCollider2D != null)
-                    //{
-                    //    var allSprites = newS.GetComponentsInChildren<tk2dSprite>(true);
-                    //    {
-                    //        allSprites.ToList().ForEach(x =>
-                    //        {
-                    //            x.scale = new Vector3(x.scale.x * scale, x.scale.y * scale, 1.0f);
-                    //            Vector2 b = x.boxCollider2D.size;
-                    //            b.x *= scale;
-                    //            b.y *= scale;
-                    //            x.boxCollider2D.size = b;
-                    //        });
-                    //    }
+                        var allAnims = newS.GetComponentsInChildren<tk2dAnimatedSprite>(true);
+                        if(allAnims != null)
+                        {
+                            allAnims.ToList().ForEach(x =>
+                            {
+                                x.scale = new Vector3(x.scale.x * scale, x.scale.y * scale, 1.0f);
 
-                    //    //newS.scale = new Vector3(newS.scale.x * scale, newS.scale.y * scale, 1.0f);
-                    //    //Vector2 b = newS.boxCollider2D.size;
-                    //    //b.x *= scale;
-                    //    //b.y *= scale;
-                    //    //newS.boxCollider2D.size = b;
-                    //}
-                    //else
-                    //{
-                    //    tryAlternate = true;
-                    //}
+                                if (x.boxCollider2D != null)
+                                {
+                                    Vector2 b = x.boxCollider2D.size;
+                                    b.x *= scale;
+                                    b.y *= scale;
+                                    x.boxCollider2D.size = b;
+                                }
+                            });
+                        }
+
+                        //newS.scale = new Vector3(newS.scale.x * scale, newS.scale.y * scale, 1.0f);
+                        //Vector2 b = newS.boxCollider2D.size;
+                        //b.x *= scale;
+                        //b.y *= scale;
+                        //newS.boxCollider2D.size = b;
+                    }
+                    else
+                    {
+                        tryAlternate = true;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -462,6 +483,9 @@ namespace EnemyRandomizerMod
 
         public virtual void NameNewEnemy(GameObject enemyToReplace = null, EnemyData dataOfEnemyToReplace = null)
         {
+            //save this here to allow for easier debugging
+            InstanceDefinitionName = EnemyDefinition.Data.name;
+
             //each enemy in a scene that wants to reigster with the PersistentBoolItem's state in the game manager needs to have
             //a unique game object name.... we want to be able to access this state when a scene reloads, so we can't use
             //our new enemy name and in-fact need to use the original enemy name to ensure that when re-loading a scene an enemy
