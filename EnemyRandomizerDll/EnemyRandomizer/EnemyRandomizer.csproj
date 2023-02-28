@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>.\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -36,6 +36,9 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\ModdingAPIWin\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="EnemyRandomizerDB">
+      <HintPath>..\..\..\EnemyRandomizerDB\EnemyRandomizerDB\EnemyRandomizerDB\Library\EnemyRandomizerDB.dll</HintPath>
     </Reference>
     <Reference Include="MMHOOK_Assembly-CSharp">
       <HintPath>..\..\..\ModdingAPIWin\MMHOOK_Assembly-CSharp.dll</HintPath>
@@ -113,93 +116,82 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\Scripts\Containers\ArrayGrid.cs" />
-    <Compile Include="Common\Scripts\Containers\ArrayGridExtensions.cs" />
-    <Compile Include="Common\Scripts\Containers\CircularBuffer.cs" />
-    <Compile Include="Common\Scripts\Logic\CommunicationNode.cs" />
-    <Compile Include="Common\Scripts\Debug\DebugColliders.cs" />
-    <Compile Include="Common\Scripts\Debug\DebugInput.cs" />
-    <Compile Include="Common\Scripts\Debug\DebugLogString.cs" />
-    <Compile Include="Common\Scripts\Debug\DevLogger.cs" />
-    <Compile Include="Common\Scripts\Debug\IDevLogger.cs" />
-    <Compile Include="Common\Scripts\Debug\Log.cs" />
-    <Compile Include="Common\Scripts\Debug\PoolableLogString.cs" />
-    <Compile Include="Common\Scripts\Physics\ExplodeOnContact.cs" />
-    <Compile Include="Common\Scripts\Physics\HomingEffect.cs" />
-    <Compile Include="Common\Scripts\Physics\Physics2DHomingEffect.cs" />
-    <Compile Include="Common\Scripts\Extensions\AnimationCurveExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\AudioSourceExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\BoundsExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\ByteExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\CameraExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\ColorExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\ComponentExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\GameObjectExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\IComparableExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\IEnumerableExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\IntExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\LayerMaskExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\ListExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\MemberInfoExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\RectArrayExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\RectExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\RectTransformExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\ReflectionHelpers.cs" />
-    <Compile Include="Common\Scripts\Extensions\SceneExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\StringExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\TypeExtensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\Vector2Extensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\Vector3Extensions.cs" />
-    <Compile Include="Common\Scripts\Extensions\Math.cs" />
-    <Compile Include="Common\Scripts\Containers\Range.cs" />
-    <Compile Include="Common\Scripts\Physics\PolyMesh2D.cs" />
-    <Compile Include="Common\Scripts\Physics\TriangleExplosion.cs" />
-    <Compile Include="Common\Scripts\Physics\Triangulator.cs" />
-    <Compile Include="Common\Scripts\ObjectPool\IObjectPool.cs" />
-    <Compile Include="Common\Scripts\ObjectPool\IPoolableObject.cs" />
-    <Compile Include="Common\Scripts\ObjectPool\MonoBehaviourFactory.cs" />
-    <Compile Include="Common\Scripts\ObjectPool\MonoBehaviourPool.cs" />
-    <Compile Include="Common\Scripts\ObjectPool\ObjectPool.cs" />
-    <Compile Include="Common\Scripts\ObjectPool\PoolableMonoBehaviour.cs" />
-    <Compile Include="Common\Scripts\Physics\CooldownRangeCheck.cs" />
-    <Compile Include="Common\Scripts\Physics\PreventOutOfBounds.cs" />
-    <Compile Include="Common\Scripts\Physics\RangeCheck.cs" />
-    <Compile Include="Common\Scripts\Physics\Raycaster.cs" />
-    <Compile Include="Common\Scripts\Physics\RaySensor.cs" />
-    <Compile Include="Common\Scripts\Extensions\RegexHelper.cs" />
-    <Compile Include="Common\Scripts\RNG\mt19937.cs" />
-    <Compile Include="Common\Scripts\RNG\RNG.cs" />
-    <Compile Include="Common\Scripts\Containers\Tags.cs" />
-    <Compile Include="Common\Scripts\Containers\GameSingleton.cs" />
-    <Compile Include="Common\Scripts\Logic\SmartRoutine.cs" />
-    <Compile Include="Common\Scripts\Logic\SmartRoutineCtors.cs" />
-    <Compile Include="Common\Scripts\Logic\SmartRoutineHelper.cs" />
-    <Compile Include="Common\Scripts\Logic\SmartRoutineStarts.cs" />
-    <Compile Include="Common\Scripts\Logic\TimedRoutine.cs" />
-    <Compile Include="Mod\Extensions\FSMUtils.cs" />
-    <Compile Include="Mod\Extensions\EnemyDataExtensions.cs" />
-    <Compile Include="Mod\Main\EnemyRandomizerReplacementLogic.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\BaseTypes\IRandomizerEnemyController.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\BaseTypes\DefaultEnemyController.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\CrystalLazerBugController.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\GGZoteBoss.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\MawlekTurret.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\MemeEnemy.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\ZombieSpiderController.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\ZoteBalloon.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\ZoteCrewNormal.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\ZoteFluke.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\Zoteling.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\ZotePrince.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\ZoteSalubra.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\ZoteThwomp.cs" />
-    <Compile Include="Mod\Satchel\Futils\CustomAction.cs" />
-    <Compile Include="Mod\Satchel\Futils\Extractors\AudioClips.cs" />
-    <Compile Include="Mod\Satchel\Futils\FsmUtils.cs" />
-    <Compile Include="Mod\Satchel\Futils\FsmVariables.cs" />
-    <Compile Include="Mod\Satchel\Futils\Interceptor.cs" />
-    <Compile Include="Mod\Satchel\Futils\Serialiser\ActionReader.cs" />
-    <Compile Include="Mod\Satchel\Futils\Serialiser\FSMSerialiser.cs" />
+    <Compile Include="Mod\BattleManager.cs" />
+    <Compile Include="Mod\EnemyRandomizerDebug.cs" />
+    <Compile Include="Mod\EnemyReplacer.cs" />
+    <Compile Include="Mod\Common\Containers\ArrayGrid.cs" />
+    <Compile Include="Mod\Common\Containers\ArrayGridExtensions.cs" />
+    <Compile Include="Mod\Common\Containers\CircularBuffer.cs" />
+    <Compile Include="Mod\Common\Logic\CommunicationNode.cs" />
+    <Compile Include="Mod\Common\Debug\DebugColliders.cs" />
+    <Compile Include="Mod\Common\Debug\DebugInput.cs" />
+    <Compile Include="Mod\Common\Debug\DebugLogString.cs" />
+    <Compile Include="Mod\Common\Debug\DevLogger.cs" />
+    <Compile Include="Mod\Common\Debug\IDevLogger.cs" />
+    <Compile Include="Mod\Common\Debug\Log.cs" />
+    <Compile Include="Mod\Common\Debug\PoolableLogString.cs" />
+    <Compile Include="Mod\Common\Physics\ExplodeOnContact.cs" />
+    <Compile Include="Mod\Common\Physics\HomingEffect.cs" />
+    <Compile Include="Mod\Common\Physics\Physics2DHomingEffect.cs" />
+    <Compile Include="Mod\Common\Extensions\AnimationCurveExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\AudioSourceExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\BoundsExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\ByteExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\CameraExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\ColorExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\ComponentExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\GameObjectExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\IComparableExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\IntExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\LayerMaskExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\ListExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\MemberInfoExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\RectArrayExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\RectExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\RectTransformExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\ReflectionHelpers.cs" />
+    <Compile Include="Mod\Common\Extensions\SceneExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\StringExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\TypeExtensions.cs" />
+    <Compile Include="Mod\Common\Extensions\Vector2Extensions.cs" />
+    <Compile Include="Mod\Common\Extensions\Vector3Extensions.cs" />
+    <Compile Include="Mod\Common\Extensions\Math.cs" />
+    <Compile Include="Mod\Common\Containers\Range.cs" />
+    <Compile Include="Mod\Common\Physics\PolyMesh2D.cs" />
+    <Compile Include="Mod\Common\Physics\TriangleExplosion.cs" />
+    <Compile Include="Mod\Common\Physics\Triangulator.cs" />
+    <Compile Include="Mod\Common\ObjectPool\IObjectPool.cs" />
+    <Compile Include="Mod\Common\ObjectPool\IPoolableObject.cs" />
+    <Compile Include="Mod\Common\ObjectPool\MonoBehaviourFactory.cs" />
+    <Compile Include="Mod\Common\ObjectPool\MonoBehaviourPool.cs" />
+    <Compile Include="Mod\Common\ObjectPool\ObjectPool.cs" />
+    <Compile Include="Mod\Common\ObjectPool\PoolableMonoBehaviour.cs" />
+    <Compile Include="Mod\Common\Physics\CooldownRangeCheck.cs" />
+    <Compile Include="Mod\Common\Physics\PreventOutOfBounds.cs" />
+    <Compile Include="Mod\Common\Physics\RangeCheck.cs" />
+    <Compile Include="Mod\Common\Physics\Raycaster.cs" />
+    <Compile Include="Mod\Common\Physics\RaySensor.cs" />
+    <Compile Include="Mod\Common\Extensions\RegexHelper.cs" />
+    <Compile Include="Mod\Common\RNG\mt19937.cs" />
+    <Compile Include="Mod\Common\RNG\RNG.cs" />
+    <Compile Include="Mod\Common\Containers\Tags.cs" />
+    <Compile Include="Mod\Common\Containers\GameSingleton.cs" />
+    <Compile Include="Mod\Common\Logic\SmartRoutine.cs" />
+    <Compile Include="Mod\Common\Logic\SmartRoutineCtors.cs" />
+    <Compile Include="Mod\Common\Logic\SmartRoutineHelper.cs" />
+    <Compile Include="Mod\Common\Logic\SmartRoutineStarts.cs" />
+    <Compile Include="Mod\Common\Logic\TimedRoutine.cs" />
+    <Compile Include="Mod\IRandomizerLogic.cs" />
+    <Compile Include="Mod\LogicLoader.cs" />
+    <Compile Include="Mod\ManagedObject.cs" />
+    <Compile Include="Satchel\CustomAction.cs" />
+    <Compile Include="Satchel\Extractors\AudioClips.cs" />
+    <Compile Include="Satchel\FsmUtils.cs" />
+    <Compile Include="Satchel\FsmVariables.cs" />
+    <Compile Include="Satchel\Interceptor.cs" />
+    <Compile Include="Satchel\Serialiser\ActionReader.cs" />
+    <Compile Include="Satchel\Serialiser\FSMSerialiser.cs" />
     <Compile Include="UniRx\Asynchronous\WebRequestExtensions.cs" />
     <Compile Include="UniRx\Disposables\BooleanDisposable.cs" />
     <Compile Include="UniRx\Disposables\CancellationDisposable.cs" />
@@ -427,37 +419,10 @@
     <Compile Include="UniRx\UnityEngineBridge\YieldInstructionCache.cs" />
     <Compile Include="UniRx\UnityWinRTBridge\Thread.cs" />
     <Compile Include="UniRx\UnityWinRTBridge\ThreadPoolScheduler_UnityWinRT.cs" />
-    <Compile Include="Common\Scripts\Debug\DebugOnWake.cs" />
-    <Compile Include="Mod\Extensions\HealthManagerExtensions.cs" />
-    <Compile Include="Mod\Main\EnemyRandomizerMenu.cs" />
-    <Compile Include="Mod\Main\EnemyRandomizerSettings.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\ColosseumEnemy.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\GrimmkinEnemy.cs" />
-    <Compile Include="Mod\Main\EnemyRandomizerXMLTypes.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\BaseTypes\DefaultEnemy.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\BaseTypes\IRandomizerEnemy.cs" />
-    <Compile Include="Mod\RandomizerEnemyFactory\BaseTypes\RandomizerEnemyFactory.cs" />
-    <Compile Include="Mod\Main\EnemyRandomizer.cs" />
-    <Compile Include="Mod\Extensions\GameObjectExtensions.cs" />
+    <Compile Include="Mod\Common\Debug\DebugOnWake.cs" />
+    <Compile Include="Mod\EnemyRandomizerMenu.cs" />
+    <Compile Include="Mod\EnemyRandomizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Mod\Extensions\StringExtensions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Mod\XMLResources\arenas.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Mod\XMLResources\enemies.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Mod\XMLResources\exclusions.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Mod\XMLResources\objects.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Mod\XMLResources\scenes.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="UniRx\Asynchronous.meta" />
@@ -706,15 +671,1522 @@
     <None Include="UniRx\UnityWinRTBridge\ThreadPoolScheduler_UnityWinRT.cs.meta" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Mod\RandomizerEnemyFactory\Testing\" />
-    <Folder Include="Mod\RandomizerEnemyFactory\Working\" />
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_03_b.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_03_c.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_04.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_05.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_06_Core.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_08.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_09.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_10.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_12.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_15.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_16.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_17.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_18.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_19.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_20.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_21.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_22.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Abyss_Lighthouse_room.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_BetaEnd.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Cinematic_Ending_A.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Cinematic_Ending_B.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Cinematic_Ending_C.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Cinematic_Ending_D.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Cinematic_Ending_E.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Cinematic_MrMushroom.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Cinematic_Stag_travel.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Cliffs_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Cliffs_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Cliffs_02_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Cliffs_03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Cliffs_04.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Cliffs_05.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Cliffs_06.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_04.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_05.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_06.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_07.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_08.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_09.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_10.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_10_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_10_boss_defeated.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_10_preload.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_11_alt.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_12.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_13.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_14.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_15.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_16.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_18.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_19.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_21.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_22.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_25.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_27.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_30.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_31.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_33.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_35.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_36.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_37.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_38.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_39.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_40.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_42.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_43.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_45.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_46.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_46b.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_47.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_48.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_49.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_49b.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_50.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_52.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Crossroads_ShamanTemple.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Cutscene_Boss_Door.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_01b.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_09.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_10.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_14.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_16.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_17.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_26.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_26b.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_30.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_31.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_32.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_33.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_34.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_35.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_36.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_37.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_38.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_39.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_40.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_41.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_42.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_43.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_44.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_45_v02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_04.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_06.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_07.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_08.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_09.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_10.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_11.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_12.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_13.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_14.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_14b.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_15.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_16.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_17.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_18.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_Hornet.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_East_Hornet_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Deepnest_Spider_Town.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Dream_01_False_Knight.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Dream_02_Mage_Lord.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Dream_03_Infected_Knight.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Dream_04_White_Defender.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Dream_Abyss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Dream_Backer_Shrine.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Dream_Final_Boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Dream_Guardian_Hegemol.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Dream_Guardian_Lurien.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Dream_Guardian_Monomon.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Dream_Mighty_Zote.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Dream_Nailcollection.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Dream_Room_Believer_Shrine.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_End_Credits.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_End_Game_Completion.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_01b.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_04.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_04_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_05.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_06.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_07.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_08.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_09.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_10.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_11.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_12.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_13.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_14.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_15.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_16_alt.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_17.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_19.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_20_v02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_21.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_22.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_23.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_24.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_25.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_26.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_28.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_30.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_31.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_32.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_34.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_35.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_36.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_37.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus1_Slug.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_04.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_05.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_06.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_07.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_08.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_09.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_10.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_11.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_12.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_13.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_14.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_15.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_15_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_15_boss_defeated.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_17.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_18.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_19.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_20.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_21.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_23.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_25.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_26.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_28.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_30.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_31.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_32.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_33.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus2_34.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_04.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_05.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_08.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_10.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_11.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_13.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_21.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_22.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_23.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_23_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_24.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_25.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_25b.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_26.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_27.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_28.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_30.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_34.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_35.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_39.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_40.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_40_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_44.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_47.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_48.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_49.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_50.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_archive.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_archive_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Fungus3_archive_02_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Atrium.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Atrium_Roof.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Blue_Room.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Boss_Door_Entrance.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Broken_Vessel.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Brooding_Mawlek.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Brooding_Mawlek_V.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Collector.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Collector_V.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Crystal_Guardian.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Crystal_Guardian_2.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Door_5_Finale.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Dung_Defender.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_End_Sequence.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Engine.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Engine_Prime.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Engine_Root.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Entrance_Cutscene.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Failed_Champion.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_False_Knight.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Flukemarm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Ghost_Galien.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Ghost_Gorb.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Ghost_Gorb_V.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Ghost_Hu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Ghost_Markoth.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Ghost_Markoth_V.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Ghost_Marmu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Ghost_Marmu_V.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Ghost_No_Eyes.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Ghost_No_Eyes_V.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Ghost_Xero.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Ghost_Xero_V.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_God_Tamer.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Grey_Prince_Zote.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Grimm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Grimm_Nightmare.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Gruz_Mother.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Gruz_Mother_V.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Hive_Knight.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Hollow_Knight.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Hornet_1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Hornet_2.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Land_of_Storms.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Lost_Kin.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Lurker.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Mage_Knight.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Mage_Knight_V.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Mantis_Lords.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Mantis_Lords_V.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Mega_Moss_Charger.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Mighty_Zote.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Nailmasters.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Nosk.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Nosk_Hornet.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Nosk_V.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Oblobbles.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Painter.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Pipeway.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Radiance.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Sly.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Soul_Master.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Soul_Tyrant.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Spa.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Traitor_Lord.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Unlock.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Unlock_Wastes.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Unn.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Uumuu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Uumuu_V.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Vengefly.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Vengefly_V.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Watcher_Knights.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Waterways.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_White_Defender.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Workshop.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_GG_Wyrm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Grimm_Divine.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Grimm_Main_Tent.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Grimm_Main_Tent_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Grimm_Nightmare.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Hive_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Hive_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Hive_03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Hive_03_c.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Hive_04.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Hive_05.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Knight_Pickup.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Menu_Credits.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Menu_Title.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_04.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_05.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_06.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_07.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_10.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_11.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_13.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_16.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_17.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_18.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_18_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_19.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_20.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_23.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_24.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_25.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_28.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_30.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_31.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_32.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_33.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_34.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_35.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_36.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Mines_37.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Opening_Sequence.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_PermaDeath.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_PermaDeath_Unlock.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Quit_To_Menu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_RestingGrounds_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_RestingGrounds_02_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_RestingGrounds_04.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_RestingGrounds_05.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_RestingGrounds_06.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_RestingGrounds_07.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_RestingGrounds_08.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_RestingGrounds_09.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_RestingGrounds_10.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_RestingGrounds_12.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_RestingGrounds_17.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Bretta.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Bretta_Basement.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Charm_Shop.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Colosseum_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Colosseum_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Colosseum_Bronze.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Colosseum_Gold.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Colosseum_Silver.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Colosseum_Spectate.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Final_Boss_Atrium.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Final_Boss_Core.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Fungus_Shaman.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_GG_Shortcut.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Jinn.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Mansion.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_mapper.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Mask_Maker.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Mender_House.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_nailmaster.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_nailmaster_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_nailmaster_03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_nailsmith.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Ouiji.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Queen.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_ruinhouse.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_shop.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Slug_Shrine.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Sly_Storeroom.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_spider_small.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_temple.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Town_Stag_Station.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Tram.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Tram_RG.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Room_Wyrm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_04.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_05.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_05b.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_05c.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_06.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_09.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_17.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_18.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_23.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_24.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_24_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_24_boss_defeated.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_25.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_27.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_28.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_30.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_31.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_31b.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins1_32.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_01_b.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_03b.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_03_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_04.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_05.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_06.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_07.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_08.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_09.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_10.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_10b.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_11.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_11_b.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_11_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins2_Watcher_Room.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins_Bathhouse.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins_Elevator.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins_House_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins_House_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Ruins_House_03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Town.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Tutorial_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_03.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_04.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_04b.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_05.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_05_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_06.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_07.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_08.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_09.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_12.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_12_boss.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_13.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_14.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_Waterways_15.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_01.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_02.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_03_hub.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_04.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_05.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_06.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_07.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_08.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_09.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_11.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_12.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_13.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_14.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_15.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_16.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_17.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_18.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_19.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData_White_Palace_20.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData__test_cocoon_1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Mod\Database\SceneData\SceneData__test_cocoon_2.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Mod\Database\EnemyRandomizerDatabase.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="AfterBuild">
-    <Exec Command="..\install_build.bat" />
-  </Target>
   <PropertyGroup>
-    <PostBuildEvent>../install_build.bat</PostBuildEvent>
+    <PostBuildEvent>@echo off
+SET DLL_SOURCE=$(TargetPath)
+SET MOD_DEST="K:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\Mods\EnemyRandomizer\$(TargetFileName)"
+echo Copying build from
+echo %25DLL_SOURCE%25
+echo to
+echo %25MOD_DEST%25
+copy %25DLL_SOURCE%25 %25MOD_DEST%25</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

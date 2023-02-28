@@ -3,11 +3,11 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("EnemyRandomizer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("https://www.github.com/kerr1291/EnemyRandomizer")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Kerr1291")]
 [assembly: AssemblyProduct("EnemyRandomizer")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -15,5 +15,5 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("c64ab8e8-9663-42f5-b6b3-af003e0ee8f9")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("2023.0.*")]
+[assembly: AssemblyFileVersion("2023.0.0")]

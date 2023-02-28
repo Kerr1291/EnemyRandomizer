@@ -1,9 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33130.400
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnemyRandomizer", "EnemyRandomizer\EnemyRandomizer.csproj", "{6840ABD8-113F-48E8-B125-19394C0AA354}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomizeEachEnemyPerRoom", "RoomRandomizerLogic\RandomizeEachEnemyPerRoom.csproj", "{AE760B55-DCF4-493C-95E6-989299ED6E48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomizeEachEnemyLogic", "RandomizeEachEnemyLogic\RandomizeEachEnemyLogic.csproj", "{792C5159-E791-4D0C-9657-9D9F356DEE9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomizeEachEnemyPerGame", "RandomizeEachEnemyPerGame\RandomizeEachEnemyPerGame.csproj", "{D0E41B50-73B0-4C45-A546-DB9DC17C195C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomizeEachEnemyPerZone", "RandomizeEachEnemyPerZone\RandomizeEachEnemyPerZone.csproj", "{1F7DEAFE-3614-4F56-9D31-98AF60B1126E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomizeEachEnemyToZote", "RandomizeEachEnemyToZote\RandomizeEachEnemyToZote.csproj", "{A380A7EF-B022-4183-9678-527F035746DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +25,26 @@ Global
 		{6840ABD8-113F-48E8-B125-19394C0AA354}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6840ABD8-113F-48E8-B125-19394C0AA354}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6840ABD8-113F-48E8-B125-19394C0AA354}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE760B55-DCF4-493C-95E6-989299ED6E48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE760B55-DCF4-493C-95E6-989299ED6E48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE760B55-DCF4-493C-95E6-989299ED6E48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE760B55-DCF4-493C-95E6-989299ED6E48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{792C5159-E791-4D0C-9657-9D9F356DEE9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{792C5159-E791-4D0C-9657-9D9F356DEE9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{792C5159-E791-4D0C-9657-9D9F356DEE9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{792C5159-E791-4D0C-9657-9D9F356DEE9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0E41B50-73B0-4C45-A546-DB9DC17C195C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0E41B50-73B0-4C45-A546-DB9DC17C195C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0E41B50-73B0-4C45-A546-DB9DC17C195C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0E41B50-73B0-4C45-A546-DB9DC17C195C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F7DEAFE-3614-4F56-9D31-98AF60B1126E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F7DEAFE-3614-4F56-9D31-98AF60B1126E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F7DEAFE-3614-4F56-9D31-98AF60B1126E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F7DEAFE-3614-4F56-9D31-98AF60B1126E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A380A7EF-B022-4183-9678-527F035746DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A380A7EF-B022-4183-9678-527F035746DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A380A7EF-B022-4183-9678-527F035746DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A380A7EF-B022-4183-9678-527F035746DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

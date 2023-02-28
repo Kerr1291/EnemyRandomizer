@@ -1,0 +1,3832 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SceneData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="GG_Hollow_Knight">
+  <sceneObjects>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/hollow_knight_chain_base (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/hollow_knight_chain_base (4)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/hollow_knight_chain_base (4)/final_boss_chain/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/hollow_knight_chain_base (4)/final_boss_chain/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/hollow_knight_chain_base (4)/final_boss_chain/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/hollow_knight_chain_base (4)/chain_base_0004_base">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/hollow_knight_chain_base (4)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/hollow_knight_chain_base (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/hollow_knight_chain_base (5)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/hollow_knight_chain_base (5)/final_boss_chain/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/hollow_knight_chain_base (5)/final_boss_chain/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/hollow_knight_chain_base (5)/final_boss_chain/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/hollow_knight_chain_base (5)/chain_base_0004_base">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/hollow_knight_chain_base (5)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (3)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (3)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (3)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (3)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (5)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (5)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (5)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (5)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (6)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (6)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (6)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (6)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (7)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (7)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (7)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (7)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (8)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (8)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (8)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (8)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (9)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (9)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (9)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (9)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (10)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (10)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (10)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (10)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (11)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (11)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (11)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (11)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (12)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (12)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (12)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (12)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (13)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (13)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (13)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (13)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (14)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (14)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (14)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (14)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (15)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (15)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (15)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (15)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (5)/final_boss_FG_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (5)/final_boss_FG_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (5)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (8)/final_boss_FG_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (8)/final_boss_FG_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (8)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (10)/final_boss_FG_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (10)/final_boss_FG_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (10)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (11)/final_boss_FG_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (11)/final_boss_FG_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (11)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (12)/final_boss_FG_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (12)/final_boss_FG_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_FG_chain (12)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (16)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (16)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (16)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (16)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (17)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (17)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (17)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (17)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (18)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (18)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (18)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (18)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (19)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (19)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (19)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (19)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (20)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (20)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (20)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (20)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (20)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (21)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (21)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (21)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (21)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (21)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (22)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (22)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (22)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (22)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (22)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (23)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (23)/final_boss_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (23)/final_boss_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (23)/final_boss_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Death Break Chains/final_boss_chain (23)/Pt Chain">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Items">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Enemies">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Darkness Region">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Roof">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0013_8">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/black_fader_GG (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (25)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (26)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (28)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (29)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (30)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (31)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones/GG_scenery_0015_6">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones/GG_scenery_0017_4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones/GG_scenery_0016_5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones/GG_scenery_0017_4 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones/GG_scenery_0017_4 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones/GG_scenery_0017_4 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones/GG_scenery_0017_4 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (1)/GG_scenery_0017_4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (3)/GG_scenery_0017_4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (4)/GG_scenery_0015_6">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (4)/GG_scenery_0017_4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (4)/GG_scenery_0016_5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (4)/GG_scenery_0015_6 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (5)/GG_scenery_0015_6">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (5)/GG_scenery_0016_5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (5)/GG_scenery_0016_5 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (5)/GG_scenery_0016_5 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (5)/GG_scenery_0016_5 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (32)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (27)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/haze2 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/BlurPlane">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>BlurPlane</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/haze2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/CamLock Floor">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/CamLock Floor/CamLock Floor">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/CamLock Floor/CamLock Floor (1)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar/GG_scenery_0000_21">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar/GG_scenery_0007_14">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar (1)/GG_scenery_0000_21">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar (1)/GG_scenery_0007_14">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/throne">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/throne/GG_scenery_0020_1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/throne/GG_scenery_0019_2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/throne/GG_scenery_0019_2 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar (4)/GG_scenery_0000_21">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gold_egg">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gold_egg (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/gg_gold_egg_front">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/gg_gold_egg_second (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/gg_gold_egg_second (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gold_egg (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/gg_gold_egg_second (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/gg_gold_egg_second (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/gg_gold_egg_second (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/haze2 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/gg_gold_egg_second (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/gg_gold_egg_second (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (8)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (8)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Enemy Wall">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_scene_glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PlayMakerFSM</string>
+        <string>PersistentBoolItem</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_scene_glow/Col_Glow_Remasker (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_scene_glow/Col_Glow_Remasker (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_NPCs">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (11)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (11)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (3)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (3)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (21)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (4)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (4)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Areas">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring large2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring large2/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring large2/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="final_boss_room_0016_tall_symb3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 0">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="final_boss_room_0016_tall_symb3 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (1)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (1)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (20)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (27)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (14)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (14)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (25)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Markers">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/CameraLockArea Intro">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast/Blast">
+      <components>
+        <string>Transform</string>
+        <string>Animator</string>
+        <string>CameraControlAnimationEvents</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast/Blast/hero_damager">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast/Blast/out of bounds impact0000">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast/Blast/Particle_rocks_small">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast/Blast/focus_ring">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast/Blast/focus_ring _thin">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast/Blast/white_glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast/Blast/Particle edge_build">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast/Blast/Particle middle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (1)">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (1)/Blast">
+      <components>
+        <string>Transform</string>
+        <string>Animator</string>
+        <string>CameraControlAnimationEvents</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (1)/Blast/hero_damager">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (1)/Blast/out of bounds impact0000">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (1)/Blast/Particle_rocks_small">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (1)/Blast/focus_ring">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (1)/Blast/focus_ring _thin">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (1)/Blast/white_glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (1)/Blast/Particle edge_build">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (1)/Blast/Particle middle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (2)">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (2)/Blast">
+      <components>
+        <string>Transform</string>
+        <string>Animator</string>
+        <string>CameraControlAnimationEvents</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (2)/Blast/hero_damager">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (2)/Blast/out of bounds impact0000">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (2)/Blast/Particle_rocks_small">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (2)/Blast/focus_ring">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (2)/Blast/focus_ring _thin">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (2)/Blast/white_glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (2)/Blast/Particle edge_build">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (2)/Blast/Particle middle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (3)">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (3)/Blast">
+      <components>
+        <string>Transform</string>
+        <string>Animator</string>
+        <string>CameraControlAnimationEvents</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (3)/Blast/hero_damager">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (3)/Blast/out of bounds impact0000">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (3)/Blast/Particle_rocks_small">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (3)/Blast/focus_ring">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (3)/Blast/focus_ring _thin">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (3)/Blast/white_glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (3)/Blast/Particle edge_build">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (3)/Blast/Particle middle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (4)">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (4)/Blast">
+      <components>
+        <string>Transform</string>
+        <string>Animator</string>
+        <string>CameraControlAnimationEvents</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (4)/Blast/hero_damager">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (4)/Blast/out of bounds impact0000">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (4)/Blast/Particle_rocks_small">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (4)/Blast/focus_ring">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (4)/Blast/focus_ring _thin">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (4)/Blast/white_glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (4)/Blast/Particle edge_build">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (4)/Blast/Particle middle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (5)">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (5)/Blast">
+      <components>
+        <string>Transform</string>
+        <string>Animator</string>
+        <string>CameraControlAnimationEvents</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (5)/Blast/hero_damager">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (5)/Blast/out of bounds impact0000">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (5)/Blast/Particle_rocks_small">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (5)/Blast/focus_ring">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (5)/Blast/focus_ring _thin">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (5)/Blast/white_glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (5)/Blast/Particle edge_build">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Focus Blasts/HK Prime Blast (5)/Blast/Particle middle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Godseeker Crowd">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>Rigidbody2D</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFixedUpdate</string>
+        <string>SpriteFlash</string>
+        <string>PlayMakerFSM</string>
+        <string>PersonalObjectPool</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+        <string>HealthManager</string>
+        <string>ExtraDamageable</string>
+        <string>DamageHero</string>
+        <string>EnemyHitEffectsUninfected</string>
+        <string>EnemyDeathEffectsUninfected</string>
+        <string>ConstrainPosition</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Colliders">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Colliders/Head">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>DamageHero</string>
+        <string>ExtraDamageableProxy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Colliders/Idle">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>DamageHero</string>
+        <string>ExtraDamageableProxy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Colliders/SmallShot">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>DamageHero</string>
+        <string>ExtraDamageableProxy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Colliders/Slash">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>DamageHero</string>
+        <string>ExtraDamageableProxy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Colliders/Slash Antic">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>DamageHero</string>
+        <string>ExtraDamageableProxy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Colliders/Counter">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>DamageHero</string>
+        <string>ExtraDamageableProxy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Colliders/Dash Antic">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>DamageHero</string>
+        <string>ExtraDamageableProxy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Colliders/Dash">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>DamageHero</string>
+        <string>ExtraDamageableProxy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Colliders/Roar Antic">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>DamageHero</string>
+        <string>ExtraDamageableProxy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Colliders/Roar">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>DamageHero</string>
+        <string>ExtraDamageableProxy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Colliders/ChestShot">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>DamageHero</string>
+        <string>ExtraDamageableProxy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Colliders/Stun">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>DamageHero</string>
+        <string>ExtraDamageableProxy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Colliders/Stun Fall">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>DamageHero</string>
+        <string>ExtraDamageableProxy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Colliders/Dstab Damage">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>DamageHero</string>
+        <string>ExtraDamageableProxy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Spawn SmallShot">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Slashes">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Slashes/Slash1">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonBouncer</string>
+        <string>PlayMakerFSM</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Slashes/Slash2">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonBouncer</string>
+        <string>PlayMakerFSM</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Slashes/Slash3">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonBouncer</string>
+        <string>PlayMakerFSM</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Slashes/Dash Stab">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonBouncer</string>
+        <string>PlayMakerFSM</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/DStab Range">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Stomp Plumes">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Stomp Plumes/Slam Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Counter Flash">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Dash Burst">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Wall Range">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Spawn Roar">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Spawn Blood">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Spawn ChestShot">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/PuppetSlam Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Burst SmallShot">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Pt Land Dust">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Slash Range">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Above Range">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Dash Range">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Pt Dash">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Evade Range">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Pt Stab Mist">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Black Wave">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Tele Wave">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>WaveEffectControl</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Focus Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Focus Effects/Lines Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Focus Effects/Dust R">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Focus Effects/Dust L">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Focus Effects/Heal Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Focus Effects/Charge Audio">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Focus Blast">
+      <components>
+        <string>Transform</string>
+        <string>Animator</string>
+        <string>DeactivateAfterDelay</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Focus Blast/Particle_rocks_small">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Focus Blast/focus_ring">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Focus Blast/focus_rune">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Focus Blast/focus_ring _thin">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Focus Blast/white_glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Focus Blast/Particle edge_build">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Focus Blast/Particle middle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Focus Hit">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Loop Rumble">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Intro Energy">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Intro Energy/FG">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ReduceParticleEffects</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Intro Energy/Mighty_Zote_entrance_energy0002">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Tendrils">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Tendrils/T1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Tendrils/T2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Tendrils/T3">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Tendrils/T Hit">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Tendrils/ST1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK Prime/Tendrils/ST2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK_Prime_Burst_Chunks">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK_Prime_Burst_Chunks/break rag particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK_Prime_Burst_Chunks/Particle_rocks_long">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/HK_Prime_Burst_Chunks/Burst Line">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Title">
+      <components>
+        <string>RectTransform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>TextContainer</string>
+        <string>TextMeshPro</string>
+        <string>PlayMakerFSM</string>
+        <string>CanvasRenderer</string>
+        <string>SetTextMeshProGameText</string>
+        <string>ChangeFontByLanguage</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Tendril Flash">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleFadeOut</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Radiant Transition">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Radiant Transition/gg_radiant_beam_transition">
+      <components>
+        <string>Transform</string>
+        <string>Animator</string>
+        <string>CameraControlAnimationEvents</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Radiant Transition/gg_radiant_beam_transition/mainglow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Radiant Transition/gg_radiant_beam_transition/vert beam">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Radiant Transition/gg_radiant_beam_transition/sun">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Radiant Transition/gg_radiant_beam_transition/vert beam (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Radiant Transition/gg_radiant_beam_transition/mainglow (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Radiant Transition/gg_radiant_beam_transition/wispy smoke object (2)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Radiant Transition/gg_radiant_beam_transition/wispy smoke object">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Radiant Transition/gg_radiant_beam_transition/white_balls">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Radiant Transition/gg_radiant_beam_transition/black balls">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Radiant Transition/gg_radiant_beam_transition/mainglow (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Radiant Transition/gg_radiant_beam_transition/mainglow (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_pillar_corner_large">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (23)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap">
+      <components>
+        <string>Transform</string>
+        <string>tk2dTileMap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (24)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Managers">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Managers/PlayMaker Unity 2D">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerUnity2d</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>PlayMakerCollisionExit2D</string>
+        <string>PlayMakerCollisionStay2D</string>
+        <string>PlayMakerTriggerEnter2D</string>
+        <string>PlayMakerTriggerExit2D</string>
+        <string>PlayMakerTriggerStay2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_SceneManager">
+      <components>
+        <string>Transform</string>
+        <string>SceneManager</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (9)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (9)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="final_boss_room_0016_tall_symb3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (7)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (7)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (2)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (2)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Camera Lock Zones">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_pillar_corner_large (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (5)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (5)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (12)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (12)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (22)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (6)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (6)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="abyss particles">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="abyss particles/wispy smoke">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ReduceParticleEffects</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="abyss particles/FG">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ReduceParticleEffects</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="abyss particles/immediate_BG">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ReduceParticleEffects</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="abyss particles/FG (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ReduceParticleEffects</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="abyss particles/wispy smoke (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ReduceParticleEffects</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring large2 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring large2 (1)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring large2 (1)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="final_boss_room_0016_tall_symb3 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="CameraLockArea">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_scene_glow (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PlayMakerFSM</string>
+        <string>PersistentBoolItem</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_scene_glow (1)/Col_Glow_Remasker (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_scene_glow (1)/Col_Glow_Remasker (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (26)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (10)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring small (10)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring large1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring large1/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Glow Response floor_ring large1/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_palace_particles">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_palace_particles/immediate_BG (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ReduceParticleEffects</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_palace_particles/Particle System BG">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ReduceParticleEffects</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_palace_particles/Particle System BG (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ReduceParticleEffects</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="World Edge v2 (1)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerFSM</string>
+        <string>NonThunker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="World Edge v2 (1)/End Superdash">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="World Edge v2">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerFSM</string>
+        <string>NonThunker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="World Edge v2/End Superdash">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Unlocker">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="glow particles">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="glow particles/Particle Rest (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="glow particles/Particle Rest (2)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="glow particles/Particle Rest (3)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller">
+      <components>
+        <string>Transform</string>
+        <string>BossSceneController</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+        <string>EventRegister</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/door_dreamEnter">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/door_dreamEnter/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/door_dreamEnter/Prompt Marker">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/Dream Entry">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+        <string>EventRegister</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/Dream Entry/Knight Dream Arrival">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/Dream Entry/Knight Dream Arrival/Spark">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/Dream Entry/Knight Dream Arrival/Attack Pt">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (1)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (1)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (2)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (2)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (3)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (3)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (4)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (4)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (5)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (5)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (6)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (6)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (7)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (7)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (8)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (8)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (9)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (9)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (10)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (10)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (15)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (15)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (16)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (16)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (17)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (17)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (18)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (18)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (19)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (19)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (20)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (20)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (20)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (21)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (21)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (21)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (22)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (22)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (22)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (24)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (24)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (24)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (25)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>GlowResponse</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (25)/Fade Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="HK_glow_wall/Glow Response wall_standard (25)/Particle System">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+  </sceneObjects>
+</SceneData>

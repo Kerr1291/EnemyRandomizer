@@ -1,0 +1,4486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SceneData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="GG_Uumuu">
+  <sceneObjects>
+    <SceneObject path="Fung_Temple_0026_21 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0026_21 (6)/Fung_Temple_0013_8 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (4)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (4)/Active/Pre-comp 8_007 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0026_21 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0026_21 (5)/Fung_Temple_0013_8 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Managers">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Managers/PlayMaker Unity 2D">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerUnity2d</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>PlayMakerCollisionExit2D</string>
+        <string>PlayMakerCollisionStay2D</string>
+        <string>PlayMakerTriggerEnter2D</string>
+        <string>PlayMakerTriggerExit2D</string>
+        <string>PlayMakerTriggerStay2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="CameraLockArea Intro">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Enemies">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="default_caustic (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="default_caustic (2)/caustic_small_000">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_pillar_top (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Enviro Region Simple (3)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>EnviroRegion</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="small_arch">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="small_arch/Fung_Temple2_0000_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="small_arch/Fung_Temple2_0000_3 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="small_arch/Fung_Temple2_0000_3 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Items">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Enviro Region Simple (2)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>EnviroRegion</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Darkness Region">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Roof">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (20)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (21)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (22)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (23)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (24)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (25)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (26)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (27)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (28)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (29)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (30)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (31)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (32)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (33)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (34)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (35)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (36)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (37)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (38)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (39)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (40)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (41)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (42)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (43)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (44)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (45)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (46)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (47)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (48)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (49)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (50)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Crowd/GG_crowd (51)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0013_8">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/black_fader_GG (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/Floor Saver">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (6)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (7)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (8)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (9)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (11)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (12)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (13)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (14)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (15)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (16)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (17)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (18)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (19)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (20)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (21)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (22)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (23)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (24)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (25)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (26)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (27)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (28)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (29)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (30)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/GG_scenery_0014_7 (31)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones/GG_scenery_0015_6">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones/GG_scenery_0017_4">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones/GG_scenery_0016_5">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones/GG_scenery_0017_4 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones/GG_scenery_0017_4 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones/GG_scenery_0017_4 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones/GG_scenery_0017_4 (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones/GG_scenery_0017_4 (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (1)/GG_scenery_0015_6">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (1)/GG_scenery_0017_4">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (1)/GG_scenery_0016_5">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (2)/GG_scenery_0015_6">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (2)/GG_scenery_0017_4">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (2)/GG_scenery_0016_5">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (2)/GG_scenery_0017_4 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (2)/GG_scenery_0015_6 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (2)/GG_scenery_0017_4 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (3)/GG_scenery_0015_6">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (3)/GG_scenery_0017_4">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (3)/GG_scenery_0016_5">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (4)/GG_scenery_0015_6">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (4)/GG_scenery_0017_4">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (4)/GG_scenery_0016_5">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (5)/GG_scenery_0015_6">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (5)/GG_scenery_0017_4">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (5)/GG_scenery_0016_5">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (5)/GG_scenery_0016_5 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Floor/fg_stones (5)/GG_scenery_0016_5 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_L">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_L/side_pillar_left">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_L/side_pillar_left/GG_scenery_0011_10">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_L/side_pillar_left/GG_scenery_0010_11">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_L/side_pillar_left/GG_scenery_0009_12">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_L/side_pillar_left/GG_scenery_0006_15">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_L/side_pillar_left/GG_scenery_0006_15 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_L/side_pillar_left/GG_scenery_0006_15 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_L/side_pillar_left/GG_scenery_0006_15 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_L/side_pillar_left/GG_scenery_0006_15 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_L/side_pillar_left/GG_scenery_0006_15 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_L/side_pillar_left/GG_scenery_0006_15 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_L/side_pillar_left/pillar_collider">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_L/side_pillar_left/GG_scenery_0011_10 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_R">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_R/side_pillar_right">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_R/side_pillar_right/GG_scenery_0011_10">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_R/side_pillar_right/GG_scenery_0010_11">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_R/side_pillar_right/GG_scenery_0009_12">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_R/side_pillar_right/GG_scenery_0006_15">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_R/side_pillar_right/GG_scenery_0006_15 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_R/side_pillar_right/GG_scenery_0006_15 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_R/side_pillar_right/GG_scenery_0006_15 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_R/side_pillar_right/GG_scenery_0006_15 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_R/side_pillar_right/GG_scenery_0006_15 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_R/side_pillar_right/GG_scenery_0006_15 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_R/side_pillar_right/pillar_collider">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Wall_R/side_pillar_right/GG_scenery_0011_10 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/haze2 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/BlurPlane">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>BlurPlane</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/haze2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/CamLock Floor">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/CamLock Floor/CamLock Floor">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/CamLock Floor/CamLock Floor (1)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar/GG_scenery_0000_21">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar/GG_scenery_0007_14">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar (1)/GG_scenery_0000_21">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar (1)/GG_scenery_0007_14">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_scenery_0008_13">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_scenery_0008_13 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_scenery_0008_13 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_scenery_0008_13 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_scenery_0008_13 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_scenery_0012_9">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_scenery_0012_9 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/throne">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/throne/GG_scenery_0020_1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/throne/GG_scenery_0019_2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/throne/GG_scenery_0019_2 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/haze2 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar (3)/GG_scenery_0000_21">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/bg_pillar (4)/GG_scenery_0000_21">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_scene_arena_extra_0000_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_scene_arena_extra_0000_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_scene_arena_extra_0000_3 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_scenery_0012_9 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_scene_arena_extra_0000_3 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_scene_arena_extra_0000_3 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_scene_arena_extra_0000_3 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gold_egg">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gold_egg (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/haze2 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gods_ray (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gods_ray (2)/GG_beam_straight (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gods_ray (2)/GG_beam_straight (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gods_ray (2)/GG_beam_straight (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gods_ray (2)/GG_beam_straight (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gods_ray (2)/GG_beam_straight (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gods_ray (2)/GG_beam_straight (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gods_ray (2)/GG_beam_straight (10)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gods_ray (2)/GG_beam_straight (11)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gods_ray (2)/GG_beam_straight (12)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/haze2 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_step (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/gg_gold_egg_front">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/gg_gold_egg_front (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/gg_gold_egg_second">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/gg_gold_egg_second (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/gg_gold_egg_second (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/GG_gold_egg (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/black_fader_GG (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/haze2 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/haze2 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/haze2 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/BG/haze2 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_Arena_Prefab/Godseeker Crowd">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+        <string>EventRegister</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="default_caustic (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="default_caustic (1)/caustic_small_000">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Hero Roof">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (9)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (9)/Active/Pre-comp 8_007 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (6)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (6)/Active/Pre-comp 8_007 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (3)/Fung_Temple_0011_6 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (3)/Fung_Temple_0011_6 (3)/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (3)/Fung_Temple_0011_6 (3)/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (3)/Fung_Temple_0012_7">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (3)/Fung_Temple_0027_22">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (3)/Fung_Temple_0011_6 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (3)/Fung_Temple_0011_6 (2)/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (3)/Fung_Temple_0011_6 (2)/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (3)/Fung_Temple_0011_6 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (3)/Fung_Temple_0011_6 (1)/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (3)/Fung_Temple_0011_6 (1)/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (3)/Fung_Temple_0011_6">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (3)/Fung_Temple_0011_6/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (3)/Fung_Temple_0011_6/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_NPCs">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0026_21 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0026_21 (2)/Fung_Temple_0013_8 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Jellyfish Spawner">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>EventRegister</string>
+        <string>PersonalObjectPool</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Jellyfish Spawner/Pt Spore">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Jellyfish Spawner/Pt Bub">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Markers">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window/Fung_Temple_0011_6 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window/Fung_Temple_0011_6 (3)/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window/Fung_Temple_0011_6 (3)/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window/Fung_Temple_0012_7">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window/Fung_Temple_0027_22">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window/Fung_Temple_0011_6 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window/Fung_Temple_0011_6 (2)/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window/Fung_Temple_0011_6 (2)/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window/Fung_Temple_0011_6 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window/Fung_Temple_0011_6 (1)/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window/Fung_Temple_0011_6 (1)/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window/Fung_Temple_0011_6">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window/Fung_Temple_0011_6/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window/Fung_Temple_0011_6/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (2)/Fung_Temple_0011_6 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (2)/Fung_Temple_0011_6 (3)/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (2)/Fung_Temple_0011_6 (3)/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (2)/Fung_Temple_0012_7">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (2)/Fung_Temple_0027_22">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (2)/Fung_Temple_0011_6 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (2)/Fung_Temple_0011_6 (2)/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (2)/Fung_Temple_0011_6 (2)/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (2)/Fung_Temple_0011_6 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (2)/Fung_Temple_0011_6 (1)/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (2)/Fung_Temple_0011_6 (1)/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (2)/Fung_Temple_0011_6">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (2)/Fung_Temple_0011_6/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (2)/Fung_Temple_0011_6/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0009_4 (44)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0009_4 (43)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0009_4 (42)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0009_4 (41)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0009_4 (40)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0009_4 (39)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0009_4 (38)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0009_4 (37)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0009_4 (36)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0009_4 (35)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0009_4 (34)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0009_4 (33)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0009_4 (32)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0009_4 (26)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0037_32 (34)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0037_32 (36)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0037_32 (35)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0037_32 (36)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0037_32 (36)/Fung_Temple_0037_32 (34)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0037_32 (36)/Fung_Temple_0037_32 (36)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0037_32 (36)/Fung_Temple_0037_32 (35)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0037_32 (35)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0037_32 (35)/Fung_Temple_0037_32 (34)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0037_32 (35)/Fung_Temple_0037_32 (36)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0037_32 (35)/Fung_Temple_0037_32 (35)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0037_32 (34)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0037_32 (34)/Fung_Temple_0037_32 (34)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0037_32 (34)/Fung_Temple_0037_32 (36)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0037_32 (33)/Fung_Temple_0037_32 (34)/Fung_Temple_0037_32 (35)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap">
+      <components>
+        <string>Transform</string>
+        <string>tk2dTileMap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (8)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (8)/Active/Pre-comp 8_007 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_SceneManager">
+      <components>
+        <string>Transform</string>
+        <string>SceneManager</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (10)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (10)/Active/Pre-comp 8_007 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (1)/Fung_Temple_0011_6 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (1)/Fung_Temple_0011_6 (3)/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (1)/Fung_Temple_0011_6 (3)/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (1)/Fung_Temple_0012_7">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (1)/Fung_Temple_0027_22">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (1)/Fung_Temple_0011_6 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (1)/Fung_Temple_0011_6 (2)/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (1)/Fung_Temple_0011_6 (2)/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (1)/Fung_Temple_0011_6 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (1)/Fung_Temple_0011_6 (1)/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (1)/Fung_Temple_0011_6 (1)/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (1)/Fung_Temple_0011_6">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (1)/Fung_Temple_0011_6/Fung_Temple_0008_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung archive_window (1)/Fung_Temple_0011_6/Fung_Temple_0008_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0026_21 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0026_21 (3)/Fung_Temple_0013_8 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Prefabs">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 0">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 3">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 1 0">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 1 1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 1 2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 1 3">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 2 0">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 2 1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 2 2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 2 3">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 3 0">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 3 1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 3 2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 3 3">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 4 0">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 4 1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 4 2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 4 3">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 5 0">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 5 1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 5 2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 5 3">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 6 0">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 6 1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 6 2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 6 3">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (2)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (2)/Active/Pre-comp 8_007 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_pillar_top">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (3)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (3)/Active/Pre-comp 8_007 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="CameraLockArea B">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (28)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (28)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (28)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (27)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (27)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (27)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (26)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (26)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (26)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (23)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (23)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (23)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (22)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (22)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (22)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (20)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (20)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (20)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (19)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (19)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (19)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (18)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (18)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (18)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (17)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (17)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (17)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (15)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (15)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (15)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (13)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (13)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (13)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (12)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (12)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (12)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (11)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (11)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (11)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (10)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (10)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (10)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (9)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (9)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (9)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (8)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (8)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (8)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (6)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (6)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (6)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (5)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (5)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (5)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (4)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (4)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (4)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (3)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (3)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (3)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (2)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (2)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (2)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (1)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (1)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 1/Mega Jelly Multizap (1)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (28)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (28)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (28)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (27)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (27)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (27)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (26)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (26)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (26)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (23)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (23)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (23)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (22)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (22)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (22)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (20)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (20)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (20)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (19)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (19)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (19)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (18)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (18)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (18)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (17)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (17)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (17)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (15)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (15)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (15)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (13)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (13)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (13)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (12)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (12)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (12)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (11)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (11)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (11)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (10)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (10)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (10)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (9)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (9)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (9)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (8)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (8)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (8)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (6)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (6)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (6)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (5)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (5)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (5)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (4)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (4)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (4)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (3)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (3)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (3)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (2)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (2)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (2)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (1)">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>MegaJellyZap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (1)/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (1)/Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Acid Control v2 (3)">
+      <components>
+        <string>Transform</string>
+        <string>AcidCorpseSplash</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Acid Control v2 (3)/Surface Water Region">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Acid Control v2 (3)/GO UP Message">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Acid Control v2 (3)/Corpse Message">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>TriggerEnterEvent</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Acid Control v2 (3)/Acid Box">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>NonBouncer</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Acid Control v2 (3)/Acid Audio">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_pillar_top (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Areas">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="default_caustic">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="default_caustic/caustic_small_000">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (1)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (1)/Active/Pre-comp 8_007 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Camera Lock Zones">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive/Active/Pre-comp 8_007 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (5)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (5)/Active/Pre-comp 8_007 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0009_4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemCollisionLagFix</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/acid_water_top">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/acid_water_top/acid_top_version_03_030 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/acid_water_top/acid_top_version_03_030 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/acid_water_top/acid_top_version_03_030 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/acid_water_top/acid_top_version_03_030 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/acid_water_top/acid_top_version_03_030 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/acid_water_top/acid_top_version_03_030">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/Fungus_Steam">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/acid_bursts">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/acid_bubbles">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/haze3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/hot_spring_layers_0032_Color-Balance-1-copy-5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/Plane Transform 1">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/water_fog (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/water_fog">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/water_fog (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_components/water_fog (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0009_4 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_pillar_top (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0020_15 (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (7)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fung_temple_tube inactive (7)/Active/Pre-comp 8_007 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0026_21 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0026_21 (4)/Fung_Temple_0013_8 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0026_21 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Fung_Temple_0026_21 (1)/Fung_Temple_0013_8 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="AcidWater (1)">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish GG">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>Rigidbody2D</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFixedUpdate</string>
+        <string>AudioSource</string>
+        <string>SetZ</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteFlash</string>
+        <string>CircleCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+        <string>PersonalObjectPool</string>
+        <string>BounceShroom</string>
+        <string>Recoil</string>
+        <string>DamageHero</string>
+        <string>HealthManager</string>
+        <string>EnemyDeathEffects</string>
+        <string>InfectedEnemyEffects</string>
+        <string>EnemyDreamnailReaction</string>
+        <string>ConstrainPosition</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish GG/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish GG/White Flash">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleSpriteFade</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish GG/Pt Wound">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish GG/Entry Sprite">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish GG/Pt Steam">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoDestroy</string>
+        <string>SetParticleScale</string>
+        <string>SpriteFlash</string>
+        <string>ConveyorMovement</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish GG/Pt Spore">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish GG/Pt Bub">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish GG/Emerge Spore">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish GG/Detonator">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish GG/Terrain">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller">
+      <components>
+        <string>Transform</string>
+        <string>BossSceneController</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+        <string>EventRegister</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/door_dreamEnter">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/door_dreamEnter/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/door_dreamEnter/Prompt Marker">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/Dream Entry">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+        <string>EventRegister</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/Dream Entry/Knight Dream Arrival">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/Dream Entry/Knight Dream Arrival/Spark">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/Dream Entry/Knight Dream Arrival/Attack Pt">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_wider">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_wider/Enviro Region Simple (1)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>EnviroRegion</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small (7)/Enviro Region Simple">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>EnviroRegion</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small (2)/Enviro Region Simple">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>EnviroRegion</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small (1)/Enviro Region Simple">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>EnviroRegion</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small (5)/Enviro Region Simple">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>EnviroRegion</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small/Enviro Region Simple">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>EnviroRegion</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small (4)/Enviro Region Simple">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>EnviroRegion</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small (3)/Enviro Region Simple">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>EnviroRegion</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_plat_float_small (6)/Enviro Region Simple">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>EnviroRegion</string>
+      </components>
+    </SceneObject>
+  </sceneObjects>
+</SceneData>
