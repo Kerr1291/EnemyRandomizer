@@ -36,20 +36,10 @@ namespace EnemyRandomizerMod
             return battleControllers.Contains(gameObject.name);
         }
 
+
+        public static PlayMakerFSM FSM { get { return Instance.Value.GetComponent<PlayMakerFSM>(); } }
         public static ReactiveProperty<BattleManager> Instance { get; protected set; }
         public static ReactiveProperty<BattleStateMachine> StateMachine { get; protected set; }
-        //static protected Dictionary<int, BattleWave> BattleWaves
-        //{
-        //    get
-        //    {
-        //        if (battleWaves == null)
-        //            battleWaves = new Dictionary<int, BattleWave>();
-        //        return battleWaves;
-        //    }
-        //}
-        //static protected Dictionary<int, BattleWave> battleWaves;
-
-        public HashSet<GameObject> nonWaveEnemies = new HashSet<GameObject>();
 
         public static void Init()
         {
@@ -57,7 +47,6 @@ namespace EnemyRandomizerMod
                 Instance = new ReactiveProperty<BattleManager>();
             if (StateMachine == null)
                 StateMachine = new ReactiveProperty<BattleStateMachine>();
-            //BattleWaves.Clear();
         }
 
         public static void OnEnemyDeathEvent(GameObject gameObject)
@@ -67,7 +56,8 @@ namespace EnemyRandomizerMod
                 var bmo = gameObject.GetComponent<BattleManagedObject>();
                 if (bmo != null)
                 {
-                    bmo.myWave.RegisterEnemyDeath(bmo);
+                    StateMachine.Value.RegisterEnemyDeath(bmo);
+                    //bmo.myWave.RegisterEnemyDeath(bmo);
                 }
             }
         }
@@ -148,216 +138,19 @@ namespace EnemyRandomizerMod
             if(Instance.Value != this)
                 Instance.Value = this;
 
-            StateMachine.Value = BattleStateMachine.Create(scene, fsm, item);
-            StateMachine.Value.Build(fsm);
-            StateMachine.Value.OnComplete.AddListener(Cleanup);
-
-            Destroy(fsm);
-
-            if (StateMachine.Value.InitState != null)
-                StateMachine.Value.InitState.Invoke();
-
-            nonWaveEnemies.ToList().ForEach(x =>
-            {
-                x.SafeSetActive(true);
-            });
-        }
-
-        protected virtual void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.tag == "Player")
-            {
-                StateMachine.Value.NotifyPlayerEnteredTrigger();
-            }
+            StateMachine.Value = new BattleStateMachine(scene, fsm);
+                //BattleStateMachine.Create(scene, fsm, item);
+            //StateMachine.Value.Build(fsm);
         }
 
         protected virtual void Cleanup()
         {
             Instance.Value = null;
             StateMachine.Value = null;
-            //BattleWaves.Clear();
             Destroy(this);
         }
-
-        //public void RegisterEnemy(BattleManagedObject bmo)
-        //{
-        //    //special exception, let these randomize normally
-        //    if (bmo.gameObject.GetSceneHierarchyPath().Contains("Pre Battle Enemies")
-        //        || (!string.IsNullOrEmpty(bmo.originalGameObjectPath) && bmo.originalGameObjectPath.Contains("Pre Battle Enemies")))
-        //    {
-        //        nonWaveEnemies.Add(bmo.gameObject);
-        //        return;
-        //    }
-
-        //    if (StateMachine.Value != null)
-        //    {
-        //        StateMachine.Value.RegisterEnemy(bmo);
-        //        return;
-        //    }
-
-        //    int wave = bmo.GetMyWave();
-
-        //    if (!BattleWaves.TryGetValue(wave, out var bwave))
-        //    {
-        //        if(wave >= 0)
-        //        {
-        //            bwave = new BattleWave(wave, bmo.gameObject.scene);
-        //            BattleWaves.Add(wave, bwave);
-        //        }
-        //        else
-        //        {
-        //            if(!BattleWaves.ContainsKey(0))
-        //            {
-        //                BattleWaves.Add(wave, new BattleWave(0,bmo.gameObject.scene));
-        //            }
-
-        //            var w0 = BattleWaves[0];
-        //            //add all subwaves to wave 0 for now until we find a case where this doesn't work out..
-        //            int subwave = -wave;
-        //            if (!w0.SubWaves.TryGetValue(subwave, out var sw))
-        //            {
-        //                sw = new BattleWave(subwave, bmo.gameObject.scene);
-        //                w0.SubWaves.Add(subwave, sw);
-        //            }
-
-        //            sw.AddEnemy(bmo);
-        //            return;
-        //        }
-        //    }
-
-        //    bwave.AddEnemy(bmo);
-        //}
-
-        //public void UnregisterEnemy(BattleManagedObject bmo)
-        //{
-        //    //special exception, let these randomize normally
-        //    if (bmo.gameObject.GetSceneHierarchyPath().Contains("Pre Battle Enemies")
-        //        || (!string.IsNullOrEmpty(bmo.originalGameObjectPath) && bmo.originalGameObjectPath.Contains("Pre Battle Enemies")))
-        //    {
-        //        nonWaveEnemies.Remove(bmo.gameObject);
-        //        return;
-        //    }
-
-        //    if (StateMachine.Value != null)
-        //    {
-        //        StateMachine.Value.UnregisterEnemy(bmo);
-        //        return;
-        //    }
-
-        //    UnregisterEnemy(bmo, bmo.GetMyWave());
-        //}
-
-        //public void UnregisterEnemy(BattleManagedObject bmo, int oldWave)
-        //{
-        //    //special exception, let these randomize normally
-        //    if (bmo.gameObject.GetSceneHierarchyPath().Contains("Pre Battle Enemies")
-        //        || (!string.IsNullOrEmpty(bmo.originalGameObjectPath) && bmo.originalGameObjectPath.Contains("Pre Battle Enemies")))
-        //    {
-        //        nonWaveEnemies.Remove(bmo.gameObject);
-        //        return;
-        //    }
-
-        //    if (StateMachine.Value != null)
-        //    {
-        //        StateMachine.Value.UnregisterEnemy(bmo, bmo.GetMyWave());
-        //        return;
-        //    }
-
-        //    if (BattleWaves.TryGetValue(oldWave, out var bwave))
-        //    {
-        //        bwave.RemoveEnemy(bmo);
-
-        //        //if the wave is empty, remove it
-        //        if (bwave.WaveSizeOnSetup <= 0)
-        //        {
-        //            bwave.Dispose();
-        //            BattleWaves.Remove(oldWave);
-        //        }
-        //    }
-        //}
     }
 }
 
 
 
-
-/*
-
-//static List<string> battleControllers = new List<string>()
-//                {
-//                    "Battle Scene Ore",
-//                    "Battle Start",
-//                    "Battle Scene",
-//                    "Battle Scene v2",
-//                    "Battle Music",
-//                    "Mantis Battle",
-//                    "Lurker Control",
-//                    "Battle Control",
-//                    "Grimm Holder",
-//                    "Grub Scene",
-//                    "Boss Scene Controller",
-//                    "Colosseum Manager",
-//                };
-
-1-
-
-init
-BoolTest -> 
-
-
-*/
-
-
-
-
-
-//public static Dictionary<string, Dictionary<string, BattleActions>> GameBattleActions = new Dictionary<string, Dictionary<string, BattleActions>>()
-//        {
-//            {//entry
-//                "Crossroads_10_boss", new Dictionary<string, BattleActions>()
-//                {
-//                    { "Init", new BattleActions()
-//                        {
-//                            gameObjectToDestroy = @"Battle Scene/FK Armour",
-//                            musicRegionToEnable = null,
-//                            musicRegionToDestroy = null,
-//                            cameraLockToEnable = @"Battle Scene/CameraLockArea B",
-//                            cameraLockToDisable = @"Battle Scene/CameraLockArea B2",
-//                        }
-//                    },
-//                    { "Start", new BattleActions()
-//                        {
-//                            gameObjectToDestroy = null,
-//                            musicRegionToEnable = null,
-//                            musicRegionToDestroy = @"Battle Scene/Music Region B",
-//                            cameraLockToEnable = @"Battle Scene/CameraLockArea B",
-//                            cameraLockToDisable = @"Battle Scene/CameraLockArea B2",
-//                        }
-//                    },
-//                }
-//            },//end entry
-            
-//            //{//entry
-//            //    "Crossroads_04", new Dictionary<string, BattleActions>()
-//            //    {
-//            //        { "Init", new BattleActions()
-//            //            {
-//            //                gameObjectToDestroy = @"Battle Scene/FK Armour",
-//            //                musicRegionToEnable = null,
-//            //                musicRegionToDestroy = null,
-//            //                cameraLockToEnable = @"Battle Scene/CameraLockArea B",
-//            //                cameraLockToDisable = @"Battle Scene/CameraLockArea B2",
-//            //            }
-//            //        },
-//            //        { "Start", new BattleActions()
-//            //            {
-//            //                gameObjectToDestroy = null,
-//            //                musicRegionToEnable = null,
-//            //                musicRegionToDestroy = @"Battle Scene/Music Region B",
-//            //                cameraLockToEnable = @"Battle Scene/CameraLockArea B",
-//            //                cameraLockToDisable = @"Battle Scene/CameraLockArea B2",
-//            //            }
-//            //        },
-//            //    }
-//            //},//end entry
-//        };

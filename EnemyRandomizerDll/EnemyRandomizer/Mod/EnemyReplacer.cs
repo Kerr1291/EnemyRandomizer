@@ -92,8 +92,9 @@ namespace EnemyRandomizerMod
 
         public static (string, string)[] SpecialBattleManagedEnemies = new (string, string)[]
         {
-            (@"Crossroads_4", @"Giant Fly"),
-            (@"Crossroads_4", @"_Enemies/Fly Spawn"),
+            (@"Crossroads_04", @"Giant Fly"),
+            (@"Crossroads_04", @"_Enemies/Fly Spawn"),
+            (@"Crossroads_09", @"_Enemies/Mawlek Body"),
         };
 
         public void OnEnemyLoaded(GameObject oldEnemy)
@@ -104,7 +105,7 @@ namespace EnemyRandomizerMod
                 if (EnemyRandomizer.bypassNextRandomizeEnemy)
                 {
                     var olde = oldEnemy.GetOrAddComponent<ManagedObject>();
-                    olde.Setup(this, oldEnemy);
+                    olde.Setup(oldEnemy);
                     olde.replaced = true;//flag replaced anyway
                     EnemyRandomizer.bypassNextRandomizeEnemy = false;
                 }
@@ -137,15 +138,15 @@ namespace EnemyRandomizerMod
                             {
                                 isBattleManagedEnemy = true;
                                 //TODO: test
-                                oldHm.SetBattleScene(null);
-                                oldEnemy.SetActive(false);
+                                //oldHm.SetBattleScene(null);
+                                //oldEnemy.SetActive(false);
                             }
 
                             if (!isBattleManagedEnemy
                                 && SpecialBattleManagedEnemies.Any(x => x.Item1 == oldEnemy.scene.name && path.Contains(x.Item2)))
                             {
                                 isBattleManagedEnemy = true;
-                                oldEnemy.SetActive(false);
+                                //oldEnemy.SetActive(false);
                             }
                         }
 
@@ -153,10 +154,11 @@ namespace EnemyRandomizerMod
                         {
                             //don't replce these directly on load
                             battleManagedObject = oldEnemy.AddComponent<BattleManagedObject>();
-                            battleManagedObject.Setup(this, oldEnemy);
+                            battleManagedObject.Setup(oldEnemy);
                             managedObject = battleManagedObject;
 
-                            //wait to replace later
+                            //wait to replace later---jk replace now
+                            OnEnemyLoaded(oldEnemy);
                             return;
                         }
                     }
@@ -172,7 +174,7 @@ namespace EnemyRandomizerMod
                         newManagedObject = newEnemy.AddComponent<BattleManagedObject>();
                     }
 
-                    newManagedObject.Setup(this, oldEnemy);
+                    newManagedObject.Setup(oldEnemy);
 
                     if (newEnemy != oldEnemy)
                     {
@@ -194,7 +196,7 @@ namespace EnemyRandomizerMod
                 {
                     GameObject newEffect = currentLogic.ReplacePooledObject(original);
                     var mo = newEffect.AddComponent<ManagedObject>();
-                    mo.Setup(this, original);
+                    mo.Setup(original);
                     if (newEffect != original)
                     {
                         GameObject.Destroy(original);
@@ -215,7 +217,7 @@ namespace EnemyRandomizerMod
                 {
                     GameObject newHazard = currentLogic.ReplaceHazardObject(potentialHazard.gameObject);
                     var mo = newHazard.AddComponent<ManagedObject>();
-                    mo.Setup(this, newHazard);
+                    mo.Setup(newHazard);
                     if (newHazard != potentialHazard.gameObject)
                     {
                         GameObject.Destroy(potentialHazard.gameObject);
@@ -243,7 +245,7 @@ namespace EnemyRandomizerMod
                 {
                     var customData = currentLogic.ReplacePersistentBoolItemData(item);
                     var mo = item.gameObject.AddComponent<ManagedObject>();
-                    mo.Setup(this, item.gameObject);
+                    mo.Setup(item.gameObject);
                     if (customData != null)
                     {
                         //new data
@@ -270,7 +272,7 @@ namespace EnemyRandomizerMod
                     {
                         var customData = currentLogic.ReplacePersistentBoolItemSetMyID(item);
                         var mo = item.gameObject.AddComponent<ManagedObject>();
-                        mo.Setup(this, item.gameObject);
+                        mo.Setup(item.gameObject);
                         if (( string.IsNullOrEmpty(customData.ID) && string.IsNullOrEmpty(customData.SceneName)))
                             return false;
 

@@ -14,7 +14,6 @@ namespace EnemyRandomizerMod
         public GameObject sourceEnemy;
         public string originalGameObjectPath;
         public string sourceDatabaseKey;
-        public EnemyReplacer replacer;
         public string myDatabaseKey;
         public bool replaced;
 
@@ -26,11 +25,9 @@ namespace EnemyRandomizerMod
         /// <summary>
         /// Pass "null" for the source if setting up a custom enemy
         /// </summary>
-        public virtual void Setup(EnemyReplacer replacer, GameObject source)
+        public virtual void Setup(GameObject source)
         {
             ThisIsSourceObject = (source == gameObject);
-
-            this.replacer = replacer;
 
             if (source != null)
             {
@@ -48,22 +45,11 @@ namespace EnemyRandomizerMod
 
     public class BattleManagedObject : ManagedObject
     {
-        public BattleWave myWave;
-        int customWave = -1;
-
-        public override void Setup(EnemyReplacer replacer, GameObject source)
+        public override void Setup(GameObject source)
         {
-            base.Setup(replacer, source);
+            base.Setup(source);
 
             RegisterWithBattleManager();
-        }
-
-        public virtual void SetCustomWave(int newWave)
-        {
-            int oldWave = GetMyWave();
-            customWave = newWave;
-            RegisterWithBattleManager();
-            UnregisterWithBattleManager(oldWave);
         }
 
         public virtual void RegisterWithBattleManager()
@@ -71,83 +57,77 @@ namespace EnemyRandomizerMod
             BattleManager.StateMachine.Value.RegisterEnemy(this);
         }
 
-        public virtual void UnregisterWithBattleManager()
-        {
-            BattleManager.StateMachine.Value.UnregisterEnemy(this);
-        }
+        //public virtual void UnregisterWithBattleManager()
+        //{
+        //    BattleManager.StateMachine.Value.UnregisterEnemy(this);
+        //}
 
-        public virtual void UnregisterWithBattleManager(int oldWave)
-        {
-            BattleManager.StateMachine.Value.UnregisterEnemy(this, oldWave);
-        }
+        //public virtual void UnregisterWithBattleManager(int oldWave)
+        //{
+        //    BattleManager.StateMachine.Value.UnregisterEnemy(this, oldWave);
+        //}
 
-        public bool IsWaveInName()
-        {
-            if (string.IsNullOrEmpty(originalGameObjectPath))
-                return false;
+        //public bool IsWaveInName()
+        //{
+        //    if (string.IsNullOrEmpty(originalGameObjectPath))
+        //        return false;
 
-            return originalGameObjectPath.Contains("Battle Scene/Wave");
-        }
+        //    return originalGameObjectPath.Contains("Battle Scene/Wave");
+        //}
 
-        public int GetBattleWaveFromName()
-        {
-            if (string.IsNullOrEmpty(originalGameObjectPath))
-                return customWave;
+        //public int GetBattleWaveFromName()
+        //{
+        //    var wavePart = originalGameObjectPath.Split('/').FirstOrDefault(x => x.Contains("Wave"));
+        //    var endPart = wavePart.Split(' ').Last();
+        //    int numberPart = int.Parse(endPart);
+        //    return numberPart;
+        //}
 
-            var wavePart = originalGameObjectPath.Split('/').FirstOrDefault(x => x.Contains("Wave"));
-            var endPart = wavePart.Split(' ').Last();
-            int numberPart = int.Parse(endPart);
-            return numberPart;
-        }
+        //public virtual int GetMyWave()
+        //{
+        //    var fullPath = originalGameObjectPath.Split('/');
+        //    if(fullPath.Length > 1)
+        //    {
+        //        if(IsWaveInName())
+        //        {
+        //            return GetBattleWaveFromName();
+        //        }
 
-        public virtual int GetMyWave()
-        {
-            if (string.IsNullOrEmpty(originalGameObjectPath))
-                return customWave;
+        //        List<string> pathRemaining = fullPath.ToList();
 
-            var fullPath = originalGameObjectPath.Split('/');
-            if(fullPath.Length > 1)
-            {
-                if(IsWaveInName())
-                {
-                    return GetBattleWaveFromName();
-                }
+        //        string myPath = originalGameObjectPath;
+        //        int wave = -1;
+        //        //try partial match if full match doesn't work
+        //        while (!StateMachines.BattleWaveMap.TryGetValue(myPath, out wave))
+        //        {
+        //            wave = -1;
+        //            pathRemaining.RemoveAt(pathRemaining.Count - 1);
+        //            if (pathRemaining.Count <= 0)
+        //                break;
 
-                List<string> pathRemaining = fullPath.ToList();
+        //            myPath = string.Join(@"/", pathRemaining);
+        //        }
 
-                string myPath = originalGameObjectPath;
-                int wave = -1;
-                //try partial match if full match doesn't work
-                while (!StateMachines.BattleWaveMap.TryGetValue(myPath, out wave))
-                {
-                    wave = -1;
-                    pathRemaining.RemoveAt(pathRemaining.Count - 1);
-                    if (pathRemaining.Count <= 0)
-                        break;
+        //        if (wave >= 0)
+        //            return wave;
 
-                    myPath = string.Join(@"/", pathRemaining);
-                }
+        //        bool hasWave = StateMachines.BattleWaveMap.ContainsKey(myPath);
 
-                if (wave >= 0)
-                    return wave;
+        //        if (hasWave && wave < 0)
+        //        {
+        //            return wave;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        string myPath = originalGameObjectPath;
+        //        if (StateMachines.BattleWaveMap.TryGetValue(myPath, out int wave))
+        //        {
+        //            return wave;
+        //        }
+        //    }
 
-                bool hasWave = StateMachines.BattleWaveMap.ContainsKey(myPath);
-
-                if (hasWave && wave < 0)
-                {
-                    return wave;
-                }
-            }
-            else
-            {
-                string myPath = originalGameObjectPath;
-                if (StateMachines.BattleWaveMap.TryGetValue(myPath, out int wave))
-                {
-                    return wave;
-                }
-            }
-
-            return 0;
-        }
+        //    return 0;
+        //}
     }
 }
