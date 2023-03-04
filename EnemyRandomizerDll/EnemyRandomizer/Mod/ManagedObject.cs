@@ -51,14 +51,6 @@ namespace EnemyRandomizerMod
         public BattleWave myWave;
         int customWave = -1;
 
-        public BattleManager BattleManager
-        {
-            get
-            {
-                return replacer.battleManager;
-            }
-        }
-
         public override void Setup(EnemyReplacer replacer, GameObject source)
         {
             base.Setup(replacer, source);
@@ -68,34 +60,26 @@ namespace EnemyRandomizerMod
 
         public virtual void SetCustomWave(int newWave)
         {
-            UnregisterWithBattleManager();
+            int oldWave = GetMyWave();
             customWave = newWave;
             RegisterWithBattleManager();
+            UnregisterWithBattleManager(oldWave);
         }
 
         public virtual void RegisterWithBattleManager()
         {
-            BattleManager.RegisterEnemy(this);
+            BattleManager.StateMachine.Value.RegisterEnemy(this);
         }
 
         public virtual void UnregisterWithBattleManager()
         {
-            BattleManager.UnregisterEnemy(this);
+            BattleManager.StateMachine.Value.UnregisterEnemy(this);
         }
 
-        public static Dictionary<string, int> BattleWaveMap = new Dictionary<string, int>()
+        public virtual void UnregisterWithBattleManager(int oldWave)
         {
-            //Crossroads_10
-            {@"Battle Scene/Pre Battle Enemies", 0},
-            {@"Battle Scene/False Knight New", 1},
-
-            //Abyss_17
-            //{@"Battle Scene Ore", 0},
-            
-            //Crossroads_04
-            {@"_Enemies/Giant Fly", 0},
-            {@"_Enemies/Fly Spawn", 1},
-        };
+            BattleManager.StateMachine.Value.UnregisterEnemy(this, oldWave);
+        }
 
         public bool IsWaveInName()
         {
@@ -134,7 +118,7 @@ namespace EnemyRandomizerMod
                 string myPath = originalGameObjectPath;
                 int wave = -1;
                 //try partial match if full match doesn't work
-                while (!BattleWaveMap.TryGetValue(myPath, out wave))
+                while (!StateMachines.BattleWaveMap.TryGetValue(myPath, out wave))
                 {
                     wave = -1;
                     pathRemaining.RemoveAt(pathRemaining.Count - 1);
@@ -146,11 +130,18 @@ namespace EnemyRandomizerMod
 
                 if (wave >= 0)
                     return wave;
+
+                bool hasWave = StateMachines.BattleWaveMap.ContainsKey(myPath);
+
+                if (hasWave && wave < 0)
+                {
+                    return wave;
+                }
             }
             else
             {
                 string myPath = originalGameObjectPath;
-                if (BattleWaveMap.TryGetValue(myPath, out int wave))
+                if (StateMachines.BattleWaveMap.TryGetValue(myPath, out int wave))
                 {
                     return wave;
                 }

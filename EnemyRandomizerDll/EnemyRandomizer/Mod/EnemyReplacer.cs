@@ -11,33 +11,9 @@ using System.Linq;
 
 namespace EnemyRandomizerMod
 {
-
     public class EnemyReplacer
     {
-        //TODO extract and customize these managers
-        static List<string> battleControllers = new List<string>()
-                {
-                    "Battle Scene Ore",
-                    "Battle Start",
-                    "Battle Scene",
-                    "Battle Scene v2",
-                    "Battle Music",
-                    "Mantis Battle",
-                    "Lurker Control",
-                    "Battle Control",
-                    "Grimm Holder",
-                    "Grub Scene",
-                    "Boss Scene Controller",
-                    "Colosseum Manager",
-                };
-
-        public static bool IsBattleManager(GameObject gameObject)
-        {
-            return battleControllers.Contains(gameObject.name);
-        }
-
         public EnemyRandomizerDatabase database;
-        public BattleManager battleManager;
         public IRandomizerLogic currentLogic;
 
         public List<(string, string)> GetPreloadNames(string databaseFilePath)
@@ -151,7 +127,7 @@ namespace EnemyRandomizerMod
                     else// if (managedObject == null)
                     {
                         string path = oldEnemy.GetSceneHierarchyPath();
-                        bool isBattleManagedEnemy = path.Split('/').Any(x => battleControllers.Any(y => x.Contains(y)));
+                        bool isBattleManagedEnemy = path.Split('/').Any(x => BattleManager.battleControllers.Any(y => x.Contains(y)));
 
                         if (!isBattleManagedEnemy)
                         {
@@ -250,19 +226,12 @@ namespace EnemyRandomizerMod
 
         public void OnBeforeSceneLoad()
         {
-            ClearBattleManagerBeforeSceneLoad();
+            //TODO: infom logics?
         }
 
         public void OnEnemyDeathEvent(GameObject deathEventOwner)
         {
-            if (battleManager != null)
-            {
-                var bmo = deathEventOwner.GetComponent<BattleManagedObject>();
-                if (bmo != null)
-                {
-                    battleManager.RegisterEnemyDeath(bmo);
-                }
-            }
+            //might want to notify the loaded logic here?
         }
 
         public bool OnPersistentBoolItemLoaded(PersistentBoolItem item)
@@ -326,23 +295,8 @@ namespace EnemyRandomizerMod
 
         public void OnPlaymakerFSMEnabled(PlayMakerFSM fsm)
         {
-            if (battleManager != null)
-                return;
 
-            bool isValid = IsBattleManager(fsm.gameObject);
-            if (isValid)
-            {
-                //we found it, but it's done so we don't need to do anything
-                var pbi = fsm.GetComponent<PersistentBoolItem>();
-                if (pbi != null && pbi.persistentBoolData.activated)
-                    return;
-
-                //attach our own
-                battleManager = fsm.gameObject.AddComponent<BattleManager>();
-
-                //set it up
-                battleManager.Setup(this, fsm, pbi);
-            }
+            //might want to notify the loaded logics?
         }
 
         EnemyRandomizerDatabase LoadDatabase(string fileName)
@@ -369,14 +323,6 @@ namespace EnemyRandomizerMod
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Invoked after scene change, so everything should be gone anyway
-        /// </summary>
-        void ClearBattleManagerBeforeSceneLoad()
-        {
-            battleManager = null;
         }
 
         public bool IsInGameScene()

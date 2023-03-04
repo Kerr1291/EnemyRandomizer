@@ -136,6 +136,7 @@ namespace EnemyRandomizerMod
 
             if (!isReloading)
             {
+                BattleManager.Init();
                 enemyReplacer.Setup(preloadedObjects);
                 LoadLogics();
             }
@@ -275,12 +276,18 @@ namespace EnemyRandomizerMod
                 return;
 
             enemyReplacer.OnEnemyDeathEvent(enemyDeathEffects.gameObject);
+            BattleManager.OnEnemyDeathEvent(enemyDeathEffects.gameObject);
         }
 
         bool MODHOOK_OnHealthManagerObjectEnabled(GameObject healthManagerObject, bool isAlreadyDead)
         {
             if (isAlreadyDead)
                 return isAlreadyDead;
+
+            if(!BattleManager.DidSceneCheck)
+            {
+                BattleManager.DoSceneCheck(healthManagerObject);
+            }
 
             enemyReplacer.OnEnemyLoaded(healthManagerObject);
 
@@ -290,6 +297,8 @@ namespace EnemyRandomizerMod
         string MODHOOK_BeforeSceneLoad(string sceneName)
         {
             enemyReplacer.OnBeforeSceneLoad();
+
+            BattleManager.DidSceneCheck = false;
 
             return sceneName;
         }
@@ -317,6 +326,12 @@ namespace EnemyRandomizerMod
         void ONHOOK_PlayMakerFSM_OnEnable(On.PlayMakerFSM.orig_OnEnable orig, PlayMakerFSM fsm)
         {
             orig(fsm);
+
+            if (BattleManager.Instance.Value == null && BattleManager.IsBattleManager(fsm.gameObject))
+            {
+                BattleManager.LoadFromFSM(fsm);
+            }
+
             enemyReplacer.OnPlaymakerFSMEnabled(fsm);
         }
 
