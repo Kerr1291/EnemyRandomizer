@@ -37,8 +37,9 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\ModdingAPIWin\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="EnemyRandomizerDB">
-      <HintPath>..\..\..\EnemyRandomizerDB\EnemyRandomizerDB\EnemyRandomizerDB\Library\EnemyRandomizerDB.dll</HintPath>
+    <Reference Include="EnemyRandomizerDB, Version=2023.0.8441.24505, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\EnemyRandomizerDB\EnemyRandomizerDB\EnemyRandomizerDB\bin\Library\EnemyRandomizerDB.dll</HintPath>
     </Reference>
     <Reference Include="MMHOOK_Assembly-CSharp">
       <HintPath>..\..\..\ModdingAPIWin\MMHOOK_Assembly-CSharp.dll</HintPath>
@@ -120,6 +121,7 @@
     <Compile Include="Mod\BattleStateMachine.cs" />
     <Compile Include="Mod\DELETE_ME2.cs" />
     <Compile Include="Mod\DELETE_ME.cs" />
+    <Compile Include="Mod\ObjectMetadata.cs" />
     <Compile Include="Mod\EnemyRandomizerDebug.cs" />
     <Compile Include="Mod\EnemyReplacer.cs" />
     <Compile Include="Mod\Common\Containers\ArrayGrid.cs" />

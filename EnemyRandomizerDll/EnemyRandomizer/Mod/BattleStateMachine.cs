@@ -223,7 +223,14 @@ namespace EnemyRandomizerMod
             //when everything is dead
             if(!updatedSomething)
             {
-                if (GameObject.FindObjectsOfType<BattleManagedObject>().Length <= 0)
+                var infos = GameObject.FindObjectsOfType<BattleManagedObject>().Select(x =>
+                {
+                    var info = new ObjectMetadata();
+                    info.Setup(x.gameObject);
+                    return info;
+                }).ToList();
+
+                if (infos.Count < 0 || !infos.Any(x => x.IsVisible))
                     OpenGates();
             }
         }

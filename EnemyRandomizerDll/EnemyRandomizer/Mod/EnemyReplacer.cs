@@ -13,6 +13,8 @@ namespace EnemyRandomizerMod
 {
     public class EnemyReplacer
     {
+        static bool DEBUG_WARN_IF_NOT_FOUND = true;
+
         public EnemyRandomizerDatabase database;
         public IRandomizerLogic currentLogic;
 
@@ -30,8 +32,15 @@ namespace EnemyRandomizerMod
             database.Finalize(null);
         }
 
+        public EnemyRandomizerDatabase GetCurrentDatabase()
+        {
+            return database;
+        }
+
         public void OnModEnabled()
         {
+            EnemyRandomizerDatabase.GetDatabase -= GetCurrentDatabase;
+            EnemyRandomizerDatabase.GetDatabase += GetCurrentDatabase;
             SetLogic(currentLogic);
         }
 
@@ -39,6 +48,8 @@ namespace EnemyRandomizerMod
         {
             if (currentLogic != null && IsInGameScene())
                 currentLogic.Disable();
+
+            EnemyRandomizerDatabase.GetDatabase -= GetCurrentDatabase;
         }
 
         public void SetLogic(IRandomizerLogic newLogic)
@@ -90,15 +101,26 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public static (string, string)[] SpecialBattleManagedEnemies = new (string, string)[]
+        public static List<string> DestroyOnLoadAlways = new List<string>()
         {
-            (@"Crossroads_04", @"Giant Fly"),
-            (@"Crossroads_04", @"_Enemies/Fly Spawn"),
-            (@"Crossroads_09", @"_Enemies/Mawlek Body"),
+            "Fly Spawn",
+            "Hatcher Spawn",
         };
 
         public void OnEnemyLoaded(GameObject oldEnemy)
         {
+            if(DestroyOnLoadAlways.Any(x => oldEnemy.GetSceneHierarchyPath().Contains(x)))
+            {
+                if (oldEnemy.name.Contains("Fly"))
+                {
+                    var battleManagedObject = oldEnemy.AddComponent<BattleManagedObject>();
+                    battleManagedObject.Setup(oldEnemy);
+                    BattleManager.StateMachine.Value.RegisterEnemyDeath(battleManagedObject);
+                }
+                GameObject.Destroy(oldEnemy);
+                return;
+            }
+
             if (currentLogic != null)
             {
                 //special hack to avoid having custom spawned enemies replaced
@@ -106,58 +128,34 @@ namespace EnemyRandomizerMod
                 {
                     var olde = oldEnemy.GetOrAddComponent<ManagedObject>();
                     olde.Setup(oldEnemy);
-                    olde.replaced = true;//flag replaced anyway
+                    olde.replaced = true;//flag as replaced anyway
                     EnemyRandomizer.bypassNextRandomizeEnemy = false;
                 }
 
                 string key = EnemyRandomizerDatabase.ToDatabaseKey(oldEnemy.name);
-                if (database.Enemies.ContainsKey(key))
+                if (!string.IsNullOrEmpty(key) && database.Enemies.ContainsKey(key))
                 {
-                    var managedObject = oldEnemy.GetComponent<ManagedObject>();
-                    var battleManagedObject = oldEnemy.GetComponent<BattleManagedObject>();
+                    ObjectMetadata info = new ObjectMetadata();
+                    info.Setup(oldEnemy);
 
-                    if (managedObject != null)
+                    if (info.RandoObject != null)
                     {
                         //don't re-replace this
-                        if (managedObject.replaced)
+                        if (info.RandoObject.replaced)
                             return;
 
                         //about to be replaced....
-                        managedObject.replaced = true;
+                        info.RandoObject.replaced = true;
                     }
                     else// if (managedObject == null)
                     {
-                        string path = oldEnemy.GetSceneHierarchyPath();
-                        bool isBattleManagedEnemy = path.Split('/').Any(x => BattleManager.battleControllers.Any(y => x.Contains(y)));
-
-                        if (!isBattleManagedEnemy)
-                        {
-                            var oldHm = oldEnemy.GetComponent<HealthManager>();
-                            var battleScene = oldHm.GetFieldValue<GameObject>("battleScene");
-                            if (oldHm != null && battleScene != null)
-                            {
-                                isBattleManagedEnemy = true;
-                                //TODO: test
-                                //oldHm.SetBattleScene(null);
-                                //oldEnemy.SetActive(false);
-                            }
-
-                            if (!isBattleManagedEnemy
-                                && SpecialBattleManagedEnemies.Any(x => x.Item1 == oldEnemy.scene.name && path.Contains(x.Item2)))
-                            {
-                                isBattleManagedEnemy = true;
-                                //oldEnemy.SetActive(false);
-                            }
-                        }
+                        bool isBattleManagedEnemy = info.IsBattleEnemy;
 
                         if (isBattleManagedEnemy)
                         {
                             //don't replce these directly on load
-                            battleManagedObject = oldEnemy.AddComponent<BattleManagedObject>();
+                            var battleManagedObject = oldEnemy.AddComponent<BattleManagedObject>();
                             battleManagedObject.Setup(oldEnemy);
-                            managedObject = battleManagedObject;
-
-                            //wait to replace later---jk replace now
                             OnEnemyLoaded(oldEnemy);
                             return;
                         }
@@ -165,7 +163,7 @@ namespace EnemyRandomizerMod
 
                     GameObject newEnemy = currentLogic.ReplaceEnemy(oldEnemy);
                     ManagedObject newManagedObject = null;
-                    if (battleManagedObject == null)
+                    if (info.BattleRandoObject == null)
                     {
                         newManagedObject = newEnemy.AddComponent<ManagedObject>();
                     }
@@ -184,6 +182,11 @@ namespace EnemyRandomizerMod
                         GameObject.Destroy(oldEnemy);
                     }
                 }
+                else
+                {
+                    if (DEBUG_WARN_IF_NOT_FOUND)
+                        Dev.LogError($"ERROR: {key} was not found in the database!");
+                }
             }
         }
 
@@ -192,7 +195,7 @@ namespace EnemyRandomizerMod
             if (currentLogic != null && original.GetComponent<ManagedObject>() == null)
             {
                 string key = EnemyRandomizerDatabase.ToDatabaseKey(original.name);
-                if (database.Effects.ContainsKey(key))
+                if (!string.IsNullOrEmpty(key) && database.Effects.ContainsKey(key))
                 {
                     GameObject newEffect = currentLogic.ReplacePooledObject(original);
                     var mo = newEffect.AddComponent<ManagedObject>();
@@ -213,7 +216,7 @@ namespace EnemyRandomizerMod
             if (currentLogic != null && potentialHazard.GetComponent<ManagedObject>() == null)
             {
                 string key = EnemyRandomizerDatabase.ToDatabaseKey(potentialHazard.name);
-                if (database.Hazards.ContainsKey(key))
+                if (!string.IsNullOrEmpty(key) && database.Hazards.ContainsKey(key))
                 {
                     GameObject newHazard = currentLogic.ReplaceHazardObject(potentialHazard.gameObject);
                     var mo = newHazard.AddComponent<ManagedObject>();
@@ -241,7 +244,7 @@ namespace EnemyRandomizerMod
             if (currentLogic != null && item.GetComponent<ManagedObject>() == null)
             {
                 string key = EnemyRandomizerDatabase.ToDatabaseKey(item.name);
-                if (database.Objects.ContainsKey(key))
+                if (!string.IsNullOrEmpty(key) && database.Objects.ContainsKey(key))
                 {
                     var customData = currentLogic.ReplacePersistentBoolItemData(item);
                     var mo = item.gameObject.AddComponent<ManagedObject>();
@@ -268,7 +271,7 @@ namespace EnemyRandomizerMod
                 if (item.persistentBoolData != null)
                 {
                     string key = EnemyRandomizerDatabase.ToDatabaseKey(item.name);
-                    if (database.Objects.ContainsKey(key))
+                    if (!string.IsNullOrEmpty(key) && database.Objects.ContainsKey(key))
                     {
                         var customData = currentLogic.ReplacePersistentBoolItemSetMyID(item);
                         var mo = item.gameObject.AddComponent<ManagedObject>();

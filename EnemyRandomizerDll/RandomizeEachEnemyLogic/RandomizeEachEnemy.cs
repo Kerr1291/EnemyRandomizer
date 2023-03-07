@@ -14,6 +14,16 @@ namespace EnemyRandomizerMod
 
         public override string Info => "Randomizes each enemy in the game to something different.";
 
+        public override void Setup(EnemyReplacer replacer)
+        {
+            base.Setup(replacer);
+        }
+
+        public override void OnStartGame(EnemyRandomizerPlayerSettings settings)
+        {
+            base.OnStartGame(settings);
+        }
+
         protected override void SetupRNGForReplacement(string enemyName, string sceneName)
         {
             base.SetupRNGForReplacement(enemyName, sceneName);
