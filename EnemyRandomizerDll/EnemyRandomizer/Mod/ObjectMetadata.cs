@@ -49,6 +49,7 @@ namespace EnemyRandomizerMod
         public bool IsVisible { get; protected set; }
         public bool IsActive { get; protected set; }
         public bool IsSummonedByEvent { get; protected set; }
+        public bool IsEnemySpawner { get; protected set; }
         public Vector2 ObjectSize { get; protected set; }
         public Vector3 ObjectPosition { get; protected set; }
 
@@ -180,6 +181,8 @@ namespace EnemyRandomizerMod
             IsTinker = sceneObject.GetComponentInChildren<TinkEffect>() != null;
             IsMobile = !DefaultMetadata.Static.Contains(DatabaseName);
             IsSmasher = sceneObject.GetDirectChildren().Any(x => x.name == "Smasher");//can use this child object layer to enable smashing of platforms/walls
+            IsSummonedByEvent = DefaultMetadata.IsSummonedByEvent.Contains(DatabaseName);
+            IsEnemySpawner = DefaultMetadata.SpawnerEnemies.Contains(DatabaseName);
 
             if (!IsBattleEnemy)
             {
@@ -191,10 +194,19 @@ namespace EnemyRandomizerMod
 
                 if (!IsBattleEnemy)
                 {
-                    bool hasScene = DefaultMetadata.BattleEnemies.TryGetValue(SceneName, out var enemies);
+                    bool hasScene = DefaultMetadata.BattleEnemies.TryGetValue("ANY", out var enemies);
                     if (hasScene)
                     {
-                        IsBattleEnemy = enemies.Contains(ScenePath);
+                        IsBattleEnemy = enemies.Contains(DatabaseName);
+                    }
+
+                    if (!hasScene)
+                    {
+                        hasScene = DefaultMetadata.BattleEnemies.TryGetValue(SceneName, out var enemies2);
+                        if (hasScene)
+                        {
+                            IsBattleEnemy = enemies2.Contains(ScenePath);
+                        }
                     }
                 }
             }
@@ -246,10 +258,6 @@ namespace EnemyRandomizerMod
 
             //TODO: come up with a way to accurately check this
             //IsActive = ???
-
-
-            //TODO: check the state machine? to see if this is meant to be summoned
-            //IsSummonedByEvent = ???
         }
 
 
@@ -264,37 +272,275 @@ namespace EnemyRandomizerMod
     public static class DefaultMetadata
     {
         public static List<string> Bossses = new List<string>() {
-            "M",
-            "M2",
+            "Giant Fly",
+            "Zote Boss",
+            "Buzzer R",
+            "Ghost Warrior Slug",
+            "White Defender",
+            "Jellyfish GG",
+            "Giant Buzzer Col",
+            "Mega Fat Bee",
+            "Lobster",
+            "Lancer",
+            "Mawlek Body",
+            "False Knight New",
+            "Mage Lord",
+            "Mage Lord Phase2",
+            "Mage Lord",
+            "Mage Lord Phase2",
+            "Black Knight",
+            "Jar Collector",
+            "Hornet Boss 1",
+            "Giant Buzzer",
+            "Mega Moss Charger",
+            "Ghost Warrior No Eyes",
+            "Ghost Warrior Hu",
+            "Mantis Traitor Lord",
+            "Grave Zombie",
+            "Mega Zombie Beam Miner",
+            "Zombie Beam Miner",
+            "Zombie Beam Miner Rematch",
+            "Mimic Spider",
+            "Hornet Boss 2",
+            "Infected Knight",
+            "Dung Defender",
+            "Fluke Mother",
+            "Ghost Warrior Galien",
+            "Hive Knight",
+            "Grimm Boss",
+            "Nightmare Grimm Boss",
+            "False Knight Dream",
+            "Dream Mage Lord",
+            "Dream Mage Lord Phase2",
+            "Lost Kin",
+            "Grey Prince",
+            "Radiance",
+            "Hollow Knight Boss",
+            "HK Prime",
+            "Pale Lurker",
+            "Oro",
+            "Mato",
+            "Sheo Boss",
+            "Absolute Radiance",
+            "Sly Boss",
+            "Hornet Nosk",
+            };
+
+        public static List<string> IsWallMounted = new List<string>() {
+            "Ceiling Dropper",
+            "Ceiling Dropper Col",
+            "Mantis Flyer Child",
+            "Plant Trap",
+            "Plant Turret",
+            "Plant Turret Right",
+            "Mushroom Turret",
+            "Laser Turret Frames",
             };
 
         public static List<string> Flying = new List<string>() {
-            "M",
-            "M2",
+            "Flamebearer Small",
+            "Flamebearer Med",
+            "Flamebearer Large",
+            "Mosquito",
+            "Bursting Bouncer",
+            "Super Spitter",
+            "Buzzer Col",
+            "Giant Fly",
+            "Blobble",
+            "Colosseum_Armoured_Mosquito",
+            "Colosseum_Flying_Sentry",
+            "Angry Buzzer",
+            "Mantis Heavy Flyer",
+            "Fly",
+            "Spitter R",
+            "Jellyfish",
+            "Lil Jellyfish",
+            "Mantis Flyer Child",
+            "Shade Sibling",
+            "Colosseum_Armoured_Mosquito R",
+            "Super Spitter R",
+            "Buzzer",
+            "Mega Fat Bee",
+            "Giant Buzzer Col",
+            "Mage",
+            "Electric Mage",
+            "Spitter",
+            "Hatcher",
+            "Ruins Sentry",
+            "Ruins Flying Sentry",
+            "Ruins Flying Sentry Javelin",
+            "Mage Balloon",
+            "Mage Lord",
+            "Mage Lord Phase2",
+            "Pigeon",
+            "Acid Flyer",
+            "Fat Fly",
+            "Lazy Flyer Enemy",
+            "Jellyfish Baby",
+            "Moss Flyer",
+            "Ghost Warrior Marmu",
+            "Mega Jellyfish",
+            "Ghost Warrior Xero",
+            "Crystal Flyer",
+            "Centipede Hatcher",
+            "Blow Fly",
+            "Bee Hatchling Ambient",
+            "Ghost Warrior Markoth",
+            "Spider Flyer",
+            "Parasite Balloon",
+            "Inflater",
+            "Fluke Fly",
+            "White Palace Fly",
+            "Bee Stinger",
+            "Big Bee",
+            "Zote Balloon",
+            "Radiance",
+            "Dream Mage Lord",
+            "Dream Mage Lord Phase2",
+            "Zote Balloon Ordeal",
+            "Zote Salubra",
+            "Zote Fluke",
+            "Hornet Nosk",
+            "Fungus Flyer",
             };
 
         public static List<string> Crawling = new List<string>() {
             "Crawler",
-            "M2",
+            "Crystal Crawler",
+            "Mines Crawler",
             };
 
         public static List<string> Climbing = new List<string>() {
-            "M",
-            "M2",
+            "Tiny Spider",
+            "Climber",
+            "Crystallised Lazer Bug",
+            "Abyss Crawler",
             };
 
         public static List<string> Static = new List<string>() {
-            "M",
-            "M2",
+            "Blocker",
+            "Egg Sac",
+            "Plant Trap",
+            "Mawlek Turret",
+            "Mawlek Turret Ceiling",
+            "fluke_baby_01",
+            "fluke_baby_02",
+            "fluke_baby_03",
+            "Zote Turret",
+            };
+
+        public static List<string> IsSummonedByEvent = new List<string>() {
+            "Giant Fly Col",
+            "Buzzer Col",
+            "Colosseum_Armoured_Roller",
+            "Colosseum_Miner",
+            "Colosseum_Armoured_Mosquito",
+            "Colosseum_Flying_Sentry",
+            "Ceiling Dropper Col",
+            "Colosseum_Worm",
+            "Mawlek Col",
+            "Colosseum Grass Hopper",
+            "Hatcher Baby",
+            "Zombie Spider 2",
+            "Zombie Spider 1",
+            "Flukeman Top",
+            "Flukeman Bot",
+            "Colosseum_Armoured_Roller R",
+            "Colosseum_Armoured_Mosquito R",
+            "Giant Buzzer Col",
+            "Mega Fat Bee",
+            "Lobster",
+            "Mage Knight",
+            "Mage",
+            "Electric Mage",
+            "Mender Bug",
+            "Mawlek Body",
+            "False Knight New",
+            "Mage Lord",
+            "Mage Lord Phase2",
+            "Black Knight",
+            "Moss Knight",
+            "Jar Collector",
+            "Giant Buzzer",
+            "Mega Moss Charger",
+            "Ghost Warrior No Eyes",
+            "Ghost Warrior Hu",
+            "Mantis Traitor Lord",
+            "Mega Zombie Beam Miner",
+            "Zombie Beam Miner",
+            "Zombie Beam Miner Rematch",
+            "Mimic Spider",
+            "Hornet Boss 2",
+            "Infected Knight",
+            "Dung Defender",
+            "Fluke Mother",
+            "Ghost Warrior Galien",
+            "Hive Knight",
+            "Grimm Boss",
+            "Nightmare Grimm Boss",
+            "False Knight Dream",
+            "Dream Mage Lord",
+            "Dream Mage Lord Phase2",
+            "Lost Kin",
+            "Grey Prince",
+            "Radiance",
+            "Hollow Knight Boss",
+            "HK Prime",
+            "Pale Lurker",
+            "Oro",
+            "Mato",
+            "Sheo Boss",
+            "Absolute Radiance",
+            "Sly Boss",
+            "Hornet Nosk",
+            };
+
+        public static List<string> AlwaysDeleteObject = new List<string>() {
+            "Fly Spawn",
+            "Hatcher Spawn",
+            "Parasite Balloon Spawner",
+            };
+
+        public static List<string> SpawnerEnemies = new List<string>() {
+            "Zombie Hornhead Sp",
+            "Zombie Runner Sp",
+            "Centipede Hatcher",
+            "Flukeman",
+            "Zombie Hive",
+            "fluke_baby_01",
+            "fluke_baby_02",
+            "fluke_baby_03",
+            "Fluke Mother",
+            "Hatcher",
+            "Giant Fly",
             };
 
         public static Dictionary<string, List<string>> BattleEnemies = new Dictionary<string, List<string>>()
         {
-            {"SCENE",
+            {"ANY",
                 new List<string>()
                 { 
-                    "PATH1",
-                    "PATH2"
+                    "Giant Fly Col",
+                    "Buzzer Col",
+                    "Colosseum_Armoured_Roller",
+                    "Colosseum_Armoured_Mosquito",
+                    "Colosseum_Flying_Sentry",
+                    "Colosseum_Miner",
+                    "Ceiling Dropper Col",
+                    "Colosseum_Worm",
+                    "Mawlek Col",
+                    "Colosseum Grass Hopper",
+                    "Colosseum_Armoured_Roller R",
+                    "Colosseum_Armoured_Mosquito R",
+                    "Giant Buzzer Col",
+                    "Mega Fat Bee",
+                    "Mage Knight",
+                    "Electric Mage",
+                    "Giant Buzzer",
+                    "Mawlek Body",
+                    "False Knight New",
+                    "Jar Collector",
+                    "Black Knight",
                 } 
             }
         };

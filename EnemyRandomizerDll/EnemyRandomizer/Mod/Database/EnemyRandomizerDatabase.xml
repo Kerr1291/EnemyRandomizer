@@ -3354,7 +3354,7 @@
     </SceneData>
   </scenes>
   <enemyNames>
-	<string>Flamebearer Spawn</string>
+	  <string>Flamebearer Spawn</string>
     <string>Flamebearer Med</string>
     <string>Flamebearer Small</string>
     <string>Mosquito</string>
@@ -3560,6 +3560,7 @@
     <string>Hornet Nosk</string>
   </enemyNames>
   <hazardNames>
+    <string>Laser Turret Frames</string>
     <string>Gas Explosion Recycle M</string>
     <string>Gas Explosion Recycle L</string>
     <string>Shot Mawlek</string>

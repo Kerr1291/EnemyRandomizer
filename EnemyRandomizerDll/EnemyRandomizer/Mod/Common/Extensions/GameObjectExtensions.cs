@@ -14,20 +14,20 @@ namespace nv
 {
     public static class GameObjectExtensions
     {
-        public static bool IsVisible(this GameObject enemy)
-        {
-            Collider2D collider = enemy.GetComponent<Collider2D>();
-            MeshRenderer renderer = enemy.GetComponent<MeshRenderer>();
-            if (collider == null && renderer == null)
-                return false;
+        //public static bool IsVisible(this GameObject enemy)
+        //{
+        //    Collider2D collider = enemy.GetComponent<Collider2D>();
+        //    MeshRenderer renderer = enemy.GetComponent<MeshRenderer>();
+        //    if (collider == null && renderer == null)
+        //        return false;
 
-            if (collider != null && renderer == null)
-                return collider.enabled;
-            else if (collider == null && renderer != null)
-                return renderer.enabled;
-            else //if (collider != null && renderer != null)
-                return collider.enabled && renderer.enabled;
-        }
+        //    if (collider != null && renderer == null)
+        //        return collider.enabled;
+        //    else if (collider == null && renderer != null)
+        //        return renderer.enabled;
+        //    else //if (collider != null && renderer != null)
+        //        return collider.enabled && renderer.enabled;
+        //}
 
         public static bool IsTouchableType(this GameObject touchableType)
         {

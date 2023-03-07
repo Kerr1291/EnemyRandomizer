@@ -113,6 +113,7 @@ namespace EnemyRandomizerMod
             {
                 if (oldEnemy.name.Contains("Fly"))
                 {
+                    //TEST: see if this removes the count from the battle scene manager
                     var battleManagedObject = oldEnemy.AddComponent<BattleManagedObject>();
                     battleManagedObject.Setup(oldEnemy);
                     BattleManager.StateMachine.Value.RegisterEnemyDeath(battleManagedObject);
@@ -185,7 +186,7 @@ namespace EnemyRandomizerMod
                 else
                 {
                     if (DEBUG_WARN_IF_NOT_FOUND)
-                        Dev.LogError($"ERROR: {key} was not found in the database!");
+                        Dev.LogError($"ERROR: {key} was not found in the database when searching for {oldEnemy.name}!");
                 }
             }
         }
