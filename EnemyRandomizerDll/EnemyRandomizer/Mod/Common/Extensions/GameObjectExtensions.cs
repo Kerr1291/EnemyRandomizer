@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -374,6 +375,55 @@ namespace nv
             }
 #endif
             yield break;
+        }
+
+
+        public static GameObject GetBattleScene(this HealthManager healthManager)
+        {
+            FieldInfo fi = typeof(HealthManager).GetField("battleScene", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fi != null)
+            {
+                return fi.GetValue(healthManager) as GameObject;
+            }
+
+            return null;
+        }
+
+        public static GameObject GetCorpseFromDeathEffects(this EnemyDeathEffects e)
+        {
+            var rootType = e.GetType();
+
+            System.Reflection.FieldInfo GetCorpseField(Type t)
+            {
+                return t.GetField("corpse", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            }
+
+            while (rootType != typeof(EnemyDeathEffects) && rootType != null)
+            {
+                if (GetCorpseField(rootType) != null)
+                    break;
+                rootType = rootType.BaseType;
+            }
+
+            if (rootType == null)
+                return null;
+
+            return (GameObject)GetCorpseField(rootType).GetValue(e);
+        }
+
+        public static GameObject GetCorpsePrefabFromDeathEffects(this EnemyDeathEffects e)
+        {
+            var rootType = e.GetType();
+
+            while (rootType != typeof(EnemyDeathEffects) && rootType != null)
+            {
+                rootType = rootType.BaseType;
+            }
+
+            if (rootType == null)
+                return null;
+
+            return (GameObject)rootType.GetField("corpsePrefab", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(e); ;
         }
 
         public static GameObject FindGameObject(string pathName)
