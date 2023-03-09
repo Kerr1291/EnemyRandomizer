@@ -1210,7 +1210,15 @@ echo Copying build from
 echo %25DLL_SOURCE%25
 echo to
 echo %25MOD_DEST%25
-copy %25DLL_SOURCE%25 %25MOD_DEST%25</PostBuildEvent>
+copy %25DLL_SOURCE%25 %25MOD_DEST%25
+SET XML_SOURCE="$(TargetDir)\Library\XMLResources\EnemyRandomizerDatabase.xml"
+SET MOD_DEST="K:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\Mods\EnemyRandomizer\EnemyRandomizerDatabase.xml"
+echo Copying XML database from
+echo %25XML_SOURCE%25
+echo to
+echo %25MOD_DEST%25
+copy %25XML_SOURCE%25 %25MOD_DEST%25
+PAUSE</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

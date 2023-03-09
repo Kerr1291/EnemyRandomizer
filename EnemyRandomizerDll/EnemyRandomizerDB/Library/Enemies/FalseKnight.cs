@@ -20,7 +20,7 @@ namespace EnemyRandomizerMod
     public class FalseKnightNewControl : MonoBehaviour
     {
         void OnEnable()
-        {
+        {  
 
         }
     }

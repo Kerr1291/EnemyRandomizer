@@ -14,7 +14,7 @@ using Dev = Modding.Logger;
 namespace EnemyRandomizerMod
 {
 //    internal static class DatabaseExtensions
-//    {
+//    {  
 //        internal static string GetSceneHierarchyPath(this GameObject gameObject)
 //        {
 //            if (gameObject == null)
