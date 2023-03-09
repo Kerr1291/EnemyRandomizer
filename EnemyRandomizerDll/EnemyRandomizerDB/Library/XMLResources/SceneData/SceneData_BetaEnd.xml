@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SceneData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="BetaEnd">
+  <sceneObjects>
+    <SceneObject path="BetaEndPrompt">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>RequestFadeSceneIn</string>
+        <string>BetaEndPrompt</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="BetaEndPrompt/Fader">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleSpriteFade</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_SceneManager">
+      <components>
+        <string>Transform</string>
+        <string>SceneManager</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+  </sceneObjects>
+</SceneData>

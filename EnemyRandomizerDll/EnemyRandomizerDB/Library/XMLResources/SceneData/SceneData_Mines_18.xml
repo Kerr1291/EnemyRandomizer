@@ -1,0 +1,4289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SceneData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Mines_18">
+  <sceneObjects>
+    <SceneObject path="_Camera Lock Zones">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Camera Lock Zones/CameraLockArea">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="BossLoader">
+      <components>
+        <string>Transform</string>
+        <string>SceneAdditiveLoadConditional</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Areas">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_NPCs">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_additions_02_0001_a (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (1)">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (1)/Beam Ball">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (1)/Beam Ball/End Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (1)/Beam">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (1)/Beam/Beam Glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (1)/Beam Impact">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (1)/Beam Impact/Impact Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (1)/Beam Impact/Init Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (1)/Beam Impact/Burn Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="crystal_spike_fg_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Items">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="crystal_spike_fg_02 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>BoxCollider2D</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+        <string>TinkEffect</string>
+        <string>NonThunker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate/Dust">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate/Close Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate/Raise Dust">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dummy Bench">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap">
+      <components>
+        <string>Transform</string>
+        <string>tk2dTileMap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_SceneManager">
+      <components>
+        <string>Transform</string>
+        <string>SceneManager</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (4)">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (4)/Beam Ball">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (4)/Beam Ball/End Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (4)/Beam">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (4)/Beam/Beam Glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (4)/Beam Impact">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (4)/Beam Impact/Impact Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (4)/Beam Impact/Init Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (4)/Beam Impact/Burn Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="crystal_spike_shadow (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mine_strut (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="crystal_spike_shadow (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Darkness Region">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TrackTriggerObjects</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate (1)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>BoxCollider2D</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+        <string>TinkEffect</string>
+        <string>NonThunker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate (1)/Dust">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate (1)/Close Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate (1)/Raise Dust">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="crystal_spike_shadow (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_additions_02_0001_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props/RestBench">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>RestBench</string>
+        <string>PlayMakerFSM</string>
+        <string>RespawnMarker</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props/RestBench/Lit">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props/RestBench/Detect Range">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props/RestBench/Light">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props/RestBench/Particle B">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props/RestBench/Particle F">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props/RestBench/Particle Rest">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props/RestBench/Light Small">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props/RestBench/Prompt Marker">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props/RestBench/Heal Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates/right1">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>GateSnap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates/right1/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerCollisionEnter2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates/right1/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates/right1/haze2 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates/left1">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>GateSnap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates/left1/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerCollisionEnter2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates/left1/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates/left1/haze2 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates/top1">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>GateSnap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates/top1/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates/top1/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates/top1/haze2 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_additions_02_0001_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mine_strut">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Managers">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Managers/PlayMaker Unity 2D">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerUnity2d</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>PlayMakerCollisionExit2D</string>
+        <string>PlayMakerCollisionStay2D</string>
+        <string>PlayMakerTriggerEnter2D</string>
+        <string>PlayMakerTriggerExit2D</string>
+        <string>PlayMakerTriggerStay2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Markers">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Markers/Hollow_Shade Marker">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Markers/Hollow_Shade Marker/HS_Image">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (2)">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (2)/Beam Ball">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (2)/Beam Ball/End Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (2)/Beam">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (2)/Beam/Beam Glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (2)/Beam Impact">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (2)/Beam Impact/Impact Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (2)/Beam Impact/Init Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (2)/Beam Impact/Burn Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Enemies">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/black_solid 413">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/black_solid 414">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/black_solid 415">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/brk_barrel_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/brk_barrel_03/barrel_pieces_burst (4)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+        <string>SetZRandom</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/brk_barrel_03/Piece Barrel (1)">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>SpriteRenderer</string>
+        <string>SpinSelfSimple</string>
+        <string>SetZRandom</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/brk_barrel_03/Pt Fruit">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+        <string>SetZRandom</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel/crystal_barrel_02_tall">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel/barrel_pieces_burst (2)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel/Fung Top Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelfSimple</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel/Fung Top Wide (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelfSimple</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel/Fung Top Wide (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelfSimple</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel/Pt Crystal (2)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel/mine_crystal_pile_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel/mine_crystal_pile_07">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel 1">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel 1/crystal_barrel_02_tall">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel 1/barrel_pieces_burst (2)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel 1/Fung Top Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelfSimple</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel 1/Fung Top Wide (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelfSimple</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel 1/Fung Top Wide (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelfSimple</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel 1/Pt Crystal (2)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel 1/mine_crystal_pile_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel 1/mine_crystal_pile_07">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel_02">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel_02/mines_cryst_barrel_short">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel_02/mines_cryst_barrel_short/crystal_barrel_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel_02/mines_cryst_barrel_short/Fung Top Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel_02/mines_cryst_barrel_short/Fung Top Wide (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel_02/mines_cryst_barrel_short/Pt Crystal (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel_02/mines_cryst_barrel_short/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel_02/mines_cryst_barrel_short/Active/mine_crystal_pile_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel_02/mines_cryst_barrel_short/Active/mine_crystal_pile_07">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel_03/Fung Top Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel_03/barrel_pieces_burst">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel_03/Fung Top Wide (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel_03/Pt Crystal (2)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystal_barrel_03/mine_crystal_pile_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/fog 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/fog 3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/fog 4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/fog 5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/haze2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/haze2 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/haze2 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_rail_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_rail_01/mine_rail_joint">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_rail_01 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_rail_01 (1)/mine_rail_joint">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_rail_01 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_rail_01 (2)/mine_rail_joint">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_additions_02_0001_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_additions_02_0001_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_cart_01">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_cart_01/Mines_Layered_0047_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_cart_01/Mines_Layered_0048_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_cart_02">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_cart_02/Mines_Layered_0047_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_cart_02/Mines_Layered_0048_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_02">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_02/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_02/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_03">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_03/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_03/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_03/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_03 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_03 (1)/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_03 (1)/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_03 (1)/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_04">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_04/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_04/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_05">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_05/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_05/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_05/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_06">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_06/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_06/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_06/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_07">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_07/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_07/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_08">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_08/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_08/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_09">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_09/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_09/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_09/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_10">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_10/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_10/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_10/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_11">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_11/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_11/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_12">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_12/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_12/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_13">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_13/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_13/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_13/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_14">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_14/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_14/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_14/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_15">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_15/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_15/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_16">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_16/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_16/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_17">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_17/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_17/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_17/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_18">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_18/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_18/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_19">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_19/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_19/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_19/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_20">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_20/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_20/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_20/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_21">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_21/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_21/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_22">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_22/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_22/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_23">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_23/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_23/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_23/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_24">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_24/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_24/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_24/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_25">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_25/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_25/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_26">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_26/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_26/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_27">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_27/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_27/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_27/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_28">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_28/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_28/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_28/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_29">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_29/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_29/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (1)/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (1)/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (1)/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (2)/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (2)/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (2)/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (3)/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (3)/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (4)/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (4)/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (6)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (6)/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (6)/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (6)/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (7)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (7)/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (7)/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (7)/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (8)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (8)/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (8)/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_30 (8)/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_32">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_32/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_32/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_33">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_33/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_33/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_34">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_34/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_34/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_36">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_36/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_36/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_36/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_38 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_38 (2)/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_38 (2)/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_38 (2)/mines_floor_rocks_0003_Layer-1 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_38 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_38 (3)/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_38 (3)/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_38 (3)/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_38 (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_38 (4)/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_38 (4)/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_38 (4)/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_39">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_39/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_39/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_39/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_40">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_40/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_40/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_40/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_41">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_41/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_41/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_42">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_42/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_42/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_43">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_43/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_43/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_44">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_44/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_44/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_44/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_45">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_45/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_45/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_46">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_46/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_46/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_46/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_47">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_47/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_47/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_48">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_48/mines_floor_rocks_0003_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_48/mines_floor_rocks_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_48/wood_plank_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_49">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_49/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_49/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_50">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_50/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_50/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_51">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_51/mines_floor_rocks_0001_Layer-2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_floor_51/wood_plank_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_fog">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_furnace_01">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_furnace_01/Mines_Layered_0000_Layer-7">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_furnace_01/Mines_Layered_0005_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_furnace_01/Mines_Layered_0055_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_furnace_01/Mines_Layered_0056_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_furnace_02">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_furnace_02/Mines_Layered_0002_Layer-6">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_furnace_02/Mines_Layered_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_furnace_02/Mines_Layered_0004_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_furnace_02/Mines_Layered_0090_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_furnace_03">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_furnace_03/Mines_Layered_0001_Layer-8">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_furnace_03/Mines_Layered_0057_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_furnace_03/Mines_Layered_0058_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_furnace_03/Mines_Layered_0059_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_Layered_0021_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_Layered_0021_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_Layered_0021_a (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Mines_Layered_0021_a (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_particles">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_01">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_01/Mines_Layered_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_01/Mines_Layered_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_01/Mines_Layered_0038_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_01/Mines_Layered_0039_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_02">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_02/Mines_Layered_0033_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_02/Mines_Layered_0034_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_02/Mines_Layered_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_05">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_05/Mines_Layered_0022_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_05/Mines_Layered_0023_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_05/Mines_Layered_0024_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_05/Mines_Layered_0025_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_05/Mines_Layered_0026_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_06">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_06/Mines_Layered_0019_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_06/Mines_Layered_0020_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_12">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_12/Mines_Layered_0019_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_12/Mines_Layered_0020_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_12/Mines_Layered_0021_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_12/Mines_Layered_0020_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_13">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_13/Mines_Layered_0019_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_13/Mines_Layered_0020_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_13/Mines_Layered_0021_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_13/Mines_Layered_0020_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_16">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_16/Mines_Layered_0019_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_16/Mines_Layered_0020_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_16/Mines_Layered_0021_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_17">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_17/Mines_Layered_0021_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_18">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_18/Mines_Layered_0021_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_19">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_19/Mines_Layered_0020_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_19/Mines_Layered_0021_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_22">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_24">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_24/Mines_Layered_0019_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_24/Mines_Layered_0019_a 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_24/Mines_Layered_0019_a 2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_24/Mines_Layered_0019_a 3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_24/Mines_Layered_0019_a 4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_24/Mines_Layered_0019_a 5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_24/Mines_Layered_0020_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_24/Mines_Layered_0020_a (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_24/Mines_Layered_0020_a (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_24/Mines_Layered_0020_a (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_25">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_25/Mines_Layered_0019_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_25/Mines_Layered_0020_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_25/Mines_Layered_0021_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_25/Mines_Layered_0021_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_28">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_28/Mines_Layered_0082_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_28/Mines_Layered_0083_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_28/Mines_Layered_0084_b">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_29">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_29/Mines_Layered_0082_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_29/Mines_Layered_0083_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_29/Mines_Layered_0084_b">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_30">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_30/Mines_Layered_0082_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_30/Mines_Layered_0083_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_33">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_33/Mines_Layered_0083_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_34">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_34/Mines_Layered_0082_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_34/Mines_Layered_0083_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_34/Mines_Layered_0084_b">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_36">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_36/Mines_Layered_0082_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_36/Mines_Layered_0083_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_36/Mines_Layered_0084_b">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_37">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_37/Mines_Layered_0082_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_37/Mines_Layered_0083_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_37/Mines_Layered_0084_b">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_38">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_38/Mines_Layered_0082_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_38/Mines_Layered_0083_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_38/Mines_Layered_0084_b">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_39">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_39/Mines_Layered_0082_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_39/Mines_Layered_0083_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_39/Mines_Layered_0084_b">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_40">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_40/Mines_Layered_0082_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_40/Mines_Layered_0083_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_40/Mines_Layered_0084_b">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_42">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_42/Mines_Layered_0082_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_42/Mines_Layered_0083_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_rocks_42/Mines_Layered_0084_b">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_stalactites_01">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0016_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0006_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0007_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0007_a 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0016_a 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0006_a 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0006_a 2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0016_a 2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0007_a 2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0016_a 3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0016_a 4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0016_a 5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0016_a 6">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0016_a 7">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0016_a 8">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0016_a 9">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0016_a 10">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_strut_01/Mines_Layered_0016_a 11">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/miness_stalactites">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/miness_stalactites/roof_FG_rock_07_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/miness_stalactites/roof_FG_rock_07_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/miness_stalactites/roof_FG_rock_07_0003_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/miness_stalactites/roof_FG_rock_07_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/miness_stalactites/roof_FG_rock_07_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/miness_stalactites/roof_FG_rock_07_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_17 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_17 (1)/roof_FG_rock_07_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_17 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_17 (2)/roof_FG_rock_07_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_17 (2)/roof_FG_rock_07_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_17 (2)/roof_FG_rock_07_0003_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_17 (2)/roof_FG_rock_07_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_17 (2)/roof_FG_rock_07_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_17 (2)/roof_FG_rock_07_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_20">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_20/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_20/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_20/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_20/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_20/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_21">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_21/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_21/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_21/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_21/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_21/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_22">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_22/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_22/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_22/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_22/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_22/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_23">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_23/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_23/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_23/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_23/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_23/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_24">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_24/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_24/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_24/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_24/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_24/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_26">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_26/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_26/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_26/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_26/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_26/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_26/roof_FG_rock_08_0001_05 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_26/roof_FG_rock_08_0001_05 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_30">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_30/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_30/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_30/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_30/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_30/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_32">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_32/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_32/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_32/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_32/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_32/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_34">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_34/roof_FG_rock_07_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_34/roof_FG_rock_07_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_34/roof_FG_rock_07_0003_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_34/roof_FG_rock_07_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_34/roof_FG_rock_07_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_34/roof_FG_rock_07_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_35">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_35/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_35/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_35/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_35/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_35/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_36">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_36/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_36/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_36/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_36/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_36/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_38">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_38/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_38/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_38/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_38/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_38/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_46">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_46/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_46/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_46/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_46/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_46/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_room_beam_glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Roof Collider">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>Roof</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Roof Collider (1)">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>Roof</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Roof Collider (2)">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>Roof</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Terrain Saver">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Terrain Saver (1)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Terrain Saver (2)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Terrain Saver (3)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystals_set">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystals_set 1">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystals_set 1/Mines_Layered_0079_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystals_set 1/Mines_Layered_0080_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystals_set 1/Mines_Layered_0068_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystals_set 1/Mines_Layered_0072_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystals_set 1/Mines_Layered_0073_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystals_set 1/Mines_Layered_0075_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystals_set 1/Mines_Layered_0077_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystals_set 1/Mines_Layered_0067_a 8">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystals_set 1/Mines_Layered_0069_a 4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/crystals_set 1/Mines_Layered_0077_a 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mines_additions_02_0001_a (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/miness_stalactites (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/miness_stalactites (1)/roof_FG_rock_07_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/miness_stalactites (1)/roof_FG_rock_07_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/miness_stalactites (1)/roof_FG_rock_07_0003_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/miness_stalactites (1)/roof_FG_rock_07_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/miness_stalactites (1)/roof_FG_rock_07_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/miness_stalactites (1)/roof_FG_rock_07_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (1)/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (1)/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (1)/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (1)/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (1)/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (2)/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (2)/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (2)/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (2)/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (2)/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (3)/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (3)/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (3)/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (3)/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/cd_FG_rock_33 (3)/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/fog 3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/mine_strut_03 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="crystal_spike_fg_02 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 0">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (3)">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (3)/Beam Ball">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (3)/Beam Ball/End Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (3)/Beam">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (3)/Beam/Beam Glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (3)/Beam Impact">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (3)/Beam Impact/Impact Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (3)/Beam Impact/Init Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Laser Turret Mega (3)/Beam Impact/Burn Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dream Gate Set Lock">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="sprite_set_mines">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="sprite_set_mines/Mossman_Shaker">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="sprite_set_mines/Mossman_Shaker (1)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="sprite_set_mines/Mossman_Shaker (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="sprite_set_mines/Mossman_Shaker (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="sprite_set_mines/Mossman_Shaker (4)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+  </sceneObjects>
+</SceneData>

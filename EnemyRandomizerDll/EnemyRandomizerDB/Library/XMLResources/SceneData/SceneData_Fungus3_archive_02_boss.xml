@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SceneData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Fungus3_archive_02_boss">
+  <sceneObjects>
+    <SceneObject path="Battle Gate Archives (2)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>BoxCollider2D</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+        <string>TinkEffect</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate Archives (2)/Dust">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate Archives (2)/Close Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate Archives (2)/Raise Dust">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/CameraLockArea B">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate Archives">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>BoxCollider2D</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+        <string>TinkEffect</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate Archives/Dust">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate Archives/Close Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate Archives/Raise Dust">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate Archives (1)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>BoxCollider2D</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+        <string>TinkEffect</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate Archives (1)/Dust">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate Archives (1)/Close Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Gate Archives (1)/Raise Dust">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>Rigidbody2D</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFixedUpdate</string>
+        <string>AudioSource</string>
+        <string>SetZ</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteFlash</string>
+        <string>CircleCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+        <string>PersonalObjectPool</string>
+        <string>BounceShroom</string>
+        <string>Recoil</string>
+        <string>DamageHero</string>
+        <string>HealthManager</string>
+        <string>EnemyDeathEffects</string>
+        <string>InfectedEnemyEffects</string>
+        <string>EnemyDreamnailReaction</string>
+        <string>DeactivateIfPlayerdataTrue</string>
+        <string>ConstrainPosition</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish/Quirrel Land">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish/Pt Attack">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish/White Flash">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleSpriteFade</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish/Pt Wound">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish/Strike Nail">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish/Quirrel Slash">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish/Entry Sprite">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish/Pt Steam">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoDestroy</string>
+        <string>SetParticleScale</string>
+        <string>SpriteFlash</string>
+        <string>ConveyorMovement</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish/Pt Spore">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish/Pt Bub">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mega Jellyfish/Emerge Spore">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+  </sceneObjects>
+</SceneData>

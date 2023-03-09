@@ -1,0 +1,2806 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SceneData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Waterways_03">
+  <sceneObjects>
+    <SceneObject path="pipe_flat_section (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (3)/_0018_waterway (90)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (3)/_0015_waterway (77)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (3)/_0015_waterway (42)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (3)/_0018_waterway (87)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_FG_04 (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_0001_waterway (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_SceneManager">
+      <components>
+        <string>Transform</string>
+        <string>SceneManager</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (20)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (3)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>BoxCollider2D</string>
+        <string>AudioSource</string>
+        <string>GrassCut</string>
+        <string>GrassBehaviour</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (3)/Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (3)/Sprite_broken">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (3)/break rag particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (3)/WindCollider">
+      <components>
+        <string>Transform</string>
+        <string>GrassWind</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_inner_corner (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_inner_corner (1)/waterways_short_ground (22)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_inner_corner (1)/_0018_waterway (24)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (2)/_0021_waterway (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (2)/_0020_waterway">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (2)/_0021_waterway (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (2)/_0023_waterway_short (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_drips (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_inner_corner">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_inner_corner/waterways_short_ground (23)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (2)/_0018_waterway (78)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (2)/_0019_waterway (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (2)/_0017_waterway (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (2)/_0018_waterway (79)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (2)/_0018_waterway (80)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (2)/_0017_waterway (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (2)/_0019_waterway (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (2)/_0017_waterway (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (2)/_0018_waterway (82)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_0008_waterway (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Audio Interior Rain">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (26)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_fog (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="low_sluice (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="low_sluice (1)/_0012_waterway">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="low_sluice (1)/_0021_waterway">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Water Drip (4)">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>AudioSource</string>
+        <string>BoxCollider2D</string>
+        <string>WaterDrip</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Items">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_FG_04 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (4)/_0018_waterway (90)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (4)/_0015_waterway (77)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (4)/_0015_waterway (42)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (4)/_0018_waterway (87)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (3)/waterways_rubbish_0006_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (3)/waterways_rubbish_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (3)/waterways_rubbish_0006_Layer-1 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (3)/waterways_rubbish_0006_Layer-1 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_stream_intermittent0000 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (2)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>BoxCollider2D</string>
+        <string>AudioSource</string>
+        <string>GrassCut</string>
+        <string>GrassBehaviour</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (2)/Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (2)/Sprite_broken">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (2)/break rag particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (2)/WindCollider">
+      <components>
+        <string>Transform</string>
+        <string>GrassWind</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Water Drip (3)">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>AudioSource</string>
+        <string>BoxCollider2D</string>
+        <string>WaterDrip</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Camera Lock Zones">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_02 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="haze2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Markers">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (1)/_0018_waterway (81)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (1)/_0018_waterway (78)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (1)/_0019_waterway (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (1)/_0017_waterway (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (1)/_0018_waterway (79)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (1)/_0017_waterway (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (1)/_0018_waterway (80)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (1)/_0019_waterway (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_FG_04 (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (6)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (6)/_0018_waterway (90)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (6)/_0015_waterway (42)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (6)/_0018_waterway (87)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (6)/_0018_waterway (91)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (6)/_0018_waterway (92)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (6)/_0018_waterway (93)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_FG_04 (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="CameraLockArea">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0003_Layer-2 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0000_Layer-5 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0005_Layer-6 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0004_Layer-7 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0006_Layer-1 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0003_Layer-2 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0001_Layer-4 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0006_Layer-1 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0000_Layer-5 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0005_Layer-6 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0004_Layer-7 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0002_Layer-3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0002_Layer-3 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0006_Layer-1 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0005_Layer-6 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0005_Layer-6 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0002_Layer-3 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0002_Layer-3 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0002_Layer-3 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0002_Layer-3 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0002_Layer-3 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0002_Layer-3 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0002_Layer-3 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (2)/waterways_rubbish_0002_Layer-3 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (5)/_0018_waterway (90)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (5)/_0015_waterway (77)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (5)/_0015_waterway (42)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (5)/_0018_waterway (87)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (5)/_0015_waterway (43)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (5)/_0015_waterway (44)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (5)/_0015_waterway (45)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_0008_waterway">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="low_sluice">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="low_sluice/_0012_waterway">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="low_sluice/_0021_waterway">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="BlurPlane">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>BlurPlane</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Managers">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Managers/PlayMaker Unity 2D">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerUnity2d</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>PlayMakerCollisionExit2D</string>
+        <string>PlayMakerCollisionStay2D</string>
+        <string>PlayMakerTriggerEnter2D</string>
+        <string>PlayMakerTriggerExit2D</string>
+        <string>PlayMakerTriggerStay2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (2)/waterways_rubbish_0006_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (2)/waterways_rubbish_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_fog (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="sewer big arch">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap">
+      <components>
+        <string>Transform</string>
+        <string>tk2dTileMap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (27)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Areas">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_FG_03 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>BoxCollider2D</string>
+        <string>AudioSource</string>
+        <string>GrassCut</string>
+        <string>GrassBehaviour</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag/Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag/Sprite_broken">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag/break rag particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag/WindCollider">
+      <components>
+        <string>Transform</string>
+        <string>GrassWind</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_FG_04 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0003_Layer-2 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0000_Layer-5 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0005_Layer-6 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0004_Layer-7 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0006_Layer-1 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0003_Layer-2 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0001_Layer-4 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0006_Layer-1 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0000_Layer-5 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0005_Layer-6 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0004_Layer-7 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0002_Layer-3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0002_Layer-3 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0006_Layer-1 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0005_Layer-6 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0005_Layer-6 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0005_Layer-6 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (3)/waterways_rubbish_0005_Layer-6 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (6)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (6)/_0021_waterway (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (6)/_0020_waterway">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (6)/_0021_waterway (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (6)/_0023_waterway_short (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03/waterways_rubbish_0006_Layer-1 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03/waterways_rubbish_0006_Layer-1 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03/waterways_rubbish_0006_Layer-1 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch/_0018_waterway (81)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch/_0018_waterway (78)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch/_0019_waterway (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch/_0017_waterway (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch/_0018_waterway (79)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch/_0017_waterway (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch/_0018_waterway (80)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch/_0019_waterway (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_FG_04 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_break_pipe_angle">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PolygonCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_break_pipe_angle/Particle_pipe_chunk (3)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_break_pipe_angle/Particle_water_explode (2)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_break_pipe_angle/Mid Chunk">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>BoxCollider2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_break_pipe_angle/Mid Chunk (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>BoxCollider2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_break_pipe_angle/Bottom Chunk (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>BoxCollider2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_break_pipe_angle/waterway_break_0015_pipe_break_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_NPCs">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_04 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_04 (2)/waterways_rubbish_0001_Layer-4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_04 (2)/waterways_rubbish_0000_Layer-5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Water Drip (6)">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>AudioSource</string>
+        <string>BoxCollider2D</string>
+        <string>WaterDrip</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_FG (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (21)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="light_beam_particles 3">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 0">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 3">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_FG_03 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)/waterways_rubbish_0006_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)/waterways_rubbish_0002_Layer-3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)/waterways_rubbish_0006_Layer-1 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)/waterways_rubbish_0006_Layer-1 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)/waterways_rubbish_0006_Layer-1 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)/waterways_rubbish_0006_Layer-1 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)/waterways_rubbish_0006_Layer-1 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)/waterways_rubbish_0006_Layer-1 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)/waterways_rubbish_0006_Layer-1 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)/waterways_rubbish_0006_Layer-1 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)/waterways_rubbish_0006_Layer-1 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)/waterways_rubbish_0006_Layer-1 (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)/waterways_rubbish_0006_Layer-1 (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)/waterways_rubbish_0006_Layer-1 (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_03 (1)/waterways_rubbish_0006_Layer-1 (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (7)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (7)/_0021_waterway (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (7)/_0020_waterway">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (7)/_0021_waterway (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (7)/_0023_waterway_short (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_break_pipe_bulge (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_break_pipe_bulge (1)/Particle_pipe_chunk (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_break_pipe_bulge (1)/Particle_water_explode (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_break_pipe_bulge (1)/Mid Chunk">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFixedUpdate</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_break_pipe_bulge (1)/Mid Chunk (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFixedUpdate</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_break_pipe_bulge (1)/Mid Chunk (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFixedUpdate</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_break_pipe_bulge (1)/Bottom Chunk (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFixedUpdate</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_break_pipe_bulge (1)/waterway_break_0009_pipe_top_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Steep Slope">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>SteepSlope</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="water_stream_intermittent0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Roof Collider">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>Roof</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Alive_Tuk">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Alive_Tuk/Dream Dialogue">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Alive_Tuk/Dream Dialogue/Active Pt">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Alive_Tuk/Dream Dialogue/Impact Pt">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Alive_Tuk/Tuk NPC">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Alive_Tuk/Tuk NPC/Prompt Marker">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Alive_Tuk/Tuk NPC/Egg Spawn">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Alive_Tuk/Tuk NPC/Rummage Audio">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Enemies">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (1)/waterways_rubbish_0003_Layer-2 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (1)/waterways_rubbish_0000_Layer-5 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (1)/waterways_rubbish_0005_Layer-6 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (1)/waterways_rubbish_0004_Layer-7 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (1)/waterways_rubbish_0006_Layer-1 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (1)/waterways_rubbish_0003_Layer-2 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (1)/waterways_rubbish_0001_Layer-4 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (1)/waterways_rubbish_0006_Layer-1 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (1)/waterways_rubbish_0000_Layer-5 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (1)/waterways_rubbish_0005_Layer-6 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (1)/waterways_rubbish_0004_Layer-7 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (1)/waterways_rubbish_0002_Layer-3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (1)/waterways_rubbish_0002_Layer-3 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_05 (1)/waterways_rubbish_0006_Layer-1 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_04 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_04 (3)/waterways_rubbish_0001_Layer-4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterways_rubbish_04 (3)/waterways_rubbish_0000_Layer-5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (3)/_0021_waterway (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (3)/_0020_waterway">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (3)/_0021_waterway (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (3)/_0023_waterway_short (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_room_beam_glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_0001_waterway (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Audio Waterfall Large">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Steep Slope Wall">
+      <components>
+        <string>Transform</string>
+        <string>NonSlider</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_FG_03 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_sluice">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_FG_04 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left1">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>GateSnap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left1/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerCollisionEnter2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left1/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left1/haze2 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_crossroads_particles">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_crossroads_particles/wispy smoke BG">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_crossroads_particles/Particle System dots">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_03 sil (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_03 sil (1)/infected_small_blob_010000 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_03 sil (1)/infected_small_blob_020000 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_03 sil (1)/infected_small_blob_020000 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_03 sil (1)/infected_small_blob_030000 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_03 sil (1)/infected_small_blob_010000 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_03 sil (1)/infected_small_blob_010000 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_020000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>CircleCollider2D</string>
+        <string>PlayFromRandomFrameMecanim</string>
+        <string>InfectedBurstLarge</string>
+        <string>AudioSource</string>
+        <string>VibrationPlayer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_020000 (1)/Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_020000 (1)/Effects/Spit Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_020000 (1)/Effects/Splat Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_floor_goop_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_010000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>CircleCollider2D</string>
+        <string>PlayFromRandomFrameMecanim</string>
+        <string>AudioSource</string>
+        <string>InfectedBurstLarge</string>
+        <string>VibrationPlayer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_010000 (1)/Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_010000 (1)/Effects/Spit Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_010000 (1)/Effects/Splat Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_03 sil">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_03 sil/infected_small_blob_010000 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_03 sil/infected_small_blob_020000 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_03 sil/infected_small_blob_020000 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_03 sil/infected_small_blob_030000 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_03 sil/infected_small_blob_010000 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_03 sil/infected_small_blob_010000 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_sil">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_030000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>CircleCollider2D</string>
+        <string>PlayFromRandomFrameMecanim</string>
+        <string>InfectedBurstLarge</string>
+        <string>AudioSource</string>
+        <string>VibrationPlayer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_030000 (1)/Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_030000 (1)/Effects/Spit Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_030000 (1)/Effects/Splat Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_orange_drip_010000">
+      <components>
+        <string>Transform</string>
+        <string>Drip</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_orange_drip_010000/Drip Anim">
+      <components>
+        <string>Transform</string>
+        <string>Animator</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_orange_drip_010000/Spawn Point">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_orange_drip_010000/Idle Anim">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_orange_drip_020000">
+      <components>
+        <string>Transform</string>
+        <string>Drip</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_orange_drip_020000/Idle Anim">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_orange_drip_020000/Spawn Point">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_orange_drip_020000/Drip Anim">
+      <components>
+        <string>Transform</string>
+        <string>Animator</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_020000">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>CircleCollider2D</string>
+        <string>PlayFromRandomFrameMecanim</string>
+        <string>InfectedBurstLarge</string>
+        <string>AudioSource</string>
+        <string>VibrationPlayer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_020000/Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_020000/Effects/Spit Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_020000/Effects/Splat Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_030000">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>CircleCollider2D</string>
+        <string>PlayFromRandomFrameMecanim</string>
+        <string>InfectedBurstLarge</string>
+        <string>AudioSource</string>
+        <string>VibrationPlayer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_030000/Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_030000/Effects/Spit Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_030000/Effects/Splat Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_010000">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>CircleCollider2D</string>
+        <string>PlayFromRandomFrameMecanim</string>
+        <string>AudioSource</string>
+        <string>InfectedBurstLarge</string>
+        <string>VibrationPlayer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_010000/Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_010000/Effects/Spit Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_010000/Effects/Splat Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>AudioSource</string>
+        <string>BreakableInfectedVine</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+        <string>VibrationPlayer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_01/infected_small_blob_020000 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_01/infected_small_blob_020000 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_01/infected_small_blob_030000 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_01/infected_small_blob_030000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_01/Spit Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_01/Splat Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_large_blob_sil (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/Shiny Item">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>PersistentBoolItem</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/Shiny Item/Inspect Region">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/Shiny Item/Inspect Region/Prompt Marker">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/Shiny Item/Appear Trail">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/Shiny Item/White Wave">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>WaveEffectControl</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/Tuk_dead">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/Tuk_dead/Dream Dialogue">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/Tuk_dead/Dream Dialogue/Active Pt">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/Tuk_dead/Dream Dialogue/Impact Pt">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/Tuk_dead/infected_large_blob_010000">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+        <string>AudioSource</string>
+        <string>InfectedBurstLarge</string>
+        <string>VibrationPlayer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/Tuk_dead/infected_large_blob_010000/Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/Tuk_dead/infected_large_blob_010000/Effects/Spit Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/Tuk_dead/infected_large_blob_010000/Effects/Splat Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_01 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>AudioSource</string>
+        <string>BreakableInfectedVine</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+        <string>VibrationPlayer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_01 (1)/infected_small_blob_020000 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_01 (1)/infected_small_blob_020000 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_01 (1)/infected_small_blob_030000 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_01 (1)/infected_small_blob_030000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_01 (1)/Spit Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_vine_01 (1)/Splat Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_floor_goop_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/infected_floor_goop_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dead_Tuk/Pulse Audio">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (3)/_0018_waterway (90)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (3)/_0015_waterway (77)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (3)/_0015_waterway (42)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (3)/_0018_waterway (87)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_flat_section (3)/_0015_waterway (43)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_FG_04 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_FG_03 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (5)/_0021_waterway (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (5)/_0020_waterway">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (5)/_0021_waterway (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (5)/_0023_waterway_short (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (1)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>BoxCollider2D</string>
+        <string>AudioSource</string>
+        <string>GrassCut</string>
+        <string>GrassBehaviour</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (1)/Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (1)/Sprite_broken">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (1)/break rag particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (1)/WindCollider">
+      <components>
+        <string>Transform</string>
+        <string>GrassWind</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (4)/_0021_waterway (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (4)/_0020_waterway">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (4)/_0021_waterway (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe short (4)/_0023_waterway_short (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_0000_waterway (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_0000_waterway (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (3)/_0018_waterway (81)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (3)/_0017_waterway (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (3)/_0018_waterway (80)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="pipe_arch (3)/_0019_waterway (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="waterway_break_0008_pipe_top_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+  </sceneObjects>
+</SceneData>

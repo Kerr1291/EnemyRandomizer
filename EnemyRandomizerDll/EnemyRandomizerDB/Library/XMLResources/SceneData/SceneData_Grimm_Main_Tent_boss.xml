@@ -1,0 +1,1004 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SceneData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Grimm_Main_Tent_boss">
+  <sceneObjects>
+    <SceneObject path="Grimm Bats">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Real Bat">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+        <string>Recoil</string>
+        <string>EnemyHitEffectsUninfected</string>
+        <string>HealthManager</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Real Bat/white_light">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (1)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (2)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (3)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (4)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (5)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (6)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (7)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (8)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (9)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (10)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (11)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (12)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (13)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (14)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (15)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (16)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Bats/Fake Bat (17)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>Rigidbody2D</string>
+        <string>FakeBat</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Idle">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Idle/Grimm_crowd">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Idle/Grimm_crowd (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Idle/Grimm_crowd (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Idle/Grimm_crowd (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Idle/Grimm_crowd (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Idle/Grimm_crowd (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Idle/Grimm_crowd (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Idle/Grimm_crowd (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Clap">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Clap/Grimm_crowd_clap">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Clap/Grimm_crowd_clap (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Clap/Grimm_crowd_clap (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Clap/Grimm_crowd_clap (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Clap/Grimm_crowd_clap (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Clap/Grimm_crowd_clap (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Clap/Grimm_crowd_clap (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Clap/Grimm_crowd_clap (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Still">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Still/Grimm_crowd">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Still/Grimm_crowd (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Still/Grimm_crowd (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Still/Grimm_crowd (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Still/Grimm_crowd (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Still/Grimm_crowd (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Still/Grimm_crowd (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Still/Grimm_crowd (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Crowd/Murmur">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>EventRegister</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike (1)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike (2)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike (3)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike (4)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike (5)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike (7)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike (8)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike (9)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike (10)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike (11)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike (13)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike (14)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike (15)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike (16)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Grimm Spike (17)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>TinkEffect</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Spike Holder/Smoke">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>Rigidbody2D</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFixedUpdate</string>
+        <string>AudioSource</string>
+        <string>SpriteFlash</string>
+        <string>PlayMakerFSM</string>
+        <string>PersonalObjectPool</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+        <string>EnemyDreamnailReaction</string>
+        <string>HealthManager</string>
+        <string>ExtraDamageable</string>
+        <string>DamageHero</string>
+        <string>BoxCollider2D</string>
+        <string>EnemyHitEffectsUninfected</string>
+        <string>EnemyDeathEffectsUninfected</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Slash1">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Slash2">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Slash3">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Firebat Spawn">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Tele Out Effects">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Tele Out Effects/Flame Pillar">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Tele Out Effects/tele_smoke_back">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Tele Out Effects/tele_smoke_front">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Tele In Effects">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Tele In Effects/Flame Pillar">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Tele In Effects/tele_smoke_back">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Tele In Effects/tele_smoke_front">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Behind Range">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Dash Spike">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Bouncer">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+        <string>DamageHero</string>
+        <string>TinkEffect</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Inflate Burst">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Cast Box">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Roar Point">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Explode Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Explode Effects/Burst">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Explode Effects/Burst (1)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>DeactivateAfter2dtkAnimation</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Explode Effects/White Flash">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleSpriteFade</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Reform Sprite">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Death Burst">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Death Burst/Uninfected Death Pt">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Death Burst/Wave">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>WaveEffectControl</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Death Puff">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+        <string>KeepWorldScalePositive</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Death Explode">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Steam Pt">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Dust Ground">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Dust Scuttle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Slam Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/G Dash Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/A Dash Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Pt Balloon">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Audio Scuttle">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Loop Balloon">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Loop Bats">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Loop Drumroll">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Uppercut Explode">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Uppercut Range">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Dust Uppercut">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Red Flash 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleSpriteFade</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Grimm Boss/Red Flash 2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleSpriteFade</string>
+      </components>
+    </SceneObject>
+  </sceneObjects>
+</SceneData>

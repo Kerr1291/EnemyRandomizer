@@ -1,0 +1,3368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SceneData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="GG_Wyrm">
+  <sceneObjects>
+    <SceneObject path="GG_scenery_0014_7 (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_particles_standard">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_particles_standard/white_palace_particles (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_particles_standard/white_palace_particles (1)/Particle System BG">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ReduceParticleEffects</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_particles_standard/white_palace_particles (1)/dream_particle_03 (3)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ReduceParticleEffects</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_particles_standard/white_palace_particles (1)/Particle System BG (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ReduceParticleEffects</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_particles_standard/white_palace_particles (1)/Particle System BG (2)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ReduceParticleEffects</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Roof Collider">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>Roof</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="WP_lamp0002 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="WP_lamp0002 (2)/black_solid 415">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_SceneManager">
+      <components>
+        <string>Transform</string>
+        <string>SceneManager</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (1)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (1)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (1)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (1)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (1)/GameObject (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (1)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (1)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (1)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (1)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (1)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (1)/_0073_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (1)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (3)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (3)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (3)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (3)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (3)/GameObject (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (3)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (3)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (3)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (3)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (3)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (3)/_0073_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (3)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_rag (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (21)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="WP_exterior_FG_glows (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (2)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (2)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (2)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (2)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (2)/GameObject (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (2)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (2)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (2)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (2)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (2)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (2)/_0073_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette (2)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_statue_door_0000_2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece (3)/gg_ascent_wall_0001_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece (3)/gg_ascent_wall_0001_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece (3)/gg_ascent_wall_0001_3 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_gold_egg">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (1)/_0065_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (1)/_0066_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (1)/_0067_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_gold_egg (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_rag (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="WP_lamp0002 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="WP_lamp0002 (5)/black_solid 415">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cloth_furniture_set">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cloth_furniture_set/wp_cloth_furniture5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cloth_furniture_set/wp_cloth_furniture4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cloth_furniture_set/wp_cloth_furniture8">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cloth_furniture_set/wp_cloth_furniture6">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cloth_furniture_set/wp_cloth_furniture1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cloth_furniture_set/wp_cloth_furniture7">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cloth_furniture_set/wp_cloth_furniture4 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cloth_furniture_set/wp_cloth_furniture4 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cloth_furniture_set/wp_cloth_furniture6 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cloth_furniture_set/wp_cloth_furniture1 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cloth_furniture_set/wp_cloth_furniture6 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cloth_furniture_set/wp_cloth_furniture6 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Atmos Player">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Enemies">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_gold_egg (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="right1">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>GateSnap</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="right1/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerCollisionEnter2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="right1/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="right1/haze2 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (5)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (5)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (5)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (4)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (4)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (4)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_01 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_01 (1)/_0065_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_01 (1)/_0066_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_01 (1)/_0067_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (3)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (3)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (3)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (2)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (2)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (2)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (1)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (1)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02 (1)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_02/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_01">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_01/_0065_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_01/_0066_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_01/_0067_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_01/_0067_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/white_bush_01/_0067_white (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/wp_sil_bush (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/wp_sil_bush (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/wp_sil_bush (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/wp_sil_bush (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/wp_sil_bush (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/wp_sil_bush (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/wp_sil_bush (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (3)/wp_sil_bush (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Items">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0013_8 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="core_extras_0025_wp (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_rag">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 3">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 4">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 0">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="WP_lamp0002 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="WP_lamp0002 (4)/black_solid 415">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="spa_pieces">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="spa_pieces/waterway caustic (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="spa_pieces/waterway caustic (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="spa_pieces/GG_gold_wall_side (15)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="spa_pieces/GG_scenery_0000_2 (11)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_statue_door_0001_1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="WP_lamp0002 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="WP_lamp0002 (3)/black_solid 415">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_gold_egg (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Col_Glow_Remasker (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_rag (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="WP_exterior_FG_glows (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (4)/_0065_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (4)/_0066_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (4)/_0067_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1 (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Camera Lock Zones">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Camera Lock Zones/CameraLockArea">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_fg_ball (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (5)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (5)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (5)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (4)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (4)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (4)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_01 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_01 (1)/_0065_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_01 (1)/_0066_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_01 (1)/_0067_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (3)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (3)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (3)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (2)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (2)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (2)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (1)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (1)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02 (1)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_02/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_01">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_01/_0065_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_01/_0066_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_01/_0067_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_01/_0067_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/white_bush_01/_0067_white (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/wp_sil_bush (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/wp_sil_bush (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/wp_sil_bush (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/wp_sil_bush (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/wp_sil_bush (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/wp_sil_bush (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/wp_sil_bush (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (1)/wp_sil_bush (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_rag (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_vignette_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Areas">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0013_8 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap">
+      <components>
+        <string>Transform</string>
+        <string>tk2dTileMap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (5)/_0065_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (5)/_0066_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (5)/_0067_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (5)/_0067_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (5)/_0066_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (5)/_0065_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (5)/_0065_white (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (5)/_0066_white (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (5)/_0067_white (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (3)/_0065_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (3)/_0066_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (3)/_0067_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01/_0065_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01/_0066_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01/_0067_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="WP_lamp0002">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="WP_lamp0002/black_solid 415">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/throne">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/throne/core_extras_0004_wp">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/throne/core_extras_0007_wp">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/throne/core_extras_0029_wp">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/throne/core_extras_0006_wp">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/core_extras_0002_wp (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/core_extras_0002_wp (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/core_extras_0027_wp">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/core_extras_0002_wp (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/core_extras_0002_wp (3)/core_extras_0027_wp">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/core_extras_0002_wp (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/core_extras_0002_wp (4)/core_extras_0027_wp">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/core_extras_0002_wp (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/core_extras_0002_wp (5)/core_extras_0027_wp">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/core_extras_0002_wp (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/core_extras_0002_wp (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/core_extras_0002_wp (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/core_extras_0002_wp">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject/core_extras_0002_wp (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece (2)/gg_ascent_wall_0001_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece (2)/gg_ascent_wall_0001_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece (2)/gg_ascent_wall_0001_3 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_rag (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Markers">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (4)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (4)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (4)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (4)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (4)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (4)/GameObject (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (4)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (4)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (4)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (4)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (4)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (4)/_0071_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_gold_wall (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Col_Glow_Remasker (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (20)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_rag (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="core_extras_0020_wp">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (24)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_NPCs">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Managers">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Managers/PlayMaker Unity 2D">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerUnity2d</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>PlayMakerCollisionExit2D</string>
+        <string>PlayMakerCollisionStay2D</string>
+        <string>PlayMakerTriggerEnter2D</string>
+        <string>PlayMakerTriggerExit2D</string>
+        <string>PlayMakerTriggerStay2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mask_beam (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (5)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (5)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (5)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (4)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (4)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (4)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_01 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_01 (1)/_0065_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_01 (1)/_0066_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_01 (1)/_0067_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (3)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (3)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (3)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (2)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (2)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (2)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (1)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (1)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02 (1)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_02/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_01">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_01/_0065_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_01/_0066_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_01/_0067_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_01/_0067_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/white_bush_01/_0067_white (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/wp_sil_bush (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/wp_sil_bush (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/wp_sil_bush (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/wp_sil_bush (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/wp_sil_bush (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/wp_sil_bush (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/wp_sil_bush (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set/wp_sil_bush (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_rag (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="core_extras_0025_wp">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="WP_lamp0002 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="WP_lamp0002 (1)/black_solid 415">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03/GameObject (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03/_0071_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1 (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1 (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mask_beam">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_rag (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (2)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (2)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (2)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (2)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (2)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (2)/GameObject (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (2)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (2)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (2)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (2)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (2)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (2)/_0071_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_gold_egg (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scene_arena_extra_0000_3_short">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Walk Area">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>WalkArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Terrain Saver (1)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="core_extras_0019_wp">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Col_Glow_Remasker">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PlayMakerFSM</string>
+        <string>PersistentBoolItem</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="BlurPlane">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>BlurPlane</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece (1)/gg_ascent_wall_0001_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece (1)/gg_ascent_wall_0001_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece (1)/gg_ascent_wall_0001_3 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="core_extras_0020_wp (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (23)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (22)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_fader (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1 (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (5)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (5)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (5)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (4)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (4)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (4)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_01 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_01 (1)/_0065_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_01 (1)/_0066_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_01 (1)/_0067_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (3)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (3)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (3)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (2)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (2)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (2)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (1)/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (1)/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02 (1)/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02/_0068_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02/_0070_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_02/_0069_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_01">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_01/_0065_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_01/_0066_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_01/_0067_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_01/_0067_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/white_bush_01/_0067_white (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/wp_sil_bush (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/wp_sil_bush (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/wp_sil_bush (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/wp_sil_bush (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/wp_sil_bush (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/wp_sil_bush (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/wp_sil_bush (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_set (2)/wp_sil_bush (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (25)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_rag (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mask_beam (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (2)/_0065_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (2)/_0066_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_bush_01 (2)/_0067_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_rag (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette/GameObject (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette/_0073_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_01_silhouette/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_rag (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="core_extras_0025_wp (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Audio Player Actor 2D">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0014_7 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_gold_wall (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_gold_wall">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (1)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (1)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (1)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (1)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (1)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (1)/GameObject (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (1)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (1)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (1)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (1)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (1)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (1)/_0071_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1 (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (5)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (5)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (5)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (5)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (5)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (5)/GameObject (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (5)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (5)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (5)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (5)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (5)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (5)/_0071_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="core_extras_0020_wp (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_rag (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="core_extras_0025_wp (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (3)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (3)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (3)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (3)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (3)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (3)/GameObject (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (3)/_0076_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (3)/_0074_white (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (3)/_0074_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (3)/_0075_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (3)/_0076_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_vine_03 (3)/_0071_white">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="WP_exterior_FG_glows">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_gold_wall (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GG_scenery_0005_16_statue_clouds (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece (4)/gg_ascent_wall_0001_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="gg_ascent_innerwall_piece (4)/gg_ascent_wall_0001_3 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="white_rag (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wp_clouds_0002_1 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="World Edge v2 (1)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerFSM</string>
+        <string>NonThunker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="World Edge v2 (1)/End Superdash">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="World Edge v2">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerFSM</string>
+        <string>NonThunker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="World Edge v2/End Superdash">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Godseeker Young NPC">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Godseeker Young NPC/Prompt Marker">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Godseeker Young NPC/Dream Dialogue">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Godseeker Young NPC/Dream Dialogue/Active Pt">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Godseeker Young NPC/Dream Dialogue/Impact Pt">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller">
+      <components>
+        <string>Transform</string>
+        <string>BossSceneController</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+        <string>EventRegister</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/door_dreamEnter">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/door_dreamEnter/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/door_dreamEnter/Prompt Marker">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/Dream Entry">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+        <string>EventRegister</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/Dream Entry/Knight Dream Arrival">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/Dream Entry/Knight Dream Arrival/Spark">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Boss Scene Controller/Dream Entry/Knight Dream Arrival/Attack Pt">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+  </sceneObjects>
+</SceneData>

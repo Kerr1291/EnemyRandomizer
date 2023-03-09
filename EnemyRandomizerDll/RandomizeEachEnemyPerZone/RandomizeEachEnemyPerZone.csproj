@@ -34,6 +34,10 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\ModdingAPIWin\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="EnemyRandomizerDB, Version=2023.0.8467.20295, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EnemyRandomizerDB\EnemyRandomizerDB.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

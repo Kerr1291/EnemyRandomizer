@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SceneData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Ruins2_11_boss">
+  <sceneObjects>
+    <SceneObject path="Battle Scene">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PersistentBoolItem</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/CameraLockArea B">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Jar Collector">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>Rigidbody2D</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFixedUpdate</string>
+        <string>AudioSource</string>
+        <string>SetZ</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteFlash</string>
+        <string>SpriteTweenColorNeutral</string>
+        <string>PlayMakerFSM</string>
+        <string>PersonalObjectPool</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>PlayMakerCollisionStay2D</string>
+        <string>DamageHero</string>
+        <string>ExtraDamageable</string>
+        <string>HealthManager</string>
+        <string>EnemyDreamnailReaction</string>
+        <string>EnemyHitEffectsShade</string>
+        <string>EnemyDeathEffects</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Jar Collector/Slam Effect">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Jar Collector/Roar Point">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Jar Collector/Dust Land">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Jar Collector/Dust Trail">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Jar Collector/Lunge Hit">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>DamageHero</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Jar Collector/Ready Dust">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Jar Collector/Terrain Block">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Jar Collector/Death Wave">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Jar Collector/Pt Dying">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Jar Collector/Death Blow">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>SetParticleScale</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Jar Collector/Death Puddle">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Battle Scene/Jar Collector/Pt Puddle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>KeepWorldScalePositive</string>
+      </components>
+    </SceneObject>
+  </sceneObjects>
+</SceneData>

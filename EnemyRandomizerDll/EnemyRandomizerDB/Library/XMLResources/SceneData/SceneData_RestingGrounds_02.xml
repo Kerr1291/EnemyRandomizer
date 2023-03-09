@@ -1,0 +1,5758 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SceneData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="RestingGrounds_02">
+  <sceneObjects>
+    <SceneObject path="cd_FG_rock_20 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="haze2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_03 (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 414 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_elevator_bottom">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_elevator_bottom/mines_additions_03_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_archway_06 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (2)/debris_particle_fling (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (2)/Fung Top Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (2)/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_tall_pole_sil (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruind_dressing_rag_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (1)/ruins_resting_extra_bits_0077_Layer-179 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (1)/ruins_resting_extra_bits_0077_Layer-179">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (1)/rg_mask_03_0000_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (1)/rg_mask_03_0001_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (1)/rg_mask_03_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (1)/rg_mask_03_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (1)/rg_mask_03_0004_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (1)/rg_mask_03_0005_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (1)/rg_mask_03_0001_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (18)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (18)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (18)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (18)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (6)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (6)/ruins_resting_extra_bits_0097_Layer-197">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (6)/ruins_resting_extra_bits_0085_Layer-187">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Items">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_bg_plate (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (14)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (14)/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (14)/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (14)/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (14)/roof_FG_rock_08_0001_05 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (14)/roof_FG_rock_08_0001_05 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (14)/roof_FG_rock_08_0001_05 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (14)/roof_FG_rock_08_0001_05 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (14)/roof_FG_rock_08_0001_05 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (14)/roof_FG_rock_08_0001_05 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (14)/roof_FG_rock_08_0004_02 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (14)/roof_FG_rock_08_0001_05 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (3)/ruins_resting_extra_bits_0097_Layer-197">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (3)/ruins_resting_extra_bits_0085_Layer-187">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (14)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (14)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (14)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (14)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Bottom Gate Collider">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Bottom Gate Collider/elev_shortcut">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (3)/highway_01_layered_0004_Layer-5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (3)/highway_01_layered_0002_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (3)/highway_01_layered_0001_Layer-4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (3)/highway_01_layered_0003_Layer-0">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (2)/highway_01_layered_0004_Layer-5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (2)/highway_01_layered_0002_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (2)/highway_01_layered_0001_Layer-4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (2)/highway_01_layered_0003_Layer-0">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 415 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="deepnest_fog_01 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (6)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (6)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (6)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (6)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_03 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="deepnest_fog_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_wall_04 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_wall_04 (2)/rg_bits_02_0040_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_wall_04 (2)/rg_bits_02_0041_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_wall_04 (2)/rg_bits_02_0042_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (23)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (37)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (37)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (37)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (37)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mid_skulls (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_archbase_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (20)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_tall_pole_sil (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (28)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (28)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (28)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (28)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Hollow_Shade Marker (2)">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Hollow_Shade Marker (2)/HS_Image">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_archway_07 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (7)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (7)/ruins_resting_extra_bits_0097_Layer-197">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (7)/ruins_resting_extra_bits_0085_Layer-187">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (7)/ruins_resting_extra_bits_0097_Layer-197 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (9)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (9)/ruins_resting_extra_bits_0097_Layer-197">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (9)/ruins_resting_extra_bits_0085_Layer-187">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_SceneManager">
+      <components>
+        <string>Transform</string>
+        <string>SceneManager</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Roof Collider (2)">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>Roof</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_spiral_break">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_spiral_break/debris_particle_fling (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_spiral_break/Simple Rock L2 (2)">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_spiral_break/Simple Rock L2 (2)/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_spiral_break/Simple Rock L2 (3)">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_spiral_break/Simple Rock L2 (3)/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_spiral_break/Simple Rock L4 (1)">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_spiral_break/Simple Rock L4 (1)/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_spiral_break/Simple Rock L4 (2)">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_spiral_break/Simple Rock L4 (2)/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_spiral_break/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (9)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (9)/cd_big_roof_0006_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (9)/cd_big_roof_0005_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (9)/cd_big_roof_0004_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (9)/cd_big_roof_0003_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (9)/cd_big_roof_0002_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (9)/cd_big_roof_0004_03 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (9)/cd_big_roof_0004_03 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (9)/cd_big_roof_0004_03 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (9)/cd_big_roof_0004_03 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (9)/cd_big_roof_0004_03 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (9)/cd_big_roof_0004_03 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (9)/cd_big_roof_0004_03 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (3)/debris_particle_fling (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (3)/Fung Top Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (3)/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_archway_07 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mid_skulls (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (39)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (39)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (39)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (39)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (2)/rg_bits_02_0032_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (2)/rg_bits_02_0032_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (2)/rg_bits_02_0031_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (2)/rg_bits_02_0033_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (9)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (9)/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (9)/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (9)/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (9)/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (9)/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (8)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (8)/ruins_resting_extra_bits_0097_Layer-197">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (8)/ruins_resting_extra_bits_0085_Layer-187">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_archway_07">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_03 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_03 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (19)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (19)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (19)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (19)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_rocks_06 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_rocks_06 (2)/Mines_Layered_0020_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_rocks_06 (2)/Mines_Layered_0020_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_rocks_06 (2)/Mines_Layered_0020_a (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_rocks_06 (2)/Mines_Layered_0020_a (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="deepnest_fog_02 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (3)/Simple Rock L2">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (3)/Simple Rock L2/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (3)/Simple Rock L4">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (3)/Simple Rock L4/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (3)/debris_particle_fling">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (3)/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 415 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_wall_03 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_wall_03 (1)/rg_bits_02_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_wall_03 (1)/rg_bits_02_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_wall_03 (1)/rg_bits_02_0039_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_wall_03 (1)/rg_bits_02_0038_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (5)/cd_big_roof_0005_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (5)/cd_big_roof_0003_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (5)/cd_big_roof_0002_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (5)/cd_big_roof_0004_03 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (5)/cd_big_roof_0004_03 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (31)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (31)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (31)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (31)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_03 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_tall_pole (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_tall_pole (1)/debris_particle_fling (2)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_tall_pole (1)/Fung Top Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>PolygonCollider2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_tall_pole (1)/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_03 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="deepnest_fog_02 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="elev_shortcut (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="haze2 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_bg_plate2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413 (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (11)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (11)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (11)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (11)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (24)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (40)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (40)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (40)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (40)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (7)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (7)/rg_bits_02_0032_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (7)/rg_bits_02_0032_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (7)/rg_bits_02_0031_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (7)/rg_bits_02_0033_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (5)/rg_bits_02_0032_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (5)/rg_bits_02_0032_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (5)/rg_bits_02_0031_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (5)/rg_bits_02_0033_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 415 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06/highway_01_layered_0004_Layer-5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06/highway_01_layered_0002_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06/highway_01_layered_0001_Layer-4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06/highway_01_layered_0003_Layer-0">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (8)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (8)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (8)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (8)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (5)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (5)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (5)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1/ruins_resting_extra_bits_0097_Layer-197">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1/ruins_resting_extra_bits_0085_Layer-187">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves/grave_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves/grave_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves/grave_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves/grave_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves/grave_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves/grave_03 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves/grave_03 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves/grave_02 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves/grave_02 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves/grave_03 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves/grave_03 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves/grave_03 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves/grave_01 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves/grave_01 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_archbase_02 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (3)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (3)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (3)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="BlurPlane">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>BlurPlane</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_cap_02 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (32)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (32)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (32)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (32)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_wall_02 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (1)/grave_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (1)/grave_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (1)/grave_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (1)/grave_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (1)/grave_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (1)/grave_05 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (1)/grave_05 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_cap_02 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (5)/ruins_resting_extra_bits_0097_Layer-197">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (5)/ruins_resting_extra_bits_0085_Layer-187">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_stucture_04 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (29)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Hollow_Shade Marker">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Hollow_Shade Marker/HS_Image">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (17)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (17)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (17)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (17)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (5)/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (5)/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (5)/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (5)/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (5)/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (2)/grave_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (2)/grave_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (2)/grave_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (2)/grave_03 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (2)/grave_04 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (2)/grave_03 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (2)/grave_04 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (2)/grave_04 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Markers">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (3)/ruins_resting_extra_bits_0077_Layer-179 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (3)/rg_mask_03_0004_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (3)/rg_mask_03_0005_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (3)/rg_mask_03_0005_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (3)/rg_mask_03_0005_a (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (3)/rg_mask_03_0005_a (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (21)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (21)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (21)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (21)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (2)/cd_big_roof_0003_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (2)/cd_big_roof_0002_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="CameraLockArea (1)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_03 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (3)/rg_bits_02_0032_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (3)/rg_bits_02_0032_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (3)/rg_bits_02_0031_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (3)/rg_bits_02_0033_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (1)/cd_big_roof_0006_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (1)/cd_big_roof_0005_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (1)/cd_big_roof_0004_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (1)/cd_big_roof_0003_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (1)/cd_big_roof_0002_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (1)/cd_big_roof_0001_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (1)/cd_big_roof_0000_07">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap">
+      <components>
+        <string>Transform</string>
+        <string>tk2dTileMap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18/roof_FG_rock_08_0001_05 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor_03 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor_03 (1)/rg_bits_02_0044_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor_03 (1)/rg_bits_02_0043_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="right1">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>GateSnap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="right1/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerCollisionEnter2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="right1/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="right1/haze2 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (33)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 414 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_bg_plate2 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (36)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_tall_pole">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_tall_pole/debris_particle_fling (2)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_tall_pole/Fung Top Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>PolygonCollider2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_tall_pole/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_bg_plate (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (24)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (24)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (24)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (24)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_19 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_19 (2)/roof_FG_rock_09_0001_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_19 (2)/roof_FG_rock_09_0000_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (3)/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (3)/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (3)/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (3)/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (3)/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_room_beam_glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (1)/highway_01_layered_0004_Layer-5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (1)/highway_01_layered_0002_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (1)/highway_01_layered_0001_Layer-4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (1)/highway_01_layered_0003_Layer-0">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (9)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (9)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (9)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (9)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (6)/Simple Rock L2">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (6)/Simple Rock L2/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (6)/Simple Rock L4">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (6)/Simple Rock L4/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (6)/debris_particle_fling">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (6)/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (4)/Simple Rock L2">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (4)/Simple Rock L2/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (4)/Simple Rock L4">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (4)/Simple Rock L4/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (4)/debris_particle_fling">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (4)/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="deepnest_fog_01 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Hollow_Shade Marker (1)">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Hollow_Shade Marker (1)/HS_Image">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_03 (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mid_skulls (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (10)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (10)/cd_big_roof_0006_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (10)/cd_big_roof_0005_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (10)/cd_big_roof_0004_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (10)/cd_big_roof_0003_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (10)/cd_big_roof_0002_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (10)/cd_big_roof_0001_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (10)/cd_big_roof_0000_07">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="deepnest_fog_02 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="deepnest_fog_02 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="deepnest_fog_02 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="top1">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>GateSnap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="top1/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="top1/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="top1/haze2 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (34)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (34)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (34)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (34)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (29)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (29)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (29)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (29)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03/ruins_resting_extra_bits_0077_Layer-179 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03/ruins_resting_extra_bits_0077_Layer-179">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03/rg_mask_03_0000_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03/rg_mask_03_0001_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03/rg_mask_03_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03/rg_mask_03_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03/rg_mask_03_0004_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03/rg_mask_03_0005_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03/rg_mask_03_0005_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03/rg_mask_03_0005_a (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (6)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (6)/cd_big_roof_0004_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (6)/cd_big_roof_0003_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (6)/cd_big_roof_0002_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (6)/cd_big_roof_0004_03 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (6)/cd_big_roof_0004_03 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (6)/cd_big_roof_0004_03 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (12)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (12)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (12)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (12)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_stucture_04 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_bg_plate2 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (2)/ruins_resting_extra_bits_0077_Layer-179 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (2)/ruins_resting_extra_bits_0077_Layer-179">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (2)/rg_mask_03_0000_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (2)/rg_mask_03_0001_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (2)/rg_mask_03_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (2)/rg_mask_03_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (2)/rg_mask_03_0004_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (2)/rg_mask_03_0005_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (2)/rg_mask_03_0005_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (2)/rg_mask_03_0005_a (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (2)/rg_mask_03_0005_a (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (2)/rg_mask_03_0005_a (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (2)/rg_mask_03_0005_a (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mask_03 (2)/rg_mask_03_0005_a (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="deepnest_fog_02 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_17">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_17/roof_FG_rock_07_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_17/roof_FG_rock_07_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_17/roof_FG_rock_07_0003_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_17/roof_FG_rock_07_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_17/roof_FG_rock_07_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_17/roof_FG_rock_07_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (1)/ruins_resting_extra_bits_0097_Layer-197">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (1)/ruins_resting_extra_bits_0085_Layer-187">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (1)/ruins_resting_extra_bits_0085_Layer-187 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (28)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_archway_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left1">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>GateSnap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left1/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerCollisionEnter2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left1/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left1/haze2 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Area Title Controller (1)">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>AreaTitleController</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Area Title Controller (1)/Fleur Cache">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_cap_01 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_03 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (21)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (35)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (35)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (35)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (35)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_03 (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="town_right_cliff">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="town_right_cliff/rocks_right_left2_BG_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="town_right_cliff/rocks_right_left2_BG_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="town_right_cliff/rocks_FG_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="town_right_cliff/rocks_FG_02 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="town_right_cliff/rocks_FG_02 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="town_right_cliff/rocks_FG_02 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="town_right_cliff/rocks_right_left2_BG_02 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="town_right_cliff/rocks_FG_02 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="town_right_cliff/rocks_FG_02 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="town_right_cliff/rocks_right_left2_BG_02 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="town_right_cliff/rocks_right_left3_BG_02 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="town_right_cliff/rocks_right_left3_BG_04 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="town_right_cliff/rocks_FG_02 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (2)/Simple Rock L2">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (2)/Simple Rock L2/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (2)/Simple Rock L4">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (2)/Simple Rock L4/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (2)/debris_particle_fling">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (2)/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 415">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (4)/highway_01_layered_0004_Layer-5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (4)/highway_01_layered_0002_Layer-1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (4)/highway_01_layered_0001_Layer-4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_06 (4)/highway_01_layered_0003_Layer-0">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (27)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (27)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (27)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (27)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_archbase_02 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (11)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (11)/cd_big_roof_0006_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (11)/cd_big_roof_0005_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (11)/cd_big_roof_0004_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (11)/cd_big_roof_0003_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (11)/cd_big_roof_0002_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (11)/cd_big_roof_0001_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (11)/cd_big_roof_0000_07">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (8)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (8)/cd_big_roof_0006_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (8)/cd_big_roof_0005_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (8)/cd_big_roof_0004_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (8)/cd_big_roof_0003_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (8)/cd_big_roof_0002_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (8)/cd_big_roof_0004_03 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (23)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (23)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (23)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (23)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (23)/ruins_resting_extra_bits_0002_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GradeMarker grey">
+      <components>
+        <string>Transform</string>
+        <string>GradeMarker</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Resting_Grounds_Shift_Set">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Resting_Grounds_Shift_Set/PreDreamnail">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Resting_Grounds_Shift_Set/PreDreamnail/default_particles">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Resting_Grounds_Shift_Set/PreDreamnail/default_particles/immediate_BG">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Resting_Grounds_Shift_Set/PreDreamnail/default_particles/FG">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Resting_Grounds_Shift_Set/PreDreamnail/default_particles/far BG">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Resting_Grounds_Shift_Set/PreDreamnail/default_particles/FG (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Resting_Grounds_Shift_Set/PostDreamnail">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Resting_Grounds_Shift_Set/PostDreamnail/resting_grounds_particles (1)">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Resting_Grounds_Shift_Set/PostDreamnail/resting_grounds_particles (1)/immediate_BG (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Resting_Grounds_Shift_Set/PostDreamnail/resting_grounds_particles (1)/soul_particles_small">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Resting_Grounds_Shift_Set/PostDreamnail/resting_grounds_particles (1)/soul_particles_small (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Resting_Grounds_Shift_Set/PostDreamnail/resting_grounds_souls">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Resting_Grounds_Shift_Set/PostDreamnail/resting_grounds_souls/soul_particles">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Resting_Grounds_Shift_Set/PostDreamnail/resting_grounds_souls/soul_particles">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 0">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 3">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 4">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (10)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (10)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (10)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (10)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (36)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (36)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (36)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (36)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="BossLoader">
+      <components>
+        <string>Transform</string>
+        <string>SceneAdditiveLoadConditional</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (1)/Simple Rock L2">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (1)/Simple Rock L2/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (1)/Simple Rock L4">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (1)/Simple Rock L4/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (1)/debris_particle_fling">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (1)/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_cap_01 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Camera Lock Zones">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (16)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (16)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (16)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (16)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fog">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_wall_04 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_wall_04 (1)/rg_bits_02_0040_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_wall_04 (1)/rg_bits_02_0041_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_wall_04 (1)/rg_bits_02_0042_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (2)/ruins_resting_extra_bits_0097_Layer-197">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (2)/ruins_resting_extra_bits_0085_Layer-187">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_tall_pole_sil (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ghost_shrines_0011_xero">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Roof Collider">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>Roof</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_bg_plate2 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor_03 (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor_03 (2)/rg_bits_02_0044_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor_03 (2)/rg_bits_02_0043_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor_03 (2)/rg_bits_02_0043_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor_03 (2)/rg_bits_02_0043_a (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Managers">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Managers/PlayMaker Unity 2D">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerUnity2d</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>PlayMakerCollisionExit2D</string>
+        <string>PlayMakerCollisionStay2D</string>
+        <string>PlayMakerTriggerEnter2D</string>
+        <string>PlayMakerTriggerExit2D</string>
+        <string>PlayMakerTriggerStay2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (20)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (20)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (20)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (20)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (1)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (1)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (1)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="simple_doorway">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_NPCs">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_roof_floor 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_bg_plate">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (6)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (6)/rg_bits_02_0032_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (6)/rg_bits_02_0032_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (6)/rg_bits_02_0031_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (6)/rg_bits_02_0033_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="formal_fence (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="formal_fence (1)/cd_arch_fence_01 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="formal_fence (1)/ruins_struts_spike (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="formal_fence (1)/ruins_struts_spike">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="formal_fence (1)/cd_arch_fence_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front/rg_bits_02_0032_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front/rg_bits_02_0032_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front/rg_bits_02_0031_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front/rg_bits_02_0033_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_bg_plate (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (2)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (2)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (2)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_tall_pole_sil (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (5)/Simple Rock L2">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (5)/Simple Rock L2/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (5)/Simple Rock L4">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (5)/Simple Rock L4/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (5)/debris_particle_fling">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break (5)/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Roof Collider (1)">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>Roof</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="deepnest_fog_02 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (8)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (8)/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (8)/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (8)/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (8)/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (8)/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_stucture_07 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (22)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mid_skulls (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (1)/rg_bits_02_0032_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (1)/rg_bits_02_0032_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (1)/rg_bits_02_0031_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (1)/rg_bits_02_0033_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_tall_pole_sil (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_wall_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (30)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 415 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_bg_plate2 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (26)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="deepnest_fog_02 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_round_top_pole">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_round_top_pole/debris_particle_fling (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_round_top_pole/Fung Top Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_round_top_pole/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_gate">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_gate/rg_bits_02_0010_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="stag_door">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="stag_door/stagdoor_0004_Color-Balance-1-copy-9">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="stag_door/stagdoor_0003_Color-Balance-1-copy-5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="stag_door/stagdoor_0002_Color-Balance-1-copy-7">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="stag_door/stagdoor_0003_Color-Balance-1-copy-5 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="stag_door/stagdoor_0003_Color-Balance-1-copy-5 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="stag_door/stagdoor_0003_Color-Balance-1-copy-5 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="stag_door/stagdoor_0003_Color-Balance-1-copy-5 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mid_skulls (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 414">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break/Simple Rock L2">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break/Simple Rock L2/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break/Simple Rock L4">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>ObjectBounce</string>
+        <string>BoxCollider2D</string>
+        <string>SpriteRenderer</string>
+        <string>SimpleRock</string>
+        <string>SetZ</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break/Simple Rock L4/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>CircleCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break/debris_particle_fling">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_stone_break/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (15)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (15)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (15)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (15)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Stag_Pole_Break">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+        <string>NonBouncer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Stag_Pole_Break/glass_burst pole 1">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Stag_Pole_Break/Fungus Top Scarab (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>PolygonCollider2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Stag_Pole_Break/lamp_bug_escape (7)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Stag_Pole_Break/stag_sign_breakable_0002_Layer-0">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Stag_Pole_Break/Fungus Top Scarab (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>CircleCollider2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Stag_Pole_Break/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Stag_Pole_Break/Active/Lamp_Bug (19)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Stag_Pole_Break/Active/Lamp_Bug (19)/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PlayFromRandomFrameMecanim</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Stag_Pole_Break/Active/Lamp_Bug (19)/haze2 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 415 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Enemies">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole/debris_particle_fling (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole/Fung Top Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_wall_02 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Areas">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (34)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (30)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (30)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (30)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (30)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (31)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mid_skulls (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (7)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (7)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (7)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (7)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof/cd_big_roof_0006_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof/cd_big_roof_0005_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof/cd_big_roof_0004_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof/cd_big_roof_0003_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof/cd_big_roof_0002_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof/cd_big_roof_0001_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof/cd_big_roof_0000_07">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (4)/rg_bits_02_0032_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (4)/rg_bits_02_0032_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (4)/rg_bits_02_0031_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_arch_front (4)/rg_bits_02_0033_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (7)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (7)/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (7)/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (7)/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (7)/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (7)/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (3)/grave_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (3)/grave_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (3)/grave_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (3)/grave_03 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (3)/grave_03 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (3)/grave_03 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (3)/grave_04 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (3)/grave_02 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="graves (3)/grave_03 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_archbase_02 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_bg_plate2 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_20">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_03 (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_rocks_06 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_rocks_06 (1)/Mines_Layered_0019_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_rocks_06 (1)/Mines_Layered_0020_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_rocks_06 (1)/Mines_Layered_0020_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_rocks_06 (1)/Mines_Layered_0020_a (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_rocks_06 (1)/Mines_Layered_0020_a (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_rocks_06 (1)/Mines_Layered_0020_a (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_tall_pole_sil">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="CameraLockArea">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (6)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (6)/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (6)/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (6)/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (6)/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (6)/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="simple_doorway (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="deepnest_fog_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (4)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (4)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (4)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (10)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (10)/ruins_resting_extra_bits_0097_Layer-197">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (10)/ruins_resting_extra_bits_0085_Layer-187">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_03 (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (27)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fog (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_mid_skulls">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (25)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (25)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (25)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (25)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fog (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_07">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_07/highway_02_layered_0003_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_07/highway_02_layered_0002_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_07/highway_02_layered_0001_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_floor_highway_07/highway_02_layered_0000_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_tall_pole_sil (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (1)/debris_particle_fling (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (1)/Fung Top Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (1)/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fog (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (32)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (33)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (33)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (33)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (33)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (26)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (26)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (26)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (26)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (25)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_wall_02 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_solid 413">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (7)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (7)/cd_big_roof_0006_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (7)/cd_big_roof_0005_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (7)/cd_big_roof_0004_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (7)/cd_big_roof_0003_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (7)/cd_big_roof_0002_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (7)/cd_big_roof_0006_01 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (7)/cd_big_roof_0006_01 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (7)/cd_big_roof_0006_01 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (7)/cd_big_roof_0006_01 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (7)/cd_big_roof_0006_01 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (7)/cd_big_roof_0004_03 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (7)/cd_big_roof_0006_01 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (7)/cd_big_roof_0006_01 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (38)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (38)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (38)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (38)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (4)/ruins_resting_extra_bits_0097_Layer-197">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_fence1 (4)/ruins_resting_extra_bits_0085_Layer-187">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="bot1">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>GateSnap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="bot1/GO UP Message">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>SendEnemyMessageTrigger</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="bot1/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="bot1/haze2 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="deepnest_fog_01 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_19 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_19 (1)/roof_FG_rock_09_0001_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_19 (1)/roof_FG_rock_09_0000_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (4)/debris_particle_fling (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (4)/Fung Top Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_short_pole (4)/Fung Base Wide">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="formal_fence">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="formal_fence/cd_arch_fence_01 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="formal_fence/ruins_struts_spike (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="formal_fence/ruins_struts_spike (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="formal_fence/cd_arch_fence_01 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="formal_fence/ruins_struts_spike">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="formal_fence/cd_arch_fence_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="resting_grounds_particles">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="resting_grounds_particles/soul_particles_small">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="resting_grounds_particles/soul_particles">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="resting_grounds_particles/soul_particles">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="resting_grounds_particles/soul_particles">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (35)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (13)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (13)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (13)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (13)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (22)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (22)/ruins_resting_extra_bits_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (22)/ruins_resting_extra_bits_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rg_floor (22)/ruins_resting_extra_bits_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="grave_03 (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (4)/cd_big_roof_0006_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (4)/cd_big_roof_0005_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (4)/cd_big_roof_0004_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (4)/cd_big_roof_0003_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (4)/cd_big_roof_0002_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (4)/cd_big_roof_0000_07">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_big_roof (4)/cd_big_roof_0005_02 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Inspect Region Ghost">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Inspect Region Ghost/Prompt Marker">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (16)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (16)/roof_FG_rock_08_0005_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (16)/roof_FG_rock_08_0004_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (16)/roof_FG_rock_08_0002_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (16)/roof_FG_rock_08_0001_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="cd_FG_rock_18 (16)/roof_FG_rock_08_0000_06">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="fg_ground_faces (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="sprite_set_rg">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="sprite_set_rg/Mossman_Shaker">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="sprite_set_rg/Mossman_Shaker (1)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="sprite_set_rg/Mossman_Shaker (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="sprite_set_rg/Mossman_Shaker (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+  </sceneObjects>
+</SceneData>

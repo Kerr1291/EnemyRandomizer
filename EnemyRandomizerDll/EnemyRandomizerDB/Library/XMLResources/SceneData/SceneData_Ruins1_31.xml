@@ -1,0 +1,5707 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SceneData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Ruins1_31">
+  <sceneObjects>
+    <SceneObject path="mage_tower_mid_BG_small (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (42)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (8)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (8)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (8)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (8)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_rain (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (43)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_additions_0006_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (52)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_SceneManager">
+      <components>
+        <string>Transform</string>
+        <string>SceneManager</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Lift Call Lever">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>NonBouncer</string>
+        <string>SetZ</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Lift Call Lever/Hero Check">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (46)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (76)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_black_solid (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_roof_standard (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (50)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GameObject">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_elev_shaft_strut (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>BoxCollider2D</string>
+        <string>AudioSource</string>
+        <string>GrassCut</string>
+        <string>GrassBehaviour</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag/Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag/Sprite_broken">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag/break rag particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag/WindCollider">
+      <components>
+        <string>Transform</string>
+        <string>GrassWind</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Transition Gates">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_dark_wall">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Gate">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>BoxCollider2D</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+        <string>TinkEffect</string>
+        <string>PersistentBoolItem</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Gate/Dust">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoDestroy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_corner (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_fog (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Terrain Saver (6)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (3)/ruins_additions_0012_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (3)/ruins_additions_0013_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (3)/ruins_additions_0014_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (51)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_roof_standard (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_rain (20)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_elevator_bottom">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_elevator_bottom/mines_additions_03_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_elev_shaft_strut">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="door_glow_rain0000">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (58)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_layered_0006_w 1 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Breakable Wall Ruin Lift">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>Rigidbody2D</string>
+        <string>AudioSource</string>
+        <string>PersistentBoolItem</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Breakable Wall Ruin Lift/Masks">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Breakable Wall Ruin Lift/Masks/Mask 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Breakable Wall Ruin Lift/Camera Locks">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Breakable Wall Ruin Lift/Camera Locks/CameraLockArea Lift">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_mid_wall_detail_05 1 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg_straight (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_roof_standard (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (12)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (12)/ruins_additions_0012_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (12)/ruins_additions_0013_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (12)/ruins_additions_0014_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (47)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Terrain Saver (4)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table/Particle_rocks_small_black (2)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table/Half Table">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+        <string>BoxCollider2D</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table/Half Table2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+        <string>BoxCollider2D</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table/Table Chunk">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table/Table Chunk 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_corner (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (55)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (42)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_corner">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_BG_books_03 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_BG_books_03 (3)/ruin_layered_0079_Layer-101">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (43)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_wall_arch_01 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_wall_arch_01 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Roof Collider (7)">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>Roof</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_rain (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_arch_window_01 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GradeMarker">
+      <components>
+        <string>Transform</string>
+        <string>GradeMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_NPCs">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_dark_wall (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (32)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Cornifer">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+        <string>AudioSource</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Cornifer/Prompt Marker">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Cornifer/Encounter Range">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Cornifer/Dream Dialogue">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Cornifer/Dream Dialogue/Active Pt">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Cornifer/Dream Dialogue/Impact Pt">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Cornifer/Hum">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (21)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruind_int_plat_float_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Hazard Respawn Trigger v2">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnTrigger</string>
+        <string>BoxCollider2D</string>
+        <string>DeactivateInDarknessWithoutLantern</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Hazard Respawn Trigger v2/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg_straight (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (45)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="wall collider">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (73)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left3">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>GateSnap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left3/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerCollisionEnter2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left3/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left3/haze2 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (44)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (56)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="CameraLockArea">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_arch_pole_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (33)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_BG_books_03 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_BG_books_03 (1)/ruin_layered_0079_Layer-101">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (37)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruind_int_plat_float_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_metal (6)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_dark_wall (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mage Door">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>tk2dSprite</string>
+        <string>AudioSource</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mage Door/Phys Box">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mage Door/Prompt Marker">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mage Door/Dust">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoDestroy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Mage Door/Shine Particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Enemies">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed/ruins_additions_0012_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed/ruins_additions_0013_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed/ruins_additions_0014_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage haze (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_corner (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_rain (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_mid_wall_detail_05">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_rain (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (46)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_rain (21)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruind_window_01 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_roof_standard (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table L">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table L/Particle_shelf_explode (5)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table L/Particle_rocks_small_black (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table L/Half Table">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table L/Half Table2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>BoxCollider2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table L/Table Chunk">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table L/Table Chunk 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table L/Half Table 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruind_window_01 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_dark_wall (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_rain (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_fog (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (1)/ruins_additions_0012_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (1)/ruins_additions_0013_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (1)/ruins_additions_0014_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small (20)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_rain (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruins_cords_0001_a 3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruins_cords_0000_a 3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruins_cords_0001_a 2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruins_cords_0000_a 2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruins_cords_0001_a 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruins_cords_0000_a 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruins_cords_0000_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruins_cords_0001_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp36">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp36/haze4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp36/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp36/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp35">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp35/haze3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp35/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp35/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp34">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp34/haze3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp34/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp34/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp33">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp33/haze3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp33/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp33/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp32">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp32/haze4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp32/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp32/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp37">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp37/haze4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp37/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_03/ruin_cords_set 11/ruin_detail_lamp37/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Book Pile Small">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Book Pile Small/Books">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Book Pile Small/Books 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Book Pile Small/Books 2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Book Pile Small/Books 3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Book Pile Small/Books 4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Book Pile Small/Books 5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Book Pile Small/Books 6">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_metal_corner (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_wall_arch_01 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (6)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (6)/ruins_additions_0012_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (6)/ruins_additions_0013_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (6)/ruins_additions_0014_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Markers">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_archbase">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_black_solid">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg_straight (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage haze">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="bot1">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>GateSnap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="bot1/GO UP Message">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>SendEnemyMessageTrigger</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="bot1/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="bot1/haze2 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_clutter_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (69)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (57)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (10)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (10)/ruins_additions_0012_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (10)/ruins_additions_0013_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (10)/ruins_additions_0014_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_arch_pole_01 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Terrain Saver (3)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (41)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap">
+      <components>
+        <string>Transform</string>
+        <string>tk2dTileMap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_BG_books_03 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_BG_books_03 (4)/ruin_layered_0079_Layer-101">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (4)/ruins_additions_0012_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (4)/ruins_additions_0013_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (4)/ruins_additions_0014_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Roof Collider (1)">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>Roof</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_arch_window_01_big (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage-furniture_0009_Layer-10 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Roof Collider (3)">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>Roof</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_dark_wall (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall/ruind_wall_02 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall/ruind_wall_03 (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall/ruind_wall_03 (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall/ruind_wall_03 (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall/ruind_wall_03 (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall/ruind_wall_03 (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall/ruind_wall_03 (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall/ruind_wall_03 (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall/ruind_wall_03 (20)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall/ruind_wall_03 (21)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall/ruind_wall_03 (22)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall/ruind_wall_03 (23)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg_straight (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_arch_window_01_big">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift">
+      <components>
+        <string>Transform</string>
+        <string>Rigidbody2D</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>RuinsLift</string>
+        <string>HeroPlatformStick</string>
+        <string>NonBouncer</string>
+        <string>PersistentIntItem</string>
+        <string>AudioSource</string>
+        <string>NonSlider</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/lift_controls_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/deepnest_spider_pieces_0010_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/deepnest_spider_pieces_0010_a/ruins_lift_spikes">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/deepnest_spider_pieces_0010_a/ruins_lift_spikes/Enemy Msg">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>SendEnemyMessageTrigger</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/deepnest_spider_pieces_0012_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/deepnest_spider_pieces_0011_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Down Light">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Up Light">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Roof Collider">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Roof Spikes">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>DamageHero</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>DamageEnemies</string>
+        <string>TinkEffect</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Control Lever">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PolygonCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>NonBouncer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Control Lever/Hero Check">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Hero Only">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Enemy Crusher">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerCollisionEnter2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Chain">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Chain/elev_chain">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Chain/elev_chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Chain/elev_chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Chain/elev_chain (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Chain/elev_chain (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Chain/elev_chain (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Chain/elev_chain (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Chain/elev_chain (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Chain/elev_chain (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Chain/elev_chain (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Hero Bonk Detector">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain L">
+      <components>
+        <string>Transform</string>
+        <string>LiftChain</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain L/Chain">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain L/Chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain L/Chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain L/Chain (3)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain L/Chain (4)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain L/Chain (5)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain L/Chain (6)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain L/Chain (7)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain L/Chain (8)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain L/Chain (9)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain L/Chain (10)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain L/Chain (11)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain L/Chain (12)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain L/Chain (14)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain R">
+      <components>
+        <string>Transform</string>
+        <string>LiftChain</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain R/Chain">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain R/Chain (1)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain R/Chain (2)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain R/Chain (3)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain R/Chain (4)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain R/Chain (5)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain R/Chain (6)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain R/Chain (7)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain R/Chain (8)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain R/Chain (9)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain R/Chain (10)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain R/Chain (11)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain R/Chain (12)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/BG Chain R/Chain (14)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Enviro Region">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Lift/Enemy Block">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>IgnoreHeroCollision</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (30)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Managers">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Managers/PlayMaker Unity 2D">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerUnity2d</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>PlayMakerCollisionExit2D</string>
+        <string>PlayMakerCollisionStay2D</string>
+        <string>PlayMakerTriggerEnter2D</string>
+        <string>PlayMakerTriggerExit2D</string>
+        <string>PlayMakerTriggerStay2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Stool">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Stool/Particle_rocks_small_black (1)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Stool/Half Stool">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Stool/Half Stool 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Stool/Half Stool 2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_roof_standard (7)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_corner (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_black_solid (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Terrain Saver">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed_small">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed_small/ruins_additions_0032_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed_small/ruins_additions_0033_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed_small/ruins_additions_0034_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="elev_top_arch">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="elev_top_arch/ruins_core_arch_front 6">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="elev_top_arch/ruins_core_half_arch 6">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="elev_top_arch/ruins_core_half_arch 6/ruins_core_0001_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="elev_top_arch/ruins_core_half_arch 5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="elev_top_arch/ruins_core_half_arch 5/ruins_core_0001_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="elev_top_arch/black_solid 416">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="elev_top_arch/black_solid 415">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="elev_top_arch/ruins_core_arch_front 6 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins BookShelf ">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Hazard Respawn Trigger v2 (1)">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnTrigger</string>
+        <string>BoxCollider2D</string>
+        <string>DeactivateInDarknessWithoutLantern</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Hazard Respawn Trigger v2 (1)/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Vial Empty">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>PersistentBoolItem</string>
+        <string>PlayMakerFSM</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Vial Empty/Bottom Chunk">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>BoxCollider2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Vial Empty/Top Chunk">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>BoxCollider2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Vial Empty/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Vial Empty/Active/soul_cache (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Vial Empty/Active/soul_cache (1)/white_light">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Vial Empty/Active/soul_cache (1)/small_soul_cache">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Vial Empty/Active/soul_cache (1)/small_soul_cache_glow">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_elev_shaft_strut (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (5)/haze5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (5)/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (5)/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (5)/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (5)/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (5)/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (5)/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small (21)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Roof Collider">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>Roof</string>
+        <string>PolygonCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (7)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+        <string>NonBouncer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (2)/glass_burst pole 1 (4)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (2)/ruind_dressing_light_03_base">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (2)/lamp_bug_escape (7)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (2)/Top Chunk (25)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>BoxCollider2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (2)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (2)/Active/haze2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (2)/Active/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (2)/Active/Lamp_Bug/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (2)/Active/Lamp_Bug/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (20)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (22)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (22)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (22)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (22)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_arch_detailed">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_arch_detailed/ruins_additions_0012_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_arch_detailed/ruins_additions_0013_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_arch_detailed/ruins_additions_0014_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (26)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (26)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (26)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (26)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (13)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (13)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (13)/ruins_additions_0038_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (13)/ruins_additions_0038_a (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (13)/ruins_additions_0035_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (13)/ruins_additions_0035_a (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (27)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (27)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (27)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (27)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (21)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (21)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (21)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (21)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (21)/ruins_additions_0038_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (21)/ruins_additions_0038_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (8)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (8)/Active/haze2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (8)/Active/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (8)/Active/Lamp_Bug/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (8)/Active/Lamp_Bug/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (9)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (9)/Active/haze2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (9)/Active/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (9)/Active/Lamp_Bug/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (9)/Active/Lamp_Bug/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (23)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (23)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (23)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (23)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (23)/ruins_additions_0038_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (24)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (24)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (24)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (24)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (24)/ruins_additions_0038_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (25)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (25)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (25)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (25)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruin_floor_detailed (25)/ruins_additions_0038_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (11)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (11)/Active/haze2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (11)/Active/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (11)/Active/Lamp_Bug/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (11)/Active/Lamp_Bug/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (12)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (12)/Active/haze2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (12)/Active/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (12)/Active/Lamp_Bug/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (12)/Active/Lamp_Bug/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (13)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (13)/Active/haze2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (13)/Active/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (13)/Active/Lamp_Bug/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (13)/Active/Lamp_Bug/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruins_mid_wall_02 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruins_mid_wall_02 (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruins_mid_wall_02 (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Book Pile (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>NonBouncer</string>
+        <string>Breakable</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Book Pile (3)/Particle_water_explode">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Book Pile (3)/Books">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Book Pile (3)/Books 2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Book Pile (3)/Books 4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Book Pile (3)/Books 8">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Book Pile (3)/Books 8 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/Book Pile (3)/Books 4 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>Breakable</string>
+        <string>NonBouncer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (10)/glass_burst pole 1 (4)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoRecycle</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (10)/ruind_dressing_light_03_base">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (10)/lamp_bug_escape (7)">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (10)/Top Chunk (25)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>ObjectBounce</string>
+        <string>Rigidbody2D</string>
+        <string>BoxCollider2D</string>
+        <string>SpinSelf</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (10)/Active">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (10)/Active/haze2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (10)/Active/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (10)/Active/Lamp_Bug/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruind_dressing_light_03 (10)/Active/Lamp_Bug/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/ruins_mid_wall_02 (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Scenery/back_strut (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruind_window_01 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_wall_arch_01 (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="enemy blocker">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+        <string>PersistentBoolItem</string>
+        <string>AudioSource</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/Prompt Marker">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/Dust Box Down">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoDestroy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/RestBench">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>BoxCollider2D</string>
+        <string>RestBench</string>
+        <string>PlayMakerFSM</string>
+        <string>RespawnMarker</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/RestBench/Lit">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/RestBench/Detect Range">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/RestBench/Light">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/RestBench/Particle B">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/RestBench/Particle F">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/RestBench/Particle Rest">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/RestBench/Light Small">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/RestBench/Prompt Marker">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/RestBench/Heal Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/pay_bench_front">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/Bench Anim">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/Dust Bench Up">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoDestroy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Toll Machine Bench/Dust Bench Down">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+        <string>ParticleSystemAutoDestroy</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (50)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (11)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (11)/ruins_additions_0012_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (11)/ruins_additions_0013_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (11)/ruins_additions_0014_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage haze (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (23)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (4)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (4)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (4)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (4)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_arch_window_01 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="elegant_door_frame_0002_1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (3)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>BoxCollider2D</string>
+        <string>AudioSource</string>
+        <string>GrassCut</string>
+        <string>GrassBehaviour</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (3)/Sprite">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (3)/Sprite_broken">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (3)/break rag particle">
+      <components>
+        <string>Transform</string>
+        <string>ParticleSystem</string>
+        <string>ParticleSystemRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="break_rag (3)/WindCollider">
+      <components>
+        <string>Transform</string>
+        <string>GrassWind</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_collider">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>NonThunker</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (72)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_archbase (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins BookShelf (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_dark_wall (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_roof_standard (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage haze (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Chair Left (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg_straight (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg_straight (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Music Region">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>MusicRegion</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Effects">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_archbase (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (28)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_arch_front (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_dark_wall (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall (1)/ruind_wall_03 (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall (1)/ruind_wall_03 (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall (1)/ruind_wall_03 (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall (1)/ruind_wall_03 (21)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall (1)/ruind_wall_03 (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall (1)/ruind_wall_03 (22)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Elevator_shaft_wall (1)/ruind_wall_03 (23)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (49)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_mid_wall_detail_05 1 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_arch_front (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (53)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (3)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (3)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (3)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (3)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (3)/ruins_additions_0038_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (48)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_corner (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (5)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (5)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (5)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg_straight (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_black_solid (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_black_solid (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_half_arch">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_half_arch/ruins_core_0001_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (20)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="CameraLockArea (1)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_metal_corner (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (49)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (54)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (7)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (7)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (7)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (7)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_rain (16)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (31)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_roof_standard (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage haze (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="BlurPlane">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>BlurPlane</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_clutter_0008_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruins_cords_0000_a 4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruins_cords_0000_a 2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruins_cords_0000_a 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruins_cords_0001_a 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruins_cords_0000_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruins_cords_0001_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruins_cords_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp36">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp36/haze4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp36/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp36/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp35">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp35/haze3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp35/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp35/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp34">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp34/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp34/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp33">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp33/haze3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp33/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp33/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp32">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp32/haze4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp32/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7 (1)/ruin_detail_lamp32/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="GradeTrigger">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>GradeTrigger</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (2)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (2)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (2)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (2)/ruins_additions_0038_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (21)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (5)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (5)/ruins_additions_0012_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (5)/ruins_additions_0013_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (5)/ruins_additions_0014_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Items">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="haze2 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (36)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_wall_arch_01 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (44)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (13)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (13)/ruins_additions_0012_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (13)/ruins_additions_0013_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_arch_detailed (13)/ruins_additions_0014_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg_straight (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruind_wall_03 (24)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (9)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (9)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (9)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (9)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruind_window_01 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruind_wall_03 (24)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruind_wall_03 (25)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed_small (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed_small (1)/ruins_additions_0032_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed_small (1)/ruins_additions_0033_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed_small (1)/ruins_additions_0034_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_mid_wall_detail_05 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="elegant_door_frame_0001_2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left1">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>GateSnap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left1/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerCollisionEnter2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left1/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left1/haze2 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_arch_window_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Map Scene Region">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruind_wall_03 (25)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_roof_standard (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Props">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_dark_wall (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_arch_window_01 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_rain (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Lift Call Lever (1)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+        <string>tk2dSpriteAnimator</string>
+        <string>NonBouncer</string>
+        <string>SetZ</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Lift Call Lever (1)/Hero Check">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Camera Lock Zones">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (1)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (1)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (1)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (1)/ruins_additions_0038_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruind_wall_03 (21)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_arch_pole_01 (5)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_black_solid (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg_straight (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_mid_wall_detail_05 1 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (45)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (51)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Terrain Saver (5)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_layered_0006_w 1 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruind_wall_03 (23)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg_straight (8)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_clutter_0000_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg_straight (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (3)/haze5">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (3)/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (3)/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (3)/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (3)/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (3)/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_detail_lamp6 (3)/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Ruins Dressing Table (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_bg_large_window">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (29)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_clutter_0004_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="black_fader">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_rain (13)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (6)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (6)/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (6)/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed (6)/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag_set">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag_set/rags_149">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag_set/rags_148">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag_set/rags_147">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag_set/rags_146">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag_set/rags_148 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_black_solid (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small (19)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_arch_pole_01 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed_small (2)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed_small (2)/ruins_additions_0032_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed_small (2)/ruins_additions_0033_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed_small (2)/ruins_additions_0034_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag_set (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag_set (1)/rags_149">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag_set (1)/rags_148">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag_set (1)/rags_147">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rag_set (1)/rags_146">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruins_cords_0000_a 4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruins_cords_0000_a 2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruins_cords_0000_a 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruins_cords_0001_a 1">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruins_cords_0000_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruins_cords_0001_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruins_cords_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp36">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp36/haze4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp36/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp36/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp35">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp35/haze3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp35/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp35/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp34">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp34/haze3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp34/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp34/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp33">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp33/haze3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp33/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp33/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp32">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp32/haze4">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp32/Lamp_Bug">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_cords_set 7/ruin_detail_lamp32/Lamp_Bug/shop_lamp_bug0000 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruind_wall_03 (22)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_arch_pole_01 (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (52)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (34)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Exterior Rain Audio (1)">
+      <components>
+        <string>Transform</string>
+        <string>AudioSource</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_BG_books_02">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_BG_books_02/ruin_layered_0079_Layer-102">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_fog (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_rain (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (17)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_small_door">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_small_door/ornate_door_0000_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_small_door/ornate_door_0003_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_small_door/ornate_door_0002_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_small_door/ornate_door_0000_a (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (53)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Hazard Respawn Trigger v2 (2)">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnTrigger</string>
+        <string>BoxCollider2D</string>
+        <string>DeactivateInDarknessWithoutLantern</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Hazard Respawn Trigger v2 (2)/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_metal_corner (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small (6)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="elegant_door_frame_0000_3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_arch_front">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_arch_front (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed/ruins_additions_0035_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed/ruins_additions_0036_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed/ruins_additions_0037_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_floor_detailed/ruins_additions_0038_a">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_arch_pole_01 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="CameraLockArea (2)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="CameraLockArea (3)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>CameraLockArea</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruind_wall_03 (28)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Roof Collider (2)">
+      <components>
+        <string>Transform</string>
+        <string>PolygonCollider2D</string>
+        <string>NonSlider</string>
+        <string>PlayMakerCollisionEnter2D</string>
+        <string>Roof</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (59)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 0">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 0 2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 1 0">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 1 1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 1 2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 2 0">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 2 1">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="TileMap Render Data/Scenemap/Chunk 2 2">
+      <components>
+        <string>Transform</string>
+        <string>MeshFilter</string>
+        <string>MeshRenderer</string>
+        <string>EdgeCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (20)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_fog">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (70)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_rain (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg_straight (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_roof_standard (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Terrain Saver (7)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Hollow_Shade Marker">
+      <components>
+        <string>Transform</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Hollow_Shade Marker/HS_Image">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_rain (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (24)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Terrain Saver (2)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (18)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_archbase (12)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (48)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mines_metal_corner">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_wall_arch_01 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (1)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Terrain Saver (1)">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (47)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="_Areas">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_wall_01 (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="window_rain (9)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_core_arch_front (14)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (20)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_arch_pole_01 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left2">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>GateSnap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left2/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerCollisionEnter2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left2/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="left2/haze2 (3)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rags_04 (22)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Book Pile Medium">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>NonBouncer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_BG_books_03">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_BG_books_03/ruin_layered_0079_Layer-101">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_add_doorbg_straight (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_BG_books_03 (2)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruin_BG_books_03 (2)/ruin_layered_0079_Layer-101">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="rubble_02 (11)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="mage_tower_mid_BG_small (15)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="right1">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>TransitionPoint</string>
+        <string>GateSnap</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="right1/EnemyDetector">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerCollisionEnter2D</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="right1/Hazard Respawn Marker">
+      <components>
+        <string>Transform</string>
+        <string>HazardRespawnMarker</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="right1/haze2 (4)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_wall_arch_01 (10)">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_wall_arch_01">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="scatter_map 3">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Cornifer Card">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>PlayMakerFSM</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFSM</string>
+        <string>PlayMakerFixedUpdate</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Cornifer Card/Shiny">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+        <string>Animator</string>
+        <string>PersistentBoolItem</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Cornifer Card/Prompt Marker">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="scatter_map 2">
+      <components>
+        <string>Transform</string>
+        <string>SpriteRenderer</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="Dream Gate Set Lock">
+      <components>
+        <string>Transform</string>
+        <string>BoxCollider2D</string>
+        <string>PlayMakerFSM</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_sentry_set (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_sentry_set (1)/Great Shield Zombie (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_sentry_set (1)/Royal Zombie Fat (1)">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_sentry_set (1)/Royal Zombie flat">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_sentry_set (1)/Royal Zombie point">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_sentry_set">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_sentry_set/Great Shield Zombie (1)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_sentry_set/Royal Zombie Fat (1)">
+      <components>
+        <string>Transform</string>
+        <string>MeshRenderer</string>
+        <string>MeshFilter</string>
+        <string>tk2dSprite</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_sentry_set/Royal Zombie flat">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+    <SceneObject path="ruins_sentry_set/Royal Zombie point">
+      <components>
+        <string>Transform</string>
+      </components>
+    </SceneObject>
+  </sceneObjects>
+</SceneData>

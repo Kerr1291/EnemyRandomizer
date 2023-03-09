@@ -1,0 +1,1220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5B11EDF6-F69C-4DE8-9232-3BDAB6B1BB60}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EnemyRandomizerMod</RootNamespace>
+    <AssemblyName>EnemyRandomizerDB</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Library|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Library\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;LIBRARY</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Development|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Development\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\ModdingAPIWin\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="MMHOOK_Assembly-CSharp">
+      <HintPath>..\..\..\ModdingAPIWin\MMHOOK_Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="MMHOOK_PlayMaker">
+      <HintPath>..\..\..\ModdingAPIWin\MMHOOK_PlayMaker.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayMaker">
+      <HintPath>..\..\..\..\..\..\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\PlayMaker.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>K:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>K:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>K:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>K:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>..\..\..\..\..\..\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>K:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.Physics2DModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>K:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>K:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsModule">
+      <HintPath>K:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>K:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Library\BattleManager.cs" />
+    <Compile Include="Library\BattleStateMachine.cs" />
+    <Compile Include="Library\Common\Containers\ArrayGrid.cs" />
+    <Compile Include="Library\Common\Containers\ArrayGridExtensions.cs" />
+    <Compile Include="Library\Common\Containers\CircularBuffer.cs" />
+    <Compile Include="Library\Common\Containers\GameSingleton.cs" />
+    <Compile Include="Library\Common\Containers\Range.cs" />
+    <Compile Include="Library\Common\Containers\Tags.cs" />
+    <Compile Include="Library\Common\Extensions\AnimationCurveExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\AudioSourceExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\BoundsExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\ByteExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\CameraExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\ColorExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\ComponentExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\GameObjectExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\IComparableExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\IntExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\LayerMaskExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\ListExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\Math.cs" />
+    <Compile Include="Library\Common\Extensions\MemberInfoExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\RectArrayExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\RectExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\RectTransformExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\ReflectionHelpers.cs" />
+    <Compile Include="Library\Common\Extensions\RegexHelper.cs" />
+    <Compile Include="Library\Common\Extensions\SceneExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\StringExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\TypeExtensions.cs" />
+    <Compile Include="Library\Common\Extensions\Vector2Extensions.cs" />
+    <Compile Include="Library\Common\Extensions\Vector3Extensions.cs" />
+    <Compile Include="Library\Common\Logic\CommunicationNode.cs" />
+    <Compile Include="Library\Common\Logic\SmartRoutine.cs" />
+    <Compile Include="Library\Common\Logic\SmartRoutineCtors.cs" />
+    <Compile Include="Library\Common\Logic\SmartRoutineHelper.cs" />
+    <Compile Include="Library\Common\Logic\SmartRoutineStarts.cs" />
+    <Compile Include="Library\Common\Logic\TimedRoutine.cs" />
+    <Compile Include="Library\Common\ObjectPool\IObjectPool.cs" />
+    <Compile Include="Library\Common\ObjectPool\IPoolableObject.cs" />
+    <Compile Include="Library\Common\ObjectPool\MonoBehaviourFactory.cs" />
+    <Compile Include="Library\Common\ObjectPool\MonoBehaviourPool.cs" />
+    <Compile Include="Library\Common\ObjectPool\ObjectPool.cs" />
+    <Compile Include="Library\Common\ObjectPool\PoolableMonoBehaviour.cs" />
+    <Compile Include="Library\Common\Physics\CooldownRangeCheck.cs" />
+    <Compile Include="Library\Common\Physics\ExplodeOnContact.cs" />
+    <Compile Include="Library\Common\Physics\HomingEffect.cs" />
+    <Compile Include="Library\Common\Physics\Physics2DHomingEffect.cs" />
+    <Compile Include="Library\Common\Physics\PolyMesh2D.cs" />
+    <Compile Include="Library\Common\Physics\PreventOutOfBounds.cs" />
+    <Compile Include="Library\Common\Physics\RangeCheck.cs" />
+    <Compile Include="Library\Common\Physics\Raycaster.cs" />
+    <Compile Include="Library\Common\Physics\RaySensor.cs" />
+    <Compile Include="Library\Common\Physics\TriangleExplosion.cs" />
+    <Compile Include="Library\Common\Physics\Triangulator.cs" />
+    <Compile Include="Library\Common\RNG\mt19937.cs" />
+    <Compile Include="Library\Common\RNG\RNG.cs" />
+    <Compile Include="Library\Database.cs" />
+    <Compile Include="Library\DatabaseAPI.cs" />
+    <Compile Include="Library\DatabaseInternal.cs" />
+    <Compile Include="Library\Enemies\FalseKnight.cs" />
+    <Compile Include="Library\Enemies\FlamebearerSpawn.cs" />
+    <Compile Include="Library\Enemies\GiantFly.cs" />
+    <Compile Include="Library\Enemies\Hatcher.cs" />
+    <Compile Include="Library\Enemies\ColosseumPrefabs.cs" />
+    <Compile Include="Library\Enemies\MawlekTurret.cs" />
+    <Compile Include="Library\Enemies\ZoteBoss.cs" />
+    <Compile Include="Library\ManagedObject.cs" />
+    <Compile Include="Library\ObjectMetadata.cs" />
+    <Compile Include="Library\Satchel\Futils\CustomAction.cs" />
+    <Compile Include="Library\Satchel\Futils\Extractors\AudioClips.cs" />
+    <Compile Include="Library\Satchel\Futils\FsmUtils.cs" />
+    <Compile Include="Library\Satchel\Futils\FsmVariables.cs" />
+    <Compile Include="Library\Satchel\Futils\Interceptor.cs" />
+    <Compile Include="Library\Satchel\Futils\Serialiser\ActionReader.cs" />
+    <Compile Include="Library\Satchel\Futils\Serialiser\FSMSerialiser.cs" />
+    <Compile Include="Library\Spawners\DefaultSpawner.cs" />
+    <Compile Include="Library\Spawners\ISpawner.cs" />
+    <Compile Include="Library\UniRx\Asynchronous\WebRequestExtensions.cs" />
+    <Compile Include="Library\UniRx\Disposables\BooleanDisposable.cs" />
+    <Compile Include="Library\UniRx\Disposables\CancellationDisposable.cs" />
+    <Compile Include="Library\UniRx\Disposables\CompositeDisposable.cs" />
+    <Compile Include="Library\UniRx\Disposables\DictionaryDisposable.cs" />
+    <Compile Include="Library\UniRx\Disposables\Disposable.cs" />
+    <Compile Include="Library\UniRx\Disposables\DisposableExtensions.cs" />
+    <Compile Include="Library\UniRx\Disposables\ICancelable.cs" />
+    <Compile Include="Library\UniRx\Disposables\MultipleAssignmentDisposable.cs" />
+    <Compile Include="Library\UniRx\Disposables\RefCountDisposable.cs" />
+    <Compile Include="Library\UniRx\Disposables\ScheduledDisposable.cs" />
+    <Compile Include="Library\UniRx\Disposables\SerialDisposable.cs" />
+    <Compile Include="Library\UniRx\Disposables\SingleAssignmentDisposable.cs" />
+    <Compile Include="Library\UniRx\Disposables\StableCompositeDisposable.cs" />
+    <Compile Include="Library\UniRx\EventPattern.cs" />
+    <Compile Include="Library\UniRx\InternalUtil\AscynLock.cs" />
+    <Compile Include="Library\UniRx\InternalUtil\CancellableTaskCompletionSource.cs" />
+    <Compile Include="Library\UniRx\InternalUtil\ExceptionExtensions.cs" />
+    <Compile Include="Library\UniRx\InternalUtil\ImmutableList.cs" />
+    <Compile Include="Library\UniRx\InternalUtil\ListObserver.cs" />
+    <Compile Include="Library\UniRx\InternalUtil\MicroCoroutine.cs" />
+    <Compile Include="Library\UniRx\InternalUtil\PriorityQueue.cs" />
+    <Compile Include="Library\UniRx\InternalUtil\PromiseHelper.cs" />
+    <Compile Include="Library\UniRx\InternalUtil\ScheduledItem.cs" />
+    <Compile Include="Library\UniRx\InternalUtil\ThreadSafeQueueWorker.cs" />
+    <Compile Include="Library\UniRx\InternalUtil\UnityEqualityComparer.cs" />
+    <Compile Include="Library\UniRx\Notification.cs" />
+    <Compile Include="Library\UniRx\Notifiers\BooleanNotifier.cs" />
+    <Compile Include="Library\UniRx\Notifiers\CountNotifier.cs" />
+    <Compile Include="Library\UniRx\Notifiers\MessageBroker.cs" />
+    <Compile Include="Library\UniRx\Notifiers\ScheduledNotifier.cs" />
+    <Compile Include="Library\UniRx\Observable.Aggregate.cs" />
+    <Compile Include="Library\UniRx\Observable.Awaiter.cs" />
+    <Compile Include="Library\UniRx\Observable.Binding.cs" />
+    <Compile Include="Library\UniRx\Observable.Blocking.cs" />
+    <Compile Include="Library\UniRx\Observable.Concatenate.cs" />
+    <Compile Include="Library\UniRx\Observable.Concurrency.cs" />
+    <Compile Include="Library\UniRx\Observable.Conversions.cs" />
+    <Compile Include="Library\UniRx\Observable.Creation.cs" />
+    <Compile Include="Library\UniRx\Observable.cs" />
+    <Compile Include="Library\UniRx\Observable.ErrorHandling.cs" />
+    <Compile Include="Library\UniRx\Observable.Events.cs" />
+    <Compile Include="Library\UniRx\Observable.FromAsync.cs" />
+    <Compile Include="Library\UniRx\Observable.Joins.cs" />
+    <Compile Include="Library\UniRx\Observable.Paging.cs" />
+    <Compile Include="Library\UniRx\Observable.Time.cs" />
+    <Compile Include="Library\UniRx\Observer.cs" />
+    <Compile Include="Library\UniRx\Operators\Aggregate.cs" />
+    <Compile Include="Library\UniRx\Operators\Amb.cs" />
+    <Compile Include="Library\UniRx\Operators\AsObservable.cs" />
+    <Compile Include="Library\UniRx\Operators\AsSingleUnitObservable.cs" />
+    <Compile Include="Library\UniRx\Operators\AsUnitObservable.cs" />
+    <Compile Include="Library\UniRx\Operators\Buffer.cs" />
+    <Compile Include="Library\UniRx\Operators\Cast.cs" />
+    <Compile Include="Library\UniRx\Operators\Catch.cs" />
+    <Compile Include="Library\UniRx\Operators\CombineLatest.cs" />
+    <Compile Include="Library\UniRx\Operators\Concat.cs" />
+    <Compile Include="Library\UniRx\Operators\ContinueWith.cs" />
+    <Compile Include="Library\UniRx\Operators\Create.cs" />
+    <Compile Include="Library\UniRx\Operators\DefaultIfEmpty.cs" />
+    <Compile Include="Library\UniRx\Operators\Defer.cs" />
+    <Compile Include="Library\UniRx\Operators\Delay.cs" />
+    <Compile Include="Library\UniRx\Operators\DelaySubscription.cs" />
+    <Compile Include="Library\UniRx\Operators\Dematerialize.cs" />
+    <Compile Include="Library\UniRx\Operators\Distinct.cs" />
+    <Compile Include="Library\UniRx\Operators\DistinctUntilChanged.cs" />
+    <Compile Include="Library\UniRx\Operators\Do.cs" />
+    <Compile Include="Library\UniRx\Operators\Empty.cs" />
+    <Compile Include="Library\UniRx\Operators\Finally.cs" />
+    <Compile Include="Library\UniRx\Operators\First.cs" />
+    <Compile Include="Library\UniRx\Operators\ForEachAsync.cs" />
+    <Compile Include="Library\UniRx\Operators\FromEvent.cs" />
+    <Compile Include="Library\UniRx\Operators\GroupBy.cs" />
+    <Compile Include="Library\UniRx\Operators\IgnoreElements.cs" />
+    <Compile Include="Library\UniRx\Operators\Last.cs" />
+    <Compile Include="Library\UniRx\Operators\Materialize.cs" />
+    <Compile Include="Library\UniRx\Operators\Merge.cs" />
+    <Compile Include="Library\UniRx\Operators\Never.cs" />
+    <Compile Include="Library\UniRx\Operators\ObserveOn.cs" />
+    <Compile Include="Library\UniRx\Operators\OfType.cs" />
+    <Compile Include="Library\UniRx\Operators\OperatorObservableBase.cs" />
+    <Compile Include="Library\UniRx\Operators\OperatorObserverBase.cs" />
+    <Compile Include="Library\UniRx\Operators\PairWise.cs" />
+    <Compile Include="Library\UniRx\Operators\Range.cs" />
+    <Compile Include="Library\UniRx\Operators\RefCount.cs" />
+    <Compile Include="Library\UniRx\Operators\Repeat.cs" />
+    <Compile Include="Library\UniRx\Operators\RepeatSafe.cs" />
+    <Compile Include="Library\UniRx\Operators\Return.cs" />
+    <Compile Include="Library\UniRx\Operators\Sample.cs" />
+    <Compile Include="Library\UniRx\Operators\Scan.cs" />
+    <Compile Include="Library\UniRx\Operators\Select.cs" />
+    <Compile Include="Library\UniRx\Operators\SelectMany.cs" />
+    <Compile Include="Library\UniRx\Operators\SelectWhere.cs" />
+    <Compile Include="Library\UniRx\Operators\Single.cs" />
+    <Compile Include="Library\UniRx\Operators\Skip.cs" />
+    <Compile Include="Library\UniRx\Operators\SkipUntil.cs" />
+    <Compile Include="Library\UniRx\Operators\SkipWhile.cs" />
+    <Compile Include="Library\UniRx\Operators\Start.cs" />
+    <Compile Include="Library\UniRx\Operators\StartWith.cs" />
+    <Compile Include="Library\UniRx\Operators\SubscribeOn.cs" />
+    <Compile Include="Library\UniRx\Operators\Switch.cs" />
+    <Compile Include="Library\UniRx\Operators\Synchronize.cs" />
+    <Compile Include="Library\UniRx\Operators\SynchronizedObserver.cs" />
+    <Compile Include="Library\UniRx\Operators\Take.cs" />
+    <Compile Include="Library\UniRx\Operators\TakeLast.cs" />
+    <Compile Include="Library\UniRx\Operators\TakeUntil.cs" />
+    <Compile Include="Library\UniRx\Operators\TakeWhile.cs" />
+    <Compile Include="Library\UniRx\Operators\Throttle.cs" />
+    <Compile Include="Library\UniRx\Operators\ThrottleFirst.cs" />
+    <Compile Include="Library\UniRx\Operators\Throw.cs" />
+    <Compile Include="Library\UniRx\Operators\TimeInterval.cs" />
+    <Compile Include="Library\UniRx\Operators\Timeout.cs" />
+    <Compile Include="Library\UniRx\Operators\Timer.cs" />
+    <Compile Include="Library\UniRx\Operators\Timestamp.cs" />
+    <Compile Include="Library\UniRx\Operators\ToArray.cs" />
+    <Compile Include="Library\UniRx\Operators\ToList.cs" />
+    <Compile Include="Library\UniRx\Operators\ToObservable.cs" />
+    <Compile Include="Library\UniRx\Operators\Wait.cs" />
+    <Compile Include="Library\UniRx\Operators\WhenAll.cs" />
+    <Compile Include="Library\UniRx\Operators\Where.cs" />
+    <Compile Include="Library\UniRx\Operators\WhereSelect.cs" />
+    <Compile Include="Library\UniRx\Operators\WithLatestFrom.cs" />
+    <Compile Include="Library\UniRx\Operators\Zip.cs" />
+    <Compile Include="Library\UniRx\Operators\ZipLatest.cs" />
+    <Compile Include="Library\UniRx\Pair.cs" />
+    <Compile Include="Library\UniRx\Schedulers\CurrentThreadScheduler.cs" />
+    <Compile Include="Library\UniRx\Schedulers\ImmediateScheduler.cs" />
+    <Compile Include="Library\UniRx\Schedulers\IScheduler.cs" />
+    <Compile Include="Library\UniRx\Schedulers\Scheduler.cs" />
+    <Compile Include="Library\UniRx\Schedulers\ThreadPoolScheduler.cs" />
+    <Compile Include="Library\UniRx\Subjects\AsyncSubject.cs" />
+    <Compile Include="Library\UniRx\Subjects\BehaviorSubject.cs" />
+    <Compile Include="Library\UniRx\Subjects\ConnectableObservable.cs" />
+    <Compile Include="Library\UniRx\Subjects\ISubject.cs" />
+    <Compile Include="Library\UniRx\Subjects\ReplaySubject.cs" />
+    <Compile Include="Library\UniRx\Subjects\Subject.cs" />
+    <Compile Include="Library\UniRx\Subjects\SubjectExtensions.cs" />
+    <Compile Include="Library\UniRx\System\IObservable.cs" />
+    <Compile Include="Library\UniRx\System\IObserver.cs" />
+    <Compile Include="Library\UniRx\System\IOptimizedObservable.cs" />
+    <Compile Include="Library\UniRx\System\IProgress.cs" />
+    <Compile Include="Library\UniRx\System\Tuple.cs" />
+    <Compile Include="Library\UniRx\System\Unit.cs" />
+    <Compile Include="Library\UniRx\Tasks\TaskObservableExtensions.cs" />
+    <Compile Include="Library\UniRx\TimeInterval.cs" />
+    <Compile Include="Library\UniRx\Timestamped.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\AsyncOperationExtensions.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\CancellationToken.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\CoroutineAsyncBridge.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Diagnostics\LogEntry.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Diagnostics\LogEntryExtensions.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Diagnostics\Logger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Diagnostics\ObservableDebugExtensions.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Diagnostics\ObservableLogger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Diagnostics\UnityDebugSink.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\FrameInterval.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\InspectableReactiveProperty.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\InspectorDisplayDrawer.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\LifetimeDisposableExtensions.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\MainThreadDispatcher.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\MainThreadScheduler.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Observable.Unity.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\ObservableWWW.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\ObserveExtensions.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Operators\BatchFrame.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Operators\DelayFrame.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Operators\DelayFrameSubscription.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Operators\FrameInterval.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Operators\FrameTimeInterval.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Operators\FromCoroutine.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Operators\RepeatUntil.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Operators\SampleFrame.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Operators\SubscribeOnMainThread.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Operators\ThrottleFirstFrame.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Operators\ThrottleFrame.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Operators\TimeoutFrame.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\ReactiveCollection.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\ReactiveCommand.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\ReactiveDictionary.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\ReactiveProperty.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\ScenePlaybackDetector.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Toolkit\ObjectPool.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableAnimatorTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableBeginDragTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableCancelTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableCanvasGroupChangedTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableCollision2DTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableCollisionTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableDeselectTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableDestroyTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableDragTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableDropTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableEnableTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableEndDragTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableEventTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableFixedUpdateTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableInitializePotentialDragTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableJointTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableLateUpdateTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableMouseTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableMoveTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableParticleTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservablePointerClickTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservablePointerDownTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservablePointerEnterTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservablePointerExitTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservablePointerUpTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableRectTransformTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableScrollTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableSelectTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableStateMachineTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableSubmitTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTransformChangedTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTrigger2DTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTriggerBase.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTriggerExtensions.Component.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTriggerExtensions.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTriggerTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableUpdateSelectedTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableUpdateTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableVisibleTrigger.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\UnityEventExtensions.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\UnityGraphicExtensions.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\UnityUIComponentExtensions.cs" />
+    <Compile Include="Library\UniRx\UnityEngineBridge\YieldInstructionCache.cs" />
+    <Compile Include="Library\UniRx\UnityWinRTBridge\Thread.cs" />
+    <Compile Include="Library\UniRx\UnityWinRTBridge\ThreadPoolScheduler_UnityWinRT.cs" />
+    <Compile Include="Library\Common\ModDebug\DebugLogString.cs" />
+    <Compile Include="Library\Common\ModDebug\DevLogger.cs" />
+    <Compile Include="Library\Common\ModDebug\IDevLogger.cs" />
+    <Compile Include="Library\Common\ModDebug\Log.cs" />
+    <Compile Include="Library\Common\ModDebug\PoolableLogString.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Library\XMLResources\EnemyRandomizerDatabase.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_03.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_03_b.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_03_c.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_04.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_05.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_06_Core.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_08.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_09.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_10.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_12.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_15.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_16.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_17.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_18.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_19.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_20.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_21.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_22.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_Lighthouse_room.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_BetaEnd.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Cinematic_Ending_A.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Cinematic_Ending_B.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Cinematic_Ending_C.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Cinematic_Ending_D.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Cinematic_Ending_E.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Cinematic_MrMushroom.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Cinematic_Stag_travel.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Cliffs_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Cliffs_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Cliffs_02_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Cliffs_03.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Cliffs_04.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Cliffs_05.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Cliffs_06.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_03.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_04.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_05.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_06.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_07.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_08.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_09.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_10.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_10_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_10_boss_defeated.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_10_preload.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_11_alt.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_12.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_13.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_14.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_15.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_16.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_18.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_19.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_21.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_22.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_25.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_27.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_30.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_31.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_33.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_35.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_36.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_37.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_38.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_39.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_40.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_42.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_43.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_45.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_46.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_46b.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_47.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_48.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_49.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_49b.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_50.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_52.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Crossroads_ShamanTemple.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Cutscene_Boss_Door.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_01b.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_03.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_09.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_10.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_14.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_16.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_17.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_26.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_26b.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_30.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_31.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_32.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_33.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_34.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_35.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_36.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_37.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_38.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_39.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_40.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_41.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_42.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_43.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_44.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_45_v02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_03.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_04.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_06.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_07.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_08.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_09.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_10.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_11.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_12.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_13.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_14.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_14b.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_15.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_16.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_17.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_18.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_Hornet.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_East_Hornet_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Deepnest_Spider_Town.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Dream_01_False_Knight.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Dream_02_Mage_Lord.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Dream_03_Infected_Knight.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Dream_04_White_Defender.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Dream_Abyss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Dream_Backer_Shrine.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Dream_Final_Boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Dream_Guardian_Hegemol.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Dream_Guardian_Lurien.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Dream_Guardian_Monomon.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Dream_Mighty_Zote.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Dream_Nailcollection.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Dream_Room_Believer_Shrine.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_End_Credits.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_End_Game_Completion.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_01b.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_03.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_04.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_04_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_05.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_06.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_07.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_08.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_09.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_10.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_11.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_12.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_13.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_14.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_15.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_16_alt.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_17.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_19.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_20_v02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_21.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_22.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_23.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_24.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_25.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_26.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_28.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_29.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_30.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_31.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_32.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_34.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_35.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_36.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_37.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus1_Slug.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_03.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_04.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_05.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_06.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_07.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_08.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_09.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_10.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_11.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_12.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_13.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_14.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_15.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_15_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_15_boss_defeated.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_17.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_18.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_19.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_20.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_21.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_23.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_25.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_26.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_28.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_29.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_30.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_31.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_32.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_33.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus2_34.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_03.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_04.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_05.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_08.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_10.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_11.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_13.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_21.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_22.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_23.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_23_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_24.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_25.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_25b.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_26.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_27.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_28.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_30.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_34.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_35.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_39.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_40.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_40_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_44.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_47.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_48.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_49.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_50.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_archive.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_archive_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Fungus3_archive_02_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Atrium.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Atrium_Roof.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Blue_Room.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Boss_Door_Entrance.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Broken_Vessel.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Brooding_Mawlek.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Brooding_Mawlek_V.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Collector.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Collector_V.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Crystal_Guardian.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Crystal_Guardian_2.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Door_5_Finale.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Dung_Defender.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_End_Sequence.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Engine.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Engine_Prime.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Engine_Root.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Entrance_Cutscene.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Failed_Champion.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_False_Knight.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Flukemarm.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Ghost_Galien.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Ghost_Gorb.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Ghost_Gorb_V.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Ghost_Hu.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Ghost_Markoth.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Ghost_Markoth_V.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Ghost_Marmu.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Ghost_Marmu_V.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Ghost_No_Eyes.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Ghost_No_Eyes_V.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Ghost_Xero.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Ghost_Xero_V.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_God_Tamer.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Grey_Prince_Zote.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Grimm.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Grimm_Nightmare.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Gruz_Mother.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Gruz_Mother_V.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Hive_Knight.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Hollow_Knight.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Hornet_1.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Hornet_2.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Land_of_Storms.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Lost_Kin.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Lurker.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Mage_Knight.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Mage_Knight_V.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Mantis_Lords.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Mantis_Lords_V.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Mega_Moss_Charger.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Mighty_Zote.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Nailmasters.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Nosk.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Nosk_Hornet.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Nosk_V.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Oblobbles.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Painter.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Pipeway.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Radiance.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Sly.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Soul_Master.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Soul_Tyrant.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Spa.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Traitor_Lord.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Unlock.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Unlock_Wastes.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Unn.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Uumuu.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Uumuu_V.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Vengefly.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Vengefly_V.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Watcher_Knights.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Waterways.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_White_Defender.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Workshop.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_GG_Wyrm.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Grimm_Divine.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Grimm_Main_Tent.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Grimm_Main_Tent_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Grimm_Nightmare.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Hive_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Hive_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Hive_03.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Hive_03_c.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Hive_04.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Hive_05.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Knight_Pickup.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Menu_Credits.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Menu_Title.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_03.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_04.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_05.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_06.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_07.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_10.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_11.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_13.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_16.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_17.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_18.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_18_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_19.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_20.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_23.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_24.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_25.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_28.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_29.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_30.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_31.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_32.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_33.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_34.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_35.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_36.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Mines_37.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Opening_Sequence.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_PermaDeath.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_PermaDeath_Unlock.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Quit_To_Menu.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_RestingGrounds_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_RestingGrounds_02_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_RestingGrounds_04.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_RestingGrounds_05.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_RestingGrounds_06.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_RestingGrounds_07.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_RestingGrounds_08.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_RestingGrounds_09.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_RestingGrounds_10.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_RestingGrounds_12.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_RestingGrounds_17.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Bretta.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Bretta_Basement.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Charm_Shop.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Colosseum_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Colosseum_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Colosseum_Bronze.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Colosseum_Gold.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Colosseum_Silver.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Colosseum_Spectate.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Final_Boss_Atrium.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Final_Boss_Core.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Fungus_Shaman.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_GG_Shortcut.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Jinn.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Mansion.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_mapper.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Mask_Maker.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Mender_House.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_nailmaster.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_nailmaster_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_nailmaster_03.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_nailsmith.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Ouiji.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Queen.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_ruinhouse.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_shop.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Slug_Shrine.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Sly_Storeroom.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_spider_small.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_temple.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Town_Stag_Station.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Tram.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Tram_RG.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Room_Wyrm.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_03.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_04.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_05.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_05b.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_05c.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_06.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_09.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_17.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_18.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_23.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_24.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_24_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_24_boss_defeated.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_25.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_27.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_28.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_29.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_30.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_31.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_31b.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins1_32.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_01_b.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_03.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_03b.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_03_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_04.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_05.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_06.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_07.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_08.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_09.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_10.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_10b.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_11.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_11_b.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_11_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins2_Watcher_Room.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins_Bathhouse.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins_Elevator.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins_House_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins_House_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Ruins_House_03.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Town.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Tutorial_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_03.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_04.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_04b.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_05.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_05_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_06.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_07.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_08.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_09.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_12.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_12_boss.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_13.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_14.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_Waterways_15.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_01.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_02.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_03_hub.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_04.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_05.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_06.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_07.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_08.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_09.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_11.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_12.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_13.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_14.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_15.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_16.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_17.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_18.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_19.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData_White_Palace_20.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData__test_cocoon_1.xml" />
+    <Content Include="Library\XMLResources\SceneData\SceneData__test_cocoon_2.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Library\UniRx\Asynchronous.meta" />
+    <None Include="Library\UniRx\Asynchronous\WebRequestExtensions.cs.meta" />
+    <None Include="Library\UniRx\Disposables.meta" />
+    <None Include="Library\UniRx\Disposables\BooleanDisposable.cs.meta" />
+    <None Include="Library\UniRx\Disposables\CancellationDisposable.cs.meta" />
+    <None Include="Library\UniRx\Disposables\CompositeDisposable.cs.meta" />
+    <None Include="Library\UniRx\Disposables\DictionaryDisposable.cs.meta" />
+    <None Include="Library\UniRx\Disposables\Disposable.cs.meta" />
+    <None Include="Library\UniRx\Disposables\DisposableExtensions.cs.meta" />
+    <None Include="Library\UniRx\Disposables\ICancelable.cs.meta" />
+    <None Include="Library\UniRx\Disposables\MultipleAssignmentDisposable.cs.meta" />
+    <None Include="Library\UniRx\Disposables\RefCountDisposable.cs.meta" />
+    <None Include="Library\UniRx\Disposables\ScheduledDisposable.cs.meta" />
+    <None Include="Library\UniRx\Disposables\SerialDisposable.cs.meta" />
+    <None Include="Library\UniRx\Disposables\SingleAssignmentDisposable.cs.meta" />
+    <None Include="Library\UniRx\Disposables\StableCompositeDisposable.cs.meta" />
+    <None Include="Library\UniRx\EventPattern.cs.meta" />
+    <None Include="Library\UniRx\InternalUtil.meta" />
+    <None Include="Library\UniRx\InternalUtil\AscynLock.cs.meta" />
+    <None Include="Library\UniRx\InternalUtil\CancellableTaskCompletionSource.cs.meta" />
+    <None Include="Library\UniRx\InternalUtil\ExceptionExtensions.cs.meta" />
+    <None Include="Library\UniRx\InternalUtil\ImmutableList.cs.meta" />
+    <None Include="Library\UniRx\InternalUtil\ListObserver.cs.meta" />
+    <None Include="Library\UniRx\InternalUtil\MicroCoroutine.cs.meta" />
+    <None Include="Library\UniRx\InternalUtil\PriorityQueue.cs.meta" />
+    <None Include="Library\UniRx\InternalUtil\PromiseHelper.cs.meta" />
+    <None Include="Library\UniRx\InternalUtil\ScheduledItem.cs.meta" />
+    <None Include="Library\UniRx\InternalUtil\ThreadSafeQueueWorker.cs.meta" />
+    <None Include="Library\UniRx\InternalUtil\UnityEqualityComparer.cs.meta" />
+    <None Include="Library\UniRx\Notification.cs.meta" />
+    <None Include="Library\UniRx\Notifiers.meta" />
+    <None Include="Library\UniRx\Notifiers\BooleanNotifier.cs.meta" />
+    <None Include="Library\UniRx\Notifiers\CountNotifier.cs.meta" />
+    <None Include="Library\UniRx\Notifiers\MessageBroker.cs.meta" />
+    <None Include="Library\UniRx\Notifiers\ScheduledNotifier.cs.meta" />
+    <None Include="Library\UniRx\Observable.Aggregate.cs.meta" />
+    <None Include="Library\UniRx\Observable.Awaiter.cs.meta" />
+    <None Include="Library\UniRx\Observable.Binding.cs.meta" />
+    <None Include="Library\UniRx\Observable.Blocking.cs.meta" />
+    <None Include="Library\UniRx\Observable.Concatenate.cs.meta" />
+    <None Include="Library\UniRx\Observable.Concurrency.cs.meta" />
+    <None Include="Library\UniRx\Observable.Conversions.cs.meta" />
+    <None Include="Library\UniRx\Observable.Creation.cs.meta" />
+    <None Include="Library\UniRx\Observable.cs.meta" />
+    <None Include="Library\UniRx\Observable.ErrorHandling.cs.meta" />
+    <None Include="Library\UniRx\Observable.Events.cs.meta" />
+    <None Include="Library\UniRx\Observable.FromAsync.cs.meta" />
+    <None Include="Library\UniRx\Observable.Joins.cs.meta" />
+    <None Include="Library\UniRx\Observable.Paging.cs.meta" />
+    <None Include="Library\UniRx\Observable.Time.cs.meta" />
+    <None Include="Library\UniRx\Observer.cs.meta" />
+    <None Include="Library\UniRx\Operators.meta" />
+    <None Include="Library\UniRx\Operators\Aggregate.cs.meta" />
+    <None Include="Library\UniRx\Operators\Amb.cs.meta" />
+    <None Include="Library\UniRx\Operators\AsObservable.cs.meta" />
+    <None Include="Library\UniRx\Operators\AsSingleUnitObservable.cs.meta" />
+    <None Include="Library\UniRx\Operators\AsUnitObservable.cs.meta" />
+    <None Include="Library\UniRx\Operators\Buffer.cs.meta" />
+    <None Include="Library\UniRx\Operators\Cast.cs.meta" />
+    <None Include="Library\UniRx\Operators\Catch.cs.meta" />
+    <None Include="Library\UniRx\Operators\CombineLatest.cs.meta" />
+    <None Include="Library\UniRx\Operators\Concat.cs.meta" />
+    <None Include="Library\UniRx\Operators\ContinueWith.cs.meta" />
+    <None Include="Library\UniRx\Operators\Create.cs.meta" />
+    <None Include="Library\UniRx\Operators\DefaultIfEmpty.cs.meta" />
+    <None Include="Library\UniRx\Operators\Defer.cs.meta" />
+    <None Include="Library\UniRx\Operators\Delay.cs.meta" />
+    <None Include="Library\UniRx\Operators\DelaySubscription.cs.meta" />
+    <None Include="Library\UniRx\Operators\Dematerialize.cs.meta" />
+    <None Include="Library\UniRx\Operators\Distinct.cs.meta" />
+    <None Include="Library\UniRx\Operators\DistinctUntilChanged.cs.meta" />
+    <None Include="Library\UniRx\Operators\Do.cs.meta" />
+    <None Include="Library\UniRx\Operators\Empty.cs.meta" />
+    <None Include="Library\UniRx\Operators\Finally.cs.meta" />
+    <None Include="Library\UniRx\Operators\First.cs.meta" />
+    <None Include="Library\UniRx\Operators\ForEachAsync.cs.meta" />
+    <None Include="Library\UniRx\Operators\FromEvent.cs.meta" />
+    <None Include="Library\UniRx\Operators\GroupBy.cs.meta" />
+    <None Include="Library\UniRx\Operators\IgnoreElements.cs.meta" />
+    <None Include="Library\UniRx\Operators\Last.cs.meta" />
+    <None Include="Library\UniRx\Operators\Materialize.cs.meta" />
+    <None Include="Library\UniRx\Operators\Merge.cs.meta" />
+    <None Include="Library\UniRx\Operators\Never.cs.meta" />
+    <None Include="Library\UniRx\Operators\ObserveOn.cs.meta" />
+    <None Include="Library\UniRx\Operators\OfType.cs.meta" />
+    <None Include="Library\UniRx\Operators\OperatorObservableBase.cs.meta" />
+    <None Include="Library\UniRx\Operators\OperatorObserverBase.cs.meta" />
+    <None Include="Library\UniRx\Operators\PairWise.cs.meta" />
+    <None Include="Library\UniRx\Operators\Range.cs.meta" />
+    <None Include="Library\UniRx\Operators\RefCount.cs.meta" />
+    <None Include="Library\UniRx\Operators\Repeat.cs.meta" />
+    <None Include="Library\UniRx\Operators\RepeatSafe.cs.meta" />
+    <None Include="Library\UniRx\Operators\Return.cs.meta" />
+    <None Include="Library\UniRx\Operators\Sample.cs.meta" />
+    <None Include="Library\UniRx\Operators\Scan.cs.meta" />
+    <None Include="Library\UniRx\Operators\Select.cs.meta" />
+    <None Include="Library\UniRx\Operators\SelectMany.cs.meta" />
+    <None Include="Library\UniRx\Operators\SelectWhere.cs.meta" />
+    <None Include="Library\UniRx\Operators\Single.cs.meta" />
+    <None Include="Library\UniRx\Operators\Skip.cs.meta" />
+    <None Include="Library\UniRx\Operators\SkipUntil.cs.meta" />
+    <None Include="Library\UniRx\Operators\SkipWhile.cs.meta" />
+    <None Include="Library\UniRx\Operators\Start.cs.meta" />
+    <None Include="Library\UniRx\Operators\StartWith.cs.meta" />
+    <None Include="Library\UniRx\Operators\SubscribeOn.cs.meta" />
+    <None Include="Library\UniRx\Operators\Switch.cs.meta" />
+    <None Include="Library\UniRx\Operators\Synchronize.cs.meta" />
+    <None Include="Library\UniRx\Operators\SynchronizedObserver.cs.meta" />
+    <None Include="Library\UniRx\Operators\Take.cs.meta" />
+    <None Include="Library\UniRx\Operators\TakeLast.cs.meta" />
+    <None Include="Library\UniRx\Operators\TakeUntil.cs.meta" />
+    <None Include="Library\UniRx\Operators\TakeWhile.cs.meta" />
+    <None Include="Library\UniRx\Operators\Throttle.cs.meta" />
+    <None Include="Library\UniRx\Operators\ThrottleFirst.cs.meta" />
+    <None Include="Library\UniRx\Operators\Throw.cs.meta" />
+    <None Include="Library\UniRx\Operators\TimeInterval.cs.meta" />
+    <None Include="Library\UniRx\Operators\Timeout.cs.meta" />
+    <None Include="Library\UniRx\Operators\Timer.cs.meta" />
+    <None Include="Library\UniRx\Operators\Timestamp.cs.meta" />
+    <None Include="Library\UniRx\Operators\ToArray.cs.meta" />
+    <None Include="Library\UniRx\Operators\ToList.cs.meta" />
+    <None Include="Library\UniRx\Operators\ToObservable.cs.meta" />
+    <None Include="Library\UniRx\Operators\Wait.cs.meta" />
+    <None Include="Library\UniRx\Operators\WhenAll.cs.meta" />
+    <None Include="Library\UniRx\Operators\Where.cs.meta" />
+    <None Include="Library\UniRx\Operators\WhereSelect.cs.meta" />
+    <None Include="Library\UniRx\Operators\WithLatestFrom.cs.meta" />
+    <None Include="Library\UniRx\Operators\Zip.cs.meta" />
+    <None Include="Library\UniRx\Operators\ZipLatest.cs.meta" />
+    <None Include="Library\UniRx\Pair.cs.meta" />
+    <None Include="Library\UniRx\Schedulers.meta" />
+    <None Include="Library\UniRx\Schedulers\CurrentThreadScheduler.cs.meta" />
+    <None Include="Library\UniRx\Schedulers\ImmediateScheduler.cs.meta" />
+    <None Include="Library\UniRx\Schedulers\IScheduler.cs.meta" />
+    <None Include="Library\UniRx\Schedulers\Scheduler.cs.meta" />
+    <None Include="Library\UniRx\Schedulers\ThreadPoolScheduler.cs.meta" />
+    <None Include="Library\UniRx\Subjects.meta" />
+    <None Include="Library\UniRx\Subjects\AsyncSubject.cs.meta" />
+    <None Include="Library\UniRx\Subjects\BehaviorSubject.cs.meta" />
+    <None Include="Library\UniRx\Subjects\ConnectableObservable.cs.meta" />
+    <None Include="Library\UniRx\Subjects\ISubject.cs.meta" />
+    <None Include="Library\UniRx\Subjects\ReplaySubject.cs.meta" />
+    <None Include="Library\UniRx\Subjects\Subject.cs.meta" />
+    <None Include="Library\UniRx\Subjects\SubjectExtensions.cs.meta" />
+    <None Include="Library\UniRx\System.meta" />
+    <None Include="Library\UniRx\System\IObservable.cs.meta" />
+    <None Include="Library\UniRx\System\IObserver.cs.meta" />
+    <None Include="Library\UniRx\System\IOptimizedObservable.cs.meta" />
+    <None Include="Library\UniRx\System\IProgress.cs.meta" />
+    <None Include="Library\UniRx\System\Tuple.cs.meta" />
+    <None Include="Library\UniRx\System\Unit.cs.meta" />
+    <None Include="Library\UniRx\Tasks.meta" />
+    <None Include="Library\UniRx\Tasks\TaskObservableExtensions.cs.meta" />
+    <None Include="Library\UniRx\TimeInterval.cs.meta" />
+    <None Include="Library\UniRx\Timestamped.cs.meta" />
+    <None Include="Library\UniRx\UniRx.asmdef" />
+    <None Include="Library\UniRx\UniRx.asmdef.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\AsyncOperationExtensions.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\CancellationToken.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\CoroutineAsyncBridge.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Diagnostics.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Diagnostics\LogEntry.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Diagnostics\LogEntryExtensions.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Diagnostics\Logger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Diagnostics\ObservableDebugExtensions.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Diagnostics\ObservableLogger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Diagnostics\UnityDebugSink.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\FrameInterval.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\InspectableReactiveProperty.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\InspectorDisplayDrawer.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\LifetimeDisposableExtensions.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\MainThreadDispatcher.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\MainThreadScheduler.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Observable.Unity.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\ObservableWWW.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\ObserveExtensions.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Operators.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Operators\BatchFrame.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Operators\DelayFrame.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Operators\DelayFrameSubscription.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Operators\FrameInterval.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Operators\FrameTimeInterval.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Operators\FromCoroutine.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Operators\RepeatUntil.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Operators\SampleFrame.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Operators\SubscribeOnMainThread.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Operators\ThrottleFirstFrame.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Operators\ThrottleFrame.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Operators\TimeoutFrame.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\ReactiveCollection.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\ReactiveCommand.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\ReactiveDictionary.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\ReactiveProperty.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\ScenePlaybackDetector.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Toolkit.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Toolkit\ObjectPool.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableAnimatorTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableBeginDragTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableCancelTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableCanvasGroupChangedTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableCollision2DTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableCollisionTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableDeselectTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableDestroyTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableDragTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableDropTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableEnableTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableEndDragTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableEventTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableFixedUpdateTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableInitializePotentialDragTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableJointTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableLateUpdateTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableMouseTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableMoveTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableParticleTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservablePointerClickTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservablePointerDownTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservablePointerEnterTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservablePointerExitTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservablePointerUpTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableRectTransformTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableScrollTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableSelectTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableStateMachineTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableSubmitTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTransformChangedTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTrigger2DTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTriggerBase.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTriggerExtensions.Component.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTriggerExtensions.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTriggerTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableUpdateSelectedTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableUpdateTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableVisibleTrigger.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\UnityEventExtensions.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\UnityGraphicExtensions.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\UnityUIComponentExtensions.cs.meta" />
+    <None Include="Library\UniRx\UnityEngineBridge\YieldInstructionCache.cs.meta" />
+    <None Include="Library\UniRx\UnityWinRTBridge.meta" />
+    <None Include="Library\UniRx\UnityWinRTBridge\Thread.cs.meta" />
+    <None Include="Library\UniRx\UnityWinRTBridge\ThreadPoolScheduler_UnityWinRT.cs.meta" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Development' ">
+    <PostBuildEvent>../../../install_build.bat</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Library' ">
+    <PostBuildEvent>../../../install_library.bat</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>@echo off
+SET DLL_SOURCE=$(TargetPath)
+SET MOD_DEST="K:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\Mods\EnemyRandomizer\$(TargetFileName)"
+echo Copying build from
+echo %25DLL_SOURCE%25
+echo to
+echo %25MOD_DEST%25
+copy %25DLL_SOURCE%25 %25MOD_DEST%25</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  -->
+</Project>
