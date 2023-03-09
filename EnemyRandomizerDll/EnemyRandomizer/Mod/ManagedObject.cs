@@ -25,18 +25,21 @@ namespace EnemyRandomizerMod
         /// <summary>
         /// Pass "null" for the source if setting up a custom enemy
         /// </summary>
-        public virtual void Setup(GameObject source)
+        public virtual void Setup(ObjectMetadata source)
         {
-            ThisIsSourceObject = (source == gameObject);
-
             if (source != null)
             {
-                this.originalGameObjectPath = source.GetSceneHierarchyPath();
-                sourceDatabaseKey = EnemyRandomizerDatabase.ToDatabaseKey(source.name);
+                ThisIsSourceObject = (source.Source == gameObject);
+                this.originalGameObjectPath = source.ScenePath;
+                sourceDatabaseKey = source.DatabaseName;
+            }
+            else
+            {
+                ThisIsSourceObject = (source.Source == gameObject);
             }
 
             myDatabaseKey = EnemyRandomizerDatabase.ToDatabaseKey(name);
-            sourceEnemy = source;
+            sourceEnemy = source.Source;
 
             if (!ThisIsSourceObject)
                 replaced = true;
@@ -45,7 +48,7 @@ namespace EnemyRandomizerMod
 
     public class BattleManagedObject : ManagedObject
     {
-        public override void Setup(GameObject source)
+        public override void Setup(ObjectMetadata source)
         {
             base.Setup(source);
 

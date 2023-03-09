@@ -49,18 +49,21 @@ namespace EnemyRandomizerMod
             GameObject newEnemy = Database.Spawn(prefab);
             newEnemy.transform.parent = other.transform.parent;
             newEnemy.transform.localPosition = other.transform.localPosition;
-            newEnemy.SafeSetActive(other.activeSelf);
             return newEnemy;
         }
 
+        List<PrefabObject> allowedEffectReplacements;
+
         public override GameObject ReplaceHazardObject(GameObject other)
         {
+            if (allowedEffectReplacements == null)
+                allowedEffectReplacements = Database.hazardPrefabs.Where(x => !EnemyReplacer.ReplacementEffectsToSkip.Contains(x.prefabName)).ToList();
+
             SetupRNGForReplacement(other.name, other.scene.name);
             var prefab = Database.hazardPrefabs.GetRandomElementFromList(rng);
             GameObject newHazard = Database.Spawn(prefab);
             newHazard.transform.parent = other.transform.parent;
             newHazard.transform.localPosition = other.transform.localPosition;
-            newHazard.SafeSetActive(other.activeSelf);
             return newHazard;
         }
 
@@ -71,7 +74,6 @@ namespace EnemyRandomizerMod
             GameObject newEffect = Database.Spawn(prefab);
             newEffect.transform.parent = other.transform.parent;
             newEffect.transform.localPosition = other.transform.localPosition;
-            newEffect.SafeSetActive(other.activeSelf);
             return newEffect;
         }
     }

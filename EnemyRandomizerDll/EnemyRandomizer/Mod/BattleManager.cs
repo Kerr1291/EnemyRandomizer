@@ -88,16 +88,30 @@ namespace EnemyRandomizerMod
 
             if (isValid)
             {
-                //we found it, but it's done so we don't need to do anything
                 var pbi = fsm.GetComponent<PersistentBoolItem>();
-                if (pbi != null && pbi.persistentBoolData.activated)
-                    return;
+                if(pbi == null)
+                {
+                    //TODO: strip the player data bool set from hive knight's fsm...
+                    if(fsm.gameObject.scene.name == "Hive_05")
+                    {
+                        //hive knight has a different way of checking persistance
+                        bool result = GameManager.instance.GetPlayerDataBool("killedHiveKnight");
+                        if (result)
+                            return;
+                    }
+                }
+                else
+                {
+                    //we found it, but it's done so we don't need to do anything
+                    if (pbi != null && pbi.persistentBoolData.activated)
+                        return;
+                }
 
                 //attach our own
                 Instance.Value = fsm.gameObject.AddComponent<BattleManager>();
 
                 //set it up
-                Instance.Value.Setup(fsm.gameObject.scene, fsm, pbi);
+                Instance.Value.Setup(fsm.gameObject.scene, fsm);
             }
         }
 
@@ -120,20 +134,13 @@ namespace EnemyRandomizerMod
             StateMachine.Value = null;
         }
 
-        public void Setup(Scene scene, PlayMakerFSM fsm, PersistentBoolItem item)
+        public void Setup(Scene scene, PlayMakerFSM fsm)
         {
             if (Instance == null)
                 Instance = new ReactiveProperty<BattleManager>(this);
 
             if (StateMachine == null)
                 StateMachine = new ReactiveProperty<BattleStateMachine>();
-
-            //if true, no point in this and destroy it
-            if (item == null || item.persistentBoolData.activated)
-            {
-                Cleanup();
-                return;
-            }
 
             if(Instance.Value != this)
                 Instance.Value = this;

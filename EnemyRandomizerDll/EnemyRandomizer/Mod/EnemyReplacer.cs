@@ -8,12 +8,13 @@ using Language;
 using On;
 using nv;
 using System.Linq;
+using System;
 
 namespace EnemyRandomizerMod
 {
     public class EnemyReplacer
     {
-        static bool DEBUG_WARN_IF_NOT_FOUND = true;
+        public static bool VERBOSE_LOGGING = false;
 
         public EnemyRandomizerDatabase database;
         public IRandomizerLogic currentLogic;
@@ -101,133 +102,216 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public static List<string> DestroyOnLoadAlways = new List<string>()
+        IEnumerator OnEnemyLoadedAndActive(ObjectMetadata info)
         {
-            "Fly Spawn",
-            "Hatcher Spawn",
-        };
+            yield return new WaitUntil(() => info.IsVisibleNow());
+            OnEnemyLoaded(info.Source);
+        }
 
-        public void OnEnemyLoaded(GameObject oldEnemy)
+        public GameObject OnEnemyLoaded(GameObject original)
         {
-            if(DestroyOnLoadAlways.Any(x => oldEnemy.GetSceneHierarchyPath().Contains(x)))
-            {
-                if (oldEnemy.name.Contains("Fly"))
-                {
-                    //TEST: see if this removes the count from the battle scene manager
-                    var battleManagedObject = oldEnemy.AddComponent<BattleManagedObject>();
-                    battleManagedObject.Setup(oldEnemy);
-                    BattleManager.StateMachine.Value.RegisterEnemyDeath(battleManagedObject);
-                }
-                GameObject.Destroy(oldEnemy);
-                return;
-            }
+            if (VERBOSE_LOGGING)
+                Dev.Log("Trying to replace " + original);
 
-            if (currentLogic != null)
+            bool error = false;
+            try
             {
-                //special hack to avoid having custom spawned enemies replaced
-                if (EnemyRandomizer.bypassNextRandomizeEnemy)
-                {
-                    var olde = oldEnemy.GetOrAddComponent<ManagedObject>();
-                    olde.Setup(oldEnemy);
-                    olde.replaced = true;//flag as replaced anyway
-                    EnemyRandomizer.bypassNextRandomizeEnemy = false;
-                }
-
-                string key = EnemyRandomizerDatabase.ToDatabaseKey(oldEnemy.name);
-                if (!string.IsNullOrEmpty(key) && database.Enemies.ContainsKey(key))
+                if (!ProcessPreReplacement(original))
                 {
                     ObjectMetadata info = new ObjectMetadata();
-                    info.Setup(oldEnemy);
+                    info.Setup(original, database);
 
-                    if (info.RandoObject != null)
+                    if(info.IsTemporarilyInactive())
                     {
-                        //don't re-replace this
-                        if (info.RandoObject.replaced)
-                            return;
-
-                        //about to be replaced....
-                        info.RandoObject.replaced = true;
-                    }
-                    else// if (managedObject == null)
-                    {
-                        bool isBattleManagedEnemy = info.IsBattleEnemy;
-
-                        if (isBattleManagedEnemy)
-                        {
-                            //don't replce these directly on load
-                            var battleManagedObject = oldEnemy.AddComponent<BattleManagedObject>();
-                            battleManagedObject.Setup(oldEnemy);
-                            OnEnemyLoaded(oldEnemy);
-                            return;
-                        }
-                    }
-
-                    GameObject newEnemy = currentLogic.ReplaceEnemy(oldEnemy);
-                    ManagedObject newManagedObject = null;
-                    if (info.BattleRandoObject == null)
-                    {
-                        newManagedObject = newEnemy.AddComponent<ManagedObject>();
+                        var hm = original.GetComponent<HealthManager>();
+                        hm.StartCoroutine(OnEnemyLoadedAndActive(info));
                     }
                     else
                     {
-                        newManagedObject = newEnemy.AddComponent<BattleManagedObject>();
+                        if (VERBOSE_LOGGING)
+                            Dev.Log("Cannot replace " + original);
                     }
 
-                    newManagedObject.Setup(oldEnemy);
-
-                    if (newEnemy != oldEnemy)
-                    {
-                        //don't invoke the old enemy's ondestroy stuff- just pretend it never existed....
-                        if (oldEnemy.activeSelf)
-                            oldEnemy.SetActive(false);
-                        GameObject.Destroy(oldEnemy);
-                    }
-                }
-                else
-                {
-                    if (DEBUG_WARN_IF_NOT_FOUND)
-                        Dev.LogError($"ERROR: {key} was not found in the database when searching for {oldEnemy.name}!");
+                    return original;
                 }
             }
+            catch (Exception e)
+            {
+                error = true;
+                Dev.Log($"Error trying to process original enemy object {original.name} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+            }
+
+            if (error)
+                return original;
+
+            GameObject newEnemy = null;
+            try
+            {
+                newEnemy = currentLogic.ReplaceEnemy(original);
+            }
+            catch (Exception e)
+            {
+                error = true;
+                Dev.Log($"Error trying to replace original enemy object {original.name} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+            }
+
+            if (error)
+                return original;
+
+            FinalizeReplacement(newEnemy, original);
+
+            return newEnemy;
         }
 
         public GameObject SpawnPooledObject(GameObject original)
         {
-            if (currentLogic != null && original.GetComponent<ManagedObject>() == null)
+            //let the health manager replacement handle this
+            if (original.GetComponent<HealthManager>() && original.activeSelf)
+                return OnEnemyLoaded(original);
+
+            //let the hazard replacement handle this
+            if (original.GetComponent<DamageHero>() && original.activeSelf)
+                return OnDamageHeroEnabled(original.GetComponent<DamageHero>());
+
+            //if it's neither of those things, it's just an effect so continue as usual
+
+            if (VERBOSE_LOGGING)
+                Dev.Log("Can we replace? " + original);
+
+            bool error = false;
+            try
             {
-                string key = EnemyRandomizerDatabase.ToDatabaseKey(original.name);
-                if (!string.IsNullOrEmpty(key) && database.Effects.ContainsKey(key))
+                if (!ProcessPreReplacement(original))
                 {
-                    GameObject newEffect = currentLogic.ReplacePooledObject(original);
-                    var mo = newEffect.AddComponent<ManagedObject>();
-                    mo.Setup(original);
-                    if (newEffect != original)
-                    {
-                        GameObject.Destroy(original);
-                    }
-                    return newEffect;
+                    if (VERBOSE_LOGGING)
+                        Dev.Log("Cannot replace " + original);
+
+                    return original;
                 }
             }
+            catch(Exception e)
+            {
+                error = true;
+                Dev.Log($"Error trying to process original pooled object {original.name} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+            }
 
-            return original;
+            if (error)
+                return original;
+
+            GameObject newEffect = null;
+            try
+            {
+                //TODO: rename "replace effect object"
+                newEffect = currentLogic.ReplacePooledObject(original);
+            }
+            catch (Exception e)
+            {
+                error = true;
+                Dev.Log($"Error trying to replace original enemy object {original.name} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+            }
+
+            if (error)
+                return original;
+
+            FinalizeReplacement(newEffect, original);
+
+            return newEffect;
         }
 
-        public void OnDamageHeroEnabled(DamageHero potentialHazard)
+        public GameObject OnDamageHeroEnabled(DamageHero originalHazard)
         {
-            if (currentLogic != null && potentialHazard.GetComponent<ManagedObject>() == null)
+            GameObject original = originalHazard.gameObject;
+            //don't invoke this for enemies
+            if (originalHazard.GetComponent<HealthManager>())
+                return original;
+            
+            if (VERBOSE_LOGGING)
+                Dev.Log("Trying to replace hazard " + original);            
+
+            bool error = false;
+            try
             {
-                string key = EnemyRandomizerDatabase.ToDatabaseKey(potentialHazard.name);
-                if (!string.IsNullOrEmpty(key) && database.Hazards.ContainsKey(key))
+                if (!ProcessPreReplacement(original))
                 {
-                    GameObject newHazard = currentLogic.ReplaceHazardObject(potentialHazard.gameObject);
-                    var mo = newHazard.AddComponent<ManagedObject>();
-                    mo.Setup(newHazard);
-                    if (newHazard != potentialHazard.gameObject)
+                    if (VERBOSE_LOGGING)
                     {
-                        GameObject.Destroy(potentialHazard.gameObject);
+                        Dev.Log("Cannot replace " + original);
                     }
+                    return original;
                 }
             }
+            catch (Exception e)
+            {
+                error = true;
+                Dev.Log($"Error trying to process original hazard object {original.name} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+            }
+
+            if (error)
+                return original;
+
+            GameObject newHazard = null;
+            try
+            {
+                newHazard = currentLogic.ReplaceHazardObject(originalHazard.gameObject);
+            }
+            catch (Exception e)
+            {
+                error = true;
+                Dev.Log($"Error trying to replace original enemy object {original.name} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+            }
+
+            if (error)
+                return original;
+
+            FinalizeReplacement(newHazard, originalHazard.gameObject);
+
+            return newHazard;
+        }
+
+        public bool OnPersistentBoolItemLoaded(PersistentBoolItem item)
+        {
+            var customData = currentLogic.ReplacePersistentBoolItemData(item);
+            if (customData != null)
+            {
+                //new data
+                if (item.persistentBoolData != customData)
+                {
+                    item.persistentBoolData = customData;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool OnPersistentBoolItemSetMyID(PersistentBoolItem item)
+        {
+            if (item.persistentBoolData == null)
+                return false;
+
+            var customData = currentLogic.ReplacePersistentBoolItemSetMyID(item);
+
+            if ((string.IsNullOrEmpty(customData.ID) && string.IsNullOrEmpty(customData.SceneName)))
+                return false;
+
+            if (customData.ID != item.persistentBoolData.id ||
+                customData.SceneName != item.persistentBoolData.sceneName)
+            {
+                if (!string.IsNullOrEmpty(customData.ID))
+                    item.persistentBoolData.id = customData.ID;
+
+                if (!string.IsNullOrEmpty(customData.SceneName))
+                    item.persistentBoolData.sceneName = customData.SceneName;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public void OnPlaymakerFSMEnabled(PlayMakerFSM fsm)
+        {
+            //might want to notify the loaded logics?
         }
 
         public void OnBeforeSceneLoad()
@@ -238,71 +322,6 @@ namespace EnemyRandomizerMod
         public void OnEnemyDeathEvent(GameObject deathEventOwner)
         {
             //might want to notify the loaded logic here?
-        }
-
-        public bool OnPersistentBoolItemLoaded(PersistentBoolItem item)
-        {
-            if (currentLogic != null && item.GetComponent<ManagedObject>() == null)
-            {
-                string key = EnemyRandomizerDatabase.ToDatabaseKey(item.name);
-                if (!string.IsNullOrEmpty(key) && database.Objects.ContainsKey(key))
-                {
-                    var customData = currentLogic.ReplacePersistentBoolItemData(item);
-                    var mo = item.gameObject.AddComponent<ManagedObject>();
-                    mo.Setup(item.gameObject);
-                    if (customData != null)
-                    {
-                        //new data
-                        if (item.persistentBoolData != customData)
-                        {
-                            item.persistentBoolData = customData;
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        public bool OnPersistentBoolItemSetMyID(PersistentBoolItem item)
-        {
-            if (currentLogic != null && item.GetComponent<ManagedObject>() == null)
-            {
-                if (item.persistentBoolData != null)
-                {
-                    string key = EnemyRandomizerDatabase.ToDatabaseKey(item.name);
-                    if (!string.IsNullOrEmpty(key) && database.Objects.ContainsKey(key))
-                    {
-                        var customData = currentLogic.ReplacePersistentBoolItemSetMyID(item);
-                        var mo = item.gameObject.AddComponent<ManagedObject>();
-                        mo.Setup(item.gameObject);
-                        if (( string.IsNullOrEmpty(customData.ID) && string.IsNullOrEmpty(customData.SceneName)))
-                            return false;
-
-                        if (customData.ID != item.persistentBoolData.id ||
-                            customData.SceneName != item.persistentBoolData.sceneName)
-                        {
-                            if(!string.IsNullOrEmpty(customData.ID))
-                                item.persistentBoolData.id = customData.ID;
-
-                            if (!string.IsNullOrEmpty(customData.SceneName))
-                                item.persistentBoolData.sceneName = customData.SceneName;
-
-                            return true;
-                            //item.persistentBoolData.sceneName = SceneName;// GameManager.GetBaseSceneName("custom");
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        public void OnPlaymakerFSMEnabled(PlayMakerFSM fsm)
-        {
-
-            //might want to notify the loaded logics?
         }
 
         EnemyRandomizerDatabase LoadDatabase(string fileName)
@@ -335,5 +354,138 @@ namespace EnemyRandomizerMod
         {
             return GameManager.instance.IsGameplayScene() && !GameManager.instance.IsCinematicScene();
         }
+
+        protected virtual bool CullBadObjects(ObjectMetadata oldEnemy)
+        {
+            if (DefaultMetadata.AlwaysDeleteObject.Any(x => oldEnemy.ScenePath.Contains(x)))
+            {
+                if (oldEnemy.ObjectName.Contains("Fly") && oldEnemy.SceneName == "Crossroads_04")
+                {
+                    //this seems to correctly decrement the count from the battle manager
+                    BattleManager.StateMachine.Value.RegisterEnemyDeath(null);
+                }
+
+                GameObject.Destroy(oldEnemy.Source);
+                return true;
+            }
+
+            return false;
+        }
+
+        protected virtual bool SkipReplacement(ObjectMetadata oldEnemy)
+        {
+            //special hack to avoid having custom spawned enemies replaced
+            if (EnemyRandomizer.bypassNextRandomizeEnemy)
+            {
+                if (oldEnemy.RandoObject == null)
+                {
+                    ManagedObject olde = oldEnemy.Source.GetOrAddComponent<ManagedObject>();
+                    olde.Setup(oldEnemy);
+                    olde.replaced = true;//flag as replaced anyway
+                }
+                else
+                {
+                    oldEnemy.RandoObject.replaced = true;
+                }
+
+                EnemyRandomizer.bypassNextRandomizeEnemy = false;
+                return true;
+            }
+            return false;
+        }
+
+        protected virtual void RemoveOldObject(GameObject oldEnemy)
+        {
+            //don't invoke the old enemy's ondestroy stuff- just pretend it never existed....
+            if (oldEnemy.activeSelf)
+                oldEnemy.SetActive(false);
+
+            GameObject.Destroy(oldEnemy);
+        }
+
+        protected virtual void MarkObjectAsReplacement(GameObject newObject, GameObject oldObject)
+        {
+            ObjectMetadata info = new ObjectMetadata();
+            info.Setup(oldObject, database);
+
+            ManagedObject mo = null;
+            if (info.IsBattleEnemy)
+                mo = newObject.AddComponent<BattleManagedObject>();
+            else
+                mo = newObject.AddComponent<ManagedObject>();
+
+            mo.Setup(info);
+            mo.replaced = true;
+        }
+
+        protected virtual bool ProcessPreReplacement(GameObject oldObject)
+        {
+            if (currentLogic == null)
+                return false;
+
+            ObjectMetadata info = new ObjectMetadata();
+            info.Setup(oldObject, database);
+
+            if (!info.HasData)
+                return false;
+
+            if (CullBadObjects(info))
+                return false;
+
+            if (SkipReplacement(info))
+                return false;
+
+            if (!info.IsActive)
+                return false;
+
+            if (info.IsAReplacementObject)
+                return false;
+
+            return true;
+        }
+
+        protected virtual void FinalizeReplacement(GameObject newObject, GameObject oldObject)
+        {
+            MarkObjectAsReplacement(newObject, oldObject);
+
+            if (newObject != oldObject)
+            {
+                var oedf = oldObject.GetComponent<EnemyDeathEffects>();
+                var nedf = newObject.GetComponent<EnemyDeathEffects>();
+                if (oedf != null && nedf != null)
+                {
+                    string oplayerDataName = oedf.GetPlayerDataNameFromDeathEffects();
+                    nedf.SetPlayerDataNameFromDeathEffects(oplayerDataName);
+                }
+                newObject.SafeSetActive(true);
+                RemoveOldObject(oldObject);
+            }
+        }
+
+        //TODO: temp solution for "bad effects"
+        public static List<string> ReplacementEffectsToSkip = new List<string>()
+        {
+            "tank_fill",
+            "tank_full",
+            "Bugs Idle",
+            "bee_fg_swarm",
+            "spider sil left",
+            "Butterflies FG",
+            "Butterflies BG",
+            "wind system",
+            "water component",
+            "BG_swarm_01",
+            "Ruins_Rain",
+            "Snore",
+            "BG_swarm_02",
+            "FG_swarm_02",
+            "FG_swarm_01",
+            "Particle System FG",
+            "Particle System BG",
+            "bg_dream",
+            "fung_immediate_BG",
+            "tank_full",
+            "tank_full",
+        };
     }
 }

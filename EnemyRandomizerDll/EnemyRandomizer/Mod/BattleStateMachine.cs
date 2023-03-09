@@ -51,7 +51,12 @@ namespace EnemyRandomizerMod
 
         private void FsmState_OnEnter(On.HutongGames.PlayMaker.FsmState.orig_OnEnter orig, FsmState self)
         {
-            if(self.Name == "Idle")
+            orig(self);
+
+            if (self == null || self.Fsm != FSM.Fsm)
+                return;
+
+            if (self.Name == "Idle")
             {
                 {
                     {
@@ -173,8 +178,6 @@ namespace EnemyRandomizerMod
                     }
                 }
             }
-
-            orig(self);
         }
 
         private void Fsm_Event_FsmEventTarget_string(On.HutongGames.PlayMaker.Fsm.orig_Event_FsmEventTarget_string orig, Fsm self, FsmEventTarget eventTarget, string fsmEventName)
@@ -190,22 +193,62 @@ namespace EnemyRandomizerMod
         public void RegisterEnemyDeath(BattleManagedObject bmo)
         {
             bool updatedSomething = false;
+            bool forceOpenGates = false;
+            bool triggerNextWave = false;
 
             //skip doing this for those
-            if (bmo.gameObject.GetSceneHierarchyPath().Contains("Pre Battle Enemies"))
+            if (bmo != null && bmo.gameObject.GetSceneHierarchyPath().Contains("Pre Battle Enemies"))
                 return;
+
+            bool isColo = BattleManager.Instance.Value.gameObject.scene.name.Contains("Room_Colosseum_");
 
             if (FSM.FsmVariables.Contains("Battle Enemies"))
             {
                 var be = FSM.FsmVariables.GetFsmInt("Battle Enemies");
                 be.Value--;
                 updatedSomething = true;
+
+                if (be.Value <= 0)
+                {
+                    if (isColo)
+                        triggerNextWave = true;
+                    else
+                        forceOpenGates = true;
+                }
+            }
+
+            if (FSM.Fsm.ActiveState.Name == "Hive Knight")
+            {
+                triggerNextWave = false;
+                forceOpenGates = true;
+                FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
+                GameManager.instance.SetPlayerDataBool("killedHiveKnight", true);
+            }
+
+            if (isColo && FSM.Fsm.ActiveState.Name == "Wave 29 Zote")
+            {
+                triggerNextWave = false;
+                forceOpenGates = true;
+            }
+
+            if (isColo && FSM.Fsm.ActiveState.Name == "Lancer Battle")
+            {
+                triggerNextWave = false;
+                forceOpenGates = false;
+                FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
             }
 
             if (FSM.FsmVariables.Contains("Children"))
             {
                 var be = FSM.FsmVariables.GetFsmInt("Children");
                 be.Value--;
+                updatedSomething = true;
+                if (be.Value <= 0)
+                    forceOpenGates = true;
+            }
+
+            if(isColo && triggerNextWave)
+            {
                 updatedSomething = true;
             }
 
@@ -221,18 +264,21 @@ namespace EnemyRandomizerMod
 
             //fallback, if we failed to update the fms appropriately, just open the damn gates
             //when everything is dead
-            if(!updatedSomething)
+            if(!updatedSomething || (updatedSomething && forceOpenGates && waitingOnBossKill))
             {
                 var infos = GameObject.FindObjectsOfType<BattleManagedObject>().Select(x =>
                 {
                     var info = new ObjectMetadata();
-                    info.Setup(x.gameObject);
+                    info.Setup(x.gameObject, EnemyRandomizerDatabase.GetDatabase());
                     return info;
                 }).ToList();
 
                 if (infos.Count < 0 || !infos.Any(x => x.IsVisible))
                     OpenGates();
             }
+
+            if(forceOpenGates)
+                OpenGates();
         }
 
         public void RegisterEnemy(BattleManagedObject bmo)

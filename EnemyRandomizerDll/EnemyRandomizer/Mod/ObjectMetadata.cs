@@ -23,13 +23,10 @@ namespace EnemyRandomizerMod
     public class ObjectMetadata
     {
         public bool HasData { get; protected set; }
-        public PrefabType ObjectType { get; protected set; }
         public string DatabaseName { get; protected set; }
-        public string ImportedSourceName { get; protected set; }
         public string SceneName { get; protected set; }
         public string ObjectName { get; protected set; }
         public string ScenePath { get; protected set; }
-        public string ImportedSourcePath { get; protected set; }
         public string MapZone { get; protected set; }
         public bool IsDisabled { get; protected set; }
         public bool IsBoss { get; protected set; }
@@ -53,6 +50,11 @@ namespace EnemyRandomizerMod
         public Vector2 ObjectSize { get; protected set; }
         public Vector3 ObjectPosition { get; protected set; }
 
+        public string ImportedSourceName { get; protected set; }
+        public string ImportedSourcePath { get; protected set; }
+        public Vector2 ImportedObjectSize { get; protected set; }
+        public Vector3 ImportedObjectPosition { get; protected set; }
+
         //These values will become null after a replacement
         public GameObject Source { get; protected set; }
         public GameObject AvailableItem { get; protected set; }
@@ -63,27 +65,33 @@ namespace EnemyRandomizerMod
         public ManagedObject RandoObject { get; protected set; }
         public BattleManagedObject BattleRandoObject { get; protected set; }
 
+        public bool IsAReplacementObject { get { return RandoObject == null ? false : RandoObject.replaced; } }
 
-        public void Setup(GameObject sceneObject)
+        protected virtual void SetupDatabaseRefs(GameObject sceneObject, EnemyRandomizerDatabase database)
         {
-            HasData = true;
-            Source = sceneObject;
-            ObjectName = sceneObject.name;
-            DatabaseName = EnemyRandomizerDatabase.ToDatabaseKey(ObjectName);
-            SceneName = sceneObject.scene.name;
-            ScenePath = sceneObject.GetSceneHierarchyPath();
-            MapZone = GameManager.instance.GetCurrentMapZone();
-            RandoObject = sceneObject.GetComponent<ManagedObject>();
-            BattleRandoObject = sceneObject.GetComponent<BattleManagedObject>();
+            if (!EnemyRandomizerDatabase.IsDatabaseObject(sceneObject))
+            {
+                HasData = false;
+                return;
+            }
 
+            DatabaseName = EnemyRandomizerDatabase.ToDatabaseKey(sceneObject.name);
+            if (!string.IsNullOrEmpty(DatabaseName))
+            {
+                HasData = IsObjectInDatabase(database);
+            }
+        }
+
+        protected virtual void SetupComponentRefs(GameObject sceneObject)
+        {
             EnemyHealthManager = sceneObject.GetComponent<HealthManager>();
-            if(EnemyHealthManager != null)
+            if (EnemyHealthManager != null)
             {
                 MaxHP = EnemyHealthManager.hp;
                 IsInvincible = EnemyHealthManager.IsInvincible;
 
                 var battleScene = EnemyHealthManager.GetBattleScene();
-                if(battleScene != null)
+                if (battleScene != null)
                 {
                     IsBattleEnemy = true;
                 }
@@ -120,41 +128,45 @@ namespace EnemyRandomizerMod
                         IsDisabled = false;
                 }
             }
+        }
 
-            if(sceneObject.GetComponent<BoxCollider2D>())
+        protected virtual void SetupTransformValues(GameObject sceneObject)
+        {
+            if (sceneObject.GetComponent<BoxCollider2D>())
             {
                 ObjectSize = sceneObject.GetComponent<BoxCollider2D>().size;
             }
+            else if(sceneObject.GetComponent<tk2dSprite>() && sceneObject.GetComponent<tk2dSprite>().boxCollider2D != null)
+            {
+                ObjectSize = sceneObject.GetComponent<tk2dSprite>().boxCollider2D.size;
+            }
             else
             {
-                if (sceneObject.GetComponent<tk2dSprite>().boxCollider2D != null)
-                    ObjectSize = sceneObject.GetComponent<tk2dSprite>().boxCollider2D.size;
-                else
-                {
-                    Debug.LogError("Need a size fallback for " + DatabaseName);
-                    ObjectSize = sceneObject.transform.localScale;
-                }
+                ObjectSize = sceneObject.transform.localScale;
             }
 
             ObjectPosition = sceneObject.transform.position;
+        }
 
+        protected virtual void SetupItemValues(GameObject sceneObject)
+        {
             //check and see if this enemy would have dropped an item
             HasAvailableItem = sceneObject.GetComponent<PreInstantiateGameObject>();
-            if(!HasAvailableItem)
+            if (!HasAvailableItem)
             {
                 var ede = sceneObject.GetComponent<EnemyDeathEffects>();
-                if(ede != null)
+                if (ede != null)
                 {
                     var corpse = ede.GetCorpseFromDeathEffects();
-                    if(corpse != null)
+                    if (corpse != null)
                     {
-                        if(corpse.GetComponent<PreInstantiateGameObject>())
+                        if (corpse.GetComponent<PreInstantiateGameObject>())
                         {
                             var go = corpse.GetComponent<PreInstantiateGameObject>().InstantiatedGameObject;
                             if (go != null && go.name.Contains("Shiny Item"))
                             {
                                 var go_pbi = go.GetComponent<PersistentBoolItem>();
-                                if(go_pbi != null && !go_pbi.persistentBoolData.activated)
+                                if (go_pbi != null && !go_pbi.persistentBoolData.activated)
                                 {
                                     HasAvailableItem = true;
                                     AvailableItem = go;
@@ -164,10 +176,22 @@ namespace EnemyRandomizerMod
                     }
                     else
                     {
-                        if (ObjectType == PrefabType.Enemy)
-                            Debug.LogError(ScenePath+" has no corpse!");
+                        if (EnemyHealthManager != null)
+                            Debug.LogError(ScenePath + " has no corpse!");
                     }
                 }
+            }
+        }
+
+        protected virtual void SetupRandoProperties(GameObject sceneObject)
+        {
+            IsTinker = sceneObject.GetComponentInChildren<TinkEffect>() != null;
+
+            if (EnemyHealthManager == null)
+            {
+                if (IsTinker)
+                    IsInvincible = true;
+                return;
             }
 
             bool isFlyingFromComponents =
@@ -178,86 +202,146 @@ namespace EnemyRandomizerMod
             IsFlying = isFlyingFromComponents || DefaultMetadata.Flying.Contains(DatabaseName);
             IsCrawling = sceneObject.GetComponent<Crawler>() != null || DefaultMetadata.Crawling.Contains(DatabaseName);
             IsClimbing = sceneObject.GetComponent<Climber>() != null || DefaultMetadata.Climbing.Contains(DatabaseName);
-            IsTinker = sceneObject.GetComponentInChildren<TinkEffect>() != null;
             IsMobile = !DefaultMetadata.Static.Contains(DatabaseName);
             IsSmasher = sceneObject.GetDirectChildren().Any(x => x.name == "Smasher");//can use this child object layer to enable smashing of platforms/walls
             IsSummonedByEvent = DefaultMetadata.IsSummonedByEvent.Contains(DatabaseName);
             IsEnemySpawner = DefaultMetadata.SpawnerEnemies.Contains(DatabaseName);
+            CheckIfIsBattleEnemy(sceneObject);
+        }
+
+        protected virtual void CheckIfIsBattleEnemy(GameObject sceneObject)
+        {
+            if (EnemyHealthManager == null)
+                return;
 
             if (!IsBattleEnemy)
             {
-                IsBattleEnemy = IsBoss;
-                if(!IsBattleEnemy)
-                {
-                    IsBattleEnemy = ScenePath.Split('/').Any(x => BattleManager.battleControllers.Any(y => x.Contains(y)));
-                }
+                if (sceneObject.GetComponent<BattleManagedObject>())
+                    IsBattleEnemy = true;
 
                 if (!IsBattleEnemy)
                 {
-                    bool hasScene = DefaultMetadata.BattleEnemies.TryGetValue("ANY", out var enemies);
-                    if (hasScene)
+                    IsBattleEnemy = IsBoss;
+
+                    if (!IsBattleEnemy)
                     {
-                        IsBattleEnemy = enemies.Contains(DatabaseName);
+                        IsBattleEnemy = ScenePath.Split('/').Any(x => BattleManager.battleControllers.Any(y => x.Contains(y)));
                     }
 
-                    if (!hasScene)
+                    if (!IsBattleEnemy)
                     {
-                        hasScene = DefaultMetadata.BattleEnemies.TryGetValue(SceneName, out var enemies2);
+                        bool hasScene = DefaultMetadata.BattleEnemies.TryGetValue("ANY", out var enemies);
                         if (hasScene)
                         {
-                            IsBattleEnemy = enemies2.Contains(ScenePath);
+                            IsBattleEnemy = enemies.Contains(DatabaseName);
+                        }
+
+                        if (!IsBattleEnemy)
+                        {
+                            hasScene = DefaultMetadata.BattleEnemies.TryGetValue(SceneName, out var enemies2);
+                            if (hasScene)
+                            {
+                                IsBattleEnemy = enemies2.Contains(ScenePath);
+                            }
                         }
                     }
                 }
             }
+        }
 
+        List<Transform> edges = new List<Transform>();
+
+        public virtual bool IsVisibleNow()
+        {
+            bool isVisible = false;
+            GameObject sceneObject = Source;
             if (sceneObject.gameObject.activeSelf)
             {
-                IsVisible = sceneObject.gameObject.activeSelf;
+                isVisible = sceneObject.gameObject.activeSelf;
 
                 //might not actually be...
-                if(IsVisible)
+                if (isVisible)
                 {
                     //count "out of bounds" enemies as not visible
-                    var edges = sceneObject.scene.GetRootGameObjects().Where(x => x.name.Contains("SceneBorder")).Select(x => x.transform);
-                    
-                    var xmin = edges.Min(o => (o.position.x - 10f));
-                    var xmax = edges.Max(o => (o.position.x + 10f));
-                    var ymin = edges.Min(o => (o.position.y - 10f));
-                    var ymax = edges.Max(o => (o.position.y + 10f));
+                    if (edges.Count <= 3)
+                        edges = sceneObject.scene.GetRootGameObjects().Where(x => x.name.Contains("SceneBorder")).Select(x => x.transform).ToList();
 
-                    if (sceneObject.transform.position.x < xmin)
-                        IsVisible = false;
-                    else if (sceneObject.transform.position.x > xmax)
-                        IsVisible = false;
-                    else if (sceneObject.transform.position.y < ymin)
-                        IsVisible = false;
-                    else if (sceneObject.transform.position.y > ymax)
-                        IsVisible = false;
+                    if (edges.Count > 3)
+                    {
+                        var xmin = edges.Min(o => (o.position.x - 10f));
+                        var xmax = edges.Max(o => (o.position.x + 10f));
+                        var ymin = edges.Min(o => (o.position.y - 10f));
+                        var ymax = edges.Max(o => (o.position.y + 10f));
+
+                        if (sceneObject.transform.position.x < xmin)
+                            isVisible = false;
+                        else if (sceneObject.transform.position.x > xmax)
+                            isVisible = false;
+                        else if (sceneObject.transform.position.y < ymin)
+                            isVisible = false;
+                        else if (sceneObject.transform.position.y > ymax)
+                            isVisible = false;
+                    }
                 }
 
                 //still might not actually be...
-                if (IsVisible)
+                if (isVisible)
                 {
                     Collider2D collider = sceneObject.GetComponent<Collider2D>();
                     MeshRenderer renderer = sceneObject.GetComponent<MeshRenderer>();
                     if (collider != null || renderer != null)
                     {
                         if (collider != null && renderer == null)
-                            IsVisible = collider.enabled;
+                            isVisible = collider.enabled;
                         else if (collider == null && renderer != null)
-                            IsVisible = renderer.enabled;
+                            isVisible = renderer.enabled;
                         else //if (collider != null && renderer != null)
-                            IsVisible = collider.enabled && renderer.enabled;
+                            isVisible = collider.enabled && renderer.enabled;
                     }
                 }
             }
+            return isVisible;
+        }
 
-            IsActive = IsVisible;
+        protected virtual void CheckIfIsActiveAndEnabled(GameObject sceneObject)
+        {
+            IsVisible = IsVisibleNow();
+            IsActive = IsVisible && !IsDisabled;
+        }
 
+        public bool IsTemporarilyInactive()
+        {
+            return HasData && Source.activeInHierarchy && EnemyHealthManager != null && !IsDisabled && !IsVisible;
+        }
 
-            //TODO: come up with a way to accurately check this
-            //IsActive = ???
+        public void Setup(GameObject sceneObject, EnemyRandomizerDatabase database)
+        {
+            Source = sceneObject;
+            ObjectName = sceneObject.name;
+
+            SetupDatabaseRefs(sceneObject, database);
+
+            if (!HasData)
+                return;
+
+            SceneName = sceneObject.scene.IsValid() ? sceneObject.scene.name : null;
+            ScenePath = sceneObject.GetSceneHierarchyPath();
+            MapZone = GameManager.instance.GetCurrentMapZone();
+            RandoObject = sceneObject.GetComponent<ManagedObject>();
+            BattleRandoObject = sceneObject.GetComponent<BattleManagedObject>();
+
+            SetupComponentRefs(sceneObject);
+            SetupTransformValues(sceneObject);
+            SetupItemValues(sceneObject);
+            SetupRandoProperties(sceneObject);
+            CheckIfIsActiveAndEnabled(sceneObject);
+        }
+
+        public void Dump()
+        {
+            var self = this;
+            var props = self.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            props.ToList().ForEach(x => Dev.Log($"{x.Name}: {x.GetValue(self)}"));
         }
 
 
@@ -266,6 +350,57 @@ namespace EnemyRandomizerMod
         {
             ImportedSourceName = other.DatabaseName;
             ImportedSourcePath = other.ScenePath;
+        }
+
+
+        static bool DEBUG_WARN_IF_NOT_FOUND = true;
+
+        public virtual bool IsObjectAnEnemy(EnemyRandomizerDatabase database)
+        {
+            if (!string.IsNullOrEmpty(DatabaseName) && database.Enemies.ContainsKey(DatabaseName))
+                return true;
+            else
+            {
+                if (DEBUG_WARN_IF_NOT_FOUND)
+                    Dev.LogWarning($"WARNING: [{DatabaseName}] was not found in the enemy database when searching for [{ObjectName}]!");
+            }
+            return false;
+        }
+
+        public virtual bool IsObjectInDatabase(EnemyRandomizerDatabase database)
+        {
+            if (!string.IsNullOrEmpty(DatabaseName) && database.Objects.ContainsKey(DatabaseName))
+                return true;
+            else
+            {
+                if (DEBUG_WARN_IF_NOT_FOUND)
+                    Dev.LogWarning($"WARNING: [{DatabaseName}] was not found in the object database when searching for [{ObjectName}]!");
+            }
+            return false;
+        }
+
+        public virtual bool IsEffectInDatabase(EnemyRandomizerDatabase database)
+        {
+            if (!string.IsNullOrEmpty(DatabaseName) && database.Effects.ContainsKey(DatabaseName))
+                return true;
+            else
+            {
+                if (DEBUG_WARN_IF_NOT_FOUND)
+                    Dev.LogWarning($"WARNING: [{DatabaseName}] was not found in the effect database when searching for [{ObjectName}]!");
+            }
+            return false;
+        }
+
+        public virtual bool IsHazardInDatabase(EnemyRandomizerDatabase database)
+        {
+            if (!string.IsNullOrEmpty(DatabaseName) && database.Hazards.ContainsKey(DatabaseName))
+                return true;
+            else
+            {
+                if (DEBUG_WARN_IF_NOT_FOUND)
+                    Dev.LogWarning($"WARNING: [{DatabaseName}] was not found in the effect database when searching for [{ObjectName}]!");
+            }
+            return false;
         }
     }
 
@@ -498,6 +633,7 @@ namespace EnemyRandomizerMod
         public static List<string> AlwaysDeleteObject = new List<string>() {
             "Fly Spawn",
             "Hatcher Spawn",
+            "Hatcher Baby Spawner",
             "Parasite Balloon Spawner",
             };
 

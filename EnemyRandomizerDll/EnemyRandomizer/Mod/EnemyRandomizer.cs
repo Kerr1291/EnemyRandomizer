@@ -335,11 +335,6 @@ namespace EnemyRandomizerMod
             enemyReplacer.OnPlaymakerFSMEnabled(fsm);
         }
 
-        //public void EnableLogic(string logicName)
-        //{
-        //    enemyReplacer.SetLogic(logicTypes[logicName]);
-        //}
-
         void LoadLogics()
         {
             logicTypes = LogicLoader.LoadLogics();
@@ -364,6 +359,7 @@ namespace EnemyRandomizerMod
         {
             return GameManager.instance.GetCurrentMapZone();
         }
+
 
         //public static GameObject DebugReplaceEnemy(string enemyName, GameObject enemyToReplace)
         //{
@@ -403,34 +399,6 @@ namespace EnemyRandomizerMod
         //}
 
     }
-
-    //public class RandomizeWhenVisible : MonoBehaviour
-    //{
-    //    IEnumerator Start()
-    //    {
-    //        Dev.Log("Waiting to randomize " + gameObject);
-    //        if (gameObject == null)
-    //            yield break;
-
-    //        Collider2D collider = gameObject.GetComponent<Collider2D>();
-    //        MeshRenderer renderer = gameObject.GetComponent<MeshRenderer>();
-    //        if (collider == null && renderer == null)
-    //            yield break;
-
-    //        yield return new WaitUntil(() => {
-    //            if (collider != null && renderer == null)
-    //                return collider.enabled;
-    //            else if (collider == null && renderer != null)
-    //                return renderer.enabled;
-    //            else //if (collider != null && renderer != null)
-    //                return collider.enabled && renderer.enabled;
-    //        });
-
-    //        Dev.Log("Randomizng newly activated " + gameObject);
-    //        EnemyRandomizer.Instance.ReplaceEnemy(gameObject);
-    //        GameObject.Destroy(this);
-    //    }
-    //}
 
 
     //EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Crawler");

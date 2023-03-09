@@ -411,6 +411,51 @@ namespace nv
             return (GameObject)GetCorpseField(rootType).GetValue(e);
         }
 
+
+        public static string GetPlayerDataNameFromDeathEffects(this EnemyDeathEffects e)
+        {
+            var rootType = e.GetType();
+
+            System.Reflection.FieldInfo GetField(Type t)
+            {
+                return t.GetField("playerDataName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            }
+
+            while (rootType != typeof(EnemyDeathEffects) && rootType != null)
+            {
+                if (GetField(rootType) != null)
+                    break;
+                rootType = rootType.BaseType;
+            }
+
+            if (rootType == null)
+                return null;
+
+            return (string)GetField(rootType).GetValue(e);
+        }
+
+        public static void SetPlayerDataNameFromDeathEffects(this EnemyDeathEffects e, string pdName)
+        {
+            var rootType = e.GetType();
+
+            System.Reflection.FieldInfo GetField(Type t)
+            {
+                return t.GetField("playerDataName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            }
+
+            while (rootType != typeof(EnemyDeathEffects) && rootType != null)
+            {
+                if (GetField(rootType) != null)
+                    break;
+                rootType = rootType.BaseType;
+            }
+
+            if (rootType == null)
+                return;
+
+            GetField(rootType).SetValue(e, pdName);
+        }
+
         public static GameObject GetCorpsePrefabFromDeathEffects(this EnemyDeathEffects e)
         {
             var rootType = e.GetType();
