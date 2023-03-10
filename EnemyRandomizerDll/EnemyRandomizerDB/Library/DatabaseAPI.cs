@@ -210,15 +210,29 @@ namespace EnemyRandomizerMod
             yield break;
         }
 
-        public GameObject Spawn(string name)
+        /// <summary>
+        /// Spawn an object from the database. All objects may be checked via the Objects property in the database.
+        /// </summary>
+        /// <param name="p">The name of the database object to spawn</param>
+        /// <param name="source">Optional: source data that may be used to configure the object</param>
+        /// <param name="defaultType">Optional: the fallback spawner to use if the object doesn't have one defined</param>
+        /// <returns>The object that was spawned. Returns null on failure.</returns>
+        public GameObject Spawn(string name, ObjectMetadata source)
         {
             if (!Objects.TryGetValue(name, out PrefabObject p))
                 return null;
 
-            return Spawn(p);
+            return Spawn(p, source);
         }
 
-        public GameObject Spawn(PrefabObject p, Type defaultType = null)
+        /// <summary>
+        /// Spawn an object from the database. All objects may be checked via the Objects property in the database.
+        /// </summary>
+        /// <param name="p">The database object to spawn</param>
+        /// <param name="source">Optional: source data that may be used to configure the object</param>
+        /// <param name="defaultType">Optional: the fallback spawner to use if the object doesn't have one defined</param>
+        /// <returns>The object that was spawned. Returns null on failure.</returns>
+        public GameObject Spawn(PrefabObject p, ObjectMetadata source, Type defaultType = null)
         {
             if (defaultType == null)
                 defaultType = typeof(DefaultSpawner);
@@ -229,7 +243,7 @@ namespace EnemyRandomizerMod
                 return null;
 
             Dev.Log("finally trying to spawn "+p.prefabName);
-            return spawner.Spawn(p);
+            return spawner.Spawn(p, source);
         }
 
         public static string ModAssetPath

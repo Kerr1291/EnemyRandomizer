@@ -46,7 +46,9 @@ namespace EnemyRandomizerMod
         {
             SetupRNGForReplacement(other.name, other.scene.name);
             var prefab = Database.enemyPrefabs.GetRandomElementFromList(rng);
-            GameObject newEnemy = Database.Spawn(prefab);
+            ObjectMetadata otherData = new ObjectMetadata();
+            otherData.Setup(other, Database);
+            GameObject newEnemy = Database.Spawn(prefab, otherData);
             newEnemy.transform.parent = other.transform.parent;
             newEnemy.transform.localPosition = other.transform.localPosition;
             return newEnemy;
@@ -61,7 +63,9 @@ namespace EnemyRandomizerMod
 
             SetupRNGForReplacement(other.name, other.scene.name);
             var prefab = Database.hazardPrefabs.GetRandomElementFromList(rng);
-            GameObject newHazard = Database.Spawn(prefab);
+            ObjectMetadata otherData = new ObjectMetadata();
+            otherData.Setup(other, Database);
+            GameObject newHazard = Database.Spawn(prefab, otherData);
             newHazard.transform.parent = other.transform.parent;
             newHazard.transform.localPosition = other.transform.localPosition;
             return newHazard;
@@ -71,7 +75,9 @@ namespace EnemyRandomizerMod
         {
             SetupRNGForReplacement(other.name, other.scene.name);
             var prefab = Database.effectPrefabs.GetRandomElementFromList(rng);
-            GameObject newEffect = Database.Spawn(prefab);
+            ObjectMetadata otherData = new ObjectMetadata();
+            otherData.Setup(other, Database);
+            GameObject newEffect = Database.Spawn(prefab, otherData);
             newEffect.transform.parent = other.transform.parent;
             newEffect.transform.localPosition = other.transform.localPosition;
             return newEffect;

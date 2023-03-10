@@ -48,16 +48,16 @@ namespace EnemyRandomizerMod
         public Vector2 ObjectSize { get; protected set; }
         public Vector3 ObjectPosition { get; protected set; }
 
-        public string ImportedSourceName { get; protected set; }
-        public string ImportedSourcePath { get; protected set; }
-        public Vector2 ImportedObjectSize { get; protected set; }
-        public Vector3 ImportedObjectPosition { get; protected set; }
+        public ObjectMetadata ObjectThisReplaced { get; protected set; }
+        public float SizeScale { get; protected set; }
 
         //These values will become null after a replacement
         public GameObject Source { get; protected set; }
         public GameObject AvailableItem { get; protected set; }
         public PersistentBoolItem SceneSaveData { get; protected set; }
         public HealthManager EnemyHealthManager { get; protected set; }
+        public Collider2D Collider { get; protected set; }
+        public tk2dSprite Sprite { get; protected set; }
         public DamageHero HeroDamage { get; protected set; }
         public DamageEnemies EnemyDamage { get; protected set; }
         public ManagedObject RandoObject { get; protected set; }
@@ -126,10 +126,15 @@ namespace EnemyRandomizerMod
                         IsDisabled = false;
                 }
             }
+
+            Collider = sceneObject.GetComponent<Collider2D>();
+            Sprite = sceneObject.GetComponent<tk2dSprite>();
         }
 
         protected virtual void SetupTransformValues(GameObject sceneObject)
         {
+            SizeScale = 1f;
+
             if (sceneObject.GetComponent<BoxCollider2D>())
             {
                 ObjectSize = sceneObject.GetComponent<BoxCollider2D>().size;
@@ -137,6 +142,16 @@ namespace EnemyRandomizerMod
             else if (sceneObject.GetComponent<tk2dSprite>() && sceneObject.GetComponent<tk2dSprite>().boxCollider2D != null)
             {
                 ObjectSize = sceneObject.GetComponent<tk2dSprite>().boxCollider2D.size;
+            }
+            if (sceneObject.GetComponent<CircleCollider2D>())
+            {
+                var newCCircle = sceneObject.GetComponent<CircleCollider2D>();
+                ObjectSize = Vector2.one * newCCircle.radius;
+            }
+            else if (sceneObject.GetComponent<PolygonCollider2D>())
+            {
+                var newCPoly = sceneObject.GetComponent<PolygonCollider2D>();
+                ObjectSize = new Vector2(newCPoly.points.Select(x => x.x).Max() - newCPoly.points.Select(x => x.x).Min(), newCPoly.points.Select(x => x.y).Max() - newCPoly.points.Select(x => x.y).Min());
             }
             else
             {
@@ -344,10 +359,9 @@ namespace EnemyRandomizerMod
 
 
         //use another object's object metadata to configure this metadata
-        public void SetupAsReplacement(ObjectMetadata other)
+        public void MarkAsReplacement(ObjectMetadata other)
         {
-            ImportedSourceName = other.DatabaseName;
-            ImportedSourcePath = other.ScenePath;
+            ObjectThisReplaced = other;
         }
 
 
@@ -399,6 +413,31 @@ namespace EnemyRandomizerMod
                     Dev.LogWarning($"WARNING: [{DatabaseName}] was not found in the effect database when searching for [{ObjectName}]!");
             }
             return false;
+        }
+
+        public virtual float GetRelativeScale(ObjectMetadata other, float min = .1f, float max = 2.5f)
+        {
+            var oldSize = other.ObjectSize;
+            var newSize = ObjectSize;
+
+            float scaleX = oldSize.x / newSize.x;
+            float scaleY = oldSize.y / newSize.y;
+            float scale = scaleX > scaleY ? scaleY : scaleX;
+
+            if (scale < min)
+                scale = min;
+
+            if (scale > max)
+                scale = max;
+
+            return scale;
+        }
+
+        public virtual void ApplySizeScale(float scale)
+        {
+            SizeScale = scale;
+            Source.transform.localScale = new Vector3(Source.transform.localScale.x * scale,
+                Source.transform.localScale.y * scale, 1f);
         }
     }
 

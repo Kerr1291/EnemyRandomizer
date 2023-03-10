@@ -394,15 +394,6 @@ namespace EnemyRandomizerMod
             return false;
         }
 
-        protected virtual void RemoveOldObject(GameObject oldEnemy)
-        {
-            //don't invoke the old enemy's ondestroy stuff- just pretend it never existed....
-            if (oldEnemy.activeSelf)
-                oldEnemy.SetActive(false);
-
-            GameObject.Destroy(oldEnemy);
-        }
-
         protected virtual void MarkObjectAsReplacement(GameObject newObject, GameObject oldObject)
         {
             ObjectMetadata info = new ObjectMetadata();
@@ -460,6 +451,15 @@ namespace EnemyRandomizerMod
                 newObject.SafeSetActive(true);
                 RemoveOldObject(oldObject);
             }
+        }
+
+        protected virtual void RemoveOldObject(GameObject oldEnemy)
+        {
+            //don't invoke the old enemy's ondestroy stuff- just pretend it never existed....
+            if (oldEnemy.activeSelf)
+                oldEnemy.SetActive(false);
+
+            GameObject.Destroy(oldEnemy);
         }
 
         //TODO: temp solution for "bad effects"

@@ -22,8 +22,8 @@ namespace EnemyRandomizerMod
         {
             var prefab = p.prefab.LocateMyFSM("Spawn").Fsm.GetFsmGameObject("Corpse to Instantiate").Value;
 
-            Dev.Log("LOADING_COLO Old prefab " + p.prefab);
-            Dev.Log("LOADING_COLO New prefab " + prefab);
+            //Dev.Log("LOADING_COLO Old prefab " + p.prefab);
+            //Dev.Log("LOADING_COLO New prefab " + prefab);
 
             //if (p.prefab.GetSceneHierarchyPath().Contains("Wave 1"))
             //{
@@ -40,7 +40,7 @@ namespace EnemyRandomizerMod
             p.prefabName = keyName;
             p.prefab = prefab;
 
-            Dev.Log("New prefab name = " + keyName);
+            //Dev.Log("New prefab name = " + keyName);
         }
     }
 
@@ -52,8 +52,8 @@ namespace EnemyRandomizerMod
             if(prefab == null) 
                 prefab = p.prefab.LocateMyFSM("Spawn").Fsm.GetFsmGameObject("Enemy Type").Value;
 
-            Dev.Log("LOADING_COLO Old prefab " + p.prefab);
-            Dev.Log("LOADING_COLO New prefab " + prefab);
+            //Dev.Log("LOADING_COLO Old prefab " + p.prefab);
+            //Dev.Log("LOADING_COLO New prefab " + prefab);
 
             string keyName = EnemyRandomizerDatabase.ToDatabaseKey(prefab.name);
 
@@ -61,7 +61,7 @@ namespace EnemyRandomizerMod
             p.prefabName = keyName;
             p.prefab = prefab;
 
-            Dev.Log("New prefab name = " + keyName);
+            //Dev.Log("New prefab name = " + keyName);
         }
     }
 

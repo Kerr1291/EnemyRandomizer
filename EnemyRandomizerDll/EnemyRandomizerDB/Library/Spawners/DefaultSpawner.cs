@@ -4,7 +4,20 @@ using System;
 
 namespace EnemyRandomizerMod
 {
-    internal class DefaultPrefabConfig : IPrefabConfig
+    public class DefaultSpawnedEnemyControl : MonoBehaviour
+    {
+        public ObjectMetadata thisMetadata;
+        public ObjectMetadata originialMetadata;
+
+        public virtual void Setup(ObjectMetadata other)
+        {
+            thisMetadata = new ObjectMetadata();
+            thisMetadata.Setup(gameObject, EnemyRandomizerDatabase.GetDatabase());
+            originialMetadata = other;
+        }
+    }
+
+    public class DefaultPrefabConfig : IPrefabConfig
     {
         public virtual void SetupPrefab(PrefabObject p)
         {
@@ -12,13 +25,38 @@ namespace EnemyRandomizerMod
         }
     }
 
-    internal class DefaultSpawner : ISpawner
+    public class DefaultPrefabConfig<TControlComponent> : DefaultPrefabConfig
+        where TControlComponent : DefaultSpawnedEnemyControl
     {
-        public virtual GameObject Spawn(PrefabObject p)
+        public override void SetupPrefab(PrefabObject p)
+        {
+            base.SetupPrefab(p);
+            p.prefab.AddComponent<TControlComponent>();
+        }
+    }
+
+    public class DefaultSpawner : ISpawner
+    {
+        public virtual GameObject Spawn(PrefabObject p, ObjectMetadata source)
         {
             var go = GameObject.Instantiate(p.prefab);
-            go.name = go.name + "(" + Guid.NewGuid().ToString() + ")"; //name values in parenthesis will be trimmed out when converting to a database key'd name
+            if(source == null)
+                go.name = go.name + "(" + Guid.NewGuid().ToString() + ")"; //name values in parenthesis will be trimmed out when converting to a database key'd name
+            else
+                go.name = go.name + $" ([{source.ObjectPosition.GetHashCode()}][{source.ScenePath.GetHashCode()}])"; //name values in parenthesis will be trimmed out when converting to a database key'd name
             return go;
+        }
+    }
+
+    public class DefaultSpawner<TControlComponent> : DefaultSpawner
+        where TControlComponent : DefaultSpawnedEnemyControl
+    {
+        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
+        {
+            var newObject = base.Spawn(p, source);
+            var control = newObject.GetComponent<TControlComponent>();
+            control.Setup(source);
+            return newObject;
         }
     }
 

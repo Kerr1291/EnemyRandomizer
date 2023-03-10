@@ -718,14 +718,14 @@
             <string>EnemyDreamnailReaction</string>
           </components>
         </SceneObject>
-        <SceneObject path="Parasite Balloon Spawner">
+        <!--<SceneObject path="Parasite Balloon Spawner">
           <components>
             <string>EnemyDreamnailReaction</string>
             <string>HealthManager</string>
             <string>DamageHero</string>
             <string>EnemyDeathEffectsNoEffect</string>
           </components>
-        </SceneObject>
+        </SceneObject>-->
         <SceneObject path="IK Projectile DS">
           <components>
             <string>DamageHero</string>
@@ -3432,7 +3432,7 @@
     <string>Zombie Spider 1</string>
     <string>Tiny Spider</string>
     <string>Shade Sibling</string>
-    <string>Parasite Balloon Spawner</string>
+    <!--<string>Parasite Balloon Spawner</string>-->
     <string>Flukeman Top</string>
     <string>Flukeman Bot</string>
     <string>White Defender</string>

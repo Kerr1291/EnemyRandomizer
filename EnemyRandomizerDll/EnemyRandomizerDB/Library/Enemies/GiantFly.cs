@@ -55,12 +55,12 @@ namespace EnemyRandomizerMod
                         if (EnemyRandomizerDatabase.GetDatabase().Enemies.TryGetValue("Fly", out var src))
                         {
                             Dev.Log("trying to spawn via prefab " + src.prefabName);
-                            result = EnemyRandomizerDatabase.GetDatabase().Spawn(src);
+                            result = EnemyRandomizerDatabase.GetDatabase().Spawn(src, null);
                         }
                         else
                         {
                             Dev.Log("trying to spawn via string");
-                            result = EnemyRandomizerDatabase.GetDatabase().Spawn("Fly");
+                            result = EnemyRandomizerDatabase.GetDatabase().Spawn("Fly", null);
                         }
 
                         Dev.Log("result = " + result);

@@ -715,6 +715,7 @@ namespace EnemyRandomizerMod
             {"Gate Mantis"},
             {"Real Bat"},
             {"Hatcher Baby Spawner"},
+            {"Parasite Balloon Spawner"},
             {"Hiveling Spawner"},
             {"Fluke Fly Spawner"},
             {"Baby Centipede Spawner"},

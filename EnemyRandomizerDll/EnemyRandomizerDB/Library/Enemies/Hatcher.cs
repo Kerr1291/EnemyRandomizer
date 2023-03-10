@@ -72,11 +72,11 @@ namespace EnemyRandomizerMod
                 {
                     if (EnemyRandomizerDatabase.GetDatabase().Enemies.TryGetValue("Hatcher Baby", out var src))
                     {
-                        result = EnemyRandomizerDatabase.GetDatabase().Spawn(src);
+                        result = EnemyRandomizerDatabase.GetDatabase().Spawn(src, null);
                     }
                     else
                     {
-                        result = EnemyRandomizerDatabase.GetDatabase().Spawn("Hatcher Baby");
+                        result = EnemyRandomizerDatabase.GetDatabase().Spawn("Hatcher Baby", null);
                     }
 
                     if (result != null && self.Owner != null)
@@ -96,44 +96,44 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public static void SpawnBabies(GameObject owner)
-        {
-            try
-            {
-                Dev.Log("has database ref: " + EnemyRandomizerDatabase.GetDatabase.GetInvocationList().Length);
-                if (EnemyRandomizerDatabase.GetDatabase != null)
-                {
-                    for (int i = 0; i < 7; ++i)
-                    {
-                        GameObject result = null;
-                        if (EnemyRandomizerDatabase.GetDatabase().Enemies.TryGetValue("Fly", out var src))
-                        {
-                            Dev.Log("trying to spawn via prefab " + src.prefabName);
-                            result = EnemyRandomizerDatabase.GetDatabase().Spawn(src);
-                        }
-                        else
-                        {
-                            Dev.Log("trying to spawn via string");
-                            result = EnemyRandomizerDatabase.GetDatabase().Spawn("Fly");
-                        }
+        //public static void SpawnBabies(GameObject owner)
+        //{
+        //    try
+        //    {
+        //        Dev.Log("has database ref: " + EnemyRandomizerDatabase.GetDatabase.GetInvocationList().Length);
+        //        if (EnemyRandomizerDatabase.GetDatabase != null)
+        //        {
+        //            for (int i = 0; i < 7; ++i)
+        //            {
+        //                GameObject result = null;
+        //                if (EnemyRandomizerDatabase.GetDatabase().Enemies.TryGetValue("Fly", out var src))
+        //                {
+        //                    Dev.Log("trying to spawn via prefab " + src.prefabName);
+        //                    result = EnemyRandomizerDatabase.GetDatabase().Spawn(src, null);
+        //                }
+        //                else
+        //                {
+        //                    Dev.Log("trying to spawn via string");
+        //                    result = EnemyRandomizerDatabase.GetDatabase().Spawn("Fly", null);
+        //                }
 
-                        Dev.Log("result = " + result);
-                        Dev.Log("self.Owner = " + owner);
-                        if (result != null && owner != null)
-                        {
-                            result.transform.position = owner.transform.position;
-                            result.SetActive(true);
-                        }
-                    }
-                }
+        //                Dev.Log("result = " + result);
+        //                Dev.Log("self.Owner = " + owner);
+        //                if (result != null && owner != null)
+        //                {
+        //                    result.transform.position = owner.transform.position;
+        //                    result.SetActive(true);
+        //                }
+        //            }
+        //        }
 
-                GameObject.Destroy(owner.GetComponent<PlayMakerFSM>());
-            }
-            catch (Exception e)
-            {
-                Dev.LogError($"Caught exception trying to spawn a custom hatcher child! {e.Message} STACKTRACE:{e.StackTrace}");
-            }
-        }
+        //        GameObject.Destroy(owner.GetComponent<PlayMakerFSM>());
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Dev.LogError($"Caught exception trying to spawn a custom hatcher child! {e.Message} STACKTRACE:{e.StackTrace}");
+        //    }
+        //}
     }
 
     internal class HatcherPrefabConfig : IPrefabConfig

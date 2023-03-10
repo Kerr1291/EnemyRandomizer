@@ -19,9 +19,11 @@ namespace EnemyRandomizerMod
 {
     public class FalseKnightNewControl : MonoBehaviour
     {
-        void OnEnable()
-        {  
+        ObjectMetadata data = new ObjectMetadata();
 
+        void OnEnable()
+        {
+            data.Setup(gameObject, EnemyRandomizerDatabase.GetDatabase());
         }
     }
 
