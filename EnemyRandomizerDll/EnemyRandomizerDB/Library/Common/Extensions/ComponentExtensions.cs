@@ -20,7 +20,7 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                Debug.Log( componentHeader + @" \--Component: " + c.GetType().Name );
+                Dev.Log( componentHeader + @" \--Component: " + c.GetType().Name );
             }
         }
 
@@ -120,7 +120,7 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                Debug.Log(header + @" \--" + label + ": " + data);
+                Dev.Log(header + @" \--" + label + ": " + data);
             }
         }
     }

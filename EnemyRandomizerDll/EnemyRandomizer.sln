@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnemyRandomizer", "EnemyRan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomizeEachEnemyPerRoom", "RoomRandomizerLogic\RandomizeEachEnemyPerRoom.csproj", "{AE760B55-DCF4-493C-95E6-989299ED6E48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomizeEachEnemyLogic", "RandomizeEachEnemyLogic\RandomizeEachEnemyLogic.csproj", "{792C5159-E791-4D0C-9657-9D9F356DEE9F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomizeEachEnemyPerEnemy", "RandomizeEachEnemyLogic\RandomizeEachEnemyPerEnemy.csproj", "{792C5159-E791-4D0C-9657-9D9F356DEE9F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomizeEachEnemyPerGame", "RandomizeEachEnemyPerGame\RandomizeEachEnemyPerGame.csproj", "{D0E41B50-73B0-4C45-A546-DB9DC17C195C}"
 EndProject
@@ -16,6 +16,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomizeEachEnemyToZote", "RandomizeEachEnemyToZote\RandomizeEachEnemyToZote.csproj", "{A380A7EF-B022-4183-9678-527F035746DB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnemyRandomizerDB", "EnemyRandomizerDB\EnemyRandomizerDB.csproj", "{5B11EDF6-F69C-4DE8-9232-3BDAB6B1BB60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomizeEachEnemyChaos", "RandomizeEachEnemyChaos\RandomizeEachEnemyChaos.csproj", "{E6EBD532-014C-469D-9CF9-5129EB4B03A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScaleRandomizedObjects", "ScaleRandomizedObjects\ScaleRandomizedObjects.csproj", "{A7A8E5EF-C34E-4AC9-81C1-5EA4072ED744}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +85,22 @@ Global
 		{5B11EDF6-F69C-4DE8-9232-3BDAB6B1BB60}.Library|Any CPU.Build.0 = Library|Any CPU
 		{5B11EDF6-F69C-4DE8-9232-3BDAB6B1BB60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B11EDF6-F69C-4DE8-9232-3BDAB6B1BB60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6EBD532-014C-469D-9CF9-5129EB4B03A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6EBD532-014C-469D-9CF9-5129EB4B03A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6EBD532-014C-469D-9CF9-5129EB4B03A8}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6EBD532-014C-469D-9CF9-5129EB4B03A8}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{E6EBD532-014C-469D-9CF9-5129EB4B03A8}.Library|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6EBD532-014C-469D-9CF9-5129EB4B03A8}.Library|Any CPU.Build.0 = Debug|Any CPU
+		{E6EBD532-014C-469D-9CF9-5129EB4B03A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6EBD532-014C-469D-9CF9-5129EB4B03A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7A8E5EF-C34E-4AC9-81C1-5EA4072ED744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7A8E5EF-C34E-4AC9-81C1-5EA4072ED744}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7A8E5EF-C34E-4AC9-81C1-5EA4072ED744}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7A8E5EF-C34E-4AC9-81C1-5EA4072ED744}.Development|Any CPU.Build.0 = Debug|Any CPU
+		{A7A8E5EF-C34E-4AC9-81C1-5EA4072ED744}.Library|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7A8E5EF-C34E-4AC9-81C1-5EA4072ED744}.Library|Any CPU.Build.0 = Debug|Any CPU
+		{A7A8E5EF-C34E-4AC9-81C1-5EA4072ED744}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7A8E5EF-C34E-4AC9-81C1-5EA4072ED744}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

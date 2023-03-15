@@ -299,6 +299,7 @@ namespace EnemyRandomizerMod
 
         public static string ToDatabaseKey(string databaseKey)
         {
+            //check the string vs a known list of acceptable values first
             if (TryConvertUniqueNameToCommonName(databaseKey, out string firstAttempt))
                 return firstAttempt;
 
@@ -315,17 +316,75 @@ namespace EnemyRandomizerMod
             //clean numbers off the ends of the string
             numberValues.ForEach(x => databaseKey = TrimStringAfter(databaseKey,x));
 
+            //after most modifications, check the string vs a known list of acceptable values again
             if (TryConvertUniqueNameToCommonName(databaseKey,out string finalAttempt))
                 return finalAttempt;
 
             //final whitespace trim
             databaseKey = databaseKey.Trim();
 
+            //check to see if this is a special forbidden item
             if (IsBadDatabaseKeyItem(databaseKey))
                 return null;
 
             //return the generated key
             return databaseKey;
+        }
+    }
+
+    public static class DatabaseExt
+    {
+        /// <summary>
+        /// Get the metadata wrapper for this game object, if no database is provided this call will try and use the global getter
+        /// </summary>
+        public static ObjectMetadata ToMetadata(this GameObject gameObject, EnemyRandomizerDatabase database = null)
+        {
+            if(database == null)
+            {
+                if (EnemyRandomizerDatabase.GetDatabase != null)
+                {
+                    database = EnemyRandomizerDatabase.GetDatabase();
+                }
+            }
+
+            if (database == null)
+            {
+                Dev.LogError("A database reference is required to generate the metadata object. None was provided and the fallback global getter was null.");
+                return null;
+            }
+
+            ObjectMetadata metaObject = new ObjectMetadata();
+            metaObject.Setup(gameObject, database);
+            return metaObject;
+        }
+
+        public static List<PrefabObject> GetObjectTypeCollection(this ObjectMetadata metaObject, EnemyRandomizerDatabase database = null)
+        {
+            if (database == null)
+            {
+                if (EnemyRandomizerDatabase.GetDatabase != null)
+                {
+                    database = EnemyRandomizerDatabase.GetDatabase();
+                }
+            }
+
+            if (database == null)
+            {
+                Dev.LogError("A database reference is required to generate the metadata object. None was provided and the fallback global getter was null.");
+                return null;
+            }
+
+            if (metaObject.ObjectType == PrefabObject.PrefabType.Enemy)
+                return database.enemyPrefabs;
+            else if (metaObject.ObjectType == PrefabObject.PrefabType.Hazard)
+                return database.hazardPrefabs;
+            else if (metaObject.ObjectType == PrefabObject.PrefabType.Effect)
+                return database.effectPrefabs;
+            else
+            {
+                Dev.LogError("Should not happen! If a new case or type has been added then update this as this will be expensive to return");
+                return database.enemyPrefabs.Concat(database.hazardPrefabs).Concat(database.effectPrefabs).ToList();
+            }
         }
     }
 }

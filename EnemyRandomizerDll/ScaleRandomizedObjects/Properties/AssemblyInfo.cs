@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RandomizeEachEnemyPerGame")]
+[assembly: AssemblyTitle("ScaleRandomizedObjects")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("HP Inc.")]
-[assembly: AssemblyProduct("RandomizeEachEnemyPerGame")]
+[assembly: AssemblyProduct("ScaleRandomizedObjects")]
 [assembly: AssemblyCopyright("Copyright © HP Inc. 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d0e41b50-73b0-4c45-a546-db9dc17c195c")]
+[assembly: Guid("a7a8e5ef-c34e-4ac9-81c1-5ea4072ed744")]
 
 // Version information for an assembly consists of the following four values:
 //

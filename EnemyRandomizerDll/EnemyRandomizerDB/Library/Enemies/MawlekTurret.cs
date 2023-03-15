@@ -17,7 +17,7 @@ using Dev = Modding.Logger;
 namespace EnemyRandomizerMod
 {
 
-    public class MawlekTurretControl : MonoBehaviour
+    public class MawlekTurretControl : DefaultSpawnedEnemyControl
     {
         Range upL = new Range(95f, 110f);
         Range upR = new Range(70f, 85f);
@@ -31,75 +31,15 @@ namespace EnemyRandomizerMod
         Range riL = new Range(5f, 20f);
         Range riR = new Range(340f, 355f);
 
-        public float shotSpeed = 10f;
-
-        public Vector2 spawnPos;
+        //TODO: implement modified shot speed
+        //public float shotSpeed = 10f;
         public float spawnDist = 1.4f;
 
         public bool isFloorTurret = false;
 
-        BoxCollider2D col;
-
-        private RaycastHit2D FireRayLocal(Vector2 direction, float length)
-        {
-            Vector2 vector = base.transform.TransformPoint(this.col.offset);
-            Vector2 vector2 = base.transform.TransformDirection(direction);
-            RaycastHit2D raycastHit2D = Physics2D.Raycast(vector, vector2, length, 256);
-            //Debug.DrawRay(vector, vector2);
-            return raycastHit2D;
-        }
-
-        private void StickToSurface()
-        {
-            var corpse = gameObject.GetCorpse<EnemyDeathEffects>();
-            if(corpse == null)
-            {
-                corpse = gameObject.GetCorpsePrefab<EnemyDeathEffects>();
-            }
-
-            List<RaycastHit2D> raycastHit2D = new List<RaycastHit2D>()
-            {
-                this.FireRayLocal(Vector2.down, 100f),
-                this.FireRayLocal(Vector2.up, 100f),
-                this.FireRayLocal(Vector2.left, 100f),
-                this.FireRayLocal(Vector2.right, 100f),
-            };
-
-            var closest = raycastHit2D.Where(x => x.collider != null).OrderBy(x => x.distance).FirstOrDefault();
-
-            if (closest.collider != null)
-            {
-                base.transform.position = closest.point + closest.normal * col.size.y / 3f * transform.localScale.y;
-                var angles = transform.localEulerAngles;
-                if (closest.normal.y > 0)
-                {
-                    angles.z = 0f;
-                }
-                else if (closest.normal.y < 0)
-                {
-                    angles.z = 180f;
-                }
-                else if (closest.normal.x < 0)
-                {
-                    angles.z = 90f;
-                }
-                else if (closest.normal.x > 0)
-                {
-                    angles.z = 270f;
-                }
-                transform.localEulerAngles = angles;
-                if(corpse != null)
-                {
-                    var fixer = corpse.gameObject.AddComponent<CorpseOrientationFixer>();
-                    fixer.corpseAngle = angles.z;
-                }
-            }
-        }
-
         void Start()
         {
-            this.col = base.GetComponent<BoxCollider2D>();
-            StickToSurface();
+            gameObject.StickToClosestSurface();
 
             var fsm = gameObject.LocateMyFSM("Mawlek Turret");
 
@@ -159,7 +99,7 @@ namespace EnemyRandomizerMod
                 rightMax.Value = riR.Max;
             }
 
-            spawnPos.Value = up * spawnDist;
+            spawnPos.Value = up * spawnDist * transform.localScale.y;
         }
     }
 

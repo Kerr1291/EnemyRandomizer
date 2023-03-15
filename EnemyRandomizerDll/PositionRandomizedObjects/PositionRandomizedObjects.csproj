@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AE760B55-DCF4-493C-95E6-989299ED6E48}</ProjectGuid>
+    <ProjectGuid>{B80CD99D-EC60-4080-A8A1-D43EB4AACDB5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RoomRandomizerLogic</RootNamespace>
-    <AssemblyName>RoomRandomizerLogic</AssemblyName>
+    <RootNamespace>PositionRandomizedObjects</RootNamespace>
+    <AssemblyName>PositionRandomizedObjects</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,9 +31,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EnemyRandomizerDB, Version=2023.0.8467.20295, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\EnemyRandomizerDB\EnemyRandomizerDB.dll</HintPath>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\ModdingAPIWin\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="MMHOOK_Assembly-CSharp">
+      <HintPath>..\..\..\ModdingAPIWin\MMHOOK_Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="MMHOOK_PlayMaker">
+      <HintPath>..\..\..\ModdingAPIWin\MMHOOK_PlayMaker.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayMaker">
+      <HintPath>..\..\..\..\..\..\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\PlayMaker.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,12 +51,19 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\..\..\..\..\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RandomizeEachEnemyPerRoom.cs" />
+    <Compile Include="PositionRandomizedObjects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EnemyRandomizerDB\EnemyRandomizerDB.csproj">
+      <Project>{5b11edf6-f69c-4de8-9232-3bdab6b1bb60}</Project>
+      <Name>EnemyRandomizerDB</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EnemyRandomizer\EnemyRandomizer.csproj">
       <Project>{6840abd8-113f-48e8-b125-19394c0aa354}</Project>
       <Name>EnemyRandomizer</Name>

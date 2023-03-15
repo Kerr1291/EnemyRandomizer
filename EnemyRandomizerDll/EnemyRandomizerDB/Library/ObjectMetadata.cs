@@ -22,11 +22,14 @@ namespace EnemyRandomizerMod
     {
         public bool HasData { get; protected set; }
         public string DatabaseName { get; protected set; }
+        public PrefabObject.PrefabType ObjectType { get; protected set; }
+        public PrefabObject ObjectPrefab { get; protected set; }
         public string SceneName { get; protected set; }
         public string ObjectName { get; protected set; }
         public string ScenePath { get; protected set; }
         public string MapZone { get; protected set; }
-        public bool IsDisabled { get; protected set; }
+        public bool IsInvalidObject { get; protected set; }
+        public bool IsDisabledBySavedGameState { get; protected set; }
         public bool IsBoss { get; protected set; }
         public bool IsFlying { get; protected set; }
         public bool IsCrawling { get; protected set; }
@@ -47,6 +50,8 @@ namespace EnemyRandomizerMod
         public bool IsEnemySpawner { get; protected set; }
         public Vector2 ObjectSize { get; protected set; }
         public Vector3 ObjectPosition { get; protected set; }
+        public Vector3 ObjectScale { get; protected set; }
+        public float Rotation { get; protected set; }
 
         public ObjectMetadata ObjectThisReplaced { get; protected set; }
         public float SizeScale { get; protected set; }
@@ -60,28 +65,53 @@ namespace EnemyRandomizerMod
         public tk2dSprite Sprite { get; protected set; }
         public DamageHero HeroDamage { get; protected set; }
         public DamageEnemies EnemyDamage { get; protected set; }
+        public EnemyDeathEffects DeathEffects { get; protected set; }
         public ManagedObject RandoObject { get; protected set; }
         public BattleManagedObject BattleRandoObject { get; protected set; }
 
         public bool IsAReplacementObject { get { return RandoObject == null ? false : RandoObject.replaced; } }
 
-        protected virtual void SetupDatabaseRefs(GameObject sceneObject, EnemyRandomizerDatabase database)
+        protected virtual void SetupObjectType(string databaseName, EnemyRandomizerDatabase database)
+        {
+            if (database.Enemies.ContainsKey(databaseName))
+                ObjectType = PrefabType.Enemy;
+
+            if (database.Hazards.ContainsKey(databaseName))
+                ObjectType = PrefabType.Hazard;
+
+            if (database.Effects.ContainsKey(databaseName))
+                ObjectType = PrefabType.Effect;
+
+            ObjectPrefab = database.Objects[databaseName];
+        }
+
+        protected virtual bool SetupDatabaseRefs(GameObject sceneObject, EnemyRandomizerDatabase database)
         {
             if (!EnemyRandomizerDatabase.IsDatabaseObject(sceneObject))
             {
                 HasData = false;
-                return;
+            }
+            else
+            {
+                DatabaseName = EnemyRandomizerDatabase.ToDatabaseKey(sceneObject.name);
+                if (!string.IsNullOrEmpty(DatabaseName))
+                {
+                    HasData = IsObjectInDatabase(database);
+                    if(HasData)
+                    {
+                        SetupObjectType(DatabaseName, database);
+                    }
+                }
             }
 
-            DatabaseName = EnemyRandomizerDatabase.ToDatabaseKey(sceneObject.name);
-            if (!string.IsNullOrEmpty(DatabaseName))
-            {
-                HasData = IsObjectInDatabase(database);
-            }
+            return HasData;
         }
 
         protected virtual void SetupComponentRefs(GameObject sceneObject)
         {
+            RandoObject = sceneObject.GetComponent<ManagedObject>();
+            BattleRandoObject = sceneObject.GetComponent<BattleManagedObject>();
+
             EnemyHealthManager = sceneObject.GetComponent<HealthManager>();
             if (EnemyHealthManager != null)
             {
@@ -115,20 +145,22 @@ namespace EnemyRandomizerMod
 
                 if (pbi.isActiveAndEnabled)
                 {
-                    IsDisabled = pbi.persistentBoolData.activated;
+                    IsDisabledBySavedGameState = pbi.persistentBoolData.activated;
                 }
                 else
                 {
                     var data = global::SceneData.instance.FindMyState(pbi.persistentBoolData);
                     if (data != null)
-                        IsDisabled = data.activated;
+                        IsDisabledBySavedGameState = data.activated;
                     else
-                        IsDisabled = false;
+                        IsDisabledBySavedGameState = false;
                 }
             }
 
             Collider = sceneObject.GetComponent<Collider2D>();
             Sprite = sceneObject.GetComponent<tk2dSprite>();
+
+            DeathEffects = sceneObject.GetComponent<EnemyDeathEffects>();
         }
 
         protected virtual void SetupTransformValues(GameObject sceneObject)
@@ -159,6 +191,8 @@ namespace EnemyRandomizerMod
             }
 
             ObjectPosition = sceneObject.transform.position;
+            ObjectScale = sceneObject.transform.localScale;
+            Rotation = sceneObject.transform.localEulerAngles.z;
         }
 
         protected virtual void SetupItemValues(GameObject sceneObject)
@@ -319,35 +353,36 @@ namespace EnemyRandomizerMod
         protected virtual void CheckIfIsActiveAndEnabled(GameObject sceneObject)
         {
             IsVisible = IsVisibleNow();
-            IsActive = IsVisible && !IsDisabled;
+            IsActive = IsVisible && !IsDisabledBySavedGameState;
         }
 
         public bool IsTemporarilyInactive()
         {
-            return HasData && Source.activeInHierarchy && EnemyHealthManager != null && !IsDisabled && !IsVisible;
+            return HasData && Source.activeInHierarchy && EnemyHealthManager != null && !IsDisabledBySavedGameState && !IsVisible;
         }
 
-        public void Setup(GameObject sceneObject, EnemyRandomizerDatabase database)
+        public bool Setup(GameObject sceneObject, EnemyRandomizerDatabase database)
         {
             Source = sceneObject;
             ObjectName = sceneObject.name;
-
-            SetupDatabaseRefs(sceneObject, database);
-
-            if (!HasData)
-                return;
-
-            SceneName = sceneObject.scene.IsValid() ? sceneObject.scene.name : null;
             ScenePath = sceneObject.GetSceneHierarchyPath();
+            SceneName = sceneObject.scene.IsValid() ? sceneObject.scene.name : null;
             MapZone = GameManager.instance.GetCurrentMapZone();
-            RandoObject = sceneObject.GetComponent<ManagedObject>();
-            BattleRandoObject = sceneObject.GetComponent<BattleManagedObject>();
+            IsInvalidObject = CheckIfIsBadObject(ScenePath);
+
+            if (IsInvalidObject)
+                return false;
+
+            if(!SetupDatabaseRefs(sceneObject, database))
+                return false;
 
             SetupComponentRefs(sceneObject);
             SetupTransformValues(sceneObject);
             SetupItemValues(sceneObject);
             SetupRandoProperties(sceneObject);
             CheckIfIsActiveAndEnabled(sceneObject);
+
+            return true;
         }
 
         public void Dump()
@@ -358,11 +393,10 @@ namespace EnemyRandomizerMod
         }
 
 
-        //use another object's object metadata to configure this metadata
-        public void MarkAsReplacement(ObjectMetadata other)
-        {
-            ObjectThisReplaced = other;
-        }
+        ////use another object's object metadata to configure this metadata
+        //public void MarkAsReplacement(ObjectMetadata other)
+        //{
+        //}
 
 
         static bool DEBUG_WARN_IF_NOT_FOUND = true;
@@ -415,6 +449,53 @@ namespace EnemyRandomizerMod
             return false;
         }
 
+
+        public virtual bool CanProcessObject()
+        {
+            if (!HasData)
+                return false;
+
+            if (IsInvalidObject)
+                return false;
+
+            if (!IsActive)
+            {
+                if(ObjectType != PrefabType.Effect)
+                    return false;
+            }
+
+            if (IsAReplacementObject)
+                return false;
+
+            return true;
+        }
+
+        protected virtual bool CheckIfIsBadObject(string scenePath)
+        {
+            return DefaultMetadata.AlwaysDeleteObject.Any(x => scenePath.Contains(x));
+        }
+
+        public virtual void DestroySource(bool disableObjectBeforeDestroy = true)
+        {
+            if (IsInvalidObject && Source != null)
+            {
+                if (ObjectName.Contains("Fly") && SceneName == "Crossroads_04")
+                {
+                    //this seems to correctly decrement the count from the battle manager
+                    BattleManager.StateMachine.Value.RegisterEnemyDeath(null);
+                }
+
+                if (disableObjectBeforeDestroy)
+                {
+                    //if (oldEnemy.activeSelf)
+                    Source.SetActive(false);
+                }
+
+                GameObject.Destroy(Source);
+                Source = null;
+            }
+        }
+
         public virtual float GetRelativeScale(ObjectMetadata other, float min = .1f, float max = 2.5f)
         {
             var oldSize = other.ObjectSize;
@@ -438,6 +519,246 @@ namespace EnemyRandomizerMod
             SizeScale = scale;
             Source.transform.localScale = new Vector3(Source.transform.localScale.x * scale,
                 Source.transform.localScale.y * scale, 1f);
+            ObjectScale = Source.transform.localScale;
+        }
+
+        public virtual void MarkObjectAsReplacement(ObjectMetadata oldObject)
+        {
+            ObjectThisReplaced = oldObject;
+
+            if (RandoObject == null)
+            {
+                if (oldObject.IsBattleEnemy)
+                {
+                    BattleRandoObject = Source.AddComponent<BattleManagedObject>();
+                    RandoObject = BattleRandoObject;
+                }
+                else
+                {
+                    RandoObject = Source.AddComponent<ManagedObject>();
+                }
+
+                RandoObject.Setup(oldObject);
+            }
+
+            RandoObject.replaced = true;
+        }
+
+        public virtual GameObject ActivateSource()
+        {
+            //error?
+            if (Source == null)
+                return null;
+
+            if (ObjectThisReplaced != null)
+            {
+                var oedf = ObjectThisReplaced.DeathEffects;
+                var nedf = DeathEffects;
+                if (oedf != null && nedf != null)
+                {
+                    string oplayerDataName = oedf.GetPlayerDataNameFromDeathEffects();
+                    nedf.SetPlayerDataNameFromDeathEffects(oplayerDataName);
+                }
+            }
+
+            Source.SafeSetActive(true);
+
+            if(ObjectThisReplaced != null)
+                ObjectThisReplaced.DestroySource();
+
+            return Source;
+        }
+
+
+        public void MatchPositionOfOther(ObjectMetadata otherdata = null)
+        {
+            if (otherdata == null)
+                return;
+
+            if (DatabaseName.Contains("Mawlek Turret"))
+                return;
+
+            float rotation = otherdata.Rotation;
+            Vector2 originalUp = Vector2.zero;
+
+            if (Mathf.Approximately(0f, rotation) || Mathf.Approximately(360f, rotation))
+                originalUp = Vector2.up;
+
+            if (Mathf.Approximately(90f, rotation) || Mathf.Approximately(-270f, rotation))
+                originalUp = Vector2.right;
+
+            if (Mathf.Approximately(-90f, rotation) || Mathf.Approximately(270f, rotation))
+                originalUp = Vector2.left;
+
+            if (Mathf.Approximately(180f, rotation))
+                originalUp = Vector2.down;
+
+            Vector3 positionOfObject = otherdata.ObjectPosition;
+            Vector3 positionOffset = Vector3.zero;
+            Vector2 objectSize = ObjectSize;
+            Vector2 scale = ObjectScale;
+            Vector2 originalPosition = positionOfObject;
+            float projectionDistance = 500f;
+
+            if (DatabaseName.Contains("Mantis Flyer Child"))
+            {
+                positionOffset = new Vector3(objectSize.x * originalUp.x * ObjectScale.x, objectSize.y * originalUp.y * ObjectScale.y, 0f);
+            }
+            //project the ceiling droppers onto the ceiling
+            if (DatabaseName.Contains("Ceiling Dropper"))
+            {
+                positionOfObject = Mathnv.GetPointOn(originalPosition, Vector2.up, projectionDistance, IsSurfaceOrPlatform);
+                //move it down a bit, keeps spawning in roof
+                positionOffset = Vector3.down * 2f * scale.y;
+            }
+
+
+            Vector2 originalDown = -originalUp;
+            Vector3 toSurface = Mathnv.GetNearestVectorTo(originalPosition, projectionDistance, IsSurfaceOrPlatform);
+            Vector2 toSurfaceDir = toSurface.normalized;
+            Vector2 toSurfaceUp = -toSurfaceDir;
+
+            if (!IsFlying)
+            {
+                positionOfObject = Mathnv.GetNearestPointOn(originalPosition, projectionDistance, IsSurfaceOrPlatform);
+            }
+
+            if (!IsFlying)
+            {
+                if (Mathf.Approximately(0f, rotation))
+                {
+                    positionOfObject = GetPointOn(otherdata, Vector2.down, projectionDistance);
+
+                    if (DatabaseName.Contains("Lobster"))
+                    {
+                        positionOffset = positionOffset + (Vector3)(Vector2.up * 2f) * scale.y;
+                    }
+                    if (DatabaseName.Contains("Blocker"))
+                    {
+                        positionOffset = positionOffset + (Vector3)(Vector2.up * -1f) * scale.y;
+                    }
+                    if (DatabaseName == ("Moss Knight"))
+                    {
+                        positionOffset = positionOffset + (Vector3)(Vector2.up * -1f) * scale.y;
+                    }
+                    if (DatabaseName == ("Enemy"))
+                    {
+                        positionOffset = positionOffset + (Vector3)(Vector2.up * -0.5f) * scale.y;
+                    }
+                }
+                else
+                {
+                    positionOfObject = GetPointOn(otherdata, toSurfaceDir, projectionDistance);
+                }
+
+                positionOffset = new Vector3(objectSize.x * originalUp.x * scale.x, objectSize.y * originalUp.y * scale.y, 0f);
+
+                if (DatabaseName.Contains("Moss Walker"))
+                {
+                    positionOffset = toSurfaceUp * objectSize.y * scale.y / 3f;
+                }
+                if (DatabaseName.Contains("Plant Trap"))
+                {
+                    positionOffset = toSurfaceUp * 2f * scale.y;
+                }
+                if (DatabaseName.Contains("Mushroom Turret"))
+                {
+                    positionOffset = (toSurfaceUp * .5f) * scale.y;
+                }
+                if (DatabaseName.Contains("Plant Turret"))
+                {
+                    positionOffset = toSurfaceUp * .7f * scale.y;
+                }
+                if (DatabaseName.Contains("Laser Turret"))
+                {
+                    positionOffset = toSurfaceUp * objectSize.y / 10f * scale.y;
+                }
+                if (DatabaseName.Contains("Worm"))
+                {
+                    positionOffset = toSurfaceUp * objectSize.y / 3f * scale.y;
+                }
+                if (DatabaseName.Contains("Crystallised Lazer Bug"))
+                {
+                    //suppposedly 1/2 their Y collider space offset should be 1.25
+                    //but whatever we set it at, they spawn pretty broken, so spawn them out of the ground a bit so they're still a threat
+                    positionOffset = toSurfaceUp * objectSize.y * 1.5f * scale.y;
+                }
+                if (DatabaseName.Contains("Mines Crawler"))
+                {
+                    positionOffset = toSurfaceUp * 1.5f * scale.y;
+                }
+                if (DatabaseName.Contains("Spider Mini"))
+                {
+                    positionOffset = toSurfaceUp * objectSize.y * 1.5f * scale.y; ;
+                }
+                if (DatabaseName.Contains("Abyss Crawler"))
+                {
+                    positionOffset = toSurfaceUp * objectSize.y * 1.5f * scale.y; ;
+                }
+                if (DatabaseName.Contains("Climber"))
+                {
+                    positionOffset = toSurfaceUp * objectSize.y * 1.5f * scale.y;
+                }
+            }
+            else
+            {
+                positionOfObject = originalPosition;
+            }
+
+            Source.transform.position = positionOfObject + positionOffset;
+            ObjectPosition = Source.transform.position;
+        }
+
+        public static bool IsSurfaceOrPlatform(GameObject gameObject)
+        {
+            if (gameObject == null)
+                return false;
+
+            return IsSurfaceOrPlatform(gameObject.name);
+        }
+
+        public static bool IsSurfaceOrPlatform(string name)
+        {
+            //First process skips or exclusions
+            List<string> groundOrPlatformName = new List<string>()
+            {
+                "Chunk",
+                "Platform",
+                "plat_",
+                "Roof"
+            };
+
+            return groundOrPlatformName.Any(x => name.Contains(x));
+        }
+
+        public static Vector3 GetVectorTo(ObjectMetadata entitiy, Vector2 dir, float max)
+        {
+            return Mathnv.GetVectorTo(entitiy.ObjectPosition, dir, max, IsSurfaceOrPlatform);
+        }
+
+        public static Vector3 GetPointOn(ObjectMetadata entitiy, Vector2 dir, float max)
+        {
+            return Mathnv.GetPointOn(entitiy.ObjectPosition, dir, max, IsSurfaceOrPlatform);
+        }
+
+        public static Vector3 GetNearestVectorToSurface(ObjectMetadata entitiy, float max)
+        {
+            return Mathnv.GetNearestVectorTo(entitiy.ObjectPosition, max, IsSurfaceOrPlatform);
+        }
+
+        public static Vector3 GetNearestPointOnSurface(ObjectMetadata entitiy, float max)
+        {
+            return Mathnv.GetNearestPointOn(entitiy.ObjectPosition, max, IsSurfaceOrPlatform);
+        }
+
+        public static Vector3 GetNearestVectorDown(ObjectMetadata entitiy, float max)
+        {
+            return Mathnv.GetNearestVectorDown(entitiy.ObjectPosition, max, IsSurfaceOrPlatform);
+        }
+
+        public static Vector3 GetNearestPointDown(ObjectMetadata entitiy, float max)
+        {
+            return Mathnv.GetNearestPointDown(entitiy.ObjectPosition, max, IsSurfaceOrPlatform);
         }
     }
 

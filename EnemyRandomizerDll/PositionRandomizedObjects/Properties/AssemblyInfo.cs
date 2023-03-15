@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RoomRandomizerLogic")]
+[assembly: AssemblyTitle("PositionRandomizedObjects")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("HP Inc.")]
-[assembly: AssemblyProduct("RoomRandomizerLogic")]
+[assembly: AssemblyProduct("PositionRandomizedObjects")]
 [assembly: AssemblyCopyright("Copyright © HP Inc. 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("ae760b55-dcf4-493c-95e6-989299ed6e48")]
+[assembly: Guid("b80cd99d-ec60-4080-a8a1-d43eb4aacdb5")]
 
 // Version information for an assembly consists of the following four values:
 //

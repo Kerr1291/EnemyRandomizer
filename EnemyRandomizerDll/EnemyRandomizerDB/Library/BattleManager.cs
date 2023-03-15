@@ -150,10 +150,17 @@ namespace EnemyRandomizerMod
             //StateMachine.Value.Build(fsm);
         }
 
+        public void Clear()
+        {
+            if (StateMachine.Value != null)
+                StateMachine.Value.Dispose();
+            StateMachine.Value = null;
+        }
+
         protected virtual void Cleanup()
         {
             Instance.Value = null;
-            StateMachine.Value = null;
+            Clear();
             Destroy(this);
         }
     }

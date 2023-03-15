@@ -632,7 +632,7 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public static void PrintSceneHierarchyChildren(this GameObject gameObject, bool printComponents = false, System.IO.StreamWriter file = null)
+        public static void PrintSceneHierarchyChildren(this GameObject gameObject, bool printComponents = false, System.IO.StreamWriter file = null, bool listComponentsOnly = false)
         {
             if(gameObject == null)
                 return;
@@ -644,8 +644,8 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                Debug.Log("START =====================================================");
-                Debug.Log("Printing scene hierarchy for game object: " + gameObject.name);
+                Dev.Log("START =====================================================");
+                Dev.Log("Printing scene hierarchy for game object: " + gameObject.name);
             }
 
             string parentObject = gameObject.GetSceneHierarchyPath();
@@ -656,7 +656,7 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                Debug.Log(parentObject);
+                Dev.Log(parentObject);
             }
 
             for(int k = 0; k < gameObject.transform.childCount; ++k)
@@ -674,7 +674,7 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    Debug.Log(objectNameAndPath + inactiveString);
+                    Dev.Log(objectNameAndPath + inactiveString);
                 }
 
 
@@ -687,6 +687,9 @@ namespace EnemyRandomizerMod
                     foreach(Component c in child.GetComponents<Component>())
                     {
                         c.PrintComponentType(componentHeader, file);
+
+                        if (listComponentsOnly)
+                            continue;
 
                         if(c is Transform)
                             c.PrintTransform(componentHeader, file);
@@ -702,7 +705,7 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                Debug.Log("END +++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                Dev.Log("END +++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             }
         }
 
@@ -728,9 +731,15 @@ namespace EnemyRandomizerMod
                     PrintSceneHierarchyTree(gameObject, printComponents, file);
                 }
             }
+            else
+            {
+                Dev.Log("START =====================================================");
+                Dev.Log("Printing scene hierarchy for object: " + gameObject.name + " ");
+                PrintSceneHierarchyTree(gameObject, printComponents, file);
+            }
         }
 
-        public static void PrintSceneHierarchyTree( this GameObject gameObject, bool printComponents = false, System.IO.StreamWriter file = null )
+        public static void PrintSceneHierarchyTree( this GameObject gameObject, bool printComponents = false, System.IO.StreamWriter file = null, bool listComponentsOnly = false )
         {
             if( gameObject == null )
                 return;
@@ -742,8 +751,8 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                Debug.Log( "START =====================================================" );
-                Debug.Log( "Printing scene hierarchy for game object: " + gameObject.name );
+                Dev.Log( "START =====================================================" );
+                Dev.Log( "Printing scene hierarchy for game object: " + gameObject.name );
             }
 
             foreach( Transform t in gameObject.GetComponentsInChildren<Transform>( true ) )
@@ -760,7 +769,7 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    Debug.Log( objectNameAndPath + inactiveString);
+                    Dev.Log( objectNameAndPath + inactiveString);
                 }
 
 
@@ -773,6 +782,9 @@ namespace EnemyRandomizerMod
                     foreach( Component c in t.GetComponents<Component>() )
                     {
                         c.PrintComponentType( componentHeader, file );
+
+                        if (listComponentsOnly)
+                            continue;
 
                         if(c is Transform)
                             c.PrintTransform(componentHeader, file);
@@ -788,7 +800,7 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                Debug.Log( "END +++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
+                Dev.Log( "END +++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
             }
         }
 

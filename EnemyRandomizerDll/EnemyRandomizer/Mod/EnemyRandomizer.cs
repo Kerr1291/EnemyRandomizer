@@ -4,21 +4,143 @@ using System.IO;
 using Modding;
 using UnityEngine.SceneManagement;
 using UnityEngine;
-using Language; 
+using Language;
 using On;
 
 using System.Linq;
 using UniRx;
 using System;
 using System.Reflection;
+using UnityEngine.UI;
 
 namespace EnemyRandomizerMod
 {
     //Global (non-player specific) settings
     public class EnemyRandomizerSettings
     {
-        public string currentLogic;
+        public List<string> loadedLogics;
         public bool IsNoClip = false;
+        public List<LogicSettings> logicSettings = new List<LogicSettings>();
+    }
+
+    public class LogicSettings
+    {
+        public string name;
+        public List<LogicOption> options = new List<LogicOption>();
+    }
+
+    public class LogicOption
+    {
+        public string name;
+        public bool value;
+    }
+
+    public static class LogicSettingsMethods
+    {
+        public static LogicSettings GetLogicSettings(this EnemyRandomizerSettings self, string logicName)
+        {
+            if (!self.logicSettings.Any(x => x.name == logicName))
+            {
+                self.logicSettings.Add(new LogicSettings() { name = logicName });
+            }
+            return self.logicSettings.FirstOrDefault(x => x.name == logicName);
+        }
+
+        public static LogicOption GetOption(this LogicSettings settings, string optionName)
+        {
+            if (!settings.options.Any(x => x.name == optionName))
+            {
+                settings.options.Add(new LogicOption() { name = optionName });
+            }
+
+            return settings.options.FirstOrDefault(x => x.name == optionName);
+        }
+
+        public static LogicOption GetOption(this EnemyRandomizerSettings self, string logicName, string optionName)
+        {
+            return self.GetLogicSettings(logicName).GetOption(optionName);
+        }
+
+        public static bool IsLogicOnInMenu(this IRandomizerLogic self)
+        {
+            return EnemyRandomizer.GlobalSettings.loadedLogics.Contains(self.Name);
+        }
+
+        public static Dictionary<string, IDisposable> disposables = new Dictionary<string, IDisposable>();
+
+        public static void SetMenuOptionState(this LogicSettings self, string optionName, bool value)
+        {
+            var spd = EnemyRandomizer.Instance.Subpages.FirstOrDefault(x => x.title == self.name);
+
+            if (spd.subpageMenu.Value == null)
+            {
+                Dev.Log($"SUBSCRIBING LOGIC:{self.name} OPTION:{optionName} VALUE:{value}");
+
+                spd.subpageMenu.SkipLatestValueOnSubscribe().Subscribe(x =>
+                {
+                    SetSubpageMenuValue(optionName, value, x);
+                });
+            }
+            else
+            {
+                //Dev.Log($"UPDATING LOGIC:{self.name} OPTION:{optionName} VALUE:{value}");
+                var logicMenu = spd.subpageMenu.Value;
+                SetSubpageMenuValue(optionName, value, logicMenu);
+            }
+
+            if (spd.activationButton.Value == null)
+            {
+                if (!disposables.ContainsKey(self.name))
+                {
+                    Dev.Log($"SUBSCRIBING LOGIC:{self.name}");
+
+                    var result = spd.activationButton.SkipLatestValueOnSubscribe().Subscribe(x =>
+                    { 
+                        SetSubpageMenuEnabled(self.name, spd.owner.IsLogicOnInMenu());
+                        disposables.Remove(self.name);
+                    });
+
+                    disposables.Add(self.name, result);
+                }
+            }
+            else
+            {
+                //Dev.Log($"UPDATING LOGIC:{self.name} OPTION:{optionName} VALUE:{value}");
+                var logicMenu = spd.subpageMenu.Value;
+                SetSubpageMenuValue(optionName, value, logicMenu);
+            }
+        }
+
+        public static void SetSubpageMenuValue(string optionName, bool value, MenuScreen logicMenu)
+        {
+            //logicMenu.gameObject.PrintSceneHierarchyTree(true, null, true);
+            Dev.Log($"SETTING MENU OPTION TO STATE -- LOGIC:{logicMenu.name} OPTION:{optionName} NEW VALUE:{value}");
+            var menuOptions = logicMenu.GetComponentsInChildren<MenuOptionHorizontal>(true).Where(x => x.name.Contains(optionName));
+            menuOptions.ToList().ForEach(x => x.SetOptionTo(value ? 1 : 0));
+        }
+
+        public static void SetSubpageMenuEnabled(string name, bool value)
+        {
+            Dev.Log($"SETTING MENU ENABLED LOGIC:{name} VALUE:{value}");
+
+            //UIManager.instance.GetComponentsInChildren<MenuScreen>(true).ToList().ForEach(x => x.gameObject.PrintSceneHierarchyTree(true,null,true));
+
+            //if(value)
+            //{
+            //    UIManager.instance.gameObject.FindGameObject("_UIManager/UICanvas/" + name).transform.parent = disabledRoot.transform;
+            //}
+            //else
+            //{
+            //    disabledRoot.FindGameObject(disabledRoot.name+"/" + name).transform.parent =
+            //        UIManager.instance.gameObject.FindGameObject("_UIManager/UICanvas").transform;
+            //}
+
+            //UIManager.instance.gameObject.FindGameObject("_UIManager/UICanvas/" + name).gameObject.SetActive(value);
+
+            //TODO: figure out why this value can't be disabled?
+            var subpageButton = EnemyRandomizer.Instance.Subpages.FirstOrDefault(x => x.title == name).activationButton.Value;
+            subpageButton.gameObject.SetActive(value);
+        }
     }
 
     //Player specific settings
@@ -37,6 +159,10 @@ namespace EnemyRandomizerMod
                     instance = new EnemyRandomizer();
                 return instance;
             }
+            set
+            {
+                instance = value;
+            }
         }
         static EnemyRandomizer instance;
 
@@ -46,11 +172,16 @@ namespace EnemyRandomizerMod
         //true during initialize when the mod is loading after the first time
         public static bool isReloading;
 
-        public static bool bypassNextRandomizeEnemy;
+        public static bool bypassNextRandomization;
 
         public override string GetVersion()
         {
             return currentVersion;
+        }
+
+        public override int LoadPriority()
+        {
+            return BitConverter.ToInt32(BitConverter.GetBytes((long)(0xDEADBEEF)),0);
         }
 
         public static string ModAssetPath
@@ -85,6 +216,7 @@ namespace EnemyRandomizerMod
         public EnemyRandomizer()
             :base("Enemy Randomizer")
         {
+            Instance = this;
 #if DEBUG
             {
                 Dev.Logger.LoggingEnabled = true;
@@ -170,6 +302,10 @@ namespace EnemyRandomizerMod
 
             ModHooks.BeforeSceneLoadHook -= MODHOOK_BeforeSceneLoad;
             ModHooks.BeforeSceneLoadHook += MODHOOK_BeforeSceneLoad;
+
+            GameManager.instance.UnloadingLevel -= Instance_UnloadingLevel;
+            GameManager.instance.UnloadingLevel += Instance_UnloadingLevel;
+
 #if DEBUG
             ModHooks.SlashHitHook -= DebugPrintObjectOnHit;
             ModHooks.SlashHitHook += DebugPrintObjectOnHit;
@@ -193,6 +329,12 @@ namespace EnemyRandomizerMod
             On.DamageHero.OnEnable += ONHOOK_DamageHero_OnEnable;
         }
 
+        void Instance_UnloadingLevel()
+        {
+            BattleManager.Instance.Value.Clear();
+            enemyReplacer.ClearPendingLoads();
+        }
+
         void UnRegisterCallbacks()
         {
             ModHooks.SavegameLoadHook -= MODHOOK_LoadFromSave;
@@ -210,6 +352,9 @@ namespace EnemyRandomizerMod
             On.UIManager.UIClosePauseMenu -= new On.UIManager.hook_UIClosePauseMenu(SetNoClip);
 
             ModHooks.BeforeSceneLoadHook -= MODHOOK_BeforeSceneLoad;
+
+            GameManager.instance.UnloadingLevel -= Instance_UnloadingLevel;
+
 #if DEBUG
             ModHooks.SlashHitHook -= DebugPrintObjectOnHit;
 #endif
@@ -243,6 +388,38 @@ namespace EnemyRandomizerMod
             isDisabled = true;
         }
 
+        protected virtual GameObject RandomizeEnemy(GameObject enemyObject)
+        {
+            DoBattleSceneCheck(enemyObject);
+            return enemyReplacer.RandomizeEnemy(enemyObject);
+        }
+
+        protected virtual GameObject RandomizeHazard(DamageHero hazardObject)
+        {
+            var hm = hazardObject.GetComponent<HealthManager>();
+            if (hm != null && hazardObject.gameObject.activeSelf)
+            {
+                return RandomizeEnemy(hazardObject.gameObject);
+            }
+            else
+            {
+                return enemyReplacer.RandomizeHazard(hazardObject);
+            }
+        }
+
+        protected virtual GameObject RandomizePooledSpawn(GameObject pooledObject)
+        {
+            var dh = pooledObject.GetComponent<DamageHero>();
+            if (dh != null && pooledObject.activeSelf)
+            {
+                return RandomizeHazard(dh);
+            }
+            else
+            {
+                return enemyReplacer.RandomizeEffect(pooledObject);
+            }
+        }
+
         void MODHOOK_LoadFromSave(int saveSlot)
         {
             enemyReplacer.OnStartGame(PlayerSettings);
@@ -260,7 +437,7 @@ namespace EnemyRandomizerMod
 
         GameObject MODHOOK_OnObjectPoolSpawn(GameObject originalGameObject)
         {
-            return enemyReplacer.SpawnPooledObject(originalGameObject);
+            return RandomizePooledSpawn(originalGameObject);
         }
 
         void MODHOOK_RecieveDeathEvent(
@@ -275,7 +452,7 @@ namespace EnemyRandomizerMod
             if (eventAlreadyReceived)
                 return;
 
-            enemyReplacer.OnEnemyDeathEvent(enemyDeathEffects.gameObject);
+            //enemyReplacer.OnEnemyDeathEvent(enemyDeathEffects.gameObject);
             BattleManager.OnEnemyDeathEvent(enemyDeathEffects.gameObject);
         }
 
@@ -284,29 +461,23 @@ namespace EnemyRandomizerMod
             if (isAlreadyDead)
                 return isAlreadyDead;
 
-            if(!BattleManager.DidSceneCheck)
-            {
-                BattleManager.DoSceneCheck(healthManagerObject);
-            }
+            if (DoBypassCheck())
+                return isAlreadyDead;
 
-            enemyReplacer.OnEnemyLoaded(healthManagerObject);
-
-            return isAlreadyDead;
+            bool result = RandomizeEnemy(healthManagerObject) != null;
+            return result;
         }
 
         string MODHOOK_BeforeSceneLoad(string sceneName)
         {
-            enemyReplacer.OnBeforeSceneLoad();
-
-            BattleManager.DidSceneCheck = false;
-
+            ClearBypassCheck();
             return sceneName;
         }
 
         void ONHOOK_DamageHero_OnEnable(On.DamageHero.orig_OnEnable orig, DamageHero self)
         {
             orig(self);
-            enemyReplacer.OnDamageHeroEnabled(self);
+            RandomizeHazard(self);
         }
 
         void ONHOOK_PersistentBoolItem_OnAwake(On.PersistentBoolItem.orig_Awake orig, PersistentBoolItem self)
@@ -332,76 +503,80 @@ namespace EnemyRandomizerMod
                 BattleManager.LoadFromFSM(fsm);
             }
 
-            enemyReplacer.OnPlaymakerFSMEnabled(fsm);
+            //enemyReplacer.OnPlaymakerFSMEnabled(fsm);
         }
 
-        void LoadLogics()
+        public void LoadLogics()
         {
+            if (logicTypes != null && logicTypes.Count > 0)
+                return;
+
+            Dev.Log("loading logics");
             logicTypes = LogicLoader.LoadLogics();
 
+            Dev.Log("constructing logics");
             //setup/construct all logics
             foreach (var logic in logicTypes.Select(x => x.Value))
             {
-                logic.Setup(enemyReplacer);
+                logic.Setup(enemyReplacer.database);
 
-                //assign the last used logic if it's in the list
-                if (EnemyRandomizer.GlobalSettings.currentLogic == logic.Name)
-                    enemyReplacer.currentLogic = logic;
+                if (GlobalSettings.loadedLogics == null)
+                    GlobalSettings.loadedLogics = new List<string>();
+
+                if (GlobalSettings.loadedLogics.Contains(logic.Name))
+                {
+                    enemyReplacer.EnableLogic(logic);
+                }
             }
 
-            if (!string.IsNullOrEmpty(EnemyRandomizer.GlobalSettings.currentLogic) && enemyReplacer.currentLogic == null)
+            Dev.Log("loading subpages");
+            //load the different module subpages
+            Subpages = logicTypes.Select(x => x.Value.GetSubpage()).ToList();
+
+            if (enemyReplacer.loadedLogics == null)
+                enemyReplacer.loadedLogics = new HashSet<IRandomizerLogic>();
+
+            Dev.Log("checking missing");
+            List<string> missingLogics = enemyReplacer.loadedLogics.Select(x => x.Name).Where(x => !GlobalSettings.loadedLogics.Contains(x)).ToList();
+
+            missingLogics.ForEach(x =>
             {
-                Dev.LogError($"Last time EnemyRandomizer was set to use {EnemyRandomizer.GlobalSettings.currentLogic} logic, which no longer exists!");
+                Dev.LogWarning($"Last time EnemyRandomizer was set to use {x} logic, which no longer exists!");
+            });
+
+            foreach(var logic in logicTypes)
+            {
+                logic.Value.InitDefaultStatesFromSettings();
             }
         }
 
-        public static string GetCurrentMapZone()
+        //public static string GetCurrentMapZone()
+        //{
+        //    return GameManager.instance.GetCurrentMapZone();
+        //}
+
+        void DoBattleSceneCheck(GameObject gameObject)
         {
-            return GameManager.instance.GetCurrentMapZone();
+            if (!BattleManager.DidSceneCheck)
+            {
+                BattleManager.DoSceneCheck(gameObject);
+            }
         }
 
+        void ClearBypassCheck()
+        {
+            BattleManager.DidSceneCheck = false;
+        }
 
-        //public static GameObject DebugReplaceEnemy(string enemyName, GameObject enemyToReplace)
-        //{
-        //    try 
-        //    {
-        //        if (EnemyRandomizer.Instance.EnemyDataMap.TryGetValue(enemyName, out RandomizerObjectDefinition data))
-        //        {
-        //            string trimmedName = enemyToReplace.name.TrimGameObjectName();
-        //            if (EnemyRandomizer.Instance.EnemyDataMap.TryGetValue(trimmedName, out RandomizerObjectDefinition replaceData))
-        //            {
-        //                enemyToReplace.SetActive(false);
-        //                var enemy = data.randomizerObject.Instantiate();
-        //                enemy.SetupRandomizerComponents(data.randomizerObject, enemyToReplace, replaceData);
-        //                enemy.SetActive(true);
-        //                return enemy;
-        //            }
-        //        }
-        //    }
-        //    catch(Exception e)
-        //    {
-        //        Dev.LogError("Error: " + e.Message);
-        //    }
+        bool DoBypassCheck()
+        {
+            if (EnemyRandomizer.bypassNextRandomization)
+            {
+                EnemyRandomizer.bypassNextRandomization = false;
+                return true;
+            }
 
-        //    return null;
-        //}
-
-        //public static void DebugSpawnThenReplaceEnemy(string spawnName, string replaceName)
-        //{
-        //    try
-        //    { 
-        //        DebugReplaceEnemy(replaceName, DebugSpawnEnemy(spawnName));
-        //    }
-        //    catch(Exception e)
-        //    {
-        //        Dev.LogError("Error: " + e.Message);
-        //    }
-        //}
-
+            return false;
+        }
     }
-
-
-    //EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Crawler");
-    //EnemyRandomizerMod.EnemyRandomizer.DebugSpawnThenReplaceEnemy("Crawler","Roller");
-
 }

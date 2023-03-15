@@ -200,6 +200,7 @@
     <Compile Include="Library\Enemies\Hatcher.cs" />
     <Compile Include="Library\Enemies\ColosseumPrefabs.cs" />
     <Compile Include="Library\Enemies\MageLordPhase2.cs" />
+    <Compile Include="Library\Enemies\Marmu.cs" />
     <Compile Include="Library\Enemies\MawlekTurret.cs" />
     <Compile Include="Library\Enemies\ZoteBoss.cs" />
     <Compile Include="Library\ManagedObject.cs" />
