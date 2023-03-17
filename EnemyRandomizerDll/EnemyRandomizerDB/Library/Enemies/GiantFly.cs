@@ -75,7 +75,7 @@ namespace EnemyRandomizerMod
             }
             catch (Exception e)
             {
-                Dev.LogError($"Caught exception trying to spawn a custom hatcher child! {e.Message} STACKTRACE:{e.StackTrace}");
+                Dev.LogError($"Caught exception trying to spawn a custom fly! {e.Message} STACKTRACE:{e.StackTrace}");
             }
         }
 

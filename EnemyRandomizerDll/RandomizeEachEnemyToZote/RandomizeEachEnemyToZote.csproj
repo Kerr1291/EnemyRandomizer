@@ -57,10 +57,6 @@
       <Project>{6840abd8-113f-48e8-b125-19394c0aa354}</Project>
       <Name>EnemyRandomizer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RoomRandomizerLogic\RandomizeEachEnemyPerRoom.csproj">
-      <Project>{ae760b55-dcf4-493c-95e6-989299ed6e48}</Project>
-      <Name>RandomizeEachEnemyPerRoom</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

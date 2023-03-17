@@ -22,78 +22,136 @@ namespace EnemyRandomizerMod
         public int maxBabies = 3;
         public int babiesRemaining = 3;
 
+        public PlayMakerFSM FSM { get; protected set; }
 
         void Start()
         {
-            On.HutongGames.PlayMaker.Actions.GetRandomChild.DoGetRandomChild += GetRandomChild_DoGetRandomChild;
+            FSM = GetComponent<PlayMakerFSM>();
+            On.HutongGames.PlayMaker.FsmState.OnEnter += FsmState_OnEnter;
+            //On.HutongGames.PlayMaker.Actions.GetRandomChild.DoGetRandomChild += GetRandomChild_DoGetRandomChild;
 
             babiesRemaining = maxBabies;
 
-            var fsm = gameObject.LocateMyFSM("Hatcher");
+            //var fsm = gameObject.LocateMyFSM("Hatcher");
 
-            //replace get child count with "set int value" to manually set the value for cage children
-            fsm.Fsm.GetState("Hatched Max Check").Actions = fsm.Fsm.GetState("Hatched Max Check").Actions.Select(x => {
-                if (x.GetType() == typeof(HutongGames.PlayMaker.Actions.GetChildCount))
-                {
-                    var action = new HutongGames.PlayMaker.Actions.SetIntValue();
-                    action.Init(x.State);
-                    action.intVariable = new HutongGames.PlayMaker.FsmInt("Cage Children");
-                    action.intValue = new HutongGames.PlayMaker.FsmInt();
-                    action.intValue = babiesRemaining;
-                    return action;
-                }
-                else
-                {
-                    return x;
-                }
-            }).ToArray();
+            ////replace get child count with "set int value" to manually set the value for cage children
+            //fsm.Fsm.GetState("Hatched Max Check").Actions = fsm.Fsm.GetState("Hatched Max Check").Actions.Select(x => {
+            //    if (x.GetType() == typeof(HutongGames.PlayMaker.Actions.GetChildCount))
+            //    {
+            //        var action = new HutongGames.PlayMaker.Actions.SetIntValue();
+            //        action.Init(x.State);
+            //        action.intVariable = new HutongGames.PlayMaker.FsmInt("Cage Children");
+            //        action.intValue = new HutongGames.PlayMaker.FsmInt();
+            //        action.intValue = babiesRemaining;
+            //        return action;
+            //    }
+            //    else
+            //    {
+            //        return x;
+            //    }
+            //}).ToArray();
         }
 
         void OnDestroy()
         {
-            On.HutongGames.PlayMaker.Actions.GetRandomChild.DoGetRandomChild -= GetRandomChild_DoGetRandomChild;
+            On.HutongGames.PlayMaker.FsmState.OnEnter -= FsmState_OnEnter;
+            //On.HutongGames.PlayMaker.Actions.GetRandomChild.DoGetRandomChild -= GetRandomChild_DoGetRandomChild;
         }
 
-        void GetRandomChild_DoGetRandomChild(On.HutongGames.PlayMaker.Actions.GetRandomChild.orig_DoGetRandomChild orig, HutongGames.PlayMaker.Actions.GetRandomChild self)
+        void FsmState_OnEnter(On.HutongGames.PlayMaker.FsmState.orig_OnEnter orig, HutongGames.PlayMaker.FsmState self)
         {
             orig(self);
 
-            //don't run this logic
-            var owner = self.Fsm.GetOwnerDefaultTarget(self.gameObject);
-            var other = this;
-            if (owner != other.gameObject)
+            if (self == null || self.Fsm != FSM.Fsm)
                 return;
 
             try
             {
+
+                Dev.Log(self.Name);
+
+                if (self.Name == "Distance Fly")
+                {
+                    if (babiesRemaining > 0)
+                    {
+                        Dev.Log("Chance to spawn babies state");
+                        FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
+                    }
+                }
+
+                if (self.Name == "Hatched Max Check")
+                {
+                    if (babiesRemaining > 0)
+                    {
+                        Dev.Log("spawn babies");
+                        SpawnBabies();
+                        //FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[1].EventName);
+                    }
+                }
+
+            }
+            catch(Exception e)
+            {
+                Dev.LogError($"Caught exception trying to spawn a custom hatcher child! {e.Message} STACKTRACE:{e.StackTrace}");
+            }
+            //if (string.Equals(self.Name, "Fire Anticipate"))
+            //{
+            //    if (babiesRemaining > 0)
+            //    {
+            //        SpawnBabies();
+            //        FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
+            //    }
+            //}
+        }
+
+        //void GetRandomChild_DoGetRandomChild(On.HutongGames.PlayMaker.Actions.GetRandomChild.orig_DoGetRandomChild orig, HutongGames.PlayMaker.Actions.GetRandomChild self)
+        //{
+        //    orig(self);
+
+        //    //don't run this logic
+        //    var owner = self.Fsm.GetOwnerDefaultTarget(self.gameObject);
+        //    var other = this;
+        //    if (owner != other.gameObject)
+        //        return;
+
+        //    self.storeResult.Value = SpawnBabies();
+        //}
+
+        public GameObject SpawnBabies()
+        {
+            try
+            {
                 GameObject result = null;
 
-                if (other.babiesRemaining > 0)
+                if (babiesRemaining > 0)
                 {
-                    if (EnemyRandomizerDatabase.GetDatabase().Enemies.TryGetValue("Hatcher Baby", out var src))
+                    //TODO: add a scene reference for "Hatcher Baby"
+                    if (EnemyRandomizerDatabase.GetDatabase().Enemies.TryGetValue("Fly", out var src))
                     {
                         result = EnemyRandomizerDatabase.GetDatabase().Spawn(src, null);
                     }
                     else
                     {
-                        result = EnemyRandomizerDatabase.GetDatabase().Spawn("Hatcher Baby", null);
+                        result = EnemyRandomizerDatabase.GetDatabase().Spawn("Fly", null);
                     }
 
-                    if (result != null && self.Owner != null)
+                    if (result != null)
                     {
-                        other.babiesRemaining--;
-                        (self.Fsm.GetState("Hatched Max Check").Actions.FirstOrDefault(x => x is HutongGames.PlayMaker.Actions.SetIntValue) as HutongGames.PlayMaker.Actions.SetIntValue).intValue.Value = other.babiesRemaining;
-                        result.transform.position = self.Owner.transform.position;
+                        babiesRemaining--;
+                        //(FSM.Fsm.GetState("Hatched Max Check").Actions.FirstOrDefault(x => x is HutongGames.PlayMaker.Actions.SetIntValue) as HutongGames.PlayMaker.Actions.SetIntValue).intValue.Value = babiesRemaining;
+                        result.transform.position = transform.position;
                         result.SetActive(true);
                     }
                 }
 
-                self.storeResult.Value = result;
+                return result;
             }
             catch (Exception e)
             {
                 Dev.LogError($"Caught exception trying to spawn a custom hatcher child! {e.Message} STACKTRACE:{e.StackTrace}");
             }
+
+            return null;
         }
 
         //public static void SpawnBabies(GameObject owner)

@@ -312,5 +312,13 @@ namespace EnemyRandomizerMod
         {
             return Mathnv.GetNearestPointDown(entitiy.transform.position, max, IsSurfaceOrPlatform);
         }
+
+        public static IEnumerable<T> GetActionsOfType<T>(this GameObject gameObject)
+            where T : HutongGames.PlayMaker.FsmStateAction
+        {
+            var fsms = gameObject.GetComponents<PlayMakerFSM>();
+            var sactions = fsms.SelectMany(x => x.Fsm.States.SelectMany(y => y.GetActions<T>()));
+            return sactions;
+        }
     }
 }

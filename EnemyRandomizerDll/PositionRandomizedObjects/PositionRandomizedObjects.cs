@@ -32,5 +32,11 @@ namespace EnemyRandomizerMod
             sourceData.MatchPositionOfOther(replacedObject);
             return sourceData;
         }
+
+        public override void Setup(EnemyRandomizerDatabase database)
+        {
+            base.Setup(database);
+            EnemyRandomizer.Instance.enemyReplacer.loadedLogics.Add(this);
+        }
     }
 }

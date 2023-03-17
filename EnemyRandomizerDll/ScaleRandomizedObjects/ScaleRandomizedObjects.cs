@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using System.Linq;
+using HutongGames.PlayMaker.Actions;
 
 namespace EnemyRandomizerMod
 {
@@ -20,11 +21,18 @@ namespace EnemyRandomizerMod
             ("Scale Hazards", "Should this effect randomized hazards?", false),
             ("Scale Effects", "Should this effect randomized effects?", false),
             ("Match Scaling", "Should enemies be scaled to a size that \'Makes Sense\' or just to random values? (Default is true)", true),
+            ("Match Audio to Scaling", "Should enemies have their sounds changed too?", true),
         };
 
         protected override List<(string Name, string Info, bool DefaultState)> ModOptions
         {
             get => CustomOptions;
+        }
+
+        public override void Setup(EnemyRandomizerDatabase database)
+        {
+            base.Setup(database);
+            EnemyRandomizer.Instance.enemyReplacer.loadedLogics.Add(this);
         }
 
         public override ObjectMetadata ModifyObject(ObjectMetadata sourceData)
@@ -68,9 +76,55 @@ namespace EnemyRandomizerMod
             if (replacedObject == null)
                 return sourceData;
 
-            float scale = sourceData.GetRelativeScale(replacedObject);
+            float scale = sourceData.GetRelativeScale(replacedObject, .2f);
             sourceData.ApplySizeScale(scale);
+
+            if (Settings.GetOption(CustomOptions[4].Name).value)
+            {
+                SetAudioToMatchScale(sourceData);
+            }
+
             return sourceData;
+        }
+
+        public virtual void SetAudioToMatchScale(ObjectMetadata sourceData)
+        {
+            if (!Mathnv.FastApproximately(sourceData.SizeScale, 1f, .01f))
+                return;
+
+            float max = 2f;
+            float min = .5f;
+            Range range = new Range(min, max);
+            float t = range.NormalizedValue(sourceData.SizeScale);
+            float pitch = max - range.Evaluate(t);
+
+            var go = sourceData.Source;
+            var audioSources = go.GetComponentsInChildren<AudioSource>();
+            var audioSourcesPitchRandomizer = go.GetComponentsInChildren<AudioSourcePitchRandomizer>();
+            //var audioPlayActions = go.GetActionsOfType<AudioPlay>();
+            var audioPlayOneShot = go.GetActionsOfType<AudioPlayerOneShot>();
+            var audioPlayRandom = go.GetActionsOfType<AudioPlayRandom>();
+            var audioPlayOneShotSingle = go.GetActionsOfType<AudioPlayerOneShotSingle>();
+            //var audioPlayInState = go.GetActionsOfType<AudioPlayInState>();
+            var audioPlayRandomSingle = go.GetActionsOfType<AudioPlayRandomSingle>();
+            //var audioPlaySimple = go.GetActionsOfType<AudioPlaySimple>();
+            //var audioPlayV2 = go.GetActionsOfType<AudioPlayV2>();
+            var audioPlayAudioEvent = go.GetActionsOfType<PlayAudioEvent>();
+
+
+            audioSources.ToList().ForEach(x => x.pitch = pitch);
+            audioSourcesPitchRandomizer.ToList().ForEach(x => x.pitchLower = pitch);
+            audioSourcesPitchRandomizer.ToList().ForEach(x => x.pitchUpper = pitch);
+            audioPlayOneShot.ToList().ForEach(x => x.pitchMin = pitch);
+            audioPlayOneShot.ToList().ForEach(x => x.pitchMax = pitch);
+            audioPlayRandom.ToList().ForEach(x => x.pitchMin = pitch);
+            audioPlayRandom.ToList().ForEach(x => x.pitchMax = pitch);
+            audioPlayOneShotSingle.ToList().ForEach(x => x.pitchMax = pitch);
+            audioPlayOneShotSingle.ToList().ForEach(x => x.pitchMin = pitch);
+            audioPlayRandomSingle.ToList().ForEach(x => x.pitchMin = pitch);
+            audioPlayRandomSingle.ToList().ForEach(x => x.pitchMax = pitch);
+            audioPlayAudioEvent.ToList().ForEach(x => x.pitchMin = pitch);
+            audioPlayAudioEvent.ToList().ForEach(x => x.pitchMax = pitch);
         }
     }
 }

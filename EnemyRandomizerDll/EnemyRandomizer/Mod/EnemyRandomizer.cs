@@ -213,6 +213,8 @@ namespace EnemyRandomizerMod
 
         public Dictionary<string, IRandomizerLogic> logicTypes;
 
+        public static ReactiveProperty<List<GameObject>> BlackBorders { get; protected set; }
+
         public EnemyRandomizer()
             :base("Enemy Randomizer")
         {
@@ -247,6 +249,8 @@ namespace EnemyRandomizerMod
         {
             if (instance == null)
                 instance = this;
+
+            BlackBorders = new ReactiveProperty<List<GameObject>>();
 
             if (preloadedObjects != null)
             {
@@ -327,12 +331,33 @@ namespace EnemyRandomizerMod
             //hook into this to replace hazards
             On.DamageHero.OnEnable -= ONHOOK_DamageHero_OnEnable;
             On.DamageHero.OnEnable += ONHOOK_DamageHero_OnEnable;
+
+            ModHooks.DrawBlackBordersHook -= ModHooks_DrawBlackBordersHook;
+            ModHooks.DrawBlackBordersHook += ModHooks_DrawBlackBordersHook;
+        }
+
+        void ModHooks_DrawBlackBordersHook(List<GameObject> obj)
+        {
+            Dev.Log("setting black borders");
+            BlackBorders.Value = obj;
         }
 
         void Instance_UnloadingLevel()
         {
-            BattleManager.Instance.Value.Clear();
-            enemyReplacer.ClearPendingLoads();
+            Dev.Log("unloading level");
+            try
+            {
+                if(BlackBorders.Value != null)
+                    BlackBorders.Value.Clear();
+
+                if (BattleManager.Instance.Value != null)
+                    BattleManager.Instance.Value.Clear();
+                enemyReplacer.ClearPendingLoads();
+            }
+            catch(Exception e)
+            {
+                Dev.LogError($"Error unloading level: MESSAGE:{e.Message} STACKTRACE:{e.StackTrace}");
+            }
         }
 
         void UnRegisterCallbacks()
@@ -362,6 +387,8 @@ namespace EnemyRandomizerMod
             On.PlayMakerFSM.OnEnable -= ONHOOK_PlayMakerFSM_OnEnable;
             On.PersistentBoolItem.SetMyID -= ONHOOK_PersistentBoolItem_SetMyID;
             On.DamageHero.OnEnable -= ONHOOK_DamageHero_OnEnable;
+
+            ModHooks.DrawBlackBordersHook -= ModHooks_DrawBlackBordersHook;
         }
 
         public void EnableMod()
@@ -462,9 +489,9 @@ namespace EnemyRandomizerMod
                 return isAlreadyDead;
 
             if (DoBypassCheck())
-                return isAlreadyDead;
+                return false;
 
-            bool result = RandomizeEnemy(healthManagerObject) != null;
+            bool result = RandomizeEnemy(healthManagerObject) == null;
             return result;
         }
 

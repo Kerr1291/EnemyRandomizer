@@ -389,6 +389,25 @@ namespace EnemyRandomizerMod
             return null;
         }
 
+        public static float GetRightScale(this Walker walker)
+        {
+            FieldInfo fi = typeof(Walker).GetField("rightScale", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fi != null)
+            {
+                return (float)fi.GetValue(walker);
+            }
+            return float.NaN;
+        }
+
+        public static void SetRightScale(this Walker walker, float value)
+        {
+            FieldInfo fi = typeof(Walker).GetField("rightScale", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fi != null)
+            {
+                fi.SetValue(walker, value);
+            }
+        }
+
         public static GameObject GetCorpseFromDeathEffects(this EnemyDeathEffects e)
         {
             var rootType = e.GetType();

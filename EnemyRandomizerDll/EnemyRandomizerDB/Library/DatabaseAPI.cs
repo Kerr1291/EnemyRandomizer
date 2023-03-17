@@ -4,6 +4,7 @@ using System.IO;
 using System;
 using System.Linq;
 using UnityEngine;
+using UniRx;
 
 #if !LIBRARY
 using Dev = EnemyRandomizerMod.Dev;
@@ -19,6 +20,7 @@ namespace EnemyRandomizerMod
         static string RESOURCES = "RESOURCES";
 
         public static Func<EnemyRandomizerDatabase> GetDatabase;
+        public static Func<ReactiveProperty<List<GameObject>>> GetBlackBorders;
 
         /// <summary>
         /// Create this in the mod's GetPreloadNames() before returning from that method

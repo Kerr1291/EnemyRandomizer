@@ -42,10 +42,18 @@ namespace EnemyRandomizerMod
             return database;
         }
 
+        public ReactiveProperty<List<GameObject>> GetBlackBorders()
+        {
+            return EnemyRandomizer.BlackBorders;
+        }
+
         public void OnModEnabled()
         {
             EnemyRandomizerDatabase.GetDatabase -= GetCurrentDatabase;
             EnemyRandomizerDatabase.GetDatabase += GetCurrentDatabase;
+
+            EnemyRandomizerDatabase.GetBlackBorders -= GetBlackBorders;
+            EnemyRandomizerDatabase.GetBlackBorders += GetBlackBorders;
 
             foreach (var logic in previousLogic)
             {
@@ -63,6 +71,7 @@ namespace EnemyRandomizerMod
             }
 
             EnemyRandomizerDatabase.GetDatabase -= GetCurrentDatabase;
+            EnemyRandomizerDatabase.GetBlackBorders -= GetBlackBorders;
         }
 
         public void EnableLogic(IRandomizerLogic newLogic, bool updateSettings = true)
@@ -123,7 +132,7 @@ namespace EnemyRandomizerMod
         IEnumerator EnableLogicOnGameLoad(EnemyRandomizerPlayerSettings settings)
         {
             yield return new WaitUntil(() => IsInGameScene());
-
+            Dev.Log("Game Loaded! Enabling logics...");
             foreach (var logic in loadedLogics)
             {
                 logic.OnStartGame(settings);
@@ -145,7 +154,8 @@ namespace EnemyRandomizerMod
 
         public void ClearPendingLoads()
         {
-            pendingLoads.Where(x => x.Key.EnemyHealthManager != null).ToList().ForEach(x => x.Key.EnemyHealthManager.StopCoroutine(x.Value));
+            Dev.Where();
+            pendingLoads.ToList().ForEach(x => GameManager.instance.StopCoroutine(x.Value));
             pendingLoads.Clear();
         }
 
@@ -169,15 +179,29 @@ namespace EnemyRandomizerMod
 
         public GameObject OnObjectLoaded(ObjectMetadata metaObject)
         {
-            if (VERBOSE_LOGGING && metaObject.HasData && !metaObject.IsAReplacementObject)
+            if (VERBOSE_LOGGING && metaObject.HasData && !metaObject.IsAReplacementObject && metaObject.Source != null)
             {
-                Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Unrandomized object loaded.");
+                Dev.Log($"[{metaObject.ObjectType}, {metaObject.ScenePath}]: Unrandomized object loaded.");
             }
+
+            var pendingLoad = pendingLoads.FirstOrDefault(x => x.Key.ScenePath == metaObject.ScenePath);
+            if(pendingLoad.Key != null)
+            {
+                pendingLoads.Remove(pendingLoad.Key);
+            }
+
+            if (metaObject.Source == null)
+                return null;
+
+            if (metaObject.IsAReplacementObject)
+                return metaObject.Source;
 
             bool canProcess = CanProcessObject(metaObject);
 
             if (!canProcess)
                 return metaObject.Source;
+
+            metaObject.UpdateTransformValues();
 
             bool replaceObject = true;
 
@@ -188,20 +212,31 @@ namespace EnemyRandomizerMod
             if (validReplacements == null || validReplacements.Count <= 0)
                 replaceObject = false;
 
-            //create default rng
-            RNG rng = new RNG(EnemyRandomizer.PlayerSettings.seed);
-            rng = GetRNG(metaObject, rng);
-
-            if (replaceObject)
+            try
             {
-                if(TryReplaceObject(metaObject, validReplacements, rng, out var newObject))
-                {
-                    newObject.MarkObjectAsReplacement(metaObject);
-                    metaObject = newObject;
-                }
-            }
+                //create default rng
+                RNG rng = new RNG(EnemyRandomizer.PlayerSettings.seed);
+                rng = GetRNG(metaObject, rng);
 
-            metaObject = ModifyObject(metaObject);
+                if (replaceObject)
+                {
+                    if(TryReplaceObject(metaObject, validReplacements, rng, out var newObject))
+                    {
+                        if (VERBOSE_LOGGING)
+                        {
+                            Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Object will be replaced by [{newObject.ObjectType}, {newObject.ObjectName}] .");
+                        }
+                        newObject.MarkObjectAsReplacement(metaObject);
+                        metaObject = newObject;
+                    }
+                }
+
+                metaObject = ModifyObject(metaObject);
+            }
+            catch(Exception e)
+            {
+                Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Fatal error randomzing object ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+            }
 
             return metaObject.ActivateSource();
         }
@@ -216,21 +251,23 @@ namespace EnemyRandomizerMod
                 {
                     if (VERBOSE_LOGGING)
                     {
-                        Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Destroying invalid object.");
+                        Dev.Log($"[{metaObject.ObjectType}, {metaObject.ScenePath}]: Destroying invalid object.");
                     }
 
                     metaObject.DestroySource();
+                    return false;
                 }
 
-                if (metaObject.IsTemporarilyInactive())
+                if (metaObject.IsTemporarilyInactive())// || metaObject.IsBattleInactive())
                 {
-                    if (VERBOSE_LOGGING)
+                    if (VERBOSE_LOGGING && GetBlackBorders().Value != null && GetBlackBorders().Value.Count > 0)
                     {
-                        Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Cannot process object yet. Queuing for activation later.");
+                        Dev.Log($"[{metaObject.ObjectType}, {metaObject.ScenePath}]: Cannot process object yet. Queuing for activation later.");
+                        metaObject.Dump();
                     }
 
                     var loader = OnObjectLoadedAndActive(metaObject);
-                    metaObject.EnemyHealthManager.StartCoroutine(loader);
+                    GameManager.instance.StartCoroutine(loader);
                     pendingLoads.Add(metaObject, loader);
 
                     //going to return original -- can't process the object yet
@@ -249,7 +286,9 @@ namespace EnemyRandomizerMod
             {
                 if (VERBOSE_LOGGING && metaObject.HasData && !metaObject.IsAReplacementObject)
                 {
-                    Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Can process object.");
+                    Dev.Log($"[{metaObject.ObjectType}, {metaObject.ScenePath}]: Can process object.");
+
+                    metaObject.Dump();
                 }
             }
 
@@ -257,14 +296,28 @@ namespace EnemyRandomizerMod
         }
 
         protected IEnumerator OnObjectLoadedAndActive(ObjectMetadata info)
-        {
-            yield return new WaitUntil(() => info.IsVisibleNow());
-            OnObjectLoaded(info);
-            pendingLoads.Remove(info);
+        { 
+            if(info == null)
+            {
+                yield break;
+            }
+
+            yield return new WaitUntil(() => info == null || info.CheckIfIsActiveAndVisible() || info.Source == null);
+            if(info == null || info.Source == null)
+            {
+                pendingLoads.Remove(info);
+                yield break;
+            }
+            yield return new WaitUntil(() => GetBlackBorders().Value != null && GetBlackBorders().Value.Count > 0);
+            if (info != null)
+            {
+                OnObjectLoaded(info);
+                pendingLoads.Remove(info);
+            }
         }
 
         protected bool CanProcessNow(ObjectMetadata original)
-        {
+        { 
             if (loadedLogics == null || loadedLogics.Count <= 0)
                 return false;
 
@@ -386,7 +439,7 @@ namespace EnemyRandomizerMod
         }
 
         public bool IsInGameScene()
-        {
+        { 
             return GameManager.instance.IsGameplayScene() && !GameManager.instance.IsCinematicScene();
         }
 

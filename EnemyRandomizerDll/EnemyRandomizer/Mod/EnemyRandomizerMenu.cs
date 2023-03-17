@@ -101,7 +101,7 @@ namespace EnemyRandomizerMod
         {
             var menu = new List<IMenuMod.MenuEntry>();
 
-            menu = GetDebugEntries(menu);
+            //menu = GetDebugEntries(menu);
             menu = GetLogics(menu);
 
             return menu;

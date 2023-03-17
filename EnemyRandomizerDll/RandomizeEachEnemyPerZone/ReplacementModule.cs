@@ -24,6 +24,11 @@ namespace EnemyRandomizerMod
         {
             get => CustomOptions;
         }
+        public override void Setup(EnemyRandomizerDatabase database)
+        {
+            base.Setup(database);
+            EnemyRandomizer.Instance.enemyReplacer.loadedLogics.Add(this);
+        }
 
         public override List<PrefabObject> GetValidReplacements(ObjectMetadata sourceData, List<PrefabObject> validReplacementObjects)
         {

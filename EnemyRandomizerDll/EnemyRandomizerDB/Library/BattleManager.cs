@@ -42,7 +42,7 @@ namespace EnemyRandomizerMod
         public static ReactiveProperty<BattleStateMachine> StateMachine { get; protected set; }
 
         public static void Init()
-        {
+        { 
             if (Instance == null)
                 Instance = new ReactiveProperty<BattleManager>();
             if (StateMachine == null)

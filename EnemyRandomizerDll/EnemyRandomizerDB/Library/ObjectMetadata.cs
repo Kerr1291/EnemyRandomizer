@@ -10,6 +10,8 @@ using System.Linq;
 using System;
 using System.Reflection;
 using static EnemyRandomizerMod.PrefabObject;
+using UniRx;
+using HutongGames.PlayMaker.Actions;
 
 //NOTE: adjust aduio player oneshot pitch values and audio source component pitch values when shrinking/growing things
 //NOTE: walker enemies need their "rightScale" float changed when the base transform scale is changed so they match or sprites will squish weirdly
@@ -44,7 +46,6 @@ namespace EnemyRandomizerMod
         public bool IsInvincible { get; protected set; }
         public int DamageDealt { get; protected set; }
         public int EnemyDamageDealt { get; protected set; }
-        public bool IsVisible { get; protected set; }
         public bool IsActive { get; protected set; }
         public bool IsSummonedByEvent { get; protected set; }
         public bool IsEnemySpawner { get; protected set; }
@@ -55,6 +56,7 @@ namespace EnemyRandomizerMod
 
         public ObjectMetadata ObjectThisReplaced { get; protected set; }
         public float SizeScale { get; protected set; }
+        public ReadOnlyReactiveProperty<List<GameObject>> BlackBorders { get; protected set; }
 
         //These values will become null after a replacement
         public GameObject Source { get; protected set; }
@@ -65,6 +67,7 @@ namespace EnemyRandomizerMod
         public tk2dSprite Sprite { get; protected set; }
         public DamageHero HeroDamage { get; protected set; }
         public DamageEnemies EnemyDamage { get; protected set; }
+        public Walker Walker { get; protected set; }
         public EnemyDeathEffects DeathEffects { get; protected set; }
         public ManagedObject RandoObject { get; protected set; }
         public BattleManagedObject BattleRandoObject { get; protected set; }
@@ -137,6 +140,9 @@ namespace EnemyRandomizerMod
                 EnemyDamageDealt = EnemyDamage.damageDealt;
             }
 
+            Walker = sceneObject.GetComponent<Walker>();
+            IsWalker = Walker != null;
+
             //check if it's disabled/completed already
             var pbi = sceneObject.GetComponent<PersistentBoolItem>();
             if (pbi != null)
@@ -190,9 +196,17 @@ namespace EnemyRandomizerMod
                 ObjectSize = sceneObject.transform.localScale;
             }
 
-            ObjectPosition = sceneObject.transform.position;
-            ObjectScale = sceneObject.transform.localScale;
-            Rotation = sceneObject.transform.localEulerAngles.z;
+            UpdateTransformValues();
+        }
+
+        public virtual void UpdateTransformValues()
+        {
+            if (Source != null)
+            {
+                ObjectPosition = Source.transform.position;
+                ObjectScale = Source.transform.localScale;
+                Rotation = Source.transform.localEulerAngles.z;
+            }
         }
 
         protected virtual void SetupItemValues(GameObject sceneObject)
@@ -296,29 +310,38 @@ namespace EnemyRandomizerMod
             }
         }
 
-        List<Transform> edges = new List<Transform>();
-
-        public virtual bool IsVisibleNow()
+        protected virtual bool IsVisibleNow()
         {
             bool isVisible = false;
             GameObject sceneObject = Source;
+            if (Source == null)
+            {
+                //Dev.Log($"{ScenePath} source has been deleted so this object can never be active!");
+                return false;
+            }
+
             if (sceneObject.gameObject.activeSelf)
             {
                 isVisible = sceneObject.gameObject.activeSelf;
+                //Dev.Log($"{ScenePath} has self active state: {isVisible}");
 
                 //might not actually be...
                 if (isVisible)
                 {
                     //count "out of bounds" enemies as not visible
-                    if (edges.Count <= 3)
-                        edges = sceneObject.scene.GetRootGameObjects().Where(x => x.name.Contains("SceneBorder")).Select(x => x.transform).ToList();
 
-                    if (edges.Count > 3)
+                    if (BlackBorders.Value != null && BlackBorders.Value.Count > 0)
                     {
-                        var xmin = edges.Min(o => (o.position.x - 10f));
-                        var xmax = edges.Max(o => (o.position.x + 10f));
-                        var ymin = edges.Min(o => (o.position.y - 10f));
-                        var ymax = edges.Max(o => (o.position.y + 10f));
+                        var leftRight = BlackBorders.Value.Where(x => x.transform.localScale.x == 20);
+                        var topBot = BlackBorders.Value.Where(x => x.transform.localScale.y == 20);
+
+                        var xmin = leftRight.Min(o => (o.transform.position.x - 10f));
+                        var xmax = leftRight.Max(o => (o.transform.position.x + 10f));
+                        var ymin = topBot.Min(o => (o.transform.position.y - 10f));
+                        var ymax = topBot.Max(o => (o.transform.position.y + 10f));
+
+                        //Dev.Log($"{ScenePath} pos:{sceneObject.transform.position}");
+                        //Dev.Log($"{ScenePath} BOUNDS[ xmin:{xmin} xmax:{xmax} ymin:{ymin} ymax:{ymax}]");
 
                         if (sceneObject.transform.position.x < xmin)
                             isVisible = false;
@@ -328,6 +351,17 @@ namespace EnemyRandomizerMod
                             isVisible = false;
                         else if (sceneObject.transform.position.y > ymax)
                             isVisible = false;
+                        
+                        //if(isVisible)
+                        //    Dev.Log($"{ScenePath} is in bounds!");
+                        //else
+                        //    Dev.Log($"{ScenePath} is out of bounds!");
+                    }
+                    else
+                    {
+                        //Dev.Log($"{ScenePath} BOUNDS NOT READY YET! Cannot check if visible");
+                        //not visible yet
+                        return false;
                     }
                 }
 
@@ -345,20 +379,32 @@ namespace EnemyRandomizerMod
                         else //if (collider != null && renderer != null)
                             isVisible = collider.enabled && renderer.enabled;
                     }
+
+                    //if(!isVisible)
+                    //    Dev.Log($"{ScenePath} has disabled colliders or renderers and is considered invisible!");
                 }
             }
             return isVisible;
         }
 
-        protected virtual void CheckIfIsActiveAndEnabled(GameObject sceneObject)
+        public virtual bool CheckIfIsActiveAndVisible()
         {
-            IsVisible = IsVisibleNow();
+            if (Source == null)
+                return false;
+
+            bool IsVisible = IsVisibleNow(); 
             IsActive = IsVisible && !IsDisabledBySavedGameState;
+            return IsVisible && IsActive;
         }
 
         public bool IsTemporarilyInactive()
+        { 
+            return HasData && !IsAReplacementObject && Source.activeInHierarchy && EnemyHealthManager != null && !IsDisabledBySavedGameState && !CheckIfIsActiveAndVisible();
+        } 
+
+        public bool IsBattleInactive()
         {
-            return HasData && Source.activeInHierarchy && EnemyHealthManager != null && !IsDisabledBySavedGameState && !IsVisible;
+            return HasData && !IsAReplacementObject && IsBattleEnemy && !Source.activeInHierarchy && EnemyHealthManager != null && !IsDisabledBySavedGameState && !CheckIfIsActiveAndVisible();
         }
 
         public bool Setup(GameObject sceneObject, EnemyRandomizerDatabase database)
@@ -369,6 +415,7 @@ namespace EnemyRandomizerMod
             SceneName = sceneObject.scene.IsValid() ? sceneObject.scene.name : null;
             MapZone = GameManager.instance.GetCurrentMapZone();
             IsInvalidObject = CheckIfIsBadObject(ScenePath);
+            BlackBorders = EnemyRandomizerDatabase.GetBlackBorders().ToReadOnlyReactiveProperty();
 
             if (IsInvalidObject)
                 return false;
@@ -380,7 +427,7 @@ namespace EnemyRandomizerMod
             SetupTransformValues(sceneObject);
             SetupItemValues(sceneObject);
             SetupRandoProperties(sceneObject);
-            CheckIfIsActiveAndEnabled(sceneObject);
+            CheckIfIsActiveAndVisible();
 
             return true;
         }
@@ -467,6 +514,11 @@ namespace EnemyRandomizerMod
             if (IsAReplacementObject)
                 return false;
 
+            if (!CheckIfIsActiveAndVisible())
+            {
+                return false;
+            }
+
             return true;
         }
 
@@ -477,8 +529,10 @@ namespace EnemyRandomizerMod
 
         public virtual void DestroySource(bool disableObjectBeforeDestroy = true)
         {
-            if (IsInvalidObject && Source != null)
+            if (Source != null)
             {
+                UpdateTransformValues();
+
                 if (ObjectName.Contains("Fly") && SceneName == "Crossroads_04")
                 {
                     //this seems to correctly decrement the count from the battle manager
@@ -520,6 +574,24 @@ namespace EnemyRandomizerMod
             Source.transform.localScale = new Vector3(Source.transform.localScale.x * scale,
                 Source.transform.localScale.y * scale, 1f);
             ObjectScale = Source.transform.localScale;
+
+            if(Walker != null)
+            {
+                if(Walker.GetRightScale() > 0)
+                    Walker.SetRightScale(scale);
+                else
+                    Walker.SetRightScale(-scale);
+
+                var fsms = Walker.GetComponents<PlayMakerFSM>();
+                var sactions = fsms.SelectMany(x => x.Fsm.States.SelectMany(y => y.GetActions<SetScale>())).Where(x => x.y.IsNone && x.z.IsNone);
+                foreach(var a in sactions)
+                {
+                    if(a.x.Value < 0)
+                        a.x.Value = -scale;
+                    else
+                        a.x.Value = scale;
+                }
+            }
         }
 
         public virtual void MarkObjectAsReplacement(ObjectMetadata oldObject)
@@ -895,6 +967,7 @@ namespace EnemyRandomizerMod
             "Zote Fluke",
             "Hornet Nosk",
             "Fungus Flyer",
+            "Hatcher Baby",
             };
 
         public static List<string> Crawling = new List<string>() {

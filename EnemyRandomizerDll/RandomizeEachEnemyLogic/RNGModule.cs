@@ -10,11 +10,17 @@ namespace EnemyRandomizerMod
 {
     public class RNGModule : BaseRandomizerLogic
     {
-        public override string Name => "RNG Modes";
+        public override string Name => "Randomization Modes";
 
         public override string Info => "Configure how objects should be randomized";
 
         protected RNG onStartGameRNG;
+
+        public override void Setup(EnemyRandomizerDatabase database)
+        {
+            base.Setup(database);
+            EnemyRandomizer.Instance.enemyReplacer.loadedLogics.Add(this);
+        }
 
 
         List<(string Name, string Info, bool Default)> CustomOptions = new List<(string, string, bool)>()
@@ -33,10 +39,19 @@ namespace EnemyRandomizerMod
 
         public override void SetOptionStateFromMenu(string name, bool state)
         {
-            var spd = EnemyRandomizer.Instance.Subpages.FirstOrDefault(x => x.title == this.Name);
-            if (spd != null && spd.subpageMenu.Value != null)
+            if (state == true)
             {
-                CustomOptions.ForEach(x => LogicSettingsMethods.SetSubpageMenuValue(x.Name, false, spd.subpageMenu.Value));
+                var spd = EnemyRandomizer.Instance.Subpages.FirstOrDefault(x => x.title == this.Name);
+                if (spd != null && spd.subpageMenu.Value != null)
+                {
+                    CustomOptions.ForEach(x =>
+                    {
+                        if (x.Name != name)
+                            LogicSettingsMethods.SetSubpageMenuValue(x.Name, false, spd.subpageMenu.Value);
+                        //else
+                        //    LogicSettingsMethods.SetSubpageMenuValue(x.Name, false, spd.subpageMenu.Value);
+                    });
+                }
             }
             base.SetOptionStateFromMenu(name, state);
         }
@@ -51,25 +66,25 @@ namespace EnemyRandomizerMod
                 onStartGameRNG.Seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
         }
 
-        public virtual RNG GetRNG(ObjectMetadata sourceData, RNG rng, int seed)
+        public override RNG GetRNG(ObjectMetadata sourceData, RNG rng, int seed)
         {
-            if (!Settings.GetOption(CustomOptions[0].Name).value)
+            if (Settings.GetOption(CustomOptions[0].Name).value)
             {
                 return onStartGameRNG;
             }
-            else if (!Settings.GetOption(CustomOptions[1].Name).value)
+            else if (Settings.GetOption(CustomOptions[1].Name).value)
             {
                 return RandomizeEachObject(sourceData.ObjectName, sourceData.SceneName, seed);
             }
-            else if (!Settings.GetOption(CustomOptions[2].Name).value)
+            else if (Settings.GetOption(CustomOptions[2].Name).value)
             {
                 return RandomizeEachRoom(sourceData.DatabaseName, sourceData.SceneName, seed);
             }
-            else if (!Settings.GetOption(CustomOptions[3].Name).value)
+            else if (Settings.GetOption(CustomOptions[3].Name).value)
             {
                 return RandomizeEachZone(sourceData.DatabaseName, seed);
             }
-            else if (!Settings.GetOption(CustomOptions[4].Name).value)
+            else if (Settings.GetOption(CustomOptions[4].Name).value)
             {
                 return RandomizeEachGame(sourceData.DatabaseName, seed);
             }

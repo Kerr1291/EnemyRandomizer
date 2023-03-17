@@ -183,11 +183,31 @@ namespace EnemyRandomizerMod
         private void Fsm_Event_FsmEventTarget_string(On.HutongGames.PlayMaker.Fsm.orig_Event_FsmEventTarget_string orig, Fsm self, FsmEventTarget eventTarget, string fsmEventName)
         {
             orig(self, eventTarget, fsmEventName);
+
+            if (self == null || self != FSM.Fsm)
+                return;
+
+            if (eventTarget != null)
+                Dev.Log($"Sending event {fsmEventName} to TARGET:{eventTarget.target} on GO:[{eventTarget.gameObject}]");
+            else
+                Dev.Log($"Sending event {fsmEventName} to {eventTarget}");
         }
 
         private void Fsm_Event_FsmEvent(On.HutongGames.PlayMaker.Fsm.orig_Event_FsmEvent orig, Fsm self, FsmEvent fsmEvent)
         {
             orig(self, fsmEvent);
+
+            if (self == null || fsmEvent == null || self != FSM.Fsm)
+                return;
+
+            if(fsmEvent == null)
+            {
+                //this can happen in a number of cases....
+            }
+            else
+            {
+                Dev.Log($"Broadcasting event {fsmEvent.Name} from {self.Name}");
+            }
         }
 
         public void RegisterEnemyDeath(BattleManagedObject bmo)
@@ -273,7 +293,7 @@ namespace EnemyRandomizerMod
                     return info;
                 }).ToList();
 
-                if (infos.Count < 0 || !infos.Any(x => x.IsVisible))
+                if (infos.Count < 0 || !infos.Any(x => x.CheckIfIsActiveAndVisible()))
                     OpenGates();
             }
 
