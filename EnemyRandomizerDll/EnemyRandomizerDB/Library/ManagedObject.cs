@@ -57,6 +57,29 @@ namespace EnemyRandomizerMod
 
         public virtual void RegisterWithBattleManager()
         {
+            if (BattleManager.StateMachine.Value == null)
+            {
+                BattleManager.DoSceneCheck(gameObject);
+            }
+
+            if(BattleManager.StateMachine.Value == null)
+            {
+                StartCoroutine(FindStateMachine());
+            }
+            else
+            {
+                BattleManager.StateMachine.Value.RegisterEnemy(this);
+            } 
+        }
+
+        IEnumerator FindStateMachine()
+        {
+            while(BattleManager.StateMachine.Value == null)
+            {
+                BattleManager.DoSceneCheck(gameObject);
+                yield return new WaitForSeconds(1f);
+            }
+
             BattleManager.StateMachine.Value.RegisterEnemy(this);
         }
 

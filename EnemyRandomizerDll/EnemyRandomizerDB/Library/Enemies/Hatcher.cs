@@ -21,12 +21,20 @@ namespace EnemyRandomizerMod
     {
         public int maxBabies = 3;
         public int babiesRemaining = 3;
+        public float delayTime = 5f;
+        public AudioClip clip;
+        public AudioSource audio;
 
         public PlayMakerFSM FSM { get; protected set; }
 
         void Start()
         {
             FSM = GetComponent<PlayMakerFSM>();
+            var audioState = FSM.GetState("Fire").GetAction<AudioPlayerOneShot>(0);
+            clip = audioState.audioClips.FirstOrDefault();
+            audio = GetComponent<AudioSource>();
+
+
             On.HutongGames.PlayMaker.FsmState.OnEnter += FsmState_OnEnter;
             //On.HutongGames.PlayMaker.Actions.GetRandomChild.DoGetRandomChild += GetRandomChild_DoGetRandomChild;
 
@@ -58,6 +66,24 @@ namespace EnemyRandomizerMod
             //On.HutongGames.PlayMaker.Actions.GetRandomChild.DoGetRandomChild -= GetRandomChild_DoGetRandomChild;
         }
 
+        IEnumerator babySpawner;
+
+        IEnumerator SpawnBabiesAfterDelay(float time)
+        {
+            yield return new WaitForSeconds(time);
+            SpawnBabies();
+            babySpawner = null;
+
+            if (babiesRemaining > 0)
+            {
+                babySpawner = SpawnBabiesAfterDelay(delayTime);
+                StartCoroutine(babySpawner);
+                if (!FSM.enabled)
+                    FSM.enabled = true;
+                FSM.SetState("Distance Fly");
+            }
+        }
+
         void FsmState_OnEnter(On.HutongGames.PlayMaker.FsmState.orig_OnEnter orig, HutongGames.PlayMaker.FsmState self)
         {
             orig(self);
@@ -75,19 +101,29 @@ namespace EnemyRandomizerMod
                     if (babiesRemaining > 0)
                     {
                         Dev.Log("Chance to spawn babies state");
-                        FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
+                        if (babySpawner == null)
+                        {
+                            babySpawner = SpawnBabiesAfterDelay(delayTime);
+                            StartCoroutine(babySpawner);
+                            //FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
+                        }
+                        //FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
                     }
                 }
 
-                if (self.Name == "Hatched Max Check")
-                {
-                    if (babiesRemaining > 0)
-                    {
-                        Dev.Log("spawn babies");
-                        SpawnBabies();
-                        //FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[1].EventName);
-                    }
-                }
+                //if (self.Name == "Hatched Max Check")
+                //{
+                //    if (babiesRemaining > 0)
+                //    {
+                //        //SpawnBabies();
+                //        if (babySpawner == null)
+                //        {
+                //            babySpawner = SpawnBabiesAfterDelay(delayTime);
+                //            StartCoroutine(babySpawner);
+                //            FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
+                //        }
+                //    }
+                //}
 
             }
             catch(Exception e)
@@ -119,6 +155,7 @@ namespace EnemyRandomizerMod
 
         public GameObject SpawnBabies()
         {
+            Dev.Log("spawn babies");
             try
             {
                 GameObject result = null;
@@ -141,6 +178,10 @@ namespace EnemyRandomizerMod
                         //(FSM.Fsm.GetState("Hatched Max Check").Actions.FirstOrDefault(x => x is HutongGames.PlayMaker.Actions.SetIntValue) as HutongGames.PlayMaker.Actions.SetIntValue).intValue.Value = babiesRemaining;
                         result.transform.position = transform.position;
                         result.SetActive(true);
+                        if(audio != null && clip != null)
+                        {
+                            audio.PlayOneShot(clip);
+                        }
                     }
                 }
 

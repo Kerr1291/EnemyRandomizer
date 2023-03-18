@@ -69,11 +69,25 @@ namespace EnemyRandomizerMod
             Scene currentScene = sceneObject.scene;
 
             var roots = currentScene.GetRootGameObjects();
-            var found = roots.FirstOrDefault(x => IsBattleManager(x));
 
-            if (found)
+            //in this scene the battle manager isn't a root game object...
+            if(currentScene.name == "Ruins1_09")
             {
-                LoadFromFSM(found.GetComponent<PlayMakerFSM>());
+                var found = GameObject.Find("Battle Scene");
+
+                if (found)
+                {
+                    LoadFromFSM(found.GetComponent<PlayMakerFSM>());
+                }
+            }
+            else
+            {
+                var found = roots.FirstOrDefault(x => IsBattleManager(x));
+
+                if (found)
+                {
+                    LoadFromFSM(found.GetComponent<PlayMakerFSM>());
+                }
             }
 
             BattleManager.DidSceneCheck = true;

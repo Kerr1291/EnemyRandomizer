@@ -9,11 +9,10 @@ using System.Xml.Serialization;
 using System.Collections;
 using System;
 using HutongGames.PlayMaker;
-using Modding;
-
+using HutongGames.PlayMaker.Actions;
 namespace EnemyRandomizerMod
 {
-    public class MageLordPhase2Control : DefaultSpawnedEnemyControl
+    public class MageLordControl : DefaultSpawnedEnemyControl
     {
         public override void Setup(ObjectMetadata other)
         {
@@ -24,9 +23,7 @@ namespace EnemyRandomizerMod
         {
         }
     }
-
-    public class MageLordPhase2PrefabConfig : DefaultPrefabConfig<MageLordPhase2Control> { }
-    public class MageLordPhase2Spawner : DefaultSpawner<MageLordPhase2Control> { }
-
+    public class MageLordSpawner : DefaultSpawner<MageLordControl> { }
+    public class MageLordPrefabConfig : DefaultPrefabConfig<MageLordControl> { }
 }
 

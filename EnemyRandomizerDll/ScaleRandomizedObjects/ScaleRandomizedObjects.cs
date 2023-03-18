@@ -76,7 +76,7 @@ namespace EnemyRandomizerMod
             if (replacedObject == null)
                 return sourceData;
 
-            float scale = sourceData.GetRelativeScale(replacedObject, .2f);
+            float scale = replacedObject.GetRelativeScale(sourceData, .2f);
             sourceData.ApplySizeScale(scale);
 
             if (Settings.GetOption(CustomOptions[4].Name).value)
