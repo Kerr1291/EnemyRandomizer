@@ -17,7 +17,7 @@ using Dev = Modding.Logger;
 #endif
 namespace EnemyRandomizerMod
 {
-    public class HatcherControl : MonoBehaviour
+    public class HatcherControl : DefaultSpawnedEnemyControl
     {
         public int maxBabies = 3;
         public int babiesRemaining = 3;
@@ -25,7 +25,7 @@ namespace EnemyRandomizerMod
         public AudioClip clip;
         public AudioSource audio;
 
-        public PlayMakerFSM FSM { get; protected set; }
+        public PlayMakerFSM FSM { get; set; }
 
         void Start()
         {
@@ -70,6 +70,9 @@ namespace EnemyRandomizerMod
 
         IEnumerator SpawnBabiesAfterDelay(float time)
         {
+            if (!FSM.enabled)
+                FSM.enabled = true;
+            FSM.SetState("Distance Fly");
             yield return new WaitForSeconds(time);
             SpawnBabies();
             babySpawner = null;
@@ -235,13 +238,36 @@ namespace EnemyRandomizerMod
         //}
     }
 
-    internal class HatcherPrefabConfig : IPrefabConfig
+    public class HatcherSpawner : DefaultSpawner<HatcherControl>
     {
-        public virtual void SetupPrefab(PrefabObject p)
+        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
         {
-            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(p.prefab.name);
-            p.prefabName = keyName;
-            var control = p.prefab.AddComponent<HatcherControl>();
+            var go = base.Spawn(p, source);
+            var fsm = go.GetComponent<HatcherControl>();
+            fsm.FSM = go.LocateMyFSM("Control");
+
+            if (source.IsBoss)
+            {
+                //TODO:
+            }
+            else
+            {
+                //var hm = go.GetComponent<HealthManager>();
+                //hm.hp = source.MaxHP;
+            }
+
+            return go;
+        }
+    }
+
+    public class HatcherPrefabConfig : DefaultPrefabConfig<HatcherControl>
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            base.SetupPrefab(p);
+            //string keyName = EnemyRandomizerDatabase.ToDatabaseKey(p.prefab.name);
+            //p.prefabName = keyName;
+            //var control = p.prefab.AddComponent<HatcherControl>();
         }
     }
 }

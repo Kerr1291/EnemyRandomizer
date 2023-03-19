@@ -583,13 +583,25 @@ namespace EnemyRandomizerMod
                     Walker.SetRightScale(-scale);
 
                 var fsms = Walker.GetComponents<PlayMakerFSM>();
-                var sactions = fsms.SelectMany(x => x.Fsm.States.SelectMany(y => y.GetActions<SetScale>())).Where(x => x.y.IsNone && x.z.IsNone);
-                foreach(var a in sactions)
                 {
-                    if(a.x.Value < 0)
-                        a.x.Value = -scale;
-                    else
-                        a.x.Value = scale;
+                    var sactions = fsms.SelectMany(x => x.Fsm.States.SelectMany(y => y.GetActions<SetScale>())).Where(x => x.y.IsNone && x.z.IsNone);
+                    foreach (var a in sactions)
+                    {
+                        if (a.x.Value < 0)
+                            a.x.Value = -scale;
+                        else
+                            a.x.Value = scale;
+                    }
+                }
+                {
+                    var sactions = fsms.SelectMany(x => x.Fsm.States.SelectMany(y => y.GetActions<SetScale>())).Where(x => x.y.Value == 0f && x.z.Value == 0f);
+                    foreach (var a in sactions)
+                    {
+                        if (a.x.Value < 0)
+                            a.x.Value = -scale;
+                        else
+                            a.x.Value = scale;
+                    }
                 }
             }
         }

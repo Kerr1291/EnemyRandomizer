@@ -52,6 +52,17 @@ namespace EnemyRandomizerMod
         }
 
         /// <summary>
+        /// The middle value
+        /// </summary>
+        public float Mid
+        {
+            get
+            {
+                return Evaluate(0.5f);
+            }
+        }
+
+        /// <summary>
         /// Will always get/set the larger of the two values.
         /// </summary>
         public float Max

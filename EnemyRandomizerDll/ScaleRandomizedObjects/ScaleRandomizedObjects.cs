@@ -89,7 +89,7 @@ namespace EnemyRandomizerMod
 
         public virtual void SetAudioToMatchScale(ObjectMetadata sourceData)
         {
-            if (!Mathnv.FastApproximately(sourceData.SizeScale, 1f, .01f))
+            if (Mathnv.FastApproximately(sourceData.SizeScale, 1f, .01f))
                 return;
 
             float max = 2f;

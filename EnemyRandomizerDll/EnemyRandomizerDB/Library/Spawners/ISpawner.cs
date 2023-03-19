@@ -273,6 +273,19 @@ namespace EnemyRandomizerMod
             return closest;
         }
 
+        public static Dictionary<Vector2,RaycastHit2D> GetNearestSurfaces(this GameObject gameObject, float maxDistanceToCheck)
+        {
+            Dictionary < Vector2, RaycastHit2D> raycastHits2D = new Dictionary<Vector2,RaycastHit2D>()
+            {
+                {Vector2.down, FireRayLocal(gameObject, Vector2.down, maxDistanceToCheck) },
+                {Vector2.up,   FireRayLocal(gameObject, Vector2.up,   maxDistanceToCheck) },
+                {Vector2.left, FireRayLocal(gameObject, Vector2.left, maxDistanceToCheck) },
+                {Vector2.right,FireRayLocal(gameObject, Vector2.right, maxDistanceToCheck) },
+            };
+
+            return raycastHits2D;
+        }
+
         public static RaycastHit2D FireRayLocal(GameObject gameObject, Vector2 direction, float length)
         {
             var collider = gameObject.GetComponent<Collider2D>();
