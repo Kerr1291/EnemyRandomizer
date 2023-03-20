@@ -35,96 +35,60 @@ namespace EnemyRandomizerMod
             EnemyRandomizer.Instance.enemyReplacer.loadedLogics.Add(this);
         }
 
-        public override ObjectMetadata ModifyObject(ObjectMetadata sourceData)
+        public override ObjectMetadata ModifyObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
         {
-            if (sourceData.ObjectType == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value)
+            if (objectToModify.ObjectType == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value)
             {
-                return ScaleObject(sourceData);
+                return ScaleObject(objectToModify, originalObject);
             }
 
-            else if (sourceData.ObjectType == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value)
+            else if (objectToModify.ObjectType == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value)
             {
-                return ScaleObject(sourceData);
+                return ScaleObject(objectToModify, originalObject);
             }
 
-            else if (sourceData.ObjectType == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value)
+            else if (objectToModify.ObjectType == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value)
             {
-                return ScaleObject(sourceData);
+                return ScaleObject(objectToModify, originalObject);
             }
 
-            return sourceData;
+            return objectToModify;
         }
 
-        public virtual ObjectMetadata ScaleObject(ObjectMetadata sourceData)
+        public virtual ObjectMetadata ScaleObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
         {
             if(Settings.GetOption(CustomOptions[3].Name).value)
             {
-                return ApplySizeScale(sourceData, sourceData.ObjectThisReplaced);
+                return ApplySizeScale(objectToModify, originalObject);
             }
             else
             {
+                Dev.LogWarning("Using randomized scale. This might create some enemies that are way too big or small");
                 RNG prng = new RNG();
-                prng.Seed = sourceData.ObjectName.GetHashCode() + sourceData.SceneName.GetHashCode();
-                float scale = prng.Rand(.1f, 3f);
-                sourceData.ApplySizeScale(scale);
+                prng.Seed = objectToModify.ObjectName.GetHashCode() + objectToModify.SceneName.GetHashCode();
+                float scale = prng.Rand(.2f, 3f);
+                objectToModify.ApplySizeScale(scale);
             }
-            return sourceData;
+            return objectToModify;
         }
 
-        public virtual ObjectMetadata ApplySizeScale(ObjectMetadata sourceData, ObjectMetadata replacedObject)
+        public virtual ObjectMetadata ApplySizeScale(ObjectMetadata objectToModify, ObjectMetadata originalObject)
         {
-            if (replacedObject == null)
-                return sourceData;
+            //TODO: maybe apply some default scaling to bigger enemies, for now just return them
+            if (originalObject == null)
+                return objectToModify;
 
-            float scale = replacedObject.GetRelativeScale(sourceData, .2f);
-            sourceData.ApplySizeScale(scale);
+            float scale = objectToModify.GetRelativeScale(originalObject, .2f);
+            Dev.Log($"Relative scale of {objectToModify.DatabaseName} to {originalObject.DatabaseName} is {scale}");
+            objectToModify.ApplySizeScale(scale);
 
+            //should we also scale the audio to match?
             if (Settings.GetOption(CustomOptions[4].Name).value)
             {
-                SetAudioToMatchScale(sourceData);
+                objectToModify.SetAudioToMatchScale();
             }
 
-            return sourceData;
-        }
-
-        public virtual void SetAudioToMatchScale(ObjectMetadata sourceData)
-        {
-            if (Mathnv.FastApproximately(sourceData.SizeScale, 1f, .01f))
-                return;
-
-            float max = 2f;
-            float min = .5f;
-            Range range = new Range(min, max);
-            float t = range.NormalizedValue(sourceData.SizeScale);
-            float pitch = max - range.Evaluate(t);
-
-            var go = sourceData.Source;
-            var audioSources = go.GetComponentsInChildren<AudioSource>();
-            var audioSourcesPitchRandomizer = go.GetComponentsInChildren<AudioSourcePitchRandomizer>();
-            //var audioPlayActions = go.GetActionsOfType<AudioPlay>();
-            var audioPlayOneShot = go.GetActionsOfType<AudioPlayerOneShot>();
-            var audioPlayRandom = go.GetActionsOfType<AudioPlayRandom>();
-            var audioPlayOneShotSingle = go.GetActionsOfType<AudioPlayerOneShotSingle>();
-            //var audioPlayInState = go.GetActionsOfType<AudioPlayInState>();
-            var audioPlayRandomSingle = go.GetActionsOfType<AudioPlayRandomSingle>();
-            //var audioPlaySimple = go.GetActionsOfType<AudioPlaySimple>();
-            //var audioPlayV2 = go.GetActionsOfType<AudioPlayV2>();
-            var audioPlayAudioEvent = go.GetActionsOfType<PlayAudioEvent>();
-
-
-            audioSources.ToList().ForEach(x => x.pitch = pitch);
-            audioSourcesPitchRandomizer.ToList().ForEach(x => x.pitchLower = pitch);
-            audioSourcesPitchRandomizer.ToList().ForEach(x => x.pitchUpper = pitch);
-            audioPlayOneShot.ToList().ForEach(x => x.pitchMin = pitch);
-            audioPlayOneShot.ToList().ForEach(x => x.pitchMax = pitch);
-            audioPlayRandom.ToList().ForEach(x => x.pitchMin = pitch);
-            audioPlayRandom.ToList().ForEach(x => x.pitchMax = pitch);
-            audioPlayOneShotSingle.ToList().ForEach(x => x.pitchMax = pitch);
-            audioPlayOneShotSingle.ToList().ForEach(x => x.pitchMin = pitch);
-            audioPlayRandomSingle.ToList().ForEach(x => x.pitchMin = pitch);
-            audioPlayRandomSingle.ToList().ForEach(x => x.pitchMax = pitch);
-            audioPlayAudioEvent.ToList().ForEach(x => x.pitchMin = pitch);
-            audioPlayAudioEvent.ToList().ForEach(x => x.pitchMax = pitch);
+            return objectToModify;
         }
     }
 }

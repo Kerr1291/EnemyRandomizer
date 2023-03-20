@@ -30,19 +30,19 @@ namespace EnemyRandomizerMod
             EnemyRandomizer.Instance.enemyReplacer.loadedLogics.Add(this);
         }
 
-        public override List<PrefabObject> GetValidReplacements(ObjectMetadata sourceData, List<PrefabObject> validReplacementObjects)
+        public override List<PrefabObject> GetValidReplacements(ObjectMetadata originalObject, List<PrefabObject> validReplacementObjects)
         {
-            if (sourceData.ObjectType == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value)
+            if (originalObject.ObjectType == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value)
             {
                 return GetValidEnemyReplacements(validReplacementObjects);
             }
 
-            else if (sourceData.ObjectType == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value)
+            else if (originalObject.ObjectType == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value)
             {
                 return GetValidHazardReplacements(validReplacementObjects);
             }
 
-            else if (sourceData.ObjectType == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value)
+            else if (originalObject.ObjectType == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value)
             {
                 return GetValidEffectReplacements(validReplacementObjects);
             }
@@ -50,24 +50,24 @@ namespace EnemyRandomizerMod
             return validReplacementObjects;
         }
 
-        public override ObjectMetadata GetReplacement(ObjectMetadata sourceData, List<PrefabObject> validReplacements, RNG rng)
+        public override ObjectMetadata GetReplacement(ObjectMetadata newObject, ObjectMetadata originalObject, List<PrefabObject> validReplacements, RNG rng)
         {
-            if (sourceData.ObjectType == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value)
+            if (originalObject.ObjectType == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value)
             {
-                return ReplaceEnemy(sourceData, validReplacements, rng);
+                return ReplaceEnemy(originalObject, validReplacements, rng);
             }
 
-            else if (sourceData.ObjectType == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value)
+            else if (originalObject.ObjectType == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value)
             {
-                return ReplaceHazardObject(sourceData, validReplacements, rng);
+                return ReplaceHazardObject(originalObject, validReplacements, rng);
             }
 
-            else if (sourceData.ObjectType == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value)
+            else if (originalObject.ObjectType == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value)
             {
-                return ReplacePooledObject(sourceData, validReplacements, rng);
+                return ReplacePooledObject(originalObject, validReplacements, rng);
             }
 
-            return sourceData;
+            return newObject == null ? originalObject : newObject;
         }
 
         public virtual List<PrefabObject> GetValidEnemyReplacements(List<PrefabObject> validReplacements)
@@ -85,36 +85,39 @@ namespace EnemyRandomizerMod
             return validReplacements.Where(x => !EnemyReplacer.ReplacementEffectsToSkip.Contains(x.prefabName)).ToList();
         }
 
-        public virtual ObjectMetadata ReplaceEnemy(ObjectMetadata other, List<PrefabObject> validReplacements, RNG rng)
+        public virtual ObjectMetadata ReplaceEnemy(ObjectMetadata originalObject, List<PrefabObject> validReplacements, RNG rng)
         {
             var prefab = validReplacements.GetRandomElementFromList(rng);
-            GameObject newEnemy = Database.Spawn(prefab, other);
-            newEnemy.SetParentToOthersParent(other);
-            newEnemy.transform.position = other.ObjectPosition;
+            GameObject newEnemy = Database.Spawn(prefab, originalObject);
+            newEnemy.SetParentToOthersParent(originalObject);
+            newEnemy.transform.position = originalObject.ObjectPosition;
             ObjectMetadata metaObject = new ObjectMetadata();
             metaObject.Setup(newEnemy, Database);
             return metaObject;
         }
 
-        public virtual ObjectMetadata ReplaceHazardObject(ObjectMetadata other, List<PrefabObject> validReplacements, RNG rng)
+        public virtual ObjectMetadata ReplaceHazardObject(ObjectMetadata originalObject, List<PrefabObject> validReplacements, RNG rng)
         {
             var prefab = validReplacements.GetRandomElementFromList(rng);
-            GameObject newHazard = Database.Spawn(prefab, other);
-            newHazard.SetParentToOthersParent(other);
-            newHazard.transform.position = other.ObjectPosition;
+            GameObject newHazard = Database.Spawn(prefab, originalObject);
+            newHazard.SetParentToOthersParent(originalObject);
+            newHazard.transform.position = originalObject.ObjectPosition;
             ObjectMetadata metaObject = new ObjectMetadata();
             metaObject.Setup(newHazard, Database);
             return metaObject;
         }
 
-        public virtual ObjectMetadata ReplacePooledObject(ObjectMetadata other, List<PrefabObject> validReplacements, RNG rng)
+        public virtual ObjectMetadata ReplacePooledObject(ObjectMetadata originalObject, List<PrefabObject> validReplacements, RNG rng)
         {
             var prefab = validReplacements.GetRandomElementFromList(rng);
-            GameObject newEffect = Database.Spawn(prefab, other);
-            newEffect.SetParentToOthersParent(other);
-            newEffect.transform.position = other.ObjectPosition;
+            GameObject newEffect = Database.Spawn(prefab, originalObject);
+            newEffect.SetParentToOthersParent(originalObject);
+            newEffect.transform.position = originalObject.ObjectPosition;
             ObjectMetadata metaObject = new ObjectMetadata();
             metaObject.Setup(newEffect, Database);
+
+
+
             return metaObject;
         }
     }

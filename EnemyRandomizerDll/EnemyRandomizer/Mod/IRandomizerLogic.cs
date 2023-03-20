@@ -78,24 +78,24 @@ namespace EnemyRandomizerMod
         void OnSaveGame(EnemyRandomizerPlayerSettings settings);
 
         /// <summary>
-        /// Configure the RNG/seed for the next thing to be replaced
-        /// </summary>
-        RNG GetRNG(ObjectMetadata sourceData, RNG rng, int seed);
-
-        /// <summary>
         /// Gets the kinds of things that may be used as replacements
         /// </summary>
-        List<PrefabObject> GetValidReplacements(ObjectMetadata sourceData, List<PrefabObject> validReplacementObjects);
+        List<PrefabObject> GetValidReplacements(ObjectMetadata objectToModify, List<PrefabObject> validReplacementObjects);
+
+        /// <summary>
+        /// Configure the RNG/seed for the next thing to be replaced
+        /// </summary>
+        RNG GetRNG(ObjectMetadata objectToModify, RNG rng, int seed);
 
         /// <summary>
         /// Use some kind of logic to replace things
         /// </summary>
-        ObjectMetadata GetReplacement(ObjectMetadata sourceData, List<PrefabObject> validReplacementObjects, RNG rng);
+        ObjectMetadata GetReplacement(ObjectMetadata objectToModify, ObjectMetadata originalObject, List<PrefabObject> validReplacementObjects, RNG rng);
         
         /// <summary>
         /// Use some kind of logic to optionally modify an object 
         /// </summary>
-        ObjectMetadata ModifyObject(ObjectMetadata sourceData);
+        ObjectMetadata ModifyObject(ObjectMetadata objectToModify, ObjectMetadata originalObject);
 
         /// <summary>
         /// Use some kind of logic to create/modify persitent bool item's data
@@ -172,29 +172,24 @@ namespace EnemyRandomizerMod
         {
         }
 
-        public virtual List<PrefabObject> GetValidReplacements(ObjectMetadata original, List<PrefabObject> validReplacementObjects)
+        public virtual List<PrefabObject> GetValidReplacements(ObjectMetadata originalObject, List<PrefabObject> validReplacementObjects)
         {
             return validReplacementObjects;
         }
 
-        public virtual RNG GetRNG(ObjectMetadata sourceData, RNG rng, int seed)
+        public virtual RNG GetRNG(ObjectMetadata objectToModify, RNG rng, int seed)
         {
             return rng;
         }
 
-        public virtual ObjectMetadata GetReplacement(ObjectMetadata original, List<PrefabObject> validReplacements, RNG rng)
+        public virtual ObjectMetadata GetReplacement(ObjectMetadata newObject, ObjectMetadata originalObject, List<PrefabObject> validReplacements, RNG rng)
         {
-            return original;
+            return newObject == null ? originalObject : newObject;
         }
 
-        public virtual ObjectMetadata ModifyObject(ObjectMetadata original)
+        public virtual ObjectMetadata ModifyObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
         {
-            return original;
-        }
-
-        public virtual List<PrefabObject> GetAllowedHazardReplacements(ObjectMetadata sourceData)
-        {
-            return Database.hazardPrefabs;
+            return objectToModify;
         }
 
         public virtual PersistentBoolData ReplacePersistentBoolItemData(PersistentBoolItem other)

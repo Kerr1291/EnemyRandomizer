@@ -32,6 +32,18 @@ namespace EnemyRandomizerMod
             ConfigureRelativeToReplacement();
         }
 
+        protected virtual void OnDisable()
+        {
+            if(thisMetadata.ObjectType == PrefabObject.PrefabType.Effect)
+            {
+                ObjectPool.Recycle(gameObject);
+            }
+            else if (thisMetadata.ObjectType == PrefabObject.PrefabType.Hazard)
+            {
+                ObjectPool.Recycle(gameObject);
+            }
+        }
+
         protected virtual void OnDestroy()
         {
             if (hasCustomDreamnailReaction)
@@ -55,6 +67,9 @@ namespace EnemyRandomizerMod
 
         protected virtual void ConfigureRelativeToReplacement()
         {
+            if (thisMetadata != null && thisMetadata.ObjectType != PrefabObject.PrefabType.Enemy)
+                return;
+
             if (thisMetadata != null && originialMetadata != null)
             {
                 if (thisMetadata.IsBoss && !originialMetadata.IsBoss)

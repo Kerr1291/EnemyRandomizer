@@ -14,23 +14,24 @@ namespace EnemyRandomizerMod
 
         public override string Info => "Attempts to correctly reposition objects that have been randomized using the old logic. Does not always work...";
 
-        public override ObjectMetadata ModifyObject(ObjectMetadata sourceData)
+        public override ObjectMetadata ModifyObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
         {
-            return RepositionObject(sourceData);
+            return RepositionObject(objectToModify, originalObject);
         }
 
-        public virtual ObjectMetadata RepositionObject(ObjectMetadata sourceData)
+        public virtual ObjectMetadata RepositionObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
         {
-            return RepositionObject(sourceData, sourceData.ObjectThisReplaced);
-        }
+            if (originalObject == null)
+            {
+                if (!objectToModify.IsFlying)
+                    objectToModify.PlaceOnGround();
+            }
+            else
+            {
+                objectToModify.MatchPositionOfOther(originalObject);
+            }
 
-        public virtual ObjectMetadata RepositionObject(ObjectMetadata sourceData, ObjectMetadata replacedObject)
-        {
-            if (replacedObject == null)
-                return sourceData;
-
-            sourceData.MatchPositionOfOther(replacedObject);
-            return sourceData;
+            return objectToModify;
         }
 
         public override void Setup(EnemyRandomizerDatabase database)

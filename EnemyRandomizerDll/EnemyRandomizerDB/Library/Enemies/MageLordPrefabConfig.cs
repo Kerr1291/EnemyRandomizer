@@ -18,6 +18,14 @@ namespace EnemyRandomizerMod
 
         protected override bool ControlCameraLocks => true;
 
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+            
+            //setup default 'next event' state
+            control.FsmVariables.GetFsmString("Next Event").Value = "IDLE";
+        }
+
         protected override void BuildArena(Vector3 spawnPoint)
         {
             QuakeYPos = 0f;
@@ -35,6 +43,7 @@ namespace EnemyRandomizerMod
             var size = new Vector3(xR.Size, yR.Size);
             UnityEngine.Bounds b = new UnityEngine.Bounds(pos, size);
             debugRenderers = b.CreateBoxOfLineRenderers(Color.cyan);
+            debugRenderers.ForEach(x => x.transform.SetParent(transform.parent,false));
         }
 
         protected virtual void ClearDebug()
@@ -72,6 +81,18 @@ namespace EnemyRandomizerMod
                 { "Quake Y", x => x.yR.Max + QuakeYPos },
                 { "Knight Quake Y Max", x => x.yR.Max + KnightQuakeYPos },
             };
+        }
+
+        protected override void Show()
+        {
+            base.Show();
+            Dev.Log("Showing");
+        }
+
+        protected override void Hide()
+        {
+            base.Show();
+            Dev.Log("Hiding");
         }
     }
 

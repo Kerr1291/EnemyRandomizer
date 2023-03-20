@@ -22,6 +22,9 @@ namespace EnemyRandomizerMod
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
+            Rigidbody2D body = GetComponent<Rigidbody2D>();
+            if (body != null)
+                body.isKinematic = false;
         }
 
         protected virtual void OnEnable()

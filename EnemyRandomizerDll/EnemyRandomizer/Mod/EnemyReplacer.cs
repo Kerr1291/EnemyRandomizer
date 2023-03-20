@@ -379,12 +379,12 @@ namespace EnemyRandomizerMod
 
         protected bool TryReplaceObject(ObjectMetadata original, List<PrefabObject> validReplacements, RNG rng, out ObjectMetadata newObject)
         {
-            ObjectMetadata metaObject = original;
+            ObjectMetadata metaObject = null;
             foreach (var logic in loadedLogics)
             {
                 try
                 {
-                    metaObject = logic.GetReplacement(metaObject, validReplacements, rng);
+                    metaObject = logic.GetReplacement(metaObject, original, validReplacements, rng);
                 }
                 catch (Exception e)
                 {
@@ -395,14 +395,14 @@ namespace EnemyRandomizerMod
             return newObject != original;
         }
 
-        protected ObjectMetadata ModifyObject(ObjectMetadata original)
+        protected ObjectMetadata ModifyObject(ObjectMetadata metaObject)
         {
-            ObjectMetadata metaObject = original;
+            ObjectMetadata original = metaObject.ObjectThisReplaced;
             foreach (var logic in loadedLogics)
             {
                 try
                 {
-                    metaObject = logic.ModifyObject(metaObject);
+                    metaObject = logic.ModifyObject(metaObject, original);
                 }
                 catch (Exception e)
                 {

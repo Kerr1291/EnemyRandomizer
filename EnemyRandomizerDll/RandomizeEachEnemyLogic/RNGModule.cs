@@ -88,6 +88,10 @@ namespace EnemyRandomizerMod
             {
                 return RandomizeEachGame(sourceData.DatabaseName, seed);
             }
+            else
+            {
+                Dev.LogError("No value in the RNGModule was set! This should never happen!");
+            }
 
             return rng;
         }

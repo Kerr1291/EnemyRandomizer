@@ -173,27 +173,37 @@ namespace EnemyRandomizerMod
         {
             SizeScale = 1f;
 
-            if (sceneObject.GetComponent<BoxCollider2D>())
-            {
-                ObjectSize = sceneObject.GetComponent<BoxCollider2D>().size;
-            }
-            else if (sceneObject.GetComponent<tk2dSprite>() && sceneObject.GetComponent<tk2dSprite>().boxCollider2D != null)
+
+            if (sceneObject.GetComponent<tk2dSprite>() && sceneObject.GetComponent<tk2dSprite>().boxCollider2D != null)
             {
                 ObjectSize = sceneObject.GetComponent<tk2dSprite>().boxCollider2D.size;
+                Dev.Log($"Size of SPRITE {sceneObject} is {ObjectSize}");
             }
-            if (sceneObject.GetComponent<CircleCollider2D>())
+            else if (sceneObject.GetComponent<BoxCollider2D>())
+            {
+                ObjectSize = sceneObject.GetComponent<BoxCollider2D>().size;
+                Dev.Log($"Size of BOX {sceneObject} is {ObjectSize}");
+            }
+            else if (sceneObject.GetComponent<CircleCollider2D>())
             {
                 var newCCircle = sceneObject.GetComponent<CircleCollider2D>();
                 ObjectSize = Vector2.one * newCCircle.radius;
+                Dev.Log($"Size of CIRCLE {sceneObject} is {ObjectSize}");
             }
             else if (sceneObject.GetComponent<PolygonCollider2D>())
             {
                 var newCPoly = sceneObject.GetComponent<PolygonCollider2D>();
                 ObjectSize = new Vector2(newCPoly.points.Select(x => x.x).Max() - newCPoly.points.Select(x => x.x).Min(), newCPoly.points.Select(x => x.y).Max() - newCPoly.points.Select(x => x.y).Min());
+
+                Dev.Log($"Size of POLYGON {sceneObject} is {ObjectSize}");
             }
             else
             {
                 ObjectSize = sceneObject.transform.localScale;
+                Dev.Log($"Size of TRANSFORM SCALE {sceneObject} is {ObjectSize}");
+
+                if (ObjectSize.x < 0)
+                    ObjectSize = new Vector2(-ObjectSize.x, ObjectSize.y);
             }
 
             UpdateTransformValues();
@@ -568,42 +578,96 @@ namespace EnemyRandomizerMod
             return scale;
         }
 
+        public virtual void ApplyPosition(Vector3 position)
+        {
+            ObjectPosition = position;
+            Source.transform.position = position;
+        }
+
         public virtual void ApplySizeScale(float scale)
         {
             SizeScale = scale;
+
+            if (Source == null)
+                return;
+
             Source.transform.localScale = new Vector3(Source.transform.localScale.x * scale,
                 Source.transform.localScale.y * scale, 1f);
             ObjectScale = Source.transform.localScale;
 
-            if(Walker != null)
+            if (Walker != null)
             {
                 if(Walker.GetRightScale() > 0)
                     Walker.SetRightScale(scale);
                 else
                     Walker.SetRightScale(-scale);
+            }
 
-                var fsms = Walker.GetComponents<PlayMakerFSM>();
+
+            var fsms = Source.GetComponents<PlayMakerFSM>();
+            {
+                var sactions = fsms.SelectMany(x => x.Fsm.States.SelectMany(y => y.GetActions<SetScale>())).Where(x => x.y.IsNone && x.z.IsNone);
+                foreach (var a in sactions)
                 {
-                    var sactions = fsms.SelectMany(x => x.Fsm.States.SelectMany(y => y.GetActions<SetScale>())).Where(x => x.y.IsNone && x.z.IsNone);
-                    foreach (var a in sactions)
-                    {
-                        if (a.x.Value < 0)
-                            a.x.Value = -scale;
-                        else
-                            a.x.Value = scale;
-                    }
-                }
-                {
-                    var sactions = fsms.SelectMany(x => x.Fsm.States.SelectMany(y => y.GetActions<SetScale>())).Where(x => x.y.Value == 0f && x.z.Value == 0f);
-                    foreach (var a in sactions)
-                    {
-                        if (a.x.Value < 0)
-                            a.x.Value = -scale;
-                        else
-                            a.x.Value = scale;
-                    }
+                    if (a.x.Value < 0)
+                        a.x.Value = -scale;
+                    else
+                        a.x.Value = scale;
                 }
             }
+            {
+                var sactions = fsms.SelectMany(x => x.Fsm.States.SelectMany(y => y.GetActions<SetScale>())).Where(x => x.y.Value == 0f && x.z.Value == 0f);
+                foreach (var a in sactions)
+                {
+                    if (a.x.Value < 0)
+                        a.x.Value = -scale;
+                    else
+                        a.x.Value = scale;
+                }
+            }
+        }
+
+        public virtual void SetAudioToMatchScale()
+        {
+            if (Source == null)
+                return;
+
+            if (Mathnv.FastApproximately(SizeScale, 1f, .01f))
+                return;
+
+            float max = 2f;
+            float min = .5f;
+            Range range = new Range(min, max);
+            float t = range.NormalizedValue(SizeScale);
+            float pitch = max - range.Evaluate(t);
+
+            var go = Source;
+            var audioSources = go.GetComponentsInChildren<AudioSource>();
+            var audioSourcesPitchRandomizer = go.GetComponentsInChildren<AudioSourcePitchRandomizer>();
+            //var audioPlayActions = go.GetActionsOfType<AudioPlay>();
+            var audioPlayOneShot = go.GetActionsOfType<AudioPlayerOneShot>();
+            var audioPlayRandom = go.GetActionsOfType<AudioPlayRandom>();
+            var audioPlayOneShotSingle = go.GetActionsOfType<AudioPlayerOneShotSingle>();
+            //var audioPlayInState = go.GetActionsOfType<AudioPlayInState>();
+            var audioPlayRandomSingle = go.GetActionsOfType<AudioPlayRandomSingle>();
+            //var audioPlaySimple = go.GetActionsOfType<AudioPlaySimple>();
+            //var audioPlayV2 = go.GetActionsOfType<AudioPlayV2>();
+            var audioPlayAudioEvent = go.GetActionsOfType<PlayAudioEvent>();
+
+
+            audioSources.ToList().ForEach(x => x.pitch = pitch);
+            audioSourcesPitchRandomizer.ToList().ForEach(x => x.pitchLower = pitch);
+            audioSourcesPitchRandomizer.ToList().ForEach(x => x.pitchUpper = pitch);
+            audioPlayOneShot.ToList().ForEach(x => x.pitchMin = pitch);
+            audioPlayOneShot.ToList().ForEach(x => x.pitchMax = pitch);
+            audioPlayRandom.ToList().ForEach(x => x.pitchMin = pitch);
+            audioPlayRandom.ToList().ForEach(x => x.pitchMax = pitch);
+            audioPlayOneShotSingle.ToList().ForEach(x => x.pitchMax = pitch);
+            audioPlayOneShotSingle.ToList().ForEach(x => x.pitchMin = pitch);
+            audioPlayRandomSingle.ToList().ForEach(x => x.pitchMin = pitch);
+            audioPlayRandomSingle.ToList().ForEach(x => x.pitchMax = pitch);
+            audioPlayAudioEvent.ToList().ForEach(x => x.pitchMin = pitch);
+            audioPlayAudioEvent.ToList().ForEach(x => x.pitchMax = pitch);
         }
 
         public virtual void MarkObjectAsReplacement(ObjectMetadata oldObject)
@@ -651,6 +715,16 @@ namespace EnemyRandomizerMod
                 ObjectThisReplaced.DestroySource();
 
             return Source;
+        }
+
+        public void PlaceOnGround()
+        {
+            if (Source == null)
+                return;
+
+            var ground = Source.GetNearestPointDown(500f);
+            var positionOffset = new Vector3(0f, ObjectSize.y * -0.5f * SizeScale, 0f);
+            ApplyPosition(ground + positionOffset);
         }
 
 
@@ -789,8 +863,7 @@ namespace EnemyRandomizerMod
                 positionOfObject = originalPosition;
             }
 
-            Source.transform.position = positionOfObject + positionOffset;
-            ObjectPosition = Source.transform.position;
+            ApplyPosition(positionOfObject + positionOffset);
         }
 
         public static bool IsSurfaceOrPlatform(GameObject gameObject)
