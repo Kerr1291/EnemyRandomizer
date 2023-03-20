@@ -506,8 +506,9 @@ namespace EnemyRandomizerMod
             return (IPrefabConfig)Activator.CreateInstance(configType);
         }
         static bool once = false;
-        ISpawner GetSpawner(PrefabObject p, Type defaultType = null)
+        bool GetSpawner(PrefabObject p, Type defaultType, out ISpawner spawnerTypeToUse)
         {
+            bool isDefault = false;
             string typeName = "EnemyRandomizerMod." + string.Join("", p.prefabName.Split(' ')) + "Spawner";
             Dev.Log(typeName);
             Type spawnerType = null;
@@ -543,9 +544,11 @@ namespace EnemyRandomizerMod
                 if (!typeof(ISpawner).IsAssignableFrom(defaultType))
                 {
                     Dev.LogError($"Default spawner type given is not an ISpawner: {defaultType}");
-                    return null;
+                    spawnerTypeToUse = null;
+                    return false;
                 }
 
+                isDefault = true;
                 spawnerType = defaultType;
             }
 
@@ -554,13 +557,15 @@ namespace EnemyRandomizerMod
             {
                 if (verboseSpawnerErrorsForDebuggingOnly)
                     Dev.Log($"No matching spawner type found for {p.prefabName}");
-                return null;
+                spawnerTypeToUse = null;
+                return false;
             }
 
             if (verboseSpawnerErrorsForDebuggingOnly)
                 Dev.Log("A spawner type was found and will be created: " + spawnerType.Name);
 
-            return (ISpawner)Activator.CreateInstance(spawnerType);
+            spawnerTypeToUse = (ISpawner)Activator.CreateInstance(spawnerType);
+            return isDefault;
         }
 
         static bool TryConvertUniqueNameToCommonName(string nameKey, out string convertedName)

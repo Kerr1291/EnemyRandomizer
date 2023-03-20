@@ -1,44 +1,34 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace EnemyRandomizerMod
 {
-
-
-    public class GreyPrinceControl : DefaultSpawnedEnemyControl
+    public class GreyPrinceControl : FSMAreaControlEnemy
     {
-        public PlayMakerFSM control;
+        public override string FSMName => "Control";
+
+        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+        {
+
+        };
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
         }
 
-        protected virtual void OnEnable()
+        protected override IEnumerator Start()
         {
+            return base.Start();
         }
     }
 
     public class GreyPrinceSpawner : DefaultSpawner<GreyPrinceControl>
     {
-        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
-        {
-            var go = base.Spawn(p, source);
-            var fsm = go.GetComponent<GreyPrinceControl>();
-            fsm.control = go.LocateMyFSM("Control");
-
-            if (source.IsBoss)
-            {
-                //TODO:
-            }
-            else
-            {
-                //var hm = go.GetComponent<HealthManager>();
-                //hm.hp = source.MaxHP;
-            }
-
-            return go;
-        }
     }
+
     public class GreyPrincePrefabConfig : DefaultPrefabConfig<GreyPrinceControl>
     {
         public override void SetupPrefab(PrefabObject p)
@@ -57,6 +47,8 @@ namespace EnemyRandomizerMod
                 fsm.ChangeTransition("Level 2", "FINISHED", "Enter 1");
                 fsm.ChangeTransition("Level 3", "FINISHED", "Enter 1");
                 fsm.ChangeTransition("4+", "FINISHED", "Enter 1");
+
+                fsm.ChangeTransition("Enter 3", "FINISHED", "Roar End");
 
                 //remove the states that were also part of that
                 //fsm.Fsm.RemoveState("Dormant");

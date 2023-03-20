@@ -1,12 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace EnemyRandomizerMod
 {
 
-    public class MawlekBodyControl : DefaultSpawnedEnemyControl
+    public class MawlekBodyControl : FSMAreaControlEnemy
     {
-        public PlayMakerFSM control;
+        public override string FSMName => "Mawklek Control";
+
+        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => new Dictionary<string, Func<FSMAreaControlEnemy, float>>();
 
         public override void Setup(ObjectMetadata other)
         {
@@ -17,48 +21,33 @@ namespace EnemyRandomizerMod
         {
         }
 
-        private IEnumerator Start()
+        protected override IEnumerator Start()
         {
             control.SetState("Init");
-
             control.GetState("Wake Land").AddCustomAction(() => control.SetState("Start"));
 
             yield return new WaitWhile(() => control.ActiveStateName != "Dormant");
 
+            yield return base.Start();
+        }
+
+        protected override void Show()
+        {
+            base.Show();
             control.SendEvent("WAKE");
+        }
+
+        protected override void Hide()
+        {
+            base.Hide();
         }
     }
 
     public class MawlekBodySpawner : DefaultSpawner<MawlekBodyControl>
     {
-        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
-        {
-            var go = base.Spawn(p, source);
-            var fsm = go.GetComponent<MawlekBodyControl>();
-            fsm.control = go.LocateMyFSM("Mawlek Control");
-
-            if (source.IsBoss)
-            {
-                //TODO:
-            }
-            else
-            {
-                //var hm = go.GetComponent<HealthManager>();
-                //hm.hp = source.MaxHP;
-            }
-
-            return go;
-        }
     }
+
     public class MawlekBodyPrefabConfig : DefaultPrefabConfig<MawlekBodyControl>
     {
-        public override void SetupPrefab(PrefabObject p)
-        {
-            base.SetupPrefab(p);
-
-            {
-                var fsm = p.prefab.LocateMyFSM("Mawlek Control");
-            }
-        }
     }
 }

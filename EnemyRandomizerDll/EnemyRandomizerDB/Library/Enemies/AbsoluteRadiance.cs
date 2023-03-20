@@ -10,27 +10,50 @@ using EnemyRandomizerMod.Futils;
 
 namespace EnemyRandomizerMod
 {
-    public class AbsoluteRadianceControl : DefaultSpawnedEnemyControl
+    public class AbsoluteRadianceControl : FSMAreaControlEnemy
     {
-        public Range xR;
-        public Range yR;
+        public override string FSMName => "Control";
+
         public Rect bounds;
 
-        public PlayMakerFSM control;
         public PlayMakerFSM commands;
 
-        public void BuildArena(Vector3 spawnPoint)
+        protected virtual Dictionary<string, Func<FSMAreaControlEnemy, float>> CommandFloatRefs
         {
-            gameObject.transform.position = spawnPoint;
-            var hits = gameObject.GetNearestSurfaces(500f);
-            xR = new Range(hits[Vector2.left].point.x, hits[Vector2.right].point.x);
-            yR = new Range(hits[Vector2.down].point.y, hits[Vector2.up].point.y);
+            get => new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                { "Orb Max X", x => x.xR.Max - 1},
+                { "Orb Max Y", x => x.yR.Max - 1},
+                { "Orb Min X", x => x.xR.Min + 1},
+                { "Orb Min Y", x => x.yR.Min + 3},
+            };
+        }
+
+        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs
+        {
+            get => new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                { "A1 X Max", x => x.xR.Max - 2},
+                { "A1 X Min", x => x.xR.Min + 2},
+            };
+        }
+
+        protected override void UpdateRefs(PlayMakerFSM fsm, Dictionary<string, Func<FSMAreaControlEnemy, float>> refs)
+        {
+            base.UpdateRefs(fsm, refs);
+            base.UpdateRefs(commands, CommandFloatRefs);
+        }
+
+        protected override void BuildArena(Vector3 spawnPoint)
+        {
+            base.BuildArena(spawnPoint);
             bounds = new Rect(spawnPoint.x, spawnPoint.y, xR.Size, yR.Size);
         }
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
+            commands = gameObject.LocateMyFSM("Attack Commands");
         }
 
         protected virtual void OnEnable()
@@ -38,13 +61,8 @@ namespace EnemyRandomizerMod
             BuildArena(gameObject.transform.position);
         }
 
-        private IEnumerator Start()
+        protected override IEnumerator Start()
         {
-            commands.Fsm.GetFsmFloat("Orb Max X").Value = bounds.xMax - 1;
-            commands.Fsm.GetFsmFloat("Orb Max Y").Value = bounds.yMax - 1;
-            commands.Fsm.GetFsmFloat("Orb Min X").Value = bounds.xMin + 1;
-            commands.Fsm.GetFsmFloat("Orb Min Y").Value = bounds.yMin + 3;
-
             GameObject comb = commands.GetFirstActionOfType<SpawnObjectFromGlobalPool>("Comb Top").gameObject.Value;
             comb.transform.position = new Vector3(bounds.center.x, bounds.center.y, 0.006f);
 
@@ -62,9 +80,6 @@ namespace EnemyRandomizerMod
             commands.GetFirstActionOfType<SpawnObjectFromGlobalPool>("Comb Top").gameObject = comb;
             commands.GetFirstActionOfType<SpawnObjectFromGlobalPool>("Comb L").gameObject = comb;
             commands.GetFirstActionOfType<SpawnObjectFromGlobalPool>("Comb R").gameObject = comb;
-
-            control.Fsm.GetFsmFloat("A1 X Max").Value = bounds.xMax - 2;
-            control.Fsm.GetFsmFloat("A1 X Min").Value = bounds.xMin + 2;
 
             control.GetAction<RandomFloat>("Set Dest", 4).min = transform.position.y - 1;
             control.GetAction<RandomFloat>("Set Dest", 4).max = transform.position.y + 1;
@@ -86,47 +101,38 @@ namespace EnemyRandomizerMod
                     return x;
                 }).ToArray();
 
+            if (!HeroInAggroRange())
+                Hide();
 
+            for (; ; )
+            {
+                UpdateHeroRefs();
+
+                if (HeroInAggroRange())
+                    Show();
+                else
+                    Hide();
+
+                if(control.ActiveStateName == "Intro End")
+                    control.SetState("Arena 1 Idle");
+
+                yield return new WaitForSeconds(1f);
+            }
+        }
+
+        protected override void Show()
+        {
+            base.Show();
             commands.SetState("Init");
             control.SetState("Init");
-
-            yield return new WaitUntil(() => control.ActiveStateName == "Intro End");
-
-            control.SetState("Arena 1 Idle");
         }
     }
 
     public class AbsoluteRadianceSpawner : DefaultSpawner<AbsoluteRadianceControl>
     {
-        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
-        {
-            var go = base.Spawn(p, source);
-            var fsm = go.GetComponent<AbsoluteRadianceControl>();
-            fsm.control = go.LocateMyFSM("Control");
-            fsm.commands = go.LocateMyFSM("Attack Commands");
-
-            if (source.IsBoss)
-            {
-                //TODO:
-            }
-            else
-            {
-                //var hm = go.GetComponent<HealthManager>();
-                //hm.hp = source.MaxHP;
-            }
-
-            return go;
-        }
     }
+
     public class AbsoluteRadiancePrefabConfig : DefaultPrefabConfig<AbsoluteRadianceControl>
     {
-        public override void SetupPrefab(PrefabObject p)
-        {
-            base.SetupPrefab(p);
-
-            {
-                var fsm = p.prefab.LocateMyFSM("Control");
-            }
-        }
     }
 }

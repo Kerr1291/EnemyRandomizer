@@ -10,30 +10,56 @@ using System.Collections;
 using System;
 using HutongGames.PlayMaker;
 using Modding;
-#if !LIBRARY
-using Dev = EnemyRandomizerMod.Dev;
-#else
-using Dev = Modding.Logger;
-#endif
+using HutongGames.PlayMaker.Actions;
+
 namespace EnemyRandomizerMod
 {
-    public class FalseKnightNewControl : MonoBehaviour
+    public class FalseKnightNewControl : FSMAreaControlEnemy
     {
-        ObjectMetadata data = new ObjectMetadata();
+        public override string FSMName => "FalseyControl";
 
-        void OnEnable()
+        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs
         {
-            data.Setup(gameObject, EnemyRandomizerDatabase.GetDatabase());
+            get => new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+            };
+        }
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+        }
+
+        protected override IEnumerator Start()
+        {
+            control.GetFirstActionOfType<SetPosition>("Dormant").y = yR.Max;
+            control.GetFirstActionOfType<GGCheckIfBossScene>("Dormant").regularSceneEvent = new FsmEvent("BATTLE START");
+
+            //skip the music and title activation state
+            control.ChangeTransition("Check", "JUMP", "First Idle");
+
+            //make it go to the death anim right away
+            control.GetFirstActionOfType<IntCompare>("Check If GG").integer2.Value = 0;
+            control.GetFirstActionOfType<GGCheckIfBossScene>("Check If GG").regularSceneEvent = new FsmEvent("GG BOSS");
+
+            control.GetFirstActionOfType<GGCheckIfBossScene>("Open Map Shop and Journal").regularSceneEvent = new FsmEvent("FINISHED");
+            control.GetFirstActionOfType<GGCheckIfBossScene>("Boss Death Sting").regularSceneEvent = new FsmEvent("FINISHED");
+            control.GetFirstActionOfType<GGCheckIfBossScene>("Boss Death Sting").regularSceneEvent = new FsmEvent("FINISHED");
+
+            yield return base.Start();
         }
     }
 
-    internal class FalseKnightNewPrefabConfig : IPrefabConfig
+    public class FalseKnightNewSpawner : DefaultSpawner<FalseKnightNewControl>
     {
-        public virtual void SetupPrefab(PrefabObject p)
+    }
+
+    public class FalseKnightNewPrefabConfig : DefaultPrefabConfig<FalseKnightNewControl>
+    {
+        public override void SetupPrefab(PrefabObject p)
         {
-            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(p.prefab.name);
-            p.prefabName = keyName;
-            var control = p.prefab.AddComponent<FalseKnightNewControl>();
+            base.SetupPrefab(p);
+
         }
     }
 }

@@ -239,13 +239,21 @@ namespace EnemyRandomizerMod
             if (defaultType == null)
                 defaultType = typeof(DefaultSpawner);
 
-            var spawner = GetSpawner(p, defaultType);
+            bool isDefault = GetSpawner(p, defaultType, out var spawner);
             Dev.Log("Spawner is " + spawner);
             if (spawner == null)
                 return null;
 
             Dev.Log("finally trying to spawn "+p.prefabName);
-            return spawner.Spawn(p, source);
+            var result = spawner.Spawn(p, source);
+
+            if(result != null && isDefault)
+            {
+                var defaultControl = result.AddComponent<DefaultSpawnedEnemyControl>();
+                defaultControl.Setup(source);
+            }
+
+            return result;
         }
 
         public static string ModAssetPath

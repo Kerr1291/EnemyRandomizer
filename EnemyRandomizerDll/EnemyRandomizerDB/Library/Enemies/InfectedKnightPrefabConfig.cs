@@ -92,11 +92,6 @@ namespace EnemyRandomizerMod
                 var fsm = go.LocateMyFSM("Spawn Balloon");
                 ik.balloonFSM = fsm;
             }
-            else
-            {
-                var hm = go.GetComponent<HealthManager>();
-                hm.hp = source.MaxHP;
-            }
 
             return go;
         }

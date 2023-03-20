@@ -197,6 +197,7 @@
     <Compile Include="Library\Enemies\AbsoluteRadiance.cs" />
     <Compile Include="Library\Enemies\CrystallisedLazerBugPrefabConfig.cs" />
     <Compile Include="Library\Enemies\FalseKnight.cs" />
+    <Compile Include="Library\Enemies\FalseKnightDreamControl.cs" />
     <Compile Include="Library\Enemies\FlamebearerSpawn.cs" />
     <Compile Include="Library\Enemies\GiantFly.cs" />
     <Compile Include="Library\Enemies\GreyPrincePrefabConfig.cs" />
