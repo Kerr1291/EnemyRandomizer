@@ -464,8 +464,27 @@ namespace EnemyRandomizerMod
 
         GameObject MODHOOK_OnObjectPoolSpawn(GameObject originalGameObject)
         {
-            return RandomizePooledSpawn(originalGameObject);
+            var pooledGO = RandomizePooledSpawn(originalGameObject);
+
+            //see if this pooled game object should me pooled by the randomizer
+            if (pooledGO != null && RandoControlledPooling.Any(x => pooledGO.name.Contains(x)))
+            {
+                //can't be doing this for everything, is causing nullrefs
+                //want to do it for some things, maybe based on a list?
+                pooledGO.GetOrAddComponent<RecycleOnDisable>();
+                var auto = pooledGO.GetComponent<AutoRecycleSelf>();
+                if (auto != null)
+                    GameObject.Destroy(auto);
+            }
+
+            return pooledGO;
         }
+
+        public static List<string> RandoControlledPooling = new List<string>()
+        {
+            "Radiant Nail",
+            "Dust Trail",
+        };
 
         void MODHOOK_RecieveDeathEvent(
             EnemyDeathEffects enemyDeathEffects,
@@ -606,4 +625,45 @@ namespace EnemyRandomizerMod
             return false;
         }
     }
+
+    public class RecycleOnDisable : MonoBehaviour
+    {
+        public void OnDisable()
+        {
+            ObjectPool.Recycle(gameObject);
+        }
+    }
+        
 }
+
+
+/*
+ * Ruins1_27
+ * root: _Scenery/ruind_fountain/fountain_new
+ *   parts: _0083_fountain (center piece)
+ *   parts: _0082_fountain (back dreamer)
+ *   parts: _0092_fountain (right dreamer)
+ *   parts: _0092_fountain (1) (left dreamer)
+ * 
+ * 
+ * GG_Blue_Room
+ * root: gg_blue_core
+ *  remove: DeactivateIfPlayerDataTrue
+ *  FSM: Dream React
+ *      State: Take Control  <--probably just remove this state, at least all the actions on it should go
+ *          Action: SetPlayerDataBool
+ *          Action: CallMethodProper
+ *          Action: SetFsmBool
+ *      State: Regain Control <-- and probably just remove this too
+ *      
+ *      
+ * GG_Workshop
+ * 
+ * dream_beam_animation   :cool floor aoe particle effect
+ * 
+ * GG_Statue_Gorb <-maybe copy them all?
+ * (remove the BossStatue component)
+ * 
+ * 
+ * 
+ */

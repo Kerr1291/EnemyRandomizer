@@ -204,6 +204,7 @@
     <Compile Include="Library\Enemies\Hatcher.cs" />
     <Compile Include="Library\Enemies\ColosseumPrefabs.cs" />
     <Compile Include="Library\Enemies\InfectedKnightPrefabConfig.cs" />
+    <Compile Include="Library\Enemies\LostKinControl.cs" />
     <Compile Include="Library\Enemies\MageLordPhase2.cs" />
     <Compile Include="Library\Enemies\MageLordPrefabConfig.cs" />
     <Compile Include="Library\Enemies\Marmu.cs" />

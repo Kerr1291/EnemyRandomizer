@@ -443,6 +443,12 @@ namespace EnemyRandomizerMod
             return GameManager.instance.IsGameplayScene() && !GameManager.instance.IsCinematicScene();
         }
 
+        public static List<string> ReplacementHazardsToSkip = new List<string>()
+        {
+            "Cave Spikes tile", //small bunch of upward pointing cave spikes
+            "Cave Spikes tile(Clone)"
+        };
+
         //TODO: temp solution for "bad effects"
         public static List<string> ReplacementEffectsToSkip = new List<string>()
         {
@@ -464,13 +470,54 @@ namespace EnemyRandomizerMod
             "Particle System FG",
             "Particle System BG",
             "bg_dream",
-            "fung_immediate_BG",
-            "tank_full",
-            "tank_full",
+            "fung_immediate_BG",  //
+            "tank_full", //large rect of acid, LOOPING
+            "bg_dream",  //big dream circles that float in the background, LOOPING
+            "Bugs Idle", //floaty puffs of glowy moth things, LOOPING
+            "Shade Particles", //sprays out shade stuff in an wide upward spray, LOOPING
+            "Fire Particles", //emits burning fire particles, LOOPING
+            "spawn particles b", //has a serialization error? -- may need fixing/don't destroy on load or something
+            "Acid Steam", //has a serialization error?
+            "Spre Fizzle", //emits a little upward spray of green particles, LOOPING
+            "Dust Land", //emits a crescent of steamy puffs that spray upward a bit originating a bit under the given origin, LOOPING
+            "Slash Ball", //emits the huge pale lurker slash AoE, LOOPING
+            "Bone", //serialzation error?
+            "Particle System", //serialization error?
+            "Dust Land Small", //??? seems to be making lots of issues
+            //"Dust Trail", // --- likely needs mod to control pooling
         };
 
 
+        public static List<string> BurstEffects = new List<string>()
+        {
+            "Roar Feathers",
+        };
 
+
+        /*
+         * Missing effects to possibly add:
+         * Slash
+         */
+
+            /* Missing hazards to possibly add:
+             * ruind_bridge_roof_04_spikes
+             * Dung Pillar (1-6)
+             * RoofSpikes
+             */
+
+            /*
+             * Hazards to fix:
+             * Shot Orange LG 0.7:  needs velocity added? -- also look into a name correction....
+             * ^delete the fsm, give some velocity, enable gravity, add a disable on collision action
+             * 
+             */
+
+            /* Broken Enemies to fix
+             * big bee -- can set bounces in Charge Antic - SetIntValue(Bounces)
+             * 
+             * 
+             * 
+             */
 
         public bool OnPersistentBoolItemLoaded(PersistentBoolItem item)
         {

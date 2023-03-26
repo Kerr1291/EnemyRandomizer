@@ -3,12 +3,9 @@ using UnityEngine;
 using Language;
 using On;
 using EnemyRandomizerMod;
-using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 using System.Collections;
-using System;
-using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 namespace EnemyRandomizerMod
 {
@@ -40,7 +37,7 @@ namespace EnemyRandomizerMod
 
             control.enabled = false;
 
-            while(dist > 100f)
+            while(dist > 50f)
             {
                 yield return new WaitForEndOfFrame();
             }

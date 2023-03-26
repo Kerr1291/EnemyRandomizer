@@ -9,7 +9,7 @@ namespace EnemyRandomizerMod
 {
     public class DefaultSpawnedEnemyControl : MonoBehaviour
     {
-        public ObjectMetadata thisMetadata;
+        public ObjectMetadata thisMetadata; 
         public ObjectMetadata originialMetadata;
 
         public EnemyDreamnailReaction edr;
@@ -32,17 +32,17 @@ namespace EnemyRandomizerMod
             ConfigureRelativeToReplacement();
         }
 
-        protected virtual void OnDisable()
-        {
-            if(thisMetadata.ObjectType == PrefabObject.PrefabType.Effect)
-            {
-                ObjectPool.Recycle(gameObject);
-            }
-            else if (thisMetadata.ObjectType == PrefabObject.PrefabType.Hazard)
-            {
-                ObjectPool.Recycle(gameObject);
-            }
-        }
+        //protected virtual void OnDisable()
+        //{
+        //    if(thisMetadata.ObjectType == PrefabObject.PrefabType.Effect)
+        //    {
+        //        ObjectPool.Recycle(gameObject);
+        //    }
+        //    else if (thisMetadata.ObjectType == PrefabObject.PrefabType.Hazard)
+        //    {
+        //        ObjectPool.Recycle(gameObject);
+        //    }
+        //}
 
         protected virtual void OnDestroy()
         {
@@ -182,12 +182,30 @@ namespace EnemyRandomizerMod
     {
         public virtual GameObject Spawn(PrefabObject p, ObjectMetadata source)
         {
-            var go = GameObject.Instantiate(p.prefab);
+            GameObject gameObject = null;
+
+            if(p.prefab == null)
+            {
+                Dev.LogError("Cannot Instantiate a null object!");
+            }    
+
+            try
+            {
+                gameObject = GameObject.Instantiate(p.prefab);
+            }
+            catch(Exception e)
+            {
+                Dev.LogError($"Error when trying to instantiate {p.prefab} from {p.prefabType} at {p.source.path} in {p.source.Name}");
+            }
+
+            if (gameObject == null)
+                return null;
+
             if(source == null)
-                go.name = go.name + "(" + Guid.NewGuid().ToString() + ")"; //name values in parenthesis will be trimmed out when converting to a database key'd name
+                gameObject.name = gameObject.name + "(" + Guid.NewGuid().ToString() + ")"; //name values in parenthesis will be trimmed out when converting to a database key'd name
             else
-                go.name = go.name + $" ([{source.ObjectPosition.GetHashCode()}][{source.ScenePath.GetHashCode()}])"; //name values in parenthesis will be trimmed out when converting to a database key'd name
-            return go;
+                gameObject.name = gameObject.name + $" ([{source.ObjectPosition.GetHashCode()}][{source.ScenePath.GetHashCode()}])"; //name values in parenthesis will be trimmed out when converting to a database key'd name
+            return gameObject;
         }
     }
 
@@ -334,7 +352,7 @@ namespace EnemyRandomizerMod
             BuildArena(SpawnPoint);
         }
 
-        protected bool HeroInAggroRange()
+        protected virtual bool HeroInAggroRange()
         {
             var size = new Vector2(xR.Size, yR.Size);
             var center = new Vector2(xR.Mid, yR.Mid);
@@ -353,11 +371,15 @@ namespace EnemyRandomizerMod
             if (control == null)
                 yield break;
 
+            PreloadRefs();
+
             Hide();
 
             for (; ; )
             {
                 UpdateHeroRefs();
+
+                UpdateCustomRefs();
 
                 if(HeroInAggroRange())
                     Show();
@@ -366,6 +388,16 @@ namespace EnemyRandomizerMod
 
                 yield return new WaitForSeconds(1f);
             }
+        }
+
+        protected virtual void PreloadRefs()
+        {
+
+        }
+
+        protected virtual void UpdateCustomRefs()
+        {
+
         }
 
         protected virtual IEnumerable<CameraLockArea> GetCameraLocksFromScene()

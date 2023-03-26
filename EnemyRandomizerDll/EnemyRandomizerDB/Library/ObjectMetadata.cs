@@ -625,6 +625,13 @@ namespace EnemyRandomizerMod
                         a.x.Value = scale;
                 }
             }
+            {
+                var sactions = fsms.SelectMany(x => x.Fsm.States.SelectMany(y => y.GetActions<FaceObject>()));
+                foreach (var a in sactions)
+                {
+                    a.GetType().GetField("xScale", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(a,scale);
+                }
+            }
         }
 
         public virtual void SetAudioToMatchScale()
@@ -806,10 +813,10 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    positionOfObject = GetPointOn(otherdata, toSurfaceDir, projectionDistance);
+                   positionOfObject = GetPointOn(otherdata, toSurfaceDir, projectionDistance);
                 }
 
-                positionOffset = new Vector3(objectSize.x * originalUp.x * scale.x, objectSize.y * originalUp.y * scale.y, 0f);
+                positionOffset = new Vector3(objectSize.x * originalUp.x * scale.x / 3f, objectSize.y * originalUp.y * scale.y / 3f, 0f);
 
                 if (DatabaseName.Contains("Moss Walker"))
                 {
