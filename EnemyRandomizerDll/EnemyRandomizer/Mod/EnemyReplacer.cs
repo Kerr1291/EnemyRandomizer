@@ -347,7 +347,7 @@ namespace EnemyRandomizerMod
             {
                 try
                 {
-                    validReplacements = logic.GetValidReplacements(original, validReplacementObjects);
+                    validReplacements = logic.GetValidReplacements(original, validReplacements);
                 }
                 catch (Exception e)
                 {
@@ -367,7 +367,6 @@ namespace EnemyRandomizerMod
                 try
                 {
                     rng = logic.GetRNG(original, rng, EnemyRandomizer.PlayerSettings.seed);
-                    //newObject = logic.ReplaceEnemy(original);
                 }
                 catch (Exception e)
                 {
@@ -484,6 +483,7 @@ namespace EnemyRandomizerMod
             "Bone", //serialzation error?
             "Particle System", //serialization error?
             "Dust Land Small", //??? seems to be making lots of issues
+            "Infected Grass A", //??? seems to be making lots of issues
             //"Dust Trail", // --- likely needs mod to control pooling
         };
 
@@ -493,31 +493,6 @@ namespace EnemyRandomizerMod
             "Roar Feathers",
         };
 
-
-        /*
-         * Missing effects to possibly add:
-         * Slash
-         */
-
-            /* Missing hazards to possibly add:
-             * ruind_bridge_roof_04_spikes
-             * Dung Pillar (1-6)
-             * RoofSpikes
-             */
-
-            /*
-             * Hazards to fix:
-             * Shot Orange LG 0.7:  needs velocity added? -- also look into a name correction....
-             * ^delete the fsm, give some velocity, enable gravity, add a disable on collision action
-             * 
-             */
-
-            /* Broken Enemies to fix
-             * big bee -- can set bounces in Charge Antic - SetIntValue(Bounces)
-             * 
-             * 
-             * 
-             */
 
         public bool OnPersistentBoolItemLoaded(PersistentBoolItem item)
         {

@@ -15,7 +15,6 @@ using UnityEngine.UI;
 
 namespace EnemyRandomizerMod
 {
-    //Global (non-player specific) settings
     public class EnemyRandomizerSettings
     {
         public List<string> loadedLogics;
@@ -95,7 +94,7 @@ namespace EnemyRandomizerMod
                     Dev.Log($"SUBSCRIBING LOGIC:{self.name}");
 
                     var result = spd.activationButton.SkipLatestValueOnSubscribe().Subscribe(x =>
-                    { 
+                    {
                         SetSubpageMenuEnabled(self.name, spd.owner.IsLogicOnInMenu());
                         disposables.Remove(self.name);
                     });
@@ -181,7 +180,7 @@ namespace EnemyRandomizerMod
 
         public override int LoadPriority()
         {
-            return BitConverter.ToInt32(BitConverter.GetBytes((long)(0xDEADBEEF)),0);
+            return BitConverter.ToInt32(BitConverter.GetBytes((long)(0xDEADBEEF)), 0);
         }
 
         public static string ModAssetPath
@@ -216,7 +215,7 @@ namespace EnemyRandomizerMod
         public static ReactiveProperty<List<GameObject>> BlackBorders { get; protected set; }
 
         public EnemyRandomizer()
-            :base("Enemy Randomizer")
+            : base("Enemy Randomizer")
         {
             Instance = this;
 #if DEBUG
@@ -237,7 +236,7 @@ namespace EnemyRandomizerMod
                 Dev.Logger.LoggingEnabled = false;
                 Dev.Logger.GuiLoggingEnabled = false;
 #endif
-            Dev.Log("Created "+ currentVersion);
+            Dev.Log("Created " + currentVersion);
         }
 
         public override List<(string, string)> GetPreloadNames()
@@ -254,12 +253,12 @@ namespace EnemyRandomizerMod
 
             if (preloadedObjects != null)
             {
-                if(preloadedObjects.Count <= 0)
+                if (preloadedObjects.Count <= 0)
                 {
                     Modding.Logger.LogError("Enemy randomizer got zero preloaded objects. Mod will not work.");
                     throw new ArgumentException("Enemy Randomizer failed to load because it was not provided with any enemy prefabs, typically because the database failed to load for some reason.", "preloadedObjects");
                 }
-           }
+            }
 
             base.Initialize(preloadedObjects);
 
@@ -347,14 +346,14 @@ namespace EnemyRandomizerMod
             Dev.Log("unloading level");
             try
             {
-                if(BlackBorders.Value != null)
+                if (BlackBorders.Value != null)
                     BlackBorders.Value.Clear();
 
                 if (BattleManager.Instance.Value != null)
                     BattleManager.Instance.Value.Clear();
                 enemyReplacer.ClearPendingLoads();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev.LogError($"Error unloading level: MESSAGE:{e.Message} STACKTRACE:{e.StackTrace}");
             }
@@ -590,7 +589,7 @@ namespace EnemyRandomizerMod
                 Dev.LogWarning($"Last time EnemyRandomizer was set to use {x} logic, which no longer exists!");
             });
 
-            foreach(var logic in logicTypes)
+            foreach (var logic in logicTypes)
             {
                 logic.Value.InitDefaultStatesFromSettings();
             }
@@ -633,37 +632,4 @@ namespace EnemyRandomizerMod
             ObjectPool.Recycle(gameObject);
         }
     }
-        
 }
-
-
-/*
- * Ruins1_27
- * root: _Scenery/ruind_fountain/fountain_new
- *   parts: _0083_fountain (center piece)
- *   parts: _0082_fountain (back dreamer)
- *   parts: _0092_fountain (right dreamer)
- *   parts: _0092_fountain (1) (left dreamer)
- * 
- * 
- * GG_Blue_Room
- * root: gg_blue_core
- *  remove: DeactivateIfPlayerDataTrue
- *  FSM: Dream React
- *      State: Take Control  <--probably just remove this state, at least all the actions on it should go
- *          Action: SetPlayerDataBool
- *          Action: CallMethodProper
- *          Action: SetFsmBool
- *      State: Regain Control <-- and probably just remove this too
- *      
- *      
- * GG_Workshop
- * 
- * dream_beam_animation   :cool floor aoe particle effect
- * 
- * GG_Statue_Gorb <-maybe copy them all?
- * (remove the BossStatue component)
- * 
- * 
- * 
- */

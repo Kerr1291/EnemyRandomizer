@@ -15,8 +15,6 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Control";
 
-        public Rect bounds;
-
         public PlayMakerFSM attackCommands;
         public PlayMakerFSM teleport;
 
@@ -39,14 +37,6 @@ namespace EnemyRandomizerMod
                 attackCommands = gameObject.LocateMyFSM("Attack Commands");
 
             //disable a variety of camera shake actions
-
-            try
-            {
-                //remove the big shake action
-                control.GetState("First Tele").GetAction<SendEventByName>(3).sendEvent = string.Empty;
-                control.GetState("First Tele").RemoveAction(3);
-            }
-            catch (Exception e) { Dev.Log("error in first tele"); }
 
             try
             {
@@ -85,18 +75,19 @@ namespace EnemyRandomizerMod
 
 
             //reduce this non-boss radiance to spawn only 1 or 2 shots
-            attackCommands.GetState("Orb Antic").GetFirstActionOfType<RandomInt>().min.Value = 1;
-            attackCommands.GetState("Orb Antic").GetFirstActionOfType<RandomInt>().max.Value = 2;
+            ChangeRandomIntRange(attackCommands, "Orb Antic", 1, 2);
 
             //disable enemy kill shake commands that make the camera shake
-            attackCommands.GetState("EB 1").GetAction<SendEventByName>(3).sendEvent = string.Empty;
-            attackCommands.GetState("EB 2").GetAction<SendEventByName>(4).sendEvent = string.Empty;
-            attackCommands.GetState("EB 3").GetAction<SendEventByName>(4).sendEvent = string.Empty;
-            attackCommands.GetState("EB 7").GetAction<SendEventByName>(3).sendEvent = string.Empty;
-            attackCommands.GetState("EB 8").GetAction<SendEventByName>(3).sendEvent = string.Empty;
-            attackCommands.GetState("EB 9").GetAction<SendEventByName>(3).sendEvent = string.Empty;
-            attackCommands.GetState("Spawn Fireball").GetAction<SendEventByName>(0).sendEvent = string.Empty;
-            attackCommands.GetState("Aim").GetAction<SendEventByName>(2).sendEvent = string.Empty;
+            DisableSendEvents(attackCommands
+                , ("EB 1", 3)
+                , ("EB 2", 4)
+                , ("EB 3", 4)
+                , ("EB 7", 3)
+                , ("EB 8", 3)
+                , ("EB 9", 3)
+                , ("Spawn Fireball", 0)
+                , ("Aim", 2)
+                );
 
             var orbPrefab = attackCommands.GetState("Spawn Fireball").GetAction<SpawnObjectFromGlobalPool>(1).gameObject.Value;
             orbPrefab.transform.localScale = orbPrefab.transform.localScale * 0.4f;
@@ -124,48 +115,19 @@ namespace EnemyRandomizerMod
             teleport.GetState("Arrive").GetAction<SendEventByName>(5).sendEvent = string.Empty;
 
             //add aggro radius controls to teleport
-            try
-            {
-                var preHideState = teleport.GetState("Music?");
-                var hidden = teleport.AddState("Hidden");
+            InsertHiddenState(teleport, "Music?", "FINISHED", "Arrive");
 
-                teleport.AddVariable<FsmBool>("IsAggro");
-                var isAggro = teleport.FsmVariables.GetFsmBool("IsAggro");
+            control.RemoveAction("First Tele", 3); //remove big shake
 
-                //change the teleport she does to keep her hidden until a player is nearby
-                preHideState.ChangeTransition("FINISHED", "Hidden");
-                teleport.AddTransition("Hidden", "SHOW", "Arrive");
-                //hidden.AddTransition("SHOW", "Flash");
-                isAggro.Value = false;
-                hidden.AddAction(new BoolTest() { boolVariable = isAggro, isTrue = new FsmEvent("SHOW"), everyFrame = true });
-            }
-            catch (Exception e) { Dev.Log("error in teleport modification"); }
+            InsertHiddenState(control, "First Tele", "TELEPORTED", "Intro Recover", createNewPreTransitionEvent:true);
 
-            //add aggro radius controls to control
-            try
-            {
-                var firstTele = control.GetState("First Tele");
-                var hidden = control.AddState("Hidden");
-
-                control.AddVariable<FsmBool>("IsAggro");
-                var isAggro = control.FsmVariables.GetFsmBool("IsAggro");
-                isAggro.Value = false;
-
-                control.RemoveAction("First Tele", 3); //remove big shake
-                //firstTele.ChangeTransition("FINISHED", "Hidden");
-
-                //introRecover.AddTransition("SHOW", "Arena 1 Start");
-                control.RemoveTransition("First Tele", "TELEPORTED");
-                control.AddTransition("First Tele", "FINISHED", "Hidden");
-                firstTele.AddAction(new Wait() { finishEvent = new FsmEvent("FINISHED") });
-                //control.AddTransition("Intro Recover", "SHOW", "Arena 1 Start");
-                control.AddTransition("Hidden", "SHOW", "Intro Recover");
-                hidden.AddAction(new BoolTest() { boolVariable = isAggro, isTrue = new FsmEvent("SHOW"), everyFrame = true });
-            }
-            catch (Exception e) { Dev.Log("error in control modification"); }
+            //special behaviour for abs rad
+            if (FSMsUsingHiddenStates.Contains(control))
+                FSMsUsingHiddenStates.Remove(control);
 
             //mute the init sfx
-            control.GetState("Set Arena 1").GetFirstActionOfType<AudioPlayerOneShotSingle>().volume = 0f;
+            SetAudioOneShotVolume(control, "Set Arena 1");
+            SetAudioOneShotVolume(control, "First Tele");
         }
 
         protected virtual Dictionary<string, Func<FSMAreaControlEnemy, float>> CommandFloatRefs
@@ -192,17 +154,6 @@ namespace EnemyRandomizerMod
         {
             base.UpdateRefs(fsm, refs);
             base.UpdateRefs(attackCommands, CommandFloatRefs);
-        }
-
-        protected override void BuildArena(Vector3 spawnPoint)
-        {
-            base.BuildArena(spawnPoint);
-            bounds = new Rect(spawnPoint.x, spawnPoint.y, xR.Size, yR.Size);
-        }
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
         }
 
         protected virtual void OnEnable()
@@ -237,39 +188,23 @@ namespace EnemyRandomizerMod
             control.GetFirstActionOfType<SetFsmVector3>("First Tele").setValue = transform.position;
             control.GetFirstActionOfType<SetFsmVector3>("Rage1 Tele").setValue = transform.position;
 
-            bool replaced = false;
-            var actions = control.GetState("Climb Plats").Actions;
-            control.GetState("Climb Plats").Actions =
-                actions.Select(x =>
-                {
-                    if (!replaced && x == actions.First())
-                    {
-                        replaced = true;
-                        return new CustomFsmAction(() => Destroy(gameObject));
-                    }
-                    return x;
-                }).ToArray();
+            AddResetToStateOnHide(control, "Init");
+
+            var climbPlatsState = control.GetState("Climb Plats1");
+            climbPlatsState.Actions = new FsmStateAction[] {
+                new CustomFsmAction(() => Destroy(gameObject))
+            }; 
 
             if (!HeroInAggroRange())
                 Hide();
 
-            for (; ; )
-            {
-                UpdateHeroRefs();
-
-                if (HeroInAggroRange())
-                    Show();
-                else
-                    Hide();
-
-                yield return new WaitForSeconds(1f);
-            }
+            yield return UpdateAggroRange();
         }
 
         protected override bool HeroInAggroRange()
         {
             var size = new Vector2(30f, 30f);
-            var center = new Vector2(xR.Mid, yR.Mid);
+            var center = new Vector2(transform.position.x, transform.position.y);
             var herop = new Vector2(HeroX, HeroY);
             var dist = herop - center;
             return (dist.sqrMagnitude < size.sqrMagnitude);
@@ -278,21 +213,12 @@ namespace EnemyRandomizerMod
         protected override void Show()
         {
             base.Show();
-            attackCommands.SetState("Init");
 
             if (control.ActiveStateName == "Hidden")
+            {
                 control.SendEvent("SHOW");
-
-            if (teleport.ActiveStateName == "Hidden")
-                teleport.SendEvent("SHOW");
-
-        }
-
-        protected override void Hide()
-        {
-            base.Hide();
-
-            control.SetState("Init");
+                attackCommands.SetState("Init");
+            }
         }
     }
 
@@ -304,3 +230,23 @@ namespace EnemyRandomizerMod
     {
     }
 }
+
+
+//add aggro radius controls to control
+//try
+//{
+//    var firstTele = control.GetState("First Tele");
+//    var hidden = control.AddState("Hidden");
+
+//    control.AddVariable<FsmBool>("IsAggro");
+//    var isAggro = control.FsmVariables.GetFsmBool("IsAggro");
+//    isAggro.Value = false;
+
+//    control.RemoveTransition("First Tele", "TELEPORTED");
+//    control.AddTransition("First Tele", "FINISHED", "Hidden");
+//    firstTele.AddAction(new Wait() { finishEvent = new FsmEvent("FINISHED") });
+//    //control.AddTransition("Intro Recover", "SHOW", "Arena 1 Start");
+//    control.AddTransition("Hidden", "SHOW", "Intro Recover");
+//    hidden.AddAction(new BoolTest() { boolVariable = isAggro, isTrue = new FsmEvent("SHOW"), everyFrame = true });
+//}
+//catch (Exception e) { Dev.Log("error in control modification"); }

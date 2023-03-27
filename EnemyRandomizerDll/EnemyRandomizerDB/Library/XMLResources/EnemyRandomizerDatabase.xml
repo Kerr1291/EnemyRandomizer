@@ -3382,23 +3382,19 @@
   </scenes>
   <enemyNames>
     <string>Flamebearer Spawn</string>
-    <string>Flamebearer Med</string>
     <string>Flamebearer Small</string>
+    <string>Flamebearer Med</string>
+    <string>Flamebearer Large</string>
     <string>Mosquito</string>
     <string>Colosseum_Armoured_Roller</string>
-    <!--ADD A VALID SCENE REFERENCE-->
     <string>Colosseum_Miner</string>
-    <!--ADD A VALID SCENE REFERENCE-->
     <string>Zote Boss</string>
     <string>Bursting Bouncer</string>
     <string>Super Spitter</string>
     <string>Super Spitter Col</string>
-    <!--ADD A VALID SCENE REFERENCE-->
     <string>Giant Fly Col</string>
     <string>Colosseum_Shield_Zombie</string>
-    <!--ADD A VALID SCENE REFERENCE-->
     <string>Buzzer Col</string>
-    <!--ADD A VALID SCENE REFERENCE-->
     <string>Blobble</string>
     <string>Colosseum_Armoured_Mosquito</string>
     <string>Colosseum_Flying_Sentry</string>
@@ -3424,7 +3420,6 @@
     <string>Jellyfish</string>
     <string>Lil Jellyfish</string>
     <string>Mantis Flyer Child</string>
-    <string>Flamebearer Large</string>
     <string>Ghost Warrior Slug</string>
     <string>Corpse Garden Zombie</string>
     <string>Baby Centipede</string>

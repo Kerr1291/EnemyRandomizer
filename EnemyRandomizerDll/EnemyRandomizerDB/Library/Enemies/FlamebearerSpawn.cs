@@ -16,8 +16,14 @@ using Dev = Modding.Logger;
 
 namespace EnemyRandomizerMod
 {
-    public class FlamebearerControl : DefaultSpawnedEnemyControl
+    public abstract class FlamebearerControl : FSMAreaControlEnemy
     {
+        public override string FSMName => gameObject.GetComponent<PlayMakerFSM>().FsmName; //not actually sure
+
+        public abstract int Level { get; }
+
+        public override string OnShowControlBroadcastEvent => "GRIMMKIN SPAWN";
+
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
@@ -39,23 +45,28 @@ namespace EnemyRandomizerMod
 
     public class FlamebearerSmallControl : FlamebearerControl
     {
+        public override int Level => 1;
     }
+
     public class FlamebearerMedControl : FlamebearerControl
     {
+        public override int Level => 2;
     }
+
     public class FlamebearerLargeControl : FlamebearerControl
     {
+        public override int Level => 3;
     }
 
-    public class FlamebearerSmallSpawner : DefaultSpawner<FlamebearerControl>
+    public class FlamebearerSmallSpawner : DefaultSpawner<FlamebearerSmallControl>
     {
     }
 
-    public class FlamebearerMedSpawner : DefaultSpawner<FlamebearerControl>
+    public class FlamebearerMedSpawner : DefaultSpawner<FlamebearerMedControl>
     {
     }
 
-    public class FlamebearerLargeSpawner : DefaultSpawner<FlamebearerControl>
+    public class FlamebearerLargeSpawner : DefaultSpawner<FlamebearerLargeControl>
     {
     }
 
