@@ -1,7 +1,7 @@
 ﻿
 /* CURRENT TODO
  * 
- * 
+ * IF AN ENEMY REPLACES THE SAME TYPE, SKIP REPLACEMENT? (add an option) 
  *
  * Remove the grimmkin's screen space existance abilities....
  * 
@@ -117,6 +117,95 @@
  * 
  * 
  *  ENEMY STATUS
+ *  
+ *  
+ *  
+    <string>Mosquito</string>                              -   IS BASIC ENEMY (see BasicEnemies.cs) && SHOULD WORK FINE
+    <string>Hopper</string>                                -   ""
+    <string>Bursting Bouncer</string>                      -   ""
+    <string>Blobble</string>                               -   ""
+    <string>Giant Hopper</string>                          -   ""
+    <string>Spitting Zombie</string>                       -   ""
+    <string>Bursting Zombie</string>                       -   ""
+    <string>Angry Buzzer</string>                          -   ""
+    <string>Mantis Heavy</string>                          -   ""
+    <string>Lesser Mawlek</string>                         -   ""
+    <string>Mantis Heavy Flyer</string>                    -   ""
+    <string>Fly</string>                                   -   ""
+    <string>Roller</string>                                -   ""
+    <string>Mossman_Runner</string>                        -   ""
+    <string>Flukeman Top</string>                          -   ""
+    <string>Flukeman Bot</string>                          -   ""
+    <string>Crawler</string>                               -   ""
+    <string>Buzzer</string>                                -   ""
+    <string>Zombie Runner</string>                         -   ""
+    <string>Spitter</string>                               -   ""
+    <string>Zombie Hornhead</string>                       -   ""
+    <string>Zombie Barger</string>                         -   ""
+    <string>Prayer Slug</string>                           -   ""
+    <string>Zombie Shield</string>                         -   ""
+    <string>Zombie Leaper</string>                         -   ""
+    <string>Zombie Guard</string>                          -   ""
+    <string>Zombie Myla</string>                           -   ""
+    <string>Royal Zombie Fat</string>                      -   ""
+    <string>Royal Zombie</string>                          -   ""
+    <string>Royal Zombie Coward</string>                   -   ""
+    <string>Ruins Sentry</string>                          -   ""
+    <string>Ruins Flying Sentry</string>                   -   ""
+    <string>Ruins Flying Sentry Javelin</string>           -   ""
+    <string>Ruins Sentry Fat</string>                      -   ""
+    <string>Great Shield Zombie</string>                   -   ""
+    <string>Moss Walker</string>                           -   ""
+    <string>Moss Flyer</string>                            -   ""
+    <string>Mossman_Shaker</string>                        -   ""
+    <string>Grass Hopper</string>                          -   ""
+    <string>Lazy Flyer Enemy</string>                      -   ""
+    <string>Fungoon Baby</string>                          -   ""
+    <string>Fungus Flyer</string>                          -   ""
+    <string>Zombie Fungus B</string>                       -   ""
+    <string>Fung Crawler</string>                          -   ""
+    <string>Mushroom Brawler</string>                      -   ""
+    <string>Mushroom Baby</string>                         -   ""
+    <string>Mushroom Roller</string>                       -   ""
+    <string>Zombie Fungus A</string>                       -   ""
+    <string>Mantis</string>                                -   ""
+    <string>Jellyfish Baby</string>                        -   ""
+    <string>Garden Zombie</string>                         -   ""
+    <string>Moss Knight Fat</string>                       -   ""
+    <string>Zombie Miner</string>                          -   ""
+    <string>Crystal Flyer</string>                         -   ""
+    <string>Slash Spider</string>                          -   ""
+    <string>Spider Flyer</string>                          -   ""
+    <string>Blow Fly</string>                              -   ""
+    <string>Bee Hatchling Ambient</string>                 -   ""
+    <string>Flip Hopper</string>                           -   ""
+    <string>Inflater</string>                              -   ""
+    <string>Fluke Fly</string>                             -   ""
+    <string>Flukeman</string>                              -   ""
+    <string>Bee Stinger</string>                           -   ""
+    <string>Fat Fluke</string>                             -   ""
+    <string>Super Spitter</string>                         -   ""
+    <string>Mawlek Col</string>                            -   ""
+    <string>Colosseum Grass Hopper</string>                -   ""
+
+
+    <string>Super Spitter Col</string>                     -  Shouldn't be their own enemies....
+    <string>Giant Fly Col</string>                         -  Shouldn't be their own enemies....
+    <string>Buzzer Col</string>                            -  Shouldn't be their own enemies....
+    <string>Ceiling Dropper Col</string>                   -  Shouldn't be their own enemies....
+    <string>Colosseum_Armoured_Roller R</string>           -  ""
+    <string>Colosseum_Armoured_Mosquito R</string>         -  ""
+    <string>Giant Buzzer Col</string>                      -  ""
+    <string>Super Spitter R</string>                       -  ""
+    <string>Hatcher Baby</string>                          -   -- ??? don't think this will be needed
+    <string>Roller R</string>                              -   -- (don't have a specific spawner with this string)
+    <string>Spitter R</string>                             -   -- (it's converted to the non-R type)
+    <string>Buzzer R</string>                              -   --
+    <string>Great Shield Zombie bottom</string>            -   --
+
+    <string>Corpse Garden Zombie</string>                  -   "" ??? check if this is a corpse, remove from enemy pool if it is
+
+
     <string>Giant Fly</string>                             -   FIXED
     <string>Hatcher</string>                               -   FIXED
     <string>Crystallised Lazer Bug</string>                -   FIXED
@@ -153,182 +242,99 @@
     <string>Zote Crew Tall</string>                        -   NEEDS TESTING -- ?????
     <string>Zote Balloon</string>                          -   NEEDS TESTING -- FIX EXPLOSION NOT HAPPENING && RESPAWN STILL HAPPENING
     <string>Ordeal Zoteling</string>                       -   ???????
+    <string>Baby Centipede</string>                        -   NEEDS TESTING
 
     <string>Grey Prince</string>                           -   STILL BROKEN
+    <string>Tiny Spider</string>                           -   USUALLY SPAWNS STUCK
+    <string>Shade Sibling</string>                         -   ADD AN OPTION TO REMOVE THE CHARM FRIENDLY EFFECT 
+    <string>Lancer</string>                                -   NEEDS SCRIPT TO DIE PROPERLY
+    <string>Mage Blob</string>                             -   DONT SPAWN HIDDEN IN ARENAS
+    <string>Mage</string>                                  -   NEEDS SPAWN SCRIPT
+    <string>Mage</string>                                  -   NEEDS SPAWN SCRIPT
+    <string>Climber</string>                               -   CAN SPAWN FLOATING?
+    <string>Mender Bug</string>                            -   DOESNT SPAWN PROPERLY
+    <string>Blocker</string>                               -   DOESNT PROPERLY SPAWN ADDS
+    <string>Egg Sac</string>                               -   NEEDS ITEM TRANSFER/SPAWN SCRIPT
+    <string>Gorgeous Husk</string>                         -   NEEDS MEME SCRIPT
+    <string>Ceiling Dropper</string>                       -   KEEPS SPAWNING FLOATING
+    <string>Mage Balloon</string>                          -   DONT SPAWN HIDDEN IN ARENAS
+    <string>Plant Trap</string>                            -   OFTEN SPAWNS FLOATING / FACING INCORRECTLY
+    <string>Acid Flyer</string>                            -   IF SOMETHING REPLACES THIS IT SHOULD HAVE TINKER ADDED!!
+    <string>Acid Walker</string>                           -   IF SOMETHING REPLACES THIS IT SHOULD HAVE TINKER ADDED!!
+    <string>Plant Turret</string>                          -   OFTEN SPAWNS FLOATING / FACING INCORRECTLY / DOESNT SHOOT CORRECTLY
+    <string>Plant Turret Right</string>                    -   OFTEN SPAWNS FLOATING / FACING INCORRECTLY / DOESNT SHOOT CORRECTLY
+    <string>Mushroom Turret</string>                       -   OFTEN SPAWNS FLOATING / FACING INCORRECTLY / DOESNT SHOOT CORRECTLY
+    <string>Moss Knight</string>                           -   NEEDS TESTING
+    <string>Moss Charger</string>                          -   NEEDS SCRIPT TO FIX GROUND TRAVERSAL
+    <string>Ghost Warrior Marmu</string>                   -   NEEDS CORPSE TESTING FOR CRASH
+    <string>Zombie Beam Miner</string>                     -   NEEDS LASER RANGE EXTENDED
+    <string>Spider Mini</string>                           -   KEEPS SPAWNING STUCK IN AIR
+    <string>Centipede Hatcher</string>                     -   NEEDS HATCHER FIX
+    <string>Mantis Heavy Spawn</string>                    -   NEEDS TESTING/REMOVAL
+    <string>Zombie Hornhead Sp</string>                    -   NEEDS TESTING
+    <string>Zombie Runner Sp</string>                      -   NEEDS TESTING
+    <string>Fat Fly</string>                               -   TEST? MIGHT NEED BOSS FIX
+    <string>Parasite Balloon</string>                      -   MAKE SPAWN FAST IN ARENA?
+    <string>Royal Gaurd</string>                           -   NEEDS A FIX TO WORK RANDOMIZED EFFECTS
+    <string>Zombie Hive</string>                           -   DOESNT PROPERLY SPAWN ADDS
+    <string>Big Bee</string>                               -   WHEN SOMETHING REPLACES THIS IT SHOULD HAVE A SMASHER
+    <string>Grave Zombie</string>                          -   MAYBE NERF TO 1 DMG WHEN REPLACING A WEAK ENEMY
+    <string>Crystal Crawler</string>                       -   OFTEN SPAWNS FLOATING
+    <string>Mines Crawler</string>                         -   OFTEN SPAWNS FLOATING?
+    <string>Abyss Crawler</string>                         -   OFTEN SPAWN FLOATING
+    <string>Mantis Flyer Child</string>                    -   NEEDS FIX FOR SPAWNING ON SURFACES CORRECTLY
+    <string>Lil Jellyfish</string>                         -   IS A PROJECTILE??? LOOK INTO THIS 
+    <string>Jellyfish</string>                             -   NEEDS SCRIPT FOR SPAWNING BABY CORRECTLY
 
-    <string>Mosquito</string>                              -   IN BASIC ENEMY LIST (see BasicEnemies.cs)
-    <string>Hopper</string>                                -   ""
-    <string>Bursting Bouncer</string>                      -   ""
-    <string>Blobble</string>                               -   ""
-    <string>Giant Hopper</string>                          -   ""
-
-
-
-
-    <string>Spitting Zombie</string>                       -   ""
-    <string>Bursting Zombie</string>                       -   ""
-    <string>Angry Buzzer</string>                          -   ""
-    <string>Mantis Heavy</string>                          -   ""
-    <string>Lesser Mawlek</string>                         -   ""
-    <string>Mantis Heavy Flyer</string>                    -   ""
-    <string>Fly</string>                                   -   ""
-    <string>Roller</string>                                -   ""
-    <string>Hatcher Baby</string>                          -   -- ??? don't think this will be needed
-    <string>Roller R</string>                              -   -- (don't have a specific spawner with this string)
-    <string>Spitter R</string>                             -   -- (it's converted to the non-R type)
-    <string>Buzzer R</string>                              -   --
-    <string>Mossman_Runner</string>                        -   ""
-    <string>Corpse Garden Zombie</string>                  -   "" ??? check if this is a corpse, remove from enemy pool if it is
-    <string>Tiny Spider</string>                           -   ""
-    <string>Shade Sibling</string>                         -   ""
-    <string>Baby Centipede</string>                        -   "" 
-    <string>Flukeman Top</string>                          -   ""
-    <string>Flukeman Bot</string>                          -   ""
-    <string>White Defender</string>                        -   ""
-    <string>Jellyfish GG</string>                          -   ""
-    <string>Crawler</string>                               -   ""
-    <string>Buzzer</string>                                -   ""
-    <string>Mega Fat Bee</string>                          -   ""
-    <string>Lobster</string>                               -   ""
-    <string>Mage Knight</string>                           -   ""
-    <string>Mage</string>                                  -   ""
-    <string>Electric Mage</string>                         -   ""
-    <string>Mage Blob</string>                             -   ""
-    <string>Lancer</string>                                -   ""
-    <string>Climber</string>                               -   ""
-    <string>Zombie Runner</string>                         -   ""
-    <string>Mender Bug</string>                            -   ""
-    <string>Spitter</string>                               -   ""
-    <string>Zombie Hornhead</string>                       -   ""
-    <string>Zombie Barger</string>                         -   ""
-    <string>Prayer Slug</string>                           -   ""
-    <string>Blocker</string>                               -   ""
-    <string>Zombie Shield</string>                         -   ""
-    <string>Zombie Leaper</string>                         -   ""
-    <string>Zombie Guard</string>                          -   ""
-    <string>Zombie Myla</string>                           -   ""
-    <string>Egg Sac</string>                               -   ""
-    <string>Royal Zombie Fat</string>                      -   ""
-    <string>Royal Zombie</string>                          -   ""
-    <string>Royal Zombie Coward</string>                   -   ""
-    <string>Gorgeous Husk</string>                         -   ""
-    <string>Ceiling Dropper</string>                       -   ""
-    <string>Ruins Sentry</string>                          -   ""
-    <string>Ruins Flying Sentry</string>                   -   ""
-    <string>Ruins Flying Sentry Javelin</string>           -   ""
-    <string>Ruins Sentry Fat</string>                      -   ""
-    <string>Mage Balloon</string>                          -   ""
-    <string>Great Shield Zombie</string>                   -   ""
-    <string>Great Shield Zombie bottom</string>            -   --
-    <string>Black Knight</string>                          -   ""
-    <string>Jar Collector</string>                         -   ""
-    <string>Moss Walker</string>                           -   ""
-    <string>Plant Trap</string>                            -   ""
-    <string>Mossman_Shaker</string>                        -   ""
-    <string>Pigeon</string>                                -   ""
-    <string>Hornet Boss 1</string>                         -   ""
-    <string>Acid Flyer</string>                            -   ""
-    <string>Moss Charger</string>                          -   ""
-    <string>Acid Walker</string>                           -   ""
-    <string>Plant Turret</string>                          -   ""
-    <string>Plant Turret Right</string>                    -   ""
-    <string>Fat Fly</string>                               -   ""
-    <string>Giant Buzzer</string>                          -   ""
-    <string>Moss Knight</string>                           -   ""
-    <string>Grass Hopper</string>                          -   ""
-    <string>Lazy Flyer Enemy</string>                      -   ""
-    <string>Mega Moss Charger</string>                     -   ""
-    <string>Ghost Warrior No Eyes</string>                 -   ""
-    <string>Fungoon Baby</string>                          -   ""
-    <string>Mushroom Turret</string>                       -   ""
-    <string>Fungus Flyer</string>                          -   ""
-    <string>Zombie Fungus B</string>                       -   ""
-    <string>Fung Crawler</string>                          -   ""
-    <string>Mushroom Brawler</string>                      -   ""
-    <string>Mushroom Baby</string>                         -   ""
-    <string>Mushroom Roller</string>                       -   ""
-    <string>Zombie Fungus A</string>                       -   ""
-    <string>Mantis</string>                                -   ""
-    <string>Ghost Warrior Hu</string>                      -   ""
-    <string>Jellyfish Baby</string>                        -   ""
-    <string>Moss Flyer</string>                            -   ""
-    <string>Garden Zombie</string>                         -   ""
-    <string>Mantis Traitor Lord</string>                   -   ""
-    <string>Moss Knight Fat</string>                       -   ""
-    <string>Mantis Heavy Spawn</string>                    -   ""
-    <string>Ghost Warrior Marmu</string>                   -   ""
-    <string>Mega Jellyfish</string>                        -   ""
-    <string>Ghost Warrior Xero</string>                    -   ""
-    <string>Grave Zombie</string>                          -   ""
-    <string>Crystal Crawler</string>                       -   ""
-    <string>Zombie Miner</string>                          -   ""
-    <string>Crystal Flyer</string>                         -   ""
-    <string>Mines Crawler</string>                         -   ""
-    <string>Mega Zombie Beam Miner</string>                -   ""
-    <string>Zombie Beam Miner</string>                     -   ""
-    <string>Zombie Beam Miner Rematch</string>             -   ""
-    <string>Spider Mini</string>                           -   ""
-    <string>Zombie Hornhead Sp</string>                    -   ""
-    <string>Zombie Runner Sp</string>                      -   ""
-    <string>Centipede Hatcher</string>                     -   ""
-    <string>Mimic Spider</string>                          -   ""
-    <string>Slash Spider</string>                          -   ""
-    <string>Spider Flyer</string>                          -   ""
-    <string>Ghost Warrior Galien</string>                  -   ""
-    <string>Blow Fly</string>                              -   ""
-    <string>Bee Hatchling Ambient</string>                 -   ""
-    <string>Ghost Warrior Markoth</string>                 -   ""
-    <string>Hornet Boss 2</string>                         -   ""
-    <string>Abyss Crawler</string>                         -   ""
-    <string>Parasite Balloon</string>                      -   ""
-    <string>Flip Hopper</string>                           -   ""
-    <string>Inflater</string>                              -   ""
-    <string>Fluke Fly</string>                             -   ""
-    <string>Flukeman</string>                              -   ""
-    <string>Dung Defender</string>                         -   ""
-    <string>fluke_baby_02</string>                         -   ""
-    <string>fluke_baby_01</string>                         -   ""
-    <string>fluke_baby_03</string>                         -   ""
-    <string>Fluke Mother</string>                          -   ""
+    <string>Pigeon</string>                                -   COULD USE SOMETHING TO MAKE THEM MORE INTERESTING
+    <string>fluke_baby_02</string>                         -   COULD USE SOMETHING TO MAKE THEM MORE INTERESTING
+    <string>fluke_baby_01</string>                         -   COULD USE SOMETHING TO MAKE THEM MORE INTERESTING
+    <string>fluke_baby_03</string>                         -   COULD USE SOMETHING TO MAKE THEM MORE INTERESTING
     <string>Enemy</string>                                 -   ""
-    <string>Royal Gaurd</string>                           -   ""
-    <string>Zombie Hive</string>                           -   ""
-    <string>Bee Stinger</string>                           -   ""
-    <string>Big Bee</string>                               -   ""
-    <string>Hive Knight</string>                           -   ""
-    <string>Grimm Boss</string>                            -   ""
-    <string>Nightmare Grimm Boss</string>                  -   ""
-    <string>Dream Mage Lord</string>                       -   ""
-    <string>Dream Mage Lord Phase2</string>                -   ""
-    <string>Hollow Knight Boss</string>                    -   ""
-    <string>HK Prime</string>                              -   ""
-    <string>Pale Lurker</string>                           -   ""
-    <string>Oro</string>                                   -   ""
-    <string>Mato</string>                                  -   ""
-    <string>Sheo Boss</string>                             -   ""
-    <string>Fat Fluke</string>                             -   ""
-    <string>Sly Boss</string>                              -   ""
-    <string>Hornet Nosk</string>                           -   ""
-    <string>Super Spitter</string>                         -   ""
-    <string>Colosseum_Armoured_Roller</string>             -   ""
-    <string>Colosseum_Miner</string>                       -   ""
-    <string>Colosseum_Shield_Zombie</string>               -   ""
-    <string>Colosseum_Armoured_Mosquito</string>           -   ""
-    <string>Colosseum_Flying_Sentry</string>               -   ""
-    <string>Colosseum_Worm</string>                        -   ""
-    <string>Mawlek Col</string>                            -   ""
-    <string>Colosseum Grass Hopper</string>                -   "" 
-    <string>Jellyfish</string>                             -   ""
-    <string>Mantis Flyer Child</string>                    -   ""
-    <string>Ghost Warrior Slug</string>                    -   ""
-    <string>Lil Jellyfish</string>                         -   ""
 
-    <string>Super Spitter Col</string>                     -  Shouldn't be their own enemies....
-    <string>Giant Fly Col</string>                         -  Shouldn't be their own enemies....
-    <string>Buzzer Col</string>                            -  Shouldn't be their own enemies....
-    <string>Ceiling Dropper Col</string>                   -  Shouldn't be their own enemies....
-    <string>Colosseum_Armoured_Roller R</string>           -  ""
-    <string>Colosseum_Armoured_Mosquito R</string>         -  ""
-    <string>Giant Buzzer Col</string>                      -  ""
-    <string>Super Spitter R</string>                       -  ""
+
+    <string>Colosseum_Armoured_Roller</string>             -   CHECK COLO SCRIPT?
+    <string>Colosseum_Miner</string>                       -   CHECK COLO SCRIPT?
+    <string>Colosseum_Shield_Zombie</string>               -   CHECK COLO SCRIPT?
+    <string>Colosseum_Armoured_Mosquito</string>           -   CHECK COLO SCRIPT?
+    <string>Colosseum_Flying_Sentry</string>               -   CHECK COLO SCRIPT?
+    <string>Colosseum_Worm</string>                        -   CHECK COLO SCRIPT?
+
+    <string>Ghost Warrior Markoth</string>                 -   NEEDS BOSS SCRIPT
+    <string>Mega Fat Bee</string>                          -   NEEDS BOSS SCRIPT
+    <string>White Defender</string>                        -   NEEDS BOSS SCRIPT
+    <string>Jellyfish GG</string>                          -   NEEDS BOSS SCRIPT
+    <string>Lobster</string>                               -   NEEDS BOSS SCRIPT
+    <string>Mage Knight</string>                           -   NEEDS BOSS SCRIPT
+    <string>Black Knight</string>                          -   NEEDS BOSS SCRIPT
+    <string>Jar Collector</string>                         -   NEEDS BOSS SCRIPT
+    <string>Hornet Boss 1</string>                         -   NEEDS BOSS SCRIPT
+    <string>Giant Buzzer</string>                          -   NEEDS BOSS SCRIPT
+    <string>Mega Moss Charger</string>                     -   NEEDS BOSS SCRIPT
+    <string>Ghost Warrior No Eyes</string>                 -   NEEDS BOSS SCRIPT
+    <string>Ghost Warrior Hu</string>                      -   NEEDS BOSS SCRIPT
+    <string>Mantis Traitor Lord</string>                   -   NEEDS BOSS SCRIPT
+    <string>Mega Jellyfish</string>                        -   NEEDS BOSS SCRIPT
+    <string>Ghost Warrior Xero</string>                    -   NEEDS BOSS SCRIPT
+    <string>Mega Zombie Beam Miner</string>                -   NEEDS BOSS SCRIPT
+    <string>Zombie Beam Miner Rematch</string>             -   NEEDS BOSS SCRIPT
+    <string>Mimic Spider</string>                          -   NEEDS BOSS SCRIPT
+    <string>Ghost Warrior Galien</string>                  -   NEEDS BOSS SCRIPT
+    <string>Hornet Boss 2</string>                         -   NEEDS BOSS SCRIPT
+    <string>Dung Defender</string>                         -   NEEDS BOSS SCRIPT
+    <string>Fluke Mother</string>                          -   NEEDS BOSS SCRIPT
+    <string>Hive Knight</string>                           -   NEEDS BOSS SCRIPT
+    <string>Grimm Boss</string>                            -   NEEDS BOSS SCRIPT
+    <string>Nightmare Grimm Boss</string>                  -   NEEDS BOSS SCRIPT
+    <string>Dream Mage Lord</string>                       -   NEEDS BOSS SCRIPT
+    <string>Dream Mage Lord Phase2</string>                -   NEEDS BOSS SCRIPT
+    <string>Hollow Knight Boss</string>                    -   NEEDS BOSS SCRIPT
+    <string>HK Prime</string>                              -   NEEDS BOSS SCRIPT
+    <string>Pale Lurker</string>                           -   NEEDS BOSS SCRIPT
+    <string>Oro</string>                                   -   NEEDS BOSS SCRIPT
+    <string>Mato</string>                                  -   NEEDS BOSS SCRIPT
+    <string>Sheo Boss</string>                             -   NEEDS BOSS SCRIPT
+    <string>Sly Boss</string>                              -   NEEDS BOSS SCRIPT
+    <string>Hornet Nosk</string>                           -   NEEDS BOSS SCRIPT
+    <string>Ghost Warrior Slug</string>                    -   NEEDS BOSS SCRIPT
  */
