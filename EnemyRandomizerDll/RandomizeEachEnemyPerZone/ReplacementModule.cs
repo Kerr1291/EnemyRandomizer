@@ -73,7 +73,7 @@ namespace EnemyRandomizerMod
 
         public virtual List<PrefabObject> GetValidEnemyReplacements(List<PrefabObject> validReplacements)
         {
-            return validReplacements;
+            return validReplacements.Where(x => !EnemyReplacer.ReplacementEnemiesToSkip.Contains(x.prefabName)).ToList();
         }
 
         public virtual List<PrefabObject> GetValidHazardReplacements(List<PrefabObject> validReplacements)

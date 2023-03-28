@@ -304,36 +304,6 @@ namespace EnemyRandomizerMod
 
             FSMsWithResetToStateOnHide.Add(fsm, resetToState);
         }
-
-        protected virtual void DisableSendEvents(PlayMakerFSM fsm, params (string StateName, int ActionIndex)[] stateActions)
-        {
-            foreach(var sa in stateActions)
-            {
-                fsm.GetState(sa.StateName).GetAction<SendEventByName>(sa.ActionIndex).sendEvent = string.Empty;
-            }
-        }
-
-        protected virtual void ChangeRandomIntRange(PlayMakerFSM fsm, string stateName, int min, int max)
-        {
-            fsm.GetState(stateName).GetFirstActionOfType<RandomInt>().min.Value = min;
-            fsm.GetState(stateName).GetFirstActionOfType<RandomInt>().max.Value = max;
-        }
-
-        protected virtual void SetAudioOneShotVolume(PlayMakerFSM fsm, string stateName, float vol = 0f)
-        {
-            fsm.GetState(stateName).GetFirstActionOfType<AudioPlayerOneShotSingle>().volume = vol;
-        }
-        
-        /// <summary>
-        /// WARNING: will remove ALL previous actions on the state
-        /// </summary>
-        protected virtual void OverrideState(PlayMakerFSM fsm, string stateName, Action stateAction)
-        {
-            var overrideState = fsm.GetState(stateName);
-            overrideState.Actions = new FsmStateAction[] {
-                new CustomFsmAction(stateAction)
-            };
-        }
     }
 }
 

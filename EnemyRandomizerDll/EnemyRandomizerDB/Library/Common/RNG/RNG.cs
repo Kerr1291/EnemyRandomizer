@@ -111,13 +111,13 @@ namespace EnemyRandomizerMod
             return mtRNG.genrand_Int31();
         }
 
-        //Generates a [0-1] float
+        ///Generates a [0-1] float
         public float Randf()
         {
             return (float)( mtRNG.genrand_real1() );
         }
 
-        //Generates a [0-N] float
+        ///Generates a [0-N] float
         public float Rand( float value )
         {
             return Randf() * value;
@@ -128,7 +128,7 @@ namespace EnemyRandomizerMod
             return mtRNG.genrand_real1();
         }
 
-        //Generates a [0-N] double
+        ///Generates a [0-N] double
         public double Rand( double a )
         {
             double n = Randd() * a;

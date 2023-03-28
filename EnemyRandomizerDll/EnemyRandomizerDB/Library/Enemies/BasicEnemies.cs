@@ -1,5 +1,57 @@
-﻿namespace EnemyRandomizerMod
+﻿using HutongGames.PlayMaker.Actions;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+using EnemyRandomizerMod.Futils;
+using HutongGames.PlayMaker;
+
+namespace EnemyRandomizerMod
 {
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class TEMPLATE_Control : DefaultSpawnedEnemyControl { }
+
+    public class TEMPLATE_Spawner : DefaultSpawner<TEMPLATE_Control> { }
+
+    public class TEMPLATE_PrefabConfig : DefaultPrefabConfig<TEMPLATE_Control> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class BuzzerControl : DefaultSpawnedEnemyControl { }
+
+    public class BuzzerSpawner : DefaultSpawner<BuzzerControl> { }
+
+    public class BuzzerPrefabConfig : DefaultPrefabConfig<BuzzerControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class CrawlerControl : DefaultSpawnedEnemyControl { }
+
+    public class CrawlerSpawner : DefaultSpawner<CrawlerControl> { }
+
+    public class CrawlerPrefabConfig : DefaultPrefabConfig<CrawlerControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
     /////////////////////////////////////////////////////////////////////////////
     /////
     public class MosquitoControl : DefaultSpawnedEnemyControl { }
@@ -188,31 +240,6 @@
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class CorpseGardenZombieControl : DefaultSpawnedEnemyControl { }
-
-    public class CorpseGardenZombieSpawner : DefaultSpawner<CorpseGardenZombieControl> { }
-
-    public class CorpseGardenZombiePrefabConfig : DefaultPrefabConfig<CorpseGardenZombieControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class TinySpiderControl : DefaultSpawnedEnemyControl { }
-
-    public class TinySpiderSpawner : DefaultSpawner<TinySpiderControl> { }
-
-    public class TinySpiderPrefabConfig : DefaultPrefabConfig<TinySpiderControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
 
 
 
@@ -260,25 +287,12 @@
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class TEMPLATE_Control : DefaultSpawnedEnemyControl { }
-
-    public class TEMPLATE_Spawner : DefaultSpawner<TEMPLATE_Control> { }
-
-    public class TEMPLATE_PrefabConfig : DefaultPrefabConfig<TEMPLATE_Control> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
     public class FlukemanBotControl : DefaultSpawnedEnemyControl { }
 
     public class FlukemanBotSpawner : DefaultSpawner<FlukemanBotControl> { }
 
     public class FlukemanBotPrefabConfig : DefaultPrefabConfig<FlukemanBotControl> { }
+
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -286,64 +300,14 @@
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class WhiteDefenderControl : DefaultSpawnedEnemyControl { }
 
-    public class WhiteDefenderSpawner : DefaultSpawner<WhiteDefenderControl> { }
-
-    public class WhiteDefenderPrefabConfig : DefaultPrefabConfig<WhiteDefenderControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
 
 
 
 
 
     /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class JellyfishGGControl : DefaultSpawnedEnemyControl { }
-
-    public class JellyfishGGSpawner : DefaultSpawner<JellyfishGGControl> { }
-
-    public class JellyfishGGPrefabConfig : DefaultPrefabConfig<JellyfishGGControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class CrawlerControl : DefaultSpawnedEnemyControl { }
-
-    public class CrawlerSpawner : DefaultSpawner<CrawlerControl> { }
-
-    public class CrawlerPrefabConfig : DefaultPrefabConfig<CrawlerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class BuzzerControl : DefaultSpawnedEnemyControl { }
-
-    public class BuzzerSpawner : DefaultSpawner<BuzzerControl> { }
-
-    public class BuzzerPrefabConfig : DefaultPrefabConfig<BuzzerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
+    ///// (Oblobbles)
     public class MegaFatBeeControl : DefaultSpawnedEnemyControl { }
 
     public class MegaFatBeeSpawner : DefaultSpawner<MegaFatBeeControl> { }
@@ -358,7 +322,20 @@
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class LobsterControl : DefaultSpawnedEnemyControl { }
+    public class LobsterControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Control";
+
+        protected override bool ControlCameraLocks => false;
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
 
     public class LobsterSpawner : DefaultSpawner<LobsterControl> { }
 
@@ -372,7 +349,28 @@
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MageKnightControl : DefaultSpawnedEnemyControl { }
+    public class MageKnightControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Mage Knight";
+
+        protected override bool ControlCameraLocks => false;
+
+        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs =>
+            new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                    { "Floor Y",    x => { return x.HeroY; } },
+                    { "Tele X Max", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.right, 500f).point.x; } },
+                    { "Tele X Min", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.left, 500f).point.x; } },
+            };
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
 
     public class MageKnightSpawner : DefaultSpawner<MageKnightControl> { }
 
@@ -386,7 +384,40 @@
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MageControl : DefaultSpawnedEnemyControl { }
+    public class MageControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Mage";
+
+        protected override bool ControlCameraLocks => false;
+
+        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs =>
+            new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                    { "X Max", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.right, 500f).point.x; } },
+                    { "X Min", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.left, 500f).point.x; } },
+                    { "Y Max", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.up, 500f).point.y; } },
+                    { "Y Min", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.down, 500f).point.y; } },
+            };
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            control.ChangeTransition("Tele Away", "FINISHED", "Init");
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
+            this.AddResetToStateOnHide(control, "Init");
+
+            var st = control.GetState("Select Target");
+            
+            //disable the teleplane actions
+            st.DisableAction(1);
+            st.DisableAction(2);
+
+            //add an action that updates the refs
+            st.InsertCustomAction(() => this.UpdateRefs(control, FloatRefs), 1);
+        }
+    }
 
     public class MageSpawner : DefaultSpawner<MageControl> { }
 
@@ -400,7 +431,38 @@
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class ElectricMageControl : DefaultSpawnedEnemyControl { }
+    public class ElectricMageControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Electric Mage";
+
+        protected override bool ControlCameraLocks => false;
+
+        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs =>
+            new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                    { "X Max", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.right, 500f).point.x; } },
+                    { "X Min", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.left, 500f).point.x; } },
+                    { "Y Max", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.up, 500f).point.y; } },
+                    { "Y Min", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.down, 500f).point.y; } },
+            };
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
+            this.AddResetToStateOnHide(control, "Init");
+
+            var st = control.GetState("Select Target");
+
+            //disable the teleplane actions
+            st.DisableAction(1);
+            st.DisableAction(2);
+
+            //add an action that updates the refs
+            st.InsertCustomAction(() => this.UpdateRefs(control, FloatRefs), 1);
+        }
+    }
 
     public class ElectricMageSpawner : DefaultSpawner<ElectricMageControl> { }
 
@@ -428,7 +490,28 @@
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class LancerControl : DefaultSpawnedEnemyControl { }
+    public class LancerControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Control";
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            var init = control.GetState("Init");
+            init.DisableAction(6);
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
+            this.AddResetToStateOnHide(control, "Init");
+
+            this.OverrideState(control, "Defeat", () =>
+            {
+                this.thisMetadata.EnemyHealthManager.hasSpecialDeath = false;
+                this.thisMetadata.EnemyHealthManager.SetSendKilledToObject(null);
+                this.thisMetadata.EnemyHealthManager.Die(null, AttackTypes.Generic, true);
+            });
+        }
+    }
 
     public class LancerSpawner : DefaultSpawner<LancerControl> { }
 
@@ -437,18 +520,6 @@
     //////////////////////////////////////////////////////////////////////////////
 
 
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class ClimberControl : DefaultSpawnedEnemyControl { }
-
-    public class ClimberSpawner : DefaultSpawner<ClimberControl> { }
-
-    public class ClimberPrefabConfig : DefaultPrefabConfig<ClimberControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -470,7 +541,35 @@
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MenderBugControl : DefaultSpawnedEnemyControl { }
+    public class MenderBugControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Mender Bug Ctrl";
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            //disable the mender state killed player data
+            var killed = control.GetState("Killed");
+            killed.DisableAction(0);
+
+            var destroy = control.GetState("Destroy");
+            destroy.DisableAction(0);
+
+            var fly = control.GetState("Fly");
+            fly.ChangeTransition("DESTROY", "Init");
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
+            this.AddResetToStateOnHide(control, "Init");
+
+            //this.OverrideState(control, "Defeat", () =>
+            //{
+            //    this.thisMetadata.EnemyHealthManager.hasSpecialDeath = false;
+            //    this.thisMetadata.EnemyHealthManager.SetSendKilledToObject(null);
+            //    this.thisMetadata.EnemyHealthManager.Die(null, AttackTypes.Generic, true);
+            //});
+        }
+    }
 
     public class MenderBugSpawner : DefaultSpawner<MenderBugControl> { }
 
@@ -540,7 +639,52 @@
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class BlockerControl : DefaultSpawnedEnemyControl { }
+    public class BlockerControl : DefaultSpawnedEnemyControl
+    {
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            var fsm = gameObject.LocateMyFSM("Blocker Control");
+
+            //allow players without spells to kill blockers
+            int level = GameManager.instance.GetPlayerDataInt("fireballLevel");
+            if (level <= 0)
+            {
+                thisMetadata.EnemyHealthManager.InvincibleFromDirection = -1;
+
+                //disable the invincible state
+                var init = fsm.GetState("Init");
+                init.DisableAction(6);
+
+                //disable the invincible state
+                var close = fsm.GetState("Close");
+                close.DisableAction(0);
+            }
+
+            //ignore the checks, allow it to spawn rollers all the time
+            this.OverrideState(fsm, "Can Roller?", () =>
+            {
+                //TODO: actual logic for spawning rollers, for now, some rng
+                RNG rng = new RNG();
+                rng.Reset();
+
+                bool result = rng.Randf() > .5f;
+                if (result)
+                    fsm.SendEvent("FINISHED");
+                else
+                    fsm.SendEvent("GOOP");
+            });
+
+            //link the shot to a roller prefab
+            var roller = fsm.GetState("Roller");
+            var setgoa = roller.GetFirstActionOfType<SetGameObject>();
+            setgoa.gameObject = EnemyRandomizerDatabase.GetDatabase().Enemies["Roller"].prefab;
+
+            //have it skip the roller assign state
+            fsm.ChangeTransition("Fire", "FINISHED", "Shot Anim End");
+        }
+    }
 
     public class BlockerSpawner : DefaultSpawner<BlockerControl> { }
 
@@ -778,7 +922,23 @@
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class BlackKnightControl : DefaultSpawnedEnemyControl { }
+    public class BlackKnightControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Black Knight";
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            this.InsertHiddenState(control, "Init Facing", "FINISHED", "Bugs In");
+            this.AddResetToStateOnHide(control, "Init");
+
+            control.GetState("Cloud Stop").DisableAction(3);
+            control.GetState("Cloud Stop").DisableAction(4);
+
+            control.ChangeTransition("Bugs In End", "FINISHED", "Roar End");
+        }
+    }
 
     public class BlackKnightSpawner : DefaultSpawner<BlackKnightControl> { }
 
@@ -2193,11 +2353,42 @@
 
     /////////////////////////////////////////////////////////////////////////////
     /////
+    public class JellyfishGGControl : DefaultSpawnedEnemyControl { }
+
+    public class JellyfishGGSpawner : DefaultSpawner<JellyfishGGControl> { }
+
+    public class JellyfishGGPrefabConfig : DefaultPrefabConfig<JellyfishGGControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
     public class LilJellyfishControl : DefaultSpawnedEnemyControl { }
 
     public class LilJellyfishSpawner : DefaultSpawner<LilJellyfishControl> { }
 
     public class LilJellyfishPrefabConfig : DefaultPrefabConfig<LilJellyfishControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+    
+
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////   BANNED -- DONT SPAWN THIS -- REMOVE THIS LATER
+    public class CorpseGardenZombieControl : DefaultSpawnedEnemyControl { }
+
+    public class CorpseGardenZombieSpawner : DefaultSpawner<CorpseGardenZombieControl> { }
+
+    public class CorpseGardenZombiePrefabConfig : DefaultPrefabConfig<CorpseGardenZombieControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 }

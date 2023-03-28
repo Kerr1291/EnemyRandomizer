@@ -681,7 +681,7 @@ namespace EnemyRandomizerMod
             {"Ruins Sentry FatB", "Ruins Sentry Fat"},
             {"Ruins Flying SentryB", "Ruins Flying Sentry"},
             {"Ruins SentryB", "Ruins Sentry"},
-            {"Hatcher NP", "Hatcher"}, //Hatcher NP -- investigate this in fsm viewer //check this -- Hatcher Summon
+            {"Hatcher NP", "Hatcher"}, 
             {"Mega Jellyfish GG", "Mega Jellyfish"},
             {"Moss Knight C", "Moss Knight"},
             {"Moss Knight B", "Moss Knight"},
@@ -689,7 +689,15 @@ namespace EnemyRandomizerMod
             {"Zombie Basic One 1 (Missing Prefab)", "Zombie Runner"},
             {"Great Shield Zombie bottom", "Great Shield Zombie" },
             {"Ruins Sentry Fat B", "Ruins Sentry Fat" },
-            {"Mawlek Turret Ceiling", "Mawlek Turret" }
+            {"Mawlek Turret Ceiling", "Mawlek Turret" },
+            {"Buzzer R", "Buzzer" },
+            {"Roller R", "Roller" },
+            {"Super Spitter R", "Super Spitter" },
+            {"Colosseum_Armoured_Roller R", "Colosseum_Armoured_Roller" },
+            {"Colosseum_Armoured_Mosquito R", "Colosseum_Armoured_Mosquito" },
+            {"Ceiling Dropper Col", "Ceiling Dropper" },
+            {"Buzzer Col", "Buzzer" },
+            {"Giant Fly Col", "Giant Fly" },
         };
 
         //Spitter Summon v2 -- check fsm

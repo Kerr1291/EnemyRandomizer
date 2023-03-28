@@ -442,6 +442,11 @@ namespace EnemyRandomizerMod
             return GameManager.instance.IsGameplayScene() && !GameManager.instance.IsCinematicScene();
         }
 
+        public static List<string> ReplacementEnemiesToSkip = new List<string>()
+        {
+            "Corpse Garden Zombie", //don't spawn this, it's just a corpse
+        };
+
         public static List<string> ReplacementHazardsToSkip = new List<string>()
         {
             "Cave Spikes tile", //small bunch of upward pointing cave spikes

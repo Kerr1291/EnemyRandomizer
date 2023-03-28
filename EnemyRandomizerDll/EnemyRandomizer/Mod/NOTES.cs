@@ -202,8 +202,9 @@
     <string>Spitter R</string>                             -   -- (it's converted to the non-R type)
     <string>Buzzer R</string>                              -   --
     <string>Great Shield Zombie bottom</string>            -   --
+    <string>Flamebearer Spawn</string>                     -   used to extract the grimmkin
+    <string>Corpse Garden Zombie</string>                  -   ADDED TO BAN LIST
 
-    <string>Corpse Garden Zombie</string>                  -   "" ??? check if this is a corpse, remove from enemy pool if it is
 
 
     <string>Giant Fly</string>                             -   FIXED
@@ -213,8 +214,6 @@
     <string>Mawlek Turret Ceiling</string>                 -   FIXED
     <string>White Palace Fly</string>                      -   FIXED
     <string>Zote Boss</string>                             -   FIXED
-
- *  <string>Flamebearer Spawn</string>                     -   DONE
  *  
     <string>Flamebearer Small</string>                     -   FIX SCREENSPACE - CHECK AGGRO
     <string>Flamebearer Med</string>                       -   FIX SCREENSPACE - CHECK AGGRO
@@ -246,14 +245,14 @@
 
     <string>Grey Prince</string>                           -   STILL BROKEN
     <string>Tiny Spider</string>                           -   USUALLY SPAWNS STUCK
-    <string>Shade Sibling</string>                         -   ADD AN OPTION TO REMOVE THE CHARM FRIENDLY EFFECT 
-    <string>Lancer</string>                                -   NEEDS SCRIPT TO DIE PROPERLY
+    <string>Shade Sibling</string>                         -   (ADD AN OPTION TO) REMOVE THE CHARM FRIENDLY EFFECT / GIVE IT TO THE REPLACED ENEMIES
+    <string>Lancer</string>                                -   +++++++++++++++++NEEDS TESTING
     <string>Mage Blob</string>                             -   DONT SPAWN HIDDEN IN ARENAS
-    <string>Mage</string>                                  -   NEEDS SPAWN SCRIPT
-    <string>Mage</string>                                  -   NEEDS SPAWN SCRIPT
+    <string>Mage</string>                                  -   +++++++++++++++++NEEDS TESTING
+    <string>Electric Mage</string>                         -   +++++++++++++++++NEEDS TESTING
     <string>Climber</string>                               -   CAN SPAWN FLOATING?
-    <string>Mender Bug</string>                            -   DOESNT SPAWN PROPERLY
-    <string>Blocker</string>                               -   DOESNT PROPERLY SPAWN ADDS
+    <string>Mender Bug</string>                            -   +++++++++++++++++NEEDS TESTING
+    <string>Blocker</string>                               -   +++++++++++++++++NEEDS TESTING
     <string>Egg Sac</string>                               -   NEEDS ITEM TRANSFER/SPAWN SCRIPT
     <string>Gorgeous Husk</string>                         -   NEEDS MEME SCRIPT
     <string>Ceiling Dropper</string>                       -   KEEPS SPAWNING FLOATING
@@ -301,12 +300,12 @@
     <string>Colosseum_Worm</string>                        -   CHECK COLO SCRIPT?
 
     <string>Ghost Warrior Markoth</string>                 -   NEEDS BOSS SCRIPT
-    <string>Mega Fat Bee</string>                          -   NEEDS BOSS SCRIPT
+    <string>Mega Fat Bee</string>                          -   (TEST FIRST) NEEDS BOSS SCRIPT?
     <string>White Defender</string>                        -   NEEDS BOSS SCRIPT
     <string>Jellyfish GG</string>                          -   NEEDS BOSS SCRIPT
-    <string>Lobster</string>                               -   NEEDS BOSS SCRIPT
-    <string>Mage Knight</string>                           -   NEEDS BOSS SCRIPT
-    <string>Black Knight</string>                          -   NEEDS BOSS SCRIPT
+    <string>Lobster</string>                               -   +++++++++++++++++NEEDS TESTING
+    <string>Mage Knight</string>                           -   +++++++++++++++++NEEDS TESTING
+    <string>Black Knight</string>                          -   +++++++++++++++++NEEDS TESTING
     <string>Jar Collector</string>                         -   NEEDS BOSS SCRIPT
     <string>Hornet Boss 1</string>                         -   NEEDS BOSS SCRIPT
     <string>Giant Buzzer</string>                          -   NEEDS BOSS SCRIPT

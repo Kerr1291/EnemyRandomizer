@@ -296,6 +296,24 @@ namespace EnemyRandomizerMod
             return raycastHit2D;
         }
 
+        public static RaycastHit2D FireRayGlobal(this Vector2 origin, Vector2 direction, float length)
+        {
+            Vector2 vector = origin;
+            Vector2 vector2 = direction;
+            RaycastHit2D raycastHit2D = Physics2D.Raycast(vector, vector2, length, 256);
+            //Debug.DrawRay(vector, vector2);
+            return raycastHit2D;
+        }
+
+        public static RaycastHit2D Fire2DRayGlobal(this Vector3 origin, Vector2 direction, float length)
+        {
+            Vector2 vector = origin;
+            Vector2 vector2 = direction;
+            RaycastHit2D raycastHit2D = Physics2D.Raycast(vector, vector2, length, 256);
+            //Debug.DrawRay(vector, vector2);
+            return raycastHit2D;
+        }
+
         public static Vector3 GetVectorTo(this GameObject entitiy, Vector2 dir, float max)
         {
             return Mathnv.GetVectorTo(entitiy.transform.position, dir, max, IsSurfaceOrPlatform);
