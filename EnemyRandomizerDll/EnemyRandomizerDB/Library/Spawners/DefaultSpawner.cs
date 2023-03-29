@@ -94,15 +94,24 @@ namespace EnemyRandomizerMod
             {
                 if (thisMetadata.IsBoss && !originialMetadata.IsBoss)
                 {
-                    //TODO: config to be not a boss
-                    thisMetadata.EnemyHealthManager.hp = originialMetadata.EnemyHealthManager.hp;
+                    thisMetadata.EnemyHealthManager.hp = ScaleHPFromBossToNormal(thisMetadata.EnemyHealthManager.hp, originialMetadata.EnemyHealthManager.hp);
                 }
 
                 if (!thisMetadata.IsBoss && originialMetadata.IsBoss)
                 {
-                    //???
+                    thisMetadata.EnemyHealthManager.hp = ScaleHPFromBossToNormal(thisMetadata.EnemyHealthManager.hp, originialMetadata.EnemyHealthManager.hp);
                 }
             }
+        }
+
+        protected virtual int ScaleHPFromBossToNormal(int defaultHP, int previousHP)
+        {
+            return previousHP;
+        }
+
+        protected virtual int ScaleHPFromNormalToBoss(int defaultHP, int previousHP)
+        {
+            return previousHP;
         }
 
         protected virtual void SetDreamnailInfo()

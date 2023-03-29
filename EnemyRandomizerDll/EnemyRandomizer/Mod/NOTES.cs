@@ -9,6 +9,16 @@
  * 
  * 
  * 
+ * 
+ * BUGS TO FIX:
+ * 
+ * The lancer dies but does not despawn-- look up some corpses/death effects to use when replacing the lancer's
+ * Replacements in an arena in queen's gardens did not work
+ * Replacements in an arena in crossroads did not work (the one for glowing womb)
+ * 
+ * 
+ * 
+ * 
  *
  * Hazards to fix:
  * Shot Orange LG 0.7:  needs velocity added? -- also look into a name correction....
@@ -70,6 +80,12 @@
  * 
  * 
  * WISHLIST
+ * 
+ * 
+ * RANDOMIZE DREAMERS
+ * RANDOMIZE END BOSS/ENDING
+ * 
+ * Change the city of tears' statues of dreamers/THK to be statues of the replacements
  * 
  * 
 //grab "Health Scuttler" and add it to the list of valid enemies to rando -- TODO
@@ -195,7 +211,6 @@
     <string>Ceiling Dropper Col</string>                   -  Shouldn't be their own enemies....
     <string>Colosseum_Armoured_Roller R</string>           -  ""
     <string>Colosseum_Armoured_Mosquito R</string>         -  ""
-    <string>Giant Buzzer Col</string>                      -  ""
     <string>Super Spitter R</string>                       -  ""
     <string>Hatcher Baby</string>                          -   -- ??? don't think this will be needed
     <string>Roller R</string>                              -   -- (don't have a specific spawner with this string)
@@ -222,7 +237,7 @@
     <string>Zombie Spider 2</string>                       -   WORKING? - TEST
     <string>Zombie Spider 1</string>                       -   WORKING? - TEST
     <string>Zoteling</string>                              -   WORKING? - TEST
-    <string>Mawlek Body</string>                           -   NEEDS TESTING
+    <string>Mawlek Body</string>                           -   NEEDS TESTING -- PROJECTILES DON'T WORK
     <string>False Knight New</string>                      -   NEEDS TESTING
     <string>Mage Lord</string>                             -   NEEDS TESTING
     <string>Mage Lord Phase2</string>                      -   NEEDS TESTING
@@ -264,7 +279,7 @@
     <string>Plant Turret Right</string>                    -   OFTEN SPAWNS FLOATING / FACING INCORRECTLY / DOESNT SHOOT CORRECTLY
     <string>Mushroom Turret</string>                       -   OFTEN SPAWNS FLOATING / FACING INCORRECTLY / DOESNT SHOOT CORRECTLY
     <string>Moss Knight</string>                           -   NEEDS TESTING
-    <string>Moss Charger</string>                          -   NEEDS SCRIPT TO FIX GROUND TRAVERSAL
+    <string>Moss Charger</string>                          -   +++++++++++++++++NEEDS TESTING
     <string>Ghost Warrior Marmu</string>                   -   NEEDS CORPSE TESTING FOR CRASH
     <string>Zombie Beam Miner</string>                     -   NEEDS LASER RANGE EXTENDED
     <string>Spider Mini</string>                           -   KEEPS SPAWNING STUCK IN AIR
@@ -299,17 +314,15 @@
     <string>Colosseum_Flying_Sentry</string>               -   CHECK COLO SCRIPT?
     <string>Colosseum_Worm</string>                        -   CHECK COLO SCRIPT?
 
-    <string>Ghost Warrior Markoth</string>                 -   NEEDS BOSS SCRIPT
-    <string>Mega Fat Bee</string>                          -   (TEST FIRST) NEEDS BOSS SCRIPT?
-    <string>White Defender</string>                        -   NEEDS BOSS SCRIPT
-    <string>Jellyfish GG</string>                          -   NEEDS BOSS SCRIPT
+    <string>Mega Fat Bee</string>                          -   +++++++++++++++++NEEDS TESTING
     <string>Lobster</string>                               -   +++++++++++++++++NEEDS TESTING
     <string>Mage Knight</string>                           -   +++++++++++++++++NEEDS TESTING
     <string>Black Knight</string>                          -   +++++++++++++++++NEEDS TESTING
-    <string>Jar Collector</string>                         -   NEEDS BOSS SCRIPT
+    <string>Jar Collector</string>                         -   +++++++++++++++++NEEDS TESTING
     <string>Hornet Boss 1</string>                         -   NEEDS BOSS SCRIPT
-    <string>Giant Buzzer</string>                          -   NEEDS BOSS SCRIPT
-    <string>Mega Moss Charger</string>                     -   NEEDS BOSS SCRIPT
+    <string>Giant Buzzer</string>                          -   +++++++++++++++++NEEDS TESTING
+    <string>Giant Buzzer Col</string>                      -   +++++++++++++++++NEEDS TESTING  (this version spawns when zote chewing flag is done)
+    <string>Mega Moss Charger</string>                     -   +++++++++++++++++NEEDS TESTING
     <string>Ghost Warrior No Eyes</string>                 -   NEEDS BOSS SCRIPT
     <string>Ghost Warrior Hu</string>                      -   NEEDS BOSS SCRIPT
     <string>Mantis Traitor Lord</string>                   -   NEEDS BOSS SCRIPT
@@ -336,4 +349,7 @@
     <string>Sly Boss</string>                              -   NEEDS BOSS SCRIPT
     <string>Hornet Nosk</string>                           -   NEEDS BOSS SCRIPT
     <string>Ghost Warrior Slug</string>                    -   NEEDS BOSS SCRIPT
+    <string>White Defender</string>                        -   NEEDS BOSS SCRIPT
+    <string>Ghost Warrior Markoth</string>                 -   NEEDS BOSS SCRIPT
+    <string>Jellyfish GG</string>                          -   NEEDS BOSS SCRIPT
  */

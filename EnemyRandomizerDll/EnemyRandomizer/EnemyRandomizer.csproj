@@ -125,6 +125,7 @@
     <Compile Include="Mod\LogicLoader.cs" />
     <Compile Include="Mod\EnemyRandomizerMenu.cs" />
     <Compile Include="Mod\EnemyRandomizer.cs" />
+    <Compile Include="Mod\NOTES.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

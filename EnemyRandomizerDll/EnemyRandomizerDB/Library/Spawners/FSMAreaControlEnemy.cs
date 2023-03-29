@@ -19,6 +19,7 @@ namespace EnemyRandomizerMod
 
         public virtual string OnShowControlBroadcastEvent => string.Empty;
 
+        protected Dictionary<string, Func<FSMAreaControlEnemy, float>> EMPTY_FLOAT_REFS = new Dictionary<string, Func<FSMAreaControlEnemy, float>>();
         public List<PlayMakerFSM> FSMsUsingHiddenStates { get; protected set; }
         public Dictionary<PlayMakerFSM,string> FSMsWithResetToStateOnHide { get; protected set; }
 

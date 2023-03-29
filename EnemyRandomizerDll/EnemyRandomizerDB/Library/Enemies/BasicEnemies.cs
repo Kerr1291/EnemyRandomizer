@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using EnemyRandomizerMod.Futils;
-using HutongGames.PlayMaker;
 
 namespace EnemyRandomizerMod
 {
@@ -15,7 +14,7 @@ namespace EnemyRandomizerMod
 
 
     /////////////////////////////////////////////////////////////////////////////
-    /////
+    ///// 
     public class TEMPLATE_Control : DefaultSpawnedEnemyControl { }
 
     public class TEMPLATE_Spawner : DefaultSpawner<TEMPLATE_Control> { }
@@ -752,16 +751,6 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class EggSacControl : DefaultSpawnedEnemyControl { }
-
-    public class EggSacSpawner : DefaultSpawner<EggSacControl> { }
-
-    public class EggSacPrefabConfig : DefaultPrefabConfig<EggSacControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
 
 
 
@@ -943,20 +932,7 @@ namespace EnemyRandomizerMod
     public class BlackKnightSpawner : DefaultSpawner<BlackKnightControl> { }
 
     public class BlackKnightPrefabConfig : DefaultPrefabConfig<BlackKnightControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class JarCollectorControl : DefaultSpawnedEnemyControl { }
-
-    public class JarCollectorSpawner : DefaultSpawner<JarCollectorControl> { }
-
-    public class JarCollectorPrefabConfig : DefaultPrefabConfig<JarCollectorControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1022,20 +998,6 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class HornetBoss1Control : DefaultSpawnedEnemyControl { }
-
-    public class HornetBoss1Spawner : DefaultSpawner<HornetBoss1Control> { }
-
-    public class HornetBoss1PrefabConfig : DefaultPrefabConfig<HornetBoss1Control> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
     public class AcidFlyerControl : DefaultSpawnedEnemyControl { }
 
     public class AcidFlyerSpawner : DefaultSpawner<AcidFlyerControl> { }
@@ -1048,15 +1010,6 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MossChargerControl : DefaultSpawnedEnemyControl { }
-
-    public class MossChargerSpawner : DefaultSpawner<MossChargerControl> { }
-
-    public class MossChargerPrefabConfig : DefaultPrefabConfig<MossChargerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -1118,16 +1071,6 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GiantBuzzerControl : DefaultSpawnedEnemyControl { }
-
-    public class GiantBuzzerSpawner : DefaultSpawner<GiantBuzzerControl> { }
-
-    public class GiantBuzzerPrefabConfig : DefaultPrefabConfig<GiantBuzzerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
 
 
 
@@ -1167,6 +1110,22 @@ namespace EnemyRandomizerMod
     public class LazyFlyerEnemySpawner : DefaultSpawner<LazyFlyerEnemyControl> { }
 
     public class LazyFlyerEnemyPrefabConfig : DefaultPrefabConfig<LazyFlyerEnemyControl> { }
+
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class Colosseum_Armoured_RollerControl : DefaultSpawnedEnemyControl { }
+
+    public class Colosseum_Armoured_RollerSpawner : DefaultSpawner<Colosseum_Armoured_RollerControl> { }
+
+    public class Colosseum_Armoured_RollerPrefabConfig : DefaultPrefabConfig<Colosseum_Armoured_RollerControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1176,11 +1135,11 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MegaMossChargerControl : DefaultSpawnedEnemyControl { }
+    public class Colosseum_MinerControl : DefaultSpawnedEnemyControl { }
 
-    public class MegaMossChargerSpawner : DefaultSpawner<MegaMossChargerControl> { }
+    public class Colosseum_MinerSpawner : DefaultSpawner<Colosseum_MinerControl> { }
 
-    public class MegaMossChargerPrefabConfig : DefaultPrefabConfig<MegaMossChargerControl> { }
+    public class Colosseum_MinerPrefabConfig : DefaultPrefabConfig<Colosseum_MinerControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1190,15 +1149,83 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GhostWarriorNoEyesControl : DefaultSpawnedEnemyControl { }
+    public class SuperSpitterControl : DefaultSpawnedEnemyControl { }
 
-    public class GhostWarriorNoEyesSpawner : DefaultSpawner<GhostWarriorNoEyesControl> { }
+    public class SuperSpitterSpawner : DefaultSpawner<SuperSpitterControl> { }
 
-    public class GhostWarriorNoEyesPrefabConfig : DefaultPrefabConfig<GhostWarriorNoEyesControl> { }
+    public class SuperSpitterPrefabConfig : DefaultPrefabConfig<SuperSpitterControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
 
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class Colosseum_Shield_ZombieControl : DefaultSpawnedEnemyControl { }
+
+    public class Colosseum_Shield_ZombieSpawner : DefaultSpawner<Colosseum_Shield_ZombieControl> { }
+
+    public class Colosseum_Shield_ZombiePrefabConfig : DefaultPrefabConfig<Colosseum_Shield_ZombieControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class Colosseum_Armoured_MosquitoControl : DefaultSpawnedEnemyControl { }
+
+    public class Colosseum_Armoured_MosquitoSpawner : DefaultSpawner<Colosseum_Armoured_MosquitoControl> { }
+
+    public class Colosseum_Armoured_MosquitoPrefabConfig : DefaultPrefabConfig<Colosseum_Armoured_MosquitoControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class Colosseum_Flying_SentryControl : DefaultSpawnedEnemyControl { }
+
+    public class Colosseum_Flying_SentrySpawner : DefaultSpawner<Colosseum_Flying_SentryControl> { }
+
+    public class Colosseum_Flying_SentryPrefabConfig : DefaultPrefabConfig<Colosseum_Flying_SentryControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class Mawlek_ColControl : DefaultSpawnedEnemyControl { }
+
+    public class Mawlek_ColSpawner : DefaultSpawner<Mawlek_ColControl> { }
+
+    public class Mawlek_ColPrefabConfig : DefaultPrefabConfig<Mawlek_ColControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class ColosseumGrassHopperControl : DefaultSpawnedEnemyControl { }
+
+    public class ColosseumGrassHopperSpawner : DefaultSpawner<ColosseumGrassHopperControl> { }
+
+    public class ColosseumGrassHopperPrefabConfig : DefaultPrefabConfig<ColosseumGrassHopperControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -1342,18 +1369,6 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorHuControl : DefaultSpawnedEnemyControl { }
-
-    public class GhostWarriorHuSpawner : DefaultSpawner<GhostWarriorHuControl> { }
-
-    public class GhostWarriorHuPrefabConfig : DefaultPrefabConfig<GhostWarriorHuControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
 
 
     /////////////////////////////////////////////////////////////////////////////
@@ -1440,29 +1455,6 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MegaJellyfishControl : DefaultSpawnedEnemyControl { }
-
-    public class MegaJellyfishSpawner : DefaultSpawner<MegaJellyfishControl> { }
-
-    public class MegaJellyfishPrefabConfig : DefaultPrefabConfig<MegaJellyfishControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorXeroControl : DefaultSpawnedEnemyControl { }
-
-    public class GhostWarriorXeroSpawner : DefaultSpawner<GhostWarriorXeroControl> { }
-
-    public class GhostWarriorXeroPrefabConfig : DefaultPrefabConfig<GhostWarriorXeroControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -1538,19 +1530,6 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MegaZombieBeamMinerControl : DefaultSpawnedEnemyControl { }
-
-    public class MegaZombieBeamMinerSpawner : DefaultSpawner<MegaZombieBeamMinerControl> { }
-
-    public class MegaZombieBeamMinerPrefabConfig : DefaultPrefabConfig<MegaZombieBeamMinerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
     /////////////////////////////////////////////////////////////////////////////
     /////
@@ -1562,19 +1541,6 @@ namespace EnemyRandomizerMod
     /////
     //////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class ZombieBeamMinerRematchControl : DefaultSpawnedEnemyControl { }
-
-    public class ZombieBeamMinerRematchSpawner : DefaultSpawner<ZombieBeamMinerRematchControl> { }
-
-    public class ZombieBeamMinerRematchPrefabConfig : DefaultPrefabConfig<ZombieBeamMinerRematchControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -1636,19 +1602,6 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MimicSpiderControl : DefaultSpawnedEnemyControl { }
-
-    public class MimicSpiderSpawner : DefaultSpawner<MimicSpiderControl> { }
-
-    public class MimicSpiderPrefabConfig : DefaultPrefabConfig<MimicSpiderControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
     /////////////////////////////////////////////////////////////////////////////
     /////
@@ -1674,19 +1627,6 @@ namespace EnemyRandomizerMod
     /////
     //////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorGalienControl : DefaultSpawnedEnemyControl { }
-
-    public class GhostWarriorGalienSpawner : DefaultSpawner<GhostWarriorGalienControl> { }
-
-    public class GhostWarriorGalienPrefabConfig : DefaultPrefabConfig<GhostWarriorGalienControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -1719,30 +1659,6 @@ namespace EnemyRandomizerMod
 
 
 
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorMarkothControl : DefaultSpawnedEnemyControl { }
-
-    public class GhostWarriorMarkothSpawner : DefaultSpawner<GhostWarriorMarkothControl> { }
-
-    public class GhostWarriorMarkothPrefabConfig : DefaultPrefabConfig<GhostWarriorMarkothControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class HornetBoss2Control : DefaultSpawnedEnemyControl { }
-
-    public class HornetBoss2Spawner : DefaultSpawner<HornetBoss2Control> { }
-
-    public class HornetBoss2PrefabConfig : DefaultPrefabConfig<HornetBoss2Control> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -1832,19 +1748,6 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class DungDefenderControl : DefaultSpawnedEnemyControl { }
-
-    public class DungDefenderSpawner : DefaultSpawner<DungDefenderControl> { }
-
-    public class DungDefenderPrefabConfig : DefaultPrefabConfig<DungDefenderControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
     /////////////////////////////////////////////////////////////////////////////
     /////
@@ -1881,20 +1784,6 @@ namespace EnemyRandomizerMod
     public class fluke_baby_03Spawner : DefaultSpawner<fluke_baby_03Control> { }
 
     public class fluke_baby_03PrefabConfig : DefaultPrefabConfig<fluke_baby_03Control> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class FlukeMotherControl : DefaultSpawnedEnemyControl { }
-
-    public class FlukeMotherSpawner : DefaultSpawner<FlukeMotherControl> { }
-
-    public class FlukeMotherPrefabConfig : DefaultPrefabConfig<FlukeMotherControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1957,6 +1846,19 @@ namespace EnemyRandomizerMod
 
 
 
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class MantisFlyerChildControl : DefaultSpawnedEnemyControl { }
+
+    public class MantisFlyerChildSpawner : DefaultSpawner<MantisFlyerChildControl> { }
+
+    public class MantisFlyerChildPrefabConfig : DefaultPrefabConfig<MantisFlyerChildControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
 
     /////////////////////////////////////////////////////////////////////////////
     /////
@@ -1969,6 +1871,90 @@ namespace EnemyRandomizerMod
     //////////////////////////////////////////////////////////////////////////////
 
 
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class FlukeMotherControl : DefaultSpawnedEnemyControl { }
+
+    public class FlukeMotherSpawner : DefaultSpawner<FlukeMotherControl> { }
+
+    public class FlukeMotherPrefabConfig : DefaultPrefabConfig<FlukeMotherControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class MimicSpiderControl : DefaultSpawnedEnemyControl { }
+
+    public class MimicSpiderSpawner : DefaultSpawner<MimicSpiderControl> { }
+
+    public class MimicSpiderPrefabConfig : DefaultPrefabConfig<MimicSpiderControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class HornetBoss1Control : DefaultSpawnedEnemyControl { }
+
+    public class HornetBoss1Spawner : DefaultSpawner<HornetBoss1Control> { }
+
+    public class HornetBoss1PrefabConfig : DefaultPrefabConfig<HornetBoss1Control> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class HornetBoss2Control : DefaultSpawnedEnemyControl { }
+
+    public class HornetBoss2Spawner : DefaultSpawner<HornetBoss2Control> { }
+
+    public class HornetBoss2PrefabConfig : DefaultPrefabConfig<HornetBoss2Control> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class MegaZombieBeamMinerControl : DefaultSpawnedEnemyControl { }
+
+    public class MegaZombieBeamMinerSpawner : DefaultSpawner<MegaZombieBeamMinerControl> { }
+
+    public class MegaZombieBeamMinerPrefabConfig : DefaultPrefabConfig<MegaZombieBeamMinerControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class ZombieBeamMinerRematchControl : DefaultSpawnedEnemyControl { }
+
+    public class ZombieBeamMinerRematchSpawner : DefaultSpawner<ZombieBeamMinerRematchControl> { }
+
+    public class ZombieBeamMinerRematchPrefabConfig : DefaultPrefabConfig<ZombieBeamMinerRematchControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -2184,91 +2170,6 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class Colosseum_Armoured_RollerControl : DefaultSpawnedEnemyControl { }
-
-    public class Colosseum_Armoured_RollerSpawner : DefaultSpawner<Colosseum_Armoured_RollerControl> { }
-
-    public class Colosseum_Armoured_RollerPrefabConfig : DefaultPrefabConfig<Colosseum_Armoured_RollerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class Colosseum_MinerControl : DefaultSpawnedEnemyControl { }
-
-    public class Colosseum_MinerSpawner : DefaultSpawner<Colosseum_MinerControl> { }
-
-    public class Colosseum_MinerPrefabConfig : DefaultPrefabConfig<Colosseum_MinerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class SuperSpitterControl : DefaultSpawnedEnemyControl { }
-
-    public class SuperSpitterSpawner : DefaultSpawner<SuperSpitterControl> { }
-
-    public class SuperSpitterPrefabConfig : DefaultPrefabConfig<SuperSpitterControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class Colosseum_Shield_ZombieControl : DefaultSpawnedEnemyControl { }
-
-    public class Colosseum_Shield_ZombieSpawner : DefaultSpawner<Colosseum_Shield_ZombieControl> { }
-
-    public class Colosseum_Shield_ZombiePrefabConfig : DefaultPrefabConfig<Colosseum_Shield_ZombieControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class Colosseum_Armoured_MosquitoControl : DefaultSpawnedEnemyControl { }
-
-    public class Colosseum_Armoured_MosquitoSpawner : DefaultSpawner<Colosseum_Armoured_MosquitoControl> { }
-
-    public class Colosseum_Armoured_MosquitoPrefabConfig : DefaultPrefabConfig<Colosseum_Armoured_MosquitoControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class Colosseum_Flying_SentryControl : DefaultSpawnedEnemyControl { }
-
-    public class Colosseum_Flying_SentrySpawner : DefaultSpawner<Colosseum_Flying_SentryControl> { }
-
-    public class Colosseum_Flying_SentryPrefabConfig : DefaultPrefabConfig<Colosseum_Flying_SentryControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
     public class Colosseum_WormControl : DefaultSpawnedEnemyControl { }
 
     public class Colosseum_WormSpawner : DefaultSpawner<Colosseum_WormControl> { }
@@ -2281,31 +2182,17 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class Mawlek_ColControl : DefaultSpawnedEnemyControl { }
-
-    public class Mawlek_ColSpawner : DefaultSpawner<Mawlek_ColControl> { }
-
-    public class Mawlek_ColPrefabConfig : DefaultPrefabConfig<Mawlek_ColControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
 
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class ColosseumGrassHopperControl : DefaultSpawnedEnemyControl { }
+    public class DungDefenderControl : DefaultSpawnedEnemyControl { }
 
-    public class ColosseumGrassHopperSpawner : DefaultSpawner<ColosseumGrassHopperControl> { }
+    public class DungDefenderSpawner : DefaultSpawner<DungDefenderControl> { }
 
-    public class ColosseumGrassHopperPrefabConfig : DefaultPrefabConfig<ColosseumGrassHopperControl> { }
+    public class DungDefenderPrefabConfig : DefaultPrefabConfig<DungDefenderControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
-
-
 
 
 
@@ -2323,16 +2210,45 @@ namespace EnemyRandomizerMod
 
 
 
+
+
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MantisFlyerChildControl : DefaultSpawnedEnemyControl { }
+    public class GhostWarriorGalienControl : DefaultSpawnedEnemyControl { }
 
-    public class MantisFlyerChildSpawner : DefaultSpawner<MantisFlyerChildControl> { }
+    public class GhostWarriorGalienSpawner : DefaultSpawner<GhostWarriorGalienControl> { }
 
-    public class MantisFlyerChildPrefabConfig : DefaultPrefabConfig<MantisFlyerChildControl> { }
+    public class GhostWarriorGalienPrefabConfig : DefaultPrefabConfig<GhostWarriorGalienControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class GhostWarriorXeroControl : DefaultSpawnedEnemyControl { }
+
+    public class GhostWarriorXeroSpawner : DefaultSpawner<GhostWarriorXeroControl> { }
+
+    public class GhostWarriorXeroPrefabConfig : DefaultPrefabConfig<GhostWarriorXeroControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class GhostWarriorHuControl : DefaultSpawnedEnemyControl { }
+
+    public class GhostWarriorHuSpawner : DefaultSpawner<GhostWarriorHuControl> { }
+
+    public class GhostWarriorHuPrefabConfig : DefaultPrefabConfig<GhostWarriorHuControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -2347,6 +2263,40 @@ namespace EnemyRandomizerMod
     /////
     //////////////////////////////////////////////////////////////////////////////
 
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class GhostWarriorNoEyesControl : DefaultSpawnedEnemyControl { }
+
+    public class GhostWarriorNoEyesSpawner : DefaultSpawner<GhostWarriorNoEyesControl> { }
+
+    public class GhostWarriorNoEyesPrefabConfig : DefaultPrefabConfig<GhostWarriorNoEyesControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class GhostWarriorMarkothControl : DefaultSpawnedEnemyControl { }
+
+    public class GhostWarriorMarkothSpawner : DefaultSpawner<GhostWarriorMarkothControl> { }
+
+    public class GhostWarriorMarkothPrefabConfig : DefaultPrefabConfig<GhostWarriorMarkothControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class MegaJellyfishControl : DefaultSpawnedEnemyControl { }
+
+    public class MegaJellyfishSpawner : DefaultSpawner<MegaJellyfishControl> { }
+
+    public class MegaJellyfishPrefabConfig : DefaultPrefabConfig<MegaJellyfishControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -2373,9 +2323,19 @@ namespace EnemyRandomizerMod
     public class LilJellyfishPrefabConfig : DefaultPrefabConfig<LilJellyfishControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
-    
 
 
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class EggSacControl : DefaultSpawnedEnemyControl { }
+
+    public class EggSacSpawner : DefaultSpawner<EggSacControl> { }
+
+    public class EggSacPrefabConfig : DefaultPrefabConfig<EggSacControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
 
 
 
