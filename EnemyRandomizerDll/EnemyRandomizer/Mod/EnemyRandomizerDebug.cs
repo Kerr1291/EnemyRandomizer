@@ -16,72 +16,72 @@ namespace EnemyRandomizerMod
 {
     public partial class EnemyRandomizer
     {
-        static SmartRoutine debugInputRoutine = new SmartRoutine();
-        static SmartRoutine noClipRoutine = new SmartRoutine();
+        //static SmartRoutine debugInputRoutine = new SmartRoutine();
+        //static SmartRoutine noClipRoutine = new SmartRoutine();
         static string debugRecentHit = "";
 
-        static void SetNoClip(On.UIManager.orig_UIClosePauseMenu orig, UIManager self)
-        {
-            orig.Invoke(self);
-            bool noClip = EnemyRandomizer.GlobalSettings.IsNoClip;
-            if (!noClip)
-                noClipRoutine.Reset();
-            else
-                noClipRoutine = new SmartRoutine(DoNoClip());
-        }
+        //static void SetNoClip(On.UIManager.orig_UIClosePauseMenu orig, UIManager self)
+        //{
+        //    orig.Invoke(self);
+        //    bool noClip = EnemyRandomizer.GlobalSettings.RandomizeBosses;
+        //    if (!noClip)
+        //        noClipRoutine.Reset();
+        //    else
+        //        noClipRoutine = new SmartRoutine(DoNoClip());
+        //}
 
-        static IEnumerator DoNoClip()
-        {
-            Vector3 noclipPos = HeroController.instance.gameObject.transform.position;
-            while (EnemyRandomizer.GlobalSettings.IsNoClip)
-            {
-                yield return null;
+        //static IEnumerator DoNoClip()
+        //{
+        //    Vector3 noclipPos = HeroController.instance.gameObject.transform.position;
+        //    while (EnemyRandomizer.GlobalSettings.RandomizeBosses)
+        //    {
+        //        yield return null;
 
-                if (HeroController.instance == null || HeroController.instance.gameObject == null || !HeroController.instance.gameObject.activeInHierarchy)
-                    continue;
+        //        if (HeroController.instance == null || HeroController.instance.gameObject == null || !HeroController.instance.gameObject.activeInHierarchy)
+        //            continue;
 
-                if (EnemyRandomizer.GlobalSettings.IsNoClip)
-                {
-                    if (GameManager.instance.inputHandler.inputActions.left.IsPressed)
-                    {
-                        noclipPos = new Vector3(noclipPos.x - Time.deltaTime * 20f, noclipPos.y, noclipPos.z);
-                    }
+        //        if (EnemyRandomizer.GlobalSettings.RandomizeBosses)
+        //        {
+        //            if (GameManager.instance.inputHandler.inputActions.left.IsPressed)
+        //            {
+        //                noclipPos = new Vector3(noclipPos.x - Time.deltaTime * 20f, noclipPos.y, noclipPos.z);
+        //            }
 
-                    if (GameManager.instance.inputHandler.inputActions.right.IsPressed)
-                    {
-                        noclipPos = new Vector3(noclipPos.x + Time.deltaTime * 20f, noclipPos.y, noclipPos.z);
-                    }
+        //            if (GameManager.instance.inputHandler.inputActions.right.IsPressed)
+        //            {
+        //                noclipPos = new Vector3(noclipPos.x + Time.deltaTime * 20f, noclipPos.y, noclipPos.z);
+        //            }
 
-                    if (GameManager.instance.inputHandler.inputActions.up.IsPressed)
-                    {
-                        noclipPos = new Vector3(noclipPos.x, noclipPos.y + Time.deltaTime * 20f, noclipPos.z);
-                    }
+        //            if (GameManager.instance.inputHandler.inputActions.up.IsPressed)
+        //            {
+        //                noclipPos = new Vector3(noclipPos.x, noclipPos.y + Time.deltaTime * 20f, noclipPos.z);
+        //            }
 
-                    if (GameManager.instance.inputHandler.inputActions.down.IsPressed)
-                    {
-                        noclipPos = new Vector3(noclipPos.x, noclipPos.y - Time.deltaTime * 20f, noclipPos.z);
-                    }
+        //            if (GameManager.instance.inputHandler.inputActions.down.IsPressed)
+        //            {
+        //                noclipPos = new Vector3(noclipPos.x, noclipPos.y - Time.deltaTime * 20f, noclipPos.z);
+        //            }
 
-                    if (HeroController.instance.transitionState.ToString() == "WAITING_TO_TRANSITION")
-                    {
-                        HeroController.instance.gameObject.transform.position = noclipPos;
-                    }
-                    else
-                    {
-                        noclipPos = HeroController.instance.gameObject.transform.position;
-                    }
-                }
-            }
-        }
+        //            if (HeroController.instance.transitionState.ToString() == "WAITING_TO_TRANSITION")
+        //            {
+        //                HeroController.instance.gameObject.transform.position = noclipPos;
+        //            }
+        //            else
+        //            {
+        //                noclipPos = HeroController.instance.gameObject.transform.position;
+        //            }
+        //        }
+        //    }
+        //}
 
 #if DEBUG
-        public static void SetDebugInput(bool enabled)
-        {
-            if (enabled)
-                debugInputRoutine = new SmartRoutine(DebugInput());
-            else
-                debugInputRoutine.Reset();
-        }
+        //public static void SetDebugInput(bool enabled)
+        //{
+        //    if (enabled)
+        //        debugInputRoutine = new SmartRoutine(DebugInput());
+        //    else
+        //        debugInputRoutine.Reset();
+        //}
 
         static void DebugPrintObjectOnHit(Collider2D otherCollider, GameObject gameObject)
         {

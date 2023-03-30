@@ -189,7 +189,7 @@ namespace EnemyRandomizerMod
                 eLeft.DisableAction(3);
                 eLeft.DisableAction(4);
                 eLeft.DisableAction(5);
-                eLeft.DisableAction(9);
+                eLeft.DisableAction(8);
 
                 eLeft.AddCustomAction(() =>
                 {
@@ -222,28 +222,6 @@ namespace EnemyRandomizerMod
 
                 leapStart.InsertCustomAction(() =>
                 {
-                    //float spawnX = control.FsmVariables.GetFsmFloat("Appear X").Value;
-                    //see if the hero is too close to the edge
-                    //bool willLeapRight = HeroX < spawnX;
-                    //if(willLeapRight)
-                    //{
-                    //    float dist = edgeR - HeroX;
-                    //    if (dist < (thisMetadata.ObjectSize.x * this.thisMetadata.SizeScale * 3))
-                    //    {
-                    //        control.SendEvent("RECHOOSE");
-                    //        return;
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    float dist = HeroX - edgeL;
-                    //    if (dist < (thisMetadata.ObjectSize.x * this.thisMetadata.SizeScale * 3))
-                    //    {
-                    //        control.SendEvent("RECHOOSE");
-                    //        return;
-                    //    }
-                    //}
-
                     //impossible leap
                     float leapSize = (thisMetadata.ObjectSize.x * this.thisMetadata.SizeScale * 3);
                     if(edgeL + leapSize > edgeR - leapSize)
@@ -254,24 +232,6 @@ namespace EnemyRandomizerMod
 
                     isLeaping = true;
                 },0);
-
-                //leapStart.InsertCustomAction(() =>
-                //{
-                //    //float leapSize = (thisMetadata.ObjectSize.x * this.thisMetadata.SizeScale * 3);
-                //    //pick a random spot between hero and edge
-                //    //RNG rng = new RNG();
-                //    //rng.Reset();
-                //    //float spawnX = rng.Rand(edgeL + leapSize, edgeR - leapSize);
-
-                //    //control.FsmVariables.GetFsmFloat("Appear X").Value = spawnX;
-
-                //    //float dir = HeroX < spawnX ? 1f : -1f;
-
-                //    //control.FsmVariables.GetFsmVector2("RayForward Direction").Value = new Vector2(dir, 0f);
-                //    //control.FsmVariables.GetFsmVector2("RayDown X").Value = new Vector2(dir * 6.5f, -.5f);
-
-                //    //control.SendEvent("FINISHED");
-                //},1);
             }
 
             //we calculated the emerge position using world space, so make sure the action uses world space

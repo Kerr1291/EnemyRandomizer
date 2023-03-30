@@ -101,7 +101,7 @@ namespace EnemyRandomizerMod
         {
             var menu = new List<IMenuMod.MenuEntry>();
 
-            //menu = GetDebugEntries(menu);
+            menu = GetDebugEntries(menu);
             menu = GetLogics(menu);
 
             return menu;
@@ -136,11 +136,11 @@ namespace EnemyRandomizerMod
         {
             menu.Add(new IMenuMod.MenuEntry
             {
-                Name = "Toggle No Clip",
-                Description = "Turns on no clip - use if you get stuck.",
+                Name = "Allow Boss Replacement",
+                Description = "If disabled, bosses will never be touched by the mod",
                 Values = this.toggle,
-                Saver = (x) => { EnemyRandomizer.GlobalSettings.IsNoClip = x == 1; },
-                Loader = () => { return EnemyRandomizer.GlobalSettings.IsNoClip ? 1 : 0; }
+                Saver = (x) => { EnemyRandomizer.GlobalSettings.RandomizeBosses = x == 1; },
+                Loader = () => { return EnemyRandomizer.GlobalSettings.RandomizeBosses ? 1 : 0; }
             });
             return menu;
         }

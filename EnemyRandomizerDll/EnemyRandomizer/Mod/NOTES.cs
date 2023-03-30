@@ -5,8 +5,8 @@
  *
  * Remove the grimmkin's screen space existance abilities....
  * 
- * 
- * 
+ * NERF the electric mage HP when replaces weakish enemies (based on count of them imo)
+ * reduce their aggro range too
  * 
  * 
  * 
@@ -255,7 +255,7 @@
     <string>Zote Crew Fat</string>                         -   NEEDS TESTING -- SEEMS TO ALMOST WORK???
     <string>Zote Crew Tall</string>                        -   NEEDS TESTING -- ?????
     <string>Zote Balloon</string>                          -   NEEDS TESTING -- FIX EXPLOSION NOT HAPPENING && RESPAWN STILL HAPPENING
-    <string>Ordeal Zoteling</string>                       -   ???????
+    <string>Ordeal Zoteling</string>                       -   BROKEN - NEEDS ZOTELING FIX???
     <string>Baby Centipede</string>                        -   NEEDS TESTING
 
     <string>Grey Prince</string>                           -   STILL BROKEN
@@ -279,7 +279,7 @@
     <string>Plant Turret Right</string>                    -   OFTEN SPAWNS FLOATING / FACING INCORRECTLY / DOESNT SHOOT CORRECTLY
     <string>Mushroom Turret</string>                       -   OFTEN SPAWNS FLOATING / FACING INCORRECTLY / DOESNT SHOOT CORRECTLY
     <string>Moss Knight</string>                           -   NEEDS TESTING
-    <string>Moss Charger</string>                          -   +++++++++++++++++NEEDS TESTING
+    <string>Moss Charger</string>                          -   SCRIPT HAS NULLREF ERRORS
     <string>Ghost Warrior Marmu</string>                   -   NEEDS CORPSE TESTING FOR CRASH
     <string>Zombie Beam Miner</string>                     -   NEEDS LASER RANGE EXTENDED
     <string>Spider Mini</string>                           -   KEEPS SPAWNING STUCK IN AIR
@@ -321,7 +321,7 @@
     <string>Jar Collector</string>                         -   +++++++++++++++++NEEDS TESTING
     <string>Hornet Boss 1</string>                         -   NEEDS BOSS SCRIPT
     <string>Giant Buzzer</string>                          -   +++++++++++++++++NEEDS TESTING
-    <string>Giant Buzzer Col</string>                      -   +++++++++++++++++NEEDS TESTING  (this version spawns when zote chewing flag is done)
+    <string>Giant Buzzer Col</string>                      -   BROKEN HITBOX (not enabled) (this version spawns when zote chewing flag is done)
     <string>Mega Moss Charger</string>                     -   +++++++++++++++++NEEDS TESTING
     <string>Ghost Warrior No Eyes</string>                 -   NEEDS BOSS SCRIPT
     <string>Ghost Warrior Hu</string>                      -   NEEDS BOSS SCRIPT

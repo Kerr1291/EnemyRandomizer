@@ -38,6 +38,9 @@ namespace EnemyRandomizerMod
 
         protected override bool HeroInAggroRange()
         {
+            if (aggroBounds == null)
+                return false;
+
             return aggroBounds.Contains(HeroController.instance.transform.position);
         }
 
@@ -152,7 +155,7 @@ namespace EnemyRandomizerMod
                 eLeft.DisableAction(3);
                 eLeft.DisableAction(4);
                 eLeft.DisableAction(5);
-                eLeft.DisableAction(9);
+                eLeft.DisableAction(8);
 
                 eLeft.AddCustomAction(() =>
                 {

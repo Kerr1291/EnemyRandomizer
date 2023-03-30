@@ -162,6 +162,10 @@ namespace EnemyRandomizerMod
         public GameObject RandomizeEnemy(GameObject original)
         {
             var metaData = original.ToMetadata(database);
+
+            if (metaData.IsBoss && !EnemyRandomizer.GlobalSettings.RandomizeBosses)
+                return original;
+
             return OnObjectLoaded(metaData);
         }
 

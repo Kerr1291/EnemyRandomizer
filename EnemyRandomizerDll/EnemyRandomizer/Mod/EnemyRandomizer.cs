@@ -18,7 +18,7 @@ namespace EnemyRandomizerMod
     public class EnemyRandomizerSettings
     {
         public List<string> loadedLogics;
-        public bool IsNoClip = false;
+        public bool RandomizeBosses = true;
         public List<LogicSettings> logicSettings = new List<LogicSettings>();
     }
 
@@ -300,8 +300,8 @@ namespace EnemyRandomizerMod
             ModHooks.ObjectPoolSpawnHook -= MODHOOK_OnObjectPoolSpawn;
             ModHooks.ObjectPoolSpawnHook += MODHOOK_OnObjectPoolSpawn;
 
-            On.UIManager.UIClosePauseMenu -= new On.UIManager.hook_UIClosePauseMenu(SetNoClip);
-            On.UIManager.UIClosePauseMenu += new On.UIManager.hook_UIClosePauseMenu(SetNoClip);
+            //On.UIManager.UIClosePauseMenu -= new On.UIManager.hook_UIClosePauseMenu(SetNoClip);
+            //On.UIManager.UIClosePauseMenu += new On.UIManager.hook_UIClosePauseMenu(SetNoClip);
 
             ModHooks.BeforeSceneLoadHook -= MODHOOK_BeforeSceneLoad;
             ModHooks.BeforeSceneLoadHook += MODHOOK_BeforeSceneLoad;
@@ -373,7 +373,7 @@ namespace EnemyRandomizerMod
 
             ModHooks.ObjectPoolSpawnHook -= MODHOOK_OnObjectPoolSpawn;
 
-            On.UIManager.UIClosePauseMenu -= new On.UIManager.hook_UIClosePauseMenu(SetNoClip);
+            //On.UIManager.UIClosePauseMenu -= new On.UIManager.hook_UIClosePauseMenu(SetNoClip);
 
             ModHooks.BeforeSceneLoadHook -= MODHOOK_BeforeSceneLoad;
 

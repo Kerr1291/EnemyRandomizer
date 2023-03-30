@@ -17,7 +17,7 @@ namespace EnemyRandomizerMod
         {
             ("Randomize Enemies", "Should enemies be randomized?", true),
             ("Randomize Hazards", "Should (some) hazards be randomized?", false),
-            ("Randomize Effects", "Should (some) effects be randomized?", false),
+            ("Randomize Effects", "Should (some) effects be randomized?", false)
         };
 
         protected override List<(string Name, string Info, bool DefaultState)> ModOptions
