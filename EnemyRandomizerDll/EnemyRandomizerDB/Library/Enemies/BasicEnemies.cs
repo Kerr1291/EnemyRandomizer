@@ -1912,7 +1912,77 @@ namespace EnemyRandomizerMod
     /////
     public class HornetBoss1Control : FSMAreaControlEnemy
     {
+        public override string FSMName => "Control";
 
+        protected Dictionary<string, Func<FSMAreaControlEnemy, float>> HornetFloatRefs;
+
+        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => HornetFloatRefs;
+
+        public Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+        public Vector2 heroPos2d => new Vector2(HeroController.instance.transform.position.x, HeroController.instance.transform.position.y);
+        public Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 16);
+        public float floorY => heroPos2d.FireRayGlobal(Vector2.down, 50f).point.y;
+        public float roofY => heroPos2d.FireRayGlobal(Vector2.up, 200f).point.y;
+        public float edgeL => heroPosWithOffset.FireRayGlobal(Vector2.left, 100f).point.y;
+        public float edgeR => heroPosWithOffset.FireRayGlobal(Vector2.right, 100f).point.y;
+
+        //values taken from hornet's FSM
+        public float sphereHeight = 33.8f - 27.55f;
+        public float minDstabHeight = 33.31f - 27.55f;
+        public float airDashHeight = 31.5f - 27.55f;
+        public float throwXLoffset = 22.51f - 15.13f;
+        public float throwXRoffset = 37.9f - 30.16f;
+
+        public Vector2 sizeOfAggroArea = new Vector2(50f, 50f);
+        public Vector2 centerOfAggroArea => gameObject.transform.position;
+        public UnityEngine.Bounds aggroBounds => new UnityEngine.Bounds(centerOfAggroArea, sizeOfAggroArea);
+
+        protected override bool HeroInAggroRange()
+        {
+            return aggroBounds.Contains(HeroController.instance.transform.position);
+        }
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            HornetFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                {"Wall X Left" , x => edgeL},
+                {"Wall X Right" , x => edgeR},
+                {"Floor Y" , x => floorY},
+                {"Roof Y" , x => roofY},
+                {"Sphere Y" , x => floorY + sphereHeight},
+                {"Air Dash Height" , x => floorY + sphereHeight},
+                {"Min Dstab Height" , x => floorY + minDstabHeight},
+                {"Throw X L" , x => edgeL + throwXLoffset},
+                {"Throw X R" , x => edgeR - throwXRoffset},
+            };
+
+            var inert = control.GetState("Inert");
+            inert.RemoveTransition("GG BOSS");
+            inert.RemoveTransition("WAKE");
+            this.OverrideState(control, "Inert", () => control.SendEvent("REFIGHT"));
+
+            var refightReady = control.GetState("Refight Ready");
+            refightReady.DisableAction(4);
+            refightReady.DisableAction(5);
+            refightReady.DisableAction(6);
+            refightReady.AddCustomAction(() => control.SendEvent("WAKE"));
+
+            var refightWake = control.GetState("Refight Wake");
+            refightWake.DisableAction(0);
+            refightWake.ChangeTransition("FINISHED", "Flourish");
+
+            var flourish = control.GetState("Flourish");
+            flourish.DisableAction(2);
+            flourish.DisableAction(3);
+            flourish.DisableAction(4);
+            flourish.DisableAction(5);
+
+            this.InsertHiddenState(control, "Refight Ready", "WAKE", "Refight Wake");
+            this.AddResetToStateOnHide(control, "Refight Ready");
+        }
     }
 
     public class HornetBoss1Spawner : DefaultSpawner<HornetBoss1Control> { }
@@ -1928,7 +1998,81 @@ namespace EnemyRandomizerMod
     /////
     public class HornetBoss2Control : FSMAreaControlEnemy
     {
+        public override string FSMName => "Control";
 
+        protected Dictionary<string, Func<FSMAreaControlEnemy, float>> HornetFloatRefs;
+
+        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => HornetFloatRefs;
+
+        public Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+        public Vector2 heroPos2d => new Vector2(HeroController.instance.transform.position.x, HeroController.instance.transform.position.y);
+        public Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 16);
+        public float floorY => heroPos2d.FireRayGlobal(Vector2.down, 50f).point.y;
+        public float roofY => heroPos2d.FireRayGlobal(Vector2.up, 200f).point.y;
+        public float edgeL => heroPosWithOffset.FireRayGlobal(Vector2.left, 100f).point.y;
+        public float edgeR => heroPosWithOffset.FireRayGlobal(Vector2.right, 100f).point.y;
+
+        //values taken from hornet's FSM
+        public float sphereHeight = 33.8f - 27.55f;
+        public float minDstabHeight = 33.31f - 27.55f;
+        public float airDashHeight = 31.5f - 27.55f;
+        public float throwXLoffset = 22.51f - 15.13f;
+        public float throwXRoffset = 37.9f - 30.16f;
+
+        public Vector2 sizeOfAggroArea = new Vector2(50f, 50f);
+        public Vector2 centerOfAggroArea => gameObject.transform.position;
+        public UnityEngine.Bounds aggroBounds => new UnityEngine.Bounds(centerOfAggroArea, sizeOfAggroArea);
+
+        protected override bool HeroInAggroRange()
+        {
+            return aggroBounds.Contains(HeroController.instance.transform.position);
+        }
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            HornetFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                {"Wall X Left" , x => edgeL},
+                {"Wall X Right" , x => edgeR},
+                {"Floor Y" , x => floorY},
+                {"Roof Y" , x => roofY},
+                {"Sphere Y" , x => floorY + sphereHeight},
+                {"Air Dash Height" , x => floorY + sphereHeight},
+                {"Min Dstab Height" , x => floorY + minDstabHeight},
+                {"Throw X L" , x => edgeL + throwXLoffset},
+                {"Throw X R" , x => edgeR - throwXRoffset},
+            };
+
+            var inert = control.GetState("Inert");
+            inert.RemoveTransition("GG BOSS");
+            inert.RemoveTransition("BATTLE START");
+            this.OverrideState(control, "Inert", () => control.SendEvent("REFIGHT"));
+
+            var refightReady = control.GetState("Refight Ready");
+            refightReady.DisableAction(3);
+            refightReady.DisableAction(5);
+            refightReady.AddCustomAction(() => control.SendEvent("WAKE"));
+
+            refightReady.ChangeTransition("WAKE", "Refight Wake");
+
+            var refightWake = control.GetState("Refight Wake");
+            this.OverrideState(control, "Refight Wake", () => control.SendEvent("FINISHED"));
+            refightWake.ChangeTransition("FINISHED", "Wake");
+
+            var wake = control.GetState("Wake");
+            wake.ChangeTransition("FINISHED", "Flourish");
+
+            var flourish = control.GetState("Flourish");
+            flourish.DisableAction(3);
+            flourish.DisableAction(4);
+            flourish.DisableAction(5);
+            flourish.DisableAction(6);
+
+            this.InsertHiddenState(control, "Refight Ready", "WAKE", "Refight Wake");
+            this.AddResetToStateOnHide(control, "Refight Ready");
+        }
     }
 
     public class HornetBoss2Spawner : DefaultSpawner<HornetBoss2Control> { }
