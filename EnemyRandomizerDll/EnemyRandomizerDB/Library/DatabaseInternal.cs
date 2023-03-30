@@ -334,6 +334,13 @@ namespace EnemyRandomizerMod
             {
                 prefabObject.prefab.name = ToDatabaseKey(prefabObject.prefab.name);
                 prefabObject.prefab.SetActive(false);
+
+                var constrainPos = prefabObject.prefab.GetComponent<ConstrainPosition>();
+                if(constrainPos)
+                {
+                    GameObject.Destroy(constrainPos);
+                }
+
                 GameObject.DontDestroyOnLoad(prefabObject.prefab);
             }
 

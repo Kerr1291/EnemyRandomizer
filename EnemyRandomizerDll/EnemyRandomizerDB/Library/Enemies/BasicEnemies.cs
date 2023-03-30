@@ -434,6 +434,9 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Electric Mage";
 
+        public float hpRatioTriggerNerf = 2f;
+        public float aggroRadius = 30f;
+
         protected override bool ControlCameraLocks => false;
 
         protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs =>
@@ -460,6 +463,28 @@ namespace EnemyRandomizerMod
 
             //add an action that updates the refs
             st.InsertCustomAction(() => this.UpdateRefs(control, FloatRefs), 1);
+        }
+
+        protected override bool HeroInAggroRange()
+        {
+            float dist = (transform.position - HeroController.instance.transform.position).magnitude;
+            return (dist <= aggroRadius);
+        }
+
+        protected override void ScaleHP()
+        {
+            if (originialMetadata == null)
+                return;
+
+            float mageHP = thisMetadata.MaxHP;
+            float originalHP = originialMetadata.MaxHP;
+
+            float ratio = mageHP / originalHP;
+
+            if(ratio > hpRatioTriggerNerf)
+            {
+                thisMetadata.EnemyHealthManager.hp = Mathf.FloorToInt( mageHP / 2f );
+            }
         }
     }
 

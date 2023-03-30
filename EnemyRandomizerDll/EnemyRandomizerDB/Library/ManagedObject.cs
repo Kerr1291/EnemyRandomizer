@@ -11,11 +11,12 @@ namespace EnemyRandomizerMod
 {
     public class ManagedObject : MonoBehaviour
     {
-        public GameObject sourceEnemy;
+        public ObjectMetadata myMetaData;
         public string originalGameObjectPath;
         public string sourceDatabaseKey;
         public string myDatabaseKey;
         public bool replaced;
+        public ObjectMetadata replacedMetaData;
 
         /// <summary>
         /// True if this has not been replaced
@@ -27,19 +28,15 @@ namespace EnemyRandomizerMod
         /// </summary>
         public virtual void Setup(ObjectMetadata source)
         {
-            if (source != null)
-            {
-                ThisIsSourceObject = (source.Source == gameObject);
-                this.originalGameObjectPath = source.ScenePath;
-                sourceDatabaseKey = source.DatabaseName;
-            }
-            else
-            {
-                ThisIsSourceObject = (source.Source == gameObject);
-            }
+            ThisIsSourceObject = (source.Source == gameObject);
+            this.originalGameObjectPath = source.ScenePath;
+            sourceDatabaseKey = source.DatabaseName;
 
             myDatabaseKey = EnemyRandomizerDatabase.ToDatabaseKey(name);
-            sourceEnemy = source.Source;
+            replacedMetaData = source;
+
+            myMetaData = new ObjectMetadata();
+            myMetaData.Setup(gameObject, EnemyRandomizerDatabase.GetDatabase());
 
             if (!ThisIsSourceObject)
                 replaced = true;

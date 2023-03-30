@@ -1,16 +1,21 @@
 ﻿
 /* CURRENT TODO
  * 
- * IF AN ENEMY REPLACES THE SAME TYPE, SKIP REPLACEMENT? (add an option) 
- *
- * Remove the grimmkin's screen space existance abilities....
+ * NEEDS TEST: KILLING WHITE PALACE ENEMY GUARD DIDN'T TRIGGER GATE OPENING
+ * NEEDS TEST: Ground enemy spawned in first arena and walked outside, gate closed... try teleporting them back in when battle starts if they're outside
  * 
- * NERF the electric mage HP when replaces weakish enemies (based on count of them imo)
- * reduce their aggro range too
+ * MAKE USER SETTABLE SEED
+ * 
+ *
+ * 
+ * 
+ * 
+ * 
  * 
  * 
  * 
  * BUGS TO FIX:
+ * 
  * 
  * The lancer dies but does not despawn-- look up some corpses/death effects to use when replacing the lancer's
  * Replacements in an arena in queen's gardens did not work
@@ -66,16 +71,18 @@
  * 
  * 
  * 
+ * LATER TODO:
+ * 
+ * IF AN ENEMY REPLACES THE SAME TYPE, SKIP REPLACEMENT? (add an option) 
+ * 
+ * Remove the grimmkin's screen space existance abilities....
  * 
  * 
  * 
+ * DESIGN ITERATIONS:
  * 
- * 
- * 
- * 
- * 
- * 
- * 
+ * Check on the electric mage's hp, it was nerfed to 1/2- see how it feels.
+ * Reduced Electric mage aggro range to a 30 radius circle- see how it feels.
  * 
  * 
  * 

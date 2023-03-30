@@ -18,6 +18,7 @@ namespace EnemyRandomizerMod
         public Scene BattleScene { get; protected set; }
         public string SceneName { get { return BattleScene.name; } }
         public PlayMakerFSM FSM { get; protected set; }
+        public BoxCollider2D FSMAREA { get; protected set; }
 
         protected CompositeDisposable disposables = new CompositeDisposable();
 
@@ -38,6 +39,7 @@ namespace EnemyRandomizerMod
         {
             BattleScene = scene;
             FSM = fsm;
+            FSMAREA = fsm.GetComponent<BoxCollider2D>();
 
             On.HutongGames.PlayMaker.Fsm.Event_FsmEvent -= Fsm_Event_FsmEvent;
             On.HutongGames.PlayMaker.Fsm.Event_FsmEventTarget_string -= Fsm_Event_FsmEventTarget_string;
@@ -49,12 +51,60 @@ namespace EnemyRandomizerMod
             On.HutongGames.PlayMaker.FsmState.OnEnter += FsmState_OnEnter;
         }
 
+        protected void OnBattleStarted()
+        {
+            if(FSMAREA != null)
+            {
+                var battleArea = FSMAREA.bounds;
+                var bmos = GameObject.FindObjectsOfType<BattleManagedObject>().ToList();
+                var outsideArea = bmos.Where(x =>
+                {
+                    var pos = x.transform.position;
+                    var localPos = FSMAREA.transform.InverseTransformPoint(pos);
+                    bool isInside = battleArea.Contains(localPos);
+
+                    return !isInside;
+
+                });
+
+                RNG rng = new RNG();
+                rng.Reset();
+
+                outsideArea.ToList().ForEach(x =>
+                {
+                    var point = rng.Rand(battleArea.min, battleArea.max);
+                    var worldPoint = FSMAREA.transform.TransformPoint(point);
+
+                    x.transform.position = worldPoint;
+                });
+            }
+            else
+            {
+                Dev.LogWarning("Battle has started and we have no collider to check if all previous battle enemies are in the arena!");
+
+                var bmos = GameObject.FindObjectsOfType<BattleManagedObject>().ToList();
+                bmos.ForEach(x =>
+                {
+                    if(x.myMetaData.CheckIfIsActiveAndVisible() && !x.myMetaData.IsBoss)
+                    {
+                        Dev.Log("Force killing pre-battle enemies for now until I implement a solution to check if they start inside the arena");
+                        x.myMetaData.EnemyHealthManager.Die(null, AttackTypes.Generic, true);
+                    }
+                });
+            }
+        }
+
         private void FsmState_OnEnter(On.HutongGames.PlayMaker.FsmState.orig_OnEnter orig, FsmState self)
         {
             orig(self);
 
             if (self == null || self.Fsm != FSM.Fsm)
                 return;
+
+            if(self.Actions.OfType<SendEventByName>().Any(x => x.sendEvent != null && x.sendEvent.Value == "BG CLOSE"))
+            {
+                OnBattleStarted();
+            }
 
             if (self.Name == "Idle")
             {
@@ -221,6 +271,7 @@ namespace EnemyRandomizerMod
                 return;
 
             bool isColo = BattleManager.Instance.Value.gameObject.scene.name.Contains("Room_Colosseum_");
+            bool isWhitePalace = BattleManager.Instance.Value.gameObject.scene.name.Contains("White_Palace_");
 
             if (FSM.FsmVariables.Contains("Battle Enemies"))
             {
@@ -255,6 +306,13 @@ namespace EnemyRandomizerMod
             {
                 triggerNextWave = false;
                 forceOpenGates = false;
+                FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
+            }
+
+            if(isWhitePalace && bmo.replacedMetaData.DatabaseName.Contains("Royal Guard"))
+            {
+                triggerNextWave = false;
+                forceOpenGates = true;
                 FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
             }
 
@@ -307,30 +365,32 @@ namespace EnemyRandomizerMod
 
         public static void OpenGates()
         {
-            var fsms = GameObject.FindObjectsOfType<PlayMakerFSM>();
-            {
-                fsms
-                    .Where(x => x != null)
-                    .ToList()
-                    .ForEach(x =>
-                    {
-                        x.SendEvent("BG OPEN");
-                    });
-            }
+            PlayMakerFSM.BroadcastEvent("BG OPEN");
+            //var fsms = GameObject.FindObjectsOfType<PlayMakerFSM>();
+            //{
+            //    fsms
+            //        .Where(x => x != null)
+            //        .ToList()
+            //        .ForEach(x =>
+            //        {
+            //            x.SendEvent("BG OPEN");
+            //        });
+            //}
         }
 
         public static void CloseGates()
         {
-            var fsms = GameObject.FindObjectsOfType<PlayMakerFSM>();
-            {
-                fsms
-                    .Where(x => x != null)
-                    .ToList()
-                    .ForEach(x =>
-                    {
-                        x.SendEvent("BG CLOSE");
-                    });
-            }
+            PlayMakerFSM.BroadcastEvent("BG CLOSE");
+            //var fsms = GameObject.FindObjectsOfType<PlayMakerFSM>();
+            //{
+            //    fsms
+            //        .Where(x => x != null)
+            //        .ToList()
+            //        .ForEach(x =>
+            //        {
+            //            x.SendEvent("BG CLOSE");
+            //        });
+            //}
         }
     }
 }
