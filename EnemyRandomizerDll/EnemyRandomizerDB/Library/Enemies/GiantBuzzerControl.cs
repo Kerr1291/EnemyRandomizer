@@ -59,6 +59,11 @@ namespace EnemyRandomizerMod
 
                 control.SendEvent("FINISHED");
             });
+
+            control.GetState("Idle").InsertCustomAction(() =>
+            {
+                gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            }, 0);
         }
 
         protected override int ScaleHPFromBossToNormal(int defaultHP, int previousHP)
@@ -160,6 +165,11 @@ namespace EnemyRandomizerMod
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
             this.AddResetToStateOnHide(control, "Init");
+
+            control.GetState("Idle").InsertCustomAction(() =>
+            {
+                gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            }, 0);
         }
     }
 

@@ -319,20 +319,15 @@
     <string>Mage Knight</string>                           -   +++++++++++++++++NEEDS TESTING
     <string>Black Knight</string>                          -   +++++++++++++++++NEEDS TESTING
     <string>Jar Collector</string>                         -   +++++++++++++++++NEEDS TESTING
-    <string>Hornet Boss 1</string>                         -   NEEDS BOSS SCRIPT
+    <string>Hornet Boss 1</string>                         -   +++++++++++++++++NEEDS TESTING
     <string>Giant Buzzer</string>                          -   +++++++++++++++++NEEDS TESTING
-    <string>Giant Buzzer Col</string>                      -   BROKEN HITBOX (not enabled) (this version spawns when zote chewing flag is done)
+    <string>Giant Buzzer Col</string>                      -   +++++++++++++++++NEEDS TESTING -- hitbox fixed? BROKEN HITBOX (not enabled) (this version spawns when zote chewing flag is done)
     <string>Mega Moss Charger</string>                     -   +++++++++++++++++NEEDS TESTING
-    <string>Ghost Warrior No Eyes</string>                 -   NEEDS BOSS SCRIPT
-    <string>Ghost Warrior Hu</string>                      -   NEEDS BOSS SCRIPT
-    <string>Mantis Traitor Lord</string>                   -   NEEDS BOSS SCRIPT
-    <string>Mega Jellyfish</string>                        -   NEEDS BOSS SCRIPT
-    <string>Ghost Warrior Xero</string>                    -   NEEDS BOSS SCRIPT
     <string>Mega Zombie Beam Miner</string>                -   +++++++++++++++++NEEDS TESTING
     <string>Zombie Beam Miner Rematch</string>             -   +++++++++++++++++NEEDS TESTING
+    <string>Hornet Boss 2</string>                         -   +++++++++++++++++NEEDS TESTING
     <string>Mimic Spider</string>                          -   NEEDS BOSS SCRIPT
-    <string>Ghost Warrior Galien</string>                  -   NEEDS BOSS SCRIPT
-    <string>Hornet Boss 2</string>                         -   NEEDS BOSS SCRIPT
+    <string>Mantis Traitor Lord</string>                   -   NEEDS BOSS SCRIPT
     <string>Dung Defender</string>                         -   NEEDS BOSS SCRIPT
     <string>Fluke Mother</string>                          -   NEEDS BOSS SCRIPT
     <string>Hive Knight</string>                           -   NEEDS BOSS SCRIPT
@@ -348,8 +343,13 @@
     <string>Sheo Boss</string>                             -   NEEDS BOSS SCRIPT
     <string>Sly Boss</string>                              -   NEEDS BOSS SCRIPT
     <string>Hornet Nosk</string>                           -   NEEDS BOSS SCRIPT
-    <string>Ghost Warrior Slug</string>                    -   NEEDS BOSS SCRIPT
     <string>White Defender</string>                        -   NEEDS BOSS SCRIPT
-    <string>Ghost Warrior Markoth</string>                 -   NEEDS BOSS SCRIPT
     <string>Jellyfish GG</string>                          -   NEEDS BOSS SCRIPT
+    <string>Mega Jellyfish</string>                        -   NEEDS BOSS SCRIPT
+    <string>Ghost Warrior Galien</string>                  -   NEEDS BOSS SCRIPT
+    <string>Ghost Warrior Xero</string>                    -   NEEDS BOSS SCRIPT
+    <string>Ghost Warrior Slug</string>                    -   NEEDS BOSS SCRIPT
+    <string>Ghost Warrior Markoth</string>                 -   NEEDS BOSS SCRIPT
+    <string>Ghost Warrior No Eyes</string>                 -   NEEDS BOSS SCRIPT
+    <string>Ghost Warrior Hu</string>                      -   NEEDS BOSS SCRIPT
  */

@@ -1879,7 +1879,89 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class FlukeMotherControl : DefaultSpawnedEnemyControl { }
+    public class FlukeMotherControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Fluke Mother";
+
+        public AudioPlayerOneShotSingle squirtA;
+        public AudioPlayerOneShotSingle squirtB;
+
+        public UnityEngine.Bounds spawnArea;
+
+        protected override bool HeroInAggroRange()
+        {
+            return true;
+        }
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            var surfaces = gameObject.GetNearestSurfaces(500f);
+
+            var w = surfaces[Vector2.right].point.x - surfaces[Vector2.left].point.x;
+            var h = surfaces[Vector2.up].point.y - surfaces[Vector2.down].point.y;
+
+            spawnArea = new UnityEngine.Bounds(gameObject.transform.position, new Vector3(w, h, 0f));
+
+            var db = EnemyRandomizerDatabase.GetDatabase();
+
+            var spawn2 = control.GetState("Spawn 2");
+
+            squirtA = spawn2.GetAction<AudioPlayerOneShotSingle>(9);
+            squirtB = spawn2.GetAction<AudioPlayerOneShotSingle>(10);
+
+            var init = control.GetState("Init");
+            init.DisableAction(2);
+            init.DisableAction(3);
+            init.DisableAction(5);
+            init.DisableAction(7);
+            init.DisableAction(8);
+
+            init.RemoveTransition("GG BOSS");
+
+            var idle = control.GetState("Idle");
+            var playIdle = control.GetState("Play Idle");
+
+            idle.DisableAction(4);
+            idle.DisableAction(3);
+
+            var roarStart = control.GetState("Roar Start");
+            roarStart.DisableAction(2);
+            roarStart.DisableAction(4);
+            roarStart.DisableAction(7);
+            roarStart.DisableAction(8);
+            roarStart.DisableAction(9);
+            roarStart.DisableAction(10);
+            roarStart.DisableAction(11);
+
+            var roarEnd = control.GetState("Roar End");
+            roarEnd.DisableAction(0);
+            roarEnd.DisableAction(1);
+
+
+            var rage = control.GetState("Rage");
+            var customSpawn = control.AddState("Custom Spawn");
+
+            customSpawn.AddCustomAction(() =>
+            {
+                var fly = db.Spawn("Fluke Fly", null);
+
+                RNG rng = new RNG();
+                rng.Reset();
+
+                var spawn = rng.Rand(spawnArea.min, spawnArea.max);
+                fly.transform.position = spawn;
+
+                fly.gameObject.SetActive(true);
+            });
+
+            customSpawn.AddAction(squirtA);
+            customSpawn.AddAction(squirtB);
+
+            rage.ChangeTransition("SPAWN", "Custom Spawn");
+        }
+    }
 
     public class FlukeMotherSpawner : DefaultSpawner<FlukeMotherControl> { }
 
