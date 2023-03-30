@@ -328,8 +328,8 @@
     <string>Mantis Traitor Lord</string>                   -   NEEDS BOSS SCRIPT
     <string>Mega Jellyfish</string>                        -   NEEDS BOSS SCRIPT
     <string>Ghost Warrior Xero</string>                    -   NEEDS BOSS SCRIPT
-    <string>Mega Zombie Beam Miner</string>                -   NEEDS BOSS SCRIPT
-    <string>Zombie Beam Miner Rematch</string>             -   NEEDS BOSS SCRIPT
+    <string>Mega Zombie Beam Miner</string>                -   +++++++++++++++++NEEDS TESTING
+    <string>Zombie Beam Miner Rematch</string>             -   +++++++++++++++++NEEDS TESTING
     <string>Mimic Spider</string>                          -   NEEDS BOSS SCRIPT
     <string>Ghost Warrior Galien</string>                  -   NEEDS BOSS SCRIPT
     <string>Hornet Boss 2</string>                         -   NEEDS BOSS SCRIPT

@@ -1910,7 +1910,10 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class HornetBoss1Control : DefaultSpawnedEnemyControl { }
+    public class HornetBoss1Control : FSMAreaControlEnemy
+    {
+
+    }
 
     public class HornetBoss1Spawner : DefaultSpawner<HornetBoss1Control> { }
 
@@ -1923,7 +1926,10 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class HornetBoss2Control : DefaultSpawnedEnemyControl { }
+    public class HornetBoss2Control : FSMAreaControlEnemy
+    {
+
+    }
 
     public class HornetBoss2Spawner : DefaultSpawner<HornetBoss2Control> { }
 
@@ -1936,7 +1942,52 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MegaZombieBeamMinerControl : DefaultSpawnedEnemyControl { }
+    public class MegaZombieBeamMinerControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Beam Miner";
+        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => EMPTY_FLOAT_REFS;
+
+
+        protected Tk2dPlayAnimation sleepAnim;
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            DisableSendEvents(control,
+                ("Land", 2),
+                ("Roar", 1)
+                );
+
+            var sleep = control.GetState("Sleep");
+            sleepAnim = sleep.GetFirstActionOfType<Tk2dPlayAnimation>();
+
+            var deparents = control.GetState("Deparents");
+            deparents.AddAction(sleepAnim);
+
+            this.InsertHiddenState(control, "Deparents", "FINISHED", "Wake");
+            this.AddResetToStateOnHide(control, "Deparents");
+
+            var wake = control.GetState("Wake");
+            wake.ChangeTransition("FINISHED", "Idle");
+
+            var roarStart = control.GetState("Roar Start");
+            roarStart.DisableAction(2);//disable roar sound
+            var roar = control.GetState("Roar");//make the roar emit no waves and be silent
+            roar.DisableAction(2);
+            roar.DisableAction(3);
+            roar.DisableAction(4);
+            roar.DisableAction(5);
+
+            var roarEnd = control.GetState("Roar End");
+            roarEnd.DisableAction(1);
+        }
+
+        protected override int ScaleHPFromBossToNormal(int defaultHP, int previousHP)
+        {
+            return previousHP * 2;
+        }
+    }
 
     public class MegaZombieBeamMinerSpawner : DefaultSpawner<MegaZombieBeamMinerControl> { }
 
@@ -1948,7 +1999,51 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class ZombieBeamMinerRematchControl : DefaultSpawnedEnemyControl { }
+    public class ZombieBeamMinerRematchControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Beam Miner";
+        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => EMPTY_FLOAT_REFS;
+
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            DisableSendEvents(control,
+                ("Land", 2),
+                ("Roar", 1)
+                );
+
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
+            this.AddResetToStateOnHide(control, "Init");
+
+            var wake = control.GetState("Wake");
+            wake.ChangeTransition("FINISHED", "Idle");
+            wake.DisableAction(1);
+            wake.DisableAction(2);
+            wake.DisableAction(3);
+
+            var roarStart = control.GetState("Roar Start");
+            roarStart.DisableAction(2);//disable roar sound
+            var roar = control.GetState("Roar");//make the roar emit no waves and be silent
+            roar.DisableAction(2);
+            roar.DisableAction(3);
+            roar.DisableAction(4);
+            roar.DisableAction(5);
+
+            var roarEnd = control.GetState("Roar End");
+            roarEnd.DisableAction(1);
+
+            if(!other.IsBoss)
+                roarEnd.GetFirstActionOfType<SetDamageHeroAmount>().damageDealt = 1;
+        }
+
+        protected override int ScaleHPFromBossToNormal(int defaultHP, int previousHP)
+        {
+            return previousHP * 2;
+        }
+    }
 
     public class ZombieBeamMinerRematchSpawner : DefaultSpawner<ZombieBeamMinerRematchControl> { }
 
