@@ -9,6 +9,12 @@
             //TODO: some logic to determine if it's safe to leave the enemy as invincible
             thisMetadata.EnemyHealthManager.hp = 1;
         }
+
+        protected virtual void Update()
+        {
+            if(thisMetadata.EnemyHealthManager.hp > 1)
+                thisMetadata.EnemyHealthManager.hp = 1;
+        }
     }
 
     public class WhitePalaceFlySpawner : DefaultSpawner<WhitePalaceFlyControl>

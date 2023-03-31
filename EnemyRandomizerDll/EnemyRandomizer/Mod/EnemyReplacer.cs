@@ -119,6 +119,7 @@ namespace EnemyRandomizerMod
 
             GameManager.instance.StartCoroutine(MakePlayerImmuneToRoar());
             GameManager.instance.StartCoroutine(EnableLogicOnGameLoad(settings));
+            EnemyRandomizer.Instance.SetCustomSeedVisible(false);
         }
 
         IEnumerator MakePlayerImmuneToRoar()
@@ -219,7 +220,7 @@ namespace EnemyRandomizerMod
             try
             {
                 //create default rng
-                RNG rng = new RNG(EnemyRandomizer.PlayerSettings.seed);
+                RNG rng = new RNG(EnemyRandomizer.PlayerSettings.enemyRandomizerSeed);
                 rng = GetRNG(metaObject, rng);
 
                 if (replaceObject)
@@ -370,7 +371,7 @@ namespace EnemyRandomizerMod
             {
                 try
                 {
-                    rng = logic.GetRNG(original, rng, EnemyRandomizer.PlayerSettings.seed);
+                    rng = logic.GetRNG(original, rng, EnemyRandomizer.PlayerSettings.enemyRandomizerSeed);
                 }
                 catch (Exception e)
                 {
@@ -448,6 +449,8 @@ namespace EnemyRandomizerMod
 
         public static List<string> ReplacementEnemiesToSkip = new List<string>()
         {
+            "Dream Mage Lord Phase2",
+            "Mage Lord Phase2",
             "Corpse Garden Zombie", //don't spawn this, it's just a corpse
         };
 

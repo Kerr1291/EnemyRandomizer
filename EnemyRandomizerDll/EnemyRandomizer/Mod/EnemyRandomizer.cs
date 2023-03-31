@@ -17,8 +17,10 @@ namespace EnemyRandomizerMod
 {
     public class EnemyRandomizerSettings
     {
+        public int seed = -1;
         public List<string> loadedLogics;
         public bool RandomizeBosses = true;
+        public bool UseCustomSeed = false;
         public List<LogicSettings> logicSettings = new List<LogicSettings>();
     }
 
@@ -145,7 +147,7 @@ namespace EnemyRandomizerMod
     //Player specific settings
     public class EnemyRandomizerPlayerSettings
     {
-        public int seed;
+        public int enemyRandomizerSeed = -1;
     }
 
     public partial class EnemyRandomizer : Mod, ITogglableMod, IGlobalSettings<EnemyRandomizerSettings>, ILocalSettings<EnemyRandomizerPlayerSettings>
@@ -172,6 +174,8 @@ namespace EnemyRandomizerMod
         public static bool isReloading;
 
         public static bool bypassNextRandomization;
+
+        public static bool DEBUG_SKIP_LOADING = false;
 
         public override string GetVersion()
         {
@@ -206,7 +210,25 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
 
         const string defaultDatabaseFilePath = "EnemyRandomizerDatabase.xml";
-        static string currentVersion = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString();
+        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 5, Now with more jank!]";
+        static string currentVersion = currentVersionPrefix;
+            //Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + $" CURRENT SEED:[{GlobalSettings.seed}] -- TO CHANGE SEED --> MODS > ENEMY RANDOMIZER > ENEMY RANDOMIZER MODULES";
+
+        protected static string GetVersionString()
+        {
+            string prefix = currentVersionPrefix;
+            string postfix = "\n\t\tTO CHANGE --> OPTIONS > MODS > ENEMY RANDOMIZER OPTIONS > ENEMY RANDOMIZER MODULES";
+
+            string seedInfo;
+
+            if(GlobalSettings.UseCustomSeed)
+                seedInfo = prefix + $" USING CUSTOM SEED:[{GlobalSettings.seed}] -- " + postfix;
+            else
+                seedInfo = prefix + $" NEW GAME WILL GENERATE NEW SEED -- " + postfix;
+
+            return seedInfo;
+        }
+
 
         public EnemyReplacer enemyReplacer = new EnemyReplacer();
 
@@ -233,7 +255,7 @@ namespace EnemyRandomizerMod
                 }).Subscribe();
             }
 #else
-                Dev.Logger.LoggingEnabled = false;
+                Dev.Logger.LoggingEnabled = true;
                 Dev.Logger.GuiLoggingEnabled = false;
 #endif
             Dev.Log("Created " + currentVersion);
@@ -241,6 +263,9 @@ namespace EnemyRandomizerMod
 
         public override List<(string, string)> GetPreloadNames()
         {
+            if (DEBUG_SKIP_LOADING)
+                return new List<(string, string)>();
+
             return enemyReplacer.GetPreloadNames(defaultDatabaseFilePath);
         }
 
@@ -251,7 +276,7 @@ namespace EnemyRandomizerMod
 
             BlackBorders = new ReactiveProperty<List<GameObject>>();
 
-            if (preloadedObjects != null)
+            if (preloadedObjects != null && !DEBUG_SKIP_LOADING)
             {
                 if (preloadedObjects.Count <= 0)
                 {
@@ -271,12 +296,16 @@ namespace EnemyRandomizerMod
 
             if (!isReloading)
             {
-                BattleManager.Init();
-                enemyReplacer.Setup(preloadedObjects);
-                LoadLogics();
+                if (!DEBUG_SKIP_LOADING)
+                {
+                    BattleManager.Init();
+                    enemyReplacer.Setup(preloadedObjects);
+                    LoadLogics();
+                }
             }
 
             EnableMod();
+            UIManager.instance.StartCoroutine(UpdateLabelOnLoad());
         }
 
 
@@ -310,7 +339,7 @@ namespace EnemyRandomizerMod
             GameManager.instance.UnloadingLevel += Instance_UnloadingLevel;
 
 #if DEBUG
-            ModHooks.SlashHitHook -= DebugPrintObjectOnHit;
+            ModHooks.SlashHitHook -= DebugPrintObjectOnHit; 
             ModHooks.SlashHitHook += DebugPrintObjectOnHit;
 #endif
 
@@ -333,6 +362,30 @@ namespace EnemyRandomizerMod
 
             ModHooks.DrawBlackBordersHook -= ModHooks_DrawBlackBordersHook;
             ModHooks.DrawBlackBordersHook += ModHooks_DrawBlackBordersHook;
+
+            On.UIManager.UIGoToMainMenu -= UIManager_UIGoToMainMenu;
+            On.UIManager.UIGoToMainMenu += UIManager_UIGoToMainMenu;
+        }
+
+        //when we return to the main menu, re-enable the seed options
+        protected virtual void UIManager_UIGoToMainMenu(On.UIManager.orig_UIGoToMainMenu orig, UIManager self)
+        {
+            Dev.Where();
+            orig(self);
+            SetCustomSeedVisible(true);
+            SetCustomSeedInputVisible(EnemyRandomizer.GlobalSettings.UseCustomSeed);
+            UpdateModVersionLabel();
+        }
+
+        IEnumerator UpdateLabelOnLoad()
+        {
+            yield return new WaitUntil(() => GameObject.FindObjectOfType<ModVersionDraw>(true) != null);
+            var mvd = GameObject.FindObjectOfType<ModVersionDraw>(true);
+            yield return new WaitUntil(() => mvd.drawString.Contains(currentVersion));
+
+            SetCustomSeedVisible(true);
+            SetCustomSeedInputVisible(EnemyRandomizer.GlobalSettings.UseCustomSeed);
+            UpdateModVersionLabel();
         }
 
         void ModHooks_DrawBlackBordersHook(List<GameObject> obj)
@@ -388,12 +441,28 @@ namespace EnemyRandomizerMod
             On.DamageHero.OnEnable -= ONHOOK_DamageHero_OnEnable;
 
             ModHooks.DrawBlackBordersHook -= ModHooks_DrawBlackBordersHook;
+
+            On.UIManager.UIGoToMainMenu -= UIManager_UIGoToMainMenu;
+        }
+
+        public void UpdateModVersionLabel()
+        {
+            string olds = currentVersion;
+            string news = GetVersionString();
+            //Dev.Log($"{olds}   {news}    {currentVersion}");
+            currentVersion = news;
+            var mvd = GameObject.FindObjectOfType<ModVersionDraw>(true);
+            mvd.drawString = mvd.drawString.Replace(olds, news);
+            //Dev.Log($"{mvd.drawString}");
         }
 
         public void EnableMod()
         {
             RegisterCallbacks();
-            enemyReplacer.OnModEnabled();
+            if (!DEBUG_SKIP_LOADING)
+            {
+                enemyReplacer.OnModEnabled();
+            }
             isReloading = false;
             isDisabled = false;
         }
@@ -446,8 +515,34 @@ namespace EnemyRandomizerMod
             }
         }
 
+        protected virtual void SetGameSeed()
+        {
+            if (PlayerSettings.enemyRandomizerSeed <= 0)
+            {
+                if (GlobalSettings.UseCustomSeed && GlobalSettings.seed > -1)
+                {
+                    Dev.Log("Using the custom seed from global settings");
+                    PlayerSettings.enemyRandomizerSeed = GlobalSettings.seed;
+                }
+                else
+                {
+                    Dev.Log("Generating new random seed for this save file");
+                    RNG rng = new RNG();
+                    rng.Reset();
+                    PlayerSettings.enemyRandomizerSeed = rng.Rand(0, int.MaxValue);
+                }
+            }
+            else
+            {
+                Dev.Log("Using the previously saved seed");
+            }
+
+            Dev.Log("USING SEED: " + PlayerSettings.enemyRandomizerSeed.ToString().Colorize(Color.magenta), Color.green);
+        }
+
         void MODHOOK_LoadFromSave(int saveSlot)
         {
+            SetGameSeed();
             enemyReplacer.OnStartGame(PlayerSettings);
         }
 
@@ -458,6 +553,7 @@ namespace EnemyRandomizerMod
 
         void MODHOOK_NewGameHook()
         {
+            SetGameSeed();
             enemyReplacer.OnStartGame(PlayerSettings);
         }
 

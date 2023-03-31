@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace EnemyRandomizerMod
 {
@@ -64,6 +65,15 @@ namespace EnemyRandomizerMod
             {
                 gameObject.GetComponent<BoxCollider2D>().enabled = true;
             }, 0);
+        }
+
+        protected virtual void Update()
+        {
+            if (gameObject.activeInHierarchy && control.enabled)
+            {
+                //TODO: temp hack to try and fix their colliders being broken
+                gameObject.GetComponents<Collider2D>().ToList().ForEach(x => x.enabled = true);
+            }
         }
 
         protected override int ScaleHPFromBossToNormal(int defaultHP, int previousHP)
@@ -170,6 +180,16 @@ namespace EnemyRandomizerMod
             {
                 gameObject.GetComponent<BoxCollider2D>().enabled = true;
             }, 0);
+        }
+
+
+        protected virtual void Update()
+        {
+            if (gameObject.activeInHierarchy && control.enabled)
+            {
+                //TODO: temp hack to try and fix their colliders being broken
+                gameObject.GetComponents<Collider2D>().ToList().ForEach(x => x.enabled = true);
+            }
         }
     }
 

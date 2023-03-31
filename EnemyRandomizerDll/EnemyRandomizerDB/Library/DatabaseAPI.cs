@@ -235,7 +235,7 @@ namespace EnemyRandomizerMod
         /// <param name="defaultType">Optional: the fallback spawner to use if the object doesn't have one defined</param>
         /// <returns>The object that was spawned. Returns null on failure.</returns>
         public GameObject Spawn(PrefabObject p, ObjectMetadata source, Type defaultType = null)
-        {
+        {  
             if (defaultType == null)
                 defaultType = typeof(DefaultSpawner);
 

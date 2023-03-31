@@ -2304,51 +2304,11 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class HiveKnightControl : DefaultSpawnedEnemyControl { }
-
-    public class HiveKnightSpawner : DefaultSpawner<HiveKnightControl> { }
-
-    public class HiveKnightPrefabConfig : DefaultPrefabConfig<HiveKnightControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
 
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GrimmBossControl : DefaultSpawnedEnemyControl { }
-
-    public class GrimmBossSpawner : DefaultSpawner<GrimmBossControl> { }
-
-    public class GrimmBossPrefabConfig : DefaultPrefabConfig<GrimmBossControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class NightmareGrimmBossControl : DefaultSpawnedEnemyControl { }
-
-    public class NightmareGrimmBossSpawner : DefaultSpawner<NightmareGrimmBossControl> { }
-
-    public class NightmareGrimmBossPrefabConfig : DefaultPrefabConfig<NightmareGrimmBossControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class DreamMageLordControl : DefaultSpawnedEnemyControl { }
+    public class DreamMageLordControl : MageLordControl { }
 
     public class DreamMageLordSpawner : DefaultSpawner<DreamMageLordControl> { }
 
@@ -2362,95 +2322,11 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class DreamMageLordPhase2Control : DefaultSpawnedEnemyControl { }
+    public class DreamMageLordPhase2Control : MageLordPhase2Control { }
 
     public class DreamMageLordPhase2Spawner : DefaultSpawner<DreamMageLordPhase2Control> { }
 
     public class DreamMageLordPhase2PrefabConfig : DefaultPrefabConfig<DreamMageLordPhase2Control> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class HollowKnightBossControl : DefaultSpawnedEnemyControl { }
-
-    public class HollowKnightBossSpawner : DefaultSpawner<HollowKnightBossControl> { }
-
-    public class HollowKnightBossPrefabConfig : DefaultPrefabConfig<HollowKnightBossControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class HKPrimeControl : DefaultSpawnedEnemyControl { }
-
-    public class HKPrimeSpawner : DefaultSpawner<HKPrimeControl> { }
-
-    public class HKPrimePrefabConfig : DefaultPrefabConfig<HKPrimeControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class PaleLurkerControl : DefaultSpawnedEnemyControl { }
-
-    public class PaleLurkerSpawner : DefaultSpawner<PaleLurkerControl> { }
-
-    public class PaleLurkerPrefabConfig : DefaultPrefabConfig<PaleLurkerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class OroControl : DefaultSpawnedEnemyControl { }
-
-    public class OroSpawner : DefaultSpawner<OroControl> { }
-
-    public class OroPrefabConfig : DefaultPrefabConfig<OroControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MatoControl : DefaultSpawnedEnemyControl { }
-
-    public class MatoSpawner : DefaultSpawner<MatoControl> { }
-
-    public class MatoPrefabConfig : DefaultPrefabConfig<MatoControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class SheoBossControl : DefaultSpawnedEnemyControl { }
-
-    public class SheoBossSpawner : DefaultSpawner<SheoBossControl> { }
-
-    public class SheoBossPrefabConfig : DefaultPrefabConfig<SheoBossControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -2474,21 +2350,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class SlyBossControl : DefaultSpawnedEnemyControl { }
-
-    public class SlyBossSpawner : DefaultSpawner<SlyBossControl> { }
-
-    public class SlyBossPrefabConfig : DefaultPrefabConfig<SlyBossControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class OrdealZotelingControl : DefaultSpawnedEnemyControl { }
+    public class OrdealZotelingControl : ZotelingControl { }
 
     public class OrdealZotelingSpawner : DefaultSpawner<OrdealZotelingControl> { }
 
@@ -2498,17 +2360,6 @@ namespace EnemyRandomizerMod
 
 
 
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class HornetNoskControl : DefaultSpawnedEnemyControl { }
-
-    public class HornetNoskSpawner : DefaultSpawner<HornetNoskControl> { }
-
-    public class HornetNoskPrefabConfig : DefaultPrefabConfig<HornetNoskControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -2532,18 +2383,6 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class DungDefenderControl : DefaultSpawnedEnemyControl { }
-
-    public class DungDefenderSpawner : DefaultSpawner<DungDefenderControl> { }
-
-    public class DungDefenderPrefabConfig : DefaultPrefabConfig<DungDefenderControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
     public class JellyfishControl : DefaultSpawnedEnemyControl { }
 
     public class JellyfishSpawner : DefaultSpawner<JellyfishControl> { }
@@ -2551,112 +2390,6 @@ namespace EnemyRandomizerMod
     public class JellyfishPrefabConfig : DefaultPrefabConfig<JellyfishControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorGalienControl : DefaultSpawnedEnemyControl { }
-
-    public class GhostWarriorGalienSpawner : DefaultSpawner<GhostWarriorGalienControl> { }
-
-    public class GhostWarriorGalienPrefabConfig : DefaultPrefabConfig<GhostWarriorGalienControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorXeroControl : DefaultSpawnedEnemyControl { }
-
-    public class GhostWarriorXeroSpawner : DefaultSpawner<GhostWarriorXeroControl> { }
-
-    public class GhostWarriorXeroPrefabConfig : DefaultPrefabConfig<GhostWarriorXeroControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorHuControl : DefaultSpawnedEnemyControl { }
-
-    public class GhostWarriorHuSpawner : DefaultSpawner<GhostWarriorHuControl> { }
-
-    public class GhostWarriorHuPrefabConfig : DefaultPrefabConfig<GhostWarriorHuControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorSlugControl : DefaultSpawnedEnemyControl { }
-
-    public class GhostWarriorSlugSpawner : DefaultSpawner<GhostWarriorSlugControl> { }
-
-    public class GhostWarriorSlugPrefabConfig : DefaultPrefabConfig<GhostWarriorSlugControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorNoEyesControl : DefaultSpawnedEnemyControl { }
-
-    public class GhostWarriorNoEyesSpawner : DefaultSpawner<GhostWarriorNoEyesControl> { }
-
-    public class GhostWarriorNoEyesPrefabConfig : DefaultPrefabConfig<GhostWarriorNoEyesControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorMarkothControl : DefaultSpawnedEnemyControl { }
-
-    public class GhostWarriorMarkothSpawner : DefaultSpawner<GhostWarriorMarkothControl> { }
-
-    public class GhostWarriorMarkothPrefabConfig : DefaultPrefabConfig<GhostWarriorMarkothControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MegaJellyfishControl : DefaultSpawnedEnemyControl { }
-
-    public class MegaJellyfishSpawner : DefaultSpawner<MegaJellyfishControl> { }
-
-    public class MegaJellyfishPrefabConfig : DefaultPrefabConfig<MegaJellyfishControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class JellyfishGGControl : DefaultSpawnedEnemyControl { }
-
-    public class JellyfishGGSpawner : DefaultSpawner<JellyfishGGControl> { }
-
-    public class JellyfishGGPrefabConfig : DefaultPrefabConfig<JellyfishGGControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
 
 
 
@@ -2697,4 +2430,806 @@ namespace EnemyRandomizerMod
     public class CorpseGardenZombiePrefabConfig : DefaultPrefabConfig<CorpseGardenZombieControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
+    ///
+
+
+
+
+
+
+
+    public class FSMBossAreaControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Control";
+
+        protected Dictionary<string, Func<FSMAreaControlEnemy, float>> CustomFloatRefs;
+
+        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => CustomFloatRefs;
+
+        public Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+        public Vector2 heroPos2d => new Vector2(HeroController.instance.transform.position.x, HeroController.instance.transform.position.y);
+        public Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 16);
+        public float floorY => heroPos2d.FireRayGlobal(Vector2.down, 50f).point.y;
+        public float roofY => heroPos2d.FireRayGlobal(Vector2.up, 200f).point.y;
+        public float edgeL => heroPosWithOffset.FireRayGlobal(Vector2.left, 100f).point.y;
+        public float edgeR => heroPosWithOffset.FireRayGlobal(Vector2.right, 100f).point.y;
+
+        public Vector2 sizeOfAggroArea = new Vector2(50f, 50f);
+        public Vector2 centerOfAggroArea => gameObject.transform.position;
+        public UnityEngine.Bounds aggroBounds => new UnityEngine.Bounds(centerOfAggroArea, sizeOfAggroArea);
+
+        protected override bool HeroInAggroRange()
+        {
+            return aggroBounds.Contains(HeroController.instance.transform.position);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class HiveKnightControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Control";
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                {"Left X" , x => edgeL},
+                {"Right X" , x => edgeR},
+                {"Ground Y" , x => floorY},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class HiveKnightSpawner : DefaultSpawner<HiveKnightControl> { }
+
+    public class HiveKnightPrefabConfig : DefaultPrefabConfig<HiveKnightControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class GrimmBossControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Control";
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            //control.ChangeTransition("Init", "FINISHED", "GG Bow");
+            control.ChangeTransition("Stun", "FINISHED", "Reformed");
+            control.ChangeTransition("Death Explode", "FINISHED", "Send Death Event");
+
+            var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
+            bpsp.x.Value = HeroX;
+            bpsp.x.Value = HeroY + 15f;
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                {"AD Max X" , x => edgeR},
+                {"AD Min X" , x => edgeL},
+                {"Max X" , x => edgeR},
+                {"Min X" , x => edgeL},
+                {"Ground Y" , x => floorY},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "GG Bow");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class GrimmBossSpawner : DefaultSpawner<GrimmBossControl> { }
+
+    public class GrimmBossPrefabConfig : DefaultPrefabConfig<GrimmBossControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+    
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class NightmareGrimmBossControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Control";
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            //control.ChangeTransition("Set Balloon HP", "FINISHED", "Tele Out");
+            control.ChangeTransition("Stun", "FINISHED", "Reformed");
+            control.ChangeTransition("Death Start", "FINISHED", "Death Explode");
+
+            var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
+            bpsp.x.Value = HeroX;
+            bpsp.x.Value = HeroY + 15f;
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                {"AD Max X" , x => edgeR},
+                {"AD Min X" , x => edgeL},
+                {"Max X" , x => edgeR},
+                {"Min X" , x => edgeL},
+                {"Mid Y" , x => MidY},
+                {"Ground Y" , x => floorY},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Tele Out");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class NightmareGrimmBossSpawner : DefaultSpawner<NightmareGrimmBossControl> { }
+
+    public class NightmareGrimmBossPrefabConfig : DefaultPrefabConfig<NightmareGrimmBossControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class HollowKnightBossControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Control";
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+
+
+            //control.ChangeTransition("Set Balloon HP", "FINISHED", "Tele Out");
+            //control.ChangeTransition("Stun", "FINISHED", "Reformed");
+            //control.ChangeTransition("Death Start", "FINISHED", "Death Explode");
+
+            //TEMP
+            this.OverrideState(control, "Long Roar End", () => Destroy(gameObject));
+
+            //var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
+            //bpsp.x.Value = HeroX;
+            //bpsp.x.Value = HeroY + 15f;
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                {"Right X" , x => edgeR},
+                {"Left X" , x => edgeL},
+                {"TeleRange Max" , x => edgeR},
+                {"TeleRange Min" , x => edgeL},
+                {"PuppetSlam Y" , x => floorY},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Init Idle");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class HollowKnightBossSpawner : DefaultSpawner<HollowKnightBossControl> { }
+
+    public class HollowKnightBossPrefabConfig : DefaultPrefabConfig<HollowKnightBossControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class HKPrimeControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Control";
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+
+
+            control.ChangeTransition("Intro 6", "FINISHED", "Intro Roar End");
+            //control.ChangeTransition("Stun", "FINISHED", "Reformed");
+            //control.ChangeTransition("Death Start", "FINISHED", "Death Explode");
+
+            //TEMP
+            //this.OverrideState(control, "Long Roar End", () => Destroy(gameObject));
+
+            //var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
+            //bpsp.x.Value = HeroX;
+            //bpsp.x.Value = HeroY + 15f;
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                {"Right X" , x => edgeR},
+                {"Left X" , x => edgeL},
+                {"TeleRange Max" , x => edgeR},
+                {"TeleRange Min" , x => edgeL},
+                {"Plume Y" , x => floorY - 4f},
+                {"Stun Land Y" , x => floorY},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Intro 1");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class HKPrimeSpawner : DefaultSpawner<HKPrimeControl> { }
+
+    public class HKPrimePrefabConfig : DefaultPrefabConfig<HKPrimeControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class PaleLurkerControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Lurker Control";
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+
+
+            //control.ChangeTransition("Intro 6", "FINISHED", "Intro Roar End");
+            //control.ChangeTransition("Stun", "FINISHED", "Reformed");
+            //control.ChangeTransition("Death Start", "FINISHED", "Death Explode");
+
+            //TEMP
+            //this.OverrideState(control, "Long Roar End", () => Destroy(gameObject));
+
+            //var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
+            //bpsp.x.Value = HeroX;
+            //bpsp.x.Value = HeroY + 15f;
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                {"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+                {"Left Pos" , x => edgeL},
+                {"Right Pos" , x => edgeR},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Get High");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class PaleLurkerSpawner : DefaultSpawner<PaleLurkerControl> { }
+
+    public class PaleLurkerPrefabConfig : DefaultPrefabConfig<PaleLurkerControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class OroControl : FSMBossAreaControl
+    {
+        public override string FSMName => "nailmaster";
+
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+                //{"Left Pos" , x => edgeL},
+                //{"Right Pos" , x => edgeR},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class OroSpawner : DefaultSpawner<OroControl> { }
+
+    public class OroPrefabConfig : DefaultPrefabConfig<OroControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class MatoControl : FSMBossAreaControl
+    {
+        public override string FSMName => "nailmaster";
+
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+                //{"Left Pos" , x => edgeL},
+                //{"Right Pos" , x => edgeR},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class MatoSpawner : DefaultSpawner<MatoControl> { }
+
+    public class MatoPrefabConfig : DefaultPrefabConfig<MatoControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class SheoBossControl : FSMBossAreaControl
+    {
+        public override string FSMName => "nailmaster_sheo";
+
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+                //{"Left Pos" , x => edgeL},
+                //{"Right Pos" , x => edgeR},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class SheoBossSpawner : DefaultSpawner<SheoBossControl> { }
+
+    public class SheoBossPrefabConfig : DefaultPrefabConfig<SheoBossControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class SlyBossControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Control";
+
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+                //{"Left Pos" , x => edgeL},
+                //{"Right Pos" , x => edgeR},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class SlyBossSpawner : DefaultSpawner<SlyBossControl> { }
+
+    public class SlyBossPrefabConfig : DefaultPrefabConfig<SlyBossControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class HornetNoskControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Hornet Nosk";
+
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                {"X Min" , x => edgeL},
+                {"X Max" , x => edgeR},
+                {"Y Min" , x => floorY},
+                {"Y Max" , x => roofY},
+                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+                //{"Left Pos" , x => edgeL},
+                //{"Right Pos" , x => edgeR},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class HornetNoskSpawner : DefaultSpawner<HornetNoskControl> { }
+
+    public class HornetNoskPrefabConfig : DefaultPrefabConfig<HornetNoskControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class DungDefenderControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Dung Defender";
+
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                {"Dolphin Max X" , x => edgeR},
+                {"Dolphin Min X" , x => edgeL},
+                {"Max X" , x => edgeR},
+                {"Min X" , x => edgeL},
+                {"Erupt Y" , x => floorY},
+                {"Buried Y" , x => floorY - 3f},
+                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+                //{"Left Pos" , x => edgeL},
+                //{"Right Pos" , x => edgeR},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Underground");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class DungDefenderSpawner : DefaultSpawner<DungDefenderControl> { }
+
+    public class DungDefenderPrefabConfig : DefaultPrefabConfig<DungDefenderControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class GhostWarriorGalienControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Movement";
+
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                //{"Dolphin Max X" , x => edgeR},
+                //{"Dolphin Min X" , x => edgeL},
+                //{"Max X" , x => edgeR},
+                //{"Min X" , x => edgeL},
+                //{"Erupt Y" , x => floorY},
+                //{"Buried Y" , x => floorY - 3f},
+                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+                ////{"Left Pos" , x => edgeL},
+                ////{"Right Pos" , x => edgeR},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class GhostWarriorGalienSpawner : DefaultSpawner<GhostWarriorGalienControl> { }
+
+    public class GhostWarriorGalienPrefabConfig : DefaultPrefabConfig<GhostWarriorGalienControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class GhostWarriorXeroControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Movement";
+
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                //{"Dolphin Max X" , x => edgeR},
+                //{"Dolphin Min X" , x => edgeL},
+                //{"Max X" , x => edgeR},
+                //{"Min X" , x => edgeL},
+                //{"Erupt Y" , x => floorY},
+                //{"Buried Y" , x => floorY - 3f},
+                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+                ////{"Left Pos" , x => edgeL},
+                ////{"Right Pos" , x => edgeR},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class GhostWarriorXeroSpawner : DefaultSpawner<GhostWarriorXeroControl> { }
+
+    public class GhostWarriorXeroPrefabConfig : DefaultPrefabConfig<GhostWarriorXeroControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class GhostWarriorHuControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Movement";
+        public virtual string ATTACKFSM => "Attacking";
+
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                //{"Dolphin Max X" , x => edgeR},
+                //{"Dolphin Min X" , x => edgeL},
+                //{"Max X" , x => edgeR},
+                //{"Min X" , x => edgeL},
+                //{"Erupt Y" , x => floorY},
+                //{"Buried Y" , x => floorY - 3f},
+                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+                ////{"Left Pos" , x => edgeL},
+                ////{"Right Pos" , x => edgeR},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class GhostWarriorHuSpawner : DefaultSpawner<GhostWarriorHuControl> { }
+
+    public class GhostWarriorHuPrefabConfig : DefaultPrefabConfig<GhostWarriorHuControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class GhostWarriorSlugControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Movement";
+
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                //{"Dolphin Max X" , x => edgeR},
+                //{"Dolphin Min X" , x => edgeL},
+                //{"Max X" , x => edgeR},
+                //{"Min X" , x => edgeL},
+                //{"Erupt Y" , x => floorY},
+                //{"Buried Y" , x => floorY - 3f},
+                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+                ////{"Left Pos" , x => edgeL},
+                ////{"Right Pos" , x => edgeR},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class GhostWarriorSlugSpawner : DefaultSpawner<GhostWarriorSlugControl> { }
+
+    public class GhostWarriorSlugPrefabConfig : DefaultPrefabConfig<GhostWarriorSlugControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class GhostWarriorNoEyesControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Movement";
+
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                //{"Dolphin Max X" , x => edgeR},
+                //{"Dolphin Min X" , x => edgeL},
+                //{"Max X" , x => edgeR},
+                //{"Min X" , x => edgeL},
+                //{"Erupt Y" , x => floorY},
+                //{"Buried Y" , x => floorY - 3f},
+                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+                ////{"Left Pos" , x => edgeL},
+                ////{"Right Pos" , x => edgeR},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class GhostWarriorNoEyesSpawner : DefaultSpawner<GhostWarriorNoEyesControl> { }
+
+    public class GhostWarriorNoEyesPrefabConfig : DefaultPrefabConfig<GhostWarriorNoEyesControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class GhostWarriorMarkothControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Movement";
+
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                //{"Dolphin Max X" , x => edgeR},
+                //{"Dolphin Min X" , x => edgeL},
+                //{"Max X" , x => edgeR},
+                //{"Min X" , x => edgeL},
+                //{"Erupt Y" , x => floorY},
+                //{"Buried Y" , x => floorY - 3f},
+                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+                ////{"Left Pos" , x => edgeL},
+                ////{"Right Pos" , x => edgeR},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+    }
+
+    public class GhostWarriorMarkothSpawner : DefaultSpawner<GhostWarriorMarkothControl> { }
+
+    public class GhostWarriorMarkothPrefabConfig : DefaultPrefabConfig<GhostWarriorMarkothControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class JellyfishGGControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Mega Jellyfish";
+
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                //{"Dolphin Max X" , x => edgeR},
+                //{"Dolphin Min X" , x => edgeL},
+                //{"Max X" , x => edgeR},
+                //{"Min X" , x => edgeL},
+                //{"Erupt Y" , x => floorY},
+                //{"Buried Y" , x => floorY - 3f},
+                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+                ////{"Left Pos" , x => edgeL},
+                ////{"Right Pos" , x => edgeR},
+            };
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Start");
+            this.AddResetToStateOnHide(control, "Init");
+
+            this.thisMetadata.EnemyHealthManager.IsInvincible = false;
+
+            control.GetState("Recover").DisableAction(2);
+        }
+    }
+
+    public class JellyfishGGSpawner : DefaultSpawner<JellyfishGGControl> { }
+
+    public class JellyfishGGPrefabConfig : DefaultPrefabConfig<JellyfishGGControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+    
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class MegaJellyfishControl : JellyfishGGControl
+    {
+        public override string FSMName => "Mega Jellyfish";
+    }
+
+    public class MegaJellyfishSpawner : DefaultSpawner<MegaJellyfishControl> { }
+
+    public class MegaJellyfishPrefabConfig : DefaultPrefabConfig<MegaJellyfishControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
 }

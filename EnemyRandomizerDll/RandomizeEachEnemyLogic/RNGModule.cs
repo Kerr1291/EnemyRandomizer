@@ -25,7 +25,7 @@ namespace EnemyRandomizerMod
 
         List<(string Name, string Info, bool Default)> CustomOptions = new List<(string, string, bool)>()
         {
-            ("Randomize Each Entry", "(Old Chaos Mode) Each time you change rooms everything is will be different", false),
+            ("Randomize On Each Transition", "(Old Chaos Mode) Each time you change rooms everything is will be different", false),
             ("Randomize Once Per Object", "Each object will change to a different type", false),
             ("Randomize Once Per Room", "Each room will change one object type", true),
             ("Randomize Once Per Zone", "Each zone will change one object type", false),
@@ -60,8 +60,8 @@ namespace EnemyRandomizerMod
         {
             base.OnStartGame(settings);
             onStartGameRNG = new RNG();
-            if (settings.seed >= 0)
-                onStartGameRNG.Seed = settings.seed;
+            if (settings.enemyRandomizerSeed >= 0)
+                onStartGameRNG.Seed = settings.enemyRandomizerSeed;
             else
                 onStartGameRNG.Seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
         }

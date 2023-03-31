@@ -64,6 +64,175 @@ namespace EnemyRandomizerMod
             }
         }
 
+        private static UIManager _uim => UIManager.instance;
+        UnityEngine.UI.InputField customSeedInput = null;
+        public Selectable customSeedInputOption;
+        GameObject menuTogglePrefab;
+        GameObject useCustomSeedOption;
+        string useCustomSeedOptionName = "Use custom seed for new game";
+        void SetupMenuTogglePrefab()
+        {
+            if (menuTogglePrefab != null)
+                return;
+
+            //find it
+            menuTogglePrefab = GameObjectExtensions.FindGameObjectInChildrenWithName(_uim.gameObject, "VSyncOption");
+
+            //remove default menu behaviors
+            GameObject.DestroyImmediate(menuTogglePrefab.GetComponent<MenuOptionHorizontal>());
+            GameObject.DestroyImmediate(menuTogglePrefab.GetComponent<MenuSetting>());
+        }
+
+        void OnCustomSeed(string seed)
+        {
+            if (seed.Length <= 0)
+                return;
+
+            //EnemyRandomizer.Instance.GlobalSettings.IntValues[ "CustomSeed" ] = Int32.Parse( seed );
+            if (Int32.TryParse(seed, out var s))
+            {
+                GlobalSettings.seed = s;
+
+                //customSeedInput.text = seed;
+            }
+        }
+
+        void SaveCustomSeed()
+        {
+            if (customSeedInput != null)
+            {
+                string seed = customSeedInput.text;
+                if (Int32.TryParse(seed, out var s))
+                {
+                    GlobalSettings.seed = s;
+                }
+            }
+        }
+
+        void LoadCustomSeed()
+        {
+            //if (customSeedInput == null)
+            //    SetupSeedEntry();
+
+            if (customSeedInput != null)
+            {
+                customSeedInput.text = GlobalSettings.seed.ToString();
+            }
+        }
+
+        void SetupSeedEntry()
+        {
+            if (customSeedInput != null)
+                return;
+
+            //find a toggle-able menu element to use for our mod option prefab
+            SetupMenuTogglePrefab();
+            //logicListSubpage.content
+            //logicListSubpage
+
+            GameObject menuItemParent = UnityEngine.Object.Instantiate(menuTogglePrefab);
+
+            string optionName = "CustomSeed";
+
+            customSeedInput = menuItemParent.AddComponent<UnityEngine.UI.InputField>();
+            customSeedInput.textComponent = menuItemParent.transform.GetChild(1).GetComponent<Text>();
+
+            //TODO: fix me in the morning :(
+            Text t = UnityEngine.Object.Instantiate(customSeedInput.textComponent) as Text;
+            t.transform.SetParent(customSeedInput.transform);
+            customSeedInput.placeholder = t;
+            t.horizontalOverflow = HorizontalWrapMode.Overflow;
+            t.text = "Click to type a custom seed";
+            t.transform.Translate(new Vector3(500f, 0f, 0f));
+            t.alignment = TextAnchor.LowerCenter;
+
+            customSeedInput.caretColor = Color.white;
+            customSeedInput.contentType = InputField.ContentType.IntegerNumber;
+            //customSeedInput.onValueChanged.AddListener( OnCustomSeed );
+            customSeedInput.onEndEdit.AddListener(OnCustomSeed);
+            customSeedInput.navigation = Navigation.defaultNavigation;
+            customSeedInput.caretWidth = 8;
+            customSeedInput.characterLimit = 11;
+
+            ColorBlock cb = new ColorBlock();
+            cb.highlightedColor = Color.yellow;
+            cb.pressedColor = Color.red;
+            cb.disabledColor = Color.black;
+            cb.normalColor = Color.white;
+            cb.colorMultiplier = 2f;
+
+            customSeedInput.colors = cb;
+
+
+            customSeedInputOption = customSeedInput;
+
+
+            string optionLabel = "Randomizer Seed";
+
+            UnityEngine.Object.Destroy(menuItemParent.transform.FindChild("Label").GetComponent<AutoLocalizeTextUI>());
+            menuItemParent.transform.FindChild("Label").GetComponent<Text>().text = optionLabel;
+
+            menuItemParent.name = optionName;
+
+            RectTransform rt = menuItemParent.GetComponent<RectTransform>();
+
+            rt.SetParent(logicListSubpage.content.transform);
+            rt.localScale = new Vector3(2, 2, 2);
+
+            int i = 0;
+
+            rt.sizeDelta = new Vector2(960, 120);
+            rt.anchoredPosition = new Vector2(0, (766 / 2) - 90 - (150 * i));
+            rt.anchorMin = new Vector2(0.5f, 1.0f);
+            rt.anchorMax = new Vector2(0.5f, 1.0f);
+
+            useCustomSeedOption = _uim.gameObject.FindGameObjectInChildrenWithName(useCustomSeedOptionName);
+
+
+            var placeholder = _uim.gameObject.FindGameObjectInChildrenWithName("THE_PLACEHOLDER");
+            placeholder.SetActive(false);
+            customSeedInput.transform.SetParent(placeholder.transform.parent);
+            customSeedInput.transform.localScale = placeholder.transform.localScale;
+            customSeedInput.transform.localPosition = placeholder.transform.localPosition;
+            customSeedInput.transform.localPosition = customSeedInput.transform.localPosition - new Vector3(0f, 40f, 0f);
+            //customSeedInput.transform.localScale = new Vector3(customSeedInput.transform.localScale.x,
+            //    customSeedInput.transform.localScale.y * .75f,
+            //    customSeedInput.transform.localScale.z);
+
+            var empty = _uim.gameObject.FindGameObjectInChildrenWithName("EMPTY_SPACE");
+            empty.SetActive(false);
+            //var back = logicListSubpage.defaultHighlight.FindSelectableOnUp();
+            //var back2 = back.FindSelectableOnUp();
+            //var next = logicListSubpage.defaultHighlight.FindSelectableOnDown();
+            //var next2 = next.FindSelectableOnDown();
+
+            //Dev.Log($"placeholder? k:{k++}");
+
+            //Dev.Log($"custom seed highlight k:{k++}");
+            //logicListSubpage.defaultHighlight = customSeedInputOption;
+            //Navigation nav2 = back.navigation;
+            //nav2.selectOnUp = back2;
+            //nav2.selectOnDown = logicListSubpage.defaultHighlight;
+            //back.navigation = nav2;
+
+            LoadCustomSeed();
+
+            customSeedInputOption.gameObject.SetActive(false);
+        }
+
+        public void SetCustomSeedInputVisible(bool enabled)
+        {
+            if (customSeedInput != null)
+                customSeedInput.gameObject.SetActive(enabled);
+        }
+
+        public void SetCustomSeedVisible(bool enabled)
+        {
+            if(useCustomSeedOption != null)
+                useCustomSeedOption.gameObject.SetActive(enabled);
+            SetCustomSeedInputVisible(enabled);
+        }
+
         //public void SetDisabled(IRandomizerLogic logic)
         //{
         //    if (GlobalSettings.currentLogic.Contains(logic.Name))
@@ -132,8 +301,46 @@ namespace EnemyRandomizerMod
             return menu;
         }
 
+        public int SetUseCustomSeed(bool useCustomSeed)
+        {
+            EnemyRandomizer.GlobalSettings.UseCustomSeed = useCustomSeed;
+            SetCustomSeedInputVisible(EnemyRandomizer.GlobalSettings.UseCustomSeed);
+            UpdateModVersionLabel();
+            return EnemyRandomizer.GlobalSettings.UseCustomSeed ? 1 : 0;
+        }
+
+        public int SetUseCustomSeed()
+        {
+            SetCustomSeedInputVisible(EnemyRandomizer.GlobalSettings.UseCustomSeed);
+            return EnemyRandomizer.GlobalSettings.UseCustomSeed ? 1 : 0;
+        }
+
         public List<IMenuMod.MenuEntry> GetDebugEntries(List<IMenuMod.MenuEntry> menu)
         {
+            menu.Add(new IMenuMod.MenuEntry
+            {
+                Name = "THE_PLACEHOLDER",
+                Description = "The seed",
+                Values = new string[] { "-1" },
+                Saver = (x) => SaveCustomSeed(),
+                Loader = () => { LoadCustomSeed(); return 0; },
+            });
+            menu.Add(new IMenuMod.MenuEntry
+            {
+                Name = "EMPTY_SPACE",
+                Description = "EMPTY",
+                Values = new string[] { "-1" },
+                Saver = (x) => { },
+                Loader = () => { return 0; },
+            });
+            menu.Add(new IMenuMod.MenuEntry
+            {
+                Name = useCustomSeedOptionName,
+                Description = "Applies to new files or files first loaded without a saved seed",
+                Values = this.toggle,
+                Saver = (x) => { SetUseCustomSeed( x == 1 ); },
+                Loader = () => { return SetUseCustomSeed(); }
+            });
             menu.Add(new IMenuMod.MenuEntry
             {
                 Name = "Allow Boss Replacement",
@@ -142,6 +349,7 @@ namespace EnemyRandomizerMod
                 Saver = (x) => { EnemyRandomizer.GlobalSettings.RandomizeBosses = x == 1; },
                 Loader = () => { return EnemyRandomizer.GlobalSettings.RandomizeBosses ? 1 : 0; }
             });
+
             return menu;
         }
 
@@ -182,7 +390,7 @@ namespace EnemyRandomizerMod
             ModMenuScreenBuilder builder = new ModMenuScreenBuilder(configScreenName, modListMenu);
 
             logicListSubpage = builder.AddSubpage("Enemy Randomizer Modules", "Select which modules to enable", GetDefaultMenuData());
-
+            
             foreach (SubpageDef def in Subpages)
             {
                 def.subpageMenu.Value = builder.AddSubpage(def.title, def.description, def.entries);
@@ -314,6 +522,7 @@ namespace EnemyRandomizerMod
             vlg.childAlignment = TextAnchor.UpperCenter;
             vlg.spacing = 2f;
 
+            SetupSeedEntry();
 
             return createdMenu;
         }
@@ -553,13 +762,16 @@ namespace EnemyRandomizerMod
                 foreach (IMenuMod.MenuEntry entry in entries)
                 {
                     DescriptionInfo? desc = null;
-                    if (string.IsNullOrEmpty(entry.Description))
+                    if (!string.IsNullOrEmpty(entry.Description))
                     {
                         desc = new DescriptionInfo()
                         {
                             Text = entry.Description
                         };
                     }
+
+                    HorizontalOptionStyle styleToUse = HorizontalOptionStyle.VanillaStyle;
+                    
 
                     HorizontalOptionConfig config = new HorizontalOptionConfig()
                     {
@@ -569,7 +781,7 @@ namespace EnemyRandomizerMod
                         Description = desc,
                         Label = entry.Name,
                         Options = entry.Values,
-                        Style = HorizontalOptionStyle.VanillaStyle
+                        Style = styleToUse
                     };
 
                     c.AddHorizontalOption(entry.Name, config, out MenuOptionHorizontal option);

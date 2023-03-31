@@ -63,6 +63,12 @@ namespace EnemyRandomizerMod
             var hero = HeroController.instance;
             while (gameObject.SafeIsActive())
             {
+                if(thisMetadata.EnemyHealthManager.hp <= 2)
+                {
+                    Destroy(gameObject);
+                    yield break;
+                }
+
                 if ((hero.transform.position - spawnLocation).magnitude < aggroRange)
                 {
                     if (fsm.ActiveStateName == "Dormant")
