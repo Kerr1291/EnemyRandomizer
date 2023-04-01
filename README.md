@@ -30,9 +30,13 @@ Plenty. This is an alpha release, so there's still a lot of work to do.
 ## Credits
 
 Thanks to the modding team for a great modding API <3
+
 Thanks to the SATCHEL mod for providing a great resource to edit fsms.
+
 Thanks to FSMView Avalonia for making all of this possible by allowing me to read through various game FSMs.
+
 Special thanks to Dwarfwoot for being a great resource to navigate the current modding pipeline.
+
 Special thanks to Fireball248, TheGreatGallus, and anyone else who kept this mod going in my absense.
 
 
