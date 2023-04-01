@@ -789,5 +789,5 @@ namespace EnemyRandomizerMod
                 }
             }
         }
-    }
+    } 
 }
