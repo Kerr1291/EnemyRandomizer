@@ -119,7 +119,6 @@ namespace EnemyRandomizerMod
 
             GameManager.instance.StartCoroutine(MakePlayerImmuneToRoar());
             GameManager.instance.StartCoroutine(EnableLogicOnGameLoad(settings));
-            EnemyRandomizer.Instance.SetCustomSeedVisible(false);
         }
 
         IEnumerator MakePlayerImmuneToRoar()
