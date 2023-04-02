@@ -311,7 +311,7 @@
     <string>fluke_baby_02</string>                         -   COULD USE SOMETHING TO MAKE THEM MORE INTERESTING
     <string>fluke_baby_01</string>                         -   COULD USE SOMETHING TO MAKE THEM MORE INTERESTING
     <string>fluke_baby_03</string>                         -   COULD USE SOMETHING TO MAKE THEM MORE INTERESTING
-    <string>Enemy</string>                                 -   ""
+    <string>Enemy</string>                                 -   "" 
 
 
     <string>Colosseum_Armoured_Roller</string>             -   CHECK COLO SCRIPT?
