@@ -56,92 +56,6 @@ namespace EnemyRandomizerMod
 
             return settings.options.FirstOrDefault(x => x.name == optionName);
         }
-
-        public static LogicOption GetOption(this EnemyRandomizerSettings self, string logicName, string optionName)
-        {
-            return self.GetLogicSettings(logicName).GetOption(optionName);
-        }
-
-        public static bool IsLogicOnInMenu(this IRandomizerLogic self)
-        {
-            return EnemyRandomizer.GlobalSettings.loadedLogics.Contains(self.Name);
-        }
-
-        public static Dictionary<string, IDisposable> disposables = new Dictionary<string, IDisposable>();
-
-        public static void SetMenuOptionState(this LogicSettings self, string optionName, bool value)
-        {
-            var spd = EnemyRandomizer.Instance.Subpages.FirstOrDefault(x => x.title == self.name);
-
-            if (spd.subpageMenu.Value == null)
-            {
-                Dev.Log($"SUBSCRIBING LOGIC:{self.name} OPTION:{optionName} VALUE:{value}");
-
-                spd.subpageMenu.SkipLatestValueOnSubscribe().Subscribe(x =>
-                {
-                    SetSubpageMenuValue(optionName, value, x);
-                });
-            }
-            else
-            {
-                //Dev.Log($"UPDATING LOGIC:{self.name} OPTION:{optionName} VALUE:{value}");
-                var logicMenu = spd.subpageMenu.Value;
-                SetSubpageMenuValue(optionName, value, logicMenu);
-            }
-
-            if (spd.activationButton.Value == null)
-            {
-                if (!disposables.ContainsKey(self.name))
-                {
-                    Dev.Log($"SUBSCRIBING LOGIC:{self.name}");
-
-                    var result = spd.activationButton.SkipLatestValueOnSubscribe().Subscribe(x =>
-                    {
-                        SetSubpageMenuEnabled(self.name, spd.owner.IsLogicOnInMenu());
-                        disposables.Remove(self.name);
-                    });
-
-                    disposables.Add(self.name, result);
-                }
-            }
-            else
-            {
-                //Dev.Log($"UPDATING LOGIC:{self.name} OPTION:{optionName} VALUE:{value}");
-                var logicMenu = spd.subpageMenu.Value;
-                SetSubpageMenuValue(optionName, value, logicMenu);
-            }
-        }
-
-        public static void SetSubpageMenuValue(string optionName, bool value, MenuScreen logicMenu)
-        {
-            //logicMenu.gameObject.PrintSceneHierarchyTree(true, null, true);
-            Dev.Log($"SETTING MENU OPTION TO STATE -- LOGIC:{logicMenu.name} OPTION:{optionName} NEW VALUE:{value}");
-            var menuOptions = logicMenu.GetComponentsInChildren<MenuOptionHorizontal>(true).Where(x => x.name.Contains(optionName));
-            menuOptions.ToList().ForEach(x => x.SetOptionTo(value ? 1 : 0));
-        }
-
-        public static void SetSubpageMenuEnabled(string name, bool value)
-        {
-            Dev.Log($"SETTING MENU ENABLED LOGIC:{name} VALUE:{value}");
-
-            //UIManager.instance.GetComponentsInChildren<MenuScreen>(true).ToList().ForEach(x => x.gameObject.PrintSceneHierarchyTree(true,null,true));
-
-            //if(value)
-            //{
-            //    UIManager.instance.gameObject.FindGameObject("_UIManager/UICanvas/" + name).transform.parent = disabledRoot.transform;
-            //}
-            //else
-            //{
-            //    disabledRoot.FindGameObject(disabledRoot.name+"/" + name).transform.parent =
-            //        UIManager.instance.gameObject.FindGameObject("_UIManager/UICanvas").transform;
-            //}
-
-            //UIManager.instance.gameObject.FindGameObject("_UIManager/UICanvas/" + name).gameObject.SetActive(value);
-
-            //TODO: figure out why this value can't be disabled?
-            var subpageButton = EnemyRandomizer.Instance.Subpages.FirstOrDefault(x => x.title == name).activationButton.Value;
-            subpageButton.gameObject.SetActive(value);
-        }
     }
 
     //Player specific settings
@@ -339,7 +253,7 @@ namespace EnemyRandomizerMod
             GameManager.instance.UnloadingLevel += Instance_UnloadingLevel;
 
 #if DEBUG
-            ModHooks.SlashHitHook -= DebugPrintObjectOnHit; 
+            ModHooks.SlashHitHook -= DebugPrintObjectOnHit;
             ModHooks.SlashHitHook += DebugPrintObjectOnHit;
 #endif
 
@@ -363,18 +277,23 @@ namespace EnemyRandomizerMod
             ModHooks.DrawBlackBordersHook -= ModHooks_DrawBlackBordersHook;
             ModHooks.DrawBlackBordersHook += ModHooks_DrawBlackBordersHook;
 
-            On.UIManager.UIGoToMainMenu -= UIManager_UIGoToMainMenu;
-            On.UIManager.UIGoToMainMenu += UIManager_UIGoToMainMenu;
-        }
+            On.HeroController.Start += (orig, self) =>
+            {
+                orig(self);
+                GeneralOptionsMenu.Find("SeedInput").Hide();
+                UpdateModVersionLabel();
+            };
 
-        //when we return to the main menu, re-enable the seed options
-        protected virtual void UIManager_UIGoToMainMenu(On.UIManager.orig_UIGoToMainMenu orig, UIManager self)
-        {
-            Dev.Where();
-            orig(self);
-            SetCustomSeedVisible(true);
-            SetCustomSeedInputVisible(EnemyRandomizer.GlobalSettings.UseCustomSeed);
-            UpdateModVersionLabel();
+            // can remove after testing
+            On.QuitToMenu.Start += (orig, self) =>
+            {
+                if (GlobalSettings.UseCustomSeed)
+                {
+                    GeneralOptionsMenu?.Find("SeedInput")?.Show();
+                }
+                UpdateModVersionLabel();
+                return orig(self);
+            };
         }
 
         IEnumerator UpdateLabelOnLoad()
@@ -382,9 +301,6 @@ namespace EnemyRandomizerMod
             yield return new WaitUntil(() => GameObject.FindObjectOfType<ModVersionDraw>(true) != null);
             var mvd = GameObject.FindObjectOfType<ModVersionDraw>(true);
             yield return new WaitUntil(() => mvd.drawString.Contains(currentVersion));
-
-            SetCustomSeedVisible(true);
-            SetCustomSeedInputVisible(EnemyRandomizer.GlobalSettings.UseCustomSeed);
             UpdateModVersionLabel();
         }
 
@@ -441,8 +357,6 @@ namespace EnemyRandomizerMod
             On.DamageHero.OnEnable -= ONHOOK_DamageHero_OnEnable;
 
             ModHooks.DrawBlackBordersHook -= ModHooks_DrawBlackBordersHook;
-
-            On.UIManager.UIGoToMainMenu -= UIManager_UIGoToMainMenu;
         }
 
         public void UpdateModVersionLabel()
@@ -671,8 +585,6 @@ namespace EnemyRandomizerMod
             }
 
             Dev.Log("loading subpages");
-            //load the different module subpages
-            Subpages = logicTypes.Select(x => x.Value.GetSubpage()).ToList();
 
             if (enemyReplacer.loadedLogics == null)
                 enemyReplacer.loadedLogics = new HashSet<IRandomizerLogic>();
@@ -684,11 +596,6 @@ namespace EnemyRandomizerMod
             {
                 Dev.LogWarning($"Last time EnemyRandomizer was set to use {x} logic, which no longer exists!");
             });
-
-            foreach (var logic in logicTypes)
-            {
-                logic.Value.InitDefaultStatesFromSettings();
-            }
         }
 
         //public static string GetCurrentMapZone()

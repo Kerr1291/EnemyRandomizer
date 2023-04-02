@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
+using Satchel.BetterMenus;
 
 namespace EnemyRandomizerMod
 {
@@ -43,14 +44,9 @@ namespace EnemyRandomizerMod
         void Setup(EnemyRandomizerDatabase database);
 
         /// <summary>
-        /// Return the title, description, and entries used by this module
+        /// Return the Menu used by this module
         /// </summary>
-        EnemyRandomizer.SubpageDef GetSubpage();
-
-        /// <summary>
-        /// invoked after the logics are completly loaded and have generated their subpages
-        /// </summary>
-        void InitDefaultStatesFromSettings();
+        Menu GetSubpage();
 
         /// <summary>
         /// Will be called once the game starts or if the logic is toggled on mid-game
@@ -124,27 +120,11 @@ namespace EnemyRandomizerMod
         {
             Database = database;
         }
+        
 
-        public virtual void InitDefaultStatesFromSettings()
+        public virtual Menu GetSubpage()
         {
-            for(int i = 0; i < ModOptions.Count; ++i)
-            {
-                Settings.GetOption(ModOptions[i].Name).value = ModOptions[i].DefaultState;
-                Settings.SetMenuOptionState(ModOptions[i].Name, ModOptions[i].DefaultState);
-            }
-        }
-
-        public virtual EnemyRandomizer.SubpageDef GetSubpage()
-        {
-            var subpage = new EnemyRandomizer.SubpageDef()
-            {
-                description = Info,
-                title = Name,
-                owner = this,
-                entries = GetEntries()
-            };
-
-            return subpage;
+            return new Menu(Name,GetEntries().ToArray());
         }
 
         public virtual void Enable()
@@ -202,11 +182,6 @@ namespace EnemyRandomizerMod
             return (null, null);
         }
 
-
-
-
-
-
         //protected const string DefaultRandomizeEnemiesOption = "Randomize Enemies";
         //protected const string DefaultRandomizeHazardsOption = "Randomize Hazards";
         //protected const string DefaultRandomizeEffectsOption = "Randomize Projectiles";
@@ -221,34 +196,16 @@ namespace EnemyRandomizerMod
             //};
         }
 
-        public virtual List<IMenuMod.MenuEntry> GetEntries()
+        public virtual List<Element> GetEntries()
         {
-            return ModOptions.Select(x => CreateOption(x.Name, x.Info)).ToList();
-        }
-
-        public string[] toggle = new string[]
-        {
-            Language.Language.Get("MOH_OFF", "MainMenu"),
-            Language.Language.Get("MOH_ON", "MainMenu")
-        };
-
-        public IMenuMod.MenuEntry CreateOption(string name, string info)
-        {
-            IMenuMod.MenuEntry entry = new IMenuMod.MenuEntry()
-            {
-                Name = name,
-                Description = info,
-                Values = this.toggle,
-                Saver = (x) => { SetOptionStateFromMenu(name, x == 1); },
-                Loader = () => { return Settings.GetOption(name).value ? 1 : 0; },
-            };
-
-            return entry;
-        }
-
-        public virtual void SetOptionStateFromMenu(string name, bool state)
-        {
-            Settings.GetOption(name).value = state;
+            return ModOptions.Select(x => 
+                Blueprints.HorizontalBoolOption(
+                    name: x.Name, 
+                    description: x.Info,
+                    applySetting: b => Settings.GetOption(x.Name).value =b ,
+                    loadSetting: () => Settings.GetOption(x.Name).value))
+                .Select(x => x as Element) // compiler doesn't like implicitly doing this cast
+                .ToList();
         }
     }
 }
