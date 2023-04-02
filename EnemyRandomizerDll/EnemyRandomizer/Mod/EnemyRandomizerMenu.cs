@@ -1,4 +1,5 @@
-﻿using Satchel.BetterMenus;
+﻿using System.Collections;
+using Satchel.BetterMenus;
 using System.Collections.Generic;
 using Modding;
 using System.Linq;
@@ -38,7 +39,7 @@ public partial class EnemyRandomizer : ICustomMenuMod
                 {
                     GlobalSettings.UseCustomSeed = b;
                     GeneralOptionsMenu.Find("SeedInput").isVisible = b;
-                    GeneralOptionsMenu.Update(); // update ui to see effects of isvisible change
+                    GeneralOptionsMenu.Reflow();
                     UpdateModVersionLabel();
                 },
                 loadSetting: () => GlobalSettings.UseCustomSeed
@@ -71,31 +72,32 @@ public partial class EnemyRandomizer : ICustomMenuMod
                         return;
                     }
 
-                    MenuRef.Find(logic.Name).isVisible = enabled;
+                    var subMenuButton = MenuRef.Find(logic.Name);
 
                     if (enabled)
                     {
+                        subMenuButton.Show();
                         enemyReplacer.EnableLogic(logic);
                     }
                     else
                     {
+                        subMenuButton.Hide();
                         enemyReplacer.DisableLogic(logic);
                     }
-                    MenuRef.Update();
                 },
-                loadSetting: () => GlobalSettings.loadedLogics.Contains(logic.Name)));
+                loadSetting: () => isLogicLoaded(logic)));
         }
 
         return elements;
     }
-        
+     
+    public bool isLogicLoaded(IRandomizerLogic logic) => GlobalSettings.loadedLogics.Contains(logic.Name);
         
     private static Menu MenuRef;
     private static Menu GeneralOptionsMenu;
     private static Menu LogicsOptionsMenu;
     public static Dictionary<string, Menu> SubPages = new();
 
-    // TODO: fix modules buttons not showing up correctly
     MenuScreen ICustomMenuMod.GetMenuScreen(MenuScreen modListMenu, ModToggleDelegates? toggleDelegates)
     {
         LoadLogics();
@@ -138,14 +140,24 @@ public partial class EnemyRandomizer : ICustomMenuMod
         MenuRef.OnBuilt += (_, _) =>
         {
             logicTypes.Values.ToList().ForEach(l =>
-            {
-                MenuRef.Find(l.Name).isVisible = l.Enabled;
-                Log(l + " " + l.Enabled);
-            });
-            MenuRef.Update();
+                MenuRef.Find(l.Name).isVisible = isLogicLoaded(l));
         };
+
+        // menu is jank it is what it is
+        On.UIManager.ShowMenu -= FixButtonPositions;
+        On.UIManager.ShowMenu += FixButtonPositions;
 
         // return a MenuScreen MAPI can use.
         return MenuRef.GetMenuScreen(modListMenu);
+    }
+
+    private IEnumerator FixButtonPositions(On.UIManager.orig_ShowMenu orig, UIManager self, MenuScreen menu)
+    {
+        yield return orig(self, menu);
+        
+        if (MenuRef?.menuScreen != null && MenuRef.menuScreen == menu)
+        {
+            MenuRef.Reflow();
+        }
     }
 }

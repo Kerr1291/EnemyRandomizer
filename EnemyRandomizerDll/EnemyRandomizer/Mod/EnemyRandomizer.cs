@@ -285,13 +285,14 @@ namespace EnemyRandomizerMod
             };
 
             // can remove after testing
-            UIManager.EditMenus += () =>
+            On.QuitToMenu.Start += (orig, self) =>
             {
                 if (GlobalSettings.UseCustomSeed)
                 {
-                    GeneralOptionsMenu.Find("SeedInput").Show();
+                    GeneralOptionsMenu?.Find("SeedInput")?.Show();
                 }
                 UpdateModVersionLabel();
+                return orig(self);
             };
         }
 
