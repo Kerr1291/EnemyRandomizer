@@ -102,51 +102,57 @@ public partial class EnemyRandomizer : ICustomMenuMod
     {
         LoadLogics();
 
-        // create instance of BetterMenus.Menu. It will be used to create the elements
-        MenuRef ??= new Menu("Enemy Randomizer Settings");
-
-        // create sub menus
-        GeneralOptionsMenu ??= new Menu("Mod Settings", GetGeneralEntries().ToArray());
-        LogicsOptionsMenu ??= new Menu("Logic Settings", GetLogics().ToArray());
-
-        MenuRef.AddElement(Blueprints.NavigateToMenu(
-            name: "Mod Settings",
-            description: "Main Settings for mod",
-            getScreen: () => GeneralOptionsMenu.GetMenuScreen(MenuRef.menuScreen)));
-        
-        MenuRef.AddElement(Blueprints.NavigateToMenu(
-            name: "Module Settings",
-            description: "Settings for modules",
-            getScreen: () => LogicsOptionsMenu.GetMenuScreen(MenuRef.menuScreen)));
-
-        logicTypes.Values.ToList().ForEach(l =>
+        if (MenuRef == null)
         {
-            var menu = l.GetSubpage();
-            SubPages[l.Name] = menu;
-            MenuRef.AddElement(
-                Blueprints.NavigateToMenu(
-                    l.Name, 
-                    l.Info, 
-                    () => menu.GetMenuScreen(MenuRef.menuScreen)));
-        });
+            // create instance of BetterMenus.Menu. It will be used to create the elements
+            MenuRef = new Menu("Enemy Randomizer Settings");
 
-        // Because of an oversight on how is visible is set, we we need to do this
-        // work around to set default visibility of the buttons
-        GeneralOptionsMenu.OnBuilt += (_, _) => 
-            GeneralOptionsMenu.Find("SeedInput").isVisible = GlobalSettings.UseCustomSeed;
-        
-        //TODO: call this when its available. if Menu is already built, dont do on built instead just set
-        // is visible and call MenuRef.Update
-        MenuRef.OnBuilt += (_, _) =>
-        {
-            logicTypes.Values.ToList().ForEach(l =>
-                MenuRef.Find(l.Name).isVisible = isLogicLoaded(l));
-        };
+            // create sub menus
+            GeneralOptionsMenu = new Menu("Mod Settings", GetGeneralEntries().ToArray());
+            LogicsOptionsMenu = new Menu("Logic Settings", GetLogics().ToArray());
 
-        // menu is jank it is what it is
-        On.UIManager.ShowMenu -= FixButtonPositions;
-        On.UIManager.ShowMenu += FixButtonPositions;
+            // add buttons to go to the sub menus
+            MenuRef.AddElement(Blueprints.NavigateToMenu(
+                name: "Mod Settings",
+                description: "Main Settings for mod",
+                getScreen: () => GeneralOptionsMenu.GetMenuScreen(MenuRef.menuScreen)));
 
+            MenuRef.AddElement(Blueprints.NavigateToMenu(
+                name: "Module Settings",
+                description: "Settings for modules",
+                getScreen: () => LogicsOptionsMenu.GetMenuScreen(MenuRef.menuScreen)));
+
+            // create the sub pages for each logic
+            logicTypes.Values.ToList().ForEach(logic =>
+            {
+                var menu = logic.GetSubpage();
+                SubPages[logic.Name] = menu;
+                
+                // add button to go the logic options sub pages
+                MenuRef.AddElement(
+                    Blueprints.NavigateToMenu(
+                        logic.Name, 
+                        logic.Info, 
+                        () => menu.GetMenuScreen(MenuRef.menuScreen)));
+            });
+
+            // Because of an oversight on how is visible is set, we we need to do this
+            // work around to set default visibility of the buttons
+            GeneralOptionsMenu.OnBuilt += (_, _) => 
+                GeneralOptionsMenu.Find("SeedInput").isVisible = GlobalSettings.UseCustomSeed;
+
+            //TODO: call this when its available. if Menu is already built, dont do on built instead just set
+            // is visible and call MenuRef.Update
+            MenuRef.OnBuilt += (_, _) =>
+            {
+                logicTypes.Values.ToList().ForEach(logic =>
+                    MenuRef.Find(logic.Name).isVisible = isLogicLoaded(logic));
+            };
+
+            // menu is jank it is what it is
+            On.UIManager.ShowMenu -= FixButtonPositions;
+            On.UIManager.ShowMenu += FixButtonPositions;
+        }
         // return a MenuScreen MAPI can use.
         return MenuRef.GetMenuScreen(modListMenu);
     }
