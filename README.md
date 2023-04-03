@@ -10,6 +10,10 @@ Find me here to give feedback, ideas, etc. Or use github, whichever!
 
 https://discord.gg/hollow-knight-modding-879125729936298015
 
+## Dependencies
+
+Satchel: https://github.com/PrashantMohta/Satchel
+
 ## Release Installation
 
 Get via one of the mod installers like scarab: https://github.com/fifty-six/Scarab
