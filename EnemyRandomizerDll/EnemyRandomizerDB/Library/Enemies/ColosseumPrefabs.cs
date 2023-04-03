@@ -8,11 +8,8 @@ using System.Linq;
 using System.Xml.Serialization;
 using System.Collections;
 using System;
-#if !LIBRARY
-using Dev = EnemyRandomizerMod.Dev;
-#else
-using Dev = Modding.Logger;
-#endif
+using Satchel;
+using Satchel.Futils;
 
 namespace EnemyRandomizerMod
 {

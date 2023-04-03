@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Satchel;
+using Satchel.Futils;
 
 namespace EnemyRandomizerMod
 {

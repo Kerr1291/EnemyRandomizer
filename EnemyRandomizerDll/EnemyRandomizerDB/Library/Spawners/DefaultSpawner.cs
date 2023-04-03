@@ -5,7 +5,8 @@ using System.Linq;
 using On.Language;
 using HutongGames.PlayMaker.Actions;
 using HutongGames.PlayMaker;
-using EnemyRandomizerMod.Futils;
+using Satchel;
+using Satchel.Futils;
 
 namespace EnemyRandomizerMod
 {

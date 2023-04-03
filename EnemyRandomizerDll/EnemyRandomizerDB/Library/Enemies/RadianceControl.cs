@@ -4,7 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using EnemyRandomizerMod.Futils;
+using Satchel;
+using Satchel.Futils;
 using HutongGames.PlayMaker;
 
 namespace EnemyRandomizerMod

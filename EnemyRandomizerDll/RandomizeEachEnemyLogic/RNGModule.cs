@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Satchel.BetterMenus;
 
 
 namespace EnemyRandomizerMod
@@ -37,24 +38,47 @@ namespace EnemyRandomizerMod
             get => CustomOptions;
         }
 
-        public override void SetOptionStateFromMenu(string name, bool state)
+        public override List<Element> GetEntries()
         {
-            if (state == true)
-            {
-                var spd = EnemyRandomizer.Instance.Subpages.FirstOrDefault(x => x.title == this.Name);
-                if (spd != null && spd.subpageMenu.Value != null)
+            var setting = "Room"; //idk
+            var elems = new List<Element>();
+            var types = new string[] { "Transition", "Object", "Room", "Zone", "Type" };
+            var desc = new string[] {
+                "(Old Chaos Mode) Each time you change rooms everything is will be different",
+                "Each object will change to a different type",
+                "Each room will change one object type",
+                "Each zone will change one object type",
+                "This will result in one type of object being changed in the same way throughout the game" };
+            elems.Add(new TextPanel("Choose 1"));
+            elems.Add(new HorizontalOption("Randomization Type", "",
+                types, i =>
                 {
-                    CustomOptions.ForEach(x =>
-                    {
-                        if (x.Name != name)
-                            LogicSettingsMethods.SetSubpageMenuValue(x.Name, false, spd.subpageMenu.Value);
-                        //else
-                        //    LogicSettingsMethods.SetSubpageMenuValue(x.Name, false, spd.subpageMenu.Value);
-                    });
-                }
-            }
-            base.SetOptionStateFromMenu(name, state);
+                    setting = types[i];
+                    (EnemyRandomizer.SubPages[Name].Find("Nice") as HorizontalOption).Description = $"{desc[i]}";
+                    EnemyRandomizer.SubPages[Name].Update();
+                }, () => types.ToList().IndexOf(setting), Id: "Nice"));
+
+            return elems;
         }
+
+        //public override void SetOptionStateFromMenu(string name, bool state)
+        //{
+        //    if (state == true)
+        //    {
+        //        var spd = EnemyRandomizer.Instance.Subpages.FirstOrDefault(x => x.title == this.Name);
+        //        if (spd != null && spd.subpageMenu.Value != null)
+        //        {
+        //            CustomOptions.ForEach(x =>
+        //            {
+        //                if (x.Name != name)
+        //                    LogicSettingsMethods.SetSubpageMenuValue(x.Name, false, spd.subpageMenu.Value);
+        //                //else
+        //                //    LogicSettingsMethods.SetSubpageMenuValue(x.Name, false, spd.subpageMenu.Value);
+        //            });
+        //        }
+        //    }
+        //    base.SetOptionStateFromMenu(name, state);
+        //}
 
         public override void OnStartGame(EnemyRandomizerPlayerSettings settings)
         {

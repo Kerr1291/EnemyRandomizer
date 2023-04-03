@@ -109,7 +109,7 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public static string GetModAssetPath(string filename)
+        public static string GetModAssetPath(string filename) 
         {
             return Path.Combine(ModAssetPath, filename);
         }

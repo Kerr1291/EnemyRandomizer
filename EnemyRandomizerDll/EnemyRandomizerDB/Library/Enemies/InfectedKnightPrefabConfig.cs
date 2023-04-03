@@ -7,6 +7,8 @@ using System.Linq;
 using System.Xml.Serialization;
 using System.Collections;
 using HutongGames.PlayMaker.Actions;
+using Satchel;
+using Satchel.Futils;
 namespace EnemyRandomizerMod
 {
     public class InfectedKnightControl : DefaultSpawnedEnemyControl

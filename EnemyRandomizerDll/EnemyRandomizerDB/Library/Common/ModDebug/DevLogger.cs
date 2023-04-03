@@ -31,7 +31,7 @@ namespace EnemyRandomizerMod
         [SerializeField] protected bool showMethodParameters = false;
         [SerializeField] protected bool showClassName = true;
         [SerializeField] protected bool loggingEnabled = true;
-        [SerializeField] protected bool guiLoggingEnabled = false;
+        [SerializeField] protected bool guiLoggingEnabled = true;
         [SerializeField] protected bool colorizeText = true;
         [SerializeField] protected Color logColor = Color.white;
         [SerializeField] protected Color logWarningColor = Color.yellow;

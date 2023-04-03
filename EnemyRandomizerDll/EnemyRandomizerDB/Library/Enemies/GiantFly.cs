@@ -10,11 +10,8 @@ using System.Collections;
 using System;
 using HutongGames.PlayMaker;
 using Modding;
-#if !LIBRARY
-using Dev = EnemyRandomizerMod.Dev;
-#else
-using Dev = Modding.Logger;
-#endif
+using Satchel;
+using Satchel.Futils;
 namespace EnemyRandomizerMod
 {
     public class GiantFlyControl : MonoBehaviour

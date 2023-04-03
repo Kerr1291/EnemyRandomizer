@@ -6,8 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using EnemyRandomizerMod.Futils;
 using HutongGames.PlayMaker;
+
+using Satchel;
+using Satchel.Futils;
 
 namespace EnemyRandomizerMod
 {

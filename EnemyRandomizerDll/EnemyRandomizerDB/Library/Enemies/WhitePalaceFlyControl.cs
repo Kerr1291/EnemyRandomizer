@@ -1,4 +1,8 @@
-﻿namespace EnemyRandomizerMod
+﻿
+using Satchel;
+using Satchel.Futils;
+
+namespace EnemyRandomizerMod
 {
     public class WhitePalaceFlyControl : DefaultSpawnedEnemyControl
     {
@@ -6,10 +10,13 @@
         {
             base.Setup(other);
 
-            //TODO: some logic to determine if it's safe to leave the enemy as invincible
             thisMetadata.EnemyHealthManager.hp = 1;
         }
 
+
+        /// <summary>
+        /// This needs to be set each frame to make the palace fly killable
+        /// </summary>
         protected virtual void Update()
         {
             if(thisMetadata.EnemyHealthManager.hp > 1)

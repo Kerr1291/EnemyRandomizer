@@ -11,6 +11,8 @@ using System.Linq;
 using System;
 using UniRx;
 using UniRx.Triggers;
+using Satchel;
+using Satchel.Futils;
 
 namespace EnemyRandomizerMod
 {

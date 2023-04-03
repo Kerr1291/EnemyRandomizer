@@ -7,19 +7,21 @@
     <ProjectGuid>{6840ABD8-113F-48E8-B125-19394C0AA354}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EnemyRandomizer</RootNamespace>
+    <RootNamespace>EnemyRandomizerMod</RootNamespace>
     <AssemblyName>EnemyRandomizer</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <LangVersion>latest</LangVersion>
-    <HollowKnightFolder>C:\Program Files (x86)\Steam\steamapps\common\Hollow Knight\hollow_knight_Data\Managed</HollowKnightFolder>
+    <SatchelPath>K:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\Mods\Satchel</SatchelPath>
+    <ModdingAPI>K:\Programming\hk\github\ModdingAPIWin</ModdingAPI>
+    <HollowKnightFolder>K:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed</HollowKnightFolder>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,7 +31,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -37,23 +39,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>$(HollowKnightFolder)\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="EnemyRandomizerDB, Version=2023.0.8467.20295, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(HollowKnightFolder)\Mods\EnemyRandomizer\EnemyRandomizerDB.dll</HintPath>
+      <HintPath>$(ModdingAPI)\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="MMHOOK_Assembly-CSharp">
-      <HintPath>$(HollowKnightFolder)\MMHOOK_Assembly-CSharp.dll</HintPath>
+      <HintPath>$(ModdingAPI)\MMHOOK_Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="MMHOOK_PlayMaker">
-      <HintPath>$(HollowKnightFolder)\MMHOOK_PlayMaker.dll</HintPath>
+      <HintPath>$(ModdingAPI)\MMHOOK_PlayMaker.dll</HintPath>
     </Reference>
     <Reference Include="PlayMaker">
       <HintPath>$(HollowKnightFolder)\PlayMaker.dll</HintPath>
     </Reference>
     <Reference Include="Satchel">
-      <HintPath>$(HollowKnightFolder)\Mods\Satchel\Satchel.dll</HintPath>
+      <HintPath>$(SatchelPath)\Satchel.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -133,11 +131,18 @@
     <Compile Include="Mod\NOTES.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EnemyRandomizerDB\EnemyRandomizerDB.csproj">
+      <Project>{5b11edf6-f69c-4de8-9232-3bdab6b1bb60}</Project>
+      <Name>EnemyRandomizerDB</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>@echo off
 SET DLL_SOURCE=$(TargetPath)
 SET MOD_DEST="$(HollowKnightFolder)\Mods\EnemyRandomizer\$(TargetFileName)"
+mkdir "$(HollowKnightFolder)\Mods\EnemyRandomizer\"
 echo Copying build from
 echo %25DLL_SOURCE%25
 echo to

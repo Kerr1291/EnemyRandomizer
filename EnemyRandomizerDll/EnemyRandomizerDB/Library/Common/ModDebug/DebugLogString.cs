@@ -10,7 +10,7 @@ namespace EnemyRandomizerMod
 {
     //need to use a type deriving from UIBehavior to capture rect size changes propigated at runtime...
     [RequireComponent(typeof(RectTransform))]
-    [RequireComponent(typeof(Text))]
+    [RequireComponent(typeof(Text))] 
     [RequireComponent(typeof(ContentSizeFitter))]
     public class DebugLogString : UnityEngine.EventSystems.UIBehaviour
     {

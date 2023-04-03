@@ -10,6 +10,8 @@ using System.Collections;
 using System;
 using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
+using Satchel;
+using Satchel.Futils;
 namespace EnemyRandomizerMod
 {
 

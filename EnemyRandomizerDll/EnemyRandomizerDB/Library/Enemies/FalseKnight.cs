@@ -11,6 +11,8 @@ using System;
 using HutongGames.PlayMaker;
 using Modding;
 using HutongGames.PlayMaker.Actions;
+using Satchel;
+using Satchel.Futils;
 
 namespace EnemyRandomizerMod
 {

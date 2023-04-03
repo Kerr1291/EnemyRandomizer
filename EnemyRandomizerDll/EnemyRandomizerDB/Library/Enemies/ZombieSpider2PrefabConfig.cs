@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using Satchel;
+using Satchel.Futils;
 
 namespace EnemyRandomizerMod
 {

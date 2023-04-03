@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using HutongGames.PlayMaker;
+using Satchel;
+using Satchel.Futils;
 
 namespace EnemyRandomizerMod
 {

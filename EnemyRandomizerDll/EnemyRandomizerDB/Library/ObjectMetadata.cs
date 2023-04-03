@@ -12,6 +12,8 @@ using System.Reflection;
 using static EnemyRandomizerMod.PrefabObject;
 using UniRx;
 using HutongGames.PlayMaker.Actions;
+using Satchel;
+using Satchel.Futils;
 
 //NOTE: adjust aduio player oneshot pitch values and audio source component pitch values when shrinking/growing things
 //NOTE: walker enemies need their "rightScale" float changed when the base transform scale is changed so they match or sprites will squish weirdly

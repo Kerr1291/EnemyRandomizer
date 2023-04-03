@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Satchel;
+using Satchel.Futils;
 
 namespace EnemyRandomizerMod
 {

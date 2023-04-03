@@ -10,11 +10,8 @@ using System.Collections;
 using System;
 using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
-#if !LIBRARY
-using Dev = EnemyRandomizerMod.Dev;
-#else
-using Dev = Modding.Logger;
-#endif
+using Satchel;
+using Satchel.Futils;
 namespace EnemyRandomizerMod
 {
     public class HatcherControl : DefaultSpawnedEnemyControl
@@ -60,8 +57,10 @@ namespace EnemyRandomizerMod
             //}).ToArray();
         }
 
-        void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
+
             On.HutongGames.PlayMaker.FsmState.OnEnter -= FsmState_OnEnter;
             //On.HutongGames.PlayMaker.Actions.GetRandomChild.DoGetRandomChild -= GetRandomChild_DoGetRandomChild;
         }
