@@ -33,6 +33,8 @@ Plenty. This is an alpha release, so there's still a lot of work to do.
 
 ## Credits
 
+Big thanks to Mulhim (Author of Satchel) for porting the menu into Satchel's [Better Menus] format.
+
 Thanks to the modding team for a great modding API <3
 
 Thanks to the SATCHEL mod for providing a great resource to edit fsms.
