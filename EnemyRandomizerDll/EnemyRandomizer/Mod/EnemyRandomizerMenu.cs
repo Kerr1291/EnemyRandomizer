@@ -139,14 +139,18 @@ namespace EnemyRandomizerMod
 
                 // add buttons to go to the sub menus
                 MenuRef.AddElement(Blueprints.NavigateToMenu(
-                    name: "Mod Settings",
-                    description: "Main Settings for mod",
+                    name: "General Settings",
+                    description: "Seed settings, credits, and other general mod settings",
                     getScreen: () => GeneralOptionsMenu.GetMenuScreen(MenuRef.menuScreen)));
 
                 MenuRef.AddElement(Blueprints.NavigateToMenu(
-                    name: "Module Settings",
-                    description: "Settings for modules",
+                    name: "Module List",
+                    description: "The list of modules that may be enabled",
                     getScreen: () => LogicsOptionsMenu.GetMenuScreen(MenuRef.menuScreen)));
+
+                MenuRef.AddElement(new TextPanel("------- Enabled Modules --------"));
+                MenuRef.AddElement(new TextPanel("Select a module to configure it"));
+                MenuRef.AddElement(new TextPanel(""));
 
                 // create the sub pages for each logic
                 logicTypes.Values.ToList().ForEach(logic =>

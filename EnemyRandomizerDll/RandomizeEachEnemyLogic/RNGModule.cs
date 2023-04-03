@@ -26,11 +26,11 @@ namespace EnemyRandomizerMod
 
         List<(string Name, string Info, bool Default)> CustomOptions = new List<(string, string, bool)>()
         {
-            ("Randomize On Each Transition", "(Old Chaos Mode) Each time you change rooms everything is will be different", false),
-            ("Randomize Once Per Object", "Each object will change to a different type", false),
-            ("Randomize Once Per Room", "Each room will change one object type", true),
-            ("Randomize Once Per Zone", "Each zone will change one object type", false),
-            ("Randomize Once Per Type", "This will result in one type of object being changed in the same way throughout the game", false),
+            ("Transition", "(Old Chaos Mode) Each time you change rooms everything is will be different", false),
+            ("Object", "Each object will change to a different type", false),
+            ("Room", "Each room will change one object type", true),
+            ("Zone", "Each zone will change one object type", false),
+            ("Type", "This will result in one type of object being changed in the same way throughout the game", false),
         };
 
         protected override List<(string Name, string Info, bool DefaultState)> ModOptions
@@ -40,7 +40,9 @@ namespace EnemyRandomizerMod
 
         public override List<Element> GetEntries()
         {
-            var setting = "Room"; //idk
+            var setting = CustomOptions.FirstOrDefault(x => Settings.GetOption(x.Name).value).Name;
+
+
             var elems = new List<Element>();
             var types = new string[] { "Transition", "Object", "Room", "Zone", "Type" };
             var desc = new string[] {
@@ -51,12 +53,25 @@ namespace EnemyRandomizerMod
                 "This will result in one type of object being changed in the same way throughout the game" };
             elems.Add(new TextPanel("Choose 1"));
             elems.Add(new HorizontalOption("Randomization Type", "",
-                types, i =>
-                {
-                    setting = types[i];
-                    (EnemyRandomizer.SubPages[Name].Find("Nice") as HorizontalOption).Description = $"{desc[i]}";
-                    EnemyRandomizer.SubPages[Name].Update();
-                }, () => types.ToList().IndexOf(setting), Id: "Nice"));
+                    types, i =>
+                    {
+                        setting = types[i];
+                        (EnemyRandomizer.SubPages[Name].Find("Nice") as HorizontalOption).Description = $"{desc[i]}";
+                        EnemyRandomizer.SubPages[Name].Update();
+
+                        CustomOptions.ForEach(x => Settings.GetOption(x.Name).value = false);
+                        Settings.GetOption(setting).value = true;
+                    }, 
+                    () =>
+                    {
+                        CustomOptions.ForEach(x => Settings.GetOption(x.Name).value = false);
+                        Settings.GetOption(setting).value = true;
+
+                        return types.ToList().IndexOf(setting);
+                    }, 
+                    Id: "Nice"
+                    )
+                );
 
             return elems;
         }
