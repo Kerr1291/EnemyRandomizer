@@ -450,6 +450,7 @@ namespace EnemyRandomizerMod
 
         public static List<string> ReplacementEnemiesToSkip = new List<string>()
         {
+            "Zote Balloon Ordeal",
             "Dream Mage Lord Phase2",
             "Mage Lord Phase2",
             "Corpse Garden Zombie", //don't spawn this, it's just a corpse

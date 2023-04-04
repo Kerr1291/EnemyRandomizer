@@ -5,148 +5,81 @@ using System.Linq;
 using UnityEngine;
 using Satchel;
 using Satchel.Futils;
+using System.Collections.Generic;
+using System;
 
 namespace EnemyRandomizerMod
 {
-    public class ZoteCrewNormalControl : DefaultSpawnedEnemyControl
+    public class ZoteCrewNormalControl : FSMBossAreaControl
     {
-        public PlayMakerFSM control;
-        public Vector3 spawnLocation;
+        public override string FSMName => "Control";
 
-        public float aggroRange = 250f;
-        public float xRange = 114.56f - 91.54f;
-        public float yHeight;
-
-        PlayMakerFSM fsm;
-
-        FsmFloat xpos;
-        FsmFloat ypos;
-
-        public bool hasSpawned;
+        public float startYPos;
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
+
+            RNG geoRNG = new RNG();
+            geoRNG.Reset();
+
+            thisMetadata.EnemyHealthManager.hp = other.MaxHP;
+            thisMetadata.EnemyHealthManager.SetGeoSmall(geoRNG.Rand(2, 12));
+
+            var init = control.GetState("Init");
+            init.DisableAction(8);
+
+            var spawnAntic = control.GetState("Spawn Antic");
+            spawnAntic.DisableAction(0);
+            control.FsmVariables.GetFsmFloat("X Pos").Value = pos2d.x;
+            spawnAntic.GetAction<SetPosition>(1).y.Value = pos2d.y;
+            spawnAntic.DisableAction(2);
+            spawnAntic.DisableAction(6);
+            spawnAntic.DisableAction(7);
+
+            var activated = control.GetState("Activate");
+            activated.DisableAction(2);
+            activated.DisableAction(3);
+            activated.GetAction<SetDamageHeroAmount>(4).damageDealt = 1;
+
+            var endState = control.AddState("DestroyGO");
+            endState.AddCustomAction(() => { Destroy(gameObject); });
+
+            var reset = control.GetState("Death Reset");
+            reset.RemoveTransition("FINISHED");
+
+            var death = control.GetState("Death");
+            death.DisableAction(0);
+            death.DisableAction(2);
+            death.DisableAction(3);
+            death.DisableAction(4);
+            death.DisableAction(5);
+            death.DisableAction(9);
+            death.AddCustomAction(() => { GameObject.Destroy(gameObject); });
+
+            this.OverrideState(control, "Death Reset", () => { GameObject.Destroy(gameObject); });
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Multiply");
+            this.AddResetToStateOnHide(control, "Init");
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                //{"Shockwave Y" , x => floorY},
+            };
         }
 
-        protected virtual void OnEnable()
+        protected override bool HeroInAggroRange()
         {
-            spawnLocation = transform.position;
-        }
-
-        IEnumerator Start()
-        {
-            Dev.Where();
-            hasSpawned = false;
-            fsm = gameObject.LocateMyFSM("Control");
-            var posState = fsm.GetState("Spawn Antic");
-            {
-                var setPosition = posState.Actions.FirstOrDefault(x => typeof(SetPosition).IsAssignableFrom(x.GetType()));
-
-                xpos = setPosition.GetFieldValue<FsmFloat>("x");
-                ypos = setPosition.GetFieldValue<FsmFloat>("y");
-
-                yHeight = ypos.Value;
-
-                //check how much room the thowmp has
-                var left = gameObject.GetPointOn(Vector2.left, float.MaxValue);
-                var right = gameObject.GetPointOn(Vector2.right, float.MaxValue);
-
-                xRange = right.x - left.x;
-                aggroRange = xRange * 2f;
-            }
-
-            //check distance and move us into idle if player is far from spawn
-            var hero = HeroController.instance;
-            while (gameObject.SafeIsActive())
-            {
-                if ((hero.transform.position - spawnLocation).magnitude < aggroRange)
-                {
-                    if (fsm.ActiveStateName == "Dormant")
-                    {
-                        xpos.Value = spawnLocation.x + (new RNG(hero.transform.position.x.GetHashCode())).Rand(-xRange * .5f, xRange * .5f);
-
-                        var roof = gameObject.GetPointOn(Vector2.up, yHeight);
-
-                        if (roof.y - spawnLocation.y < yHeight)
-                        {
-                            ypos.Value = roof.y;
-                        }
-                        else
-                        {
-                            ypos.Value = spawnLocation.y + yHeight;
-                        }
-
-                        hasSpawned = true;
-                        fsm.SendEvent("SPAWN");
-                    }
-                }
-                else
-                {
-                    if (hasSpawned)
-                        fsm.SendEvent("PLAYER_FAR");
-                }
-
-                yield return new WaitForEndOfFrame();
-            }
-
-            yield break;
+            return (heroPos2d - pos2d).magnitude < 50f;
         }
     }
 
     public class ZoteCrewNormalSpawner : DefaultSpawner<ZoteCrewNormalControl>
     {
-        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
-        {
-            var go = base.Spawn(p, source);
-            var fsm = go.GetComponent<ZoteCrewNormalControl>();
-            fsm.control = go.LocateMyFSM("Control");
-
-            if (source.IsBoss)
-            {
-                //TODO:
-            }
-            else
-            {
-                //var hm = go.GetComponent<HealthManager>();
-                //hm.hp = source.MaxHP;
-            }
-
-            return go;
-        }
     }
 
     public class ZoteCrewNormalPrefabConfig : DefaultPrefabConfig<ZoteCrewNormalControl>
     {
-        public override void SetupPrefab(PrefabObject p)
-        {
-            base.SetupPrefab(p);
-
-            {
-                var fsm = p.prefab.LocateMyFSM("Control");
-                //var initState = fsm.Fsm.GetState("Init");
-                //var spawnState = fsm.Fsm.GetState("Spawn Antic");
-                //var activateState = fsm.Fsm.GetState("Activate");
-
-                //remove the transitions related to chain spawning zotes for the event
-                //fsm.RemoveTransition("Death", "FINISHED");
-                fsm.RemoveTransition("Death Reset", "FINISHED");
-                fsm.ChangeTransition("Dormant", "SPAWN", "Spawn Antic");
-                fsm.RemoveTransition("Multiply", "FINISHED");
-
-                //change the start transition to just begin the spawn antics
-                //fsm.ChangeTransition("Init", "FINISHED", "Spawn Antic");
-
-                //remove the states that were also part of that
-                //fsm.Fsm.RemoveState("Death Reset");
-                //fsm.Fsm.RemoveState("Dormant");
-
-
-                //fsm.Fsm.RemoveState("Multiply");
-
-                fsm.AddGlobalTransition("PLAYER_FAR", "Idle");
-            }
-        }
     }
 
 

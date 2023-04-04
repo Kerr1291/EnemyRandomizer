@@ -5,129 +5,108 @@ using System.Linq;
 using UnityEngine;
 using Satchel;
 using Satchel.Futils;
+using System.Collections.Generic;
+using System;
 
 namespace EnemyRandomizerMod
 {
-    public class ZoteThwompControl : DefaultSpawnedEnemyControl
+    public class ZoteThwompControl : FSMBossAreaControl
     {
-        public PlayMakerFSM control;
-        public Vector3 spawnLocation;
+        public override string FSMName => "Control";
 
-        public float aggroRange = 250f;
-        public float xRange = 113.85f - 92.43f;
-        public float yHeight;
+        PlayMakerFSM slamEffect;
+        PlayMakerFSM enemyCrusher;
+        PlayMakerFSM armourHit;
 
-        PlayMakerFSM fsm;
-
-        FsmFloat xpos;
-        FsmFloat ypos;
+        public float startYPos;
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
+
+            var de = gameObject.GetComponent<DamageEnemies>();
+            if (de != null)
+                GameObject.Destroy(de);
+
+            slamEffect = gameObject.FindGameObjectInChildrenWithName("Slam Effect").LocateMyFSM("FSM");
+            enemyCrusher = gameObject.FindGameObjectInChildrenWithName("Enemy Crusher").LocateMyFSM("FSM");
+            armourHit = gameObject.FindGameObjectInChildrenWithName("Armour Hit").LocateMyFSM("Effect Control");
+
+            slamEffect.ChangeTransition("Set Rotation?", "FINISHED", "Wait");
+            slamEffect.ChangeTransition("Wait", "FINISHED", "Destroy");
+
+            //control.ChangeTransition("Init", "FINISHED", "Set Pos");
+
+            RNG geoRNG = new RNG();
+            geoRNG.Reset();
+
+            thisMetadata.EnemyHealthManager.hp = other.MaxHP;
+            thisMetadata.EnemyHealthManager.SetGeoLarge(geoRNG.Rand(1, 5));
+
+            this.OverrideState(control, "Set Pos", () =>
+            {
+                control.FsmVariables.GetFsmFloat("X Pos").Value = HeroX;
+                float ypos = roofY - this.thisMetadata.ObjectSize.y * this.thisMetadata.SizeScale;
+                control.FsmVariables.GetFsmFloat("Y Pos").Value = ypos;
+                startYPos = ypos;
+                gameObject.transform.position = new Vector3(HeroX, ypos, 0f);
+                gameObject.GetComponent<Collider2D>().enabled = true;
+                gameObject.GetComponent<MeshRenderer>().enabled = true;
+            });
+
+            var rise = control.GetState("Rise");
+            rise.DisableAction(5);
+            rise.InsertCustomAction(() => {
+                control.FsmVariables.GetFsmFloat("Y Pos").Value = startYPos;
+            }, 5);
+
+            this.OverrideState(control, "Out", () =>
+            {
+                control.FsmVariables.GetFsmFloat("X Pos").Value = HeroX;
+                float ypos = roofY - this.thisMetadata.ObjectSize.y * this.thisMetadata.SizeScale;
+                control.FsmVariables.GetFsmFloat("Y Pos").Value = ypos;
+                startYPos = ypos;
+                gameObject.transform.position = new Vector3(HeroX, ypos, 0f);
+                gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
+            });
+
+            var endState = control.AddState("DestroyGO");
+            endState.AddCustomAction(() => { Destroy(gameObject); });
+
+            control.ChangeTransition("Break", "FINISHED", "DestroyGO");
+
+            var breakState = control.GetState("Break");
+            breakState.DisableAction(1);
+
+            var breakAntic = control.GetState("Break Antic");
+            breakAntic.DisableAction(1);
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Set Pos");
+            this.AddResetToStateOnHide(control, "Init");
+
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                //{"Right X" , x => edgeR},
+                //{"Left X" , x => edgeL},
+                //{"TeleRange Max" , x => edgeR},
+                //{"TeleRange Min" , x => edgeL},
+                //{"PuppetSlam Y" , x => floorY},
+            };
         }
 
-        protected virtual void OnEnable()
+        protected override bool HeroInAggroRange()
         {
-            spawnLocation = transform.position;
-        }
-
-        IEnumerator Start()
-        {
-            Dev.Where();
-            fsm = gameObject.LocateMyFSM("Control");
-            var posState = fsm.GetState("Set Pos");
-            {
-                var setPosition = posState.Actions.FirstOrDefault(x => typeof(SetPosition).IsAssignableFrom(x.GetType()));
-
-                xpos = setPosition.GetFieldValue<FsmFloat>("x");
-                ypos = setPosition.GetFieldValue<FsmFloat>("y");
-
-                yHeight = ypos.Value;
-
-                //check how much room the thowmp has
-                var left = gameObject.GetPointOn(Vector2.left, float.MaxValue);
-                var right = gameObject.GetPointOn(Vector2.right, float.MaxValue);
-
-                xRange = right.x - left.x;
-                aggroRange = xRange * 2f;
-            }
-
-            //check distance and move us into idle if player is far from spawn
-            var hero = HeroController.instance;
-            while (gameObject.SafeIsActive())
-            {
-                if ((hero.transform.position - spawnLocation).magnitude < aggroRange)
-                {
-                    if (fsm.ActiveStateName == "Dormant")
-                    {
-                        var rng = (new RNG(hero.transform.position.x.GetHashCode()));
-                        xpos.Value = spawnLocation.x + rng.Rand(-xRange * .5f, xRange * .5f);
-
-                        var roof = gameObject.GetPointOn(Vector2.up, yHeight);
-
-                        if (roof.y - spawnLocation.y < yHeight)
-                        {
-                            ypos.Value = roof.y;
-                        }
-                        else
-                        {
-                            ypos.Value = spawnLocation.y + yHeight;
-                        }
-
-                        fsm.SendEvent("GO");
-                    }
-                }
-                else
-                {
-                    if (fsm.ActiveStateName == "Out")
-                        fsm.SendEvent("PLAYER_FAR");
-                }
-
-                yield return new WaitForEndOfFrame();
-            }
-
-            yield break;
+            return (heroPos2d - pos2d).magnitude < 25f;
         }
     }
 
     public class ZoteThwompSpawner : DefaultSpawner<ZoteThwompControl>
     {
-        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
-        {
-            var go = base.Spawn(p, source);
-            var fsm = go.GetComponent<ZoteThwompControl>();
-            fsm.control = go.LocateMyFSM("Control");
-
-            if (source.IsBoss)
-            {
-                //TODO:
-            }
-            else
-            {
-                //var hm = go.GetComponent<HealthManager>();
-                //hm.hp = source.MaxHP;
-            }
-
-            return go;
-        }
     }
 
     public class ZoteThwompPrefabConfig : DefaultPrefabConfig<ZoteThwompControl>
     {
-        public override void SetupPrefab(PrefabObject p)
-        {
-            base.SetupPrefab(p);
-
-            {
-                var fsm = p.prefab.LocateMyFSM("Control");
-                //remove the transitions related to chain spawning zotes for the event
-                fsm.RemoveTransition("Break", "FINISHED");
-                fsm.AddTransition("Out", "PLAYER_FAR", "Dormant");
-                //fsm.ChangeTransition("Init", "FINISHED", "Teleport");
-                //fsm.ChangeTransition("Init", "GG BOSS", "Teleport");
-            }
-        }
     }
 
 

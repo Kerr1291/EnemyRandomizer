@@ -5,200 +5,137 @@ using HutongGames.PlayMaker.Actions;
 using UnityEngine;
 using Satchel;
 using Satchel.Futils;
+using System.Collections.Generic;
+using System;
 
 namespace EnemyRandomizerMod
 {
-    public class ZoteSalubraControl : DefaultSpawnedEnemyControl
+    public class ZoteSalubraControl : FSMBossAreaControl
     {
-        public PlayMakerFSM control;
-        public Vector3 spawnLocation;
+        public override string FSMName => "Control";
 
-        public float aggroRange = 25f;
-        public float xRange;
-        public float yRange;
-        public float maxxRange;
-        public float maxyRange;
-
-        PlayMakerFSM fsm;
+        public float startYPos;
+        public float maxSuck = 5f;
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
+
+            RNG geoRNG = new RNG();
+            geoRNG.Reset();
+
+            thisMetadata.EnemyHealthManager.hp = other.MaxHP;
+            thisMetadata.EnemyHealthManager.SetGeoLarge(geoRNG.Rand(1, 5));
+            thisMetadata.EnemyHealthManager.SetGeoMedium(geoRNG.Rand(1, 5));
+
+            var init = control.GetState("Init");
+            init.DisableAction(4);
+
+            var appear = control.GetState("Appear");
+            var appearSound = appear.GetAction<AudioPlayerOneShotSingle>(5);
+            var appearAnim = appear.GetAction<Tk2dPlayAnimationWithEvents>(1);
+            appear.RemoveTransition("RETRY");
+
+            this.OverrideState(control, "Retry", () => { });
+
+            this.OverrideState(control, "Appear", () =>
+            {
+                gameObject.GetComponent<Collider2D>().enabled = false;
+                gameObject.GetComponent<MeshRenderer>().enabled = true;
+
+                var xpos = gameObject.transform.position.x;
+                control.FsmVariables.GetFsmFloat("X Pos").Value = xpos;
+
+                float ypos = gameObject.transform.position.y;
+                control.FsmVariables.GetFsmFloat("Y Pos").Value = ypos;
+
+                startYPos = ypos;
+                gameObject.transform.position = new Vector3(xpos, ypos, 0f);
+                gameObject.GetComponent<Collider2D>().enabled = true;
+                gameObject.GetComponent<MeshRenderer>().enabled = true;
+            });
+
+            appear.InsertAction(appearSound, 0);
+            appear.InsertAction(appearAnim, 0);
+
+            var idle = control.GetState("Idle");
+
+            idle.InsertCustomAction(() => {
+
+                var gm = idle.GetFirstActionOfType<GhostMovement>();
+                gm.xPosMin = edgeL;
+                gm.xPosMax = edgeR;
+                gm.yPosMin = floorY;
+                gm.yPosMax = roofY;
+
+            }, 0);
+
+
+            var sucking = control.GetState("Sucking");
+
+            sucking.InsertCustomAction(() => {
+
+                control.FsmVariables.GetFsmVector2("Hero Pos").Value = heroPos2d;
+
+                var gm = idle.GetFirstActionOfType<GhostMovement>();
+                gm.xPosMin = edgeL;
+                gm.xPosMax = edgeR;
+                gm.yPosMin = floorY;
+                gm.yPosMax = roofY;
+
+            }, 0);
+
+            var suck = control.GetState("Suck");
+
+            suck.InsertCustomAction(() => {
+
+                float dist = (heroPos2d - pos2d).magnitude;
+                if(dist > maxSuck)
+                {
+                    control.SendEvent("FINISHED");
+                }
+
+            }, 0);
+
+            var endState = control.AddState("DestroyGO");
+            endState.AddCustomAction(() => { Destroy(gameObject); });
+
+            control.ChangeTransition("Death", "FINISHED", "DestroyGO");
+
+            var death = control.GetState("Death");
+            death.DisableAction(0);
+            death.DisableAction(2);
+            death.DisableAction(3);
+            death.DisableAction(10);
+            death.DisableAction(11);
+
+            this.OverrideState(control, "Dead", () => { });
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Appear");
+            this.AddResetToStateOnHide(control, "Init");
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                //{"Right X" , x => edgeR},
+                //{"Left X" , x => edgeL},
+                //{"TeleRange Max" , x => edgeR},
+                //{"TeleRange Min" , x => edgeL},
+                //{"PuppetSlam Y" , x => floorY},
+            };
         }
 
-        protected virtual void OnEnable()
+        protected override bool HeroInAggroRange()
         {
-            spawnLocation = transform.position;
-        }
-
-
-        IEnumerator Start()
-        {
-            Dev.Where();
-            fsm = gameObject.LocateMyFSM("Control");
-            var idleState = fsm.GetState("Idle");
-            {
-                var ghostMovement = idleState.Actions.FirstOrDefault(x => typeof(GhostMovement).IsAssignableFrom(x.GetType()));
-
-                FsmFloat xmin = ghostMovement.GetFieldValue<FsmFloat>("xPosMin");
-                FsmFloat ymin = ghostMovement.GetFieldValue<FsmFloat>("yPosMin");
-                FsmFloat xmax = ghostMovement.GetFieldValue<FsmFloat>("xPosMax");
-                FsmFloat ymax = ghostMovement.GetFieldValue<FsmFloat>("yPosMax");
-
-                xRange = xmax.Value - xmin.Value;
-                yRange = ymax.Value - ymin.Value;
-
-                //check if the ghost has less room to move
-                var left = gameObject.GetPointOn(Vector2.left, xRange * .5f);
-                var right = gameObject.GetPointOn(Vector2.right, xRange * .5f);
-
-                xRange = right.x - left.x;
-
-                xmin.Value = spawnLocation.x - xRange * .5f;
-                ymin.Value = spawnLocation.y - yRange * .5f;
-                xmax.Value = spawnLocation.x + xRange * .5f;
-                ymax.Value = spawnLocation.y + yRange * .5f;
-
-                //set the ghost to patrol around its new location
-                //ghostMovement.SetFieldValue<FsmFloat>("xPosMin", spawnLocation.x - xRange * .5f);
-                //ghostMovement.SetFieldValue<FsmFloat>("yPosMin", spawnLocation.y - yRange * .5f);
-                //ghostMovement.SetFieldValue<FsmFloat>("xPosMax", spawnLocation.y + xRange * .5f);
-                //ghostMovement.SetFieldValue<FsmFloat>("yPosMax", spawnLocation.y + yRange * .5f);
-            }
-
-            var suckingState = fsm.GetState("Sucking");
-            {
-                var ghostMovement = suckingState.Actions.FirstOrDefault(x => typeof(GhostMovement).IsAssignableFrom(x.GetType()));
-
-                FsmFloat xmin = ghostMovement.GetFieldValue<FsmFloat>("xPosMin");
-                FsmFloat ymin = ghostMovement.GetFieldValue<FsmFloat>("yPosMin");
-                FsmFloat xmax = ghostMovement.GetFieldValue<FsmFloat>("xPosMax");
-                FsmFloat ymax = ghostMovement.GetFieldValue<FsmFloat>("yPosMax");
-
-                xRange = xmax.Value - xmin.Value;
-                yRange = ymax.Value - ymin.Value;
-
-                var left = gameObject.GetPointOn(Vector2.left, xRange * .5f);
-                var right = gameObject.GetPointOn(Vector2.right, xRange * .5f);
-
-                xRange = right.x - left.x;
-                xRange = Mathf.Min(maxyRange, xRange);
-
-                xmin.Value = spawnLocation.x - xRange * .5f;
-                ymin.Value = spawnLocation.y - yRange * .5f;
-                xmax.Value = spawnLocation.x + xRange * .5f;
-                ymax.Value = spawnLocation.y + yRange * .5f;
-
-                //set the ghost to patrol around its new location
-                //ghostMovement.SetFieldValue<FsmFloat>("xPosMin", spawnLocation.x - xRange * .5f);
-                //ghostMovement.SetFieldValue<FsmFloat>("yPosMin", spawnLocation.y - yRange * .5f);
-                //ghostMovement.SetFieldValue<FsmFloat>("xPosMax", spawnLocation.y + xRange * .5f);
-                //ghostMovement.SetFieldValue<FsmFloat>("yPosMax", spawnLocation.y + yRange * .5f);
-            }
-
-            //check distance and move us into idle if player is far from spawn
-            var hero = HeroController.instance;
-            while (gameObject.SafeIsActive())
-            {
-                if ((hero.transform.position - spawnLocation).magnitude < aggroRange)
-                {
-                    //keep the ghost near the player once active
-                    {
-                        FsmFloat xmin = suckingState.GetFieldValue<FsmFloat>("xPosMin");
-                        FsmFloat ymin = suckingState.GetFieldValue<FsmFloat>("yPosMin");
-                        FsmFloat xmax = suckingState.GetFieldValue<FsmFloat>("xPosMax");
-                        FsmFloat ymax = suckingState.GetFieldValue<FsmFloat>("yPosMax");
-
-                        var heroPos = hero.transform.position;
-                        xmin.Value = heroPos.x - xRange * .5f;
-                        ymin.Value = heroPos.y - yRange * .5f;
-                        xmax.Value = heroPos.x + xRange * .5f;
-                        ymax.Value = heroPos.y + yRange * .5f;
-                    }
-
-                    if (fsm.ActiveStateName == "Idle")
-                        fsm.SendEvent("PLAYER_NEAR");
-                }
-                else
-                {
-
-                    if (fsm.ActiveStateName == "Sucking")
-                        fsm.SendEvent("PLAYER_FAR");
-                }
-                yield return new WaitForEndOfFrame();
-            }
-
-            yield break;
+            return (heroPos2d - pos2d).magnitude < 50f;
         }
     }
 
     public class ZoteSalubraSpawner : DefaultSpawner<ZoteSalubraControl>
     {
-        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
-        {
-            var go = base.Spawn(p, source);
-            var fsm = go.GetComponent<ZoteSalubraControl>();
-            fsm.control = go.LocateMyFSM("Control");
-
-            if (source.IsBoss)
-            {
-                //TODO:
-            }
-            else
-            {
-                //var hm = go.GetComponent<HealthManager>();
-                //hm.hp = source.MaxHP;
-            }
-
-            return go;
-        }
     }
 
     public class ZoteSalubraPrefabConfig : DefaultPrefabConfig<ZoteSalubraControl>
     {
-        public override void SetupPrefab(PrefabObject p)
-        {
-            base.SetupPrefab(p);
-
-            {
-                var fsm = p.prefab.LocateMyFSM("Control");
-
-                //remove the transitions related to chain spawning zotes for the event
-                fsm.RemoveTransition("Dormant", "START");
-                fsm.RemoveTransition("Dead", "FINISHED");
-
-                fsm.RemoveTransition("Appear", "RETRY");
-                fsm.RemoveTransition("Retry", "FINISHED");
-
-                //change the start transition to just begin the spawn antics
-                fsm.ChangeTransition("Init", "FINISHED", "Appear");
-
-                //remove the states that are not needed
-                //fsm.Fsm.RemoveState("Dormant");
-                //fsm.Fsm.RemoveState("Retry");
-
-                var appearState = fsm.GetState("Appear");
-                appearState.Actions = appearState.Actions.Where(x =>
-                {
-                    return
-                       !typeof(SetCircleCollider).IsAssignableFrom(x.GetType())
-                    && !typeof(RandomFloat).IsAssignableFrom(x.GetType())
-                    && !typeof(GetXDistance).IsAssignableFrom(x.GetType())
-                    && !typeof(FloatCompare).IsAssignableFrom(x.GetType())
-                    && !typeof(SetPosition).IsAssignableFrom(x.GetType());
-                }).ToArray();
-
-                var idleState = fsm.GetState("Idle");
-                appearState.Actions = appearState.Actions.Where(x =>
-                {
-                    return !typeof(Wait).IsAssignableFrom(x.GetType());
-                }).ToArray();
-
-                fsm.AddTransition("Idle", "PLAYER_NEAR", "Sucking");
-                fsm.AddTransition("Sucking", "PLAYER_FAR", "Idle");
-                fsm.RemoveTransition("Idle", "FINISHED");
-            }
-        }
     }
 
 

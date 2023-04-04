@@ -25,7 +25,7 @@ namespace EnemyRandomizerMod
 
         public virtual List<PrefabObject> GetValidEnemyReplacements(List<PrefabObject> validReplacements)
         {
-            return validReplacements.Where(x => x.prefabName.ToLower().Contains("zote")).ToList();
+            return validReplacements.Where(x => x.prefabName.ToLower().Contains("zote") || x.prefabName.ToLower().Contains("prince")).ToList();
         }
 
         (string,string,bool) CustomOption = ("Allow Custom Zotes", "[NOT YET IMPLEMENTED] Precept Thirty-Two: 'Names Have Power'. Names have power, and so to name something is to grant it power. I myself named my nail 'Life Ender'. Do not steal the name I came up with! Invent your own!", false);

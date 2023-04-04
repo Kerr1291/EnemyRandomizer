@@ -5,128 +5,99 @@ using System.Linq;
 using UnityEngine;
 using Satchel;
 using Satchel.Futils;
+using System.Collections.Generic;
+using System;
 
 namespace EnemyRandomizerMod
 {
 
 
 
-    public class ZoteFlukeControl : DefaultSpawnedEnemyControl
+    public class ZoteFlukeControl : FSMBossAreaControl
     {
-        public PlayMakerFSM control;
-        public Vector3 spawnLocation;
+        public override string FSMName => "Control";
 
-        public float aggroRange = 250f;
-        public float xRange = 115.64f - 90.45f;
-        public float yHeight;
-
-        PlayMakerFSM fsm;
-
-        FsmFloat xpos;
-        FsmFloat ypos;
+        public float startYPos;
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
-        }
 
-        protected virtual void OnEnable()
-        {
-            spawnLocation = transform.position;
-        }
+            RNG geoRNG = new RNG();
+            geoRNG.Reset();
 
-        IEnumerator Start()
-        {
-            Dev.Where();
-            fsm = gameObject.LocateMyFSM("Control");
-            var posState = fsm.GetState("Pos");
-            {
-                var setPosition = posState.Actions.FirstOrDefault(x => typeof(SetPosition).IsAssignableFrom(x.GetType()));
+            thisMetadata.EnemyHealthManager.hp = other.MaxHP;
+            thisMetadata.EnemyHealthManager.SetGeoSmall(geoRNG.Rand(2, 5));
 
-                xpos = setPosition.GetFieldValue<FsmFloat>("x");
-                ypos = setPosition.GetFieldValue<FsmFloat>("y");
+            var init = control.GetState("Init");
+            init.DisableAction(2);
 
-                yHeight = ypos.Value;
 
-                //check how much room the thowmp has
-                var left = gameObject.GetPointOn(Vector2.left, float.MaxValue);
-                var right = gameObject.GetPointOn(Vector2.right, float.MaxValue);
+            this.OverrideState(control, "Pos", () => {
+                transform.position = thisMetadata.ObjectPosition;
+            });
 
-                xRange = right.x - left.x;
-                aggroRange = xRange * 2f;
-            }
+            var climb = control.GetState("Climb");
+            //climb.DisableAction(0);
 
-            //check distance and move us into idle if player is far from spawn
-            var hero = HeroController.instance;
-            while (gameObject.SafeIsActive())
-            {
-                if ((hero.transform.position - spawnLocation).magnitude < aggroRange)
+            climb.InsertCustomAction(() => {
+
+                //control.FsmVariables.GetFsmVector2("Hero Pos").Value = heroPos2d;
+
+                var gm = climb.GetFirstActionOfType<GhostMovement>();
+                gm.xPosMin = edgeL;
+                gm.xPosMax = edgeR;
+                gm.yPosMin = floorY;
+                gm.yPosMax = roofY;
+
+            }, 0);
+
+            climb.DisableAction(3);
+            climb.AddCustomAction(() => { control.SendEvent("END"); });
+
+            var suck = control.AddState("Suck");
+            climb.ChangeTransition("END", "Suck");
+            suck.AddTransition("FINISHED", "Climb");
+            suck.AddCustomAction(() => {
+
+                var dist = (heroPos2d - pos2d).magnitude;
+                if(dist < 5f)
                 {
-                    if (fsm.ActiveStateName == "Dormant")
-                    {
-                        xpos.Value = spawnLocation.x + (new RNG(hero.transform.position.x.GetHashCode())).Rand(-xRange * .5f, xRange * .5f);
-
-                        var roof = gameObject.GetPointOn(Vector2.up, float.MaxValue);
-
-                        ypos.Value = roof.y;
-
-                        fsm.SendEvent("GO");
-                    }
-                }
-                else
-                {
-                    fsm.SendEvent("PLAYER_FAR");
+                    HeroController.instance.TakeMPQuick(1);
                 }
 
-                yield return new WaitForEndOfFrame();
-            }
+            });
+            suck.AddAction(new Wait() { time = 0.5f, finishEvent = new FsmEvent("FINISHED") });
 
-            yield break;
+            var death = control.GetState("Death");
+            death.DisableAction(4);
+            death.DisableAction(5);
+            death.DisableAction(6);
+            death.AddCustomAction(() => { GameObject.Destroy(gameObject); });
+
+            this.OverrideState(control, "Sleep", () => { GameObject.Destroy(gameObject); });
+            this.OverrideState(control, "Sleeping", () => { GameObject.Destroy(gameObject); });
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Pos");
+            this.AddResetToStateOnHide(control, "Init");
+
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                //{"Shockwave Y" , x => floorY},
+            };
+        }
+
+        protected override bool HeroInAggroRange()
+        {
+            return (heroPos2d - pos2d).magnitude < 50f;
         }
     }
 
     public class ZoteFlukeSpawner : DefaultSpawner<ZoteFlukeControl>
     {
-        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
-        {
-            var go = base.Spawn(p, source);
-            var fsm = go.GetComponent<ZoteFlukeControl>();
-            fsm.control = go.LocateMyFSM("Control");
-
-            if (source.IsBoss)
-            {
-                //TODO:
-            }
-            else
-            {
-                //var hm = go.GetComponent<HealthManager>();
-                //hm.hp = source.MaxHP;
-            }
-
-            return go;
-        }
     }
     public class ZoteFlukePrefabConfig : DefaultPrefabConfig<ZoteFlukeControl>
     {
-        public override void SetupPrefab(PrefabObject p)
-        {
-            base.SetupPrefab(p);
-
-            {
-                var fsm = p.prefab.LocateMyFSM("Control");
-
-                //remove the transitions related to chain spawning zotes for the event
-                //fsm.RemoveTransition("Sleeping", "F");
-                fsm.RemoveTransition("Death", "FINISHED");
-
-                //change the start transition to just begin the spawn antics
-                //fsm.ChangeTransition("Init", "FINISHED", "Pos");
-
-                //remove the states that were also part of that
-                fsm.AddGlobalTransition("PLAYER_FAR", "Dormant");
-                //fsm.Fsm.RemoveState("Dormant");
-            }
-        }
     }
 
 

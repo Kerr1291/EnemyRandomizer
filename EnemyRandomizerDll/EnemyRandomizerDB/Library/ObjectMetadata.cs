@@ -742,6 +742,7 @@ namespace EnemyRandomizerMod
             if (otherdata == null)
                 return;
 
+
             if (DatabaseName.Contains("Mawlek Turret"))
                 return;
 
@@ -863,6 +864,11 @@ namespace EnemyRandomizerMod
                     positionOffset = toSurfaceUp * objectSize.y * 1.5f * scale.y; ;
                 }
                 if (DatabaseName.Contains("Climber"))
+                {
+                    positionOffset = toSurfaceUp * objectSize.y * 1.5f * scale.y;
+                }
+
+                if (DatabaseName.ToLower().Contains("zote") || DatabaseName.ToLower().Contains("prince"))
                 {
                     positionOffset = toSurfaceUp * objectSize.y * 1.5f * scale.y;
                 }
