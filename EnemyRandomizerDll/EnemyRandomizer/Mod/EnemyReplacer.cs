@@ -39,6 +39,42 @@ namespace EnemyRandomizerMod
             database.Finalize(null);
         }
 
+        public List<IRandomizerLogic> ConstructLogics(List<string> previouslyLoadedLogics, Dictionary<string, IRandomizerLogic> logics)
+        {
+            Dev.Log("constructing logics");
+            //setup/construct all logics
+            foreach (var logic in logics.Select(x => x.Value))
+            {
+                Dev.Log("Creating " + logic.Name);
+                logic.Setup(database);
+
+                //if this is the first time a logic is loaded
+                var hasBeenLoadedBefore = logic.Settings.GetOption("__HAS_BEEN_LOADED_BEFORE__");
+                if (!hasBeenLoadedBefore.value)
+                {
+                    hasBeenLoadedBefore.value = true;
+
+                    //check if it should be enabled by default
+                    if (logic.EnableByDefault)
+                    {
+                        //and enable it
+                        loadedLogics.Add(logic);
+                        EnableLogic(logic);
+                    }
+                }
+                else
+                {
+                    if (previouslyLoadedLogics.Contains(logic.Name))
+                        EnableLogic(logic);
+                }
+            }
+
+            var enabledLogics = logics.Where(x => loadedLogics.Contains(x.Value)).Select(x => x.Value).ToList();
+            EnemyRandomizer.GlobalSettings.loadedLogics = EnemyRandomizer.GlobalSettings.loadedLogics.Concat(enabledLogics.Select(x => x.Name)).Distinct().ToList();
+
+            return enabledLogics;
+        }
+
         public EnemyRandomizerDatabase GetCurrentDatabase()
         {
             return database;
@@ -78,6 +114,9 @@ namespace EnemyRandomizerMod
 
         public void EnableLogic(IRandomizerLogic newLogic, bool updateSettings = true)
         {
+            if (loadedLogics == null)
+                loadedLogics = new HashSet<IRandomizerLogic>();
+
             if (updateSettings)
             {
                 if (!EnemyRandomizer.GlobalSettings.loadedLogics.Contains(newLogic.Name))
@@ -97,6 +136,9 @@ namespace EnemyRandomizerMod
 
         public void DisableLogic(IRandomizerLogic oldLogic, bool updateSettings = true)
         {
+            if (loadedLogics == null)
+                loadedLogics = new HashSet<IRandomizerLogic>();
+
             if (updateSettings)
             {
                 if (EnemyRandomizer.GlobalSettings.loadedLogics.Contains(oldLogic.Name))
@@ -447,6 +489,13 @@ namespace EnemyRandomizerMod
         { 
             return GameManager.instance.IsGameplayScene() && !GameManager.instance.IsCinematicScene();
         }
+
+
+        public static List<string> RandoControlledPooling = new List<string>()
+        {
+            "Radiant Nail",
+            "Dust Trail",
+        };
 
         public static List<string> ReplacementEnemiesToSkip = new List<string>()
         {

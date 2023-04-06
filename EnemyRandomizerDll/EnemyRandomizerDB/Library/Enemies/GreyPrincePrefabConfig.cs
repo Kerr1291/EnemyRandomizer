@@ -15,6 +15,8 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
+            thisMetadata.EnemyHealthManager.hp = other.MaxHP * 2 + 1;
+
             GameObject.Destroy(gameObject.LocateMyFSM("Constrain X"));
 
             var fsm = control;

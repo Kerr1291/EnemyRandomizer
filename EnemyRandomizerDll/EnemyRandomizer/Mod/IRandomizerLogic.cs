@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using Modding;
 using UnityEngine.SceneManagement;
-using UnityEngine;
 using Language;
 using On;
 
@@ -37,6 +36,21 @@ namespace EnemyRandomizerMod
         /// Is this logic currently enabled?
         /// </summary>
         bool Enabled { get; }
+
+        /// <summary>
+        /// Should this logic module be enabled the first time it's loaded by a user
+        /// </summary>
+        bool EnableByDefault { get; }
+
+        /// <summary>
+        /// The database reference being used by the module
+        /// </summary>
+        EnemyRandomizerDatabase Database { get; }
+
+        /// <summary>
+        /// The configuration settings used by the module
+        /// </summary>
+        LogicSettings Settings { get; }
 
         /// <summary>
         /// After the logic is created, give it a reference to the replacement functionality
@@ -112,9 +126,10 @@ namespace EnemyRandomizerMod
         public abstract string Info { get; }
         public virtual bool Enabled { get; protected set; }
         public virtual bool OnStartGameWasCalled { get; protected set; }
+        public virtual bool EnableByDefault { get => false; }
 
-        protected virtual EnemyRandomizerDatabase Database { get; set; }
-        protected virtual LogicSettings Settings { get => EnemyRandomizer.GlobalSettings.GetLogicSettings(Name); }
+        public virtual EnemyRandomizerDatabase Database { get; protected set; }
+        public virtual LogicSettings Settings { get => EnemyRandomizer.GlobalSettings.GetLogicSettings(Name); }
 
         public virtual void Setup(EnemyRandomizerDatabase database)
         {
@@ -182,18 +197,9 @@ namespace EnemyRandomizerMod
             return (null, null);
         }
 
-        //protected const string DefaultRandomizeEnemiesOption = "Randomize Enemies";
-        //protected const string DefaultRandomizeHazardsOption = "Randomize Hazards";
-        //protected const string DefaultRandomizeEffectsOption = "Randomize Projectiles";
-
         protected virtual List<(string Name, string Info, bool DefaultState)> ModOptions
         {
             get => new List<(string, string, bool)>();
-            //{
-            //    (DefaultRandomizeEnemiesOption, "Should this change enemies? (Only one mod may set this to true)", true ),
-            //    (DefaultRandomizeHazardsOption, "Should this change hazards? (Only one mod may set this to true)", false ),
-            //    (DefaultRandomizeEffectsOption, "Should this change effects? (Only one mod may set this to true)", false ),
-            //};
         }
 
         public virtual List<Element> GetEntries()

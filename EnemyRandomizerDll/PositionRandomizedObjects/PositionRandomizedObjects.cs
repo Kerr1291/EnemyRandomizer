@@ -14,6 +14,7 @@ namespace EnemyRandomizerMod
 
         public override string Info => "Attempts to correctly reposition objects that have been randomized using the old logic. Does not always work...";
 
+        public override bool EnableByDefault => true;
         public override ObjectMetadata ModifyObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
         {
             return RepositionObject(objectToModify, originalObject);

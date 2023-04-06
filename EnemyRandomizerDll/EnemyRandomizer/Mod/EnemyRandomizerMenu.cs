@@ -9,7 +9,6 @@ namespace EnemyRandomizerMod
 
     public partial class EnemyRandomizer : ICustomMenuMod
     {
-
         /// <summary>
         /// Will the toggle button (for an ITogglableMod) be inside the returned menu screen.
         /// If this is set, an `ITogglableMod` will not create the toggle entry in the main
@@ -17,7 +16,7 @@ namespace EnemyRandomizerMod
         /// </summary>
         public bool ToggleButtonInsideMenu => false;
 
-        public string[] playtesters = new string[]
+        protected string[] playtesters = new string[]
         {
             "ColetteMSLP",
             "oatmille1",
@@ -25,7 +24,22 @@ namespace EnemyRandomizerMod
             "...and you; thanks for playing!"
         };
 
-        private List<Element> GetGeneralEntries()
+        public static Menu RootMenuObject;
+
+        public static Menu GeneralOptionsMenu;
+
+        public static Dictionary<string, Menu> SubPages = new Dictionary<string, Menu>();
+
+        public static Menu logicsOptionsMenu;
+        public static Menu LogicsOptionsMenu
+        {
+            get
+            {
+                return logicsOptionsMenu;
+            }
+        }
+
+        protected virtual List<Element> GetGeneralEntries()
         {
             var elements = new List<Element> 
         {
@@ -80,9 +94,8 @@ namespace EnemyRandomizerMod
             return elements;
         }
 
-        private List<Element> GetLogics()
+        public static List<Element> GetLogicMenuOptions(Dictionary<string, IRandomizerLogic> logicTypes)
         {
-            GlobalSettings.loadedLogics ??= new List<string>();
             var elements = new List<Element>();
 
             foreach (var (dllName, logic) in logicTypes)
@@ -93,22 +106,23 @@ namespace EnemyRandomizerMod
                     description: logic.Info,
                     applySetting: enabled =>
                     {
-                        if (logic.Enabled && enabled)
-                        {
-                            return;
-                        }
+                        //try this
+                        //if (logic.Enabled && enabled)
+                        //{
+                        //    return;
+                        //}
 
-                        var subMenuButton = MenuRef.Find(logic.Name);
+                        var subMenuButton = RootMenuObject.Find(logic.Name);
 
                         if (enabled)
                         {
                             subMenuButton.Show();
-                            enemyReplacer.EnableLogic(logic);
+                            EnemyRandomizer.instance.enemyReplacer.EnableLogic(logic);
                         }
                         else
                         {
                             subMenuButton.Hide();
-                            enemyReplacer.DisableLogic(logic);
+                            EnemyRandomizer.instance.enemyReplacer.DisableLogic(logic);
                         }
                     },
                     loadSetting: () => isLogicLoaded(logic)));
@@ -117,40 +131,45 @@ namespace EnemyRandomizerMod
             return elements;
         }
 
-        public bool isLogicLoaded(IRandomizerLogic logic) => GlobalSettings.loadedLogics.Contains(logic.Name);
+        public static bool isLogicLoaded(IRandomizerLogic logic) => GlobalSettings.loadedLogics.Contains(logic.Name);
 
-        private static Menu MenuRef;
-        private static Menu GeneralOptionsMenu;
-        private static Menu LogicsOptionsMenu;
-        public static Dictionary<string, Menu> SubPages = new();
+
+        public static void CreateLogicOptionsMenu(Dictionary<string, IRandomizerLogic> logicTypes)
+        {
+            if (logicsOptionsMenu == null)
+                logicsOptionsMenu = new Menu("Module List", GetLogicMenuOptions(logicTypes).ToArray());
+        }
 
         MenuScreen ICustomMenuMod.GetMenuScreen(MenuScreen modListMenu, ModToggleDelegates? toggleDelegates)
         {
-            LoadLogics();
-
-            if (MenuRef == null)
+            if(EnemyRandomizer.Instance.logicTypes == null)
+                EnemyRandomizer.Instance.logicTypes = LogicLoader.LoadLogics();
+            var previouslyLoadedLogics = EnemyRandomizer.GlobalSettings.loadedLogics;
+            var loadedLogics = EnemyRandomizer.Instance.enemyReplacer.ConstructLogics(previouslyLoadedLogics, logicTypes);
+            
+            if (RootMenuObject == null)
             {
                 // create instance of BetterMenus.Menu. It will be used to create the elements
-                MenuRef = new Menu("Enemy Randomizer Settings");
+                RootMenuObject = new Menu("Enemy Randomizer Settings");
 
                 // create sub menus
-                GeneralOptionsMenu = new Menu("Mod Settings", GetGeneralEntries().ToArray());
-                LogicsOptionsMenu = new Menu("Logic Settings", GetLogics().ToArray());
+                GeneralOptionsMenu = new Menu("General Settings", GetGeneralEntries().ToArray());
+                CreateLogicOptionsMenu(logicTypes);
 
                 // add buttons to go to the sub menus
-                MenuRef.AddElement(Blueprints.NavigateToMenu(
+                RootMenuObject.AddElement(Blueprints.NavigateToMenu(
                     name: "General Settings",
                     description: "Seed settings, credits, and other general mod settings",
-                    getScreen: () => GeneralOptionsMenu.GetMenuScreen(MenuRef.menuScreen)));
+                    getScreen: () => GeneralOptionsMenu.GetMenuScreen(RootMenuObject.menuScreen)));
 
-                MenuRef.AddElement(Blueprints.NavigateToMenu(
+                RootMenuObject.AddElement(Blueprints.NavigateToMenu(
                     name: "Module List",
                     description: "The list of modules that may be enabled",
-                    getScreen: () => LogicsOptionsMenu.GetMenuScreen(MenuRef.menuScreen)));
+                    getScreen: () => LogicsOptionsMenu.GetMenuScreen(RootMenuObject.menuScreen)));
 
-                MenuRef.AddElement(new TextPanel("------- Enabled Modules --------"));
-                MenuRef.AddElement(new TextPanel("Select a module to configure it"));
-                MenuRef.AddElement(new TextPanel(""));
+                RootMenuObject.AddElement(new TextPanel("------- Enabled Modules --------"));
+                RootMenuObject.AddElement(new TextPanel("Select a module to configure it"));
+                RootMenuObject.AddElement(new TextPanel(""));
 
                 // create the sub pages for each logic
                 logicTypes.Values.ToList().ForEach(logic =>
@@ -159,11 +178,11 @@ namespace EnemyRandomizerMod
                     SubPages[logic.Name] = menu;
 
                 // add button to go the logic options sub pages
-                MenuRef.AddElement(
+                RootMenuObject.AddElement(
                         Blueprints.NavigateToMenu(
                             logic.Name,
                             logic.Info,
-                            () => menu.GetMenuScreen(MenuRef.menuScreen)));
+                            () => menu.GetMenuScreen(RootMenuObject.menuScreen)));
                 });
 
                 // Because of an oversight on how is visible is set, we we need to do this
@@ -173,10 +192,10 @@ namespace EnemyRandomizerMod
 
                 //TODO: call this when its available. if Menu is already built, dont do on built instead just set
                 // is visible and call MenuRef.Update
-                MenuRef.OnBuilt += (_, _) =>
+                RootMenuObject.OnBuilt += (_, _) =>
                 {
                     logicTypes.Values.ToList().ForEach(logic =>
-                        MenuRef.Find(logic.Name).isVisible = isLogicLoaded(logic));
+                        RootMenuObject.Find(logic.Name).isVisible = isLogicLoaded(logic));
                 };
 
                 // menu is jank it is what it is
@@ -184,16 +203,16 @@ namespace EnemyRandomizerMod
                 On.UIManager.ShowMenu += FixButtonPositions;
             }
             // return a MenuScreen MAPI can use.
-            return MenuRef.GetMenuScreen(modListMenu);
+            return RootMenuObject.GetMenuScreen(modListMenu);
         }
 
         private IEnumerator FixButtonPositions(On.UIManager.orig_ShowMenu orig, UIManager self, MenuScreen menu)
         {
             yield return orig(self, menu);
 
-            if (MenuRef?.menuScreen != null && MenuRef.menuScreen == menu)
+            if (RootMenuObject?.menuScreen != null && RootMenuObject.menuScreen == menu)
             {
-                MenuRef.Reflow();
+                RootMenuObject.Reflow();
             }
         }
     }

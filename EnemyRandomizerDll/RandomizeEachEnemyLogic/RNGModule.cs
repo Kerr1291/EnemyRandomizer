@@ -15,6 +15,8 @@ namespace EnemyRandomizerMod
 
         public override string Info => "Configure how objects should be randomized";
 
+        public override bool EnableByDefault => true;
+
         protected RNG onStartGameRNG;
 
         public override void Setup(EnemyRandomizerDatabase database)

@@ -12,58 +12,11 @@ using UniRx;
 using System;
 using System.Reflection;
 using UnityEngine.UI;
+using Satchel.BetterMenus;
+using UnityEngine.Events;
 
 namespace EnemyRandomizerMod
 {
-    public class EnemyRandomizerSettings
-    {
-        public int seed = -1;
-        public List<string> loadedLogics;
-        public bool RandomizeBosses = true;
-        public bool UseCustomSeed = false;
-        public List<LogicSettings> logicSettings = new List<LogicSettings>();
-    }
-
-    public class LogicSettings
-    {
-        public string name;
-        public List<LogicOption> options = new List<LogicOption>();
-    }
-
-    public class LogicOption
-    {
-        public string name;
-        public bool value;
-    }
-
-    public static class LogicSettingsMethods
-    {
-        public static LogicSettings GetLogicSettings(this EnemyRandomizerSettings self, string logicName)
-        {
-            if (!self.logicSettings.Any(x => x.name == logicName))
-            {
-                self.logicSettings.Add(new LogicSettings() { name = logicName });
-            }
-            return self.logicSettings.FirstOrDefault(x => x.name == logicName);
-        }
-
-        public static LogicOption GetOption(this LogicSettings settings, string optionName)
-        {
-            if (!settings.options.Any(x => x.name == optionName))
-            {
-                settings.options.Add(new LogicOption() { name = optionName });
-            }
-
-            return settings.options.FirstOrDefault(x => x.name == optionName);
-        }
-    }
-
-    //Player specific settings
-    public class EnemyRandomizerPlayerSettings
-    {
-        public int enemyRandomizerSeed = -1;
-    }
-
     public partial class EnemyRandomizer : Mod, ITogglableMod, IGlobalSettings<EnemyRandomizerSettings>, ILocalSettings<EnemyRandomizerPlayerSettings>
     {
         public static EnemyRandomizer Instance
@@ -90,6 +43,9 @@ namespace EnemyRandomizerMod
         public static bool bypassNextRandomization;
 
         public static bool DEBUG_SKIP_LOADING = false;
+
+        public ReactiveProperty<bool> IsModLoaded { get; protected set; }
+        public UnityEvent<EnemyRandomizer> OnModLoaded { get; protected set; }
 
         public override string GetVersion()
         {
@@ -154,6 +110,10 @@ namespace EnemyRandomizerMod
             : base("Enemy Randomizer")
         {
             Instance = this;
+            IsModLoaded = new ReactiveProperty<bool>(false);
+            OnModLoaded = new UnityEvent<EnemyRandomizer>();
+            IsModLoaded.SkipLatestValueOnSubscribe().Where(x => x == true).Subscribe(_ => OnModLoaded?.Invoke(this));
+
 #if DEBUG
             {
                 Dev.Logger.LoggingEnabled = true;
@@ -169,8 +129,8 @@ namespace EnemyRandomizerMod
                 }).Subscribe();
             }
 #else
-                Dev.Logger.LoggingEnabled = true;
-                Dev.Logger.GuiLoggingEnabled = false;
+            Dev.Logger.LoggingEnabled = true;
+            Dev.Logger.GuiLoggingEnabled = false;
 #endif
             Dev.Log("Created " + currentVersion);
         }
@@ -214,7 +174,12 @@ namespace EnemyRandomizerMod
                 {
                     BattleManager.Init();
                     enemyReplacer.Setup(preloadedObjects);
-                    LoadLogics();
+
+                    if (EnemyRandomizer.Instance.logicTypes == null)
+                        EnemyRandomizer.Instance.logicTypes = LogicLoader.LoadLogics();
+
+                    enemyReplacer.ConstructLogics(GlobalSettings.loadedLogics, logicTypes);
+
                 }
             }
 
@@ -242,9 +207,6 @@ namespace EnemyRandomizerMod
 
             ModHooks.ObjectPoolSpawnHook -= MODHOOK_OnObjectPoolSpawn;
             ModHooks.ObjectPoolSpawnHook += MODHOOK_OnObjectPoolSpawn;
-
-            //On.UIManager.UIClosePauseMenu -= new On.UIManager.hook_UIClosePauseMenu(SetNoClip);
-            //On.UIManager.UIClosePauseMenu += new On.UIManager.hook_UIClosePauseMenu(SetNoClip);
 
             ModHooks.BeforeSceneLoadHook -= MODHOOK_BeforeSceneLoad;
             ModHooks.BeforeSceneLoadHook += MODHOOK_BeforeSceneLoad;
@@ -377,6 +339,12 @@ namespace EnemyRandomizerMod
             {
                 enemyReplacer.OnModEnabled();
             }
+
+            if(!isReloading)
+            {
+                IsModLoaded.Value = true;
+            }
+
             isReloading = false;
             isDisabled = false;
         }
@@ -476,7 +444,7 @@ namespace EnemyRandomizerMod
             var pooledGO = RandomizePooledSpawn(originalGameObject);
 
             //see if this pooled game object should me pooled by the randomizer
-            if (pooledGO != null && RandoControlledPooling.Any(x => pooledGO.name.Contains(x)))
+            if (pooledGO != null && EnemyReplacer.RandoControlledPooling.Any(x => pooledGO.name.Contains(x)))
             {
                 //can't be doing this for everything, is causing nullrefs
                 //want to do it for some things, maybe based on a list?
@@ -488,12 +456,6 @@ namespace EnemyRandomizerMod
 
             return pooledGO;
         }
-
-        public static List<string> RandoControlledPooling = new List<string>()
-        {
-            "Radiant Nail",
-            "Dust Trail",
-        };
 
         void MODHOOK_RecieveDeathEvent(
             EnemyDeathEffects enemyDeathEffects,
@@ -557,51 +519,7 @@ namespace EnemyRandomizerMod
             {
                 BattleManager.LoadFromFSM(fsm);
             }
-
-            //enemyReplacer.OnPlaymakerFSMEnabled(fsm);
         }
-
-        public void LoadLogics()
-        {
-            if (logicTypes != null && logicTypes.Count > 0)
-                return;
-
-            Dev.Log("loading logics");
-            logicTypes = LogicLoader.LoadLogics();
-
-            Dev.Log("constructing logics");
-            //setup/construct all logics
-            foreach (var logic in logicTypes.Select(x => x.Value))
-            {
-                logic.Setup(enemyReplacer.database);
-
-                if (GlobalSettings.loadedLogics == null)
-                    GlobalSettings.loadedLogics = new List<string>();
-
-                if (GlobalSettings.loadedLogics.Contains(logic.Name))
-                {
-                    enemyReplacer.EnableLogic(logic);
-                }
-            }
-
-            Dev.Log("loading subpages");
-
-            if (enemyReplacer.loadedLogics == null)
-                enemyReplacer.loadedLogics = new HashSet<IRandomizerLogic>();
-
-            Dev.Log("checking missing");
-            List<string> missingLogics = enemyReplacer.loadedLogics.Select(x => x.Name).Where(x => !GlobalSettings.loadedLogics.Contains(x)).ToList();
-
-            missingLogics.ForEach(x =>
-            {
-                Dev.LogWarning($"Last time EnemyRandomizer was set to use {x} logic, which no longer exists!");
-            });
-        }
-
-        //public static string GetCurrentMapZone()
-        //{
-        //    return GameManager.instance.GetCurrentMapZone();
-        //}
 
         void DoBattleSceneCheck(GameObject gameObject)
         {
@@ -635,4 +553,20 @@ namespace EnemyRandomizerMod
             ObjectPool.Recycle(gameObject);
         }
     }
+
 }
+
+
+
+
+
+//TODO: will need to do in a different place since other mods could load their modules later on
+//Dev.Log("checking missing");
+//List<string> missingLogics = EnemyRandomizer.instance.enemyReplacer.loadedLogics.Select(x => x.Name).Where(x => !GlobalSettings.loadedLogics.Contains(x)).ToList();
+
+//missingLogics.ForEach(x =>
+//{
+//    Dev.LogWarning($"Last time EnemyRandomizer had loaded the logic module {x}, which no longer exists!");
+//    //TODO: remove them? for now just post a warning
+//});
+//}

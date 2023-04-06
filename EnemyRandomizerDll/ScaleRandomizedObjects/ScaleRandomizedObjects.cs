@@ -15,6 +15,8 @@ namespace EnemyRandomizerMod
 
         public override string Info => "Scales randomized objects to match the size of the objects they replaced.";
 
+        public override bool EnableByDefault => true;
+
         List<(string Name, string Info, bool Default)> CustomOptions = new List<(string, string, bool)>()
         {
             ("Scale Enemies", "Should this effect randomized enemies?", true),

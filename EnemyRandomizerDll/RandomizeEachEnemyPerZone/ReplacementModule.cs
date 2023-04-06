@@ -13,6 +13,8 @@ namespace EnemyRandomizerMod
 
         public override string Info => "Defines if enemies, hazards, and effects should be replace/randomized.";
 
+        public override bool EnableByDefault => true;
+
         List<(string Name, string Info, bool Default)> CustomOptions = new List<(string, string, bool)>()
         {
             ("Randomize Enemies", "Should enemies be randomized?", true),
@@ -37,7 +39,7 @@ namespace EnemyRandomizerMod
         public override void Setup(EnemyRandomizerDatabase database)
         {
             base.Setup(database);
-            EnemyRandomizer.Instance.enemyReplacer.loadedLogics.Add(this);
+            //EnemyRandomizer.Instance.enemyReplacer.loadedLogics.Add(this);
         }
 
         public override List<PrefabObject> GetValidReplacements(ObjectMetadata originalObject, List<PrefabObject> validReplacementObjects)
