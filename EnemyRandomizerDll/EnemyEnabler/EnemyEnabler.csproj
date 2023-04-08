@@ -126,7 +126,7 @@
       <Name>EnemyRandomizerDB</Name>
     </ProjectReference>
     <ProjectReference Include="..\EnemyRandomizer\EnemyRandomizer.csproj">
-      <Project>{6840abd8-113f-48e8-b125-19394c0aa354}</Project>
+      <Project>{6840ABD8-113F-48E8-B125-19394C0AA354}</Project>
       <Name>EnemyRandomizer</Name>
     </ProjectReference>
   </ItemGroup>

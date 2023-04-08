@@ -122,6 +122,7 @@
   <ItemGroup>
     <Compile Include="Mod\DELETE_ME2.cs" />
     <Compile Include="Mod\DELETE_ME.cs" />
+    <Compile Include="Mod\EnemyRandomizerAPI.cs" />
     <Compile Include="Mod\EnemyRandomizerDebug.cs" />
     <Compile Include="Mod\EnemyReplacer.cs" />
     <Compile Include="Mod\IRandomizerLogic.cs" />

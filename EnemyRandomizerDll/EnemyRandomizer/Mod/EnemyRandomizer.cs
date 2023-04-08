@@ -80,7 +80,7 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
 
         const string defaultDatabaseFilePath = "EnemyRandomizerDatabase.xml";
-        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 5, Now with more jank!]";
+        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 6ish, Now with more zote]";
         static string currentVersion = currentVersionPrefix;
             //Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + $" CURRENT SEED:[{GlobalSettings.seed}] -- TO CHANGE SEED --> MODS > ENEMY RANDOMIZER > ENEMY RANDOMIZER MODULES";
 
@@ -170,9 +170,9 @@ namespace EnemyRandomizerMod
 
             if (!isReloading)
             {
+                BattleManager.Init();
                 if (!DEBUG_SKIP_LOADING)
                 {
-                    BattleManager.Init();
                     enemyReplacer.Setup(preloadedObjects);
 
                     if (EnemyRandomizer.Instance.logicTypes == null)
@@ -514,6 +514,9 @@ namespace EnemyRandomizerMod
         void ONHOOK_PlayMakerFSM_OnEnable(On.PlayMakerFSM.orig_OnEnable orig, PlayMakerFSM fsm)
         {
             orig(fsm);
+
+            if (fsm == null)
+                return;
 
             if (BattleManager.Instance.Value == null && BattleManager.IsBattleManager(fsm.gameObject))
             {

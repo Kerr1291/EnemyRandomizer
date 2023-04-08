@@ -72,7 +72,7 @@ namespace EnemyRandomizerMod
     public class EnemyRandomizerSettings
     {
         public int seed = -1;
-        public List<string> loadedLogics;
+        public List<string> loadedLogics = new List<string>();
         public bool RandomizeBosses = true;
         public bool UseCustomSeed = false;
         public List<LogicSettings> logicSettings = new List<LogicSettings>();

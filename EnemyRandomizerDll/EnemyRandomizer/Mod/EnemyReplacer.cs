@@ -114,8 +114,13 @@ namespace EnemyRandomizerMod
 
         public void EnableLogic(IRandomizerLogic newLogic, bool updateSettings = true)
         {
-            if (loadedLogics == null)
-                loadedLogics = new HashSet<IRandomizerLogic>();
+            loadedLogics ??= new HashSet<IRandomizerLogic>();
+
+            if (EnemyRandomizer.GlobalSettings == null)
+                throw new NullReferenceException("Error: Global settings is null! (this should never happen)");
+
+            if(EnemyRandomizer.GlobalSettings.loadedLogics == null)
+                throw new NullReferenceException("Error: List of loaded modules is null! (this should never happen)");
 
             if (updateSettings)
             {

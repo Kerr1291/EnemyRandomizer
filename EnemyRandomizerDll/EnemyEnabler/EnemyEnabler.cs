@@ -39,10 +39,18 @@ namespace EnemyRandomizerMod
             {
                 if(ModuleOptions == null)
                 {
-                    ModuleOptions = Database.Enemies.Select(x =>
+                    try
                     {
-                        return (x.Value.prefabName, "", true);
-                    }).ToList();
+                        ModuleOptions = Database.Enemies.Select(x =>
+                        {
+                            return (x.Value.prefabName, "", true);
+                        }).ToList();
+                    }
+                    catch(Exception e)
+                    {
+                        Dev.LogError("Null database or database without enemies was loaded! EnemyEnabler will not load any menu options.");
+                        ModuleOptions = new List<(string Name, string Info, bool DefaultState)>();
+                    }
                 }
 
                 return ModuleOptions;

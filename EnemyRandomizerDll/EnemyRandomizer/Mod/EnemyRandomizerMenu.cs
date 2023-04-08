@@ -142,8 +142,8 @@ namespace EnemyRandomizerMod
 
         MenuScreen ICustomMenuMod.GetMenuScreen(MenuScreen modListMenu, ModToggleDelegates? toggleDelegates)
         {
-            if(EnemyRandomizer.Instance.logicTypes == null)
-                EnemyRandomizer.Instance.logicTypes = LogicLoader.LoadLogics();
+            EnemyRandomizer.Instance.logicTypes ??= LogicLoader.LoadLogics();
+
             var previouslyLoadedLogics = EnemyRandomizer.GlobalSettings.loadedLogics;
             var loadedLogics = EnemyRandomizer.Instance.enemyReplacer.ConstructLogics(previouslyLoadedLogics, logicTypes);
             

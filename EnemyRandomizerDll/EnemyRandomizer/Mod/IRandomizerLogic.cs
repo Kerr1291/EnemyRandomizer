@@ -139,7 +139,11 @@ namespace EnemyRandomizerMod
 
         public virtual Menu GetSubpage()
         {
-            return new Menu(Name,GetEntries().ToArray());
+            var entries = GetEntries();
+
+            var menu = new Menu(Name, entries.ToArray());
+
+            return menu;
         }
 
         public virtual void Enable()
@@ -208,10 +212,37 @@ namespace EnemyRandomizerMod
                 Blueprints.HorizontalBoolOption(
                     name: x.Name, 
                     description: x.Info,
-                    applySetting: b => Settings.GetOption(x.Name).value =b ,
-                    loadSetting: () => Settings.GetOption(x.Name).value))
+                    applySetting: b => SetModOptionLoaded(x.Name, b),
+                    loadSetting: () => IsModOptionLoaded(x.Name)))
                 .Select(x => x as Element) // compiler doesn't like implicitly doing this cast
                 .ToList();
+        }
+
+        protected virtual void SetModOptionLoaded(string optionName, bool value)
+        {
+            Settings.GetOption(optionName).value = value;
+        }
+
+        protected virtual bool IsModOptionLoaded(string optionName)
+        {
+            bool? defaultValue = null;
+
+            //if the option entry doesn't exist in settings then it's never been loaded before
+            if(!Settings.HasOption(optionName))
+            {
+                //make sure the mod also has a valid entry with this label
+                var modOption = ModOptions.FirstOrDefault(x => x.Name == optionName);
+                if (!string.IsNullOrEmpty(modOption.Name))
+                    defaultValue = modOption.DefaultState;
+
+                //if it does and has a default state, then assign it
+                if(defaultValue != null)
+                {
+                    Settings.GetOption(optionName).value = defaultValue.Value;
+                }
+            }
+
+            return Settings.GetOption(optionName).value;
         }
     }
 }
