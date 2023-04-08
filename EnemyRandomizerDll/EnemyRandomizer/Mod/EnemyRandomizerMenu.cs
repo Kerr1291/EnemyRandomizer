@@ -160,12 +160,12 @@ namespace EnemyRandomizerMod
                 RootMenuObject.AddElement(Blueprints.NavigateToMenu(
                     name: "General Settings",
                     description: "Seed settings, credits, and other general mod settings",
-                    getScreen: () => GeneralOptionsMenu.GetMenuScreen(RootMenuObject.menuScreen)));
+                    getScreen: () => GeneralOptionsMenu.menuScreen));
 
                 RootMenuObject.AddElement(Blueprints.NavigateToMenu(
                     name: "Module List",
                     description: "The list of modules that may be enabled",
-                    getScreen: () => LogicsOptionsMenu.GetMenuScreen(RootMenuObject.menuScreen)));
+                    getScreen: () => LogicsOptionsMenu.menuScreen));
 
                 RootMenuObject.AddElement(new TextPanel("------- Enabled Modules --------"));
                 RootMenuObject.AddElement(new TextPanel("Select a module to configure it"));
@@ -182,7 +182,7 @@ namespace EnemyRandomizerMod
                         Blueprints.NavigateToMenu(
                             logic.Name,
                             logic.Info,
-                            () => menu.GetMenuScreen(RootMenuObject.menuScreen)));
+                            () => menu.menuScreen));
                 });
 
                 // Because of an oversight on how is visible is set, we we need to do this
@@ -203,7 +203,14 @@ namespace EnemyRandomizerMod
                 On.UIManager.ShowMenu += FixButtonPositions;
             }
             // return a MenuScreen MAPI can use.
-            return RootMenuObject.GetMenuScreen(modListMenu);
+            var rootMenuScreen = RootMenuObject.GetMenuScreen(modListMenu);
+            
+            // build the sub menus only once per UIManager lifecycle 
+            GeneralOptionsMenu.GetMenuScreen(rootMenuScreen);
+            LogicsOptionsMenu.GetMenuScreen(rootMenuScreen);
+            SubPages.Values.ToList().ForEach(menu => menu.GetMenuScreen(rootMenuScreen));
+            
+            return rootMenuScreen;
         }
 
         private IEnumerator FixButtonPositions(On.UIManager.orig_ShowMenu orig, UIManager self, MenuScreen menu)
