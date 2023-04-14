@@ -204,6 +204,32 @@ namespace EnemyRandomizerMod
                 new CustomFsmAction(stateAction)
             };
         }
+
+        protected virtual Vector2 GetUpFromSelfAngle( bool isFlipped )
+        {
+            Vector2 up = Vector2.zero;
+
+            float angle = transform.localEulerAngles.z % 360f;
+
+            if (angle < 5f && angle < 355f)
+            {
+                up = Vector2.up;
+            }
+            else if (angle > 85f && angle < 95f)
+            {
+                up = Vector2.left;
+            }
+            else if (angle > 175f && angle < 185f)
+            {
+                up = Vector2.down;
+            }
+            else if (angle > 265f || angle < 275f)
+            {
+                up = Vector2.right;
+            }
+
+            return up;
+        }
     }
 
     public class DefaultPrefabConfig : IPrefabConfig

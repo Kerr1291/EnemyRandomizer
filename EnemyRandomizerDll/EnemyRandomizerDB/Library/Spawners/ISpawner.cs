@@ -204,6 +204,52 @@ namespace EnemyRandomizerMod
             return true;
         }
 
+        public static bool StickToClosestSurface(this GameObject gameObject, float maxRange, float extraOffsetScale = 0.33f, bool alsoStickCorpse = true, bool flipped = false)
+        {
+            if (gameObject.GetComponent<Collider2D>() == null)
+                return false;
+
+            RaycastHit2D closest = GetNearestSurface(gameObject, maxRange);
+            SetPositionToRayCollisionPoint(gameObject, closest, extraOffsetScale);
+            float newAngle = SetRotationToRayCollisionNormal(gameObject, closest, flipped);
+
+            if (alsoStickCorpse)
+            {
+                GameObject corpse = GetCorpseObject(gameObject);
+                if (corpse != null)
+                {
+                    AddCorpseOrientationFixer(newAngle, corpse);
+                }
+            }
+
+            return true;
+        }
+
+
+        public static bool StickToGround(this GameObject gameObject, float extraOffsetScale = 0.33f)
+        {
+            if (gameObject.GetComponent<Collider2D>() == null)
+                return false;
+
+            RaycastHit2D closest = GetGround(gameObject);
+            SetPositionToRayCollisionPoint(gameObject, closest, extraOffsetScale);
+            float newAngle = SetRotationToRayCollisionNormal(gameObject, closest, false);
+
+            return true;
+        }
+
+        public static bool StickToRoof(this GameObject gameObject, float extraOffsetScale = 0.33f)
+        {
+            if (gameObject.GetComponent<Collider2D>() == null)
+                return false;
+
+            RaycastHit2D closest = GetRoof(gameObject);
+            SetPositionToRayCollisionPoint(gameObject, closest, extraOffsetScale);
+            float newAngle = SetRotationToRayCollisionNormal(gameObject, closest, false);
+
+            return true;
+        }
+
         public static CorpseOrientationFixer AddCorpseOrientationFixer(float newAngle, GameObject corpse)
         {
             var fixer = corpse.gameObject.AddComponent<CorpseOrientationFixer>();
@@ -222,11 +268,12 @@ namespace EnemyRandomizerMod
             return corpse;
         }
 
-        public static float SetRotationToRayCollisionNormal(GameObject gameObject, RaycastHit2D closest)
+        public static float SetRotationToRayCollisionNormal(GameObject gameObject, RaycastHit2D closest, bool flipped = false)
         {
             if (closest.collider != null)
             {
                 var angles = gameObject.transform.localEulerAngles;
+
                 if (closest.normal.y > 0)
                 {
                     angles.z = 0f;
@@ -243,6 +290,14 @@ namespace EnemyRandomizerMod
                 {
                     angles.z = 270f;
                 }
+
+                if (flipped)
+                {
+                    float angle = angles.z % 360f;
+                    angle = (angle + 180f) % 360f;
+                    angles.z = angle;
+                }
+
                 gameObject.transform.localEulerAngles = angles;
                 return angles.z;
             }
@@ -250,12 +305,12 @@ namespace EnemyRandomizerMod
             return 0f;
         }
 
-        public static Vector3 SetPositionToRayCollisionPoint(GameObject gameObject, RaycastHit2D closest, float offsetScale = 3f)
+        public static Vector3 SetPositionToRayCollisionPoint(GameObject gameObject, RaycastHit2D closest, float offsetScale = 0.33f)
         {
             var collider = gameObject.GetComponent<BoxCollider2D>();
             if (closest.collider != null && collider != null)
             {
-                gameObject.transform.position = closest.point + closest.normal * collider.size.y / offsetScale * gameObject.transform.localScale.y;
+                gameObject.transform.position = closest.point + closest.normal * collider.size.y * offsetScale * gameObject.transform.localScale.y;
             }
 
             return gameObject.transform.position;
@@ -273,6 +328,18 @@ namespace EnemyRandomizerMod
 
             var closest = raycastHit2D.Where(x => x.collider != null).OrderBy(x => x.distance).FirstOrDefault();
             return closest;
+        }
+
+        public static RaycastHit2D GetGround(GameObject gameObject)
+        {
+            RaycastHit2D result = FireRayLocal(gameObject, Vector2.down, float.MaxValue);
+            return result;
+        }
+
+        public static RaycastHit2D GetRoof(GameObject gameObject)
+        {
+            RaycastHit2D result = FireRayLocal(gameObject, Vector2.up, float.MaxValue);
+            return result;
         }
 
         public static Dictionary<Vector2,RaycastHit2D> GetNearestSurfaces(this GameObject gameObject, float maxDistanceToCheck)

@@ -27,46 +27,17 @@ namespace EnemyRandomizerMod
 
 
 
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class BuzzerControl : DefaultSpawnedEnemyControl { }
-
-    public class BuzzerSpawner : DefaultSpawner<BuzzerControl> { }
-
-    public class BuzzerPrefabConfig : DefaultPrefabConfig<BuzzerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class CrawlerControl : DefaultSpawnedEnemyControl { }
-
-    public class CrawlerSpawner : DefaultSpawner<CrawlerControl> { }
-
-    public class CrawlerPrefabConfig : DefaultPrefabConfig<CrawlerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MosquitoControl : DefaultSpawnedEnemyControl { }
-
-    public class MosquitoSpawner : DefaultSpawner<MosquitoControl> { }
-
-    public class MosquitoPrefabConfig : DefaultPrefabConfig<MosquitoControl> { }
-                                                                             /////
-    //////////////////////////////////////////////////////////////////////////////
     
     
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class HopperControl : DefaultSpawnedEnemyControl { }
+    public class HopperControl : DefaultSpawnedEnemyControl
+    {
+        //protected virtual void OnEnable()
+        //{
+        //    gameObject.StickToGround();
+        //}
+    }
 
     public class HopperSpawner : DefaultSpawner<HopperControl> { }
 
@@ -74,36 +45,18 @@ namespace EnemyRandomizerMod
                                                                              /////
     //////////////////////////////////////////////////////////////////////////////
     
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class BurstingBouncerControl : DefaultSpawnedEnemyControl { }
-
-    public class BurstingBouncerSpawner : DefaultSpawner<BurstingBouncerControl> { }
-
-    public class BurstingBouncerPrefabConfig : DefaultPrefabConfig<BurstingBouncerControl> { }
-                                                                             /////
-    //////////////////////////////////////////////////////////////////////////////
     
 
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class BlobbleControl : DefaultSpawnedEnemyControl { }
-
-    public class BlobbleSpawner : DefaultSpawner<BlobbleControl> { }
-
-    public class BlobblePrefabConfig : DefaultPrefabConfig<BlobbleControl> { }
-                                                                             /////
-    //////////////////////////////////////////////////////////////////////////////
-    
-    
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GiantHopperControl : DefaultSpawnedEnemyControl { }
+    public class GiantHopperControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class GiantHopperSpawner : DefaultSpawner<GiantHopperControl> { }
 
@@ -117,7 +70,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class SpittingZombieControl : DefaultSpawnedEnemyControl { }
+    public class SpittingZombieControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class SpittingZombieSpawner : DefaultSpawner<SpittingZombieControl> { }
 
@@ -131,7 +90,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class BurstingZombieControl : DefaultSpawnedEnemyControl { }
+    public class BurstingZombieControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class BurstingZombieSpawner : DefaultSpawner<BurstingZombieControl> { }
 
@@ -145,21 +110,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class AngryBuzzerControl : DefaultSpawnedEnemyControl { }
-
-    public class AngryBuzzerSpawner : DefaultSpawner<AngryBuzzerControl> { }
-
-    public class AngryBuzzerPrefabConfig : DefaultPrefabConfig<AngryBuzzerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MantisHeavyControl : DefaultSpawnedEnemyControl { }
+    public class MantisHeavyControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class MantisHeavySpawner : DefaultSpawner<MantisHeavyControl> { }
 
@@ -173,39 +130,17 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class LesserMawlekControl : DefaultSpawnedEnemyControl { }
+    public class LesserMawlekControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class LesserMawlekSpawner : DefaultSpawner<LesserMawlekControl> { }
 
     public class LesserMawlekPrefabConfig : DefaultPrefabConfig<LesserMawlekControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MantisHeavyFlyerControl : DefaultSpawnedEnemyControl { }
-
-    public class MantisHeavyFlyerSpawner : DefaultSpawner<MantisHeavyFlyerControl> { }
-
-    public class MantisHeavyFlyerPrefabConfig : DefaultPrefabConfig<MantisHeavyFlyerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class FlyControl : DefaultSpawnedEnemyControl { }
-
-    public class FlySpawner : DefaultSpawner<FlyControl> { }
-
-    public class FlyPrefabConfig : DefaultPrefabConfig<FlyControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -229,7 +164,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class Mossman_RunnerControl : DefaultSpawnedEnemyControl { }
+    public class Mossman_RunnerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class Mossman_RunnerSpawner : DefaultSpawner<Mossman_RunnerControl> { }
 
@@ -244,23 +185,16 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class ShadeSiblingControl : DefaultSpawnedEnemyControl { }
-
-    public class ShadeSiblingSpawner : DefaultSpawner<ShadeSiblingControl> { }
-
-    public class ShadeSiblingPrefabConfig : DefaultPrefabConfig<ShadeSiblingControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class BabyCentipedeControl : DefaultSpawnedEnemyControl { }
+    public class BabyCentipedeControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class BabyCentipedeSpawner : DefaultSpawner<BabyCentipedeControl> { }
 
@@ -272,46 +206,23 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class FlukemanTopControl : DefaultSpawnedEnemyControl { }
-
-    public class FlukemanTopSpawner : DefaultSpawner<FlukemanTopControl> { }
-
-    public class FlukemanTopPrefabConfig : DefaultPrefabConfig<FlukemanTopControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
 
 
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class FlukemanBotControl : DefaultSpawnedEnemyControl { }
+    public class FlukemanBotControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class FlukemanBotSpawner : DefaultSpawner<FlukemanBotControl> { }
 
     public class FlukemanBotPrefabConfig : DefaultPrefabConfig<FlukemanBotControl> { }
 
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    ///// (Oblobbles)
-    public class MegaFatBeeControl : DefaultSpawnedEnemyControl { }
-
-    public class MegaFatBeeSpawner : DefaultSpawner<MegaFatBeeControl> { }
-
-    public class MegaFatBeePrefabConfig : DefaultPrefabConfig<MegaFatBeeControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -334,6 +245,11 @@ namespace EnemyRandomizerMod
             this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
             this.AddResetToStateOnHide(control, "Init");
         }
+    
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }    
     }
 
     public class LobsterSpawner : DefaultSpawner<LobsterControl> { }
@@ -369,6 +285,11 @@ namespace EnemyRandomizerMod
             this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
             this.AddResetToStateOnHide(control, "Init");
         }
+    
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
     }
 
     public class MageKnightSpawner : DefaultSpawner<MageKnightControl> { }
@@ -381,126 +302,17 @@ namespace EnemyRandomizerMod
 
 
 
+
+
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MageControl : FSMAreaControlEnemy
+    public class MageBlobControl : DefaultSpawnedEnemyControl
     {
-        public override string FSMName => "Mage";
-
-        protected override bool ControlCameraLocks => false;
-
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs =>
-            new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                    { "X Max", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.right, 500f).point.x; } },
-                    { "X Min", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.left, 500f).point.x; } },
-                    { "Y Max", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.up, 500f).point.y; } },
-                    { "Y Min", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.down, 500f).point.y; } },
-            };
-
-        public override void Setup(ObjectMetadata other)
+        protected virtual void OnEnable()
         {
-            base.Setup(other);
-
-            control.ChangeTransition("Tele Away", "FINISHED", "Init");
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
-            this.AddResetToStateOnHide(control, "Init");
-
-            var st = control.GetState("Select Target");
-            
-            //disable the teleplane actions
-            st.DisableAction(1);
-            st.DisableAction(2);
-
-            //add an action that updates the refs
-            st.InsertCustomAction(() => this.UpdateRefs(control, FloatRefs), 1);
+            gameObject.StickToGround();
         }
     }
-
-    public class MageSpawner : DefaultSpawner<MageControl> { }
-
-    public class MagePrefabConfig : DefaultPrefabConfig<MageControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class ElectricMageControl : FSMAreaControlEnemy
-    {
-        public override string FSMName => "Electric Mage";
-
-        public float hpRatioTriggerNerf = 2f;
-        public float aggroRadius = 30f;
-
-        protected override bool ControlCameraLocks => false;
-
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs =>
-            new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                    { "X Max", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.right, 500f).point.x; } },
-                    { "X Min", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.left, 500f).point.x; } },
-                    { "Y Max", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.up, 500f).point.y; } },
-                    { "Y Min", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.down, 500f).point.y; } },
-            };
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
-            this.AddResetToStateOnHide(control, "Init");
-
-            var st = control.GetState("Select Target");
-
-            //disable the teleplane actions
-            st.DisableAction(1);
-            st.DisableAction(2);
-
-            //add an action that updates the refs
-            st.InsertCustomAction(() => this.UpdateRefs(control, FloatRefs), 1);
-        }
-
-        protected override bool HeroInAggroRange()
-        {
-            float dist = (transform.position - HeroController.instance.transform.position).magnitude;
-            return (dist <= aggroRadius);
-        }
-
-        protected override void ScaleHP()
-        {
-            if (originialMetadata == null)
-                return;
-
-            float mageHP = thisMetadata.MaxHP;
-            float originalHP = originialMetadata.MaxHP;
-
-            float ratio = mageHP / originalHP;
-
-            if(ratio > hpRatioTriggerNerf)
-            {
-                thisMetadata.EnemyHealthManager.hp = Mathf.FloorToInt( mageHP / 2f );
-            }
-        }
-    }
-
-    public class ElectricMageSpawner : DefaultSpawner<ElectricMageControl> { }
-
-    public class ElectricMagePrefabConfig : DefaultPrefabConfig<ElectricMageControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MageBlobControl : DefaultSpawnedEnemyControl { }
 
     public class MageBlobSpawner : DefaultSpawner<MageBlobControl> { }
 
@@ -535,6 +347,10 @@ namespace EnemyRandomizerMod
                 this.thisMetadata.EnemyHealthManager.Die(null, AttackTypes.Generic, true);
             });
         }
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
     }
 
     public class LancerSpawner : DefaultSpawner<LancerControl> { }
@@ -551,7 +367,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class ZombieRunnerControl : DefaultSpawnedEnemyControl { }
+    public class ZombieRunnerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class ZombieRunnerSpawner : DefaultSpawner<ZombieRunnerControl> { }
 
@@ -593,6 +415,10 @@ namespace EnemyRandomizerMod
             //    this.thisMetadata.EnemyHealthManager.Die(null, AttackTypes.Generic, true);
             //});
         }
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
     }
 
     public class MenderBugSpawner : DefaultSpawner<MenderBugControl> { }
@@ -605,23 +431,17 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class SpitterControl : DefaultSpawnedEnemyControl { }
-
-    public class SpitterSpawner : DefaultSpawner<SpitterControl> { }
-
-    public class SpitterPrefabConfig : DefaultPrefabConfig<SpitterControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
 
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class ZombieHornheadControl : DefaultSpawnedEnemyControl { }
+    public class ZombieHornheadControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class ZombieHornheadSpawner : DefaultSpawner<ZombieHornheadControl> { }
 
@@ -635,7 +455,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class ZombieBargerControl : DefaultSpawnedEnemyControl { }
+    public class ZombieBargerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class ZombieBargerSpawner : DefaultSpawner<ZombieBargerControl> { }
 
@@ -649,7 +475,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class PrayerSlugControl : DefaultSpawnedEnemyControl { }
+    public class PrayerSlugControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class PrayerSlugSpawner : DefaultSpawner<PrayerSlugControl> { }
 
@@ -659,52 +491,6 @@ namespace EnemyRandomizerMod
 
 
 
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class HatcherControl : DefaultSpawnedEnemyControl
-    {
-        public int maxBabies = 3;
-        public int babiesRemaining = 3;
-
-        public PlayMakerFSM FSM { get; set; }
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            babiesRemaining = maxBabies;
-            FSM = gameObject.LocateMyFSM("Hatcher");
-
-            var init = FSM.GetState("Initiate");
-            init.DisableAction(2);
-
-            var hatchedMaxCheck = FSM.GetState("Hatched Max Check");
-            hatchedMaxCheck.DisableAction(1);
-            hatchedMaxCheck.InsertCustomAction(() => { FSM.FsmVariables.GetFsmInt("Cage Children").Value = babiesRemaining; }, 0);
-
-            var fire = FSM.GetState("Fire");
-            fire.DisableAction(1);
-            fire.DisableAction(2);
-            fire.DisableAction(6);
-            fire.DisableAction(11);
-            fire.InsertCustomAction(() => {
-                FSM.FsmVariables.GetFsmGameObject("Shot").Value.SafeSetActive(true);
-                babiesRemaining--;
-            }, 6);
-            fire.InsertCustomAction(() => {
-                FSM.FsmVariables.GetFsmGameObject("Shot").Value = EnemyRandomizerDatabase.GetDatabase().Spawn("Fly", null);
-            }, 0);
-            fire.AddCustomAction(() => { FSM.SendEvent("WAIT"); });
-        }
-    }
-
-    public class HatcherSpawner : DefaultSpawner<HatcherControl> { }
-
-    public class HatcherPrefabConfig : DefaultPrefabConfig<HatcherControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -757,6 +543,10 @@ namespace EnemyRandomizerMod
             //have it skip the roller assign state
             fsm.ChangeTransition("Fire", "FINISHED", "Shot Anim End");
         }
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
     }
 
     public class BlockerSpawner : DefaultSpawner<BlockerControl> { }
@@ -771,7 +561,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class ZombieShieldControl : DefaultSpawnedEnemyControl { }
+    public class ZombieShieldControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class ZombieShieldSpawner : DefaultSpawner<ZombieShieldControl> { }
 
@@ -785,7 +581,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class ZombieLeaperControl : DefaultSpawnedEnemyControl { }
+    public class ZombieLeaperControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class ZombieLeaperSpawner : DefaultSpawner<ZombieLeaperControl> { }
 
@@ -799,7 +601,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class ZombieGuardControl : DefaultSpawnedEnemyControl { }
+    public class ZombieGuardControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class ZombieGuardSpawner : DefaultSpawner<ZombieGuardControl> { }
 
@@ -813,7 +621,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class ZombieMylaControl : DefaultSpawnedEnemyControl { }
+    public class ZombieMylaControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class ZombieMylaSpawner : DefaultSpawner<ZombieMylaControl> { }
 
@@ -831,7 +645,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class RoyalZombieFatControl : DefaultSpawnedEnemyControl { }
+    public class RoyalZombieFatControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class RoyalZombieFatSpawner : DefaultSpawner<RoyalZombieFatControl> { }
 
@@ -845,7 +665,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class RoyalZombieControl : DefaultSpawnedEnemyControl { }
+    public class RoyalZombieControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class RoyalZombieSpawner : DefaultSpawner<RoyalZombieControl> { }
 
@@ -859,7 +685,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class RoyalZombieCowardControl : DefaultSpawnedEnemyControl { }
+    public class RoyalZombieCowardControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class RoyalZombieCowardSpawner : DefaultSpawner<RoyalZombieCowardControl> { }
 
@@ -873,7 +705,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GorgeousHuskControl : DefaultSpawnedEnemyControl { }
+    public class GorgeousHuskControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class GorgeousHuskSpawner : DefaultSpawner<GorgeousHuskControl> { }
 
@@ -887,7 +725,21 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class CeilingDropperControl : DefaultSpawnedEnemyControl { }
+    public class CeilingDropperControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            var roof = SpawnerExtensions.GetRoof(gameObject);
+            if (roof.distance > 200f)
+            {
+                gameObject.StickToClosestSurface(200f, false);
+            }
+            else
+            {
+                gameObject.StickToRoof();
+            }
+        }
+    }
 
     public class CeilingDropperSpawner : DefaultSpawner<CeilingDropperControl> { }
 
@@ -901,7 +753,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class RuinsSentryControl : DefaultSpawnedEnemyControl { }
+    public class RuinsSentryControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class RuinsSentrySpawner : DefaultSpawner<RuinsSentryControl> { }
 
@@ -913,37 +771,18 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class RuinsFlyingSentryControl : DefaultSpawnedEnemyControl { }
-
-    public class RuinsFlyingSentrySpawner : DefaultSpawner<RuinsFlyingSentryControl> { }
-
-    public class RuinsFlyingSentryPrefabConfig : DefaultPrefabConfig<RuinsFlyingSentryControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
 
 
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class RuinsFlyingSentryJavelinControl : DefaultSpawnedEnemyControl { }
-
-    public class RuinsFlyingSentryJavelinSpawner : DefaultSpawner<RuinsFlyingSentryJavelinControl> { }
-
-    public class RuinsFlyingSentryJavelinPrefabConfig : DefaultPrefabConfig<RuinsFlyingSentryJavelinControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class RuinsSentryFatControl : DefaultSpawnedEnemyControl { }
+    public class RuinsSentryFatControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class RuinsSentryFatSpawner : DefaultSpawner<RuinsSentryFatControl> { }
 
@@ -955,23 +794,17 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MageBalloonControl : DefaultSpawnedEnemyControl { }
-
-    public class MageBalloonSpawner : DefaultSpawner<MageBalloonControl> { }
-
-    public class MageBalloonPrefabConfig : DefaultPrefabConfig<MageBalloonControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
 
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GreatShieldZombieControl : DefaultSpawnedEnemyControl { }
+    public class GreatShieldZombieControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class GreatShieldZombieSpawner : DefaultSpawner<GreatShieldZombieControl> { }
 
@@ -1001,6 +834,11 @@ namespace EnemyRandomizerMod
 
             control.ChangeTransition("Bugs In End", "FINISHED", "Roar End");
         }
+
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
     }
 
     public class BlackKnightSpawner : DefaultSpawner<BlackKnightControl> { }
@@ -1016,7 +854,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MossWalkerControl : DefaultSpawnedEnemyControl { }
+    public class MossWalkerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class MossWalkerSpawner : DefaultSpawner<MossWalkerControl> { }
 
@@ -1030,7 +874,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class PlantTrapControl : DefaultSpawnedEnemyControl { }
+    public class PlantTrapControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToClosestSurface(200f, -.5f, true, false);
+        }
+    }
 
     public class PlantTrapSpawner : DefaultSpawner<PlantTrapControl> { }
 
@@ -1044,7 +894,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class Mossman_ShakerControl : DefaultSpawnedEnemyControl { }
+    public class Mossman_ShakerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class Mossman_ShakerSpawner : DefaultSpawner<Mossman_ShakerControl> { }
 
@@ -1058,7 +914,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class PigeonControl : DefaultSpawnedEnemyControl { }
+    public class PigeonControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class PigeonSpawner : DefaultSpawner<PigeonControl> { }
 
@@ -1070,18 +932,6 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class AcidFlyerControl : DefaultSpawnedEnemyControl { }
-
-    public class AcidFlyerSpawner : DefaultSpawner<AcidFlyerControl> { }
-
-    public class AcidFlyerPrefabConfig : DefaultPrefabConfig<AcidFlyerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
 
 
 
@@ -1091,7 +941,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class AcidWalkerControl : DefaultSpawnedEnemyControl { }
+    public class AcidWalkerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class AcidWalkerSpawner : DefaultSpawner<AcidWalkerControl> { }
 
@@ -1105,7 +961,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class PlantTurretControl : DefaultSpawnedEnemyControl { }
+    public class PlantTurretControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToClosestSurface(200f, -.5f, true, false);
+        }
+    }
 
     public class PlantTurretSpawner : DefaultSpawner<PlantTurretControl> { }
 
@@ -1119,7 +981,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class PlantTurretRightControl : DefaultSpawnedEnemyControl { }
+    public class PlantTurretRightControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToClosestSurface(200f, -.5f, true, true);
+        }
+    }
 
     public class PlantTurretRightSpawner : DefaultSpawner<PlantTurretRightControl> { }
 
@@ -1131,19 +999,6 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class FatFlyControl : DefaultSpawnedEnemyControl { }
-
-    public class FatFlySpawner : DefaultSpawner<FatFlyControl> { }
-
-    public class FatFlyPrefabConfig : DefaultPrefabConfig<FatFlyControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
 
 
@@ -1151,7 +1006,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MossKnightControl : DefaultSpawnedEnemyControl { }
+    public class MossKnightControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class MossKnightSpawner : DefaultSpawner<MossKnightControl> { }
 
@@ -1165,7 +1026,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GrassHopperControl : DefaultSpawnedEnemyControl { }
+    public class GrassHopperControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class GrassHopperSpawner : DefaultSpawner<GrassHopperControl> { }
 
@@ -1174,19 +1041,6 @@ namespace EnemyRandomizerMod
     //////////////////////////////////////////////////////////////////////////////
 
 
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class LazyFlyerEnemyControl : DefaultSpawnedEnemyControl { }
-
-    public class LazyFlyerEnemySpawner : DefaultSpawner<LazyFlyerEnemyControl> { }
-
-    public class LazyFlyerEnemyPrefabConfig : DefaultPrefabConfig<LazyFlyerEnemyControl> { }
-
-    /////
-    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -1209,7 +1063,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class Colosseum_MinerControl : DefaultSpawnedEnemyControl { }
+    public class Colosseum_MinerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class Colosseum_MinerSpawner : DefaultSpawner<Colosseum_MinerControl> { }
 
@@ -1221,24 +1081,16 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class SuperSpitterControl : DefaultSpawnedEnemyControl { }
-
-    public class SuperSpitterSpawner : DefaultSpawner<SuperSpitterControl> { }
-
-    public class SuperSpitterPrefabConfig : DefaultPrefabConfig<SuperSpitterControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class Colosseum_Shield_ZombieControl : DefaultSpawnedEnemyControl { }
+    public class Colosseum_Shield_ZombieControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class Colosseum_Shield_ZombieSpawner : DefaultSpawner<Colosseum_Shield_ZombieControl> { }
 
@@ -1252,34 +1104,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class Colosseum_Armoured_MosquitoControl : DefaultSpawnedEnemyControl { }
-
-    public class Colosseum_Armoured_MosquitoSpawner : DefaultSpawner<Colosseum_Armoured_MosquitoControl> { }
-
-    public class Colosseum_Armoured_MosquitoPrefabConfig : DefaultPrefabConfig<Colosseum_Armoured_MosquitoControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class Colosseum_Flying_SentryControl : DefaultSpawnedEnemyControl { }
-
-    public class Colosseum_Flying_SentrySpawner : DefaultSpawner<Colosseum_Flying_SentryControl> { }
-
-    public class Colosseum_Flying_SentryPrefabConfig : DefaultPrefabConfig<Colosseum_Flying_SentryControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class Mawlek_ColControl : DefaultSpawnedEnemyControl { }
+    public class Mawlek_ColControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class Mawlek_ColSpawner : DefaultSpawner<Mawlek_ColControl> { }
 
@@ -1305,7 +1136,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class FungoonBabyControl : DefaultSpawnedEnemyControl { }
+    public class FungoonBabyControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class FungoonBabySpawner : DefaultSpawner<FungoonBabyControl> { }
 
@@ -1319,7 +1156,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MushroomTurretControl : DefaultSpawnedEnemyControl { }
+    public class MushroomTurretControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToClosestSurface(200f, -.5f, true, false);
+        }
+    }
 
     public class MushroomTurretSpawner : DefaultSpawner<MushroomTurretControl> { }
 
@@ -1333,21 +1176,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class FungusFlyerControl : DefaultSpawnedEnemyControl { }
-
-    public class FungusFlyerSpawner : DefaultSpawner<FungusFlyerControl> { }
-
-    public class FungusFlyerPrefabConfig : DefaultPrefabConfig<FungusFlyerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class ZombieFungusBControl : DefaultSpawnedEnemyControl { }
+    public class ZombieFungusBControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class ZombieFungusBSpawner : DefaultSpawner<ZombieFungusBControl> { }
 
@@ -1361,7 +1196,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class FungCrawlerControl : DefaultSpawnedEnemyControl { }
+    public class FungCrawlerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class FungCrawlerSpawner : DefaultSpawner<FungCrawlerControl> { }
 
@@ -1375,7 +1216,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MushroomBrawlerControl : DefaultSpawnedEnemyControl { }
+    public class MushroomBrawlerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class MushroomBrawlerSpawner : DefaultSpawner<MushroomBrawlerControl> { }
 
@@ -1389,7 +1236,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MushroomBabyControl : DefaultSpawnedEnemyControl { }
+    public class MushroomBabyControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class MushroomBabySpawner : DefaultSpawner<MushroomBabyControl> { }
 
@@ -1403,7 +1256,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MushroomRollerControl : DefaultSpawnedEnemyControl { }
+    public class MushroomRollerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class MushroomRollerSpawner : DefaultSpawner<MushroomRollerControl> { }
 
@@ -1417,7 +1276,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class ZombieFungusAControl : DefaultSpawnedEnemyControl { }
+    public class ZombieFungusAControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class ZombieFungusASpawner : DefaultSpawner<ZombieFungusAControl> { }
 
@@ -1431,7 +1296,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MantisControl : DefaultSpawnedEnemyControl { }
+    public class MantisControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class MantisSpawner : DefaultSpawner<MantisControl> { }
 
@@ -1441,41 +1312,15 @@ namespace EnemyRandomizerMod
 
 
 
-
-
-
-
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class JellyfishBabyControl : DefaultSpawnedEnemyControl { }
-
-    public class JellyfishBabySpawner : DefaultSpawner<JellyfishBabyControl> { }
-
-    public class JellyfishBabyPrefabConfig : DefaultPrefabConfig<JellyfishBabyControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MossFlyerControl : DefaultSpawnedEnemyControl { }
-
-    public class MossFlyerSpawner : DefaultSpawner<MossFlyerControl> { }
-
-    public class MossFlyerPrefabConfig : DefaultPrefabConfig<MossFlyerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GardenZombieControl : DefaultSpawnedEnemyControl { }
+    public class GardenZombieControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class GardenZombieSpawner : DefaultSpawner<GardenZombieControl> { }
 
@@ -1487,23 +1332,16 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MantisTraitorLordControl : DefaultSpawnedEnemyControl { }
-
-    public class MantisTraitorLordSpawner : DefaultSpawner<MantisTraitorLordControl> { }
-
-    public class MantisTraitorLordPrefabConfig : DefaultPrefabConfig<MantisTraitorLordControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MossKnightFatControl : DefaultSpawnedEnemyControl { }
+    public class MossKnightFatControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class MossKnightFatSpawner : DefaultSpawner<MossKnightFatControl> { }
 
@@ -1517,7 +1355,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MantisHeavySpawnControl : DefaultSpawnedEnemyControl { }
+    public class MantisHeavySpawnControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class MantisHeavySpawnSpawner : DefaultSpawner<MantisHeavySpawnControl> { }
 
@@ -1536,7 +1380,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GraveZombieControl : DefaultSpawnedEnemyControl { }
+    public class GraveZombieControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class GraveZombieSpawner : DefaultSpawner<GraveZombieControl> { }
 
@@ -1550,21 +1400,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class CrystalCrawlerControl : DefaultSpawnedEnemyControl { }
-
-    public class CrystalCrawlerSpawner : DefaultSpawner<CrystalCrawlerControl> { }
-
-    public class CrystalCrawlerPrefabConfig : DefaultPrefabConfig<CrystalCrawlerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class ZombieMinerControl : DefaultSpawnedEnemyControl { }
+    public class ZombieMinerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class ZombieMinerSpawner : DefaultSpawner<ZombieMinerControl> { }
 
@@ -1574,40 +1416,15 @@ namespace EnemyRandomizerMod
 
 
 
-
-
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class CrystalFlyerControl : DefaultSpawnedEnemyControl { }
-
-    public class CrystalFlyerSpawner : DefaultSpawner<CrystalFlyerControl> { }
-
-    public class CrystalFlyerPrefabConfig : DefaultPrefabConfig<CrystalFlyerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MinesCrawlerControl : DefaultSpawnedEnemyControl { }
-
-    public class MinesCrawlerSpawner : DefaultSpawner<MinesCrawlerControl> { }
-
-    public class MinesCrawlerPrefabConfig : DefaultPrefabConfig<MinesCrawlerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class ZombieBeamMinerControl : DefaultSpawnedEnemyControl { }
+    public class ZombieBeamMinerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class ZombieBeamMinerSpawner : DefaultSpawner<ZombieBeamMinerControl> { }
 
@@ -1619,24 +1436,15 @@ namespace EnemyRandomizerMod
 
 
 
-
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class SpiderMiniControl : DefaultSpawnedEnemyControl { }
-
-    public class SpiderMiniSpawner : DefaultSpawner<SpiderMiniControl> { }
-
-    public class SpiderMiniPrefabConfig : DefaultPrefabConfig<SpiderMiniControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class ZombieHornheadSpControl : DefaultSpawnedEnemyControl { }
+    public class ZombieHornheadSpControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class ZombieHornheadSpSpawner : DefaultSpawner<ZombieHornheadSpControl> { }
 
@@ -1650,7 +1458,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class ZombieRunnerSpControl : DefaultSpawnedEnemyControl { }
+    public class ZombieRunnerSpControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class ZombieRunnerSpSpawner : DefaultSpawner<ZombieRunnerSpControl> { }
 
@@ -1659,27 +1473,15 @@ namespace EnemyRandomizerMod
     //////////////////////////////////////////////////////////////////////////////
 
 
-
-
-
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class CentipedeHatcherControl : DefaultSpawnedEnemyControl { }
-
-    public class CentipedeHatcherSpawner : DefaultSpawner<CentipedeHatcherControl> { }
-
-    public class CentipedeHatcherPrefabConfig : DefaultPrefabConfig<CentipedeHatcherControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class SlashSpiderControl : DefaultSpawnedEnemyControl { }
+    public class SlashSpiderControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class SlashSpiderSpawner : DefaultSpawner<SlashSpiderControl> { }
 
@@ -1689,86 +1491,15 @@ namespace EnemyRandomizerMod
 
 
 
-
-
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class SpiderFlyerControl : DefaultSpawnedEnemyControl { }
-
-    public class SpiderFlyerSpawner : DefaultSpawner<SpiderFlyerControl> { }
-
-    public class SpiderFlyerPrefabConfig : DefaultPrefabConfig<SpiderFlyerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class BlowFlyControl : DefaultSpawnedEnemyControl { }
-
-    public class BlowFlySpawner : DefaultSpawner<BlowFlyControl> { }
-
-    public class BlowFlyPrefabConfig : DefaultPrefabConfig<BlowFlyControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class BeeHatchlingAmbientControl : DefaultSpawnedEnemyControl { }
-
-    public class BeeHatchlingAmbientSpawner : DefaultSpawner<BeeHatchlingAmbientControl> { }
-
-    public class BeeHatchlingAmbientPrefabConfig : DefaultPrefabConfig<BeeHatchlingAmbientControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class AbyssCrawlerControl : DefaultSpawnedEnemyControl { }
-
-    public class AbyssCrawlerSpawner : DefaultSpawner<AbyssCrawlerControl> { }
-
-    public class AbyssCrawlerPrefabConfig : DefaultPrefabConfig<AbyssCrawlerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class ParasiteBalloonControl : DefaultSpawnedEnemyControl { }
-
-    public class ParasiteBalloonSpawner : DefaultSpawner<ParasiteBalloonControl> { }
-
-    public class ParasiteBalloonPrefabConfig : DefaultPrefabConfig<ParasiteBalloonControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class FlipHopperControl : DefaultSpawnedEnemyControl { }
+    public class FlipHopperControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class FlipHopperSpawner : DefaultSpawner<FlipHopperControl> { }
 
@@ -1777,40 +1508,15 @@ namespace EnemyRandomizerMod
     //////////////////////////////////////////////////////////////////////////////
 
 
-
-
-
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class InflaterControl : DefaultSpawnedEnemyControl { }
-
-    public class InflaterSpawner : DefaultSpawner<InflaterControl> { }
-
-    public class InflaterPrefabConfig : DefaultPrefabConfig<InflaterControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class FlukeFlyControl : DefaultSpawnedEnemyControl { }
-
-    public class FlukeFlySpawner : DefaultSpawner<FlukeFlyControl> { }
-
-    public class FlukeFlyPrefabConfig : DefaultPrefabConfig<FlukeFlyControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class FlukemanControl : DefaultSpawnedEnemyControl { }
+    public class FlukemanControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class FlukemanSpawner : DefaultSpawner<FlukemanControl> { }
 
@@ -1825,7 +1531,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class fluke_baby_02Control : DefaultSpawnedEnemyControl { }
+    public class fluke_baby_02Control : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class fluke_baby_02Spawner : DefaultSpawner<fluke_baby_02Control> { }
 
@@ -1839,7 +1551,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class fluke_baby_01Control : DefaultSpawnedEnemyControl { }
+    public class fluke_baby_01Control : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class fluke_baby_01Spawner : DefaultSpawner<fluke_baby_01Control> { }
 
@@ -1853,7 +1571,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class fluke_baby_03Control : DefaultSpawnedEnemyControl { }
+    public class fluke_baby_03Control : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class fluke_baby_03Spawner : DefaultSpawner<fluke_baby_03Control> { }
 
@@ -1867,7 +1591,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class EnemyControl : DefaultSpawnedEnemyControl { }
+    public class EnemyControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class EnemySpawner : DefaultSpawner<EnemyControl> { }
 
@@ -1881,7 +1611,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class RoyalGuardControl : DefaultSpawnedEnemyControl { }
+    public class RoyalGuardControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class RoyalGuardSpawner : DefaultSpawner<RoyalGuardControl> { }
 
@@ -1894,8 +1630,14 @@ namespace EnemyRandomizerMod
 
 
     /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class ZombieHiveControl : DefaultSpawnedEnemyControl { }
+    /////  TODO: fix like hatcher
+    public class ZombieHiveControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class ZombieHiveSpawner : DefaultSpawner<ZombieHiveControl> { }
 
@@ -1905,24 +1647,15 @@ namespace EnemyRandomizerMod
 
 
 
-
-
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class BeeStingerControl : DefaultSpawnedEnemyControl { }
-
-    public class BeeStingerSpawner : DefaultSpawner<BeeStingerControl> { }
-
-    public class BeeStingerPrefabConfig : DefaultPrefabConfig<BeeStingerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MantisFlyerChildControl : DefaultSpawnedEnemyControl { }
+    public class MantisFlyerChildControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToClosestSurface(200f, false);
+        }
+    }
 
     public class MantisFlyerChildSpawner : DefaultSpawner<MantisFlyerChildControl> { }
 
@@ -1934,458 +1667,16 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class BigBeeControl : DefaultSpawnedEnemyControl { }
-
-    public class BigBeeSpawner : DefaultSpawner<BigBeeControl> { }
-
-    public class BigBeePrefabConfig : DefaultPrefabConfig<BigBeeControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class FlukeMotherControl : FSMAreaControlEnemy
+    public class FatFlukeControl : DefaultSpawnedEnemyControl
     {
-        public override string FSMName => "Fluke Mother";
-
-        public AudioPlayerOneShotSingle squirtA;
-        public AudioPlayerOneShotSingle squirtB;
-
-        public UnityEngine.Bounds spawnArea;
-
-        protected override bool HeroInAggroRange()
+        protected virtual void OnEnable()
         {
-            return true;
-        }
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            var surfaces = gameObject.GetNearestSurfaces(500f);
-
-            var w = surfaces[Vector2.right].point.x - surfaces[Vector2.left].point.x;
-            var h = surfaces[Vector2.up].point.y - surfaces[Vector2.down].point.y;
-
-            spawnArea = new UnityEngine.Bounds(gameObject.transform.position, new Vector3(w, h, 0f));
-
-            var db = EnemyRandomizerDatabase.GetDatabase();
-
-            var spawn2 = control.GetState("Spawn 2");
-
-            squirtA = spawn2.GetAction<AudioPlayerOneShotSingle>(9);
-            squirtB = spawn2.GetAction<AudioPlayerOneShotSingle>(10);
-
-            var init = control.GetState("Init");
-            init.DisableAction(2);
-            init.DisableAction(3);
-            init.DisableAction(5);
-            init.DisableAction(7);
-            init.DisableAction(8);
-
-            init.RemoveTransition("GG BOSS");
-
-            var idle = control.GetState("Idle");
-            var playIdle = control.GetState("Play Idle");
-
-            idle.DisableAction(4);
-            idle.DisableAction(3);
-
-            var roarStart = control.GetState("Roar Start");
-            roarStart.DisableAction(2);
-            roarStart.DisableAction(4);
-            roarStart.DisableAction(7);
-            roarStart.DisableAction(8);
-            roarStart.DisableAction(9);
-            roarStart.DisableAction(10);
-            roarStart.DisableAction(11);
-
-            var roarEnd = control.GetState("Roar End");
-            roarEnd.DisableAction(0);
-            roarEnd.DisableAction(1);
-
-
-            var rage = control.GetState("Rage");
-            var customSpawn = control.AddState("Custom Spawn");
-
-            customSpawn.AddCustomAction(() =>
-            {
-                var fly = db.Spawn("Fluke Fly", null);
-
-                RNG rng = new RNG();
-                rng.Reset();
-
-                var spawn = rng.Rand(spawnArea.min, spawnArea.max);
-                fly.transform.position = spawn;
-
-                fly.gameObject.SetActive(true);
-            });
-
-            customSpawn.AddAction(squirtA);
-            customSpawn.AddAction(squirtB);
-
-            rage.ChangeTransition("SPAWN", "Custom Spawn");
+            gameObject.StickToGround();
         }
     }
-
-    public class FlukeMotherSpawner : DefaultSpawner<FlukeMotherControl> { }
-
-    public class FlukeMotherPrefabConfig : DefaultPrefabConfig<FlukeMotherControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MimicSpiderControl : DefaultSpawnedEnemyControl { }
-
-    public class MimicSpiderSpawner : DefaultSpawner<MimicSpiderControl> { }
-
-    public class MimicSpiderPrefabConfig : DefaultPrefabConfig<MimicSpiderControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class HornetBoss1Control : FSMAreaControlEnemy
-    {
-        public override string FSMName => "Control";
-
-        protected Dictionary<string, Func<FSMAreaControlEnemy, float>> HornetFloatRefs;
-
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => HornetFloatRefs;
-
-        public Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-        public Vector2 heroPos2d => new Vector2(HeroController.instance.transform.position.x, HeroController.instance.transform.position.y);
-        public Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 16);
-        public float floorY => heroPos2d.FireRayGlobal(Vector2.down, 50f).point.y;
-        public float roofY => heroPos2d.FireRayGlobal(Vector2.up, 200f).point.y;
-        public float edgeL => heroPosWithOffset.FireRayGlobal(Vector2.left, 100f).point.y;
-        public float edgeR => heroPosWithOffset.FireRayGlobal(Vector2.right, 100f).point.y;
-
-        //values taken from hornet's FSM
-        public float sphereHeight = 33.8f - 27.55f;
-        public float minDstabHeight = 33.31f - 27.55f;
-        public float airDashHeight = 31.5f - 27.55f;
-        public float throwXLoffset = 22.51f - 15.13f;
-        public float throwXRoffset = 37.9f - 30.16f;
-
-        public Vector2 sizeOfAggroArea = new Vector2(50f, 50f);
-        public Vector2 centerOfAggroArea => gameObject.transform.position;
-        public UnityEngine.Bounds aggroBounds => new UnityEngine.Bounds(centerOfAggroArea, sizeOfAggroArea);
-
-        protected override bool HeroInAggroRange()
-        {
-            return aggroBounds.Contains(HeroController.instance.transform.position);
-        }
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            HornetFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"Wall X Left" , x => edgeL},
-                {"Wall X Right" , x => edgeR},
-                {"Floor Y" , x => floorY},
-                {"Roof Y" , x => roofY},
-                {"Sphere Y" , x => floorY + sphereHeight},
-                {"Air Dash Height" , x => floorY + sphereHeight},
-                {"Min Dstab Height" , x => floorY + minDstabHeight},
-                {"Throw X L" , x => edgeL + throwXLoffset},
-                {"Throw X R" , x => edgeR - throwXRoffset},
-            };
-
-            var inert = control.GetState("Inert");
-            inert.RemoveTransition("GG BOSS");
-            inert.RemoveTransition("WAKE");
-            this.OverrideState(control, "Inert", () => control.SendEvent("REFIGHT"));
-
-            var refightReady = control.GetState("Refight Ready");
-            refightReady.DisableAction(4);
-            refightReady.DisableAction(5);
-            refightReady.DisableAction(6);
-            refightReady.AddCustomAction(() => control.SendEvent("WAKE"));
-
-            var refightWake = control.GetState("Refight Wake");
-            refightWake.DisableAction(0);
-            refightWake.ChangeTransition("FINISHED", "Flourish");
-
-            var flourish = control.GetState("Flourish");
-            flourish.DisableAction(2);
-            flourish.DisableAction(3);
-            flourish.DisableAction(4);
-            flourish.DisableAction(5);
-
-            this.InsertHiddenState(control, "Refight Ready", "WAKE", "Refight Wake");
-            this.AddResetToStateOnHide(control, "Refight Ready");
-        }
-    }
-
-    public class HornetBoss1Spawner : DefaultSpawner<HornetBoss1Control> { }
-
-    public class HornetBoss1PrefabConfig : DefaultPrefabConfig<HornetBoss1Control> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class HornetBoss2Control : FSMAreaControlEnemy
-    {
-        public override string FSMName => "Control";
-
-        protected Dictionary<string, Func<FSMAreaControlEnemy, float>> HornetFloatRefs;
-
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => HornetFloatRefs;
-
-        public Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-        public Vector2 heroPos2d => new Vector2(HeroController.instance.transform.position.x, HeroController.instance.transform.position.y);
-        public Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 16);
-        public float floorY => heroPos2d.FireRayGlobal(Vector2.down, 50f).point.y;
-        public float roofY => heroPos2d.FireRayGlobal(Vector2.up, 200f).point.y;
-        public float edgeL => heroPosWithOffset.FireRayGlobal(Vector2.left, 100f).point.y;
-        public float edgeR => heroPosWithOffset.FireRayGlobal(Vector2.right, 100f).point.y;
-
-        //values taken from hornet's FSM
-        public float sphereHeight = 33.8f - 27.55f;
-        public float minDstabHeight = 33.31f - 27.55f;
-        public float airDashHeight = 31.5f - 27.55f;
-        public float throwXLoffset = 22.51f - 15.13f;
-        public float throwXRoffset = 37.9f - 30.16f;
-
-        public Vector2 sizeOfAggroArea = new Vector2(50f, 50f);
-        public Vector2 centerOfAggroArea => gameObject.transform.position;
-        public UnityEngine.Bounds aggroBounds => new UnityEngine.Bounds(centerOfAggroArea, sizeOfAggroArea);
-
-        protected override bool HeroInAggroRange()
-        {
-            return aggroBounds.Contains(HeroController.instance.transform.position);
-        }
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            HornetFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"Wall X Left" , x => edgeL},
-                {"Wall X Right" , x => edgeR},
-                {"Floor Y" , x => floorY},
-                {"Roof Y" , x => roofY},
-                {"Sphere Y" , x => floorY + sphereHeight},
-                {"Air Dash Height" , x => floorY + sphereHeight},
-                {"Min Dstab Height" , x => floorY + minDstabHeight},
-                {"Throw X L" , x => edgeL + throwXLoffset},
-                {"Throw X R" , x => edgeR - throwXRoffset},
-            };
-
-            var inert = control.GetState("Inert");
-            inert.RemoveTransition("GG BOSS");
-            inert.RemoveTransition("BATTLE START");
-            this.OverrideState(control, "Inert", () => control.SendEvent("REFIGHT"));
-
-            var refightReady = control.GetState("Refight Ready");
-            refightReady.DisableAction(3);
-            refightReady.DisableAction(5);
-            refightReady.AddCustomAction(() => control.SendEvent("WAKE"));
-
-            refightReady.ChangeTransition("WAKE", "Refight Wake");
-
-            var refightWake = control.GetState("Refight Wake");
-            this.OverrideState(control, "Refight Wake", () => control.SendEvent("FINISHED"));
-            refightWake.ChangeTransition("FINISHED", "Wake");
-
-            var wake = control.GetState("Wake");
-            wake.ChangeTransition("FINISHED", "Flourish");
-
-            var flourish = control.GetState("Flourish");
-            flourish.DisableAction(3);
-            flourish.DisableAction(4);
-            flourish.DisableAction(5);
-            flourish.DisableAction(6);
-
-            this.InsertHiddenState(control, "Refight Ready", "WAKE", "Refight Wake");
-            this.AddResetToStateOnHide(control, "Refight Ready");
-        }
-    }
-
-    public class HornetBoss2Spawner : DefaultSpawner<HornetBoss2Control> { }
-
-    public class HornetBoss2PrefabConfig : DefaultPrefabConfig<HornetBoss2Control> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MegaZombieBeamMinerControl : FSMAreaControlEnemy
-    {
-        public override string FSMName => "Beam Miner";
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => EMPTY_FLOAT_REFS;
-
-
-        protected Tk2dPlayAnimation sleepAnim;
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            DisableSendEvents(control,
-                ("Land", 2),
-                ("Roar", 1)
-                );
-
-            var sleep = control.GetState("Sleep");
-            sleepAnim = sleep.GetFirstActionOfType<Tk2dPlayAnimation>();
-
-            var deparents = control.GetState("Deparents");
-            deparents.AddAction(sleepAnim);
-
-            this.InsertHiddenState(control, "Deparents", "FINISHED", "Wake");
-            this.AddResetToStateOnHide(control, "Deparents");
-
-            var wake = control.GetState("Wake");
-            wake.ChangeTransition("FINISHED", "Idle");
-
-            var roarStart = control.GetState("Roar Start");
-            roarStart.DisableAction(2);//disable roar sound
-            var roar = control.GetState("Roar");//make the roar emit no waves and be silent
-            roar.DisableAction(2);
-            roar.DisableAction(3);
-            roar.DisableAction(4);
-            roar.DisableAction(5);
-
-            var roarEnd = control.GetState("Roar End");
-            roarEnd.DisableAction(1);
-        }
-
-        protected override int ScaleHPFromBossToNormal(int defaultHP, int previousHP)
-        {
-            return previousHP * 2;
-        }
-    }
-
-    public class MegaZombieBeamMinerSpawner : DefaultSpawner<MegaZombieBeamMinerControl> { }
-
-    public class MegaZombieBeamMinerPrefabConfig : DefaultPrefabConfig<MegaZombieBeamMinerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class ZombieBeamMinerRematchControl : FSMAreaControlEnemy
-    {
-        public override string FSMName => "Beam Miner";
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => EMPTY_FLOAT_REFS;
-
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            DisableSendEvents(control,
-                ("Land", 2),
-                ("Roar", 1)
-                );
-
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
-            this.AddResetToStateOnHide(control, "Init");
-
-            var wake = control.GetState("Wake");
-            wake.ChangeTransition("FINISHED", "Idle");
-            wake.DisableAction(1);
-            wake.DisableAction(2);
-            wake.DisableAction(3);
-
-            var roarStart = control.GetState("Roar Start");
-            roarStart.DisableAction(2);//disable roar sound
-            var roar = control.GetState("Roar");//make the roar emit no waves and be silent
-            roar.DisableAction(2);
-            roar.DisableAction(3);
-            roar.DisableAction(4);
-            roar.DisableAction(5);
-
-            var roarEnd = control.GetState("Roar End");
-            roarEnd.DisableAction(1);
-
-            if(!other.IsBoss)
-                roarEnd.GetFirstActionOfType<SetDamageHeroAmount>().damageDealt = 1;
-        }
-
-        protected override int ScaleHPFromBossToNormal(int defaultHP, int previousHP)
-        {
-            return previousHP * 2;
-        }
-    }
-
-    public class ZombieBeamMinerRematchSpawner : DefaultSpawner<ZombieBeamMinerRematchControl> { }
-
-    public class ZombieBeamMinerRematchPrefabConfig : DefaultPrefabConfig<ZombieBeamMinerRematchControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class DreamMageLordControl : MageLordControl { }
-
-    public class DreamMageLordSpawner : DefaultSpawner<DreamMageLordControl> { }
-
-    public class DreamMageLordPrefabConfig : DefaultPrefabConfig<DreamMageLordControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class DreamMageLordPhase2Control : MageLordPhase2Control { }
-
-    public class DreamMageLordPhase2Spawner : DefaultSpawner<DreamMageLordPhase2Control> { }
-
-    public class DreamMageLordPhase2PrefabConfig : DefaultPrefabConfig<DreamMageLordPhase2Control> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class FatFlukeControl : DefaultSpawnedEnemyControl { }
 
     public class FatFlukeSpawner : DefaultSpawner<FatFlukeControl> { }
 
@@ -2490,7 +1781,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class Colosseum_WormControl : DefaultSpawnedEnemyControl { }
+    public class Colosseum_WormControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class Colosseum_WormSpawner : DefaultSpawner<Colosseum_WormControl> { }
 
@@ -2502,36 +1799,15 @@ namespace EnemyRandomizerMod
 
 
 
-
-
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class JellyfishControl : DefaultSpawnedEnemyControl { }
-
-    public class JellyfishSpawner : DefaultSpawner<JellyfishControl> { }
-
-    public class JellyfishPrefabConfig : DefaultPrefabConfig<JellyfishControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class LilJellyfishControl : DefaultSpawnedEnemyControl { }
-
-    public class LilJellyfishSpawner : DefaultSpawner<LilJellyfishControl> { }
-
-    public class LilJellyfishPrefabConfig : DefaultPrefabConfig<LilJellyfishControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class EggSacControl : DefaultSpawnedEnemyControl { }
+    public class EggSacControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
 
     public class EggSacSpawner : DefaultSpawner<EggSacControl> { }
 
@@ -2555,852 +1831,6 @@ namespace EnemyRandomizerMod
     //////////////////////////////////////////////////////////////////////////////
     ///
 
-
-
-
-
-
-
-    public class FSMBossAreaControl : FSMAreaControlEnemy
-    {
-        public override string FSMName => "Control";
-
-        protected Dictionary<string, Func<FSMAreaControlEnemy, float>> CustomFloatRefs;
-
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => CustomFloatRefs;
-
-        public Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-        public Vector2 heroPos2d => new Vector2(HeroController.instance.transform.position.x, HeroController.instance.transform.position.y);
-        public Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 16);
-        public float floorY => heroPos2d.FireRayGlobal(Vector2.down, 50f).point.y;
-        public float roofY => heroPos2d.FireRayGlobal(Vector2.up, 200f).point.y;
-        public float edgeL => heroPosWithOffset.FireRayGlobal(Vector2.left, 100f).point.y;
-        public float edgeR => heroPosWithOffset.FireRayGlobal(Vector2.right, 100f).point.y;
-
-        public Vector2 sizeOfAggroArea = new Vector2(50f, 50f);
-        public Vector2 centerOfAggroArea => gameObject.transform.position;
-        public UnityEngine.Bounds aggroBounds => new UnityEngine.Bounds(centerOfAggroArea, sizeOfAggroArea);
-
-        protected override bool HeroInAggroRange()
-        {
-            return aggroBounds.Contains(HeroController.instance.transform.position);
-        }
-
-        protected override void SetupCustomDebugArea()
-        {
-            //radius
-            debugColliders.customLineCollections.Add(Color.red,
-                DebugColliders.GetPointsFromCollider(Vector2.one, centerOfAggroArea, sizeOfAggroArea.magnitude).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
-            
-            //distance
-            debugColliders.customLineCollections.Add(Color.magenta, new List<Vector3>() {
-            heroPos2d, pos2d, heroPos2d
-            });
-            
-            //bounds
-            debugColliders.customLineCollections.Add(Color.blue, debugColliders.GetPointsFromCollider(aggroBounds, false).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
-
-            Vector2 min = new Vector2(edgeL, floorY);
-            Vector2 max = new Vector2(edgeR, roofY);
-            var rect = new Rect();
-            rect = rect.SetMinMax(min, max);
-
-            //arena bounds
-            debugColliders.customLineCollections.Add(new Color(255,255,0), debugColliders.GetPointsFromCollider(rect, false).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
-
-            var down = heroPos2d.FireRayGlobal(Vector2.down, 50f).point;
-            var up = heroPos2d.FireRayGlobal(Vector2.up, 200f).point;
-            var left = heroPos2d.FireRayGlobal(Vector2.left, 100f).point;
-            var right = heroPos2d.FireRayGlobal(Vector2.right, 100f).point;
-
-            //floory
-            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
-            down, pos2d, down
-            });
-
-            //roofy
-            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
-            up, pos2d, up
-            });
-
-            //left
-            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
-            left, pos2d, left
-            });
-
-            //right
-            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
-            right, pos2d, right
-            });
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class HiveKnightControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Control";
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"Left X" , x => edgeL},
-                {"Right X" , x => edgeR},
-                {"Ground Y" , x => floorY},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class HiveKnightSpawner : DefaultSpawner<HiveKnightControl> { }
-
-    public class HiveKnightPrefabConfig : DefaultPrefabConfig<HiveKnightControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GrimmBossControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Control";
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            //control.ChangeTransition("Init", "FINISHED", "GG Bow");
-            control.ChangeTransition("Stun", "FINISHED", "Reformed");
-            control.ChangeTransition("Death Explode", "FINISHED", "Send Death Event");
-
-            var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
-            bpsp.x.Value = HeroX;
-            bpsp.x.Value = HeroY + 15f;
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"AD Max X" , x => edgeR},
-                {"AD Min X" , x => edgeL},
-                {"Max X" , x => edgeR},
-                {"Min X" , x => edgeL},
-                {"Ground Y" , x => floorY},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "GG Bow");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class GrimmBossSpawner : DefaultSpawner<GrimmBossControl> { }
-
-    public class GrimmBossPrefabConfig : DefaultPrefabConfig<GrimmBossControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-    
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class NightmareGrimmBossControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Control";
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            //control.ChangeTransition("Set Balloon HP", "FINISHED", "Tele Out");
-            control.ChangeTransition("Stun", "FINISHED", "Reformed");
-            control.ChangeTransition("Death Start", "FINISHED", "Death Explode");
-
-            var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
-            bpsp.x.Value = HeroX;
-            bpsp.x.Value = HeroY + 15f;
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"AD Max X" , x => edgeR},
-                {"AD Min X" , x => edgeL},
-                {"Max X" , x => edgeR},
-                {"Min X" , x => edgeL},
-                {"Mid Y" , x => MidY},
-                {"Ground Y" , x => floorY},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Tele Out");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class NightmareGrimmBossSpawner : DefaultSpawner<NightmareGrimmBossControl> { }
-
-    public class NightmareGrimmBossPrefabConfig : DefaultPrefabConfig<NightmareGrimmBossControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class HollowKnightBossControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Control";
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-
-
-            //control.ChangeTransition("Set Balloon HP", "FINISHED", "Tele Out");
-            //control.ChangeTransition("Stun", "FINISHED", "Reformed");
-            //control.ChangeTransition("Death Start", "FINISHED", "Death Explode");
-
-            //TEMP
-            this.OverrideState(control, "Long Roar End", () => Destroy(gameObject));
-
-            //var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
-            //bpsp.x.Value = HeroX;
-            //bpsp.x.Value = HeroY + 15f;
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"Right X" , x => edgeR},
-                {"Left X" , x => edgeL},
-                {"TeleRange Max" , x => edgeR},
-                {"TeleRange Min" , x => edgeL},
-                {"PuppetSlam Y" , x => floorY},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Init Idle");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class HollowKnightBossSpawner : DefaultSpawner<HollowKnightBossControl> { }
-
-    public class HollowKnightBossPrefabConfig : DefaultPrefabConfig<HollowKnightBossControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class HKPrimeControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Control";
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-
-
-            control.ChangeTransition("Intro 6", "FINISHED", "Intro Roar End");
-            //control.ChangeTransition("Stun", "FINISHED", "Reformed");
-            //control.ChangeTransition("Death Start", "FINISHED", "Death Explode");
-
-            //TEMP
-            //this.OverrideState(control, "Long Roar End", () => Destroy(gameObject));
-
-            //var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
-            //bpsp.x.Value = HeroX;
-            //bpsp.x.Value = HeroY + 15f;
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"Right X" , x => edgeR},
-                {"Left X" , x => edgeL},
-                {"TeleRange Max" , x => edgeR},
-                {"TeleRange Min" , x => edgeL},
-                {"Plume Y" , x => floorY - 4f},
-                {"Stun Land Y" , x => floorY},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Intro 1");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class HKPrimeSpawner : DefaultSpawner<HKPrimeControl> { }
-
-    public class HKPrimePrefabConfig : DefaultPrefabConfig<HKPrimeControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class PaleLurkerControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Lurker Control";
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-
-
-            //control.ChangeTransition("Intro 6", "FINISHED", "Intro Roar End");
-            //control.ChangeTransition("Stun", "FINISHED", "Reformed");
-            //control.ChangeTransition("Death Start", "FINISHED", "Death Explode");
-
-            //TEMP
-            //this.OverrideState(control, "Long Roar End", () => Destroy(gameObject));
-
-            //var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
-            //bpsp.x.Value = HeroX;
-            //bpsp.x.Value = HeroY + 15f;
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                {"Left Pos" , x => edgeL},
-                {"Right Pos" , x => edgeR},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Get High");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class PaleLurkerSpawner : DefaultSpawner<PaleLurkerControl> { }
-
-    public class PaleLurkerPrefabConfig : DefaultPrefabConfig<PaleLurkerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class OroControl : FSMBossAreaControl
-    {
-        public override string FSMName => "nailmaster";
-
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                //{"Left Pos" , x => edgeL},
-                //{"Right Pos" , x => edgeR},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class OroSpawner : DefaultSpawner<OroControl> { }
-
-    public class OroPrefabConfig : DefaultPrefabConfig<OroControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MatoControl : FSMBossAreaControl
-    {
-        public override string FSMName => "nailmaster";
-
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                //{"Left Pos" , x => edgeL},
-                //{"Right Pos" , x => edgeR},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class MatoSpawner : DefaultSpawner<MatoControl> { }
-
-    public class MatoPrefabConfig : DefaultPrefabConfig<MatoControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class SheoBossControl : FSMBossAreaControl
-    {
-        public override string FSMName => "nailmaster_sheo";
-
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                //{"Left Pos" , x => edgeL},
-                //{"Right Pos" , x => edgeR},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class SheoBossSpawner : DefaultSpawner<SheoBossControl> { }
-
-    public class SheoBossPrefabConfig : DefaultPrefabConfig<SheoBossControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class SlyBossControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Control";
-
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                //{"Left Pos" , x => edgeL},
-                //{"Right Pos" , x => edgeR},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class SlyBossSpawner : DefaultSpawner<SlyBossControl> { }
-
-    public class SlyBossPrefabConfig : DefaultPrefabConfig<SlyBossControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class HornetNoskControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Hornet Nosk";
-
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"X Min" , x => edgeL},
-                {"X Max" , x => edgeR},
-                {"Y Min" , x => floorY},
-                {"Y Max" , x => roofY},
-                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                //{"Left Pos" , x => edgeL},
-                //{"Right Pos" , x => edgeR},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class HornetNoskSpawner : DefaultSpawner<HornetNoskControl> { }
-
-    public class HornetNoskPrefabConfig : DefaultPrefabConfig<HornetNoskControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class DungDefenderControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Dung Defender";
-
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"Dolphin Max X" , x => edgeR},
-                {"Dolphin Min X" , x => edgeL},
-                {"Max X" , x => edgeR},
-                {"Min X" , x => edgeL},
-                {"Erupt Y" , x => floorY},
-                {"Buried Y" , x => floorY - 3f},
-                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                //{"Left Pos" , x => edgeL},
-                //{"Right Pos" , x => edgeR},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Underground");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class DungDefenderSpawner : DefaultSpawner<DungDefenderControl> { }
-
-    public class DungDefenderPrefabConfig : DefaultPrefabConfig<DungDefenderControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorGalienControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Movement";
-
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Dolphin Max X" , x => edgeR},
-                //{"Dolphin Min X" , x => edgeL},
-                //{"Max X" , x => edgeR},
-                //{"Min X" , x => edgeL},
-                //{"Erupt Y" , x => floorY},
-                //{"Buried Y" , x => floorY - 3f},
-                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                ////{"Left Pos" , x => edgeL},
-                ////{"Right Pos" , x => edgeR},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class GhostWarriorGalienSpawner : DefaultSpawner<GhostWarriorGalienControl> { }
-
-    public class GhostWarriorGalienPrefabConfig : DefaultPrefabConfig<GhostWarriorGalienControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorXeroControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Movement";
-
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Dolphin Max X" , x => edgeR},
-                //{"Dolphin Min X" , x => edgeL},
-                //{"Max X" , x => edgeR},
-                //{"Min X" , x => edgeL},
-                //{"Erupt Y" , x => floorY},
-                //{"Buried Y" , x => floorY - 3f},
-                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                ////{"Left Pos" , x => edgeL},
-                ////{"Right Pos" , x => edgeR},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class GhostWarriorXeroSpawner : DefaultSpawner<GhostWarriorXeroControl> { }
-
-    public class GhostWarriorXeroPrefabConfig : DefaultPrefabConfig<GhostWarriorXeroControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorHuControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Movement";
-        public virtual string ATTACKFSM => "Attacking";
-
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Dolphin Max X" , x => edgeR},
-                //{"Dolphin Min X" , x => edgeL},
-                //{"Max X" , x => edgeR},
-                //{"Min X" , x => edgeL},
-                //{"Erupt Y" , x => floorY},
-                //{"Buried Y" , x => floorY - 3f},
-                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                ////{"Left Pos" , x => edgeL},
-                ////{"Right Pos" , x => edgeR},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class GhostWarriorHuSpawner : DefaultSpawner<GhostWarriorHuControl> { }
-
-    public class GhostWarriorHuPrefabConfig : DefaultPrefabConfig<GhostWarriorHuControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorSlugControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Movement";
-
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Dolphin Max X" , x => edgeR},
-                //{"Dolphin Min X" , x => edgeL},
-                //{"Max X" , x => edgeR},
-                //{"Min X" , x => edgeL},
-                //{"Erupt Y" , x => floorY},
-                //{"Buried Y" , x => floorY - 3f},
-                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                ////{"Left Pos" , x => edgeL},
-                ////{"Right Pos" , x => edgeR},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class GhostWarriorSlugSpawner : DefaultSpawner<GhostWarriorSlugControl> { }
-
-    public class GhostWarriorSlugPrefabConfig : DefaultPrefabConfig<GhostWarriorSlugControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorNoEyesControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Movement";
-
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Dolphin Max X" , x => edgeR},
-                //{"Dolphin Min X" , x => edgeL},
-                //{"Max X" , x => edgeR},
-                //{"Min X" , x => edgeL},
-                //{"Erupt Y" , x => floorY},
-                //{"Buried Y" , x => floorY - 3f},
-                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                ////{"Left Pos" , x => edgeL},
-                ////{"Right Pos" , x => edgeR},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class GhostWarriorNoEyesSpawner : DefaultSpawner<GhostWarriorNoEyesControl> { }
-
-    public class GhostWarriorNoEyesPrefabConfig : DefaultPrefabConfig<GhostWarriorNoEyesControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class GhostWarriorMarkothControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Movement";
-
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Dolphin Max X" , x => edgeR},
-                //{"Dolphin Min X" , x => edgeL},
-                //{"Max X" , x => edgeR},
-                //{"Min X" , x => edgeL},
-                //{"Erupt Y" , x => floorY},
-                //{"Buried Y" , x => floorY - 3f},
-                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                ////{"Left Pos" , x => edgeL},
-                ////{"Right Pos" , x => edgeR},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
-            this.AddResetToStateOnHide(control, "Init");
-        }
-    }
-
-    public class GhostWarriorMarkothSpawner : DefaultSpawner<GhostWarriorMarkothControl> { }
-
-    public class GhostWarriorMarkothPrefabConfig : DefaultPrefabConfig<GhostWarriorMarkothControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class JellyfishGGControl : FSMBossAreaControl
-    {
-        public override string FSMName => "Mega Jellyfish";
-
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Dolphin Max X" , x => edgeR},
-                //{"Dolphin Min X" , x => edgeL},
-                //{"Max X" , x => edgeR},
-                //{"Min X" , x => edgeL},
-                //{"Erupt Y" , x => floorY},
-                //{"Buried Y" , x => floorY - 3f},
-                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                ////{"Left Pos" , x => edgeL},
-                ////{"Right Pos" , x => edgeR},
-            };
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Start");
-            this.AddResetToStateOnHide(control, "Init");
-
-            this.thisMetadata.EnemyHealthManager.IsInvincible = false;
-
-            control.GetState("Recover").DisableAction(2);
-        }
-    }
-
-    public class JellyfishGGSpawner : DefaultSpawner<JellyfishGGControl> { }
-
-    public class JellyfishGGPrefabConfig : DefaultPrefabConfig<JellyfishGGControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-    
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MegaJellyfishControl : JellyfishGGControl
-    {
-        public override string FSMName => "Mega Jellyfish";
-    }
-
-    public class MegaJellyfishSpawner : DefaultSpawner<MegaJellyfishControl> { }
-
-    public class MegaJellyfishPrefabConfig : DefaultPrefabConfig<MegaJellyfishControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
 
 
 }

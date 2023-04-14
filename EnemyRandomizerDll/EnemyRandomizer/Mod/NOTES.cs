@@ -212,11 +212,16 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Mawlek Col</string>                            -   ""   NOT A VALID ENEMY STRING (fix this?)
     <string>Colosseum Grass Hopper</string>                -   ""   NO LONGER A VALID ENEMY STRING
 
-
+    <string>Crystal Crawler</string>                       -   TODO: TEST POSITION FIX
+    <string>Mines Crawler</string>                         -   TODO: TEST POSITION FIX
+    <string>Abyss Crawler</string>                         -   TODO: TEST POSITION FIX
+    <string>Tiny Spider</string>                           -   TODO: TEST POSITION FIX
+    <string>Climber</string>                               -   TODO: TEST POSITION FIX
+    <string>Crystallised Lazer Bug</string>                -   TODO: NEEDS TO BE POSITIONED HALF ITS HITBOX SIZE DOWNWARD
+    
     <string>Giant Fly</string>                             -   WORKS BUT  --- FIX THIS ENEMY TO NOT START SLEEPING OR PLACE ON THE GROUND
                                                                           ALSO, REMOVE THE TITLE POPUP
-    <string>Hatcher</string>                               -   FIXED!
-    <string>Crystallised Lazer Bug</string>                -   TODO: NEEDS TO BE POSITIONED HALF ITS HITBOX SIZE DOWNWARD
+    <string>Hatcher</string>                               -   FIXED -- ADDED DIE CHILDREN METHOD (test it) and changed child count to spawn more consistantly
     <string>Mawlek Turret</string>                         -   FIXED
     <string>Mawlek Turret Ceiling</string>                 -   FIXED
     <string>White Palace Fly</string>                      -   FIXED
@@ -251,13 +256,11 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Baby Centipede</string>                        -   NEEDS TESTING
 
     <string>Grey Prince</string>                           -   STILL BROKEN
-    <string>Tiny Spider</string>                           -   USUALLY SPAWNS STUCK
     <string>Shade Sibling</string>                         -   (ADD AN OPTION TO) REMOVE THE CHARM FRIENDLY EFFECT / GIVE IT TO THE REPLACED ENEMIES
     <string>Lancer</string>                                -   +++++++++++++++++NEEDS TESTING
     <string>Mage Blob</string>                             -   DONT SPAWN HIDDEN IN ARENAS
     <string>Mage</string>                                  -   +++++++++++++++++NEEDS TESTING
     <string>Electric Mage</string>                         -   +++++++++++++++++NEEDS TESTING
-    <string>Climber</string>                               -   CAN SPAWN FLOATING?
     <string>Mender Bug</string>                            -   +++++++++++++++++NEEDS TESTING
     <string>Blocker</string>                               -   +++++++++++++++++NEEDS TESTING
     <string>Egg Sac</string>                               -   NEEDS ITEM TRANSFER/SPAWN SCRIPT
@@ -285,9 +288,6 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Zombie Hive</string>                           -   DOESNT PROPERLY SPAWN ADDS
     <string>Big Bee</string>                               -   WHEN SOMETHING REPLACES THIS IT SHOULD HAVE A SMASHER
     <string>Grave Zombie</string>                          -   MAYBE NERF TO 1 DMG WHEN REPLACING A WEAK ENEMY
-    <string>Crystal Crawler</string>                       -   OFTEN SPAWNS FLOATING
-    <string>Mines Crawler</string>                         -   OFTEN SPAWNS FLOATING?
-    <string>Abyss Crawler</string>                         -   OFTEN SPAWN FLOATING
     <string>Mantis Flyer Child</string>                    -   NEEDS FIX FOR SPAWNING ON SURFACES CORRECTLY
     <string>Lil Jellyfish</string>                         -   IS A PROJECTILE??? LOOK INTO THIS 
     <string>Jellyfish</string>                             -   NEEDS SCRIPT FOR SPAWNING BABY CORRECTLY
