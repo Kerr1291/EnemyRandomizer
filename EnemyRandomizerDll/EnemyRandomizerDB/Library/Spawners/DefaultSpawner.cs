@@ -14,6 +14,7 @@ namespace EnemyRandomizerMod
     {
         public ObjectMetadata thisMetadata; 
         public ObjectMetadata originialMetadata;
+        public DebugColliders debugColliders;
 
         public EnemyDreamnailReaction edr;
 
@@ -33,6 +34,8 @@ namespace EnemyRandomizerMod
 
             SetDreamnailInfo();
             ConfigureRelativeToReplacement();
+
+            debugColliders = gameObject.AddComponent<DebugColliders>();
         }
 
         //protected virtual void OnDisable()

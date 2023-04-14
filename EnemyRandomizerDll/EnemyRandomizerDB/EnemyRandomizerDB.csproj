@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_2018_3_OR_NEWER;UNITY_2019_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -31,30 +31,10 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;UNITY_2018_3_OR_NEWER;UNITY_2019_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Library|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Library\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;LIBRARY</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Development|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Development\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
@@ -475,9 +455,237 @@
     <Compile Include="Library\Common\ModDebug\IDevLogger.cs" />
     <Compile Include="Library\Common\ModDebug\Log.cs" />
     <Compile Include="Library\Common\ModDebug\PoolableLogString.cs" />
+    <Compile Include="Library\UniTask\AsyncLazy.cs" />
+    <Compile Include="Library\UniTask\AsyncReactiveProperty.cs" />
+    <Compile Include="Library\UniTask\AsyncUnit.cs" />
+    <Compile Include="Library\UniTask\CancellationTokenEqualityComparer.cs" />
+    <Compile Include="Library\UniTask\CancellationTokenExtensions.cs" />
+    <Compile Include="Library\UniTask\CancellationTokenSourceExtensions.cs" />
+    <Compile Include="Library\UniTask\Channel.cs" />
+    <Compile Include="Library\UniTask\CompilerServices\AsyncMethodBuilderAttribute.cs" />
+    <Compile Include="Library\UniTask\CompilerServices\AsyncUniTaskMethodBuilder.cs" />
+    <Compile Include="Library\UniTask\CompilerServices\AsyncUniTaskVoidMethodBuilder.cs" />
+    <Compile Include="Library\UniTask\CompilerServices\StateMachineRunner.cs" />
+    <Compile Include="Library\UniTask\EnumerableAsyncExtensions.cs" />
+    <Compile Include="Library\UniTask\EnumeratorAsyncExtensions.cs" />
+    <Compile Include="Library\UniTask\ExceptionExtensions.cs" />
+    <Compile Include="Library\UniTask\External\Addressables\AddressablesAsyncExtensions.cs" />
+    <Compile Include="Library\UniTask\External\DOTween\DOTweenAsyncExtensions.cs" />
+    <Compile Include="Library\UniTask\External\TextMeshPro\TextMeshProAsyncExtensions.cs" />
+    <Compile Include="Library\UniTask\External\TextMeshPro\TextMeshProAsyncExtensions.InputField.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TextMeshProAsyncExtensions.InputField.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Library\UniTask\Internal\ArrayPool.cs" />
+    <Compile Include="Library\UniTask\Internal\ArrayPoolUtil.cs" />
+    <Compile Include="Library\UniTask\Internal\ArrayUtil.cs" />
+    <Compile Include="Library\UniTask\Internal\ContinuationQueue.cs" />
+    <Compile Include="Library\UniTask\Internal\DiagnosticsExtensions.cs" />
+    <Compile Include="Library\UniTask\Internal\Error.cs" />
+    <Compile Include="Library\UniTask\Internal\MinimumQueue.cs" />
+    <Compile Include="Library\UniTask\Internal\PlayerLoopRunner.cs" />
+    <Compile Include="Library\UniTask\Internal\PooledDelegate.cs" />
+    <Compile Include="Library\UniTask\Internal\RuntimeHelpersAbstraction.cs" />
+    <Compile Include="Library\UniTask\Internal\StatePool.cs" />
+    <Compile Include="Library\UniTask\Internal\TaskTracker.cs" />
+    <Compile Include="Library\UniTask\Internal\UnityEqualityComparer.cs" />
+    <Compile Include="Library\UniTask\Internal\UnityWebRequestExtensions.cs" />
+    <Compile Include="Library\UniTask\Internal\ValueStopwatch.cs" />
+    <Compile Include="Library\UniTask\Internal\WeakDictionary.cs" />
+    <Compile Include="Library\UniTask\IUniTaskAsyncEnumerable.cs" />
+    <Compile Include="Library\UniTask\IUniTaskSource.cs" />
+    <Compile Include="Library\UniTask\Linq\Aggregate.cs" />
+    <Compile Include="Library\UniTask\Linq\All.cs" />
+    <Compile Include="Library\UniTask\Linq\Any.cs" />
+    <Compile Include="Library\UniTask\Linq\AppendPrepend.cs" />
+    <Compile Include="Library\UniTask\Linq\AsUniTaskAsyncEnumerable.cs" />
+    <Compile Include="Library\UniTask\Linq\AsyncEnumeratorBase.cs" />
+    <Compile Include="Library\UniTask\Linq\Average.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Average.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Library\UniTask\Linq\Buffer.cs" />
+    <Compile Include="Library\UniTask\Linq\Cast.cs" />
+    <Compile Include="Library\UniTask\Linq\CombineLatest.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CombineLatest.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Library\UniTask\Linq\Concat.cs" />
+    <Compile Include="Library\UniTask\Linq\Contains.cs" />
+    <Compile Include="Library\UniTask\Linq\Count.cs" />
+    <Compile Include="Library\UniTask\Linq\Create.cs" />
+    <Compile Include="Library\UniTask\Linq\DefaultIfEmpty.cs" />
+    <Compile Include="Library\UniTask\Linq\Distinct.cs" />
+    <Compile Include="Library\UniTask\Linq\DistinctUntilChanged.cs" />
+    <Compile Include="Library\UniTask\Linq\Do.cs" />
+    <Compile Include="Library\UniTask\Linq\ElementAt.cs" />
+    <Compile Include="Library\UniTask\Linq\Empty.cs" />
+    <Compile Include="Library\UniTask\Linq\Except.cs" />
+    <Compile Include="Library\UniTask\Linq\First.cs" />
+    <Compile Include="Library\UniTask\Linq\ForEach.cs" />
+    <Compile Include="Library\UniTask\Linq\GroupBy.cs" />
+    <Compile Include="Library\UniTask\Linq\GroupJoin.cs" />
+    <Compile Include="Library\UniTask\Linq\Intersect.cs" />
+    <Compile Include="Library\UniTask\Linq\Join.cs" />
+    <Compile Include="Library\UniTask\Linq\Last.cs" />
+    <Compile Include="Library\UniTask\Linq\LongCount.cs" />
+    <Compile Include="Library\UniTask\Linq\Max.cs" />
+    <Compile Include="Library\UniTask\Linq\Min.cs" />
+    <Compile Include="Library\UniTask\Linq\MinMax.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MinMax.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Library\UniTask\Linq\Never.cs" />
+    <Compile Include="Library\UniTask\Linq\OfType.cs" />
+    <Compile Include="Library\UniTask\Linq\OrderBy.cs" />
+    <Compile Include="Library\UniTask\Linq\Pairwise.cs" />
+    <Compile Include="Library\UniTask\Linq\Publish.cs" />
+    <Compile Include="Library\UniTask\Linq\Queue.cs" />
+    <Compile Include="Library\UniTask\Linq\Range.cs" />
+    <Compile Include="Library\UniTask\Linq\Repeat.cs" />
+    <Compile Include="Library\UniTask\Linq\Return.cs" />
+    <Compile Include="Library\UniTask\Linq\Reverse.cs" />
+    <Compile Include="Library\UniTask\Linq\Select.cs" />
+    <Compile Include="Library\UniTask\Linq\SelectMany.cs" />
+    <Compile Include="Library\UniTask\Linq\SequenceEqual.cs" />
+    <Compile Include="Library\UniTask\Linq\Single.cs" />
+    <Compile Include="Library\UniTask\Linq\Skip.cs" />
+    <Compile Include="Library\UniTask\Linq\SkipLast.cs" />
+    <Compile Include="Library\UniTask\Linq\SkipUntil.cs" />
+    <Compile Include="Library\UniTask\Linq\SkipUntilCanceled.cs" />
+    <Compile Include="Library\UniTask\Linq\SkipWhile.cs" />
+    <Compile Include="Library\UniTask\Linq\Subscribe.cs" />
+    <Compile Include="Library\UniTask\Linq\Sum.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sum.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Library\UniTask\Linq\Take.cs" />
+    <Compile Include="Library\UniTask\Linq\TakeLast.cs" />
+    <Compile Include="Library\UniTask\Linq\TakeUntil.cs" />
+    <Compile Include="Library\UniTask\Linq\TakeUntilCanceled.cs" />
+    <Compile Include="Library\UniTask\Linq\TakeWhile.cs" />
+    <Compile Include="Library\UniTask\Linq\Throw.cs" />
+    <Compile Include="Library\UniTask\Linq\ToArray.cs" />
+    <Compile Include="Library\UniTask\Linq\ToDictionary.cs" />
+    <Compile Include="Library\UniTask\Linq\ToHashSet.cs" />
+    <Compile Include="Library\UniTask\Linq\ToList.cs" />
+    <Compile Include="Library\UniTask\Linq\ToLookup.cs" />
+    <Compile Include="Library\UniTask\Linq\ToObservable.cs" />
+    <Compile Include="Library\UniTask\Linq\ToUniTaskAsyncEnumerable.cs" />
+    <Compile Include="Library\UniTask\Linq\Union.cs" />
+    <Compile Include="Library\UniTask\Linq\UnityExtensions\EveryUpdate.cs" />
+    <Compile Include="Library\UniTask\Linq\UnityExtensions\EveryValueChanged.cs" />
+    <Compile Include="Library\UniTask\Linq\UnityExtensions\Timer.cs" />
+    <Compile Include="Library\UniTask\Linq\Where.cs" />
+    <Compile Include="Library\UniTask\Linq\Zip.cs" />
+    <Compile Include="Library\UniTask\MoveNextSource.cs" />
+    <Compile Include="Library\UniTask\PlayerLoopHelper.cs" />
+    <Compile Include="Library\UniTask\PlayerLoopTimer.cs" />
+    <Compile Include="Library\UniTask\Progress.cs" />
+    <Compile Include="Library\UniTask\TaskPool.cs" />
+    <Compile Include="Library\UniTask\TimeoutController.cs" />
+    <Compile Include="Library\UniTask\TriggerEvent.cs" />
+    <Compile Include="Library\UniTask\Triggers\AsyncAwakeTrigger.cs" />
+    <Compile Include="Library\UniTask\Triggers\AsyncDestroyTrigger.cs" />
+    <Compile Include="Library\UniTask\Triggers\AsyncStartTrigger.cs" />
+    <Compile Include="Library\UniTask\Triggers\AsyncTriggerBase.cs" />
+    <Compile Include="Library\UniTask\Triggers\AsyncTriggerExtensions.cs" />
+    <Compile Include="Library\UniTask\Triggers\MonoBehaviourMessagesTriggers.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MonoBehaviourMessagesTriggers.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Library\UniTask\UniTask.Bridge.cs" />
+    <Compile Include="Library\UniTask\UniTask.cs" />
+    <Compile Include="Library\UniTask\UniTask.Delay.cs" />
+    <Compile Include="Library\UniTask\UniTask.Factory.cs" />
+    <Compile Include="Library\UniTask\UniTask.Run.cs" />
+    <Compile Include="Library\UniTask\UniTask.Threading.cs" />
+    <Compile Include="Library\UniTask\UniTask.WaitUntil.cs" />
+    <Compile Include="Library\UniTask\UniTask.WhenAll.cs" />
+    <Compile Include="Library\UniTask\UniTask.WhenAll.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UniTask.WhenAll.Generated.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Library\UniTask\UniTask.WhenAny.cs" />
+    <Compile Include="Library\UniTask\UniTask.WhenAny.Generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UniTask.WhenAny.Generated.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Library\UniTask\UniTaskCompletionSource.cs" />
+    <Compile Include="Library\UniTask\UniTaskExtensions.cs" />
+    <Compile Include="Library\UniTask\UniTaskExtensions.Shorthand.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UniTaskExtensions.Shorthand.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Library\UniTask\UniTaskObservableExtensions.cs" />
+    <Compile Include="Library\UniTask\UniTaskScheduler.cs" />
+    <Compile Include="Library\UniTask\UniTaskSynchronizationContext.cs" />
+    <Compile Include="Library\UniTask\UniTaskVoid.cs" />
+    <Compile Include="Library\UniTask\UnityAsyncExtensions.AssetBundleRequestAllAssets.cs" />
+    <Compile Include="Library\UniTask\UnityAsyncExtensions.AsyncGPUReadback.cs" />
+    <Compile Include="Library\UniTask\UnityAsyncExtensions.Jobs.cs" />
+    <Compile Include="Library\UniTask\UnityAsyncExtensions.MonoBehaviour.cs" />
+    <Compile Include="Library\UniTask\UnityAsyncExtensions.uGUI.cs" />
+    <Compile Include="Library\UniTask\UnityAsyncExtensions.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnityAsyncExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Library\UniTask\UnityBindingExtensions.cs" />
+    <Compile Include="Library\UniTask\UnityWebRequestException.cs" />
+    <Compile Include="Library\UniTask\_InternalVisibleTo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Library\UniTask\External\TextMeshPro\TextMeshProAsyncExtensions.InputField.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TextMeshProAsyncExtensions.InputField.cs</LastGenOutput>
+    </Content>
+    <Content Include="Library\UniTask\Linq\Average.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Average.cs</LastGenOutput>
+    </Content>
+    <Content Include="Library\UniTask\Linq\CombineLatest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CombineLatest.cs</LastGenOutput>
+    </Content>
+    <Content Include="Library\UniTask\Linq\MinMax.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MinMax.cs</LastGenOutput>
+    </Content>
+    <Content Include="Library\UniTask\Linq\Sum.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Sum.cs</LastGenOutput>
+    </Content>
+    <Content Include="Library\UniTask\Triggers\MonoBehaviourMessagesTriggers.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MonoBehaviourMessagesTriggers.cs</LastGenOutput>
+    </Content>
+    <Content Include="Library\UniTask\UniTask.WhenAll.Generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UniTask.WhenAll.Generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Library\UniTask\UniTask.WhenAny.Generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UniTask.WhenAny.Generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Library\UniTask\UniTaskExtensions.Shorthand.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UniTaskExtensions.Shorthand.cs</LastGenOutput>
+    </Content>
+    <Content Include="Library\UniTask\UnityAsyncExtensions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>UnityAsyncExtensions.cs</LastGenOutput>
+    </Content>
     <Content Include="Library\XMLResources\EnemyRandomizerDatabase.xml" />
     <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_01.xml" />
     <Content Include="Library\XMLResources\SceneData\SceneData_Abyss_02.xml" />
@@ -981,250 +1189,7 @@
     <Content Include="Library\XMLResources\SceneData\SceneData__test_cocoon_2.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Library\UniRx\Asynchronous.meta" />
-    <None Include="Library\UniRx\Asynchronous\WebRequestExtensions.cs.meta" />
-    <None Include="Library\UniRx\Disposables.meta" />
-    <None Include="Library\UniRx\Disposables\BooleanDisposable.cs.meta" />
-    <None Include="Library\UniRx\Disposables\CancellationDisposable.cs.meta" />
-    <None Include="Library\UniRx\Disposables\CompositeDisposable.cs.meta" />
-    <None Include="Library\UniRx\Disposables\DictionaryDisposable.cs.meta" />
-    <None Include="Library\UniRx\Disposables\Disposable.cs.meta" />
-    <None Include="Library\UniRx\Disposables\DisposableExtensions.cs.meta" />
-    <None Include="Library\UniRx\Disposables\ICancelable.cs.meta" />
-    <None Include="Library\UniRx\Disposables\MultipleAssignmentDisposable.cs.meta" />
-    <None Include="Library\UniRx\Disposables\RefCountDisposable.cs.meta" />
-    <None Include="Library\UniRx\Disposables\ScheduledDisposable.cs.meta" />
-    <None Include="Library\UniRx\Disposables\SerialDisposable.cs.meta" />
-    <None Include="Library\UniRx\Disposables\SingleAssignmentDisposable.cs.meta" />
-    <None Include="Library\UniRx\Disposables\StableCompositeDisposable.cs.meta" />
-    <None Include="Library\UniRx\EventPattern.cs.meta" />
-    <None Include="Library\UniRx\InternalUtil.meta" />
-    <None Include="Library\UniRx\InternalUtil\AscynLock.cs.meta" />
-    <None Include="Library\UniRx\InternalUtil\CancellableTaskCompletionSource.cs.meta" />
-    <None Include="Library\UniRx\InternalUtil\ExceptionExtensions.cs.meta" />
-    <None Include="Library\UniRx\InternalUtil\ImmutableList.cs.meta" />
-    <None Include="Library\UniRx\InternalUtil\ListObserver.cs.meta" />
-    <None Include="Library\UniRx\InternalUtil\MicroCoroutine.cs.meta" />
-    <None Include="Library\UniRx\InternalUtil\PriorityQueue.cs.meta" />
-    <None Include="Library\UniRx\InternalUtil\PromiseHelper.cs.meta" />
-    <None Include="Library\UniRx\InternalUtil\ScheduledItem.cs.meta" />
-    <None Include="Library\UniRx\InternalUtil\ThreadSafeQueueWorker.cs.meta" />
-    <None Include="Library\UniRx\InternalUtil\UnityEqualityComparer.cs.meta" />
-    <None Include="Library\UniRx\Notification.cs.meta" />
-    <None Include="Library\UniRx\Notifiers.meta" />
-    <None Include="Library\UniRx\Notifiers\BooleanNotifier.cs.meta" />
-    <None Include="Library\UniRx\Notifiers\CountNotifier.cs.meta" />
-    <None Include="Library\UniRx\Notifiers\MessageBroker.cs.meta" />
-    <None Include="Library\UniRx\Notifiers\ScheduledNotifier.cs.meta" />
-    <None Include="Library\UniRx\Observable.Aggregate.cs.meta" />
-    <None Include="Library\UniRx\Observable.Awaiter.cs.meta" />
-    <None Include="Library\UniRx\Observable.Binding.cs.meta" />
-    <None Include="Library\UniRx\Observable.Blocking.cs.meta" />
-    <None Include="Library\UniRx\Observable.Concatenate.cs.meta" />
-    <None Include="Library\UniRx\Observable.Concurrency.cs.meta" />
-    <None Include="Library\UniRx\Observable.Conversions.cs.meta" />
-    <None Include="Library\UniRx\Observable.Creation.cs.meta" />
-    <None Include="Library\UniRx\Observable.cs.meta" />
-    <None Include="Library\UniRx\Observable.ErrorHandling.cs.meta" />
-    <None Include="Library\UniRx\Observable.Events.cs.meta" />
-    <None Include="Library\UniRx\Observable.FromAsync.cs.meta" />
-    <None Include="Library\UniRx\Observable.Joins.cs.meta" />
-    <None Include="Library\UniRx\Observable.Paging.cs.meta" />
-    <None Include="Library\UniRx\Observable.Time.cs.meta" />
-    <None Include="Library\UniRx\Observer.cs.meta" />
-    <None Include="Library\UniRx\Operators.meta" />
-    <None Include="Library\UniRx\Operators\Aggregate.cs.meta" />
-    <None Include="Library\UniRx\Operators\Amb.cs.meta" />
-    <None Include="Library\UniRx\Operators\AsObservable.cs.meta" />
-    <None Include="Library\UniRx\Operators\AsSingleUnitObservable.cs.meta" />
-    <None Include="Library\UniRx\Operators\AsUnitObservable.cs.meta" />
-    <None Include="Library\UniRx\Operators\Buffer.cs.meta" />
-    <None Include="Library\UniRx\Operators\Cast.cs.meta" />
-    <None Include="Library\UniRx\Operators\Catch.cs.meta" />
-    <None Include="Library\UniRx\Operators\CombineLatest.cs.meta" />
-    <None Include="Library\UniRx\Operators\Concat.cs.meta" />
-    <None Include="Library\UniRx\Operators\ContinueWith.cs.meta" />
-    <None Include="Library\UniRx\Operators\Create.cs.meta" />
-    <None Include="Library\UniRx\Operators\DefaultIfEmpty.cs.meta" />
-    <None Include="Library\UniRx\Operators\Defer.cs.meta" />
-    <None Include="Library\UniRx\Operators\Delay.cs.meta" />
-    <None Include="Library\UniRx\Operators\DelaySubscription.cs.meta" />
-    <None Include="Library\UniRx\Operators\Dematerialize.cs.meta" />
-    <None Include="Library\UniRx\Operators\Distinct.cs.meta" />
-    <None Include="Library\UniRx\Operators\DistinctUntilChanged.cs.meta" />
-    <None Include="Library\UniRx\Operators\Do.cs.meta" />
-    <None Include="Library\UniRx\Operators\Empty.cs.meta" />
-    <None Include="Library\UniRx\Operators\Finally.cs.meta" />
-    <None Include="Library\UniRx\Operators\First.cs.meta" />
-    <None Include="Library\UniRx\Operators\ForEachAsync.cs.meta" />
-    <None Include="Library\UniRx\Operators\FromEvent.cs.meta" />
-    <None Include="Library\UniRx\Operators\GroupBy.cs.meta" />
-    <None Include="Library\UniRx\Operators\IgnoreElements.cs.meta" />
-    <None Include="Library\UniRx\Operators\Last.cs.meta" />
-    <None Include="Library\UniRx\Operators\Materialize.cs.meta" />
-    <None Include="Library\UniRx\Operators\Merge.cs.meta" />
-    <None Include="Library\UniRx\Operators\Never.cs.meta" />
-    <None Include="Library\UniRx\Operators\ObserveOn.cs.meta" />
-    <None Include="Library\UniRx\Operators\OfType.cs.meta" />
-    <None Include="Library\UniRx\Operators\OperatorObservableBase.cs.meta" />
-    <None Include="Library\UniRx\Operators\OperatorObserverBase.cs.meta" />
-    <None Include="Library\UniRx\Operators\PairWise.cs.meta" />
-    <None Include="Library\UniRx\Operators\Range.cs.meta" />
-    <None Include="Library\UniRx\Operators\RefCount.cs.meta" />
-    <None Include="Library\UniRx\Operators\Repeat.cs.meta" />
-    <None Include="Library\UniRx\Operators\RepeatSafe.cs.meta" />
-    <None Include="Library\UniRx\Operators\Return.cs.meta" />
-    <None Include="Library\UniRx\Operators\Sample.cs.meta" />
-    <None Include="Library\UniRx\Operators\Scan.cs.meta" />
-    <None Include="Library\UniRx\Operators\Select.cs.meta" />
-    <None Include="Library\UniRx\Operators\SelectMany.cs.meta" />
-    <None Include="Library\UniRx\Operators\SelectWhere.cs.meta" />
-    <None Include="Library\UniRx\Operators\Single.cs.meta" />
-    <None Include="Library\UniRx\Operators\Skip.cs.meta" />
-    <None Include="Library\UniRx\Operators\SkipUntil.cs.meta" />
-    <None Include="Library\UniRx\Operators\SkipWhile.cs.meta" />
-    <None Include="Library\UniRx\Operators\Start.cs.meta" />
-    <None Include="Library\UniRx\Operators\StartWith.cs.meta" />
-    <None Include="Library\UniRx\Operators\SubscribeOn.cs.meta" />
-    <None Include="Library\UniRx\Operators\Switch.cs.meta" />
-    <None Include="Library\UniRx\Operators\Synchronize.cs.meta" />
-    <None Include="Library\UniRx\Operators\SynchronizedObserver.cs.meta" />
-    <None Include="Library\UniRx\Operators\Take.cs.meta" />
-    <None Include="Library\UniRx\Operators\TakeLast.cs.meta" />
-    <None Include="Library\UniRx\Operators\TakeUntil.cs.meta" />
-    <None Include="Library\UniRx\Operators\TakeWhile.cs.meta" />
-    <None Include="Library\UniRx\Operators\Throttle.cs.meta" />
-    <None Include="Library\UniRx\Operators\ThrottleFirst.cs.meta" />
-    <None Include="Library\UniRx\Operators\Throw.cs.meta" />
-    <None Include="Library\UniRx\Operators\TimeInterval.cs.meta" />
-    <None Include="Library\UniRx\Operators\Timeout.cs.meta" />
-    <None Include="Library\UniRx\Operators\Timer.cs.meta" />
-    <None Include="Library\UniRx\Operators\Timestamp.cs.meta" />
-    <None Include="Library\UniRx\Operators\ToArray.cs.meta" />
-    <None Include="Library\UniRx\Operators\ToList.cs.meta" />
-    <None Include="Library\UniRx\Operators\ToObservable.cs.meta" />
-    <None Include="Library\UniRx\Operators\Wait.cs.meta" />
-    <None Include="Library\UniRx\Operators\WhenAll.cs.meta" />
-    <None Include="Library\UniRx\Operators\Where.cs.meta" />
-    <None Include="Library\UniRx\Operators\WhereSelect.cs.meta" />
-    <None Include="Library\UniRx\Operators\WithLatestFrom.cs.meta" />
-    <None Include="Library\UniRx\Operators\Zip.cs.meta" />
-    <None Include="Library\UniRx\Operators\ZipLatest.cs.meta" />
-    <None Include="Library\UniRx\Pair.cs.meta" />
-    <None Include="Library\UniRx\Schedulers.meta" />
-    <None Include="Library\UniRx\Schedulers\CurrentThreadScheduler.cs.meta" />
-    <None Include="Library\UniRx\Schedulers\ImmediateScheduler.cs.meta" />
-    <None Include="Library\UniRx\Schedulers\IScheduler.cs.meta" />
-    <None Include="Library\UniRx\Schedulers\Scheduler.cs.meta" />
-    <None Include="Library\UniRx\Schedulers\ThreadPoolScheduler.cs.meta" />
-    <None Include="Library\UniRx\Subjects.meta" />
-    <None Include="Library\UniRx\Subjects\AsyncSubject.cs.meta" />
-    <None Include="Library\UniRx\Subjects\BehaviorSubject.cs.meta" />
-    <None Include="Library\UniRx\Subjects\ConnectableObservable.cs.meta" />
-    <None Include="Library\UniRx\Subjects\ISubject.cs.meta" />
-    <None Include="Library\UniRx\Subjects\ReplaySubject.cs.meta" />
-    <None Include="Library\UniRx\Subjects\Subject.cs.meta" />
-    <None Include="Library\UniRx\Subjects\SubjectExtensions.cs.meta" />
-    <None Include="Library\UniRx\System.meta" />
-    <None Include="Library\UniRx\System\IObservable.cs.meta" />
-    <None Include="Library\UniRx\System\IObserver.cs.meta" />
-    <None Include="Library\UniRx\System\IOptimizedObservable.cs.meta" />
-    <None Include="Library\UniRx\System\IProgress.cs.meta" />
-    <None Include="Library\UniRx\System\Tuple.cs.meta" />
-    <None Include="Library\UniRx\System\Unit.cs.meta" />
-    <None Include="Library\UniRx\Tasks.meta" />
-    <None Include="Library\UniRx\Tasks\TaskObservableExtensions.cs.meta" />
-    <None Include="Library\UniRx\TimeInterval.cs.meta" />
-    <None Include="Library\UniRx\Timestamped.cs.meta" />
-    <None Include="Library\UniRx\UniRx.asmdef" />
-    <None Include="Library\UniRx\UniRx.asmdef.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\AsyncOperationExtensions.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\CancellationToken.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\CoroutineAsyncBridge.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Diagnostics.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Diagnostics\LogEntry.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Diagnostics\LogEntryExtensions.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Diagnostics\Logger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Diagnostics\ObservableDebugExtensions.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Diagnostics\ObservableLogger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Diagnostics\UnityDebugSink.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\FrameInterval.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\InspectableReactiveProperty.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\InspectorDisplayDrawer.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\LifetimeDisposableExtensions.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\MainThreadDispatcher.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\MainThreadScheduler.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Observable.Unity.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\ObservableWWW.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\ObserveExtensions.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Operators.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Operators\BatchFrame.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Operators\DelayFrame.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Operators\DelayFrameSubscription.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Operators\FrameInterval.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Operators\FrameTimeInterval.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Operators\FromCoroutine.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Operators\RepeatUntil.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Operators\SampleFrame.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Operators\SubscribeOnMainThread.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Operators\ThrottleFirstFrame.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Operators\ThrottleFrame.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Operators\TimeoutFrame.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\ReactiveCollection.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\ReactiveCommand.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\ReactiveDictionary.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\ReactiveProperty.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\ScenePlaybackDetector.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Toolkit.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Toolkit\ObjectPool.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableAnimatorTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableBeginDragTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableCancelTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableCanvasGroupChangedTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableCollision2DTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableCollisionTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableDeselectTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableDestroyTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableDragTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableDropTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableEnableTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableEndDragTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableEventTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableFixedUpdateTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableInitializePotentialDragTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableJointTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableLateUpdateTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableMouseTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableMoveTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableParticleTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservablePointerClickTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservablePointerDownTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservablePointerEnterTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservablePointerExitTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservablePointerUpTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableRectTransformTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableScrollTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableSelectTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableStateMachineTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableSubmitTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTransformChangedTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTrigger2DTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTriggerBase.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTriggerExtensions.Component.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTriggerExtensions.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableTriggerTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableUpdateSelectedTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableUpdateTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\Triggers\ObservableVisibleTrigger.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\UnityEventExtensions.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\UnityGraphicExtensions.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\UnityUIComponentExtensions.cs.meta" />
-    <None Include="Library\UniRx\UnityEngineBridge\YieldInstructionCache.cs.meta" />
-    <None Include="Library\UniRx\UnityWinRTBridge.meta" />
-    <None Include="Library\UniRx\UnityWinRTBridge\Thread.cs.meta" />
-    <None Include="Library\UniRx\UnityWinRTBridge\ThreadPoolScheduler_UnityWinRT.cs.meta" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

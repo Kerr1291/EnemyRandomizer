@@ -157,7 +157,7 @@ namespace EnemyRandomizerMod
 
         protected virtual void OnEnable()
         {
-            BuildArena(gameObject.transform.position);
+            BuildArena();
         }
 
         protected override IEnumerator Start()

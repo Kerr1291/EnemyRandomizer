@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace EnemyRandomizerMod
 {
+    //TODO: add an option to enable all, disable all, and invert selection
     public class EnemyEnabler : BaseRandomizerLogic
     {
         public override string Name => "Enemy Enabler";

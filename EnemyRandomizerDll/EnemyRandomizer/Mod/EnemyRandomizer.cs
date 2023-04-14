@@ -9,15 +9,19 @@ using On;
 
 using System.Linq;
 using UniRx;
+using UniRx.Triggers;
 using System;
 using System.Reflection;
 using UnityEngine.UI;
 using Satchel.BetterMenus;
 using UnityEngine.Events;
+using Cysharp.Threading.Tasks.Triggers;
+using Cysharp.Threading.Tasks.Linq;
+using Cysharp.Threading.Tasks;
 
 namespace EnemyRandomizerMod
 {
-    public partial class EnemyRandomizer : Mod, ITogglableMod, IGlobalSettings<EnemyRandomizerSettings>, ILocalSettings<EnemyRandomizerPlayerSettings>
+    public partial class EnemyRandomizer : Mod, ITogglableMod, IGlobalSettings<EnemyRandomizerSettings>, ILocalSettings<EnemyRandomizerPlayerSettings>, IDisposable
     {
         public static EnemyRandomizer Instance
         {
@@ -40,11 +44,26 @@ namespace EnemyRandomizerMod
         //true during initialize when the mod is loading after the first time
         public static bool isReloading;
 
+        //if true, will skip all logic on the next spawn and create a vanilla enemy
         public static bool bypassNextRandomization;
 
+        //if true will allow an enemy spawned to run through modules that modify but do not replace the enemy
+        public static bool bypassNextReplacement;
+        
+        //if bypass next replacement is true, this will be checked to pull a custom replacement, if desired
+        public static string debugCustomReplacement = null;
+
+        //use this to test menus and test module loading -- will skip the loading of all preloads
         public static bool DEBUG_SKIP_LOADING = false;
 
+        /// <summary>
+        /// Set to true when the mod is finished loading
+        /// </summary>
         public ReactiveProperty<bool> IsModLoaded { get; protected set; }
+
+        /// <summary>
+        /// Additional callback to hook into, invoked at the same time as IsModLoaded
+        /// </summary>
         public UnityEvent<EnemyRandomizer> OnModLoaded { get; protected set; }
 
         public override string GetVersion()
@@ -80,14 +99,14 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
 
         const string defaultDatabaseFilePath = "EnemyRandomizerDatabase.xml";
-        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 6ish, Now with more zote]";
+        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 7]";
         static string currentVersion = currentVersionPrefix;
             //Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + $" CURRENT SEED:[{GlobalSettings.seed}] -- TO CHANGE SEED --> MODS > ENEMY RANDOMIZER > ENEMY RANDOMIZER MODULES";
 
         protected static string GetVersionString()
         {
             string prefix = currentVersionPrefix;
-            string postfix = "\n\t\tTO CHANGE --> OPTIONS > MODS > ENEMY RANDOMIZER OPTIONS > ENEMY RANDOMIZER MODULES";
+            string postfix = string.Empty;// "\n\t\tTO CHANGE --> OPTIONS > MODS > ENEMY RANDOMIZER OPTIONS > ENEMY RANDOMIZER MODULES";
 
             string seedInfo;
 
@@ -96,7 +115,7 @@ namespace EnemyRandomizerMod
             else
                 seedInfo = prefix + $" NEW GAME WILL GENERATE NEW SEED -- " + postfix;
 
-            return seedInfo;
+            return string.Empty;
         }
 
 
@@ -106,13 +125,17 @@ namespace EnemyRandomizerMod
 
         public static ReactiveProperty<List<GameObject>> BlackBorders { get; protected set; }
 
+        protected CompositeDisposable disposables = new CompositeDisposable();
+
         public EnemyRandomizer()
             : base("Enemy Randomizer")
         {
             Instance = this;
             IsModLoaded = new ReactiveProperty<bool>(false);
             OnModLoaded = new UnityEvent<EnemyRandomizer>();
-            IsModLoaded.SkipLatestValueOnSubscribe().Where(x => x == true).Subscribe(_ => OnModLoaded?.Invoke(this));
+            IsModLoaded.SkipLatestValueOnSubscribe().Where(x => x == true).Subscribe(_ => OnModLoaded?.Invoke(this)).AddTo(disposables);
+            ModHooks.FinishedLoadingModsHook -= ModHooks_FinishedLoadingModsHook;
+            ModHooks.FinishedLoadingModsHook += ModHooks_FinishedLoadingModsHook;
 
 #if DEBUG
             {
@@ -133,6 +156,12 @@ namespace EnemyRandomizerMod
             Dev.Logger.GuiLoggingEnabled = false;
 #endif
             Dev.Log("Created " + currentVersion);
+        }
+
+        protected virtual void ModHooks_FinishedLoadingModsHook()
+        {
+            SetIsLoaded();
+            ModHooks.FinishedLoadingModsHook -= ModHooks_FinishedLoadingModsHook;
         }
 
         public override List<(string, string)> GetPreloadNames()
@@ -323,13 +352,15 @@ namespace EnemyRandomizerMod
 
         public void UpdateModVersionLabel()
         {
-            string olds = currentVersion;
-            string news = GetVersionString();
-            //Dev.Log($"{olds}   {news}    {currentVersion}");
-            currentVersion = news;
-            var mvd = GameObject.FindObjectOfType<ModVersionDraw>(true);
-            mvd.drawString = mvd.drawString.Replace(olds, news);
-            //Dev.Log($"{mvd.drawString}");
+            //TODO: put a condition here to add more info
+            //after testing a few versions without this notice to see if it was useful or not
+            return;
+            //string olds = currentVersion;
+            //string news = GetVersionString();
+            ////Dev.Log($"{olds}   {news}    {currentVersion}");
+            //currentVersion = news;
+            //var mvd = GameObject.FindObjectOfType<ModVersionDraw>(true);
+            //mvd.drawString = mvd.drawString.Replace(olds, news);
         }
 
         public void EnableMod()
@@ -340,13 +371,13 @@ namespace EnemyRandomizerMod
                 enemyReplacer.OnModEnabled();
             }
 
-            if(!isReloading)
-            {
-                IsModLoaded.Value = true;
-            }
-
             isReloading = false;
             isDisabled = false;
+        }
+
+        public void SetIsLoaded()
+        {
+            IsModLoaded.Value = true;
         }
 
         ///Revert all changes the mod has made
@@ -487,7 +518,7 @@ namespace EnemyRandomizerMod
 
         string MODHOOK_BeforeSceneLoad(string sceneName)
         {
-            ClearBypassCheck();
+            ResetBattleSceneCheck();
             return sceneName;
         }
 
@@ -532,7 +563,7 @@ namespace EnemyRandomizerMod
             }
         }
 
-        void ClearBypassCheck()
+        void ResetBattleSceneCheck()
         {
             BattleManager.DidSceneCheck = false;
         }
@@ -547,6 +578,47 @@ namespace EnemyRandomizerMod
 
             return false;
         }
+
+        public static bool DoReplacementBypassCheck()
+        {
+            if (EnemyRandomizer.bypassNextReplacement)
+            {
+                EnemyRandomizer.bypassNextReplacement = false;
+                return true;
+            }
+
+            return false;
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)disposables).Dispose();
+        }
+
+        public static GameObject DebugSpawnEnemy(string enemyName, string replacement = null)
+        {
+            try
+            {
+                EnemyRandomizer.bypassNextReplacement = true;
+                EnemyRandomizer.debugCustomReplacement = replacement;
+
+                var enemy = EnemyRandomizerDatabase.GetDatabase().Spawn(enemyName, null);
+                if (enemy != null)
+                {
+                    var pos = HeroController.instance.transform.position + Vector3.right * 5f;
+                    enemy.transform.position = pos;
+                    var defaultEnemyControl = enemy.GetComponent<DefaultSpawnedEnemyControl>();
+                    enemy.SetActive(true);
+                    return enemy;
+                }
+            }
+            catch (Exception e)
+            {
+                Dev.LogError("Error: " + e.Message);
+            }
+
+            return null;
+        }
     }
 
     public class RecycleOnDisable : MonoBehaviour
@@ -556,6 +628,8 @@ namespace EnemyRandomizerMod
             ObjectPool.Recycle(gameObject);
         }
     }
+
+
 
 }
 

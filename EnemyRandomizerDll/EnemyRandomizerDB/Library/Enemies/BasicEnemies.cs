@@ -27,6 +27,7 @@ namespace EnemyRandomizerMod
 
 
 
+
     /////////////////////////////////////////////////////////////////////////////
     /////
     public class BuzzerControl : DefaultSpawnedEnemyControl { }
@@ -295,8 +296,6 @@ namespace EnemyRandomizerMod
 
     /////
     //////////////////////////////////////////////////////////////////////////////
-
-
 
 
 
@@ -655,6 +654,55 @@ namespace EnemyRandomizerMod
     public class PrayerSlugSpawner : DefaultSpawner<PrayerSlugControl> { }
 
     public class PrayerSlugPrefabConfig : DefaultPrefabConfig<PrayerSlugControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class HatcherControl : DefaultSpawnedEnemyControl
+    {
+        public int maxBabies = 3;
+        public int babiesRemaining = 3;
+
+        public PlayMakerFSM FSM { get; set; }
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            babiesRemaining = maxBabies;
+            FSM = gameObject.LocateMyFSM("Hatcher");
+
+            var init = FSM.GetState("Initiate");
+            init.DisableAction(2);
+
+            var hatchedMaxCheck = FSM.GetState("Hatched Max Check");
+            hatchedMaxCheck.DisableAction(1);
+            hatchedMaxCheck.InsertCustomAction(() => { FSM.FsmVariables.GetFsmInt("Cage Children").Value = babiesRemaining; }, 0);
+
+            var fire = FSM.GetState("Fire");
+            fire.DisableAction(1);
+            fire.DisableAction(2);
+            fire.DisableAction(6);
+            fire.DisableAction(11);
+            fire.InsertCustomAction(() => {
+                FSM.FsmVariables.GetFsmGameObject("Shot").Value.SafeSetActive(true);
+                babiesRemaining--;
+            }, 6);
+            fire.InsertCustomAction(() => {
+                FSM.FsmVariables.GetFsmGameObject("Shot").Value = EnemyRandomizerDatabase.GetDatabase().Spawn("Fly", null);
+            }, 0);
+            fire.AddCustomAction(() => { FSM.SendEvent("WAIT"); });
+        }
+    }
+
+    public class HatcherSpawner : DefaultSpawner<HatcherControl> { }
+
+    public class HatcherPrefabConfig : DefaultPrefabConfig<HatcherControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -2536,6 +2584,54 @@ namespace EnemyRandomizerMod
         protected override bool HeroInAggroRange()
         {
             return aggroBounds.Contains(HeroController.instance.transform.position);
+        }
+
+        protected override void SetupCustomDebugArea()
+        {
+            //radius
+            debugColliders.customLineCollections.Add(Color.red,
+                DebugColliders.GetPointsFromCollider(Vector2.one, centerOfAggroArea, sizeOfAggroArea.magnitude).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
+            
+            //distance
+            debugColliders.customLineCollections.Add(Color.magenta, new List<Vector3>() {
+            heroPos2d, pos2d, heroPos2d
+            });
+            
+            //bounds
+            debugColliders.customLineCollections.Add(Color.blue, debugColliders.GetPointsFromCollider(aggroBounds, false).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
+
+            Vector2 min = new Vector2(edgeL, floorY);
+            Vector2 max = new Vector2(edgeR, roofY);
+            var rect = new Rect();
+            rect = rect.SetMinMax(min, max);
+
+            //arena bounds
+            debugColliders.customLineCollections.Add(new Color(255,255,0), debugColliders.GetPointsFromCollider(rect, false).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
+
+            var down = heroPos2d.FireRayGlobal(Vector2.down, 50f).point;
+            var up = heroPos2d.FireRayGlobal(Vector2.up, 200f).point;
+            var left = heroPos2d.FireRayGlobal(Vector2.left, 100f).point;
+            var right = heroPos2d.FireRayGlobal(Vector2.right, 100f).point;
+
+            //floory
+            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
+            down, pos2d, down
+            });
+
+            //roofy
+            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
+            up, pos2d, up
+            });
+
+            //left
+            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
+            left, pos2d, left
+            });
+
+            //right
+            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
+            right, pos2d, right
+            });
         }
     }
 

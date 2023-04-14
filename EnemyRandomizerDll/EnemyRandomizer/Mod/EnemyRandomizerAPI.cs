@@ -58,11 +58,6 @@ namespace EnemyRandomizerMod
             });
 
             loadedLogics.ForEach(x => EnemyRandomizer.RootMenuObject.Find(x.Name).isVisible = true);
-
-            //externalLogics.Values.ToList().ForEach(logic =>
-            //    EnemyRandomizer.RootMenuObject.Find(logic.Name).isVisible = EnemyRandomizer.isLogicLoaded(logic));
-            //externalLogics.Values.ToList().ForEach(logic =>
-            //    EnemyRandomizer.RootMenuObject.Find(logic.Name).isVisible = EnemyRandomizer.isLogicLoaded(logic));
         }
     }
 

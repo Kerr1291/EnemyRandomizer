@@ -12,6 +12,8 @@ using Dev = EnemyRandomizerMod.Dev;
 using Dev = Modding.Logger;
 #endif
 
+//EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Fly",null);
+
 namespace EnemyRandomizerMod
 {
     public partial class EnemyRandomizerDatabase
@@ -172,32 +174,66 @@ namespace EnemyRandomizerMod
             Dev.Log("Finalizing loading");
             foreach(SceneData s in scenes)
             {
-                var unloadedObjects = s.sceneObjects.Where(x => x.Loaded == false);
+                FinalizeAndLoadSceneData(s);
+            }
 
-                foreach(var sceneObject in unloadedObjects)
+            Dev.Log("Object Database Loading Complete!");
+            onComplete?.Invoke();
+            yield break;
+        }
+
+        protected virtual void FinalizeAndLoadSceneData(SceneData s)
+        {
+            var unloadedObjects = s.sceneObjects.Where(x => x.Loaded == false);
+
+            foreach (var sceneObject in unloadedObjects)
+            {
+                try
                 {
-                    //Dev.Log($"[NOT LOADED] NAME:{sceneObject.Name} - PATH:{sceneObject.path} - SCENE:{s.name} OBJ_SCENE:{sceneObject.Scene}");
+                    Dev.Log($"[ATTEMPTING TO LOAD RESOURCE]");
+                    Dev.Log($"[ATTEMPTING TO LOAD RESOURCE] NAME:{sceneObject.Name}");
+                    Dev.Log($"[ATTEMPTING TO LOAD RESOURCE] NAME:{sceneObject.Name} - PATH:{sceneObject.path}");
+                    Dev.Log($"[ATTEMPTING TO LOAD RESOURCE] NAME:{sceneObject.Name} - PATH:{sceneObject.path} - SCENE:{s.name}");
+                    Dev.Log($"[ATTEMPTING TO LOAD RESOURCE] NAME:{sceneObject.Name} - PATH:{sceneObject.path} - SCENE:{s.name} OBJ_SCENE:{sceneObject.Scene}");
 
-                    if(s.name == "RESOURCES" || s.name.Contains(DESTROY_ON_LOAD))
+                    if (s.name == "RESOURCES" || s.name.Contains(DESTROY_ON_LOAD))
                     {
+                        Dev.Log("Trying to find resource");
                         var go = FindResource(sceneObject.path);
                         if (go == null)
                         {
-                            Dev.Log("Failed to load resource");
+                            Dev.Log("Cannot find resource to load; skipping");
                             continue;
                         }
 
+                        Dev.Log("Trying to create prefab object");
                         var result = CreatePrefabObject(sceneObject.Name, go, sceneObject);
+
+                        if (result == null)
+                        {
+                            Dev.Log("Cannot create prefab object to load resource; skipping");
+                            continue;
+                        }
 
                         //unload the resource if we're not going to use it
                         if (result.prefab != go)
                         {
+                            Dev.Log("Unloading resource that will not be used...");
                             go.SetActive(false);
                             GameObject.Destroy(go);
                         }
                     }
-                }
 
+                    Dev.Log($"[COMPLETED LOADING RESOURCE] NAME:{sceneObject.Name}");
+                }
+                catch(Exception e)
+                {
+                    Dev.LogError($"Failed to load resource or don't destroy on load object. ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                }
+            }
+
+            try
+            {
                 //verify
                 var finalObjects = s.sceneObjects.Where(x => x.Loaded == false);
 
@@ -206,10 +242,10 @@ namespace EnemyRandomizerMod
                     Dev.Log($"[NOT LOADED] NAME:{sceneObject.Name} - PATH:{sceneObject.path} - SCENE:{s.name} OBJ_SCENE:{sceneObject.Scene}");
                 }
             }
-
-            Dev.Log("Object Database Loading Complete!");
-            onComplete?.Invoke();
-            yield break;
+            catch (Exception e)
+            {
+                Dev.LogError($"Failed to verify remaining unloaded objects. ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+            }
         }
 
         /// <summary>

@@ -95,7 +95,8 @@
  * Change the city of tears' statues of dreamers/THK to be statues of the replacements
  * 
  * 
-//grab "Health Scuttler" and add it to the list of valid enemies to rando -- TODO
+ADD "Health Scuttler" and add it to the list of valid enemies to rando -- TODO
+ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) and a DamagesHero component
  * 
  */
 
@@ -200,7 +201,7 @@
     <string>Slash Spider</string>                          -   ""
     <string>Spider Flyer</string>                          -   ""
     <string>Blow Fly</string>                              -   ""
-    <string>Bee Hatchling Ambient</string>                 -   ""
+    <string>Bee Hatchling Ambient</string>                 -   ""   ADD GEO TO THIS
     <string>Flip Hopper</string>                           -   ""
     <string>Inflater</string>                              -   ""
     <string>Fluke Fly</string>                             -   ""
@@ -208,52 +209,36 @@
     <string>Bee Stinger</string>                           -   ""
     <string>Fat Fluke</string>                             -   ""
     <string>Super Spitter</string>                         -   ""
-    <string>Mawlek Col</string>                            -   ""
-    <string>Colosseum Grass Hopper</string>                -   ""
+    <string>Mawlek Col</string>                            -   ""   NOT A VALID ENEMY STRING (fix this?)
+    <string>Colosseum Grass Hopper</string>                -   ""   NO LONGER A VALID ENEMY STRING
 
 
-    <string>Super Spitter Col</string>                     -  Shouldn't be their own enemies....
-    <string>Giant Fly Col</string>                         -  Shouldn't be their own enemies....
-    <string>Buzzer Col</string>                            -  Shouldn't be their own enemies....
-    <string>Ceiling Dropper Col</string>                   -  Shouldn't be their own enemies....
-    <string>Colosseum_Armoured_Roller R</string>           -  ""
-    <string>Colosseum_Armoured_Mosquito R</string>         -  ""
-    <string>Super Spitter R</string>                       -  ""
-    <string>Hatcher Baby</string>                          -   -- ??? don't think this will be needed
-    <string>Roller R</string>                              -   -- (don't have a specific spawner with this string)
-    <string>Spitter R</string>                             -   -- (it's converted to the non-R type)
-    <string>Buzzer R</string>                              -   --
-    <string>Great Shield Zombie bottom</string>            -   --
-    <string>Flamebearer Spawn</string>                     -   used to extract the grimmkin
-    <string>Corpse Garden Zombie</string>                  -   ADDED TO BAN LIST
-
-
-
-    <string>Giant Fly</string>                             -   FIXED
-    <string>Hatcher</string>                               -   FIXED
-    <string>Crystallised Lazer Bug</string>                -   FIXED
+    <string>Giant Fly</string>                             -   WORKS BUT  --- FIX THIS ENEMY TO NOT START SLEEPING OR PLACE ON THE GROUND
+                                                                          ALSO, REMOVE THE TITLE POPUP
+    <string>Hatcher</string>                               -   FIXED!
+    <string>Crystallised Lazer Bug</string>                -   TODO: NEEDS TO BE POSITIONED HALF ITS HITBOX SIZE DOWNWARD
     <string>Mawlek Turret</string>                         -   FIXED
     <string>Mawlek Turret Ceiling</string>                 -   FIXED
     <string>White Palace Fly</string>                      -   FIXED
-    <string>Zote Boss</string>                             -   FIXED
+    <string>Zote Boss</string>                             -   FIXED -- TODO: remove the white screen flash
  *  
-    <string>Flamebearer Small</string>                     -   FIX SCREENSPACE - CHECK AGGRO
-    <string>Flamebearer Med</string>                       -   FIX SCREENSPACE - CHECK AGGRO
-    <string>Flamebearer Large</string>                     -   FIX SCREENSPACE - CHECK AGGRO
+    <string>Flamebearer Small</string>                     -   ERROR: DOES NOT SPAWN?
+    <string>Flamebearer Med</string>                       -   ERROR: HAS A NULLREF
+    <string>Flamebearer Large</string>                     -   ERROR: SPAWNS IN A WEIRD SPOT
 
-    <string>Zombie Spider 2</string>                       -   WORKING? - TEST
-    <string>Zombie Spider 1</string>                       -   WORKING? - TEST
-    <string>Zoteling</string>                              -   WORKING? - TEST
-    <string>Mawlek Body</string>                           -   NEEDS TESTING -- PROJECTILES DON'T WORK
-    <string>False Knight New</string>                      -   NEEDS TESTING
-    <string>Mage Lord</string>                             -   NEEDS TESTING
-    <string>Mage Lord Phase2</string>                      -   NEEDS TESTING
-    <string>Infected Knight</string>                       -   NEEDS TESTING
-    <string>False Knight Dream</string>                    -   NEEDS TESTING
-    <string>Lost Kin</string>                              -   NEEDS TESTING
-    <string>Radiance</string>                              -   NEEDS TESTING
-    <string>Absolute Radiance</string>                     -   NEEDS TESTING
-    <string>Zote Turret</string>                           -   NEEDS TESTING -- ?????
+    <string>Zombie Spider 2</string>                       -   ERROR: NULLREF TRYING TO SPAWN -- CORRECTLY SPAWNS WHEN USED AS REPLACEMENT BUT DID NOT COME ALIVE
+    <string>Zombie Spider 1</string>                       -   SPAWNS DISABLED? -- CORRECTLY SPAWNS WHEN USED AS REPLACEMENT
+    <string>Zoteling</string>                              -   SPAWNS DISABLED? -- CORRECTLY SPAWNS WHEN USED AS REPLACEMENT -- NEEDS SOUND EFFECTS
+    <string>Mawlek Body</string>                           -   NEED TO FIX HIM STARTING IN STEALTH STATE  -- MawlekBodyControl+<Start>  HAS A NULLREF
+    <string>False Knight New</string>                      -   SEEMS TOTALLY BUSTED -- ALSO CAN'T SEEM TO KILL -- ONCE ENGAGED HE FIGHTS OK (BUT HIS BASIC COMBAT BODY IS INVISIBLE)
+    <string>Mage Lord</string>                             -   SPAWNS INCORRECTLY AND IN FLOOR? --- GETS RANDOMIZED WHEN HE TELEPORTS????????
+    <string>Mage Lord Phase2</string>                      -   GETS RANDOMIZED WHEN HE TELEPORTS --- ALMOST WORKS WHEN REPLACING
+    <string>Infected Knight</string>                       -   DOESN'T SPAWN -- SPAWNS WHEN REPLACING, DOESN'T HANDLE MAX HEIGHT ROOFS - YEETS TO SPACE INDOORS
+    <string>False Knight Dream</string>                    -   NULLREF ISSUES
+    <string>Lost Kin</string>                              -   SPAWNS INCORRECTLY WHEN REPLACING
+    <string>Radiance</string>                              -   SPAWNS CORRECTLY - NULLREF WHEN REPLACING
+    <string>Absolute Radiance</string>                     -   SPAWNS CORRECTLY - REPLACES INCORRECTLY (SAME POSITION ISSUE AS OTHERS)
+    <string>Zote Turret</string>                           -   SPAWNS INCORRECTLY - REPLACES CORRECTLY BUT POSITION IS WRONG
     <string>Zote Balloon Ordeal</string>                   -   NEEDS TESTING -- ?????
     <string>Zote Salubra</string>                          -   NEEDS TESTING -- DOESN'T DRAIN
     <string>Zote Thwomp</string>                           -   NEEDS TESTING -- STILL BROKEN
@@ -321,19 +306,19 @@
     <string>Colosseum_Flying_Sentry</string>               -   CHECK COLO SCRIPT?
     <string>Colosseum_Worm</string>                        -   CHECK COLO SCRIPT?
 
-    <string>Mega Fat Bee</string>                          -   +++++++++++++++++NEEDS TESTING
-    <string>Lobster</string>                               -   +++++++++++++++++NEEDS TESTING
-    <string>Mage Knight</string>                           -   +++++++++++++++++NEEDS TESTING
-    <string>Black Knight</string>                          -   +++++++++++++++++NEEDS TESTING
-    <string>Jar Collector</string>                         -   +++++++++++++++++NEEDS TESTING
-    <string>Hornet Boss 1</string>                         -   +++++++++++++++++NEEDS TESTING
-    <string>Giant Buzzer</string>                          -   +++++++++++++++++NEEDS TESTING
+    <string>Mega Fat Bee</string>                          -   NEED TO FIX "FLY IN" CODE SO IT DOESN'T TELEPORT AWAY
+    <string>Lobster</string>                               -   SEEMS OK? NEEDS CUSTOM CODE TO STOP ROLLING WHEN THERE'S NO WALLS
+    <string>Mage Knight</string>                           -   WORKS WHEN REPLACING
+    <string>Black Knight</string>                          -   SORTA WORKS? -- YEETS INTO THE SKY RANDOMLY
+    <string>Jar Collector</string>                         -   NULLREF
+    <string>Hornet Boss 1</string>                         -   DOESN'T SPAWN CORRECTLY
+    <string>Giant Buzzer</string>                          -   +++++++++++++++++NEEDS TESTING -- SPAMS NULLREFS? (it changed to a giant buzzer col and spammed nullrefs)
     <string>Giant Buzzer Col</string>                      -   +++++++++++++++++NEEDS TESTING -- hitbox fixed? BROKEN HITBOX (not enabled) (this version spawns when zote chewing flag is done)
-    <string>Mega Moss Charger</string>                     -   +++++++++++++++++NEEDS TESTING
-    <string>Mega Zombie Beam Miner</string>                -   +++++++++++++++++NEEDS TESTING
-    <string>Zombie Beam Miner Rematch</string>             -   +++++++++++++++++NEEDS TESTING
-    <string>Hornet Boss 2</string>                         -   +++++++++++++++++NEEDS TESTING
-    <string>Mimic Spider</string>                          -   NEEDS BOSS SCRIPT
+    <string>Mega Moss Charger</string>                     -   NULLREF
+    <string>Mega Zombie Beam Miner</string>                -   STILL HAS CAMERA FIGHTING ISSUES -- DOESN'T UNHIDE
+    <string>Zombie Beam Miner Rematch</string>             -   LASER ISN'T WORKING
+    <string>Hornet Boss 2</string>                         -   DOESN'T SPAWN
+    <string>Mimic Spider</string>                          -   SPAWNS TOO FAR TO THE RIGHT
     <string>Mantis Traitor Lord</string>                   -   NEEDS BOSS SCRIPT
     <string>Dung Defender</string>                         -   NEEDS BOSS SCRIPT
     <string>Fluke Mother</string>                          -   NEEDS BOSS SCRIPT
@@ -359,4 +344,24 @@
     <string>Ghost Warrior Markoth</string>                 -   NEEDS BOSS SCRIPT
     <string>Ghost Warrior No Eyes</string>                 -   NEEDS BOSS SCRIPT
     <string>Ghost Warrior Hu</string>                      -   NEEDS BOSS SCRIPT
+
+
+
+
+
+
+    <string>Super Spitter Col</string>                     -  NO LONGER A VALID ENEMY STRING
+    <string>Giant Fly Col</string>                         -  NO LONGER A VALID ENEMY STRING
+    <string>Buzzer Col</string>                            -  NO LONGER A VALID ENEMY STRING
+    <string>Ceiling Dropper Col</string>                   -  NO LONGER A VALID ENEMY STRING
+    <string>Colosseum_Armoured_Roller R</string>           -  NO LONGER A VALID ENEMY STRING
+    <string>Colosseum_Armoured_Mosquito R</string>         -  NO LONGER A VALID ENEMY STRING
+    <string>Super Spitter R</string>                       -  NO LONGER A VALID ENEMY STRING
+    <string>Hatcher Baby</string>                          -  NO LONGER A VALID ENEMY STRING
+    <string>Roller R</string>                              -  NO LONGER A VALID ENEMY STRING
+    <string>Spitter R</string>                             -  VALID - CONVERTS TO NON-R TYPE (fails to drop geo)
+    <string>Buzzer R</string>                              -  NO LONGER A VALID ENEMY STRING
+    <string>Great Shield Zombie bottom</string>            -  NO LONGER A VALID ENEMY STRING
+    <string>Flamebearer Spawn</string>                     -  NO LONGER A VALID ENEMY STRING - used to extract the grimmkin types on load
+    <string>Corpse Garden Zombie</string>                  -  ADDED TO BAN LIST
  */

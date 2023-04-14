@@ -27,8 +27,6 @@ namespace EnemyRandomizerMod
         public Range xR;
         public Range yR;
 
-        public Vector3 SpawnPoint;
-
         public Rect bounds;
 
         protected virtual bool ControlCameraLocks { get => false; }
@@ -66,9 +64,8 @@ namespace EnemyRandomizerMod
 
         protected virtual IEnumerable<CameraLockArea> cams { get; set; }
 
-        protected virtual void BuildArena(Vector3 spawnPoint)
+        protected virtual void BuildArena()
         {
-            gameObject.transform.position = spawnPoint;
             var hits = gameObject.GetNearestSurfaces(500f);
 
             //Dev.LogVarArray($"{FSMName} -- ArenaHits", hits.Select(x => $"DIR:{x.Key} POINT:{x.Value.point}").ToList());
@@ -86,7 +83,9 @@ namespace EnemyRandomizerMod
                 heroY = control.FsmVariables.GetFsmFloat("Hero Y");
             }
 
-            bounds = new Rect(spawnPoint.x, spawnPoint.y, xR.Size, yR.Size);
+            bounds = new Rect(gameObject.transform.position.x, gameObject.transform.position.y, xR.Size, yR.Size);
+
+            SetupCustomDebugArea();
 
             UpdateRefs(control, FloatRefs);
         }
@@ -135,7 +134,7 @@ namespace EnemyRandomizerMod
                 control.enabled = true;
                 if (ControlCameraLocks)
                     UnlockCameras(cams);
-                BuildArena(SpawnPoint);
+                BuildArena();
 
                 if(OnShowControlBroadcastEvent != null)
                 {
@@ -186,9 +185,23 @@ namespace EnemyRandomizerMod
             return (dist.sqrMagnitude < size.sqrMagnitude);
         }
 
+        protected virtual void SetupCustomDebugArea()
+        {
+            var size = new Vector2(xR.Size, yR.Size);
+            var center = new Vector2(transform.position.x, transform.position.y);
+            var herop = new Vector2(HeroX, HeroY);
+            var dist = herop - center;
+            debugColliders.customLineCollections.Add(Color.yellow,
+                DebugColliders.GetPointsFromCollider(Vector2.one,center,dist.magnitude).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
+            debugColliders.customLineCollections.Add(Color.magenta, new List<Vector3>() { 
+            herop, center, herop
+            });
+            debugColliders.customLineCollections.Add(Color.cyan, debugColliders.GetPointsFromCollider(bounds, false).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
+        }
+
         protected virtual IEnumerator Start()
         {
-            BuildArena(SpawnPoint);
+            BuildArena();
 
             if(ControlCameraLocks)
                 cams = GetCameraLocksFromScene();

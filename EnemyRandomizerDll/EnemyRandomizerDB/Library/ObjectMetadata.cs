@@ -707,7 +707,7 @@ namespace EnemyRandomizerMod
             if (Source == null)
                 return null;
 
-            if (ObjectThisReplaced != null)
+            if (ObjectThisReplaced != null && this != ObjectThisReplaced)
             {
                 var oedf = ObjectThisReplaced.DeathEffects;
                 var nedf = DeathEffects;
@@ -720,7 +720,7 @@ namespace EnemyRandomizerMod
 
             Source.SafeSetActive(true);
 
-            if(ObjectThisReplaced != null)
+            if(ObjectThisReplaced != null && this != ObjectThisReplaced)
                 ObjectThisReplaced.DestroySource();
 
             return Source;

@@ -249,6 +249,7 @@ namespace EnemyRandomizerMod
             if (metaObject.IsAReplacementObject)
                 return metaObject.Source;
 
+            //TODO: add this to the modules
             bool canProcess = CanProcessObject(metaObject);
 
             if (!canProcess)
@@ -259,11 +260,27 @@ namespace EnemyRandomizerMod
             bool replaceObject = true;
 
             //create default replacements
-            var originalReplacementObjects = metaObject.GetObjectTypeCollection(database);
+            List<PrefabObject> originalReplacementObjects = metaObject.GetObjectTypeCollection(database);
 
-            var validReplacements = GetValidReplacements(metaObject, originalReplacementObjects);
-            if (validReplacements == null || validReplacements.Count <= 0)
-                replaceObject = false;
+            List<PrefabObject> validReplacements = originalReplacementObjects;
+
+            if (!EnemyRandomizer.DoReplacementBypassCheck())
+            {
+                validReplacements = GetValidReplacements(metaObject, originalReplacementObjects);
+                if (validReplacements == null || validReplacements.Count <= 0)
+                    replaceObject = false;
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(EnemyRandomizer.debugCustomReplacement))
+                {
+                    validReplacements = new List<PrefabObject>() { database.Objects[EnemyRandomizer.debugCustomReplacement] };
+                }
+                else
+                {
+                    replaceObject = false;
+                }
+            }
 
             try
             {
@@ -282,6 +299,10 @@ namespace EnemyRandomizerMod
                         newObject.MarkObjectAsReplacement(metaObject);
                         metaObject = newObject;
                     }
+                }
+                else
+                {
+                    metaObject.MarkObjectAsReplacement(metaObject);
                 }
 
                 metaObject = ModifyObject(metaObject);

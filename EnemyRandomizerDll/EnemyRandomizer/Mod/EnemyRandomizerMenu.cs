@@ -147,7 +147,8 @@ namespace EnemyRandomizerMod
             var previouslyLoadedLogics = EnemyRandomizer.GlobalSettings.loadedLogics;
             var loadedLogics = EnemyRandomizer.Instance.enemyReplacer.ConstructLogics(previouslyLoadedLogics, logicTypes);
             
-            if (RootMenuObject == null)
+            //TODO: trial this and see if it fixes anything
+            //if (RootMenuObject == null)
             {
                 // create instance of BetterMenus.Menu. It will be used to create the elements
                 RootMenuObject = new Menu("Enemy Randomizer Settings");
