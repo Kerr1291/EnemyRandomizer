@@ -180,7 +180,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class SpiderMiniControl : DefaultSpawnedEnemyControl { }
+    public class SpiderMiniControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToClosestSurface(100f, extraOffsetScale: 0.5f, alsoStickCorpse: false);
+        }
+    }
 
     public class SpiderMiniSpawner : DefaultSpawner<SpiderMiniControl> { }
 

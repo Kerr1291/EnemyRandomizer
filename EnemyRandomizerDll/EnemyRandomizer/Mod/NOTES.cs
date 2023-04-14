@@ -219,9 +219,15 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Climber</string>                               -   TODO: TEST POSITION FIX
     <string>Crystallised Lazer Bug</string>                -   TODO: NEEDS TO BE POSITIONED HALF ITS HITBOX SIZE DOWNWARD
     
+
+    <string>Hatcher</string>                               -   FIXED -- ADDED DIE CHILDREN METHOD (test it) and changed child count to spawn more consistantly
+    <string>Centipede Hatcher</string>                     -   NEEDS TESTING
+    <string>Zombie Hive</string>                           -   NEEDS TESTING
+    <string>Blocker</string>                               -   NEEDS TESTING
+    
+
     <string>Giant Fly</string>                             -   WORKS BUT  --- FIX THIS ENEMY TO NOT START SLEEPING OR PLACE ON THE GROUND
                                                                           ALSO, REMOVE THE TITLE POPUP
-    <string>Hatcher</string>                               -   FIXED -- ADDED DIE CHILDREN METHOD (test it) and changed child count to spawn more consistantly
     <string>Mawlek Turret</string>                         -   FIXED
     <string>Mawlek Turret Ceiling</string>                 -   FIXED
     <string>White Palace Fly</string>                      -   FIXED
@@ -243,6 +249,8 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Lost Kin</string>                              -   SPAWNS INCORRECTLY WHEN REPLACING
     <string>Radiance</string>                              -   SPAWNS CORRECTLY - NULLREF WHEN REPLACING
     <string>Absolute Radiance</string>                     -   SPAWNS CORRECTLY - REPLACES INCORRECTLY (SAME POSITION ISSUE AS OTHERS)
+
+
     <string>Zote Turret</string>                           -   SPAWNS INCORRECTLY - REPLACES CORRECTLY BUT POSITION IS WRONG
     <string>Zote Balloon Ordeal</string>                   -   NEEDS TESTING -- ?????
     <string>Zote Salubra</string>                          -   NEEDS TESTING -- DOESN'T DRAIN
@@ -253,7 +261,9 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Zote Crew Tall</string>                        -   NEEDS TESTING -- ?????
     <string>Zote Balloon</string>                          -   NEEDS TESTING -- FIX EXPLOSION NOT HAPPENING && RESPAWN STILL HAPPENING
     <string>Ordeal Zoteling</string>                       -   BROKEN - NEEDS ZOTELING FIX???
-    <string>Baby Centipede</string>                        -   NEEDS TESTING
+
+
+    <string>Baby Centipede</string>                        -   NEED TO LOOK UP ITS FSM IN GAME
 
     <string>Grey Prince</string>                           -   STILL BROKEN
     <string>Shade Sibling</string>                         -   (ADD AN OPTION TO) REMOVE THE CHARM FRIENDLY EFFECT / GIVE IT TO THE REPLACED ENEMIES
@@ -262,35 +272,33 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Mage</string>                                  -   +++++++++++++++++NEEDS TESTING
     <string>Electric Mage</string>                         -   +++++++++++++++++NEEDS TESTING
     <string>Mender Bug</string>                            -   +++++++++++++++++NEEDS TESTING
-    <string>Blocker</string>                               -   +++++++++++++++++NEEDS TESTING
     <string>Egg Sac</string>                               -   NEEDS ITEM TRANSFER/SPAWN SCRIPT
     <string>Gorgeous Husk</string>                         -   NEEDS MEME SCRIPT
-    <string>Ceiling Dropper</string>                       -   KEEPS SPAWNING FLOATING
+    <string>Ceiling Dropper</string>                       -   NEEDS TESTING
     <string>Mage Balloon</string>                          -   DONT SPAWN HIDDEN IN ARENAS
-    <string>Plant Trap</string>                            -   OFTEN SPAWNS FLOATING / FACING INCORRECTLY
-    <string>Acid Flyer</string>                            -   IF SOMETHING REPLACES THIS IT SHOULD HAVE TINKER ADDED!!
-    <string>Acid Walker</string>                           -   IF SOMETHING REPLACES THIS IT SHOULD HAVE TINKER ADDED!!
-    <string>Plant Turret</string>                          -   OFTEN SPAWNS FLOATING / FACING INCORRECTLY / DOESNT SHOOT CORRECTLY
-    <string>Plant Turret Right</string>                    -   OFTEN SPAWNS FLOATING / FACING INCORRECTLY / DOESNT SHOOT CORRECTLY
-    <string>Mushroom Turret</string>                       -   OFTEN SPAWNS FLOATING / FACING INCORRECTLY / DOESNT SHOOT CORRECTLY
+    <string>Plant Trap</string>                            -   NEEDS TESTING
+    <string>Plant Turret</string>                          -   NEEDS TESTING
+    <string>Plant Turret Right</string>                    -   NEEDS TESTING
+    <string>Mushroom Turret</string>                       -   NEEDS TESTING
     <string>Moss Knight</string>                           -   NEEDS TESTING
     <string>Moss Charger</string>                          -   SCRIPT HAS NULLREF ERRORS
-    <string>Ghost Warrior Marmu</string>                   -   NEEDS CORPSE TESTING FOR CRASH
+    <string>Ghost Warrior Marmu</string>                   -   NEEDS MORE TESTING -- SEEMS FIXED?
     <string>Zombie Beam Miner</string>                     -   NEEDS LASER RANGE EXTENDED
-    <string>Spider Mini</string>                           -   KEEPS SPAWNING STUCK IN AIR
-    <string>Centipede Hatcher</string>                     -   NEEDS HATCHER FIX
+    <string>Spider Mini</string>                           -   NEEDS TESTING
     <string>Mantis Heavy Spawn</string>                    -   NEEDS TESTING/REMOVAL
     <string>Zombie Hornhead Sp</string>                    -   NEEDS TESTING
     <string>Zombie Runner Sp</string>                      -   NEEDS TESTING
     <string>Fat Fly</string>                               -   TEST? MIGHT NEED BOSS FIX
     <string>Parasite Balloon</string>                      -   MAKE SPAWN FAST IN ARENA?
-    <string>Royal Gaurd</string>                           -   NEEDS A FIX TO WORK RANDOMIZED EFFECTS
-    <string>Zombie Hive</string>                           -   DOESNT PROPERLY SPAWN ADDS
-    <string>Big Bee</string>                               -   WHEN SOMETHING REPLACES THIS IT SHOULD HAVE A SMASHER
+    <string>Royal Gaurd</string>                           -   MAYBE NERF TO 1 DMG WHEN REPLACING A WEAK ENEMY -- NEEDS A FIX TO WORK RANDOMIZED EFFECTS
     <string>Grave Zombie</string>                          -   MAYBE NERF TO 1 DMG WHEN REPLACING A WEAK ENEMY
     <string>Mantis Flyer Child</string>                    -   NEEDS FIX FOR SPAWNING ON SURFACES CORRECTLY
     <string>Lil Jellyfish</string>                         -   IS A PROJECTILE??? LOOK INTO THIS 
-    <string>Jellyfish</string>                             -   NEEDS SCRIPT FOR SPAWNING BABY CORRECTLY
+
+    <string>Jellyfish</string>                             -   NEEDS SCRIPT FOR SPAWNING BABY CORRECTLY ?
+    <string>Acid Flyer</string>                            -   IF SOMETHING REPLACES THIS IT SHOULD HAVE TINKER ADDED!!
+    <string>Acid Walker</string>                           -   IF SOMETHING REPLACES THIS IT SHOULD HAVE TINKER ADDED!!
+    <string>Big Bee</string>                               -   WHEN SOMETHING REPLACES THIS IT SHOULD HAVE A SMASHER
 
     <string>Pigeon</string>                                -   COULD USE SOMETHING TO MAKE THEM MORE INTERESTING
     <string>fluke_baby_02</string>                         -   COULD USE SOMETHING TO MAKE THEM MORE INTERESTING
@@ -306,16 +314,16 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Colosseum_Flying_Sentry</string>               -   CHECK COLO SCRIPT?
     <string>Colosseum_Worm</string>                        -   CHECK COLO SCRIPT?
 
-    <string>Mega Fat Bee</string>                          -   NEED TO FIX "FLY IN" CODE SO IT DOESN'T TELEPORT AWAY
-    <string>Lobster</string>                               -   SEEMS OK? NEEDS CUSTOM CODE TO STOP ROLLING WHEN THERE'S NO WALLS
-    <string>Mage Knight</string>                           -   WORKS WHEN REPLACING
-    <string>Black Knight</string>                          -   SORTA WORKS? -- YEETS INTO THE SKY RANDOMLY
-    <string>Jar Collector</string>                         -   NULLREF
+    <string>Mega Fat Bee</string>                          -   NEEDS TESTING
+    <string>Lobster</string>                               -   NEEDS TESTING
+    <string>Mage Knight</string>                           -   WORKS WHEN REPLACING?
+    <string>Black Knight</string>                          -   NEEDS TESTING - YEETING WAS A RESULT OF DISABLED FSM WHEN OUT OF RANGED
+    <string>Jar Collector</string>                         -   ADDED SOME CODE TO CATCH THE NULLREF IN SETUP -- TEST!
     <string>Hornet Boss 1</string>                         -   DOESN'T SPAWN CORRECTLY
     <string>Giant Buzzer</string>                          -   +++++++++++++++++NEEDS TESTING -- SPAMS NULLREFS? (it changed to a giant buzzer col and spammed nullrefs)
     <string>Giant Buzzer Col</string>                      -   +++++++++++++++++NEEDS TESTING -- hitbox fixed? BROKEN HITBOX (not enabled) (this version spawns when zote chewing flag is done)
     <string>Mega Moss Charger</string>                     -   NULLREF
-    <string>Mega Zombie Beam Miner</string>                -   STILL HAS CAMERA FIGHTING ISSUES -- DOESN'T UNHIDE
+    <string>Mega Zombie Beam Miner</string>                -   TEST IF CAMERA FIGHTING IS FIXED
     <string>Zombie Beam Miner Rematch</string>             -   LASER ISN'T WORKING
     <string>Hornet Boss 2</string>                         -   DOESN'T SPAWN
     <string>Mimic Spider</string>                          -   SPAWNS TOO FAR TO THE RIGHT

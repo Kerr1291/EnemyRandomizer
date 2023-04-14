@@ -1488,6 +1488,7 @@ namespace EnemyRandomizerMod
         public override string FSMName => "Beam Miner";
         protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => EMPTY_FLOAT_REFS;
 
+        protected override bool ControlCameraLocks => true;
 
         protected Tk2dPlayAnimation sleepAnim;
 
@@ -1510,6 +1511,8 @@ namespace EnemyRandomizerMod
             this.AddResetToStateOnHide(control, "Deparents");
 
             var wake = control.GetState("Wake");
+            wake.DisableAction(2);
+            wake.DisableAction(3);
             wake.ChangeTransition("FINISHED", "Idle");
 
             var roarStart = control.GetState("Roar Start");
@@ -1544,7 +1547,7 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Beam Miner";
         protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => EMPTY_FLOAT_REFS;
-
+        protected override bool ControlCameraLocks => true;
 
         public override void Setup(ObjectMetadata other)
         {
@@ -2407,39 +2410,67 @@ namespace EnemyRandomizerMod
             spawn.RemoveTransition("REPOS");
 
             spawnAction = new SpawnObjectFromGlobalPool();
+            spawnAction.storeObject = new FsmGameObject();
+
+            spawnAction.gameObject = new FsmGameObject();
             spawnAction.gameObject.Value = jarPrefab;
+
+            spawnAction.spawnPoint = new FsmGameObject();
             spawnAction.spawnPoint.Value = gameObject;
+
+            spawnAction.position = new FsmVector3();
             spawnAction.position.Value = Vector3.zero; //offset from boss (might update later)
 
             spawn.AddAction(spawnAction);
             spawn.AddCustomAction(() =>
             {
                 var go = spawnAction.storeObject.Value;
+                if (go == null)
+                    Dev.LogError("NO JAR PREFAB FOUND!");
+
                 var jar = go.GetComponent<SpawnJarControl>();
-                var selectedSpawn = possibleSpawns.GetRandomElementFromList(rng);
-                jar.SetEnemySpawn(selectedSpawn.Item1.prefab, selectedSpawn.Item2);
-                FlingUtils.FlingObject(new FlingUtils.SelfConfig
+                if (jar == null)
+                    Dev.LogError("NO JAR COMPONENT FOUND!");
+
+                try
                 {
-                    Object = go,
-                    SpeedMin = 20f,
-                    SpeedMax = 30f,
-                    AngleMin = 70f,
-                    AngleMax = 110f
-                }, gameObject.transform, Vector3.zero);
-                var body = jar.GetComponent<Rigidbody2D>();
-                if (body != null)
-                    body.angularVelocity = 15f;
+                    var selectedSpawn = possibleSpawns.GetRandomElementFromList(rng);
+                    jar.SetEnemySpawn(selectedSpawn.Item1.prefab, selectedSpawn.Item2);
+                    FlingUtils.FlingObject(new FlingUtils.SelfConfig
+                    {
+                        Object = go,
+                        SpeedMin = 20f,
+                        SpeedMax = 30f,
+                        AngleMin = 70f,
+                        AngleMax = 110f
+                    }, gameObject.transform, Vector3.zero);
+                    var body = jar.GetComponent<Rigidbody2D>();
+                    if (body != null)
+                        body.angularVelocity = 15f;
+                }
+                catch(Exception e)
+                {
+                    Dev.LogError($"Error flinging custom collector jar! ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                }
             });
+
             spawn.AddCustomAction(() => control.SendEvent("FINISHED"));
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Start Fall");
             this.AddResetToStateOnHide(control, "Init");
 
-            var fsm = gameObject.LocateMyFSM("Death");
-            fsm.ChangeTransition("Init", "DEATH", "Fall");
+            try
+            { 
+                var fsm = gameObject.LocateMyFSM("Death");
+                fsm.ChangeTransition("Init", "DEATH", "Fall");
 
-            var phase = gameObject.LocateMyFSM("Phase Control");
-            GameObject.Destroy(phase);
+                var phase = gameObject.LocateMyFSM("Phase Control");
+                GameObject.Destroy(phase);
+            }
+            catch (Exception e)
+            {
+                Dev.LogError($"Error fixing additional fsms! ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+            }
         }
     }
 
@@ -2768,6 +2799,9 @@ namespace EnemyRandomizerMod
 
         protected virtual void Update()
         {
+            if (control == null)
+                return;
+
             if (gameObject.activeInHierarchy && control.enabled)
             {
                 //TODO: temp hack to try and fix their colliders being broken
@@ -2837,11 +2871,18 @@ namespace EnemyRandomizerMod
                 ("Roar Right", 0)
                 );
 
+            var init = control.GetState("Init");
+            init.DisableAction(3);
+            control.ChangeTransition("Init", "FINISHED", "Idle");
+            control.ChangeTransition("Init", "GG BOSS", "Idle");
+
+
             var summon = control.GetState("Summon");
             summon.DisableAction(0);
             summon.DisableAction(1);
             summon.DisableAction(2);
             summon.DisableAction(3);
+            summon.DisableAction(4);
             summon.AddCustomAction(() =>
             {
                 var left = db.Spawn("Buzzer", null);
@@ -2869,9 +2910,6 @@ namespace EnemyRandomizerMod
 
             summon.RemoveTransition("GG BOSS");
 
-            control.ChangeTransition("Init", "FINISHED", "Idle");
-            control.ChangeTransition("Init", "GG BOSS", "Idle");
-
             this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
             this.AddResetToStateOnHide(control, "Init");
 
@@ -2884,6 +2922,9 @@ namespace EnemyRandomizerMod
 
         protected virtual void Update()
         {
+            if (control == null)
+                return;
+
             if (gameObject.activeInHierarchy && control.enabled)
             {
                 //TODO: temp hack to try and fix their colliders being broken
@@ -3254,15 +3295,169 @@ namespace EnemyRandomizerMod
 
 
 
+
+
+
+
     /////////////////////////////////////////////////////////////////////////////
-    /////   
+    /////
+    public class LobsterControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Control";
+
+        protected override bool ControlCameraLocks => false;
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
+            this.AddResetToStateOnHide(control, "Init");
+
+            //add a random timeout to force the lobster out of an infinite roll
+            var rcCharging = control.GetState("RC Charging");
+            rcCharging.AddAction(new WaitRandom() { 
+            timeMin = 2f,
+            timeMax = 3f,
+            finishEvent = new FsmEvent("WALL")
+            });
+        }
+
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
+
+    public class LobsterSpawner : DefaultSpawner<LobsterControl> { }
+
+    public class LobsterPrefabConfig : DefaultPrefabConfig<LobsterControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
 
 
 
 
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class LancerControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Control";
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            var init = control.GetState("Init");
+            init.DisableAction(6);
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
+            this.AddResetToStateOnHide(control, "Init");
+
+            this.OverrideState(control, "Defeat", () =>
+            {
+                this.thisMetadata.EnemyHealthManager.hasSpecialDeath = false;
+                this.thisMetadata.EnemyHealthManager.SetSendKilledToObject(null);
+                this.thisMetadata.EnemyHealthManager.Die(null, AttackTypes.Generic, true);
+            });
+        }
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
+
+    public class LancerSpawner : DefaultSpawner<LancerControl> { }
+
+    public class LancerPrefabConfig : DefaultPrefabConfig<LancerControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+    ///
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class MageKnightControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Mage Knight";
+
+        protected override bool ControlCameraLocks => false;
+
+        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs =>
+            new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            {
+                    { "Floor Y",    x => { return x.HeroY; } },
+                    { "Tele X Max", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.right, 500f).point.x; } },
+                    { "Tele X Min", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.left, 500f).point.x; } },
+            };
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
+            this.AddResetToStateOnHide(control, "Init");
+        }
+
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
+
+    public class MageKnightSpawner : DefaultSpawner<MageKnightControl> { }
+
+    public class MageKnightPrefabConfig : DefaultPrefabConfig<MageKnightControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+    ///
+
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class BlackKnightControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Black Knight";
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            this.InsertHiddenState(control, "Init Facing", "FINISHED", "Bugs In");
+            this.AddResetToStateOnHide(control, "Init");
+
+            control.GetState("Cloud Stop").DisableAction(3);
+            control.GetState("Cloud Stop").DisableAction(4);
+
+            control.ChangeTransition("Bugs In End", "FINISHED", "Roar End");
+        }
+
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
+
+    public class BlackKnightSpawner : DefaultSpawner<BlackKnightControl> { }
+
+    public class BlackKnightPrefabConfig : DefaultPrefabConfig<BlackKnightControl> { }
 
     /////
     //////////////////////////////////////////////////////////////////////////////
+
+
 
 
 

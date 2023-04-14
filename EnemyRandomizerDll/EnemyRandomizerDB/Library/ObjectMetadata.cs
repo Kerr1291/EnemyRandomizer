@@ -73,6 +73,7 @@ namespace EnemyRandomizerMod
         public EnemyDeathEffects DeathEffects { get; protected set; }
         public ManagedObject RandoObject { get; protected set; }
         public BattleManagedObject BattleRandoObject { get; protected set; }
+        public Rigidbody2D PhysicsBody { get; protected set; }
 
         public bool IsAReplacementObject { get { return RandoObject == null ? false : RandoObject.replaced; } }
 
@@ -144,6 +145,8 @@ namespace EnemyRandomizerMod
 
             Walker = sceneObject.GetComponent<Walker>();
             IsWalker = Walker != null;
+
+            PhysicsBody = sceneObject.GetComponent<Rigidbody2D>();
 
             //check if it's disabled/completed already
             var pbi = sceneObject.GetComponent<PersistentBoolItem>();

@@ -684,6 +684,8 @@ namespace EnemyRandomizerMod
         static Dictionary<string, string> uniqueNameToCommonNameMap = new Dictionary<string, string>()
         {
             {"Spawn Roller v2", "Roller"},
+            {"Giant Buzzer", "Giant Buzzer" },
+            {"Giant Buzzer Col", "Giant Buzzer Col" },
             {"Electric Mage New", "Electric Mage"},
             {"Ruins Sentry FatB", "Ruins Sentry Fat"},
             {"Ruins Flying SentryB", "Ruins Flying Sentry"},

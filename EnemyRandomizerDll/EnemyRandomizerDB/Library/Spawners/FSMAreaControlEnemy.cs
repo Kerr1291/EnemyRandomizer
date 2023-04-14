@@ -122,6 +122,12 @@ namespace EnemyRandomizerMod
             if (control.enabled)
             {
                 control.enabled = false;
+                var body = thisMetadata.PhysicsBody;
+                if(body != null)
+                {
+                    body.velocity = Vector2.zero;
+                    body.angularVelocity = 0f;
+                }
             }
 
             CheckFSMsWithResetOnHideStates();
