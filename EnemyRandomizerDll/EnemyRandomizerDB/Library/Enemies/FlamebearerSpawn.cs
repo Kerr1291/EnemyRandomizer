@@ -76,13 +76,13 @@ namespace EnemyRandomizerMod
 
             string keyName = EnemyRandomizerDatabase.ToDatabaseKey(prefab.name);
 
-            //Dev.Log("FLAMEBEARER_CONVERSION old prefab name = " + p.prefab.name);
+            Dev.Log("FLAMEBEARER_CONVERSION old prefab name = " + p.prefab.name);
 
             //get actual enemy prefab from the fsm
             p.prefabName = keyName;
             p.prefab = prefab;
 
-            //Dev.Log("FLAMEBEARER_CONVERSION New prefab name = " + keyName);
+            Dev.Log("FLAMEBEARER_CONVERSION New prefab name = " + keyName);
 
             if(keyName.Contains("Small"))
                 p.prefab.AddComponent<FlamebearerSmallControl>();
