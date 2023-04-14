@@ -34,8 +34,9 @@ namespace EnemyRandomizerMod
 
             SetDreamnailInfo();
             ConfigureRelativeToReplacement();
-
+#if DEBUG
             debugColliders = gameObject.AddComponent<DebugColliders>();
+#endif
         }
 
         //protected virtual void OnDisable()

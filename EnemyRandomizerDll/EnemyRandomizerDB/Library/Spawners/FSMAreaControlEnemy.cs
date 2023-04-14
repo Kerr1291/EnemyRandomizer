@@ -84,8 +84,9 @@ namespace EnemyRandomizerMod
             }
 
             bounds = new Rect(gameObject.transform.position.x, gameObject.transform.position.y, xR.Size, yR.Size);
-
+#if DEBUG
             SetupCustomDebugArea();
+#endif
 
             UpdateRefs(control, FloatRefs);
         }
@@ -193,6 +194,7 @@ namespace EnemyRandomizerMod
 
         protected virtual void SetupCustomDebugArea()
         {
+#if DEBUG
             var size = new Vector2(xR.Size, yR.Size);
             var center = new Vector2(transform.position.x, transform.position.y);
             var herop = new Vector2(HeroX, HeroY);
@@ -203,6 +205,7 @@ namespace EnemyRandomizerMod
             herop, center, herop
             });
             debugColliders.customLineCollections.Add(Color.cyan, debugColliders.GetPointsFromCollider(bounds, false).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
+#endif
         }
 
         protected virtual IEnumerator Start()

@@ -43,6 +43,8 @@ namespace EnemyRandomizerMod
 
         protected override void SetupCustomDebugArea()
         {
+#if DEBUG
+
             //radius
             debugColliders.customLineCollections.Add(Color.red,
                 DebugColliders.GetPointsFromCollider(Vector2.one, centerOfAggroArea, sizeOfAggroArea.magnitude).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
@@ -87,6 +89,7 @@ namespace EnemyRandomizerMod
             debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
             right, pos2d, right
             });
+#endif
         }
     }
 
