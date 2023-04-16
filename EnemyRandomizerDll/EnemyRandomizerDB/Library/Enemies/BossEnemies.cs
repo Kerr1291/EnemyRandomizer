@@ -24,15 +24,13 @@ namespace EnemyRandomizerMod
 
         protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => CustomFloatRefs;
 
-        public Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-        public Vector2 heroPos2d => new Vector2(HeroController.instance.transform.position.x, HeroController.instance.transform.position.y);
         public Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 16);
         public float floorY => heroPos2d.FireRayGlobal(Vector2.down, 50f).point.y;
         public float roofY => heroPos2d.FireRayGlobal(Vector2.up, 200f).point.y;
         public float edgeL => heroPosWithOffset.FireRayGlobal(Vector2.left, 100f).point.y;
         public float edgeR => heroPosWithOffset.FireRayGlobal(Vector2.right, 100f).point.y;
 
-        public Vector2 sizeOfAggroArea = new Vector2(50f, 50f);
+        public Vector2 sizeOfAggroArea = new Vector2(25f, 25f);
         public Vector2 centerOfAggroArea => gameObject.transform.position;
         public UnityEngine.Bounds aggroBounds => new UnityEngine.Bounds(centerOfAggroArea, sizeOfAggroArea);
 

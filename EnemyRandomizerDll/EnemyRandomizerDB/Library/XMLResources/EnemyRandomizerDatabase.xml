@@ -1096,6 +1096,14 @@
             <string>DamageHero</string>
             <string>EnemyDeathEffects</string>
           </components>
+        </SceneObject>     
+        <SceneObject path="Colosseum Manager/Waves/Wave 26 Obble/Colosseum Cage Small (1)">
+          <components>
+            <string>Transform</string>
+            <string>SpriteRenderer</string>
+            <string>PlayMakerFSM</string>
+            <string>AudioSource</string>
+          </components>
         </SceneObject>
         <SceneObject path="Colosseum_Miner">
           <components>

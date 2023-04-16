@@ -143,11 +143,11 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
  *  ENEMY STATUS
  *  
  *  
- *  
+ *  EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Fly",null);
     <string>Mosquito</string>                              -   IS BASIC ENEMY (see BasicEnemies.cs) && SHOULD WORK FINE
     <string>Hopper</string>                                -   ""
     <string>Bursting Bouncer</string>                      -   ""
-    <string>Blobble</string>                               -   ""
+    <string>Blobble</string>                               -   "" ENEMY WAS MISSING, NOW SHOULD BE LOADING
     <string>Giant Hopper</string>                          -   ""
     <string>Spitting Zombie</string>                       -   ""
     <string>Bursting Zombie</string>                       -   ""
@@ -211,19 +211,19 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Super Spitter</string>                         -   ""
     <string>Mawlek Col</string>                            -   ""   NOT A VALID ENEMY STRING (fix this?)
     <string>Colosseum Grass Hopper</string>                -   ""   NO LONGER A VALID ENEMY STRING
+    <string>Crystal Crawler</string>                       -   WORKS - giant crystal crawler is fine
 
-    <string>Crystal Crawler</string>                       -   TODO: TEST POSITION FIX
-    <string>Mines Crawler</string>                         -   TODO: TEST POSITION FIX
-    <string>Abyss Crawler</string>                         -   TODO: TEST POSITION FIX
-    <string>Tiny Spider</string>                           -   TODO: TEST POSITION FIX
-    <string>Climber</string>                               -   TODO: TEST POSITION FIX
-    <string>Crystallised Lazer Bug</string>                -   TODO: NEEDS TO BE POSITIONED HALF ITS HITBOX SIZE DOWNWARD
-    
+    <string>Mines Crawler</string>                         -   SPAWNS IN GROUND -- TEST, adjusted up slightly
+    <string>Abyss Crawler</string>                         -   FIXED
+    <string>Tiny Spider</string>                           -   FIXED
+    <string>Climber</string>                               -   FIXED
+    <string>Crystallised Lazer Bug</string>                -   POSITION FIXED, NEEDS FLIPPING ON TRANSITION IMPLEMENTED
+    EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Hatcher",null);
 
     <string>Hatcher</string>                               -   FIXED -- ADDED DIE CHILDREN METHOD (test it) and changed child count to spawn more consistantly
-    <string>Centipede Hatcher</string>                     -   NEEDS TESTING
-    <string>Zombie Hive</string>                           -   NEEDS TESTING
-    <string>Blocker</string>                               -   NEEDS TESTING
+    <string>Centipede Hatcher</string>                     -   NEEDS TESTING -- SEEMS TO WORK
+    <string>Zombie Hive</string>                           -   NEEDS TESTING  -- SPAWNING BROKEN
+    <string>Blocker</string>                               -   NEEDS TESTING -- SPAWNS INSIDE OF GROUND
     
 
     <string>Giant Fly</string>                             -   WORKS BUT  --- FIX THIS ENEMY TO NOT START SLEEPING OR PLACE ON THE GROUND
@@ -237,8 +237,8 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Flamebearer Med</string>                       -   ERROR: HAS A NULLREF
     <string>Flamebearer Large</string>                     -   ERROR: SPAWNS IN A WEIRD SPOT
 
-    <string>Zombie Spider 2</string>                       -   ERROR: NULLREF TRYING TO SPAWN -- CORRECTLY SPAWNS WHEN USED AS REPLACEMENT BUT DID NOT COME ALIVE
-    <string>Zombie Spider 1</string>                       -   SPAWNS DISABLED? -- CORRECTLY SPAWNS WHEN USED AS REPLACEMENT
+    <string>Zombie Spider 2</string>                       -   Spawns under the world...
+    <string>Zombie Spider 1</string>                       -   Spawns under the world...
     <string>Zoteling</string>                              -   SPAWNS DISABLED? -- CORRECTLY SPAWNS WHEN USED AS REPLACEMENT -- NEEDS SOUND EFFECTS
     <string>Mawlek Body</string>                           -   NEED TO FIX HIM STARTING IN STEALTH STATE  -- MawlekBodyControl+<Start>  HAS A NULLREF
     <string>False Knight New</string>                      -   SEEMS TOTALLY BUSTED -- ALSO CAN'T SEEM TO KILL -- ONCE ENGAGED HE FIGHTS OK (BUT HIS BASIC COMBAT BODY IS INVISIBLE)
@@ -263,7 +263,7 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Ordeal Zoteling</string>                       -   BROKEN - NEEDS ZOTELING FIX???
 
 
-    <string>Baby Centipede</string>                        -   NEED TO LOOK UP ITS FSM IN GAME
+    <string>Baby Centipede</string>                        -   GET LOTS OF NULLREFS -- SPAWNS UNDER SCENE
 
     <string>Grey Prince</string>                           -   STILL BROKEN
     <string>Shade Sibling</string>                         -   (ADD AN OPTION TO) REMOVE THE CHARM FRIENDLY EFFECT / GIVE IT TO THE REPLACED ENEMIES
@@ -276,7 +276,7 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Gorgeous Husk</string>                         -   NEEDS MEME SCRIPT
     <string>Ceiling Dropper</string>                       -   NEEDS TESTING
     <string>Mage Balloon</string>                          -   DONT SPAWN HIDDEN IN ARENAS
-    <string>Plant Trap</string>                            -   NEEDS TESTING
+    <string>Plant Trap</string>                            -   NEEDS TESTING -- wasnnt placed on a surface
     <string>Plant Turret</string>                          -   NEEDS TESTING
     <string>Plant Turret Right</string>                    -   NEEDS TESTING
     <string>Mushroom Turret</string>                       -   NEEDS TESTING
@@ -284,7 +284,7 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Moss Charger</string>                          -   SCRIPT HAS NULLREF ERRORS
     <string>Ghost Warrior Marmu</string>                   -   NEEDS MORE TESTING -- SEEMS FIXED?
     <string>Zombie Beam Miner</string>                     -   NEEDS LASER RANGE EXTENDED
-    <string>Spider Mini</string>                           -   NEEDS TESTING
+    <string>Spider Mini</string>                           -   SPAWNS CORRECTLY - DOESN"T SHOOT CORRECTLY
     <string>Mantis Heavy Spawn</string>                    -   NEEDS TESTING/REMOVAL
     <string>Zombie Hornhead Sp</string>                    -   NEEDS TESTING
     <string>Zombie Runner Sp</string>                      -   NEEDS TESTING
@@ -320,8 +320,8 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Black Knight</string>                          -   NEEDS TESTING - YEETING WAS A RESULT OF DISABLED FSM WHEN OUT OF RANGED
     <string>Jar Collector</string>                         -   ADDED SOME CODE TO CATCH THE NULLREF IN SETUP -- TEST!
     <string>Hornet Boss 1</string>                         -   DOESN'T SPAWN CORRECTLY
-    <string>Giant Buzzer</string>                          -   +++++++++++++++++NEEDS TESTING -- SPAMS NULLREFS? (it changed to a giant buzzer col and spammed nullrefs)
-    <string>Giant Buzzer Col</string>                      -   +++++++++++++++++NEEDS TESTING -- hitbox fixed? BROKEN HITBOX (not enabled) (this version spawns when zote chewing flag is done)
+    <string>Giant Buzzer</string>                          -   NEEDS TESTING (seems to work)
+    <string>Giant Buzzer Col</string>                      -   NEEDS TESTING (seems to work)
     <string>Mega Moss Charger</string>                     -   NULLREF
     <string>Mega Zombie Beam Miner</string>                -   TEST IF CAMERA FIGHTING IS FIXED
     <string>Zombie Beam Miner Rematch</string>             -   LASER ISN'T WORKING

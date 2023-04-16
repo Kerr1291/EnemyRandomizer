@@ -27,8 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnemyRandomizerDB", "EnemyR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScaleRandomizedObjects", "ScaleRandomizedObjects\ScaleRandomizedObjects.csproj", "{A7A8E5EF-C34E-4AC9-81C1-5EA4072ED744}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PositionRandomizedObjects", "PositionRandomizedObjects\PositionRandomizedObjects.csproj", "{B80CD99D-EC60-4080-A8A1-D43EB4AACDB5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnemyEnabler", "EnemyEnabler\EnemyEnabler.csproj", "{FCB2945F-2949-4921-BAE2-D2A564FB6EFE}"
 EndProject
 Global
@@ -61,10 +59,6 @@ Global
 		{A7A8E5EF-C34E-4AC9-81C1-5EA4072ED744}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7A8E5EF-C34E-4AC9-81C1-5EA4072ED744}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7A8E5EF-C34E-4AC9-81C1-5EA4072ED744}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B80CD99D-EC60-4080-A8A1-D43EB4AACDB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B80CD99D-EC60-4080-A8A1-D43EB4AACDB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B80CD99D-EC60-4080-A8A1-D43EB4AACDB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B80CD99D-EC60-4080-A8A1-D43EB4AACDB5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FCB2945F-2949-4921-BAE2-D2A564FB6EFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FCB2945F-2949-4921-BAE2-D2A564FB6EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCB2945F-2949-4921-BAE2-D2A564FB6EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU

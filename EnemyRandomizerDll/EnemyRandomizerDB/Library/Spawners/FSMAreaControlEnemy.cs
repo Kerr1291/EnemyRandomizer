@@ -51,9 +51,6 @@ namespace EnemyRandomizerMod
         protected FsmFloat heroX;
         protected FsmFloat heroY;
 
-        public virtual float HeroX { get => HeroController.instance.transform.position.x; }
-        public virtual float HeroY { get => HeroController.instance.transform.position.y; }
-
         public virtual float XMIN { get => xR.Min; }
         public virtual float XMAX { get => xR.Max; }
         public virtual float YMIN { get => yR.Min; }

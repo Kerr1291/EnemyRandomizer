@@ -968,6 +968,102 @@ namespace EnemyRandomizerMod
 
 
 
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class AbyssCrawlerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToClosestSurface(100f, extraOffsetScale: -1f, alsoStickCorpse: false, flipped: true);
+        }
+    }
+
+    public class AbyssCrawlerSpawner : DefaultSpawner<AbyssCrawlerControl> { }
+
+    public class AbyssCrawlerPrefabConfig : DefaultPrefabConfig<AbyssCrawlerControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class MinesCrawlerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToClosestSurface(100f, extraOffsetScale: 1.15f, alsoStickCorpse: false, flipped: false);
+        }
+    }
+
+    public class MinesCrawlerSpawner : DefaultSpawner<MinesCrawlerControl> { }
+
+    public class MinesCrawlerPrefabConfig : DefaultPrefabConfig<MinesCrawlerControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+    ///
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class CrystalCrawlerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
+
+    public class CrystalCrawlerSpawner : DefaultSpawner<CrystalCrawlerControl> { }
+
+    public class CrystalCrawlerPrefabConfig : DefaultPrefabConfig<CrystalCrawlerControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+    ///
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class CrawlerControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
+
+    public class CrawlerSpawner : DefaultSpawner<CrawlerControl> { }
+
+    public class CrawlerPrefabConfig : DefaultPrefabConfig<CrawlerControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+    ///
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class TinySpiderControl : DefaultSpawnedEnemyControl
+    {
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround();
+        }
+    }
+
+
+    public class TinySpiderSpawner : DefaultSpawner<TinySpiderControl> { }
+
+    public class TinySpiderPrefabConfig : DefaultPrefabConfig<TinySpiderControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
 
     /////////////////////////////////////////////////////////////////////////////
     /////

@@ -18,6 +18,11 @@ namespace EnemyRandomizerMod
 
         public EnemyDreamnailReaction edr;
 
+        public virtual float HeroX { get => HeroController.instance.transform.position.x; }
+        public virtual float HeroY { get => HeroController.instance.transform.position.y; }
+        public Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+        public Vector2 heroPos2d => new Vector2(HeroController.instance.transform.position.x, HeroController.instance.transform.position.y);
+
         public bool hasCustomDreamnailReaction;
         public string customDreamnailKey;
 
