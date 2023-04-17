@@ -200,6 +200,7 @@
     <Compile Include="Library\Enemies\Zote\ZoteSalubraPrefabConfig.cs" />
     <Compile Include="Library\Enemies\Zote\ZoteThwompPrefabConfig.cs" />
     <Compile Include="Library\Enemies\Zote\ZoteTurretPrefabConfig.cs" />
+    <Compile Include="Library\Geo.cs" />
     <Compile Include="Library\ManagedObject.cs" />
     <Compile Include="Library\ObjectMetadata.cs" />
     <Compile Include="Library\Spawners\DefaultSpawner.cs" />

@@ -1267,6 +1267,34 @@
             <string>DamageHero</string>
             <string>EnemyDeathEffects</string>
           </components>
+        </SceneObject>        
+        <SceneObject path="Infected Parent/Bursting Zombie">
+          <components>
+            <string>Transform</string>
+            <string>MeshRenderer</string>
+            <string>MeshFilter</string>
+            <string>tk2dSprite</string>
+            <string>Rigidbody2D</string>
+            <string>tk2dSpriteAnimator</string>
+            <string>PlayMakerFixedUpdate</string>
+            <string>AudioSource</string>
+            <string>SetZ</string>
+            <string>BoxCollider2D</string>
+            <string>SpriteFlash</string>
+            <string>PlayMakerFSM</string>
+            <string>FSMActivator</string>
+            <string>PersistentBoolItem</string>
+            <string>PlayMakerCollisionEnter2D</string>
+            <string>PlayMakerCollisionStay2D</string>
+            <string>DamageHero</string>
+            <string>Walker</string>
+            <string>ExtraDamageable</string>
+            <string>HealthManager</string>
+            <string>EnemyDeathEffects</string>
+            <string>InfectedEnemyEffects</string>
+            <string>EnemyDreamnailReaction</string>
+            <string>Recoil</string>
+          </components>
         </SceneObject>
         <SceneObject path="_Enemies/Giant Fly/Snore">
           <components>
@@ -1293,6 +1321,36 @@
         <SceneObject path="_Props/Tute Door 1/Break Dust">
           <components>
             <string>ParticleSystem</string>
+          </components>
+        </SceneObject>      
+        <SceneObject path="Infected Parent/Bursting Bouncer">
+          <components>
+            <string>Transform</string>
+            <string>MeshRenderer</string>
+            <string>MeshFilter</string>
+            <string>tk2dSprite</string>
+            <string>Rigidbody2D</string>
+            <string>tk2dSpriteAnimator</string>
+            <string>PlayMakerFixedUpdate</string>
+            <string>AudioSource</string>
+            <string>SetZ</string>
+            <string>BoxCollider2D</string>
+            <string>SpriteFlash</string>
+            <string>PlayMakerFSM</string>
+            <string>PlayMakerFSM</string>
+            <string>PersonalObjectPool</string>
+            <string>FSMActivator</string>
+            <string>PersistentBoolItem</string>
+            <string>PlayMakerCollisionEnter2D</string>
+            <string>PlayMakerCollisionStay2D</string>
+            <string>PlayMakerCollisionStay</string>
+            <string>DamageHero</string>
+            <string>ExtraDamageable</string>
+            <string>HealthManager</string>
+            <string>EnemyDeathEffects</string>
+            <string>InfectedEnemyEffects</string>
+            <string>EnemyDreamnailReaction</string>
+            <string>Recoil</string>
           </components>
         </SceneObject>
       </sceneObjects>

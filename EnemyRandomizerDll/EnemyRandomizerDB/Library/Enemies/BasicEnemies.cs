@@ -52,10 +52,10 @@ namespace EnemyRandomizerMod
     /////
     public class GiantHopperControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
+        //protected virtual void OnEnable()
+        //{
+        //    gameObject.StickToGround();
+        //}
     }
 
     public class GiantHopperSpawner : DefaultSpawner<GiantHopperControl> { }
@@ -411,6 +411,16 @@ namespace EnemyRandomizerMod
     /////
     public class ZombieMylaControl : DefaultSpawnedEnemyControl
     {
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            //this checks if the player has superdash and if not disables the game object
+            //which is kinda silly.... so destroy it
+            var deactivate = gameObject.GetComponent<DeactivateIfPlayerdataFalse>();
+            GameObject.Destroy(deactivate);
+        }
+
         protected virtual void OnEnable()
         {
             gameObject.StickToGround();
@@ -495,9 +505,92 @@ namespace EnemyRandomizerMod
     /////
     public class GorgeousHuskControl : DefaultSpawnedEnemyControl
     {
+        public bool doSurprise = false;
+        public bool doBounceSurprise = false;
+        public bool isSuperHusk = false;
+
+        public int hp = 0;
+        public GameObject supEffect;
+        public GameObject superEffect;
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            RNG rng = new RNG();
+            rng.Reset();
+
+            int surprise = rng.Rand(0, 20);
+            int superHusk = rng.Rand(0, 100);
+
+            if (surprise < 2)
+            {
+                doSurprise = true;
+                thisMetadata.GeoManager.Value = rng.Rand(500, 2000);
+            }
+            else if (surprise < 4)
+            {
+                doBounceSurprise = true;
+                thisMetadata.GeoManager.Value = rng.Rand(500, 2000);
+            }
+            else
+            {
+                thisMetadata.GeoManager.Value = rng.Rand(100, 1000);
+            }
+
+            if(doSurprise || doBounceSurprise)
+            {
+                thisMetadata.EnemyHealthManager.hp = thisMetadata.EnemyHealthManager.hp * 2;
+                supEffect = EnemyRandomizerDatabase.GetDatabase().Spawn("Fire Particles", null);
+                supEffect.transform.parent = transform;
+                supEffect.transform.localPosition = Vector3.zero;
+                var pe = supEffect.GetComponent<ParticleSystem>();
+                pe.startSize = 5;
+                pe.simulationSpace = ParticleSystemSimulationSpace.World;
+            }
+
+            if(superHusk < 2)
+            {
+                thisMetadata.EnemyHealthManager.hp = thisMetadata.EnemyHealthManager.hp * 4;
+                isSuperHusk = true;
+                thisMetadata.GeoManager.Value = thisMetadata.GeoManager.Value * 4;
+                superEffect = EnemyRandomizerDatabase.GetDatabase().Spawn("Particle System B", null);
+                superEffect.transform.parent = transform;
+                superEffect.transform.localPosition = Vector3.zero;
+            }
+
+            hp = thisMetadata.EnemyHealthManager.hp;
+        }
+
         protected virtual void OnEnable()
         {
             gameObject.StickToGround();
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(doSurprise)
+            {
+                EnemyRandomizerDatabase.GetDatabase().Spawn("Gas Explosion Recycle L", null);
+            }
+            else if(doBounceSurprise)
+            {
+                EnemyRandomizerDatabase.GetDatabase().Spawn("Galien Mini Hammer", null);
+            }
+        }
+
+        protected virtual void Update()
+        {
+            if(isSuperHusk)
+            {
+                int newHp = thisMetadata.EnemyHealthManager.hp;
+                if(hp > 0 && newHp < hp)
+                {
+                    EnemyRandomizerDatabase.GetDatabase().Spawn("Shot Markoth Nail", null);
+                    hp = newHp;
+                }
+            }
         }
     }
 
@@ -613,7 +706,8 @@ namespace EnemyRandomizerMod
     {
         protected virtual void OnEnable()
         {
-            gameObject.StickToGround();
+            //TODO: test
+            gameObject.StickToClosestSurface();
         }
     }
 
@@ -889,22 +983,6 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class FungoonBabyControl : DefaultSpawnedEnemyControl
-    {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
-    }
-
-    public class FungoonBabySpawner : DefaultSpawner<FungoonBabyControl> { }
-
-    public class FungoonBabyPrefabConfig : DefaultPrefabConfig<FungoonBabyControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
 
 
 
@@ -996,7 +1074,7 @@ namespace EnemyRandomizerMod
     {
         protected virtual void OnEnable()
         {
-            gameObject.StickToClosestSurface(100f, extraOffsetScale: 1.15f, alsoStickCorpse: false, flipped: false);
+            gameObject.StickToClosestSurface(100f, extraOffsetScale: 1.3f, alsoStickCorpse: false, flipped: false);
         }
     }
 
@@ -1065,23 +1143,6 @@ namespace EnemyRandomizerMod
 
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    /////
-    public class MushroomBrawlerControl : DefaultSpawnedEnemyControl
-    {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
-    }
-
-    public class MushroomBrawlerSpawner : DefaultSpawner<MushroomBrawlerControl> { }
-
-    public class MushroomBrawlerPrefabConfig : DefaultPrefabConfig<MushroomBrawlerControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
-
-
 
 
 
@@ -1089,9 +1150,16 @@ namespace EnemyRandomizerMod
     /////
     public class MushroomBabyControl : DefaultSpawnedEnemyControl
     {
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            this.thisMetadata.GeoManager.Value += 3;
+        }
+
         protected virtual void OnEnable()
         {
-            gameObject.StickToGround();
+            gameObject.StickToGround(1f);
         }
     }
 
@@ -1109,6 +1177,56 @@ namespace EnemyRandomizerMod
     /////
     public class MushroomRollerControl : DefaultSpawnedEnemyControl
     {
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            var control = gameObject.LocateMyFSM("Mush Roller");
+
+            RNG rng = new RNG();
+            rng.Reset();
+
+            int superShroom = rng.Rand(0, 100);
+
+            if (superShroom < 5)
+            {
+                List<Func<GameObject>> trailEffects = new List<Func<GameObject>>()
+                {
+                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Mega Jelly Zap", null),
+                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Falling Barrel", null),
+                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Electro Zap", null),
+                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Shot PickAxe", null),
+                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Dung Ball Small", null),
+                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Paint Shot P Down", null),
+                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Paint Shot B_fix", null),
+                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Paint Shot R", null),
+                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Gas Explosion Recycle L", null),
+                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Lil Jellyfish", null),
+                };
+
+                var selection = trailEffects.GetRandomElementFromList(rng);
+
+                var gasState = control.GetState("In Air");
+                gasState.DisableAction(3);
+                gasState.InsertCustomAction(() => {
+                    selection.Invoke();
+                }, 3);
+
+                var gasState2 = control.GetState("Roll");
+                gasState2.DisableAction(3);
+                gasState2.InsertCustomAction(() => {
+                    selection.Invoke();
+                }, 3);
+
+                var glow = EnemyRandomizerDatabase.GetDatabase().Spawn("Summon", null);
+                var ge = glow.GetComponent<ParticleSystem>();
+                glow.transform.parent = transform;
+                glow.transform.localPosition = Vector3.zero;
+                ge.simulationSpace = ParticleSystemSimulationSpace.World;
+                ge.startSize = 3;
+            }
+        }
+
         protected virtual void OnEnable()
         {
             gameObject.StickToGround();
@@ -1151,7 +1269,7 @@ namespace EnemyRandomizerMod
     {
         protected virtual void OnEnable()
         {
-            gameObject.StickToGround();
+            gameObject.StickToGround(1f);
         }
     }
 

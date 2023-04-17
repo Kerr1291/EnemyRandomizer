@@ -138,17 +138,59 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class SpitterControl : DefaultSpawnedEnemyControl { }
+    public class SpitterControl : DefaultSpawnedEnemyControl
+    {
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            if(this.thisMetadata.GeoManager.Value <= 0)
+            {
+                RNG rng = new RNG();
+                rng.Reset();
+                this.thisMetadata.GeoManager.Value = rng.Rand(1, 10);
+            }
+        }
+    }
 
     public class SpitterSpawner : DefaultSpawner<SpitterControl> { }
 
     public class SpitterPrefabConfig : DefaultPrefabConfig<SpitterControl> { }
+
+
+    public class SpitterRControl : DefaultSpawnedEnemyControl
+    {
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            RNG rng = new RNG();
+            rng.Reset();
+            this.thisMetadata.GeoManager.Value = rng.Rand(1, 10);
+        }
+    }
+
+    public class SpitterRSpawner : DefaultSpawner<SpitterRControl> { }
+
+    public class SpitterRPrefabConfig : DefaultPrefabConfig<SpitterRControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
 
 
 
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class FungoonBabyControl : DefaultSpawnedEnemyControl
+    {
+    }
+
+    public class FungoonBabySpawner : DefaultSpawner<FungoonBabyControl> { }
+
+    public class FungoonBabyPrefabConfig : DefaultPrefabConfig<FungoonBabyControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -371,7 +413,15 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class BeeHatchlingAmbientControl : DefaultSpawnedEnemyControl { }
+    public class BeeHatchlingAmbientControl : DefaultSpawnedEnemyControl
+    {
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            thisMetadata.GeoManager.Value = 2;
+        }
+    }
 
     public class BeeHatchlingAmbientSpawner : DefaultSpawner<BeeHatchlingAmbientControl> { }
 

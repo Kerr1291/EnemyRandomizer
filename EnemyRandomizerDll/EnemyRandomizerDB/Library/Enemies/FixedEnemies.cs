@@ -16,6 +16,37 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
+    public class MushroomBrawlerControl : FSMAreaControlEnemy
+    {
+        public override string FSMName => "Shroom Brawler";
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            control.ChangeTransition("Facing Right?", "FINISHED", "Wake");
+        }
+
+        protected virtual void OnEnable()
+        {
+            gameObject.StickToGround(1f);
+        }
+    }
+
+    public class MushroomBrawlerSpawner : DefaultSpawner<MushroomBrawlerControl> { }
+
+    public class MushroomBrawlerPrefabConfig : DefaultPrefabConfig<MushroomBrawlerControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
     public class MenderBugControl : FSMAreaControlEnemy
     {
         public override string FSMName => "Mender Bug Ctrl";
@@ -113,7 +144,7 @@ namespace EnemyRandomizerMod
         }
         protected virtual void OnEnable()
         {
-            gameObject.StickToGround();
+            gameObject.StickToGround(.7f);
         }
     }
 
@@ -130,7 +161,7 @@ namespace EnemyRandomizerMod
 
 
     /////////////////////////////////////////////////////////////////////////////
-    /////  TODO: fix like hatcher
+    /////  
     public class ZombieHiveControl : DefaultSpawnedEnemyControl
     {
         public int maxBabies = 3;
@@ -180,7 +211,7 @@ namespace EnemyRandomizerMod
             spot1.DisableAction(4);
             spot1.DisableAction(8);
             spot1.InsertCustomAction(() => {
-                var child = EnemyRandomizerDatabase.GetDatabase().Spawn("Hatchling", null);
+                var child = EnemyRandomizerDatabase.GetDatabase().Spawn("Bee Hatchling Ambient", null);
                 children.Add(child);
                 FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = child;
             },0); ;
@@ -194,7 +225,7 @@ namespace EnemyRandomizerMod
             spot2.DisableAction(4);
             spot2.DisableAction(8);
             spot2.InsertCustomAction(() => {
-                var child = EnemyRandomizerDatabase.GetDatabase().Spawn("Hatchling", null);
+                var child = EnemyRandomizerDatabase.GetDatabase().Spawn("Bee Hatchling Ambient", null);
                 children.Add(child);
                 FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = child;
             }, 0); ;

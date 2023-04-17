@@ -226,7 +226,7 @@ namespace EnemyRandomizerMod
         }
 
 
-        public static bool StickToGround(this GameObject gameObject, float extraOffsetScale = 0.33f)
+        public static bool StickToGround(this GameObject gameObject, float extraOffsetScale = 0.53f)
         {
             if (gameObject.GetComponent<Collider2D>() == null)
                 return false;

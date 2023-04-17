@@ -7,7 +7,6 @@ using UnityEngine;
 using Language;
 using On;
 using System.Linq;
-using System;
 using System.Reflection;
 using static EnemyRandomizerMod.PrefabObject;
 using UniRx;
@@ -65,6 +64,7 @@ namespace EnemyRandomizerMod
         public GameObject AvailableItem { get; protected set; }
         public PersistentBoolItem SceneSaveData { get; protected set; }
         public HealthManager EnemyHealthManager { get; protected set; }
+        public Geo GeoManager { get; protected set; }
         public Collider2D Collider { get; protected set; }
         public tk2dSprite Sprite { get; protected set; }
         public DamageHero HeroDamage { get; protected set; }
@@ -129,6 +129,8 @@ namespace EnemyRandomizerMod
                 {
                     IsBattleEnemy = true;
                 }
+
+                GeoManager = new Geo(this);
             }
 
             HeroDamage = sceneObject.GetComponent<DamageHero>();

@@ -172,12 +172,19 @@ namespace EnemyRandomizerMod
 
         protected virtual void SetupNormalEnemyAsBoss()
         {
-
+            if(thisMetadata.GeoManager != null)
+                this.thisMetadata.GeoManager.Value *= 5;
         }
 
         protected virtual void SetupBossAsNormalEnemy()
         {
-
+            if (originialMetadata != null)
+            {
+                RNG rng = new RNG();
+                rng.Reset();
+                int extra = rng.Rand(0, 24);
+                thisMetadata.GeoManager.Value = originialMetadata.GeoManager.Value + extra;
+            }
         }
 
 

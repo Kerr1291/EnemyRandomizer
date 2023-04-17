@@ -143,72 +143,77 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
  *  ENEMY STATUS
  *  
  *  
- *  EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Fly",null);
-    <string>Mosquito</string>                              -   IS BASIC ENEMY (see BasicEnemies.cs) && SHOULD WORK FINE
-    <string>Hopper</string>                                -   ""
-    <string>Bursting Bouncer</string>                      -   ""
-    <string>Blobble</string>                               -   "" ENEMY WAS MISSING, NOW SHOULD BE LOADING
-    <string>Giant Hopper</string>                          -   ""
-    <string>Spitting Zombie</string>                       -   ""
-    <string>Bursting Zombie</string>                       -   ""
-    <string>Angry Buzzer</string>                          -   ""
-    <string>Mantis Heavy</string>                          -   ""
-    <string>Lesser Mawlek</string>                         -   ""
-    <string>Mantis Heavy Flyer</string>                    -   ""
+ *  EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Lazy Flyer Enemy",null);
+    EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Bursting Bouncer",null);
+    BASIC FLYING ENEMIES
+    <string>Mosquito</string>                              -   
+    <string>Blobble</string>                               -   ""
     <string>Fly</string>                                   -   ""
-    <string>Roller</string>                                -   ""
-    <string>Mossman_Runner</string>                        -   ""
-    <string>Flukeman Top</string>                          -   ""
-    <string>Flukeman Bot</string>                          -   ""
-    <string>Crawler</string>                               -   ""
+    <string>Bursting Bouncer</string>                      -   ""
+    <string>Angry Buzzer</string>                          -   ""
+    <string>Mantis Heavy Flyer</string>                    -   ""
     <string>Buzzer</string>                                -   ""
-    <string>Zombie Runner</string>                         -   ""
     <string>Spitter</string>                               -   ""
-    <string>Zombie Hornhead</string>                       -   ""
-    <string>Zombie Barger</string>                         -   ""
-    <string>Prayer Slug</string>                           -   ""
+    <string>Spitter R</string>                             -   "" ADDED GEO?
+    <string>Ruins Flying Sentry</string>                   -   ""
+    <string>Ruins Flying Sentry Javelin</string>           -   ""
+    <string>Moss Flyer</string>                            -   ""
+    <string>Lazy Flyer Enemy</string>                      -   ""
+    <string>Fungoon Baby</string>                          -   ""
+    <string>Fungus Flyer</string>                          -   ""
+    <string>Jellyfish Baby</string>                        -   ""
+    <string>Spider Flyer</string>                          -   ""
+    <string>Crystal Flyer</string>                         -   ""  TODO: get their projectile
+    <string>Blow Fly</string>                              -   ""
+    <string>Bee Hatchling Ambient</string>                 -   ""   ADD GEO TO THIS (test)
+    <string>Inflater</string>                              -   ""
+    <string>Fluke Fly</string>                             -   ""
+    <string>Bee Stinger</string>                           -   ""
+    <string>Super Spitter</string>                         -   ""
+    
+    BASIC NONFLYING -- DOES NOT STICK TO GROUND
+    <string>Hopper</string>                                -   "" 
+    <string>Giant Hopper</string>                          -   ""
+    <string>Roller</string>                                -   ""
+    
+    BASIC NONFLYING
+    <string>Spitting Zombie</string>                       -   ""
+    <string>Bursting Zombie</string>                       -   "" 
+    <string>Mantis Heavy</string>                          -   "" 
+    <string>Lesser Mawlek</string>                         -   "" 
+    <string>Mossman_Runner</string>                        -   "" 
+    <string>Crawler</string>                               -   "" 
+    <string>Zombie Runner</string>                         -   "" 
+    <string>Zombie Hornhead</string>                       -   "" 
+    <string>Zombie Barger</string>                         -   "" 
+    <string>Prayer Slug</string>                           -   "" (maggot)
     <string>Zombie Shield</string>                         -   ""
     <string>Zombie Leaper</string>                         -   ""
     <string>Zombie Guard</string>                          -   ""
-    <string>Zombie Myla</string>                           -   ""
+    <string>Zombie Myla</string>                           -   "" REMOVED the superdash check
     <string>Royal Zombie Fat</string>                      -   ""
     <string>Royal Zombie</string>                          -   ""
     <string>Royal Zombie Coward</string>                   -   ""
     <string>Ruins Sentry</string>                          -   ""
-    <string>Ruins Flying Sentry</string>                   -   ""
-    <string>Ruins Flying Sentry Javelin</string>           -   ""
     <string>Ruins Sentry Fat</string>                      -   ""
     <string>Great Shield Zombie</string>                   -   ""
-    <string>Moss Walker</string>                           -   ""
-    <string>Moss Flyer</string>                            -   ""
+    <string>Moss Walker</string>                           -   "" TEST STICKING TO WALLS/CEILINGS
     <string>Mossman_Shaker</string>                        -   ""
-    <string>Grass Hopper</string>                          -   ""
-    <string>Lazy Flyer Enemy</string>                      -   ""
-    <string>Fungoon Baby</string>                          -   ""
-    <string>Fungus Flyer</string>                          -   ""
+    <string>Grass Hopper</string>                          -   ""                      
     <string>Zombie Fungus B</string>                       -   ""
     <string>Fung Crawler</string>                          -   ""
-    <string>Mushroom Brawler</string>                      -   ""
-    <string>Mushroom Baby</string>                         -   ""
-    <string>Mushroom Roller</string>                       -   ""
-    <string>Zombie Fungus A</string>                       -   ""
+    <string>Mushroom Brawler</string>                      -   "" NEEDS TO BE UP MORE -- NEEDS FIX SO IT ISN'T RANDOMIZED AND STARTS AWAKE
+    <string>Mushroom Baby</string>                         -   "" NEEDS TO BE UP MORE
+    <string>Mushroom Roller</string>                       -   "" Added some spice
+    <string>Zombie Fungus A</string>                       -   "" NEEDS TO BE UP SOME MORE
     <string>Mantis</string>                                -   ""
-    <string>Jellyfish Baby</string>                        -   ""
     <string>Garden Zombie</string>                         -   ""
-    <string>Moss Knight Fat</string>                       -   ""
+    <string>Moss Knight Fat</string>                       -   "" Bouncing useless fat moss guy
     <string>Zombie Miner</string>                          -   ""
-    <string>Crystal Flyer</string>                         -   ""
     <string>Slash Spider</string>                          -   ""
-    <string>Spider Flyer</string>                          -   ""
-    <string>Blow Fly</string>                              -   ""
-    <string>Bee Hatchling Ambient</string>                 -   ""   ADD GEO TO THIS
     <string>Flip Hopper</string>                           -   ""
-    <string>Inflater</string>                              -   ""
-    <string>Fluke Fly</string>                             -   ""
     <string>Flukeman</string>                              -   ""
-    <string>Bee Stinger</string>                           -   ""
     <string>Fat Fluke</string>                             -   ""
-    <string>Super Spitter</string>                         -   ""
     <string>Mawlek Col</string>                            -   ""   NOT A VALID ENEMY STRING (fix this?)
     <string>Colosseum Grass Hopper</string>                -   ""   NO LONGER A VALID ENEMY STRING
     <string>Crystal Crawler</string>                       -   WORKS - giant crystal crawler is fine
@@ -222,7 +227,7 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
 
     <string>Hatcher</string>                               -   FIXED -- ADDED DIE CHILDREN METHOD (test it) and changed child count to spawn more consistantly
     <string>Centipede Hatcher</string>                     -   NEEDS TESTING -- SEEMS TO WORK
-    <string>Zombie Hive</string>                           -   NEEDS TESTING  -- SPAWNING BROKEN
+    <string>Zombie Hive</string>                           -   NEEDS TESTING -- FIXED
     <string>Blocker</string>                               -   NEEDS TESTING -- SPAWNS INSIDE OF GROUND
     
 
@@ -273,7 +278,7 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Electric Mage</string>                         -   +++++++++++++++++NEEDS TESTING
     <string>Mender Bug</string>                            -   +++++++++++++++++NEEDS TESTING
     <string>Egg Sac</string>                               -   NEEDS ITEM TRANSFER/SPAWN SCRIPT
-    <string>Gorgeous Husk</string>                         -   NEEDS MEME SCRIPT
+    <string>Gorgeous Husk</string>                         -   Made more exciting
     <string>Ceiling Dropper</string>                       -   NEEDS TESTING
     <string>Mage Balloon</string>                          -   DONT SPAWN HIDDEN IN ARENAS
     <string>Plant Trap</string>                            -   NEEDS TESTING -- wasnnt placed on a surface
@@ -358,6 +363,8 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
 
 
 
+    <string>Flukeman Top</string>                          -   "" NO LONGER A VALID ENEMY STRING
+    <string>Flukeman Bot</string>                          -   "" NO LONGER A VALID ENEMY STRING
     <string>Super Spitter Col</string>                     -  NO LONGER A VALID ENEMY STRING
     <string>Giant Fly Col</string>                         -  NO LONGER A VALID ENEMY STRING
     <string>Buzzer Col</string>                            -  NO LONGER A VALID ENEMY STRING

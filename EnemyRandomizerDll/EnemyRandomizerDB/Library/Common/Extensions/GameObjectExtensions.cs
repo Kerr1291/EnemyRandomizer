@@ -389,6 +389,40 @@ namespace EnemyRandomizerMod
             return null;
         }
 
+
+        public static int GetSmallGeo(this HealthManager healthManager)
+        {
+            FieldInfo fi = typeof(HealthManager).GetField("smallGeoDrops", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fi != null)
+            {
+                return (int)fi.GetValue(healthManager);
+            }
+
+            return 0;
+        }
+
+        public static int GetMedGeo(this HealthManager healthManager)
+        {
+            FieldInfo fi = typeof(HealthManager).GetField("mediumGeoDrops", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fi != null)
+            {
+                return (int)fi.GetValue(healthManager);
+            }
+
+            return 0;
+        }
+
+        public static int GetLargeGeo(this HealthManager healthManager)
+        {
+            FieldInfo fi = typeof(HealthManager).GetField("largeGeoDrops", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fi != null)
+            {
+                return (int)fi.GetValue(healthManager);
+            }
+
+            return 0;
+        }
+
         public static float GetRightScale(this Walker walker)
         {
             FieldInfo fi = typeof(Walker).GetField("rightScale", BindingFlags.NonPublic | BindingFlags.Instance);
