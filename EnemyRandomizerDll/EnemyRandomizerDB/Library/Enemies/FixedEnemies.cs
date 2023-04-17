@@ -313,7 +313,7 @@ namespace EnemyRandomizerMod
 
         protected virtual void OnEnable()
         {
-            gameObject.StickToGround();
+            gameObject.StickToGround(1f);
         }
     }
 
@@ -350,7 +350,7 @@ namespace EnemyRandomizerMod
 
         protected virtual void OnEnable()
         {
-            gameObject.StickToGround();
+            gameObject.StickToGround(1f);
         }
     }
 

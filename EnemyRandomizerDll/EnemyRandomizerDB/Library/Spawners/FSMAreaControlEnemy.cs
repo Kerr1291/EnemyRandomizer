@@ -63,29 +63,67 @@ namespace EnemyRandomizerMod
 
         protected virtual void BuildArena()
         {
-            var hits = gameObject.GetNearestSurfaces(500f);
-
-            //Dev.LogVarArray($"{FSMName} -- ArenaHits", hits.Select(x => $"DIR:{x.Key} POINT:{x.Value.point}").ToList());
-
-            xR = new Range(hits[Vector2.left].point.x, hits[Vector2.right].point.x);
-            yR = new Range(hits[Vector2.down].point.y, hits[Vector2.up].point.y);
-
-            if (heroX == null)
+            try
             {
-                heroX = control.FsmVariables.GetFsmFloat("Hero X");
+                var hits = gameObject.GetNearestSurfaces(500f);
+
+                //Dev.LogVarArray($"{FSMName} -- ArenaHits", hits.Select(x => $"DIR:{x.Key} POINT:{x.Value.point}").ToList());
+
+                xR = new Range(hits[Vector2.left].point.x, hits[Vector2.right].point.x);
+                yR = new Range(hits[Vector2.down].point.y, hits[Vector2.up].point.y);
+            }
+            catch
+            {
+                Dev.LogError("Error calculating arena the range");
             }
 
-            if (heroY == null)
+            try
             {
-                heroY = control.FsmVariables.GetFsmFloat("Hero Y");
+
+                if (heroX == null)
+                {
+                    heroX = control.FsmVariables.GetFsmFloat("Hero X");
+                }
+
+                if (heroY == null)
+                {
+                    heroY = control.FsmVariables.GetFsmFloat("Hero Y");
+                }
+            }
+            catch
+            {
+                Dev.LogError("Error getting the hero's fsm variables");
             }
 
-            bounds = new Rect(gameObject.transform.position.x, gameObject.transform.position.y, xR.Size, yR.Size);
+            try
+            {
+                bounds = new Rect(gameObject.transform.position.x, gameObject.transform.position.y, xR.Size, yR.Size);
+            }
+            catch
+            {
+                Dev.LogError("Error calculating aggro bounds");
+            }
+
+            try
+            {
 #if DEBUG
-            SetupCustomDebugArea();
+                SetupCustomDebugArea();
 #endif
+            }
+            catch
+            {
+                Dev.LogError("Error calculating the debug area");
+            }
 
-            UpdateRefs(control, FloatRefs);
+
+            try
+            {
+                UpdateRefs(control, FloatRefs);
+            }
+            catch
+            {
+                Dev.LogError("Error updating the flaot refs");
+            }
         }
 
         protected virtual void UpdateRefs(PlayMakerFSM fsm, Dictionary<string, Func<FSMAreaControlEnemy, float>> refs)

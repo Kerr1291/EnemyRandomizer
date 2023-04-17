@@ -547,9 +547,10 @@ namespace EnemyRandomizerMod
                 var pe = supEffect.GetComponent<ParticleSystem>();
                 pe.startSize = 5;
                 pe.simulationSpace = ParticleSystemSimulationSpace.World;
-            }
+                supEffect.SafeSetActive(true);
+            }   
 
-            if(superHusk < 2)
+            if (superHusk < 2)
             {
                 thisMetadata.EnemyHealthManager.hp = thisMetadata.EnemyHealthManager.hp * 4;
                 isSuperHusk = true;
@@ -557,6 +558,7 @@ namespace EnemyRandomizerMod
                 superEffect = EnemyRandomizerDatabase.GetDatabase().Spawn("Particle System B", null);
                 superEffect.transform.parent = transform;
                 superEffect.transform.localPosition = Vector3.zero;
+                superEffect.SafeSetActive(true);
             }
 
             hp = thisMetadata.EnemyHealthManager.hp;
@@ -572,11 +574,11 @@ namespace EnemyRandomizerMod
             base.OnDestroy();
             if(doSurprise)
             {
-                EnemyRandomizerDatabase.GetDatabase().Spawn("Gas Explosion Recycle L", null);
+                EnemyRandomizerDatabase.GetDatabase().Spawn("Gas Explosion Recycle L", null).SafeSetActive(true);
             }
             else if(doBounceSurprise)
             {
-                EnemyRandomizerDatabase.GetDatabase().Spawn("Galien Mini Hammer", null);
+                EnemyRandomizerDatabase.GetDatabase().Spawn("Galien Mini Hammer", null).SafeSetActive(true);
             }
         }
 
@@ -587,7 +589,7 @@ namespace EnemyRandomizerMod
                 int newHp = thisMetadata.EnemyHealthManager.hp;
                 if(hp > 0 && newHp < hp)
                 {
-                    EnemyRandomizerDatabase.GetDatabase().Spawn("Shot Markoth Nail", null);
+                    EnemyRandomizerDatabase.GetDatabase().Spawn("Shot Markoth Nail", null).SafeSetActive(true);
                     hp = newHp;
                 }
             }
@@ -1209,13 +1211,17 @@ namespace EnemyRandomizerMod
                 var gasState = control.GetState("In Air");
                 gasState.DisableAction(3);
                 gasState.InsertCustomAction(() => {
-                    selection.Invoke();
+                    var result = selection.Invoke();
+                    result.transform.position = transform.position;
+                    result.SetActive(true);
                 }, 3);
 
                 var gasState2 = control.GetState("Roll");
                 gasState2.DisableAction(3);
                 gasState2.InsertCustomAction(() => {
-                    selection.Invoke();
+                    var result = selection.Invoke();
+                    result.transform.position = transform.position;
+                    result.SetActive(true);
                 }, 3);
 
                 var glow = EnemyRandomizerDatabase.GetDatabase().Spawn("Summon", null);
@@ -1224,6 +1230,7 @@ namespace EnemyRandomizerMod
                 glow.transform.localPosition = Vector3.zero;
                 ge.simulationSpace = ParticleSystemSimulationSpace.World;
                 ge.startSize = 3;
+                glow.SetActive(true);
             }
         }
 

@@ -84,12 +84,12 @@ namespace EnemyRandomizerMod
 
             Dev.Log("FLAMEBEARER_CONVERSION New prefab name = " + keyName);
 
-            if(keyName.Contains("Small"))
-                p.prefab.AddComponent<FlamebearerSmallControl>();
-            else if (keyName.Contains("Med"))
-                p.prefab.AddComponent<FlamebearerMedControl>();
-            else if (keyName.Contains("Large"))
-                p.prefab.AddComponent<FlamebearerLargeControl>();
+            //if(keyName.Contains("Small"))
+            //    p.prefab.AddComponent<FlamebearerSmallControl>();
+            //else if (keyName.Contains("Med"))
+            //    p.prefab.AddComponent<FlamebearerMedControl>();
+            //else if (keyName.Contains("Large"))
+            //    p.prefab.AddComponent<FlamebearerLargeControl>();
         }
     }
 }

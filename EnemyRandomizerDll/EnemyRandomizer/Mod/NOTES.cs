@@ -226,9 +226,9 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Hatcher",null);
 
     <string>Hatcher</string>                               -   FIXED -- ADDED DIE CHILDREN METHOD (test it) and changed child count to spawn more consistantly
-    <string>Centipede Hatcher</string>                     -   NEEDS TESTING -- SEEMS TO WORK
+    <string>Centipede Hatcher</string>                     -   FIXED
     <string>Zombie Hive</string>                           -   NEEDS TESTING -- FIXED
-    <string>Blocker</string>                               -   NEEDS TESTING -- SPAWNS INSIDE OF GROUND
+    <string>Blocker</string>                               -   NEEDS TESTING -- SPAWNS INSIDE OF GROUND? sorta works?
     
 
     <string>Giant Fly</string>                             -   WORKS BUT  --- FIX THIS ENEMY TO NOT START SLEEPING OR PLACE ON THE GROUND
@@ -239,11 +239,11 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Zote Boss</string>                             -   FIXED -- TODO: remove the white screen flash
  *  
     <string>Flamebearer Small</string>                     -   ERROR: DOES NOT SPAWN?
-    <string>Flamebearer Med</string>                       -   ERROR: HAS A NULLREF
+    <string>Flamebearer Med</string>                       -   ERROR: HAS A NULLREF -- TEST NEXT BUILD
     <string>Flamebearer Large</string>                     -   ERROR: SPAWNS IN A WEIRD SPOT
 
-    <string>Zombie Spider 2</string>                       -   Spawns under the world...
-    <string>Zombie Spider 1</string>                       -   Spawns under the world...
+    <string>Zombie Spider 2</string>                       -   MAYBE FIXED? TEST
+    <string>Zombie Spider 1</string>                       -   MAYBE FIXED? TEST
     <string>Zoteling</string>                              -   SPAWNS DISABLED? -- CORRECTLY SPAWNS WHEN USED AS REPLACEMENT -- NEEDS SOUND EFFECTS
     <string>Mawlek Body</string>                           -   NEED TO FIX HIM STARTING IN STEALTH STATE  -- MawlekBodyControl+<Start>  HAS A NULLREF
     <string>False Knight New</string>                      -   SEEMS TOTALLY BUSTED -- ALSO CAN'T SEEM TO KILL -- ONCE ENGAGED HE FIGHTS OK (BUT HIS BASIC COMBAT BODY IS INVISIBLE)
