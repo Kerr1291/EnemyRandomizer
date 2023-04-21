@@ -24,6 +24,9 @@ namespace EnemyRandomizerMod
         public static Func<EnemyRandomizerDatabase> GetDatabase;
         public static Func<ReactiveProperty<List<GameObject>>> GetBlackBorders;
 
+        //Params: Position, Object Name, (Optional: null or Object Replacement Name), bool: SetActive? -- Returns the created (or replaced) game object using the randomizer's custom methods
+        public static Func<Vector3, string, string, bool, GameObject> CustomSpawnWithLogic;
+
         /// <summary>
         /// Create this in the mod's GetPreloadNames() before returning from that method
         /// </summary>
@@ -375,6 +378,28 @@ namespace EnemyRandomizerMod
 
             //return the generated key
             return databaseKey;
+        }
+
+        public static GameObject CustomSpawn(Vector3 pos, string objectName, bool setActive = true)
+        {
+            try
+            {
+                var enemy = EnemyRandomizerDatabase.GetDatabase().Spawn(objectName, null);
+                if (enemy != null)
+                {
+                    enemy.transform.position = pos;
+                    //var defaultEnemyControl = enemy.GetComponent<DefaultSpawnedEnemyControl>();
+                    if (setActive)
+                        enemy.SetActive(true);
+                    return enemy;
+                }
+            }
+            catch (Exception e)
+            {
+                Dev.LogError("Custom Spawn Error: " + e.Message);
+            }
+
+            return null;
         }
     }
 

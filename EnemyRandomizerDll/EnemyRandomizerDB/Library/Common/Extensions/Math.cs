@@ -347,6 +347,19 @@ namespace EnemyRandomizerMod
             return sorted.FirstOrDefault();
         }
 
+        public static RaycastHit2D GetNearestRayDown(Vector2 origin, float max, Func<GameObject, bool> isRaycastHitObject)
+        {
+            List<RaycastHit2D[]> allHits = new List<RaycastHit2D[]>()
+            {
+                Physics2D.RaycastAll(origin, Vector2.down, max, Physics2D.AllLayers)
+            };
+
+            var allGoodHits = allHits.Where(x => x != null).SelectMany(y => y);
+            var hitsWithChunks = allGoodHits.Where(v => isRaycastHitObject(v.collider.gameObject));
+            var sorted = hitsWithChunks.Select(x => x).OrderBy(y => (y.point - origin).sqrMagnitude);
+            return sorted.FirstOrDefault();
+        }
+
         public static Vector3 GetNearestPointOn(Vector2 origin, float max, Func<GameObject, bool> isRaycastHitObject)
         {
             List<RaycastHit2D[]> allHits = new List<RaycastHit2D[]>()
@@ -360,6 +373,22 @@ namespace EnemyRandomizerMod
             var allGoodHits = allHits.Where(x => x != null).SelectMany(y => y);
             var hitsWithChunks = allGoodHits.Where(v => isRaycastHitObject(v.collider.gameObject));
             var sorted = hitsWithChunks.Select(x => x.point).OrderBy(y => (y - origin).sqrMagnitude);
+            return sorted.FirstOrDefault();
+        }
+
+        public static RaycastHit2D GetNearestRayOn(Vector2 origin, float max, Func<GameObject, bool> isRaycastHitObject)
+        {
+            List<RaycastHit2D[]> allHits = new List<RaycastHit2D[]>()
+            {
+                Physics2D.RaycastAll(origin, Vector2.up, max, Physics2D.AllLayers),
+                Physics2D.RaycastAll(origin, Vector2.down, max, Physics2D.AllLayers),
+                Physics2D.RaycastAll(origin, Vector2.left, max, Physics2D.AllLayers),
+                Physics2D.RaycastAll(origin, Vector2.right, max, Physics2D.AllLayers)
+            };
+
+            var allGoodHits = allHits.Where(x => x != null).SelectMany(y => y);
+            var hitsWithChunks = allGoodHits.Where(v => isRaycastHitObject(v.collider.gameObject));
+            var sorted = hitsWithChunks.Select(x => x).OrderBy(y => (y.point - origin).sqrMagnitude);
             return sorted.FirstOrDefault();
         }
 
@@ -392,6 +421,37 @@ namespace EnemyRandomizerMod
                 }
             }
             return lastGoodPoint;
+        }
+
+        public static RaycastHit2D GetRayOn(Vector2 origin, Vector2 dir, float max, Func<GameObject, bool> isRaycastHitObject)
+        {
+            Vector2 direction = dir;
+
+            RaycastHit2D[] toGround = Physics2D.RaycastAll(origin, direction, max, Physics2D.AllLayers);
+
+            Vector2 lastGoodPoint = direction * max;
+
+            if (toGround != null)
+            {
+                foreach (var v in toGround)
+                {
+                    if (isRaycastHitObject(v.collider.gameObject))
+                    {
+                        return v;
+                    }
+                    else
+                    {
+                        float newDist = (v.point - origin).magnitude;
+                        float oldDist = (lastGoodPoint - origin).magnitude;
+
+                        if (newDist < oldDist)
+                        {
+                            lastGoodPoint = v.point;
+                        }
+                    }
+                }
+            }
+            return new RaycastHit2D() { point = lastGoodPoint, distance = max, normal = -dir };
         }
     }
 }

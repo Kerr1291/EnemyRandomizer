@@ -25,6 +25,10 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
+            var init = control.GetState("Init");
+            init.DisableAction(2);
+            init.AddCustomAction(() => { control.SendEvent("START"); });
+
             float hpScale = GameObject.FindObjectsOfType<FlamebearerControl>().Length;
 
             if (hpScale < 1f)

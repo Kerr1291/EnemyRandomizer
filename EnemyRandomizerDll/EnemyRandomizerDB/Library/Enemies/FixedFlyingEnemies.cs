@@ -118,8 +118,10 @@ namespace EnemyRandomizerMod
             }
         }
 
-        protected virtual void Update()
+        protected override void Update()
         {
+            base.Update();
+
             if (children == null)
                 return;
 

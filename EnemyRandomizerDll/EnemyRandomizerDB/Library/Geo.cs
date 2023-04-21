@@ -115,31 +115,67 @@ namespace EnemyRandomizerMod
 
         public static bool operator <(Geo a, Geo b)
         {
+            if (a == null && b != null)
+                return false;
+            if (a != null && b == null)
+                return false;
+            if (a == null && b == null)
+                return false;
             return a.Value < b.Value;
         }
 
         public static bool operator >(Geo a, Geo b)
         {
+            if (a == null && b != null)
+                return false;
+            if (a != null && b == null)
+                return false;
+            if (a == null && b == null)
+                return false;
             return a.Value < b.Value;
         }
 
         public static bool operator ==(Geo a, Geo b)
         {
+            if (a == null && b != null)
+                return false;
+            if (a != null && b == null)
+                return false;
+            if (a == null && b == null)
+                return true;
             return a.Value == b.Value;
         }
 
         public static bool operator !=(Geo a, Geo b)
         {
+            if (a == null && b != null)
+                return true;
+            if (a != null && b == null)
+                return true;
+            if (a == null && b == null)
+                return false;
             return a.Value != b.Value;
         }
 
         public static bool operator <=(Geo a, Geo b)
         {
+            if (a == null && b != null)
+                return false;
+            if (a != null && b == null)
+                return false;
+            if (a == null && b == null)
+                return true;
             return a.Value <= b.Value;
         }
 
         public static bool operator >=(Geo a, Geo b)
         {
+            if (a == null && b != null)
+                return false;
+            if (a != null && b == null)
+                return false;
+            if (a == null && b == null)
+                return true;
             return a.Value <= b.Value;
         }
 

@@ -27,36 +27,24 @@ namespace EnemyRandomizerMod
 
 
 
-    
-    
+
+
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class HopperControl : DefaultSpawnedEnemyControl
-    {
-        //protected virtual void OnEnable()
-        //{
-        //    gameObject.StickToGround();
-        //}
-    }
+    public class HopperControl : DefaultSpawnedEnemyControl { }
 
     public class HopperSpawner : DefaultSpawner<HopperControl> { }
 
     public class HopperPrefabConfig : DefaultPrefabConfig<HopperControl> { }
-                                                                             /////
+    /////
     //////////////////////////////////////////////////////////////////////////////
-    
-    
+
+
 
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GiantHopperControl : DefaultSpawnedEnemyControl
-    {
-        //protected virtual void OnEnable()
-        //{
-        //    gameObject.StickToGround();
-        //}
-    }
+    public class GiantHopperControl : DefaultSpawnedEnemyControl { }
 
     public class GiantHopperSpawner : DefaultSpawner<GiantHopperControl> { }
 
@@ -521,7 +509,7 @@ namespace EnemyRandomizerMod
             rng.Reset();
 
             int surprise = rng.Rand(0, 20);
-            int superHusk = rng.Rand(0, 100);
+            int superHusk = rng.Rand(0, 40);
 
             if (surprise < 2)
             {
@@ -541,6 +529,7 @@ namespace EnemyRandomizerMod
             if(doSurprise || doBounceSurprise)
             {
                 thisMetadata.EnemyHealthManager.hp = thisMetadata.EnemyHealthManager.hp * 2;
+                thisMetadata.ApplySizeScale(thisMetadata.SizeScale + 0.2f);
                 supEffect = EnemyRandomizerDatabase.GetDatabase().Spawn("Fire Particles", null);
                 supEffect.transform.parent = transform;
                 supEffect.transform.localPosition = Vector3.zero;
@@ -553,6 +542,7 @@ namespace EnemyRandomizerMod
             if (superHusk < 2)
             {
                 thisMetadata.EnemyHealthManager.hp = thisMetadata.EnemyHealthManager.hp * 4;
+                thisMetadata.ApplySizeScale(thisMetadata.SizeScale + 0.4f);
                 isSuperHusk = true;
                 thisMetadata.GeoManager.Value = thisMetadata.GeoManager.Value * 4;
                 superEffect = EnemyRandomizerDatabase.GetDatabase().Spawn("Particle System B", null);
@@ -574,11 +564,11 @@ namespace EnemyRandomizerMod
             base.OnDestroy();
             if(doSurprise)
             {
-                EnemyRandomizerDatabase.GetDatabase().Spawn("Gas Explosion Recycle L", null).SafeSetActive(true);
+                EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Gas Explosion Recycle L", null, true);
             }
             else if(doBounceSurprise)
             {
-                EnemyRandomizerDatabase.GetDatabase().Spawn("Galien Mini Hammer", null).SafeSetActive(true);
+                EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Galien Mini Hammer", null, true);
             }
         }
 
@@ -615,11 +605,11 @@ namespace EnemyRandomizerMod
             var roof = SpawnerExtensions.GetRoof(gameObject);
             if (roof.distance > 200f)
             {
-                gameObject.StickToClosestSurface(200f, false);
+                gameObject.StickToClosestSurface(200f, .5f, false, true);
             }
             else
             {
-                gameObject.StickToRoof();
+                gameObject.StickToRoof(.5f, true);
             }
         }
     }
@@ -709,7 +699,7 @@ namespace EnemyRandomizerMod
         protected virtual void OnEnable()
         {
             //TODO: test
-            gameObject.StickToClosestSurface();
+            gameObject.StickToGround();
         }
     }
 
@@ -729,7 +719,7 @@ namespace EnemyRandomizerMod
     {
         protected virtual void OnEnable()
         {
-            gameObject.StickToClosestSurface(200f, -.5f, true, false);
+            gameObject.StickToClosestSurface(200f, -1.5f, false, false);
         }
     }
 
@@ -1179,6 +1169,9 @@ namespace EnemyRandomizerMod
     /////
     public class MushroomRollerControl : DefaultSpawnedEnemyControl
     {
+        public int superEffectsToSpawn = 5;
+        public float spawnRate = 0.15f;
+
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
@@ -1194,16 +1187,17 @@ namespace EnemyRandomizerMod
             {
                 List<Func<GameObject>> trailEffects = new List<Func<GameObject>>()
                 {
-                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Mega Jelly Zap", null),
-                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Falling Barrel", null),
-                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Electro Zap", null),
-                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Shot PickAxe", null),
-                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Dung Ball Small", null),
-                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Paint Shot P Down", null),
-                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Paint Shot B_fix", null),
-                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Paint Shot R", null),
-                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Gas Explosion Recycle L", null),
-                    () => EnemyRandomizerDatabase.GetDatabase().Spawn("Lil Jellyfish", null),
+                    //WARNING: using "CustomSpawnWithLogic" will override any replacement randomization modules
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Mega Jelly Zap", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Falling Barrel", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Electro Zap", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Shot PickAxe", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Dung Ball Small", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Paint Shot P Down", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Paint Shot B_fix", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Paint Shot R", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Gas Explosion Recycle L", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Lil Jellyfish", null, false),
                 };
 
                 var selection = trailEffects.GetRandomElementFromList(rng);
@@ -1211,17 +1205,13 @@ namespace EnemyRandomizerMod
                 var gasState = control.GetState("In Air");
                 gasState.DisableAction(3);
                 gasState.InsertCustomAction(() => {
-                    var result = selection.Invoke();
-                    result.transform.position = transform.position;
-                    result.SetActive(true);
+                    StartCoroutine(SuperEffectSpawns(selection));
                 }, 3);
 
                 var gasState2 = control.GetState("Roll");
                 gasState2.DisableAction(3);
                 gasState2.InsertCustomAction(() => {
-                    var result = selection.Invoke();
-                    result.transform.position = transform.position;
-                    result.SetActive(true);
+                    StartCoroutine(SuperEffectSpawns(selection));
                 }, 3);
 
                 var glow = EnemyRandomizerDatabase.GetDatabase().Spawn("Summon", null);
@@ -1237,6 +1227,17 @@ namespace EnemyRandomizerMod
         protected virtual void OnEnable()
         {
             gameObject.StickToGround();
+        }
+
+        protected virtual IEnumerator SuperEffectSpawns(Func<GameObject> spawner)
+        {
+            for(int i = 0; i < superEffectsToSpawn; ++i)
+            {
+                var result = spawner.Invoke();
+                result.transform.position = transform.position;
+                result.SetActive(true);
+                yield return new WaitForSeconds(spawnRate);
+            }
         }
     }
 

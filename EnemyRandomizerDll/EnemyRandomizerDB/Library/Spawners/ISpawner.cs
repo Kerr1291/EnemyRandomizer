@@ -225,6 +225,42 @@ namespace EnemyRandomizerMod
             return true;
         }
 
+        public static RaycastHit2D GetGroundRay(this GameObject gameObject)
+        {
+            if (gameObject.GetComponent<Collider2D>() == null)
+                return new RaycastHit2D() { point = new Vector2(-9999,-9999) };
+
+            RaycastHit2D closest = GetGround(gameObject);
+            return closest;
+        }
+
+        public static RaycastHit2D GetRoofRay(this GameObject gameObject)
+        {
+            if (gameObject.GetComponent<Collider2D>() == null)
+                return new RaycastHit2D() { point = new Vector2(-9999, -9999) };
+
+            RaycastHit2D closest = GetRoof(gameObject);
+            return closest;
+        }
+
+        public static RaycastHit2D GetLeftRay(this GameObject gameObject)
+        {
+            if (gameObject.GetComponent<Collider2D>() == null)
+                return new RaycastHit2D() { point = new Vector2(-9999, -9999) };
+
+            RaycastHit2D closest = GetLeft(gameObject);
+            return closest;
+        }
+
+        public static RaycastHit2D GetRightRay(this GameObject gameObject)
+        {
+            if (gameObject.GetComponent<Collider2D>() == null)
+                return new RaycastHit2D() { point = new Vector2(-9999, -9999) };
+
+            RaycastHit2D closest = GetRight(gameObject);
+            return closest;
+        }
+
 
         public static bool StickToGround(this GameObject gameObject, float extraOffsetScale = 0.53f)
         {
@@ -238,14 +274,14 @@ namespace EnemyRandomizerMod
             return true;
         }
 
-        public static bool StickToRoof(this GameObject gameObject, float extraOffsetScale = 0.33f)
+        public static bool StickToRoof(this GameObject gameObject, float extraOffsetScale = 0.33f, bool flipped = false)
         {
             if (gameObject.GetComponent<Collider2D>() == null)
                 return false;
 
             RaycastHit2D closest = GetRoof(gameObject);
             SetPositionToRayCollisionPoint(gameObject, closest, extraOffsetScale);
-            float newAngle = SetRotationToRayCollisionNormal(gameObject, closest, false);
+            float newAngle = SetRotationToRayCollisionNormal(gameObject, closest, flipped);
 
             return true;
         }
@@ -342,6 +378,18 @@ namespace EnemyRandomizerMod
             return result;
         }
 
+        public static RaycastHit2D GetLeft(GameObject gameObject)
+        {
+            RaycastHit2D result = FireRayLocal(gameObject, Vector2.left, float.MaxValue);
+            return result;
+        }
+
+        public static RaycastHit2D GetRight(GameObject gameObject)
+        {
+            RaycastHit2D result = FireRayLocal(gameObject, Vector2.right, float.MaxValue);
+            return result;
+        }
+
         public static Dictionary<Vector2,RaycastHit2D> GetNearestSurfaces(this GameObject gameObject, float maxDistanceToCheck)
         {
             Dictionary < Vector2, RaycastHit2D> raycastHits2D = new Dictionary<Vector2,RaycastHit2D>()
@@ -388,9 +436,29 @@ namespace EnemyRandomizerMod
             return Mathnv.GetVectorTo(entitiy.transform.position, dir, max, IsSurfaceOrPlatform);
         }
 
+        public static Vector3 GetVectorTo(Vector2 origin, Vector2 dir, float max)
+        {
+            return Mathnv.GetVectorTo(origin, dir, max, IsSurfaceOrPlatform);
+        }
+
         public static Vector3 GetPointOn(this GameObject entitiy, Vector2 dir, float max)
         {
             return Mathnv.GetPointOn(entitiy.transform.position, dir, max, IsSurfaceOrPlatform);
+        }
+
+        public static RaycastHit2D GetRayOn(this GameObject entitiy, Vector2 dir, float max)
+        {
+            return Mathnv.GetRayOn(entitiy.transform.position, dir, max, IsSurfaceOrPlatform);
+        }
+
+        public static Vector3 GetPointOn(Vector2 origin, Vector2 dir, float max)
+        {
+            return Mathnv.GetPointOn(origin, dir, max, IsSurfaceOrPlatform);
+        }
+
+        public static RaycastHit2D GetRayOn(Vector2 origin, Vector2 dir, float max)
+        {
+            return Mathnv.GetRayOn(origin, dir, max, IsSurfaceOrPlatform);
         }
 
         public static Vector3 GetNearestVectorToSurface(this GameObject entitiy, float max)
@@ -403,6 +471,21 @@ namespace EnemyRandomizerMod
             return Mathnv.GetNearestPointOn(entitiy.transform.position, max, IsSurfaceOrPlatform);
         }
 
+        public static Vector3 GetNearestPointOnSurface(Vector2 origin, float max)
+        {
+            return Mathnv.GetNearestPointOn(origin, max, IsSurfaceOrPlatform);
+        }
+
+        public static RaycastHit2D GetNearestRayOnSurface(this GameObject entitiy, float max)
+        {
+            return Mathnv.GetNearestRayOn(entitiy.transform.position, max, IsSurfaceOrPlatform);
+        }
+
+        public static RaycastHit2D GetNearestRayOnSurface(Vector2 origin, float max)
+        {
+            return Mathnv.GetNearestRayOn(origin, max, IsSurfaceOrPlatform);
+        }
+
         public static Vector3 GetNearestVectorDown(this GameObject entitiy, float max)
         {
             return Mathnv.GetNearestVectorDown(entitiy.transform.position, max, IsSurfaceOrPlatform);
@@ -411,6 +494,59 @@ namespace EnemyRandomizerMod
         public static Vector3 GetNearestPointDown(this GameObject entitiy, float max)
         {
             return Mathnv.GetNearestPointDown(entitiy.transform.position, max, IsSurfaceOrPlatform);
+        }
+
+        public static Vector3 GetNearestPointDown(Vector2 origin, float max)
+        {
+            return Mathnv.GetNearestPointDown(origin, max, IsSurfaceOrPlatform);
+        }
+
+        public static RaycastHit2D GetNearestRayDown(this GameObject entitiy, float max)
+        {
+            return Mathnv.GetNearestRayDown(entitiy.transform.position, max, IsSurfaceOrPlatform);
+        }
+
+        public static RaycastHit2D GetNearestRayDown(Vector2 origin, float max)
+        {
+            return Mathnv.GetNearestRayDown(origin, max, IsSurfaceOrPlatform);
+        }
+
+        public static RaycastHit2D GetNearestSurfaceX(GameObject gameObject, float maxDistanceToCheck)
+        {
+            List<RaycastHit2D> raycastHit2D = new List<RaycastHit2D>()
+            {
+                GetRayOn(gameObject, Vector2.down, maxDistanceToCheck),
+                GetRayOn(gameObject, Vector2.up, maxDistanceToCheck),
+                GetRayOn(gameObject, Vector2.left, maxDistanceToCheck),
+                GetRayOn(gameObject, Vector2.right, maxDistanceToCheck),
+            };
+
+            var closest = raycastHit2D.Where(x => x.collider != null).OrderBy(x => x.distance).FirstOrDefault();
+            return closest;
+        }
+
+        public static RaycastHit2D GetGroundX(GameObject gameObject)
+        {
+            RaycastHit2D result = GetNearestRayDown(gameObject, float.MaxValue);
+            return result;
+        }
+
+        public static RaycastHit2D GetRoofX(GameObject gameObject)
+        {
+            RaycastHit2D result = GetRayOn(gameObject, Vector2.up, float.MaxValue);
+            return result;
+        }
+
+        public static RaycastHit2D GetLeftX(GameObject gameObject)
+        {
+            RaycastHit2D result = GetRayOn(gameObject, Vector2.left, float.MaxValue);
+            return result;
+        }
+
+        public static RaycastHit2D GetRightX(GameObject gameObject)
+        {
+            RaycastHit2D result = GetRayOn(gameObject, Vector2.right, float.MaxValue);
+            return result;
         }
 
         public static IEnumerable<T> GetActionsOfType<T>(this GameObject gameObject)

@@ -619,6 +619,27 @@ namespace EnemyRandomizerMod
 
             return null;
         }
+
+        /// <summary>
+        /// Spawn exactly what you want!
+        /// Also allows to test the replacement functionality by providing an optional replacement which will be immediately processed.
+        /// </summary>
+        public static GameObject CustomSpawn(Vector3 pos, string objectName, string replacement = null, bool setActive = true)
+        {
+            try
+            {
+                EnemyRandomizer.bypassNextReplacement = true;
+                EnemyRandomizer.debugCustomReplacement = replacement;
+
+                return EnemyRandomizerDatabase.CustomSpawn(pos, objectName, setActive);
+            }
+            catch (Exception e)
+            {
+                Dev.LogError("Custom Spawn Error: " + e.Message);
+            }
+
+            return null;
+        }
     }
 
     public class RecycleOnDisable : MonoBehaviour
@@ -628,9 +649,6 @@ namespace EnemyRandomizerMod
             ObjectPool.Recycle(gameObject);
         }
     }
-
-
-
 }
 
 

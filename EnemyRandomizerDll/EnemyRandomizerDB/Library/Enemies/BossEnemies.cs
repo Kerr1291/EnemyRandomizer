@@ -16,91 +16,72 @@ using Satchel.Futils;
 
 namespace EnemyRandomizerMod
 {
-    public class FSMBossAreaControl : FSMAreaControlEnemy
-    {
-        public override string FSMName => "Control";
-
-        protected Dictionary<string, Func<FSMAreaControlEnemy, float>> CustomFloatRefs;
-
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => CustomFloatRefs;
-
-        public Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 16);
-        public float floorY => heroPos2d.FireRayGlobal(Vector2.down, 50f).point.y;
-        public float roofY => heroPos2d.FireRayGlobal(Vector2.up, 200f).point.y;
-        public float edgeL => heroPosWithOffset.FireRayGlobal(Vector2.left, 100f).point.y;
-        public float edgeR => heroPosWithOffset.FireRayGlobal(Vector2.right, 100f).point.y;
-
-        public Vector2 sizeOfAggroArea = new Vector2(25f, 25f);
-        public Vector2 centerOfAggroArea => gameObject.transform.position;
-        public UnityEngine.Bounds aggroBounds => new UnityEngine.Bounds(centerOfAggroArea, sizeOfAggroArea);
-
-        protected override bool HeroInAggroRange()
-        {
-            return aggroBounds.Contains(HeroController.instance.transform.position);
-        }
-
-        protected override void SetupCustomDebugArea()
-        {
-#if DEBUG
-
-            //radius
-            debugColliders.customLineCollections.Add(Color.red,
-                DebugColliders.GetPointsFromCollider(Vector2.one, centerOfAggroArea, sizeOfAggroArea.magnitude).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
-
-            //distance
-            debugColliders.customLineCollections.Add(Color.magenta, new List<Vector3>() {
-            heroPos2d, pos2d, heroPos2d
-            });
-
-            //bounds
-            debugColliders.customLineCollections.Add(Color.blue, debugColliders.GetPointsFromCollider(aggroBounds, false).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
-
-            Vector2 min = new Vector2(edgeL, floorY);
-            Vector2 max = new Vector2(edgeR, roofY);
-            var rect = new Rect();
-            rect = rect.SetMinMax(min, max);
-
-            //arena bounds
-            debugColliders.customLineCollections.Add(new Color(255, 255, 0), debugColliders.GetPointsFromCollider(rect, false).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
-
-            var down = heroPos2d.FireRayGlobal(Vector2.down, 50f).point;
-            var up = heroPos2d.FireRayGlobal(Vector2.up, 200f).point;
-            var left = heroPos2d.FireRayGlobal(Vector2.left, 100f).point;
-            var right = heroPos2d.FireRayGlobal(Vector2.right, 100f).point;
-
-            //floory
-            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
-            down, pos2d, down
-            });
-
-            //roofy
-            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
-            up, pos2d, up
-            });
-
-            //left
-            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
-            left, pos2d, left
-            });
-
-            //right
-            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
-            right, pos2d, right
-            });
-#endif
-        }
-    }
-
-
-
-
     /////////////////////////////////////////////////////////////////////////////
-    ///// TODO
-    public class MantisTraitorLordControl : DefaultSpawnedEnemyControl
+    ///// 
+    public class MantisTraitorLordControl : FSMBossAreaControl
     {
-        protected virtual void OnEnable()
+        public override string FSMName => "Mantis";
+
+        public GameObject megaMantisTallSlash;
+
+        public override void Setup(ObjectMetadata other)
         {
-            gameObject.StickToGround();
+            base.Setup(other);
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Fall");
+            this.AddResetToStateOnHide(control, "Init");
+
+            var fall = control.GetState("Fall");
+            fall.DisableAction(1);
+            fall.DisableAction(2);
+            fall.DisableAction(3);
+            fall.DisableAction(4);
+            fall.DisableAction(5);
+            fall.DisableAction(6);
+            fall.DisableAction(8);
+            fall.DisableAction(10);
+            fall.AddCustomAction(() => { control.SendEvent("LAND"); });
+
+            var introLand = control.GetState("Intro Land");
+            introLand.DisableAction(0);
+            introLand.DisableAction(1);
+            introLand.DisableAction(3);
+            introLand.DisableAction(6);
+            introLand.ChangeTransition("FINISHED", "Active");
+
+            var active = control.GetState("Active");
+            active.DisableAction(4);
+            active.DisableAction(5);
+            active.DisableAction(6);
+
+            var roarRecover = control.GetState("Roar Recover");
+            roarRecover.DisableAction(1);
+
+            var idle = control.GetState("Idle");
+            idle.DisableAction(0);
+            idle.InsertCustomAction(() => {  
+            if(thisMetadata.EnemyHealthManager.hp <= 0)
+                {
+                    EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Death Explode Boss", null, true);
+                    Destroy(gameObject);
+                }
+            },0);
+
+            var waves = control.GetState("Waves");
+
+            //extract wave prefab
+            megaMantisTallSlash = waves.GetAction<SpawnObjectFromGlobalPool>(0).gameObject.Value;
+            waves.DisableAction(0);
+            waves.DisableAction(3);
+
+            waves.InsertCustomAction(() => {
+                var s = megaMantisTallSlash.Spawn(transform.position, Quaternion.identity);
+                control.FsmVariables.GetFsmGameObject("Projectile").Value = s;
+            }, 3);
+            waves.InsertCustomAction(() => {
+                var s = megaMantisTallSlash.Spawn(transform.position, Quaternion.identity);
+                control.FsmVariables.GetFsmGameObject("Projectile").Value = s;
+            }, 0);
         }
     }
 
@@ -121,7 +102,87 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MimicSpiderControl : DefaultSpawnedEnemyControl { }
+    public class MimicSpiderControl : FSMBossAreaControl
+    {
+        public override string FSMName => "Mimic Spider";
+        public bool skipToIdle = false;
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Trans 1");
+            this.AddResetToStateOnHide(control, "Init");
+
+            var constrainx = gameObject.LocateMyFSM("constrain_x");
+            Destroy(constrainx);
+
+            var init = control.GetState("Init");
+            init.DisableAction(1);
+            init.DisableAction(2);
+
+            var trans1 = control.GetState("Trans 1");
+            trans1.DisableAction(0);
+            trans1.DisableAction(1);
+            trans1.DisableAction(3);
+            trans1.DisableAction(4);
+            trans1.DisableAction(5);
+            trans1.DisableAction(7);
+            trans1.DisableAction(8);
+            trans1.DisableAction(9);
+            trans1.DisableAction(10);
+            trans1.DisableAction(11);
+            trans1.GetAction<Wait>(12).time = 0.1f;
+            trans1.DisableAction(14);
+            trans1.InsertCustomAction(() => {
+                if (skipToIdle)
+                    control.SetState("Idle");
+            }, 0);
+
+            var trans2 = control.GetState("Trans 2");
+            trans1.GetAction<Wait>(2).time = 0.1f;
+
+            var trans3 = control.GetState("Trans 3");
+            trans1.GetAction<Wait>(2).time = 0.1f;
+
+            var trans4 = control.GetState("Trans 4");
+            trans1.GetAction<Wait>(1).time = 0.1f;
+
+            var trans5 = control.GetState("Trans 5");
+            trans1.GetAction<Wait>(1).time = 0.1f;
+
+            var roarEnd = control.GetState("Roar End");
+            roarEnd.DisableAction(0);
+            roarEnd.DisableAction(2);
+
+            var roarInit = control.GetState("Roar Init");            
+            roarInit.DisableAction(0);
+            roarInit.DisableAction(1);
+            roarInit.DisableAction(2);
+            roarInit.DisableAction(3);
+            roarInit.DisableAction(4);
+            roarInit.DisableAction(5);
+            roarInit.ChangeTransition("FINISHED", "Idle");
+            roarInit.InsertCustomAction(() => { skipToIdle = true; }, 0);
+
+            var encountered = control.GetState("Encountered");
+            this.OverrideState(control, "Encountered", () => { control.SetState("Init"); });
+
+            var idle = control.GetState("Idle");
+            idle.DisableAction(3);
+            idle.DisableAction(5);
+            idle.RemoveTransition("ROAR");
+
+            var aimJump = control.GetState("Aim Jump");
+            aimJump.DisableAction(1);
+            aimJump.InsertCustomAction(() => {
+                control.FsmVariables.GetFsmFloat("Target X").Value = heroPos2d.x;
+            },0);
+
+            var roofJump = control.GetState("Roof Jump?");
+            roofJump.ChangeTransition("ROOF SPIT", "Idle");
+        }
+    }
 
     public class MimicSpiderSpawner : DefaultSpawner<MimicSpiderControl> { }
 
@@ -146,94 +207,152 @@ namespace EnemyRandomizerMod
     public class LostKinControl : FSMBossAreaControl
     {
         public PlayMakerFSM balloonFSM;
+        public int maxBabies = 5;
+
+        //if true, will set the max babies to 5
+        public bool dieChildrenOnDeath = true;
+
+        public PlayMakerFSM FSM { get; set; }
+
+        public List<GameObject> children = new List<GameObject>();
 
         public override string FSMName => "IK Control";
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>();
-        }
+            balloonFSM = gameObject.LocateMyFSM("Spawn Balloon");
 
-        protected override void SetupNormalEnemyAsBoss()
-        {
-            base.SetupNormalEnemyAsBoss();
-            var fsm = gameObject.LocateMyFSM("Spawn Balloon");
-            balloonFSM = fsm;
-        }
+            var pause = control.GetState("Pause");
+            pause.DisableAction(1);
+            pause.AddCustomAction(() => { control.SendEvent("FINISHED"); });
 
-        protected override void SetupBossAsNormalEnemy()
-        {
-            base.SetupBossAsNormalEnemy();
-        }
+            var waiting = control.GetState("Waiting");
+            waiting.DisableAction(2);
+            waiting.DisableAction(3);
+            waiting.DisableAction(4);
+            waiting.DisableAction(5);
+            waiting.AddCustomAction(() => { control.SendEvent("BATTLE START"); });
 
-        FsmFloat adright;
-        FsmFloat leftx;
+            var closeGates = control.GetState("Close Gates");
+            closeGates.DisableAction(0);
+            closeGates.DisableAction(3);
 
-        FsmFloat mindstabh;
-        FsmFloat rightx;
+            var setx = control.GetState("Set X");
+            setx.DisableAction(0);
+            setx.DisableAction(2);
 
-        FsmFloat bxmax;
-        FsmFloat bxmin;
-        FsmFloat bymax;
-        FsmFloat bymin;
+            var introFall = control.GetState("Intro Fall");
+            introFall.DisableAction(2);
+            introFall.AddCustomAction(() => { control.SendEvent("LAND"); });
 
-        protected override void PreloadRefs()
-        {
+            control.ChangeTransition("Intro Land", "FINISHED", "First Counter");
+
+            var inAir2 = control.GetState("In Air 2");
+            inAir2.DisableAction(3);
+            inAir2.AddAction(new Wait() { time = 3f, finishEvent = new FsmEvent("LAND") });
+
+            var inAir = control.GetState("In Air");
+            inAir.InsertCustomAction(() => {
+                control.FsmVariables.GetFsmFloat("Min Dstab Height").Value = floorY + 6f;
+                control.FsmVariables.GetFsmFloat("Air Dash Height").Value = floorY + 3f;
+            }, 0);
+
+            var inert = balloonFSM.GetState("Inert");
+            inert.AddCustomAction(() => { balloonFSM.SendEvent("START SPAWN"); });
+
+            var stop = balloonFSM.GetState("Stop");
+            inert.AddCustomAction(() => { balloonFSM.SendEvent("START SPAWN"); });
+
+            this.OverrideState(balloonFSM, "Spawn", () =>
             {
-                var fsm = gameObject.LocateMyFSM("IK Control");
-                fsm.ChangeTransition("Init", "FINISHED", "Intro Fall");
-                var fallpos = control.GetFirstActionOfType<SetPosition>("Intro Fall");
-                fallpos.x.Value = pos2d.x;
-                fallpos.y.Value = floorY + 4f;
-                fsm.ChangeTransition("Intro Land", "FINISHED", "First Counter");
+                if (children.Count >= maxBabies)
+                {
+                    balloonFSM.SendEvent("STOP SPAWN");
+                }
+
+                if(CanEnemySeePlayer())
+                {
+                    var randomDir = UnityEngine.Random.insideUnitCircle;
+                    var spawnRay = SpawnerExtensions.GetRayOn(gameObject, randomDir, 12f);
+
+                    if(spawnRay.distance < 5f)
+                    {
+                        balloonFSM.SendEvent("CANCEL");
+                    }
+                    else
+                    {
+                        var spawnPoint = spawnRay.point - spawnRay.normal;
+                        var child = EnemyRandomizerDatabase.GetDatabase().Spawn("Parasite Balloon", null);
+                        child.transform.position = spawnPoint;
+                        child.SetActive(true);
+                        children.Add(child);
+                        balloonFSM.SendEvent("FINISHED");
+                    }
+                }
+                else
+                {
+                    balloonFSM.SendEvent("CANCEL");
+                }
+            });
+        }
+
+
+        protected override void OnDestroy()
+        {
+            if (dieChildrenOnDeath)
+            {
+                children.ForEach(x =>
+                {
+                    if (x == null)
+                        return;
+
+                    var hm = x.GetComponent<HealthManager>();
+                    if (hm != null)
+                    {
+                        hm.Die(null, AttackTypes.Generic, true);
+                    }
+                });
             }
-
-            adright = control.Fsm.GetFsmFloat("Air Dash Height");
-            leftx = control.Fsm.GetFsmFloat("Left X");
-            mindstabh = control.Fsm.GetFsmFloat("Min Dstab Height");
-            rightx = control.Fsm.GetFsmFloat("Right X");
-
-            if (balloonFSM != null)
-            {
-                bxmax = balloonFSM.Fsm.Variables.GetFsmFloat("X Max");
-                bxmin = balloonFSM.Fsm.Variables.GetFsmFloat("X Min");
-                bymax = balloonFSM.Fsm.Variables.GetFsmFloat("Y Max");
-                bymin = balloonFSM.Fsm.Variables.GetFsmFloat("Y Min");
-            }
         }
 
-        protected override void UpdateCustomRefs()
+        protected override void Update()
         {
-            adright.Value = YMIN + 3;
-            leftx.Value = XMIN;
-            mindstabh.Value = YMIN + 5;
-            rightx.Value = XMAX;
+            base.Update();
 
-            control.GetFirstActionOfType<RandomFloat>("Aim Jump 2").min = xR.Mid - 1;
-            control.GetFirstActionOfType<RandomFloat>("Aim Jump 2").max = xR.Mid + 1;
-            control.GetFirstActionOfType<SetPosition>("Set Pos").x = transform.position.x;
-            control.GetFirstActionOfType<SetPosition>("Set Pos").y = transform.position.y;
+            if (children == null)
+                return;
 
-            if (balloonFSM != null)
+            for (int i = 0; i < children.Count;)
             {
-                bxmax.Value = XMAX;
-                bxmin.Value = XMIN;
-                bymax.Value = YMAX;
-                bymin.Value = YMIN;
+                if (i >= children.Count)
+                    break;
+
+                if (children[i] == null)
+                {
+                    children.RemoveAt(i);
+                    continue;
+                }
+                else
+                {
+                    var hm = children[i].GetComponent<HealthManager>();
+                    if (hm.hp <= 0 || hm.isDead)
+                    {
+                        children.RemoveAt(i);
+                        continue;
+                    }
+                }
+
+                ++i;
             }
         }
     }
 
 
-    public class LostKinSpawner : DefaultSpawner<LostKinControl>
-    {
-    }
+    public class LostKinSpawner : DefaultSpawner<LostKinControl> { }
 
 
-    public class LostKinPrefabConfig : DefaultPrefabConfig<LostKinControl>
-    {
-    }
+    public class LostKinPrefabConfig : DefaultPrefabConfig<LostKinControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -247,76 +366,120 @@ namespace EnemyRandomizerMod
 
         protected override bool ControlCameraLocks => true;
 
-        public static float ShockwaveYPos = 3.23f;
-        public static float QuakeYPos = 2.15f;
-        public static float KnightQuakeYPos = .44f;
-
-        //public Range xR = new Range(6.98f, 34.75f);
-        //public Range yR = new Range(31.05f, 35.85f);
-
-        public Range oxR = new Range(6.98f, 34.75f);
-        public Range oyR = new Range(31.05f, 35.85f);
-
-        protected override void BuildArena()
-        {
-            var hits = gameObject.GetNearestSurfaces(500f);
-
-            oxR = new Range(hits[Vector2.left].point.x + .5f, hits[Vector2.right].point.x - .5f);
-            oyR = new Range(hits[Vector2.down].point.y + .5f, hits[Vector2.up].point.y - .5f);
-
-            //don't spawn in the roof
-            QuakeYPos = 0f;
-            KnightQuakeYPos = 0f;
-
-            base.BuildArena();
-        }
-
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                { "Tele X", x => x.xR.RandomValuef(new RNG(HeroController.instance.transform.position.x.GetHashCode()))},
-                { "Left X", x => x.xR.Min},
-                { "Right X", x => x.xR.Max},
-                { "Top Y", x => x.yR.Max},
-                { "Bot Y", x => x.yR.Min},
-                { "Ground Y", x => x.yR.Min},
-                { "Tele Y", x => x.yR.RandomValuef(new RNG(HeroController.instance.transform.position.y.GetHashCode()))},
-                { "Hero Mid X", x => x.xR.Mid},
-                { "X Scale", x => x.transform.localScale.x},
-                { "Hero X", x => x.HeroX },
-                { "Hero Y", x => x.HeroY },
-                { "Shockwave Y", x => x.yR.Min + ShockwaveYPos },
-                { "Quake Y", x => x.yR.Max + QuakeYPos },
-                { "Knight Quake Y Max", x => x.yR.Max + KnightQuakeYPos },
+            var pause = control.GetState("Pause");
+            pause.ChangeTransition("FINISHED", "Init");
 
-                { "Orb Min X", x => oxR.Min},
-                { "Orb Min Y", x => oyR.Min},
-                { "Orb Max X", x => oxR.Max},
-                { "Orb Max Y", x => oyR.Max},
-            };
+            var init = control.GetState("Init");
+            init.DisableAction(6);
+            init.AddCustomAction(() => { control.SendEvent("PHASE 2"); });
+            init.ChangeTransition("PHASE 2", "Tele Quake");
 
-            //set it up to just instantly start
+            var teleQuake  = control.GetState("Tele Quake");
+            teleQuake.DisableAction(3);
+            teleQuake.DisableAction(4);
+            teleQuake.DisableAction(5);
+
+            var shiftq = control.GetState("Shift?");
+            shiftq.DisableAction(1);
+            shiftq.DisableAction(2);
+            shiftq.DisableAction(3);
+
+            var teleportQ = control.GetState("TeleportQ");
+            teleportQ.DisableAction(0);
+            teleportQ.DisableAction(1);
+            teleportQ.DisableAction(2);
+            teleportQ.DisableAction(3);
+            teleportQ.DisableAction(7);
+            teleportQ.InsertCustomAction(() => {
+                var telePoint = heroPos2d + SpawnerExtensions.GetRayOn(heroPos2d, Vector2.up, 10f).point;
+                control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
+                transform.position = telePoint;
+                control.FsmVariables.GetFsmVector3("Teleport Point").Value = transform.position;
+            },0);
+
+            var quakeLand = control.GetState("Quake Land");
+            quakeLand.DisableAction(1);
+            quakeLand.DisableAction(9);
+            quakeLand.InsertCustomAction(() =>
             {
-                var fsm = control;
-                fsm.ChangeTransition("Init", "PHASE 2", "Tele Quake");
-                var init = fsm.GetState("Init");
-                var last = (FloatCompare)init.Actions.Last();
-                last.equal = last.lessThan;
-                last.greaterThan = last.lessThan;
-            }
+                gameObject.StickToGround();
+            }, 0);
+
+            var teleAway = control.GetState("Tele Away");
+            teleAway.DisableAction(1);
+            teleAway.DisableAction(2);
+
+            var awayValidq = control.GetState("Away Valid?");
+            awayValidq.DisableAction(0);
+            awayValidq.DisableAction(1);
+            awayValidq.DisableAction(3);
+            awayValidq.DisableAction(4);
+            awayValidq.DisableAction(5);
+            awayValidq.DisableAction(6);
+            awayValidq.AddCustomAction(() => { control.SendEvent("FINISHED"); });
+
+            var teleport = control.GetState("Teleport");
+            teleport.DisableAction(0);
+            teleport.DisableAction(2);
+            teleport.DisableAction(3);
+            teleport.DisableAction(4);
+            teleport.InsertCustomAction(() => {
+
+                var randomDir = UnityEngine.Random.insideUnitCircle;
+                var spawnRay = SpawnerExtensions.GetRayOn(gameObject, randomDir, 12f);
+                Vector2 telePoint;
+
+                if (spawnRay.distance > 2f)
+                {
+                    telePoint = spawnRay.point - spawnRay.normal * 2f;
+                }
+                else
+                {
+                    telePoint = spawnRay.point;
+                }
+
+                control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
+                transform.position = telePoint;
+                control.FsmVariables.GetFsmVector3("Teleport Point").Value = telePoint;
+            }, 0);
+
+            this.OverrideState(control, "Fireball Pos", () => { control.SendEvent("FINISHED"); });
+
+            var orbSummon = control.GetState("Orb Summon");
+            orbSummon.DisableAction(0);
+            orbSummon.InsertCustomAction(() => {
+
+                var randomDir = UnityEngine.Random.insideUnitCircle;
+                var spawnRay = SpawnerExtensions.GetRayOn(gameObject, randomDir, 6f);
+                Vector2 orbSpawnPoint;
+
+                if (spawnRay.distance > 2f)
+                {
+                    orbSpawnPoint = spawnRay.point - spawnRay.normal;
+                }
+                else
+                {
+                    orbSpawnPoint = spawnRay.point;
+                }
+
+                control.FsmVariables.GetFsmVector3("Fireball Pos").Value = orbSpawnPoint;
+            }, 0);
+
+            var spawnFireball = control.GetState("Spawn Fireball");
+            spawnFireball.DisableAction(0);
+
+            var teleOut = control.GetState("Tele Out");
+            teleOut.DisableAction(3);
         }
     }
 
-    public class MageLordPhase2Spawner : DefaultSpawner<MageLordPhase2Control>
-    {
-    }
+    public class MageLordPhase2Spawner : DefaultSpawner<MageLordPhase2Control> { }
 
-    public class MageLordPhase2PrefabConfig : DefaultPrefabConfig<MageLordPhase2Control>
-    {
-    }
+    public class MageLordPhase2PrefabConfig : DefaultPrefabConfig<MageLordPhase2Control> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -335,58 +498,155 @@ namespace EnemyRandomizerMod
 
         protected override bool ControlCameraLocks => true;
 
-        public static float ShockwaveYPos = 3.23f;
-        public static float QuakeYPos = 2.15f;
-        public static float KnightQuakeYPos = .44f;
-
-        protected override void BuildArena()
-        {
-            QuakeYPos = 0f;
-            KnightQuakeYPos = 0f;
-
-            base.BuildArena();
-        }
-
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            var destroyIfDefeated = gameObject.LocateMyFSM("Destroy If Defeated");
+            GameObject.Destroy(destroyIfDefeated);
+
+            var init = control.GetState("Init");
+            init.DisableAction(1);
+            init.DisableAction(4);
+            init.DisableAction(5);
+            init.AddCustomAction(() => { control.SendEvent("FINISHED"); });
+
+            var sleep = control.GetState("Sleep");
+            sleep.DisableAction(0);
+            sleep.AddCustomAction(() => { control.SendEvent("WAKE"); });
+            sleep.ChangeTransition("FINISHED", "Teleport In");
+
+            var teleportIn = control.GetState("Teleport In");
+            teleportIn.DisableAction(3);
+            teleportIn.DisableAction(4);
+            teleportIn.DisableAction(5);
+            teleportIn.DisableAction(6);
+            teleportIn.DisableAction(7);
+            teleportIn.InsertCustomAction(() => {
+
+                var randomDir = UnityEngine.Random.insideUnitCircle;
+                var spawnRay = SpawnerExtensions.GetRayOn(gameObject, randomDir, 12f);
+                Vector2 telePoint;
+
+                if (spawnRay.distance > 2f)
+                {
+                    telePoint = spawnRay.point - spawnRay.normal * 2f;
+                }
+                else
+                {
+                    telePoint = spawnRay.point;
+                }
+
+                control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
+                transform.position = telePoint;
+                control.FsmVariables.GetFsmVector3("Teleport Point").Value = telePoint;
+            }, 0);
+            teleportIn.ChangeTransition("FINISHED", "Set Idle Timer");
+
+            var teleAway = control.GetState("Tele Away");
+            teleAway.DisableAction(1);
+            teleAway.DisableAction(2);
+
+            var awayValidq = control.GetState("Away Valid?");
+            awayValidq.DisableAction(0);
+            awayValidq.DisableAction(1);
+            awayValidq.DisableAction(3);
+            awayValidq.DisableAction(4);
+            awayValidq.DisableAction(5);
+            awayValidq.DisableAction(6);
+            awayValidq.AddCustomAction(() => { control.SendEvent("FINISHED"); });
+
+            var teleport = control.GetState("Teleport");
+            teleport.DisableAction(4);
+            teleport.DisableAction(5);
+            teleport.DisableAction(6);
+            teleport.DisableAction(7);
+            teleport.DisableAction(11);
+            teleport.InsertCustomAction(() => {
+
+                var randomDir = UnityEngine.Random.insideUnitCircle;
+                var spawnRay = SpawnerExtensions.GetRayOn(gameObject, randomDir, 12f);
+                Vector2 telePoint;
+
+                if (spawnRay.distance > 2f)
+                {
+                    telePoint = spawnRay.point - spawnRay.normal * 2f;
+                }
+                else
+                {
+                    telePoint = spawnRay.point;
+                }
+
+                control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
+                transform.position = telePoint;
+                control.FsmVariables.GetFsmVector3("Teleport Point").Value = telePoint;
+            }, 0);
+
+            var shot = control.GetState("Shot");
+            shot.DisableAction(2);
+
+            var teleQuake = control.GetState("Tele Quake");
+            teleQuake.DisableAction(2);
+            teleQuake.DisableAction(3);
+            teleQuake.DisableAction(4);
+
+            var teleportQ = control.GetState("TeleportQ");
+            teleportQ.DisableAction(0);
+            teleportQ.DisableAction(3);
+            teleportQ.DisableAction(4);
+            teleportQ.DisableAction(5);
+            teleportQ.DisableAction(9);
+            teleportQ.InsertCustomAction(() => {
+                var telePoint = heroPos2d + SpawnerExtensions.GetRayOn(heroPos2d, Vector2.up, 10f).point;
+                control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
+                transform.position = telePoint;
+                control.FsmVariables.GetFsmVector3("Teleport Point").Value = transform.position;
+            }, 0);
+
+            var quakeDown = control.GetState("Quake Down");
+            quakeDown.DisableAction(6);
+            quakeDown.DisableAction(7);
+            quakeDown.AddCustomAction(() =>
             {
-                { "Tele X", x => x.xR.RandomValuef(new RNG(HeroController.instance.transform.position.x.GetHashCode()))},
-                { "Left X", x => x.xR.Min},
-                { "Right X", x => x.xR.Max},
-                { "Top Y", x => x.yR.Max},
-                { "Bot Y", x => x.yR.Min},
-                { "Ground Y", x => x.yR.Min},
-                { "Tele Y", x => x.yR.RandomValuef(new RNG(HeroController.instance.transform.position.y.GetHashCode()))},
-                { "Hero Mid X", x => x.xR.Mid},
-                { "X Scale", x => x.transform.localScale.x},
-                { "Hero X", x => x.HeroX },
-                { "Hero Y", x => x.HeroY },
-                { "Shockwave Y", x => x.yR.Min + ShockwaveYPos },
-                { "Quake Y", x => x.yR.Max + QuakeYPos },
-                { "Knight Quake Y Max", x => x.yR.Max + KnightQuakeYPos },
-            };
+                StartCoroutine(SendFinishedOnGroundOrDelay());
+            });
 
-            var badFSM = gameObject.LocateMyFSM("Destroy If Defeated");
-            GameObject.Destroy(badFSM);
+            var quakeLand = control.GetState("Quake Land");
+            quakeLand.DisableAction(3);
+            quakeLand.DisableAction(13);
+            quakeLand.InsertCustomAction(() =>
+            {
+                gameObject.StickToGround();
+            }, 0);
 
-            control.ChangeTransition("Init", "FINISHED", "Teleport");
-            control.ChangeTransition("Init", "GG BOSS", "Teleport");
+            var teleOut = control.GetState("Tele Out");
+            teleOut.DisableAction(2);
+        }
 
-            //setup default 'next event' state
-            control.FsmVariables.GetFsmString("Next Event").Value = "IDLE";
+        IEnumerator SendFinishedOnGroundOrDelay()
+        {
+            float timeout = 2f;
+            var rayToGround = SpawnerExtensions.GetGroundRay(gameObject);
+            while(rayToGround.distance > 1f)
+            {
+                if (timeout <= 0)
+                    break;
+
+                rayToGround = SpawnerExtensions.GetGroundRay(gameObject);
+                timeout -= Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
+
+            if (control.ActiveStateName == "Quake Down")
+                control.SendEvent("FINISHED");
+
+            yield break;
         }
     }
 
-    public class MageLordSpawner : DefaultSpawner<MageLordControl>
-    {
-    }
+    public class MageLordSpawner : DefaultSpawner<MageLordControl> { }
 
-    public class MageLordPrefabConfig : DefaultPrefabConfig<MageLordControl>
-    {
-    }
+    public class MageLordPrefabConfig : DefaultPrefabConfig<MageLordControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -412,18 +672,18 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"Dolphin Max X" , x => edgeR},
-                {"Dolphin Min X" , x => edgeL},
-                {"Max X" , x => edgeR},
-                {"Min X" , x => edgeL},
-                {"Erupt Y" , x => floorY},
-                {"Buried Y" , x => floorY - 3f},
-                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                //{"Left Pos" , x => edgeL},
-                //{"Right Pos" , x => edgeR},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    {"Dolphin Max X" , x => edgeR},
+            //    {"Dolphin Min X" , x => edgeL},
+            //    {"Max X" , x => edgeR},
+            //    {"Min X" , x => edgeL},
+            //    {"Erupt Y" , x => floorY},
+            //    {"Buried Y" , x => floorY - 3f},
+            //    //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+            //    //{"Left Pos" , x => edgeL},
+            //    //{"Right Pos" , x => edgeR},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Will Evade?");
             this.AddResetToStateOnHide(control, "Init");
@@ -468,12 +728,12 @@ namespace EnemyRandomizerMod
             base.Setup(other);
 
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"Left X" , x => edgeL},
-                {"Right X" , x => edgeR},
-                {"Ground Y" , x => floorY},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    {"Left X" , x => edgeL},
+            //    {"Right X" , x => edgeR},
+            //    {"Ground Y" , x => floorY},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
             this.AddResetToStateOnHide(control, "Init");
@@ -505,17 +765,17 @@ namespace EnemyRandomizerMod
             control.ChangeTransition("Death Explode", "FINISHED", "Send Death Event");
 
             var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
-            bpsp.x.Value = HeroX;
-            bpsp.x.Value = HeroY + 15f;
+            //bpsp.x.Value = HeroX;
+            //bpsp.x.Value = HeroY + 15f;
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"AD Max X" , x => edgeR},
-                {"AD Min X" , x => edgeL},
-                {"Max X" , x => edgeR},
-                {"Min X" , x => edgeL},
-                {"Ground Y" , x => floorY},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    {"AD Max X" , x => edgeR},
+            //    {"AD Min X" , x => edgeL},
+            //    {"Max X" , x => edgeR},
+            //    {"Min X" , x => edgeL},
+            //    {"Ground Y" , x => floorY},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "GG Bow");
             this.AddResetToStateOnHide(control, "Init");
@@ -548,18 +808,18 @@ namespace EnemyRandomizerMod
             control.ChangeTransition("Death Start", "FINISHED", "Death Explode");
 
             var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
-            bpsp.x.Value = HeroX;
-            bpsp.x.Value = HeroY + 15f;
+            //bpsp.x.Value = HeroX;
+            //bpsp.x.Value = HeroY + 15f;
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"AD Max X" , x => edgeR},
-                {"AD Min X" , x => edgeL},
-                {"Max X" , x => edgeR},
-                {"Min X" , x => edgeL},
-                {"Mid Y" , x => MidY},
-                {"Ground Y" , x => floorY},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    {"AD Max X" , x => edgeR},
+            //    {"AD Min X" , x => edgeL},
+            //    {"Max X" , x => edgeR},
+            //    {"Min X" , x => edgeL},
+            //    {"Mid Y" , x => MidY},
+            //    {"Ground Y" , x => floorY},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Tele Out");
             this.AddResetToStateOnHide(control, "Init");
@@ -599,14 +859,14 @@ namespace EnemyRandomizerMod
             //bpsp.x.Value = HeroX;
             //bpsp.x.Value = HeroY + 15f;
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"Right X" , x => edgeR},
-                {"Left X" , x => edgeL},
-                {"TeleRange Max" , x => edgeR},
-                {"TeleRange Min" , x => edgeL},
-                {"PuppetSlam Y" , x => floorY},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    {"Right X" , x => edgeR},
+            //    {"Left X" , x => edgeL},
+            //    {"TeleRange Max" , x => edgeR},
+            //    {"TeleRange Min" , x => edgeL},
+            //    {"PuppetSlam Y" , x => floorY},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Init Idle");
             this.AddResetToStateOnHide(control, "Init");
@@ -646,15 +906,15 @@ namespace EnemyRandomizerMod
             //bpsp.x.Value = HeroX;
             //bpsp.x.Value = HeroY + 15f;
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"Right X" , x => edgeR},
-                {"Left X" , x => edgeL},
-                {"TeleRange Max" , x => edgeR},
-                {"TeleRange Min" , x => edgeL},
-                {"Plume Y" , x => floorY - 4f},
-                {"Stun Land Y" , x => floorY},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    {"Right X" , x => edgeR},
+            //    {"Left X" , x => edgeL},
+            //    {"TeleRange Max" , x => edgeR},
+            //    {"TeleRange Min" , x => edgeL},
+            //    {"Plume Y" , x => floorY - 4f},
+            //    {"Stun Land Y" , x => floorY},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Intro 1");
             this.AddResetToStateOnHide(control, "Init");
@@ -694,12 +954,12 @@ namespace EnemyRandomizerMod
             //bpsp.x.Value = HeroX;
             //bpsp.x.Value = HeroY + 15f;
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                {"Left Pos" , x => edgeL},
-                {"Right Pos" , x => edgeR},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    {"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+            //    {"Left Pos" , x => edgeL},
+            //    {"Right Pos" , x => edgeR},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Get High");
             this.AddResetToStateOnHide(control, "Init");
@@ -727,12 +987,12 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                //{"Left Pos" , x => edgeL},
-                //{"Right Pos" , x => edgeR},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+            //    //{"Left Pos" , x => edgeL},
+            //    //{"Right Pos" , x => edgeR},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
             this.AddResetToStateOnHide(control, "Init");
@@ -760,12 +1020,12 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                //{"Left Pos" , x => edgeL},
-                //{"Right Pos" , x => edgeR},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+            //    //{"Left Pos" , x => edgeL},
+            //    //{"Right Pos" , x => edgeR},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
             this.AddResetToStateOnHide(control, "Init");
@@ -793,12 +1053,12 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                //{"Left Pos" , x => edgeL},
-                //{"Right Pos" , x => edgeR},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+            //    //{"Left Pos" , x => edgeL},
+            //    //{"Right Pos" , x => edgeR},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
             this.AddResetToStateOnHide(control, "Init");
@@ -826,12 +1086,12 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                //{"Left Pos" , x => edgeL},
-                //{"Right Pos" , x => edgeR},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+            //    //{"Left Pos" , x => edgeL},
+            //    //{"Right Pos" , x => edgeR},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
             this.AddResetToStateOnHide(control, "Init");
@@ -856,16 +1116,16 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"X Min" , x => edgeL},
-                {"X Max" , x => edgeR},
-                {"Y Min" , x => floorY},
-                {"Y Max" , x => roofY},
-                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                //{"Left Pos" , x => edgeL},
-                //{"Right Pos" , x => edgeR},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    {"X Min" , x => edgeL},
+            //    {"X Max" , x => edgeR},
+            //    {"Y Min" , x => floorY},
+            //    {"Y Max" , x => roofY},
+            //    //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+            //    //{"Left Pos" , x => edgeL},
+            //    //{"Right Pos" , x => edgeR},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
             this.AddResetToStateOnHide(control, "Init");
@@ -891,18 +1151,18 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                {"Dolphin Max X" , x => edgeR},
-                {"Dolphin Min X" , x => edgeL},
-                {"Max X" , x => edgeR},
-                {"Min X" , x => edgeL},
-                {"Erupt Y" , x => floorY},
-                {"Buried Y" , x => floorY - 3f},
-                //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                //{"Left Pos" , x => edgeL},
-                //{"Right Pos" , x => edgeR},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    {"Dolphin Max X" , x => edgeR},
+            //    {"Dolphin Min X" , x => edgeL},
+            //    {"Max X" , x => edgeR},
+            //    {"Min X" , x => edgeL},
+            //    {"Erupt Y" , x => floorY},
+            //    {"Buried Y" , x => floorY - 3f},
+            //    //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+            //    //{"Left Pos" , x => edgeL},
+            //    //{"Right Pos" , x => edgeR},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Underground");
             this.AddResetToStateOnHide(control, "Init");
@@ -932,18 +1192,18 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Dolphin Max X" , x => edgeR},
-                //{"Dolphin Min X" , x => edgeL},
-                //{"Max X" , x => edgeR},
-                //{"Min X" , x => edgeL},
-                //{"Erupt Y" , x => floorY},
-                //{"Buried Y" , x => floorY - 3f},
-                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                ////{"Left Pos" , x => edgeL},
-                ////{"Right Pos" , x => edgeR},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    //{"Dolphin Max X" , x => edgeR},
+            //    //{"Dolphin Min X" , x => edgeL},
+            //    //{"Max X" , x => edgeR},
+            //    //{"Min X" , x => edgeL},
+            //    //{"Erupt Y" , x => floorY},
+            //    //{"Buried Y" , x => floorY - 3f},
+            //    ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+            //    ////{"Left Pos" , x => edgeL},
+            //    ////{"Right Pos" , x => edgeR},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
             this.AddResetToStateOnHide(control, "Init");
@@ -972,18 +1232,18 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Dolphin Max X" , x => edgeR},
-                //{"Dolphin Min X" , x => edgeL},
-                //{"Max X" , x => edgeR},
-                //{"Min X" , x => edgeL},
-                //{"Erupt Y" , x => floorY},
-                //{"Buried Y" , x => floorY - 3f},
-                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                ////{"Left Pos" , x => edgeL},
-                ////{"Right Pos" , x => edgeR},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    //{"Dolphin Max X" , x => edgeR},
+            //    //{"Dolphin Min X" , x => edgeL},
+            //    //{"Max X" , x => edgeR},
+            //    //{"Min X" , x => edgeL},
+            //    //{"Erupt Y" , x => floorY},
+            //    //{"Buried Y" , x => floorY - 3f},
+            //    ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+            //    ////{"Left Pos" , x => edgeL},
+            //    ////{"Right Pos" , x => edgeR},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
             this.AddResetToStateOnHide(control, "Init");
@@ -1011,18 +1271,18 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Dolphin Max X" , x => edgeR},
-                //{"Dolphin Min X" , x => edgeL},
-                //{"Max X" , x => edgeR},
-                //{"Min X" , x => edgeL},
-                //{"Erupt Y" , x => floorY},
-                //{"Buried Y" , x => floorY - 3f},
-                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                ////{"Left Pos" , x => edgeL},
-                ////{"Right Pos" , x => edgeR},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    //{"Dolphin Max X" , x => edgeR},
+            //    //{"Dolphin Min X" , x => edgeL},
+            //    //{"Max X" , x => edgeR},
+            //    //{"Min X" , x => edgeL},
+            //    //{"Erupt Y" , x => floorY},
+            //    //{"Buried Y" , x => floorY - 3f},
+            //    ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+            //    ////{"Left Pos" , x => edgeL},
+            //    ////{"Right Pos" , x => edgeR},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
             this.AddResetToStateOnHide(control, "Init");
@@ -1049,18 +1309,18 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Dolphin Max X" , x => edgeR},
-                //{"Dolphin Min X" , x => edgeL},
-                //{"Max X" , x => edgeR},
-                //{"Min X" , x => edgeL},
-                //{"Erupt Y" , x => floorY},
-                //{"Buried Y" , x => floorY - 3f},
-                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                ////{"Left Pos" , x => edgeL},
-                ////{"Right Pos" , x => edgeR},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    //{"Dolphin Max X" , x => edgeR},
+            //    //{"Dolphin Min X" , x => edgeL},
+            //    //{"Max X" , x => edgeR},
+            //    //{"Min X" , x => edgeL},
+            //    //{"Erupt Y" , x => floorY},
+            //    //{"Buried Y" , x => floorY - 3f},
+            //    ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+            //    ////{"Left Pos" , x => edgeL},
+            //    ////{"Right Pos" , x => edgeR},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
             this.AddResetToStateOnHide(control, "Init");
@@ -1086,18 +1346,18 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Dolphin Max X" , x => edgeR},
-                //{"Dolphin Min X" , x => edgeL},
-                //{"Max X" , x => edgeR},
-                //{"Min X" , x => edgeL},
-                //{"Erupt Y" , x => floorY},
-                //{"Buried Y" , x => floorY - 3f},
-                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                ////{"Left Pos" , x => edgeL},
-                ////{"Right Pos" , x => edgeR},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    //{"Dolphin Max X" , x => edgeR},
+            //    //{"Dolphin Min X" , x => edgeL},
+            //    //{"Max X" , x => edgeR},
+            //    //{"Min X" , x => edgeL},
+            //    //{"Erupt Y" , x => floorY},
+            //    //{"Buried Y" , x => floorY - 3f},
+            //    ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+            //    ////{"Left Pos" , x => edgeL},
+            //    ////{"Right Pos" , x => edgeR},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
             this.AddResetToStateOnHide(control, "Init");
@@ -1122,18 +1382,18 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Dolphin Max X" , x => edgeR},
-                //{"Dolphin Min X" , x => edgeL},
-                //{"Max X" , x => edgeR},
-                //{"Min X" , x => edgeL},
-                //{"Erupt Y" , x => floorY},
-                //{"Buried Y" , x => floorY - 3f},
-                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                ////{"Left Pos" , x => edgeL},
-                ////{"Right Pos" , x => edgeR},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    //{"Dolphin Max X" , x => edgeR},
+            //    //{"Dolphin Min X" , x => edgeL},
+            //    //{"Max X" , x => edgeR},
+            //    //{"Min X" , x => edgeL},
+            //    //{"Erupt Y" , x => floorY},
+            //    //{"Buried Y" , x => floorY - 3f},
+            //    ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+            //    ////{"Left Pos" , x => edgeL},
+            //    ////{"Right Pos" , x => edgeR},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
             this.AddResetToStateOnHide(control, "Init");
@@ -1160,18 +1420,18 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Dolphin Max X" , x => edgeR},
-                //{"Dolphin Min X" , x => edgeL},
-                //{"Max X" , x => edgeR},
-                //{"Min X" , x => edgeL},
-                //{"Erupt Y" , x => floorY},
-                //{"Buried Y" , x => floorY - 3f},
-                ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-                ////{"Left Pos" , x => edgeL},
-                ////{"Right Pos" , x => edgeR},
-            };
+            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            //{
+            //    //{"Dolphin Max X" , x => edgeR},
+            //    //{"Dolphin Min X" , x => edgeL},
+            //    //{"Max X" , x => edgeR},
+            //    //{"Min X" , x => edgeL},
+            //    //{"Erupt Y" , x => floorY},
+            //    //{"Buried Y" , x => floorY - 3f},
+            //    ////{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
+            //    ////{"Left Pos" , x => edgeL},
+            //    ////{"Right Pos" , x => edgeR},
+            //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Start");
             this.AddResetToStateOnHide(control, "Init");
@@ -1312,17 +1572,17 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Control";
 
-        protected Dictionary<string, Func<FSMAreaControlEnemy, float>> HornetFloatRefs;
+        protected Dictionary<string, Func<DefaultSpawnedEnemyControl, float>> HornetFloatRefs;
 
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => HornetFloatRefs;
+        protected override Dictionary<string, Func<DefaultSpawnedEnemyControl, float>> FloatRefs => HornetFloatRefs;
 
-        public Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-        public Vector2 heroPos2d => new Vector2(HeroController.instance.transform.position.x, HeroController.instance.transform.position.y);
-        public Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 16);
-        public float floorY => heroPos2d.FireRayGlobal(Vector2.down, 50f).point.y;
-        public float roofY => heroPos2d.FireRayGlobal(Vector2.up, 200f).point.y;
-        public float edgeL => heroPosWithOffset.FireRayGlobal(Vector2.left, 100f).point.y;
-        public float edgeR => heroPosWithOffset.FireRayGlobal(Vector2.right, 100f).point.y;
+        //public Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+        //public Vector2 heroPos2d => new Vector2(HeroController.instance.transform.position.x, HeroController.instance.transform.position.y);
+        //public Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 16);
+        //public float floorY => heroPos2d.FireRayGlobal(Vector2.down, 50f).point.y;
+        //public float roofY => heroPos2d.FireRayGlobal(Vector2.up, 200f).point.y;
+        //public float edgeL => heroPosWithOffset.FireRayGlobal(Vector2.left, 100f).point.y;
+        //public float edgeR => heroPosWithOffset.FireRayGlobal(Vector2.right, 100f).point.y;
 
         //values taken from hornet's FSM
         public float sphereHeight = 33.8f - 27.55f;
@@ -1344,7 +1604,13 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            HornetFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            var deactive = gameObject.GetComponent<DeactivateIfPlayerdataTrue>();
+            if(deactive != null)
+            {
+                Destroy(deactive);
+            }
+
+            HornetFloatRefs = new Dictionary<string, Func<DefaultSpawnedEnemyControl, float>>()
             {
                 {"Wall X Left" , x => edgeL},
                 {"Wall X Right" , x => edgeR},
@@ -1398,17 +1664,17 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Control";
 
-        protected Dictionary<string, Func<FSMAreaControlEnemy, float>> HornetFloatRefs;
+        protected Dictionary<string, Func<DefaultSpawnedEnemyControl, float>> HornetFloatRefs;
 
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => HornetFloatRefs;
+        protected override Dictionary<string, Func<DefaultSpawnedEnemyControl, float>> FloatRefs => HornetFloatRefs;
 
-        public Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-        public Vector2 heroPos2d => new Vector2(HeroController.instance.transform.position.x, HeroController.instance.transform.position.y);
-        public Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 16);
-        public float floorY => heroPos2d.FireRayGlobal(Vector2.down, 50f).point.y;
-        public float roofY => heroPos2d.FireRayGlobal(Vector2.up, 200f).point.y;
-        public float edgeL => heroPosWithOffset.FireRayGlobal(Vector2.left, 100f).point.y;
-        public float edgeR => heroPosWithOffset.FireRayGlobal(Vector2.right, 100f).point.y;
+        //public Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+        //public Vector2 heroPos2d => new Vector2(HeroController.instance.transform.position.x, HeroController.instance.transform.position.y);
+        //public Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 16);
+        //public float floorY => heroPos2d.FireRayGlobal(Vector2.down, 50f).point.y;
+        //public float roofY => heroPos2d.FireRayGlobal(Vector2.up, 200f).point.y;
+        //public float edgeL => heroPosWithOffset.FireRayGlobal(Vector2.left, 100f).point.y;
+        //public float edgeR => heroPosWithOffset.FireRayGlobal(Vector2.right, 100f).point.y;
 
         //values taken from hornet's FSM
         public float sphereHeight = 33.8f - 27.55f;
@@ -1430,7 +1696,13 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            HornetFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            var deactive = gameObject.GetComponent<DeactivateIfPlayerdataTrue>();
+            if (deactive != null)
+            {
+                Destroy(deactive);
+            }
+
+            HornetFloatRefs = new Dictionary<string, Func<DefaultSpawnedEnemyControl, float>>()
             {
                 {"Wall X Left" , x => edgeL},
                 {"Wall X Right" , x => edgeR},
@@ -1487,7 +1759,6 @@ namespace EnemyRandomizerMod
     public class MegaZombieBeamMinerControl : FSMAreaControlEnemy
     {
         public override string FSMName => "Beam Miner";
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => EMPTY_FLOAT_REFS;
 
         protected override bool ControlCameraLocks => true;
 
@@ -1547,7 +1818,6 @@ namespace EnemyRandomizerMod
     public class ZombieBeamMinerRematchControl : FSMAreaControlEnemy
     {
         public override string FSMName => "Beam Miner";
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => EMPTY_FLOAT_REFS;
         protected override bool ControlCameraLocks => true;
 
         public override void Setup(ObjectMetadata other)
@@ -1644,208 +1914,208 @@ namespace EnemyRandomizerMod
         public PlayMakerFSM attackCommands;
         public PlayMakerFSM teleport;
 
-        protected override void SetupBossAsNormalEnemy()
-        {
-            base.SetupBossAsNormalEnemy();
+        //protected override void SetupBossAsNormalEnemy()
+        //{
+        //    base.SetupBossAsNormalEnemy();
 
-            if (thisMetadata.SizeScale >= 1f)
-            {
-                thisMetadata.ApplySizeScale(thisMetadata.SizeScale * 0.25f);
-            }
+        //    if (thisMetadata.SizeScale >= 1f)
+        //    {
+        //        thisMetadata.ApplySizeScale(thisMetadata.SizeScale * 0.25f);
+        //    }
 
-            if (teleport == null)
-                teleport = gameObject.LocateMyFSM("Teleport");
+        //    if (teleport == null)
+        //        teleport = gameObject.LocateMyFSM("Teleport");
 
-            if (control == null)
-                control = gameObject.LocateMyFSM("Control");
+        //    if (control == null)
+        //        control = gameObject.LocateMyFSM("Control");
 
-            if (attackCommands == null)
-                attackCommands = gameObject.LocateMyFSM("Attack Commands");
+        //    if (attackCommands == null)
+        //        attackCommands = gameObject.LocateMyFSM("Attack Commands");
 
-            //disable a variety of camera shake actions
+        //    //disable a variety of camera shake actions
 
-            try
-            {
-                control.GetState("Rage1 Start").GetFirstActionOfType<SetFsmBool>().variableName = string.Empty;
-                control.GetState("Rage1 Start").GetFirstActionOfType<SetFsmBool>().setValue.Clear();
-            }
-            catch (Exception e) { Dev.Log("error in Rage1"); }
+        //    try
+        //    {
+        //        control.GetState("Rage1 Start").GetFirstActionOfType<SetFsmBool>().variableName = string.Empty;
+        //        control.GetState("Rage1 Start").GetFirstActionOfType<SetFsmBool>().setValue.Clear();
+        //    }
+        //    catch (Exception e) { Dev.Log("error in Rage1"); }
 
-            try
-            {
-                control.GetState("Stun1 Start").GetFirstActionOfType<SetFsmBool>().variableName = string.Empty;
-                control.GetState("Stun1 Start").GetFirstActionOfType<SetFsmBool>().setValue.Clear();
-            }
-            catch (Exception e) { Dev.Log("error in Stun1"); }
+        //    try
+        //    {
+        //        control.GetState("Stun1 Start").GetFirstActionOfType<SetFsmBool>().variableName = string.Empty;
+        //        control.GetState("Stun1 Start").GetFirstActionOfType<SetFsmBool>().setValue.Clear();
+        //    }
+        //    catch (Exception e) { Dev.Log("error in Stun1"); }
 
-            try
-            {
-                control.GetState("Tendrils1").GetFirstActionOfType<SetFsmBool>().variableName = string.Empty;
-                control.GetState("Tendrils1").GetFirstActionOfType<SetFsmBool>().setValue.Clear();
-            }
-            catch (Exception e) { Dev.Log("error in Tendrils1"); }
+        //    try
+        //    {
+        //        control.GetState("Tendrils1").GetFirstActionOfType<SetFsmBool>().variableName = string.Empty;
+        //        control.GetState("Tendrils1").GetFirstActionOfType<SetFsmBool>().setValue.Clear();
+        //    }
+        //    catch (Exception e) { Dev.Log("error in Tendrils1"); }
 
-            try
-            {
-                //clip off both camera shakes
-                control.GetState("Stun1 Roar").Actions = control.GetState("Stun1 Roar").Actions.Take(control.GetState("Stun1 Roar").Actions.Length - 2).ToArray();
-            }
-            catch (Exception e) { Dev.Log("error in Stun1"); }
+        //    try
+        //    {
+        //        //clip off both camera shakes
+        //        control.GetState("Stun1 Roar").Actions = control.GetState("Stun1 Roar").Actions.Take(control.GetState("Stun1 Roar").Actions.Length - 2).ToArray();
+        //    }
+        //    catch (Exception e) { Dev.Log("error in Stun1"); }
 
-            try
-            {
-                control.GetState("Stun1 Out").GetAction<ActivateGameObject>(8).activate = false;
-                control.GetState("Stun1 Out").GetAction<SendEventByName>(9).sendEvent = string.Empty;
-            }
-            catch (Exception e) { Dev.Log("error in Stun1 out"); }
+        //    try
+        //    {
+        //        control.GetState("Stun1 Out").GetAction<ActivateGameObject>(8).activate = false;
+        //        control.GetState("Stun1 Out").GetAction<SendEventByName>(9).sendEvent = string.Empty;
+        //    }
+        //    catch (Exception e) { Dev.Log("error in Stun1 out"); }
 
 
-            //reduce this non-boss radiance to spawn only 1 or 2 shots
-            ChangeRandomIntRange(attackCommands, "Orb Antic", 1, 2);
+        //    //reduce this non-boss radiance to spawn only 1 or 2 shots
+        //    ChangeRandomIntRange(attackCommands, "Orb Antic", 1, 2);
 
-            //disable enemy kill shake commands that make the camera shake
-            DisableSendEvents(attackCommands
-                , ("EB 1", 3)
-                , ("EB 2", 4)
-                , ("EB 3", 4)
-                , ("EB 7", 3)
-                , ("EB 8", 3)
-                , ("EB 9", 3)
-                , ("Spawn Fireball", 0)
-                , ("Aim", 2)
-                );
+        //    //disable enemy kill shake commands that make the camera shake
+        //    DisableSendEvents(attackCommands
+        //        , ("EB 1", 3)
+        //        , ("EB 2", 4)
+        //        , ("EB 3", 4)
+        //        , ("EB 7", 3)
+        //        , ("EB 8", 3)
+        //        , ("EB 9", 3)
+        //        , ("Spawn Fireball", 0)
+        //        , ("Aim", 2)
+        //        );
 
-            var orbPrefab = attackCommands.GetState("Spawn Fireball").GetAction<SpawnObjectFromGlobalPool>(1).gameObject.Value;
-            orbPrefab.transform.localScale = orbPrefab.transform.localScale * 0.4f;
+        //    var orbPrefab = attackCommands.GetState("Spawn Fireball").GetAction<SpawnObjectFromGlobalPool>(1).gameObject.Value;
+        //    orbPrefab.transform.localScale = orbPrefab.transform.localScale * 0.4f;
 
-            if (orbPrefab.GetComponent<DamageHero>() != null)
-                orbPrefab.GetComponent<DamageHero>().damageDealt = 1;
+        //    if (orbPrefab.GetComponent<DamageHero>() != null)
+        //        orbPrefab.GetComponent<DamageHero>().damageDealt = 1;
 
-            //grab attacks
-            List<GameObject> attacks = new List<GameObject>() {
-            attackCommands.FsmVariables.GetFsmGameObject("Eye Beam Burst1").Value,
-            attackCommands.FsmVariables.GetFsmGameObject("Eye Beam Burst2").Value,
-            attackCommands.FsmVariables.GetFsmGameObject("Eye Beam Burst3").Value,
-            attackCommands.FsmVariables.GetFsmGameObject("Eye Beam Glow").Value,
-            attackCommands.FsmVariables.GetFsmGameObject("Self").Value,
-            attackCommands.FsmVariables.GetFsmGameObject("Shot Charge").Value,
-            };
+        //    //grab attacks
+        //    List<GameObject> attacks = new List<GameObject>() {
+        //    attackCommands.FsmVariables.GetFsmGameObject("Eye Beam Burst1").Value,
+        //    attackCommands.FsmVariables.GetFsmGameObject("Eye Beam Burst2").Value,
+        //    attackCommands.FsmVariables.GetFsmGameObject("Eye Beam Burst3").Value,
+        //    attackCommands.FsmVariables.GetFsmGameObject("Eye Beam Glow").Value,
+        //    attackCommands.FsmVariables.GetFsmGameObject("Self").Value,
+        //    attackCommands.FsmVariables.GetFsmGameObject("Shot Charge").Value,
+        //    };
 
-            //reduce damage and shrink attacks
-            attacks.Select(x => x.GetComponent<DamageHero>()).Where(x => x != null)
-                .ToList().ForEach(x => { x.damageDealt = 1; x.transform.localScale = new Vector3(.4f, .4f, 1f); });
+        //    //reduce damage and shrink attacks
+        //    attacks.Select(x => x.GetComponent<DamageHero>()).Where(x => x != null)
+        //        .ToList().ForEach(x => { x.damageDealt = 1; x.transform.localScale = new Vector3(.4f, .4f, 1f); });
 
-            control.ChangeTransition("Intro End", "FINISHED", "Arena 1 Idle");
+        //    control.ChangeTransition("Intro End", "FINISHED", "Arena 1 Idle");
 
-            //disable shaking from teleport
-            teleport.GetState("Arrive").GetAction<SendEventByName>(5).sendEvent = string.Empty;
+        //    //disable shaking from teleport
+        //    teleport.GetState("Arrive").GetAction<SendEventByName>(5).sendEvent = string.Empty;
 
-            //add aggro radius controls to teleport
-            InsertHiddenState(teleport, "Music?", "FINISHED", "Arrive");
+        //    //add aggro radius controls to teleport
+        //    InsertHiddenState(teleport, "Music?", "FINISHED", "Arrive");
 
-            control.RemoveAction("First Tele", 3); //remove big shake
+        //    control.RemoveAction("First Tele", 3); //remove big shake
 
-            InsertHiddenState(control, "First Tele", "TELEPORTED", "Intro Recover", createNewPreTransitionEvent: true);
+        //    InsertHiddenState(control, "First Tele", "TELEPORTED", "Intro Recover", createNewPreTransitionEvent: true);
 
-            //special behaviour for abs rad
-            if (FSMsUsingHiddenStates.Contains(control))
-                FSMsUsingHiddenStates.Remove(control);
+        //    //special behaviour for abs rad
+        //    if (FSMsUsingHiddenStates.Contains(control))
+        //        FSMsUsingHiddenStates.Remove(control);
 
-            //mute the init sfx
-            SetAudioOneShotVolume(control, "Set Arena 1");
-            SetAudioOneShotVolume(control, "First Tele");
-        }
+        //    //mute the init sfx
+        //    SetAudioOneShotVolume(control, "Set Arena 1");
+        //    SetAudioOneShotVolume(control, "First Tele");
+        //}
 
-        protected virtual Dictionary<string, Func<FSMAreaControlEnemy, float>> CommandFloatRefs
-        {
-            get => new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                { "Orb Max X", x => x.xR.Max - 1},
-                { "Orb Max Y", x => x.yR.Max - 1},
-                { "Orb Min X", x => x.xR.Min + 1},
-                { "Orb Min Y", x => x.yR.Min + 3},
-            };
-        }
+        //protected virtual Dictionary<string, Func<FSMAreaControlEnemy, float>> CommandFloatRefs
+        //{
+        //    get => new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+        //    {
+        //        //{ "Orb Max X", x => x.xR.Max - 1},
+        //        //{ "Orb Max Y", x => x.yR.Max - 1},
+        //        //{ "Orb Min X", x => x.xR.Min + 1},
+        //        //{ "Orb Min Y", x => x.yR.Min + 3},
+        //    };
+        //}
 
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs
-        {
-            get => new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                { "A1 X Max", x => x.xR.Max - 2},
-                { "A1 X Min", x => x.xR.Min + 2},
-            };
-        }
+        ////protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs
+        ////{
+        ////    get => new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+        ////    {
+        ////        //{ "A1 X Max", x => x.xR.Max - 2},
+        ////        //{ "A1 X Min", x => x.xR.Min + 2},
+        ////    };
+        ////}
 
-        protected override void UpdateRefs(PlayMakerFSM fsm, Dictionary<string, Func<FSMAreaControlEnemy, float>> refs)
-        {
-            base.UpdateRefs(fsm, refs);
-            base.UpdateRefs(attackCommands, CommandFloatRefs);
-        }
+        //protected override void UpdateRefs(PlayMakerFSM fsm, Dictionary<string, Func<FSMAreaControlEnemy, float>> refs)
+        //{
+        //    base.UpdateRefs(fsm, refs);
+        //    base.UpdateRefs(attackCommands, CommandFloatRefs);
+        //}
 
-        protected virtual void OnEnable()
-        {
-            BuildArena();
-        }
+        //protected virtual void OnEnable()
+        //{
+        //    BuildArena();
+        //}
 
-        protected override IEnumerator Start()
-        {
-            GameObject comb = attackCommands.GetFirstActionOfType<SpawnObjectFromGlobalPool>("Comb Top").gameObject.Value;
-            comb.transform.position = new Vector3(bounds.center.x, bounds.center.y, 0.006f);
+        //protected override IEnumerator Start()
+        //{
+        //    GameObject comb = attackCommands.GetFirstActionOfType<SpawnObjectFromGlobalPool>("Comb Top").gameObject.Value;
+        //    comb.transform.position = new Vector3(bounds.center.x, bounds.center.y, 0.006f);
 
-            PlayMakerFSM combControl = comb.LocateMyFSM("Control");
-            combControl.GetFirstActionOfType<SetPosition>("TL").x = bounds.xMin;
-            combControl.GetFirstActionOfType<SetPosition>("TR").x = bounds.xMax;
-            combControl.GetFirstActionOfType<RandomFloat>("Top").min = bounds.center.x - 1;
-            combControl.GetFirstActionOfType<RandomFloat>("Top").max = bounds.center.x + 1;
-            combControl.GetFirstActionOfType<SetPosition>("Top").y = bounds.yMax;
-            combControl.GetFirstActionOfType<SetPosition>("L").x = bounds.xMin;
-            combControl.GetFirstActionOfType<SetPosition>("L").y = bounds.center.y;
-            combControl.GetFirstActionOfType<SetPosition>("R").x = bounds.xMax;
-            combControl.GetFirstActionOfType<SetPosition>("R").y = bounds.center.y;
+        //    PlayMakerFSM combControl = comb.LocateMyFSM("Control");
+        //    combControl.GetFirstActionOfType<SetPosition>("TL").x = bounds.xMin;
+        //    combControl.GetFirstActionOfType<SetPosition>("TR").x = bounds.xMax;
+        //    combControl.GetFirstActionOfType<RandomFloat>("Top").min = bounds.center.x - 1;
+        //    combControl.GetFirstActionOfType<RandomFloat>("Top").max = bounds.center.x + 1;
+        //    combControl.GetFirstActionOfType<SetPosition>("Top").y = bounds.yMax;
+        //    combControl.GetFirstActionOfType<SetPosition>("L").x = bounds.xMin;
+        //    combControl.GetFirstActionOfType<SetPosition>("L").y = bounds.center.y;
+        //    combControl.GetFirstActionOfType<SetPosition>("R").x = bounds.xMax;
+        //    combControl.GetFirstActionOfType<SetPosition>("R").y = bounds.center.y;
 
-            attackCommands.GetFirstActionOfType<SpawnObjectFromGlobalPool>("Comb Top").gameObject = comb;
-            attackCommands.GetFirstActionOfType<SpawnObjectFromGlobalPool>("Comb L").gameObject = comb;
-            attackCommands.GetFirstActionOfType<SpawnObjectFromGlobalPool>("Comb R").gameObject = comb;
+        //    attackCommands.GetFirstActionOfType<SpawnObjectFromGlobalPool>("Comb Top").gameObject = comb;
+        //    attackCommands.GetFirstActionOfType<SpawnObjectFromGlobalPool>("Comb L").gameObject = comb;
+        //    attackCommands.GetFirstActionOfType<SpawnObjectFromGlobalPool>("Comb R").gameObject = comb;
 
-            control.GetAction<RandomFloat>("Set Dest", 4).min = transform.position.y - 1;
-            control.GetAction<RandomFloat>("Set Dest", 4).max = transform.position.y + 1;
-            control.GetAction<RandomFloat>("Set Dest 2", 4).min = transform.position.y - 1;
-            control.GetAction<RandomFloat>("Set Dest 2", 4).max = transform.position.y + 1;
-            control.GetFirstActionOfType<SetFsmVector3>("First Tele").setValue = transform.position;
-            control.GetFirstActionOfType<SetFsmVector3>("Rage1 Tele").setValue = transform.position;
+        //    control.GetAction<RandomFloat>("Set Dest", 4).min = transform.position.y - 1;
+        //    control.GetAction<RandomFloat>("Set Dest", 4).max = transform.position.y + 1;
+        //    control.GetAction<RandomFloat>("Set Dest 2", 4).min = transform.position.y - 1;
+        //    control.GetAction<RandomFloat>("Set Dest 2", 4).max = transform.position.y + 1;
+        //    control.GetFirstActionOfType<SetFsmVector3>("First Tele").setValue = transform.position;
+        //    control.GetFirstActionOfType<SetFsmVector3>("Rage1 Tele").setValue = transform.position;
 
-            AddResetToStateOnHide(control, "Init");
+        //    AddResetToStateOnHide(control, "Init");
 
-            var climbPlatsState = control.GetState("Climb Plats1");
-            climbPlatsState.Actions = new FsmStateAction[] {
-                new CustomFsmAction(() => Destroy(gameObject))
-            };
+        //    var climbPlatsState = control.GetState("Climb Plats1");
+        //    climbPlatsState.Actions = new FsmStateAction[] {
+        //        new CustomFsmAction(() => Destroy(gameObject))
+        //    };
 
-            if (!HeroInAggroRange())
-                Hide();
+        //    if (!HeroInAggroRange())
+        //        Hide();
 
-            yield return UpdateAggroRange();
-        }
+        //    yield return UpdateAggroRange();
+        //}
 
-        protected override bool HeroInAggroRange()
-        {
-            var size = new Vector2(30f, 30f);
-            var center = new Vector2(transform.position.x, transform.position.y);
-            var herop = new Vector2(HeroX, HeroY);
-            var dist = herop - center;
-            return (dist.sqrMagnitude < size.sqrMagnitude);
-        }
+        //protected override bool HeroInAggroRange()
+        //{
+        //    var size = new Vector2(30f, 30f);
+        //    var center = new Vector2(transform.position.x, transform.position.y);
+        //    var herop = new Vector2(HeroX, HeroY);
+        //    var dist = herop - center;
+        //    return (dist.sqrMagnitude < size.sqrMagnitude);
+        //}
 
-        protected override void Show()
-        {
-            base.Show();
+        //protected override void Show()
+        //{
+        //    base.Show();
 
-            if (control.ActiveStateName == "Hidden")
-            {
-                control.SendEvent("SHOW");
-                attackCommands.SetState("Init");
-            }
-        }
+        //    if (control.ActiveStateName == "Hidden")
+        //    {
+        //        control.SendEvent("SHOW");
+        //        attackCommands.SetState("Init");
+        //    }
+        //}
     }
 
     public class RadianceSpawner : DefaultSpawner<RadianceControl>
@@ -2654,10 +2924,11 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////   
-    public class GiantFlyControl : MonoBehaviour
+    public class GiantFlyControl : FSMBossAreaControl
     {
-        //default
-        public static int babiesToSpawn = 7;
+        public override string FSMName => "Big Fly Control";
+
+        public static int babiesToSpawn = 6;
 
         static string MODHOOK_BeforeSceneLoad(string sceneName)
         {
@@ -2666,7 +2937,34 @@ namespace EnemyRandomizerMod
             return sceneName;
         }
 
-        void OnEnable()
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            if (other.Source == gameObject)
+                return;
+
+            var init = control.GetState("Init");
+            init.ChangeTransition("FINISHED", "Wake");
+            init.DisableAction(0);
+            init.DisableAction(2);
+            init.DisableAction(6);
+
+            var wake = control.GetState("Wake");
+            wake.DisableAction(0);
+            wake.DisableAction(1);
+            wake.DisableAction(2);
+            wake.DisableAction(3);
+            wake.DisableAction(5);
+            wake.DisableAction(6);
+
+            var fly = control.GetState("Fly");
+            fly.DisableAction(5);
+            fly.DisableAction(6);
+            fly.DisableAction(7);
+        }
+
+        protected virtual void OnEnable()
         {
             ModHooks.BeforeSceneLoadHook -= MODHOOK_BeforeSceneLoad;
             ModHooks.BeforeSceneLoadHook += MODHOOK_BeforeSceneLoad;
@@ -2681,6 +2979,12 @@ namespace EnemyRandomizerMod
 
         static void SpawnBabies(GameObject owner)
         {
+            bool areBattleBabies = false;
+            if (BattleManager.Instance.Value != null && BattleManager.FSM != null)
+            {
+                areBattleBabies = true;
+            }
+
             try
             {
                 Dev.Log("has database ref: " + EnemyRandomizerDatabase.GetDatabase.GetInvocationList().Length);
@@ -2693,11 +2997,27 @@ namespace EnemyRandomizerMod
                         {
                             Dev.Log("trying to spawn via prefab " + src.prefabName);
                             result = EnemyRandomizerDatabase.GetDatabase().Spawn(src, null);
+
+                            if (areBattleBabies)
+                            {
+                                var bmo = result.GetOrAddComponent<BattleManagedObject>();
+                                ObjectMetadata metaInfo = new ObjectMetadata();
+                                metaInfo.Setup(result, EnemyRandomizerDatabase.GetDatabase());
+                                bmo.Setup(metaInfo);
+                            }
                         }
                         else
                         {
                             Dev.Log("trying to spawn via string");
                             result = EnemyRandomizerDatabase.GetDatabase().Spawn("Fly", null);
+
+                            if (areBattleBabies)
+                            {
+                                var bmo = result.GetOrAddComponent<BattleManagedObject>();
+                                ObjectMetadata metaInfo = new ObjectMetadata();
+                                metaInfo.Setup(result, EnemyRandomizerDatabase.GetDatabase());
+                                bmo.Setup(metaInfo);
+                            }
                         }
 
                         Dev.Log("result = " + result);
@@ -2727,15 +3047,9 @@ namespace EnemyRandomizerMod
         }
     }
 
-    internal class GiantFlyPrefabConfig : IPrefabConfig
-    {
-        public virtual void SetupPrefab(PrefabObject p)
-        {
-            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(p.prefab.name);
-            p.prefabName = keyName;
-            var control = p.prefab.AddComponent<GiantFlyControl>();
-        }
-    }
+    public class GiantFlySpawner : DefaultSpawner<GiantBuzzerControl> { }
+
+    public class GiantFlyPrefabConfig : DefaultPrefabConfig<GiantBuzzerControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -2949,62 +3263,86 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////   
-    public class FalseKnightDreamControl : FSMAreaControlEnemy
+    public class FalseKnightDreamControl : FSMBossAreaControl
     {
         public override string FSMName => "FalseyControl";
 
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs
-        {
-            get => new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-            };
-        }
+        public Vector3 originalScale;
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
-        }
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>();
 
-        protected override IEnumerator Start()
-        {
-            control.GetFirstActionOfType<SetPosition>("Dormant").y = yR.Max;
-            control.GetFirstActionOfType<GGCheckIfBossScene>("Dormant").regularSceneEvent = new FsmEvent("BATTLE START");
+            this.InsertHiddenState(control, "Init", "FINISHED", "Start Fall");
+            this.AddResetToStateOnHide(control, "Init");
 
-            //skip the music and title activation state
-            control.ChangeTransition("Check", "JUMP", "Idle");
-            control.ChangeTransition("Init", "FINISHED", "Dormant");
+            var init = control.GetState("Init");
+            init.DisableAction(1);
+            init.DisableAction(2);
+            init.DisableAction(9);
+            init.DisableAction(10);
+            init.DisableAction(11);
+            init.DisableAction(13);
+            init.DisableAction(14);
+            init.DisableAction(15);
+            init.DisableAction(18);
+            init.DisableAction(19);
 
-            //make it go to the death anim right away
-            control.GetFirstActionOfType<IntCompare>("Check GG").integer2.Value = 0;
-            control.GetFirstActionOfType<GGCheckIfBossScene>("Check GG").regularSceneEvent = new FsmEvent("GG BOSS");
+            var startFall = control.GetState("Start Fall");
+            startFall.DisableAction(1);
+            startFall.DisableAction(2);
+            startFall.DisableAction(3);
+            startFall.DisableAction(4);
+            startFall.DisableAction(5);
+            startFall.DisableAction(6);
+            startFall.DisableAction(7);
+            startFall.DisableAction(13);
+            startFall.DisableAction(14);
+            startFall.DisableAction(16);
+            startFall.DisableAction(17);
 
-            control.GetFirstActionOfType<GGCheckIfBossScene>("Dream Return").regularSceneEvent = new FsmEvent("GG BOSS");
+            startFall.ChangeTransition("FALL", "State 1");
 
-            yield return base.Start();
-        }
+            var state1 = control.GetState("State 1");
+            state1.DisableAction(1);
+            state1.DisableAction(4);
 
-        protected override void Show()
-        {
-            base.Show();
+            control.ChangeTransition("Check", "JUMP", "First Idle");
 
-            if (control.ActiveStateName == "Dormant")
-                control.SendEvent("BATTLE START");
+            var jump = control.GetState("Jump");
+            jump.DisableAction(4);
+
+            originalScale = transform.localScale;
+
+            var turnr = control.GetState("Turn R");
+            turnr.DisableAction(5);
+            turnr.InsertCustomAction(() => {
+                transform.localScale = new Vector3(originalScale.x * 1.3f, originalScale.y, originalScale.z);
+            }, 5);
+
+            var turnl = control.GetState("Turn L");
+            turnl.DisableAction(5);
+            turnl.InsertCustomAction(() => {
+                transform.localScale = new Vector3(originalScale.x * -1.3f, originalScale.y, originalScale.z);
+            }, 5);
+
+            var checkDirection = control.GetState("Check Direction");
+            checkDirection.RemoveTransition("TURN L");
+            checkDirection.RemoveTransition("TURN R");
+            checkDirection.RemoveTransition("FINISHED");
+            checkDirection.RemoveTransition("CANCEL");
+            this.OverrideState(control, "Check Direction", () => {
+                EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Death Explode Boss", null, true);
+                Destroy(gameObject);
+            });
         }
     }
 
 
-    public class FalseKnightDreamSpawner : DefaultSpawner<FalseKnightNewControl>
-    {
-    }
+    public class FalseKnightDreamSpawner : DefaultSpawner<FalseKnightDreamControl> { }
 
-    public class FalseKnightDreamPrefabConfig : DefaultPrefabConfig<FalseKnightNewControl>
-    {
-        public override void SetupPrefab(PrefabObject p)
-        {
-            base.SetupPrefab(p);
-
-        }
-    }
+    public class FalseKnightDreamPrefabConfig : DefaultPrefabConfig<FalseKnightDreamControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -3014,54 +3352,84 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////   
-    public class FalseKnightNewControl : FSMAreaControlEnemy
+    public class FalseKnightNewControl : FSMBossAreaControl
     {
         public override string FSMName => "FalseyControl";
 
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs
-        {
-            get => new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-            };
-        }
+        public Vector3 originalScale;
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
-        }
+            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>();
 
-        protected override IEnumerator Start()
-        {
-            control.GetFirstActionOfType<SetPosition>("Dormant").y = yR.Max;
-            control.GetFirstActionOfType<GGCheckIfBossScene>("Dormant").regularSceneEvent = new FsmEvent("BATTLE START");
+            this.InsertHiddenState(control, "Init", "FINISHED", "Start Fall");
+            this.AddResetToStateOnHide(control, "Init");
 
-            //skip the music and title activation state
+            var init = control.GetState("Init");
+            init.DisableAction(1);
+            init.DisableAction(2);
+            init.DisableAction(9);
+            init.DisableAction(10);
+            init.DisableAction(12);
+            init.DisableAction(13);
+            init.DisableAction(14);
+
+            var startFall = control.GetState("Start Fall");
+            startFall.DisableAction(1);
+            startFall.DisableAction(2);
+            startFall.DisableAction(3);
+            startFall.DisableAction(4);
+            startFall.DisableAction(5);
+            startFall.DisableAction(10);
+            startFall.DisableAction(11);
+            startFall.DisableAction(12);
+            startFall.DisableAction(13);
+
+            startFall.ChangeTransition("FALL", "State 1");
+
+            var state1 = control.GetState("State 1");
+            state1.DisableAction(1);
+            state1.DisableAction(4);
+
             control.ChangeTransition("Check", "JUMP", "First Idle");
 
-            //make it go to the death anim right away
-            control.GetFirstActionOfType<IntCompare>("Check If GG").integer2.Value = 0;
-            control.GetFirstActionOfType<GGCheckIfBossScene>("Check If GG").regularSceneEvent = new FsmEvent("GG BOSS");
+            var idle = control.GetState("Idle");
+            idle.DisableAction(0);
+            idle.ChangeTransition("ESCAPED", "Init");
 
-            control.GetFirstActionOfType<GGCheckIfBossScene>("Open Map Shop and Journal").regularSceneEvent = new FsmEvent("FINISHED");
-            control.GetFirstActionOfType<GGCheckIfBossScene>("Boss Death Sting").regularSceneEvent = new FsmEvent("FINISHED");
-            control.GetFirstActionOfType<GGCheckIfBossScene>("Boss Death Sting").regularSceneEvent = new FsmEvent("FINISHED");
+            var jump = control.GetState("Jump");
+            jump.DisableAction(6);
 
-            yield return base.Start();
+            originalScale = transform.localScale;
+
+            var turnr = control.GetState("Turn R");
+            turnr.DisableAction(5);
+            turnr.InsertCustomAction(() => {
+                transform.localScale = new Vector3(originalScale.x * 1.3f, originalScale.y, originalScale.z);
+            }, 5);
+
+            var turnl = control.GetState("Turn L");
+            turnl.DisableAction(5);
+            turnl.InsertCustomAction(() => {
+                transform.localScale = new Vector3(originalScale.x * -1.3f, originalScale.y, originalScale.z);
+            }, 5);
+
+            var checkDirection = control.GetState("Check Direction");
+            checkDirection.RemoveTransition("TURN L");
+            checkDirection.RemoveTransition("TURN R");
+            checkDirection.RemoveTransition("FINISHED");
+            this.OverrideState(control, "Check Direction", () => {
+                EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Death Explode Boss", null, true);
+                Destroy(gameObject);
+            });
         }
     }
 
-    public class FalseKnightNewSpawner : DefaultSpawner<FalseKnightNewControl>
-    {
-    }
 
-    public class FalseKnightNewPrefabConfig : DefaultPrefabConfig<FalseKnightNewControl>
-    {
-        public override void SetupPrefab(PrefabObject p)
-        {
-            base.SetupPrefab(p);
+    public class FalseKnightNewSpawner : DefaultSpawner<FalseKnightNewControl> { }
 
-        }
-    }
+    public class FalseKnightNewPrefabConfig : DefaultPrefabConfig<FalseKnightNewControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -3317,16 +3685,26 @@ namespace EnemyRandomizerMod
 
             //add a random timeout to force the lobster out of an infinite roll
             var rcCharging = control.GetState("RC Charging");
-            rcCharging.AddAction(new WaitRandom() { 
-            timeMin = 2f,
-            timeMax = 3f,
-            finishEvent = new FsmEvent("WALL")
+            rcCharging.AddCustomAction(() => {
+                StartCoroutine(FireAfterTime("RC Charging", "WALL", 2f));
+            });
+
+            var rcAir = control.GetState("RC Air");
+            rcAir.AddCustomAction(() => {
+                StartCoroutine(FireAfterTime("RC Air", "LAND", 2f));
             });
         }
 
         protected virtual void OnEnable()
         {
             gameObject.StickToGround();
+        }
+
+        protected virtual IEnumerator FireAfterTime(string state, string eventName, float t)
+        {
+            yield return new WaitForSeconds(t);
+            if (control.ActiveStateName == state)
+                control.SendEvent(eventName);
         }
     }
 
@@ -3474,3 +3852,57 @@ namespace EnemyRandomizerMod
     /////
     //////////////////////////////////////////////////////////////////////////////
 }
+
+
+
+
+//        protected override void SetupCustomDebugArea()
+//        {
+//#if DEBUG
+
+//            //radius
+//            debugColliders.customLineCollections.Add(Color.red,
+//                DebugColliders.GetPointsFromCollider(Vector2.one, centerOfAggroArea, sizeOfAggroArea.magnitude).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
+
+//            //distance
+//            debugColliders.customLineCollections.Add(Color.magenta, new List<Vector3>() {
+//            heroPos2d, pos2d, heroPos2d
+//            });
+
+//            //bounds
+//            debugColliders.customLineCollections.Add(Color.blue, debugColliders.GetPointsFromCollider(aggroBounds, false).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
+
+//            Vector2 min = new Vector2(edgeL, floorY);
+//            Vector2 max = new Vector2(edgeR, roofY);
+//            var rect = new Rect();
+//            rect = rect.SetMinMax(min, max);
+
+//            //arena bounds
+//            debugColliders.customLineCollections.Add(new Color(255, 255, 0), debugColliders.GetPointsFromCollider(rect, false).Select(x => new Vector3(x.x, x.y, debugColliders.zDepth)).ToList());
+
+//            var down = heroPos2d.FireRayGlobal(Vector2.down, 50f).point;
+//            var up = heroPos2d.FireRayGlobal(Vector2.up, 200f).point;
+//            var left = heroPos2d.FireRayGlobal(Vector2.left, 100f).point;
+//            var right = heroPos2d.FireRayGlobal(Vector2.right, 100f).point;
+
+//            //floory
+//            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
+//            down, pos2d, down
+//            });
+
+//            //roofy
+//            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
+//            up, pos2d, up
+//            });
+
+//            //left
+//            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
+//            left, pos2d, left
+//            });
+
+//            //right
+//            debugColliders.customLineCollections.Add(Color.green, new List<Vector3>() {
+//            right, pos2d, right
+//            });
+//#endif
+//        }

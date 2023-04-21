@@ -7,6 +7,7 @@ using HutongGames.PlayMaker.Actions;
 using HutongGames.PlayMaker;
 using Satchel;
 using Satchel.Futils;
+using System.Collections.Generic;
 
 namespace EnemyRandomizerMod
 {
@@ -15,13 +16,31 @@ namespace EnemyRandomizerMod
         public ObjectMetadata thisMetadata; 
         public ObjectMetadata originialMetadata;
         public DebugColliders debugColliders;
-
         public EnemyDreamnailReaction edr;
+        protected bool hasSeenPlayer;
 
-        public virtual float HeroX { get => HeroController.instance.transform.position.x; }
-        public virtual float HeroY { get => HeroController.instance.transform.position.y; }
+        public virtual PlayMakerFSM control { get; protected set; }
+
+        /// <summary>
+        /// override to autmatically set the control fsm used by this enemy in setup
+        /// </summary>
+        public virtual string FSMName => null;
+
+        protected Dictionary<string, Func<DefaultSpawnedEnemyControl, float>> CustomFloatRefs = new Dictionary<string, Func<DefaultSpawnedEnemyControl, float>>();
+        protected virtual Dictionary<string, Func<DefaultSpawnedEnemyControl, float>> FloatRefs => CustomFloatRefs;
+
+        protected virtual string FSMHiddenStateName => "Hidden";
+        protected List<PlayMakerFSM> FSMsUsingHiddenStates { get; set; }
+        protected Dictionary<PlayMakerFSM, string> FSMsWithResetToStateOnHide { get; set; }
+
         public Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
         public Vector2 heroPos2d => new Vector2(HeroController.instance.transform.position.x, HeroController.instance.transform.position.y);
+        public Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 1f);
+        public float floorY => heroPosWithOffset.FireRayGlobal(Vector2.down, float.MaxValue).point.y;
+        public float roofY => heroPosWithOffset.FireRayGlobal(Vector2.up, float.MaxValue).point.y;
+        public float edgeL => heroPosWithOffset.FireRayGlobal(Vector2.left, float.MaxValue).point.x;
+        public float edgeR => heroPosWithOffset.FireRayGlobal(Vector2.right, float.MaxValue).point.x;
+        public float aggroRange => 50f;
 
         public bool hasCustomDreamnailReaction;
         public string customDreamnailKey;
@@ -31,17 +50,188 @@ namespace EnemyRandomizerMod
         //TODO: put memes etc here
         public virtual string customDreamnailText { get => $"In another dream, I was a {customDreamnailSourceName}..."; }
 
+        /// <summary>
+        /// Override to enable this enemy to disable camera locks
+        /// </summary>
+        protected virtual bool ControlCameraLocks { get => false; }
+
+        protected virtual IEnumerable<CameraLockArea> cams { get; set; }
+
         public virtual void Setup(ObjectMetadata other)
         {
             thisMetadata = new ObjectMetadata();
             thisMetadata.Setup(gameObject, EnemyRandomizerDatabase.GetDatabase());
             originialMetadata = other;
 
+            if (ControlCameraLocks)
+                cams = GetCameraLocksFromScene();
+
+            if (control == null)
+                control = gameObject.LocateMyFSM(FSMName);
+
             SetDreamnailInfo();
             ConfigureRelativeToReplacement();
 #if DEBUG
             debugColliders = gameObject.AddComponent<DebugColliders>();
 #endif
+        }
+
+        protected virtual void Update()
+        {
+            UpdateFSMRefs();
+            CheckFSMsUsingHiddenStates();
+        }
+
+        protected virtual void UpdateRefs(PlayMakerFSM fsm, Dictionary<string, Func<DefaultSpawnedEnemyControl, float>> refs)
+        {
+            if (fsm == null)
+                return;
+
+            foreach (var fref in refs)
+            {
+                var fvar = fsm.FsmVariables.GetFsmFloat(fref.Key);
+                if (fvar != null)
+                {
+                    fvar.Value = fref.Value.Invoke(this);
+                }
+            }
+        }
+
+        protected virtual void UpdateFSMRefs()
+        {
+            if (control != null && FloatRefs != null && FloatRefs.Count > 0)
+                UpdateRefs(control, FloatRefs);
+        }
+
+        protected virtual void StopPhysicsBody()
+        {
+            var body = thisMetadata.PhysicsBody;
+            if (body != null)
+            {
+                body.velocity = Vector2.zero;
+                body.angularVelocity = 0f;
+            }
+        }
+
+        protected virtual bool CanEnemySeePlayer()
+        {
+            HeroController instance = HeroController.instance;
+            if (instance == null)
+            {
+                return false;
+            }
+            Vector2 vector = base.transform.position;
+            Vector2 vector2 = instance.transform.position;
+            Vector2 vector3 = vector2 - vector;
+            if (Physics2D.Raycast(vector, vector3.normalized, vector3.magnitude, 256))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        protected virtual float DistanceToPlayer()
+        {
+            Vector2 vector = pos2d;
+            Vector2 vector2 = heroPos2d;
+            Vector2 vector3 = vector2 - vector;
+            return vector3.magnitude;
+        }
+
+        protected virtual bool IsEnemyNearPlayer(float dist)
+        {
+            return DistanceToPlayer() <= dist;
+        }
+
+        protected virtual bool HeroInAggroRange()
+        {
+            if(hasSeenPlayer)
+            {
+                return IsEnemyNearPlayer(aggroRange);
+            }
+            else
+            {
+                if(CanEnemySeePlayer())
+                {
+                    hasSeenPlayer = true;
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        protected virtual void Hide()
+        {
+            if (control.enabled)
+            {
+                control.enabled = false;
+                StopPhysicsBody();
+            }
+
+            CheckFSMsWithResetOnHideStates();
+        }
+
+        protected virtual void Show()
+        {
+            if (!control.enabled)
+            {
+                control.enabled = true;
+                if (ControlCameraLocks)
+                    UnlockCameras(cams);
+            }
+        }
+
+        protected virtual void CheckFSMsUsingHiddenStates()
+        {
+            if (control == null)
+                return;
+
+            if (!control.enabled)
+                return;
+
+            if (FSMsUsingHiddenStates == null)
+                return;
+
+            if (FSMsUsingHiddenStates.Count <= 0)
+                return;
+
+            List<PlayMakerFSM> activatedFSMs = new List<PlayMakerFSM>();
+
+            foreach (var fsm in FSMsUsingHiddenStates)
+            {
+                if (!fsm.enabled && control.enabled)
+                    fsm.enabled = true;
+
+                if (fsm.ActiveStateName == FSMHiddenStateName)
+                {
+                    fsm.SendEvent("SHOW");
+
+                    activatedFSMs.Add(fsm);
+                }
+            }
+
+            activatedFSMs.ForEach(x => FSMsUsingHiddenStates.Remove(x));
+        }
+
+        protected virtual void CheckFSMsWithResetOnHideStates()
+        {
+            if (FSMsWithResetToStateOnHide == null)
+                return;
+
+            if (FSMsUsingHiddenStates.Count <= 0)
+                return;
+
+            foreach (var fsmStatePair in FSMsWithResetToStateOnHide)
+            {
+                if (!fsmStatePair.Key.enabled)
+                    continue;
+
+                fsmStatePair.Key.SetState(fsmStatePair.Value);
+            }
         }
 
         //protected virtual void OnDisable()
@@ -223,6 +413,10 @@ namespace EnemyRandomizerMod
             Vector2 up = Vector2.zero;
 
             float angle = transform.localEulerAngles.z % 360f;
+            if (!isFlipped)
+            {
+                angle = (angle + 180f) % 360f;
+            }
 
             if (angle < 5f && angle < 355f)
             {
@@ -242,6 +436,72 @@ namespace EnemyRandomizerMod
             }
 
             return up;
+        }
+
+        protected virtual IEnumerable<CameraLockArea> GetCameraLocksFromScene()
+        {
+            return gameObject.GetComponentsFromScene<CameraLockArea>();
+        }
+
+        protected virtual void UnlockCameras(IEnumerable<CameraLockArea> cameraLocks)
+        {
+            if (!ControlCameraLocks)
+                return;
+
+            foreach (var c in cameraLocks)
+            {
+                c.gameObject.SetActive(false);
+            }
+        }
+
+        protected virtual void InsertHiddenState(PlayMakerFSM fsm,
+            string preHideStateName, string preHideTransitionEventName,
+            string postHideStateName, bool createNewPreTransitionEvent = false)
+        {
+            if (FSMsUsingHiddenStates == null)
+                FSMsUsingHiddenStates = new List<PlayMakerFSM>();
+
+            try
+            {
+                //var preHideState = fsm.GetState("Music?");
+                var preHideState = fsm.GetState(preHideStateName);
+                var hidden = fsm.AddState(FSMHiddenStateName);
+
+                fsm.AddVariable<FsmBool>("IsAggro");
+                var isAggro = fsm.FsmVariables.GetFsmBool("IsAggro");
+                isAggro.Value = false;
+
+                if (createNewPreTransitionEvent)
+                {
+                    preHideState.RemoveTransition(preHideTransitionEventName);
+                    preHideState.AddTransition("FINISHED", FSMHiddenStateName);
+
+                    var waitAction = preHideState.Actions.OfType<Wait>().LastOrDefault();
+                    if (waitAction == null)
+                        preHideState.AddAction(new Wait() { finishEvent = new FsmEvent("FINISHED") });
+                    else
+                        waitAction.finishEvent = new FsmEvent("FINISHED");
+                }
+                else
+                {
+                    //change the state to stall the FSM until a player is nearby
+                    preHideState.ChangeTransition(preHideTransitionEventName, FSMHiddenStateName);
+                }
+
+                fsm.AddTransition(FSMHiddenStateName, "SHOW", postHideStateName);
+                hidden.AddAction(new BoolTest() { boolVariable = isAggro, isTrue = new FsmEvent("SHOW"), everyFrame = true });
+
+                FSMsUsingHiddenStates.Add(fsm);
+            }
+            catch (Exception e) { Dev.Log($"Error in adding an aggro range state to FSM:{fsm.name} PRE STATE:{preHideStateName} EVENT:{preHideTransitionEventName} POST-STATE:{postHideStateName}"); }
+        }
+
+        protected virtual void AddResetToStateOnHide(PlayMakerFSM fsm, string resetToState)
+        {
+            if (FSMsWithResetToStateOnHide == null)
+                FSMsWithResetToStateOnHide = new Dictionary<PlayMakerFSM, string>();
+
+            FSMsWithResetToStateOnHide.Add(fsm, resetToState);
         }
     }
 

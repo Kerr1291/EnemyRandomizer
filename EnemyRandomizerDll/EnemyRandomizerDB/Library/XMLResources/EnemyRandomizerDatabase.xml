@@ -964,14 +964,6 @@
             <string>ParticleSystem</string>
           </components>
         </SceneObject>
-        <SceneObject path="Flamebearer Spawn">
-          <components>
-            <string>Transform</string>
-            <string>SpriteRenderer</string>
-            <string>PlayMakerFSM</string>
-            <string>PersistentBoolItem</string>
-          </components>
-        </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_Town_Stag_Station">
@@ -2435,6 +2427,18 @@
         </SceneObject>
       </sceneObjects>
     </SceneData>
+    <SceneData name="Mines_10">
+      <sceneObjects>      
+        <SceneObject path="Flamebearer Spawn">
+          <components>
+            <string>Transform</string>
+            <string>SpriteRenderer</string>
+            <string>PlayMakerFSM</string>
+            <string>PersistentBoolItem</string>
+          </components>
+        </SceneObject>
+      </sceneObjects>
+    </SceneData>
     <SceneData name="Mines_11">
       <sceneObjects>
         <SceneObject path="Mines Crawler">
@@ -2444,7 +2448,7 @@
             <string>DamageHero</string>
             <string>EnemyDeathEffects</string>
           </components>
-        </SceneObject>
+        </SceneObject>    
       </sceneObjects>
     </SceneData>
     <SceneData name="Mines_16">

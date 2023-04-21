@@ -93,6 +93,9 @@ namespace EnemyRandomizerMod
             EnemyRandomizerDatabase.GetBlackBorders -= GetBlackBorders;
             EnemyRandomizerDatabase.GetBlackBorders += GetBlackBorders;
 
+            EnemyRandomizerDatabase.CustomSpawnWithLogic -= EnemyRandomizer.CustomSpawn;
+            EnemyRandomizerDatabase.CustomSpawnWithLogic += EnemyRandomizer.CustomSpawn;
+
             foreach (var logic in previousLogic)
             {
                 EnableLogic(logic);
@@ -110,6 +113,7 @@ namespace EnemyRandomizerMod
 
             EnemyRandomizerDatabase.GetDatabase -= GetCurrentDatabase;
             EnemyRandomizerDatabase.GetBlackBorders -= GetBlackBorders;
+            EnemyRandomizerDatabase.CustomSpawnWithLogic -= EnemyRandomizer.CustomSpawn;
         }
 
         public void EnableLogic(IRandomizerLogic newLogic, bool updateSettings = true)
@@ -213,7 +217,15 @@ namespace EnemyRandomizerMod
             var metaData = original.ToMetadata(database);
 
             if (metaData.IsBoss && !EnemyRandomizer.GlobalSettings.RandomizeBosses)
+            {
+                if(metaData.DatabaseName.Contains("Giant Fly"))
+                {
+                    var fixedBossControl = original.GetOrAddComponent<GiantFlyControl>();
+                    fixedBossControl.Setup(metaData);
+                }
+
                 return original;
+            }
 
             return OnObjectLoaded(metaData);
         }

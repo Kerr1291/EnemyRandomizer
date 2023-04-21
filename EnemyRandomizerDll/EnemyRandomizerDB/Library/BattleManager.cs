@@ -37,7 +37,7 @@ namespace EnemyRandomizerMod
         }
 
 
-        public static PlayMakerFSM FSM { get { return Instance.Value.GetComponent<PlayMakerFSM>(); } }
+        public static PlayMakerFSM FSM { get { return Instance.Value == null ? null : Instance.Value.GetComponent<PlayMakerFSM>(); } }
         public static ReactiveProperty<BattleManager> Instance { get; protected set; }
         public static ReactiveProperty<BattleStateMachine> StateMachine { get; protected set; }
 

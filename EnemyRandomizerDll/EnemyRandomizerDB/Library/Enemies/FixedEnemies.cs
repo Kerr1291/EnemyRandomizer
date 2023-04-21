@@ -24,7 +24,8 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            control.ChangeTransition("Facing Right?", "FINISHED", "Wake");
+            this.InsertHiddenState(control, "Facing Right?", "FINISHED", "Wake");
+            this.AddResetToStateOnHide(control, "Init");
         }
 
         protected virtual void OnEnable()
@@ -137,14 +138,14 @@ namespace EnemyRandomizerMod
             //link the shot to a roller prefab
             var roller = fsm.GetState("Roller");
             var setgoa = roller.GetFirstActionOfType<SetGameObject>();
-            setgoa.gameObject = EnemyRandomizerDatabase.GetDatabase().Enemies["Roller"].prefab;
+            setgoa.gameObject = EnemyRandomizerDatabase.GetDatabase().Spawn("Roller", null);
 
             //have it skip the roller assign state
             fsm.ChangeTransition("Fire", "FINISHED", "Shot Anim End");
         }
         protected virtual void OnEnable()
         {
-            gameObject.StickToGround(.7f);
+            gameObject.StickToGround(1f);
         }
     }
 
@@ -297,14 +298,16 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////   
-    public class ZombieSpider1Control : DefaultSpawnedEnemyControl
+    public class ZombieSpider1Control : FSMAreaControlEnemy
     {
-        public PlayMakerFSM control;
+        public override string FSMName => "Chase";
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
-            control = gameObject.LocateMyFSM("Chase");
+
+            var inert = control.GetState("Inert");
+            inert.AddCustomAction(() => { control.SetState("Init"); });
 
             //change the start transition to just begin the spawn antics
             control.ChangeTransition("Check Battle", "BATTLE", "Wait 2");
@@ -334,14 +337,16 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////   
-    public class ZombieSpider2Control : DefaultSpawnedEnemyControl
+    public class ZombieSpider2Control : FSMAreaControlEnemy
     {
-        public PlayMakerFSM control;
+        public override string FSMName => "Chase";
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
-            control = gameObject.LocateMyFSM("Chase");
+
+            var inert = control.GetState("Inert");
+            inert.AddCustomAction(() => { control.SetState("Init"); });
 
             //change the start transition to just begin the spawn antics
             control.ChangeTransition("Check Battle", "BATTLE", "Wait 2");
