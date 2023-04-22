@@ -45,11 +45,11 @@ namespace EnemyRandomizerMod
 
             this.OverrideState(control, "Set Pos", () =>
             {
-                control.FsmVariables.GetFsmFloat("X Pos").Value = HeroX;
+                control.FsmVariables.GetFsmFloat("X Pos").Value = heroPos2d.x;
                 float ypos = roofY - this.thisMetadata.ObjectSize.y * this.thisMetadata.SizeScale;
                 control.FsmVariables.GetFsmFloat("Y Pos").Value = ypos;
                 startYPos = ypos;
-                gameObject.transform.position = new Vector3(HeroX, ypos, 0f);
+                gameObject.transform.position = new Vector3(heroPos2d.x, ypos, 0f);
                 gameObject.GetComponent<Collider2D>().enabled = true;
                 gameObject.GetComponent<MeshRenderer>().enabled = true;
             });
@@ -62,11 +62,11 @@ namespace EnemyRandomizerMod
 
             this.OverrideState(control, "Out", () =>
             {
-                control.FsmVariables.GetFsmFloat("X Pos").Value = HeroX;
+                control.FsmVariables.GetFsmFloat("X Pos").Value = heroPos2d.x;
                 float ypos = roofY - this.thisMetadata.ObjectSize.y * this.thisMetadata.SizeScale;
                 control.FsmVariables.GetFsmFloat("Y Pos").Value = ypos;
                 startYPos = ypos;
-                gameObject.transform.position = new Vector3(HeroX, ypos, 0f);
+                gameObject.transform.position = new Vector3(heroPos2d.x, ypos, 0f);
                 gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
             });
 
@@ -83,21 +83,6 @@ namespace EnemyRandomizerMod
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Set Pos");
             this.AddResetToStateOnHide(control, "Init");
-
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Right X" , x => edgeR},
-                //{"Left X" , x => edgeL},
-                //{"TeleRange Max" , x => edgeR},
-                //{"TeleRange Min" , x => edgeL},
-                //{"PuppetSlam Y" , x => floorY},
-            };
-        }
-
-        protected override bool HeroInAggroRange()
-        {
-            return (heroPos2d - pos2d).magnitude < 25f;
         }
     }
 

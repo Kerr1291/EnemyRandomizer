@@ -25,11 +25,11 @@ namespace EnemyRandomizerMod
 
             this.OverrideState(control, "Pos", () =>
             {
-                control.FsmVariables.GetFsmFloat("X Pos").Value = HeroX;
+                control.FsmVariables.GetFsmFloat("X Pos").Value = heroPos2d.x;
                 float ypos = roofY;
                 control.FsmVariables.GetFsmFloat("Y Pos").Value = ypos;
                 startYPos = ypos;
-                gameObject.transform.position = new Vector3(HeroX, ypos, 0f);
+                gameObject.transform.position = new Vector3(heroPos2d.x, ypos, 0f);
                 gameObject.GetComponent<Collider2D>().enabled = true;
                 gameObject.GetComponent<MeshRenderer>().enabled = true;
             });
@@ -67,20 +67,6 @@ namespace EnemyRandomizerMod
 
             var retract = control.GetState("Retract");
             retract.ChangeTransition("FINISHED", "Init");
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Right X" , x => edgeR},
-                //{"Left X" , x => edgeL},
-                //{"TeleRange Max" , x => edgeR},
-                //{"TeleRange Min" , x => edgeL},
-                //{"PuppetSlam Y" , x => floorY},
-            };
-        }
-
-        protected override bool HeroInAggroRange()
-        {
-            return (heroPos2d - pos2d).magnitude < 50f;
         }
     }
 

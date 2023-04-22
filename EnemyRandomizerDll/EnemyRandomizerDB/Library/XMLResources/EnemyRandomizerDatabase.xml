@@ -2692,6 +2692,18 @@
         </SceneObject>
       </sceneObjects>
     </SceneData>
+    <SceneData name="Deepnest_East_Hornet">
+      <sceneObjects>
+        <SceneObject path="Barb Region">
+          <components>
+            <string>Transform</string>
+            <string>BoxCollider2D</string>
+            <string>PlayMakerFSM</string>
+            <string>PersonalObjectPool</string>
+          </components>
+        </SceneObject>
+      </sceneObjects>
+    </SceneData>
     <SceneData name="Deepnest_East_Hornet_boss">
       <sceneObjects>
         <SceneObject path="Hornet Boss 2">
@@ -3658,6 +3670,8 @@
     <string>Hornet Nosk</string>
   </enemyNames>
   <hazardNames>
+    <string>Barb Region</string>
+    <string>Hornet Barb</string>
     <string>Laser Turret Frames</string>
     <string>Gas Explosion Recycle M</string>
     <string>Gas Explosion Recycle L</string>

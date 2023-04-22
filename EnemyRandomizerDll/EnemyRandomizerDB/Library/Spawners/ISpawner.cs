@@ -225,6 +225,17 @@ namespace EnemyRandomizerMod
             return true;
         }
 
+        public static bool StickToClosestSurfaceWithoutRotation(this GameObject gameObject, float maxRange, float extraOffsetScale = 0.33f)
+        {
+            if (gameObject.GetComponent<Collider2D>() == null)
+                return false;
+
+            RaycastHit2D closest = GetNearestSurface(gameObject, maxRange);
+            SetPositionToRayCollisionPoint(gameObject, closest, extraOffsetScale);
+
+            return true;
+        }
+
         public static RaycastHit2D GetGroundRay(this GameObject gameObject)
         {
             if (gameObject.GetComponent<Collider2D>() == null)
@@ -523,6 +534,19 @@ namespace EnemyRandomizerMod
 
             var closest = raycastHit2D.Where(x => x.collider != null).OrderBy(x => x.distance).FirstOrDefault();
             return closest;
+        }
+
+        public static List<RaycastHit2D> GetCardinalRays(GameObject gameObject, float maxDistanceToCheck)
+        {
+            List<RaycastHit2D> raycastHit2D = new List<RaycastHit2D>()
+            {
+                GetRayOn(gameObject, Vector2.down, maxDistanceToCheck),
+                GetRayOn(gameObject, Vector2.up, maxDistanceToCheck),
+                GetRayOn(gameObject, Vector2.left, maxDistanceToCheck),
+                GetRayOn(gameObject, Vector2.right, maxDistanceToCheck),
+            };
+
+            return raycastHit2D;
         }
 
         public static RaycastHit2D GetGroundX(GameObject gameObject)

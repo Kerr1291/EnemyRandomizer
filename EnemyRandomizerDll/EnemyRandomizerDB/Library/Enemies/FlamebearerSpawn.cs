@@ -19,8 +19,6 @@ namespace EnemyRandomizerMod
 
         public abstract int Level { get; }
 
-        public override string OnShowControlBroadcastEvent => "GRIMMKIN SPAWN";
-
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
@@ -41,6 +39,12 @@ namespace EnemyRandomizerMod
 
             //maps get insane when there's lots of these.... so scale down their HP really fast if there's more than 1
             thisMetadata.EnemyHealthManager.hp = Mathf.Clamp(Mathf.FloorToInt(newHP), 1, Mathf.FloorToInt(curHP));
+        }
+
+        protected override void Show()
+        {
+            base.Show();
+            control.Fsm.BroadcastEvent("GRIMMKIN SPAWN");
         }
     }
 

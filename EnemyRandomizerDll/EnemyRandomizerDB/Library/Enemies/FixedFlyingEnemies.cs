@@ -304,13 +304,13 @@ namespace EnemyRandomizerMod
 
         protected override bool ControlCameraLocks => false;
 
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs =>
-            new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+        protected override Dictionary<string, Func<DefaultSpawnedEnemyControl, float>> FloatRefs =>
+            new Dictionary<string, Func<DefaultSpawnedEnemyControl, float>>()
             {
-                    { "X Max", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.right, 500f).point.x; } },
-                    { "X Min", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.left, 500f).point.x; } },
-                    { "Y Max", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.up, 500f).point.y; } },
-                    { "Y Min", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.down, 500f).point.y; } },
+                    { "X Max", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.right, 500f).point.x; } },
+                    { "X Min", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.left, 500f).point.x; } },
+                    { "Y Max", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.up, 500f).point.y; } },
+                    { "Y Min", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.down, 500f).point.y; } },
             };
 
         public override void Setup(ObjectMetadata other)
@@ -354,13 +354,13 @@ namespace EnemyRandomizerMod
 
         protected override bool ControlCameraLocks => false;
 
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs =>
-            new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+        protected override Dictionary<string, Func<DefaultSpawnedEnemyControl, float>> FloatRefs =>
+            new Dictionary<string, Func<DefaultSpawnedEnemyControl, float>>()
             {
-                    { "X Max", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.right, 500f).point.x; } },
-                    { "X Min", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.left, 500f).point.x; } },
-                    { "Y Max", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.up, 500f).point.y; } },
-                    { "Y Min", x => { return new Vector2(x.HeroX,x.HeroY).FireRayGlobal(Vector2.down, 500f).point.y; } },
+                    { "X Max", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.right, 500f).point.x; } },
+                    { "X Min", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.left, 500f).point.x; } },
+                    { "Y Max", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.up, 500f).point.y; } },
+                    { "Y Min", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.down, 500f).point.y; } },
             };
 
         public override void Setup(ObjectMetadata other)

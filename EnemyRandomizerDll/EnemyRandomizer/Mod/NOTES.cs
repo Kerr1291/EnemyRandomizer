@@ -6,7 +6,14 @@
  * NEEDS TEST: Ground enemy spawned in first arena and walked outside, gate closed... try teleporting them back in when battle starts if they're outside
  * add lumaflies to the randomize hazard list
  * re-balance the random scale probabilities
+ * fix traitor lord from jumping into ceilings
+ * fix mender bug not being killable
+ * fix hornet 2 from not spawning correctly
+ * collector stuck in floor -- need some kind of fix
+ * fix blugg items
+ * fix geo randomizer golden husk not dropping item
  * 
+ * ********since I'm loading pretty much every song anyway.... add music randomizer module
  *
  * 
  * 

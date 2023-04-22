@@ -375,15 +375,11 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Mossy Control";
 
-        public override string FSMHiddenStateName => "MOSS_HIDDEN";
+        protected override string FSMHiddenStateName => "MOSS_HIDDEN";
 
         public bool didInit = false;
         public bool isVisible = false;
         public bool isRunning = false;
-
-        protected Dictionary<string, Func<FSMAreaControlEnemy, float>> MossyFloatsRefs;
-
-        protected override Dictionary<string, Func<FSMAreaControlEnemy, float>> FloatRefs => MossyFloatsRefs;
 
         public float edgeL;
         public float edgeR;
@@ -435,7 +431,7 @@ namespace EnemyRandomizerMod
 
             aggroBounds = new UnityEngine.Bounds(centerOfAggroArea, sizeOfAggroArea);
 
-            MossyFloatsRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
+            CustomFloatRefs = new Dictionary<string, Func<DefaultSpawnedEnemyControl, float>>()
             {
                 {"X Max" , x => edgeR},
                 {"X Min" , x => edgeL},
@@ -484,7 +480,7 @@ namespace EnemyRandomizerMod
                 eRight.AddCustomAction(() =>
                 {
                     //too close to edge? do emerge left
-                    float dist = edgeR - HeroX;
+                    float dist = edgeR - heroPos2d.x;
                     if (dist < thisMetadata.ObjectSize.x * this.thisMetadata.SizeScale)
                     {
                         control.SendEvent("LEFT");
@@ -494,7 +490,7 @@ namespace EnemyRandomizerMod
                     //pick a random spot between hero and edge
                     RNG rng = new RNG();
                     rng.Reset();
-                    float spawnX = rng.Rand(HeroX, edgeR - (thisMetadata.ObjectSize.x * this.thisMetadata.SizeScale));
+                    float spawnX = rng.Rand(heroPos2d.x, edgeR - (thisMetadata.ObjectSize.x * this.thisMetadata.SizeScale));
 
                     control.FsmVariables.GetFsmFloat("Appear X").Value = spawnX;
 
@@ -517,7 +513,7 @@ namespace EnemyRandomizerMod
                 eLeft.AddCustomAction(() =>
                 {
                     //too close to edge? do emerge left
-                    float dist = HeroX - edgeL;
+                    float dist = heroPos2d.x - edgeL;
                     if (dist < thisMetadata.ObjectSize.x * this.thisMetadata.SizeScale)
                     {
                         control.SendEvent("RIGHT");
@@ -527,7 +523,7 @@ namespace EnemyRandomizerMod
                     //pick a random spot between hero and edge
                     RNG rng = new RNG();
                     rng.Reset();
-                    float spawnX = rng.Rand(edgeL + (thisMetadata.ObjectSize.x * this.thisMetadata.SizeScale), HeroX);
+                    float spawnX = rng.Rand(edgeL + (thisMetadata.ObjectSize.x * this.thisMetadata.SizeScale), heroPos2d.x);
 
                     control.FsmVariables.GetFsmFloat("Appear X").Value = spawnX;
 
@@ -579,12 +575,6 @@ namespace EnemyRandomizerMod
             this.AddResetToStateOnHide(control, "CUSTOM_HIDE");
 
             control.GetState("Submerge CD").GetAction<SetPosition>(6).space = Space.World;
-        }
-
-        protected override void UpdateCustomRefs()
-        {
-            base.UpdateCustomRefs();
-            UpdateRefs(control, MossyFloatsRefs);
         }
     }
 

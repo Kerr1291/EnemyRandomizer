@@ -78,16 +78,6 @@ namespace EnemyRandomizerMod
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Ball");
             this.AddResetToStateOnHide(control, "Init");
-
-            CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            {
-                //{"Shockwave Y" , x => floorY},
-            };
-        }
-
-        protected override bool HeroInAggroRange()
-        {
-            return (heroPos2d - pos2d).magnitude < 50f;
         }
     }
 
