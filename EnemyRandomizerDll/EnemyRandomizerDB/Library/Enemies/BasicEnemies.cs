@@ -497,36 +497,61 @@ namespace EnemyRandomizerMod
         public bool doBounceSurprise = false;
         public bool isSuperHusk = false;
 
-        public int hp = 0;
         public GameObject supEffect;
         public GameObject superEffect;
 
-        public override void Setup(ObjectMetadata other)
+        bool HasSurprise(out int surprise)
         {
-            base.Setup(other);
-
             RNG rng = new RNG();
             rng.Reset();
+            surprise = rng.Rand(0, 20);
+            return surprise < 5;
+        }
 
-            int surprise = rng.Rand(0, 20);
+        bool HasBigSurprise(int previousSurprise)
+        {
+            return previousSurprise < 10;
+        }
+
+        bool IsSuperHusk()
+        {
+            RNG rng = new RNG();
+            rng.Reset();
             int superHusk = rng.Rand(0, 40);
+            return superHusk < 10;
+        }
 
-            if (surprise < 2)
+        protected virtual void CalculateGeo(bool hasSurprise, bool hasBigSurprise)
+        {
+            RNG rng = new RNG();
+            rng.Reset();
+            if (hasSurprise)
             {
-                doSurprise = true;
                 thisMetadata.GeoManager.Value = rng.Rand(500, 2000);
             }
-            else if (surprise < 4)
+            else if (hasBigSurprise)
             {
-                doBounceSurprise = true;
                 thisMetadata.GeoManager.Value = rng.Rand(500, 2000);
             }
             else
             {
                 thisMetadata.GeoManager.Value = rng.Rand(100, 1000);
             }
+        }
 
-            if(doSurprise || doBounceSurprise)
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            bool hasSurprise = HasSurprise(out int surpriseType);
+            bool hasBigSurprise = HasBigSurprise(surpriseType);
+            bool isSuperHusk = IsSuperHusk();
+            CalculateGeo(hasSurprise, hasBigSurprise);
+
+            doSurprise = hasSurprise;
+            doBounceSurprise = hasBigSurprise;
+
+            if (doSurprise || doBounceSurprise)
             {
                 thisMetadata.EnemyHealthManager.hp = thisMetadata.EnemyHealthManager.hp * 2;
                 thisMetadata.ApplySizeScale(thisMetadata.SizeScale + 0.2f);
@@ -539,7 +564,7 @@ namespace EnemyRandomizerMod
                 supEffect.SafeSetActive(true);
             }   
 
-            if (superHusk < 2)
+            if (isSuperHusk)
             {
                 thisMetadata.EnemyHealthManager.hp = thisMetadata.EnemyHealthManager.hp * 4;
                 thisMetadata.ApplySizeScale(thisMetadata.SizeScale + 0.4f);
@@ -551,7 +576,8 @@ namespace EnemyRandomizerMod
                 superEffect.SafeSetActive(true);
             }
 
-            hp = thisMetadata.EnemyHealthManager.hp;
+            onHit -= OnHit;
+            onHit += OnHit;
         }
 
         protected virtual void OnEnable()
@@ -572,16 +598,11 @@ namespace EnemyRandomizerMod
             }
         }
 
-        protected virtual void Update()
+        protected virtual void OnHit()
         {
-            if(isSuperHusk)
+            if (isSuperHusk)
             {
-                int newHp = thisMetadata.EnemyHealthManager.hp;
-                if(hp > 0 && newHp < hp)
-                {
-                    EnemyRandomizerDatabase.GetDatabase().Spawn("Shot Markoth Nail", null).SafeSetActive(true);
-                    hp = newHp;
-                }
+                EnemyRandomizerDatabase.GetDatabase().Spawn("Shot Markoth Nail", null).SafeSetActive(true);
             }
         }
     }
@@ -1171,6 +1192,7 @@ namespace EnemyRandomizerMod
     {
         public int superEffectsToSpawn = 5;
         public float spawnRate = 0.15f;
+        public int chanceToSpawnSuperShroomOutOf100 = 20; // -> ( 20 / 100 )
 
         public override void Setup(ObjectMetadata other)
         {
@@ -1183,7 +1205,7 @@ namespace EnemyRandomizerMod
 
             int superShroom = rng.Rand(0, 100);
 
-            if (superShroom < 5)
+            if (superShroom < chanceToSpawnSuperShroomOutOf100)
             {
                 List<Func<GameObject>> trailEffects = new List<Func<GameObject>>()
                 {

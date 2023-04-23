@@ -99,7 +99,7 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
 
         const string defaultDatabaseFilePath = "EnemyRandomizerDatabase.xml";
-        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 8 oat pt 2]";
+        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 7.5 -- Now with more hornet]";
         static string currentVersion = currentVersionPrefix;
             //Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + $" CURRENT SEED:[{GlobalSettings.seed}] -- TO CHANGE SEED --> MODS > ENEMY RANDOMIZER > ENEMY RANDOMIZER MODULES";
 
@@ -579,15 +579,33 @@ namespace EnemyRandomizerMod
             return false;
         }
 
-        public static bool DoReplacementBypassCheck()
+        public static bool DoReplacementBypassCheck(bool peek = false)
         {
             if (EnemyRandomizer.bypassNextReplacement)
             {
-                EnemyRandomizer.bypassNextReplacement = false;
+                if (!peek)
+                {
+                    EnemyRandomizer.bypassNextReplacement = false;
+                }
                 return true;
             }
 
             return false;
+        }
+
+        public static bool HasCustomBypassReplacement()
+        {
+            if (!string.IsNullOrEmpty(debugCustomReplacement))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static string GetCustomBypassReplacement()
+        {
+            return debugCustomReplacement;
         }
 
         public void Dispose()
@@ -614,7 +632,7 @@ namespace EnemyRandomizerMod
             }
             catch (Exception e)
             {
-                Dev.LogError("Error: " + e.Message);
+                Dev.LogError($"Debug spawn error: {e.Message} stacktrace: {e.StackTrace}");
             }
 
             return null;

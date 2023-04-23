@@ -16,11 +16,17 @@ namespace EnemyRandomizerMod
 {
     public class HornetBarbControl : DefaultSpawnedEnemyControl
     {
-        public override string FSMName => gameObject.GetComponent<PlayMakerFSM>().FsmName; //not actually sure
+        public override string FSMName => "Control";
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
+
+            var init = control.GetState("Init");
+            init.DisableAction(7);
+
+            var dc = control.GetState("Distance Check");
+            this.OverrideState(control, "Distance Check", () => { control.SendEvent("FINISHED"); });
         }
 
         public void ActivateBarb()

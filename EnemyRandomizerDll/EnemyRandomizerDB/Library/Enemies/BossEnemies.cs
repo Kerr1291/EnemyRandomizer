@@ -23,10 +23,15 @@ namespace EnemyRandomizerMod
         public override string FSMName => "Mantis";
 
         public GameObject megaMantisTallSlash;
+        public PreventOutOfBounds poob;
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
+
+            //enable this after activating/repositioning traitor lord
+            poob = gameObject.AddComponent<PreventOutOfBounds>();
+            poob.enabled = false;
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Fall");
             this.AddResetToStateOnHide(control, "Init");
@@ -82,6 +87,17 @@ namespace EnemyRandomizerMod
                 var s = megaMantisTallSlash.Spawn(transform.position, Quaternion.identity);
                 control.FsmVariables.GetFsmGameObject("Projectile").Value = s;
             }, 0);
+        }
+
+        protected override void Show()
+        {
+            base.Show();
+            poob.enabled = true;
+        }
+
+        protected override void PositionBoss()
+        {
+            gameObject.StickToGround(1f);
         }
     }
 
@@ -211,8 +227,6 @@ namespace EnemyRandomizerMod
 
         //if true, will set the max babies to 5
         public bool dieChildrenOnDeath = true;
-
-        public PlayMakerFSM FSM { get; set; }
 
         public List<GameObject> children = new List<GameObject>();
 
@@ -665,47 +679,380 @@ namespace EnemyRandomizerMod
 
 
 
-
-
-
-
-
-
-
-
-
     /////////////////////////////////////////////////////////////////////////////
     /////
     public class WhiteDefenderControl : FSMBossAreaControl
     {
         public override string FSMName => "Dung Defender";
 
+        public float peakEruptHeight = 12f;
+        public float eruptStartOffset = 3f;
+        public float defaultHP;
+        public float defaultRageHP=600f;
+        public float rageTriggerRatio;
+        public float tooFarToSlamDist = 7f;
+        public float tooCloseToWallDist = 5f;
+        public float buriedYOffset = 3f;
+        public float tunnelTooCloseToWall = 2f;
+        public float tunnelTurnTowardPlayerDist = 10f;
+        public float airDiveHeight = 15.4f;
+        public float pillarHeight = 10.68f;
+        public Vector2 eruptOrigin;
+
+        PlayMakerFSM burrowEffect;
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            //{
-            //    {"Dolphin Max X" , x => edgeR},
-            //    {"Dolphin Min X" , x => edgeL},
-            //    {"Max X" , x => edgeR},
-            //    {"Min X" , x => edgeL},
-            //    {"Erupt Y" , x => floorY},
-            //    {"Buried Y" , x => floorY - 3f},
-            //    //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-            //    //{"Left Pos" , x => edgeL},
-            //    //{"Right Pos" , x => edgeR},
-            //};
+            var constrainX = gameObject.LocateMyFSM("Constrain X");
+            if(constrainX != null)
+            {
+                Destroy(constrainX);
+            }
 
-            this.InsertHiddenState(control, "Init", "FINISHED", "Will Evade?");
+            burrowEffect = gameObject.GetDirectChildren().FirstOrDefault(x => x.name.Contains("Burrow Effect")).LocateMyFSM("Burrow Effect");
+
+            defaultHP = thisMetadata.MaxHP;
+            rageTriggerRatio = defaultHP / defaultRageHP;
+
+            this.InsertHiddenState(control, "Init 2", "FINISHED", "Wake");
             this.AddResetToStateOnHide(control, "Init");
+
+            var init = control.GetState("Init");
+            DisableActions(init, 1, 2);
+
+            //var init2 = control.GetState("Init 2");
+            //init2.ChangeTransition("FINISHED", "Wake");
+
+            var wake = control.GetState("Wake");
+            DisableActions(wake, 1, 7, 9);
+
+            var eruptOutFirst2 = control.GetState("Erupt Out First 2");
+            DisableActions(eruptOutFirst2, 1, 6, 8, 11, 16);
+            eruptOutFirst2.AddCustomAction(() => { StartCoroutine(StartAndCheckEruptPeak("Erupt Out First 2", "END")); });
+            eruptOutFirst2.InsertCustomAction(() => CalculateAndSetupErupt(),0);
+
+            var introFall = control.GetState("Intro Fall");
+            DisableActions(introFall, 0);
+            introFall.AddCustomAction(() => { StartCoroutine(TimeoutState("Intro Fall", "LAND", 2f)); });
+
+            var introLand = control.GetState("Intro Land");
+            introLand.ChangeTransition("FINISHED", "Roar End");
+
+            var rageq = control.GetState("Rage?");
+            this.OverrideState(control, "Rage?", () => {
+                if(control.FsmVariables.GetFsmBool("Raged").Value)
+                {
+                    control.SendEvent("FINISHED");
+                }
+                else
+                {
+                    if(thisMetadata.EnemyHealthManager.hp/thisMetadata.MaxHP < rageTriggerRatio)
+                    {
+                        control.FsmVariables.GetFsmBool("Raged").Value = true;
+                        control.SendEvent("RAGE");
+                    }
+                    else
+                    {
+                        control.SendEvent("FINISHED");
+                    }
+                }
+            });
+
+            var rageRoar = control.GetState("Rage Roar");
+            DisableActions(rageRoar, 2,3);
+
+            var diveIn2 = control.GetState("Dive In 2");
+            DisableActions(diveIn2, 3);
+
+            var underground = control.GetState("Underground");
+            DisableActions(underground, 0);
+            underground.InsertCustomAction(() => CalculateAndSetupBuried(), 0);
+
+            var rageIn = control.GetState("Rage In");
+            DisableActions(rageIn, 3);
+
+            var groundslamq = control.GetState("Ground Slam?");
+            this.OverrideState(control, "Ground Slam?", () => {
+
+                var left = SpawnerExtensions.GetRayOn(pos2d + Vector2.up, Vector2.left, float.MaxValue);
+                var right = SpawnerExtensions.GetRayOn(pos2d + Vector2.up, Vector2.right, float.MaxValue);
+
+                bool isHeroLeft = heroPos2d.x < pos2d.x;
+
+                if (DistanceToPlayer() > tooFarToSlamDist)
+                {
+                    control.SendEvent("FINISHED");
+                }
+                else
+                {
+                    bool tooCloseToRight = right.distance < tooCloseToWallDist;
+                    bool tooCloseToLeft = left.distance < tooCloseToWallDist;
+
+                    if(tooCloseToLeft && isHeroLeft)
+                    {
+                        control.SendEvent("FINISHED");
+                    }
+                    else if (tooCloseToRight && !isHeroLeft)
+                    {
+                        control.SendEvent("FINISHED");
+                    }
+                    else
+                    {
+                        RNG rng = new RNG();
+                        rng.Reset();
+
+                        bool doSlam = rng.Randf() < .2f;
+                        if(doSlam)
+                        {
+                            control.SendEvent("GROUND SLAM");
+                        }
+                        else
+                        {
+                            control.SendEvent("FINISHED");
+                        }
+                    }
+                }
+            });
+
+            var tunnelingL = control.GetState("Tunneling L");
+            DisableActions(tunnelingL, 3, 4, 7, 8, 9);
+            tunnelingL.AddCustomAction(() => StartCoroutine(StartAndCheckTunnelingState("Tunneling L",true)));
+
+            var tunnelingR = control.GetState("Tunneling R");
+            DisableActions(tunnelingL, 0, 4, 7, 8, 9);
+            tunnelingR.AddCustomAction(() => StartCoroutine(StartAndCheckTunnelingState("Tunneling R", true)));
+
+            var eruptAntic = control.GetState("Erupt Antic");
+            DisableActions(eruptAntic, 3);
+
+            var eruptAnticR = control.GetState("Erupt Antic R");
+            DisableActions(eruptAnticR, 2);
+
+            var eruptOutFirst = control.GetState("Erupt Out First");
+            DisableActions(eruptOutFirst, 1,3,6,10);
+            eruptOutFirst.AddCustomAction(() => { StartCoroutine(StartAndCheckEruptPeak("Erupt Out First", "END")); });
+            eruptOutFirst.InsertCustomAction(() => CalculateAndSetupErupt(), 0);
+
+            var eruptOut = control.GetState("Erupt Out");
+            DisableActions(eruptOut, 2, 5, 9, 14);
+            eruptOut.AddCustomAction(() => { StartCoroutine(StartAndCheckEruptPeak("Erupt Out", "END")); });
+            eruptOut.InsertCustomAction(() => CalculateAndSetupErupt(), 0);
+
+            var eruptFall = control.GetState("Erupt Fall");
+            DisableActions(eruptFall, 0);
+            eruptFall.AddCustomAction(() => { StartCoroutine(TimeoutState("Erupt Fall", "LAND", 2f)); });
+
+            var eruptLand = control.GetState("Erupt Land");
+            DisableActions(eruptLand, 4);
+
+            var roarq = control.GetState("Roar?");
+            DisableActions(roarq, 5, 6, 11, 12, 13, 14, 15, 16);
+
+            var throw1 = control.GetState("Throw 1");
+            DisableActions(throw1, 1);
+            throw1.AddCustomAction(() => {
+                var dungBall = EnemyRandomizerDatabase.GetDatabase().Spawn("Dung Ball Large", null);
+                control.FsmVariables.GetFsmGameObject("Dung Ball").Value = dungBall;
+                dungBall.transform.position = transform.position;
+                dungBall.SafeSetActive(true);
+            });
+
+            var rjInAir = control.GetState("RJ In Air");
+            DisableActions(rjInAir, 7);
+            rjInAir.InsertCustomAction(() => StartCoroutine(CalculateAirDiveHeight()), 7);
+
+            var airDive = control.GetState("Air Dive");
+            DisableActions(airDive, 8);
+            airDive.AddCustomAction(() => StartCoroutine(CheckEndAirDive()));
+
+            var pillar = control.GetState("Pillar");
+            pillar.InsertCustomAction(() => {
+                var floor = SpawnerExtensions.GetRayOn(pos2d + Vector2.up * 3.5f, Vector2.down, float.MaxValue);
+                pillar.GetActions<SetPosition>().ToList().ForEach(x => x.y.Value = floor.point.y + pillarHeight);
+            }, 0);
+
+            var dolphDir = control.GetState("Dolph Dir");
+            dolphDir.DisableAction(5);
+            dolphDir.InsertCustomAction(() => {
+                if (pos2d.x < heroPos2d.x)
+                    control.SendEvent("FINISHED");
+            }, 5);
+        }
+
+        protected virtual IEnumerator CheckEndAirDive()
+        {
+            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+
+            var downRay = SpawnerExtensions.GetRayOn(gameObject, Vector2.down, float.MaxValue);
+
+            float timeout = 4f;
+            float endY = downRay.point.y;
+
+            while (control.ActiveStateName == "Air Dive")
+            {
+                timeout -= Time.deltaTime;
+                if (pos2d.y <= endY)
+                {
+                    control.SendEvent("LAND");
+                    break;
+                }
+
+                if (timeout <= 0f)
+                {
+                    control.SendEvent("LAND");
+                    break;
+                }
+
+                var platRay = SpawnerExtensions.GetRayOn(gameObject, Vector2.down, 0.5f);
+                if(platRay.collider != null)
+                {
+                    control.SendEvent("LAND");
+                    break;
+                }
+
+                yield return new WaitForEndOfFrame();
+            }
+
+            Destroy(poob);
+
+            yield break;
+        }
+
+        protected virtual IEnumerator CalculateAirDiveHeight()
+        {
+            while (control.ActiveStateName == "RJ In Air")
+            {
+                var hitRay = SpawnerExtensions.GetRayOn(gameObject,Vector2.down,float.MaxValue);
+                if (hitRay.collider != null && hitRay.distance > airDiveHeight)
+                {
+                    control.FsmVariables.GetFsmBool("Air Dive Height").Value = true;
+                }
+                else
+                {
+                    control.FsmVariables.GetFsmBool("Air Dive Height").Value = false;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+
+            yield break;
+        }
+
+        protected virtual void CalculateAndSetupBuried()
+        {
+            Vector2 groundPos = SpawnerExtensions.GetRayOn(pos2d + Vector2.up * 3.5f, Vector2.down, 5f).point;
+
+            Vector2 buriedPos = groundPos;// - new Vector2(0f, buriedYOffset * transform.localScale.y);
+            //var downRay = SpawnerExtensions.GetRayOn(pos2d, Vector2.down, 5f).point + Vector2.down * buriedYOffset * transform.localScale.y;
+            control.FsmVariables.GetFsmFloat("Buried Y").Value = buriedPos.y;
+            transform.position = new Vector3(buriedPos.x, buriedPos.y, transform.position.z);
+        }
+
+        protected virtual void CalculateAndSetupErupt()
+        {
+            Vector2 eruptStart = pos2d + new Vector2(0f, eruptStartOffset);
+            control.FsmVariables.GetFsmFloat("Erupt Y").Value = eruptStart.y;
+            Vector2 eruptMax = eruptStart + Vector2.up * peakEruptHeight;
+            var upRay = SpawnerExtensions.GetRayOn(eruptStart, Vector2.up, peakEruptHeight + 1f);
+            if (upRay.distance < peakEruptHeight)
+            {
+                eruptMax = upRay.point;
+            }
+            control.FsmVariables.GetFsmFloat("Erupt Peak Y").Value = eruptMax.y;
+            transform.position = new Vector3(eruptStart.x, eruptStart.y, transform.position.z);
+        }
+
+        protected virtual IEnumerator StartAndCheckEruptPeak(string currentState, string endEvent)
+        {
+            float eruptMax = control.FsmVariables.GetFsmFloat("Erupt Peak Y").Value;
+
+            while (control.ActiveStateName == currentState)
+            {
+                var hitRay = SpawnerExtensions.GetRoofX(gameObject);
+                if (hitRay.collider != null || pos2d.y >= eruptMax || thisMetadata.PhysicsBody.velocity.y < 0)
+                {
+                    control.SendEvent(endEvent);
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+
+            yield break;
+        }
+
+        protected virtual IEnumerator TimeoutState(string currentState, string endEvent, float timeout)
+        {
+            while (control.ActiveStateName == currentState)
+            {
+                timeout -= Time.deltaTime;
+
+                if(timeout <= 0f)
+                {
+                    control.SendEvent(endEvent);
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+
+            yield break;
+        }
+
+        protected virtual IEnumerator StartAndCheckTunnelingState(string currentState, bool isMovingLeft)
+        {
+            while (control.ActiveStateName == currentState)
+            {
+                var left = SpawnerExtensions.GetRayOn(pos2d + Vector2.up * 3.5f, Vector2.left, float.MaxValue);
+                var right = SpawnerExtensions.GetRayOn(pos2d + Vector2.up * 3.5f, Vector2.right, float.MaxValue);
+
+                bool isHeroLeft = heroPos2d.x < pos2d.x;
+
+                if(left.distance < tunnelTooCloseToWall && isMovingLeft)
+                {
+                    control.SendEvent("RIGHT");
+                    break;
+                }
+                else if(right.distance < tunnelTooCloseToWall && !isMovingLeft)
+                {
+                    control.SendEvent("LEFT");
+                    break;
+                }
+                else if(DistanceToPlayer() > tunnelTurnTowardPlayerDist)
+                {
+                    if ((isMovingLeft && !isHeroLeft) || (!isMovingLeft && isMovingLeft))
+                    {
+                        control.SendEvent("TURN");
+                        break;
+                    }
+                }
+                yield return new WaitForEndOfFrame();
+            }
+
+            yield break;
+        }
+
+        protected override void PositionBoss()
+        {
+            gameObject.StickToGround(-1f);
+            burrowEffect.FsmVariables.GetFsmFloat("Ground Y").Value = transform.position.y;
         }
     }
 
 
 
-    public class WhiteDefenderSpawner : DefaultSpawner<WhiteDefenderControl> { }
+    public class WhiteDefenderSpawner : DefaultSpawner<WhiteDefenderControl>
+    {
+        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
+        {
+            var wd = base.Spawn(p, source);
+            GameObject corpse = SpawnerExtensions.GetCorpseObject(wd);
+            if (corpse != null)
+            {
+                SpawnerExtensions.AddCorpseRemoverWithEffect(corpse);
+            }
+            return wd;
+        }
+    }
 
     public class WhiteDefenderPrefabConfig : DefaultPrefabConfig<WhiteDefenderControl> { }
     /////
@@ -1159,26 +1506,334 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Dung Defender";
 
+        public float peakEruptHeight = 12f;
+        public float eruptStartOffset = 3f;
+        public float defaultHP;
+        public float defaultRageHP = 600f;
+        public float rageTriggerRatio;
+        public float tooFarToSlamDist = 7f;
+        public float tooCloseToWallDist = 5f;
+        public float buriedYOffset = 3f;
+        public float tunnelTooCloseToWall = 2f;
+        public float tunnelTurnTowardPlayerDist = 10f;
+        public float airDiveHeight = 15.4f;
+        public float pillarHeight = 10.68f;
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            //{
-            //    {"Dolphin Max X" , x => edgeR},
-            //    {"Dolphin Min X" , x => edgeL},
-            //    {"Max X" , x => edgeR},
-            //    {"Min X" , x => edgeL},
-            //    {"Erupt Y" , x => floorY},
-            //    {"Buried Y" , x => floorY - 3f},
-            //    //{"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-            //    //{"Left Pos" , x => edgeL},
-            //    //{"Right Pos" , x => edgeR},
-            //};
+            defaultHP = thisMetadata.MaxHP;
+            rageTriggerRatio = defaultHP / defaultRageHP;
 
-            this.InsertHiddenState(control, "Init", "FINISHED", "Underground");
+            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
             this.AddResetToStateOnHide(control, "Init");
+
+            var wake = control.GetState("Wake");
+            DisableActions(wake, 6);
+
+            var quakedOut = control.GetState("Quaked Out");
+            DisableActions(quakedOut, 1, 4, 9, 11);
+            //eruptOutFirst2.AddCustomAction(() => { StartCoroutine(StartAndCheckEruptPeak("Erupt Out First 2", "END")); });
+            quakedOut.InsertCustomAction(() => CalculateAndSetupErupt(), 0);
+
+            //var introFall = control.GetState("Intro Fall");
+            //DisableActions(introFall, 0);
+            //introFall.AddCustomAction(() => { StartCoroutine(TimeoutState("Intro Fall", "LAND", 2f)); });
+
+            //var introEnd = control.GetState("Intro End");
+            //introEnd.ChangeTransition("FINISHED", "Roar End");
+
+            var rageq = control.GetState("Rage?");
+            this.OverrideState(control, "Rage?", () => {
+                if (control.FsmVariables.GetFsmBool("Raged").Value)
+                {
+                    control.SendEvent("FINISHED");
+                }
+                else
+                {
+                    if (thisMetadata.EnemyHealthManager.hp / thisMetadata.MaxHP < rageTriggerRatio)
+                    {
+                        control.FsmVariables.GetFsmBool("Raged").Value = true;
+                        control.SendEvent("RAGE");
+                    }
+                    else
+                    {
+                        control.SendEvent("FINISHED");
+                    }
+                }
+            });
+
+            var roarEnd = control.GetState("Roar End");
+            DisableActions(roarEnd, 3,4,5);
+
+            var rageRoar = control.GetState("Rage Roar");
+            DisableActions(rageRoar, 2, 3);
+
+            var diveIn2 = control.GetState("Dive In 2");
+            DisableActions(diveIn2, 3);
+
+            var underground = control.GetState("Underground");
+            DisableActions(underground, 0);
+            underground.InsertCustomAction(() => CalculateAndSetupBuried(), 0);
+
+            var rageIn = control.GetState("Rage In");
+            DisableActions(rageIn, 2);
+
+            //var groundslamq = control.GetState("Ground Slam?");
+            //this.OverrideState(control, "Ground Slam?", () => {
+
+            //    var left = SpawnerExtensions.GetRayOn(pos2d + Vector2.up, Vector2.left, float.MaxValue);
+            //    var right = SpawnerExtensions.GetRayOn(pos2d + Vector2.up, Vector2.right, float.MaxValue);
+
+            //    bool isHeroLeft = heroPos2d.x < pos2d.x;
+
+            //    if (DistanceToPlayer() > tooFarToSlamDist)
+            //    {
+            //        control.SendEvent("FINISHED");
+            //    }
+            //    else
+            //    {
+            //        bool tooCloseToRight = right.distance < tooCloseToWallDist;
+            //        bool tooCloseToLeft = left.distance < tooCloseToWallDist;
+
+            //        if (tooCloseToLeft && isHeroLeft)
+            //        {
+            //            control.SendEvent("FINISHED");
+            //        }
+            //        else if (tooCloseToRight && !isHeroLeft)
+            //        {
+            //            control.SendEvent("FINISHED");
+            //        }
+            //        else
+            //        {
+            //            RNG rng = new RNG();
+            //            rng.Reset();
+
+            //            bool doSlam = rng.Randf() < .2f;
+            //            if (doSlam)
+            //            {
+            //                control.SendEvent("GROUND SLAM");
+            //            }
+            //            else
+            //            {
+            //                control.SendEvent("FINISHED");
+            //            }
+            //        }
+            //    }
+            //});
+
+            var tunnelingL = control.GetState("Tunneling L");
+            DisableActions(tunnelingL, 3, 4, 7, 8, 9);
+            tunnelingL.AddCustomAction(() => StartCoroutine(StartAndCheckTunnelingState("Tunneling L", true)));
+
+            var tunnelingR = control.GetState("Tunneling R");
+            DisableActions(tunnelingL, 0, 4, 7, 8, 9);
+            tunnelingR.AddCustomAction(() => StartCoroutine(StartAndCheckTunnelingState("Tunneling R", true)));
+
+            var eruptAntic = control.GetState("Erupt Antic");
+            DisableActions(eruptAntic, 3);
+
+            var eruptAnticR = control.GetState("Erupt Antic R");
+            DisableActions(eruptAnticR, 2);
+
+            var eruptOutFirst = control.GetState("Erupt Out First");
+            DisableActions(eruptOutFirst, 1, 3, 6, 10);
+            eruptOutFirst.AddCustomAction(() => { StartCoroutine(StartAndCheckEruptPeak("Erupt Out First", "END")); });
+            eruptOutFirst.InsertCustomAction(() => CalculateAndSetupErupt(), 0);
+
+            var eruptOut = control.GetState("Erupt Out");
+            DisableActions(eruptOut, 2, 5, 9, 14);
+            eruptOut.AddCustomAction(() => { StartCoroutine(StartAndCheckEruptPeak("Erupt Out", "END")); });
+            eruptOut.InsertCustomAction(() => CalculateAndSetupErupt(), 0);
+
+            var eruptFall = control.GetState("Erupt Fall");
+            DisableActions(eruptFall, 0);
+            eruptFall.AddCustomAction(() => { StartCoroutine(TimeoutState("Erupt Fall", "LAND", 2f)); });
+
+            var eruptLand = control.GetState("Erupt Land");
+            DisableActions(eruptLand, 4);
+
+            var roarq = control.GetState("Roar?");
+            DisableActions(roarq, 4, 5, 11, 12, 13, 14, 15);
+
+            var throw1 = control.GetState("Throw 1");
+            DisableActions(throw1, 1);
+            throw1.AddCustomAction(() => {
+                var dungBall = EnemyRandomizerDatabase.GetDatabase().Spawn("Dung Ball Large", null);
+                control.FsmVariables.GetFsmGameObject("Dung Ball").Value = dungBall;
+                dungBall.SafeSetActive(true);
+            });
+
+            //var rjInAir = control.GetState("RJ In Air");
+            //DisableActions(rjInAir, 7);
+            //rjInAir.InsertCustomAction(() => StartCoroutine(CalculateAirDiveHeight()), 7);
+
+            //var airDive = control.GetState("Air Dive");
+            //DisableActions(airDive, 8);
+            //airDive.AddCustomAction(() => StartCoroutine(CheckEndAirDive()));
+
+            //var pillar = control.GetState("Pillar");
+            //pillar.InsertCustomAction(() => {
+            //    var floor = SpawnerExtensions.GetRayOn(pos2d + Vector2.up * 3.5f, Vector2.down, float.MaxValue);
+            //    pillar.GetActions<SetPosition>().ToList().ForEach(x => x.y.Value = floor.point.y + pillarHeight);
+            //}, 0);
+
+            var dolphDir = control.GetState("Dolph Dir");
+            dolphDir.DisableAction(5);
+            dolphDir.InsertCustomAction(() => {
+                if (pos2d.x < heroPos2d.x)
+                    control.SendEvent("FINISHED");
+            }, 5);
+
+        }
+
+        protected virtual IEnumerator CheckEndAirDive()
+        {
+            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+
+            var downRay = SpawnerExtensions.GetRayOn(gameObject, Vector2.down, float.MaxValue);
+
+            float timeout = 4f;
+            float endY = downRay.point.y;
+
+            while (control.ActiveStateName == "Air Dive")
+            {
+                timeout -= Time.deltaTime;
+                if (pos2d.y <= endY)
+                {
+                    control.SendEvent("LAND");
+                    break;
+                }
+
+                if (timeout <= 0f)
+                {
+                    control.SendEvent("LAND");
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+
+            Destroy(poob);
+
+            yield break;
+        }
+
+        protected virtual IEnumerator CalculateAirDiveHeight()
+        {
+            while (control.ActiveStateName == "RJ In Air")
+            {
+                var hitRay = SpawnerExtensions.GetRayOn(gameObject, Vector2.down, float.MaxValue);
+                if (hitRay.collider != null && hitRay.distance > airDiveHeight)
+                {
+                    control.FsmVariables.GetFsmBool("Air Dive Height").Value = true;
+                }
+                else
+                {
+                    control.FsmVariables.GetFsmBool("Air Dive Height").Value = false;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+
+            yield break;
+        }
+
+        protected virtual void CalculateAndSetupBuried()
+        {
+            Vector2 groundPos = SpawnerExtensions.GetRayOn(pos2d + Vector2.up * 3.5f, Vector2.down, 5f).point;
+
+            Vector2 buriedPos = groundPos;// - new Vector2(0f, buriedYOffset * transform.localScale.y);
+            //var downRay = SpawnerExtensions.GetRayOn(pos2d, Vector2.down, 5f).point + Vector2.down * buriedYOffset * transform.localScale.y;
+            control.FsmVariables.GetFsmFloat("Buried Y").Value = buriedPos.y;
+            transform.position = new Vector3(buriedPos.x, buriedPos.y, transform.position.z);
+        }
+
+        protected virtual void CalculateAndSetupErupt()
+        {
+            Vector2 eruptStart = pos2d + new Vector2(0f, eruptStartOffset);
+            control.FsmVariables.GetFsmFloat("Erupt Y").Value = eruptStart.y;
+            Vector2 eruptMax = eruptStart + Vector2.up * peakEruptHeight;
+            var upRay = SpawnerExtensions.GetRayOn(eruptStart, Vector2.up, peakEruptHeight + 1f);
+            if (upRay.distance < peakEruptHeight)
+            {
+                eruptMax = upRay.point;
+            }
+            control.FsmVariables.GetFsmFloat("Erupt Peak Y").Value = eruptMax.y;
+            transform.position = new Vector3(eruptStart.x, eruptStart.y, transform.position.z);
+        }
+
+        protected virtual IEnumerator StartAndCheckEruptPeak(string currentState, string endEvent)
+        {
+            float eruptMax = control.FsmVariables.GetFsmFloat("Erupt Peak Y").Value;
+
+            while (control.ActiveStateName == currentState)
+            {
+                var hitRay = SpawnerExtensions.GetRoofX(gameObject);
+                if (hitRay.collider != null || pos2d.y >= eruptMax || thisMetadata.PhysicsBody.velocity.y < 0)
+                {
+                    control.SendEvent(endEvent);
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+
+            yield break;
+        }
+
+        protected virtual IEnumerator TimeoutState(string currentState, string endEvent, float timeout)
+        {
+            while (control.ActiveStateName == currentState)
+            {
+                timeout -= Time.deltaTime;
+
+                if (timeout <= 0f)
+                {
+                    control.SendEvent(endEvent);
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+
+            yield break;
+        }
+
+        protected virtual IEnumerator StartAndCheckTunnelingState(string currentState, bool isMovingLeft)
+        {
+            while (control.ActiveStateName == currentState)
+            {
+                var left = SpawnerExtensions.GetRayOn(pos2d + Vector2.up * 3.5f, Vector2.left, float.MaxValue);
+                var right = SpawnerExtensions.GetRayOn(pos2d + Vector2.up * 3.5f, Vector2.right, float.MaxValue);
+
+                bool isHeroLeft = heroPos2d.x < pos2d.x;
+
+                if (left.distance < tunnelTooCloseToWall && isMovingLeft)
+                {
+                    control.SendEvent("RIGHT");
+                    break;
+                }
+                else if (right.distance < tunnelTooCloseToWall && !isMovingLeft)
+                {
+                    control.SendEvent("LEFT");
+                    break;
+                }
+                else if (DistanceToPlayer() > tunnelTurnTowardPlayerDist)
+                {
+                    if ((isMovingLeft && !isHeroLeft) || (!isMovingLeft && isMovingLeft))
+                    {
+                        control.SendEvent("TURN");
+                        break;
+                    }
+                }
+                yield return new WaitForEndOfFrame();
+            }
+
+            yield break;
+        }
+
+        protected override void PositionBoss()
+        {
+            gameObject.StickToGround(-1f);
+            burrowEffect.FsmVariables.GetFsmFloat("Ground Y").Value = transform.position.y;
         }
     }
 
@@ -1839,7 +2494,7 @@ namespace EnemyRandomizerMod
 
         protected override void PositionBoss()
         {
-            gameObject.StickToGround();
+            gameObject.StickToGround(1f);
         }
 
         protected virtual void StickToWall()
@@ -1857,8 +2512,10 @@ namespace EnemyRandomizerMod
 
         protected virtual IEnumerator CheckEndAirDash()
         {
+            float timeout = 5f;
             while(control.ActiveStateName == "A Dash")
             {
+                timeout -= Time.deltaTime;
                 var cardinalRays = SpawnerExtensions.GetCardinalRays(gameObject, 1f);
                 var hitRay = cardinalRays.FirstOrDefault(x => x.collider != null);
                 if(hitRay.collider != null)
@@ -1880,6 +2537,11 @@ namespace EnemyRandomizerMod
                             control.SendEvent("ROOF");
                         break;
                     }
+                }
+                if (timeout <= 0f)
+                {
+                    control.SendEvent("ROOF");
+                    break;
                 }
                 yield return new WaitForEndOfFrame();
             }
@@ -1976,8 +2638,9 @@ namespace EnemyRandomizerMod
                     return;
                 }
 
+                //if hornet gets scaled to a normal enemy with low hp, just enable the escalation right away
                 float hpPercent = (float)thisMetadata.EnemyHealthManager.hp / (float)thisMetadata.MaxHP;
-                if (hpPercent <= escalationHPPercentage)
+                if (hpPercent <= escalationHPPercentage || thisMetadata.EnemyHealthManager.hp < 100)
                 {
                     control.FsmVariables.GetFsmBool("Can Barb").Value = true;
 
@@ -2140,13 +2803,13 @@ namespace EnemyRandomizerMod
                 var spawnPoint = spawnRay.point;
 
                 var newBarb = EnemyRandomizerDatabase.GetDatabase().Spawn("Hornet Barb", null);
-                children.Add(newBarb);
 
                 ObjectMetadata barbMeta = new ObjectMetadata();
                 barbMeta.Setup(newBarb, EnemyRandomizerDatabase.GetDatabase());
                 barbMeta.ApplySizeScale(thisMetadata.SizeScale);
                 newBarb.transform.position = spawnPoint;
                 newBarb.SetActive(true);
+                children.Add(newBarb);
 
                 StartCoroutine(SendSpikeToBarbs());
             }, 0);
@@ -2160,7 +2823,7 @@ namespace EnemyRandomizerMod
 
         protected override void PositionBoss()
         {
-            gameObject.StickToGround();
+            gameObject.StickToGround(1f);
         }
 
         protected virtual void StickToWall()
@@ -2186,8 +2849,10 @@ namespace EnemyRandomizerMod
 
         protected virtual IEnumerator CheckEndAirDash()
         {
+            float timeout = 5f;
             while (control.ActiveStateName == "A Dash")
             {
+                timeout -= Time.deltaTime;
                 var cardinalRays = SpawnerExtensions.GetCardinalRays(gameObject, 1f);
                 var hitRay = cardinalRays.FirstOrDefault(x => x.collider != null);
                 if (hitRay.collider != null)
@@ -2210,6 +2875,11 @@ namespace EnemyRandomizerMod
                         break;
                     }
                 }
+                if(timeout <= 0f)
+                {
+                    control.SendEvent("ROOF");
+                    break;
+                }    
                 yield return new WaitForEndOfFrame();
             }
 

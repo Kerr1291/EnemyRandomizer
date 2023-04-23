@@ -304,6 +304,16 @@ namespace EnemyRandomizerMod
             return fixer;
         }
 
+        public static CorpseRemover AddCorpseRemoverWithEffect(GameObject corpse, string effect = null)
+        {
+            var remover = corpse.gameObject.AddComponent<CorpseRemover>();
+            if (!string.IsNullOrEmpty(effect))
+            {
+                remover.replacementEffect = effect;
+            }
+            return remover;
+        }
+
         public static GameObject GetCorpseObject(GameObject gameObject)
         {
             var corpse = gameObject.GetCorpse<EnemyDeathEffects>();

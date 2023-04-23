@@ -164,6 +164,8 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
  *  EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Lazy Flyer Enemy",null);
     EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Hatcher",null);
     EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Bursting Bouncer",null);
+    EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Hornet Boss 1",null);
+    EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("White Defender",null);
     BASIC FLYING ENEMIES
     <string>Mosquito</string>                              -   
     <string>Blobble</string>                               -   ""
@@ -339,16 +341,16 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Mage Knight</string>                           -   WORKS WHEN REPLACING?
     <string>Black Knight</string>                          -   NEEDS TESTING - YEETING WAS A RESULT OF DISABLED FSM WHEN OUT OF RANGED
     <string>Jar Collector</string>                         -   DOESN'T PROPERLY THROW JARS
-    <string>Hornet Boss 1</string>                         -   REMOVE 'DEACTIVATE IF PLAYER DATA TRUE'
+    <string>Hornet Boss 1</string>                         -   WORKS
     <string>Giant Buzzer</string>                          -   NEEDS TESTING (seems to work)
     <string>Giant Buzzer Col</string>                      -   NEEDS TESTING (seems to work)
     <string>Mega Moss Charger</string>                     -   NULLREF
     <string>Mega Zombie Beam Miner</string>                -   TEST IF CAMERA FIGHTING IS FIXED
     <string>Zombie Beam Miner Rematch</string>             -   LASER ISN'T WORKING
-    <string>Hornet Boss 2</string>                         -   DOESN'T SPAWN
+    <string>Hornet Boss 2</string>                         -   WORKS
     <string>Mimic Spider</string>                          -   SPAWNS TOO FAR TO THE RIGHT
-    <string>Mantis Traitor Lord</string>                   -   NEEDS TESTING
-    <string>Dung Defender</string>                         -   NEEDS BOSS SCRIPT
+    <string>Mantis Traitor Lord</string>                   -   SEEMS TO ALMOST WORK?
+    <string>Dung Defender</string>                         -   NEEDS TESTING
     <string>Fluke Mother</string>                          -   NEEDS TESTING
     <string>Hive Knight</string>                           -   NEEDS TESTING
     <string>Grimm Boss</string>                            -   NEEDS TESTING
@@ -358,12 +360,12 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Hollow Knight Boss</string>                    -   NEEDS BOSS SCRIPT -- WOULDN'T ACTIVATE AND COULDN'T DIE
     <string>HK Prime</string>                              -   NEEDS TESTING
     <string>Pale Lurker</string>                           -   WOULD NOT ACTIVATE
-    <string>Oro</string>                                   -   WOULD NOT ACTIVATE
-    <string>Mato</string>                                  -   WOULD NOT ACTIVATE
-    <string>Sheo Boss</string>                             -   WOULD NOT ACTIVATE
+    <string>Oro</string>                                   -   NEEDS BOSS SCRIPT
+    <string>Mato</string>                                  -   NEEDS BOSS SCRIPT
+    <string>Sheo Boss</string>                             -   NEEDS BOSS SCRIPT
     <string>Sly Boss</string>                              -   NEEDS BOSS SCRIPT
-    <string>Hornet Nosk</string>                           -   WOULDN'T ACTIVATE
-    <string>White Defender</string>                        -   NEEDS BOSS SCRIPT
+    <string>Hornet Nosk</string>                           -   NEEDS TESTING
+    <string>White Defender</string>                        -   NEEDS TESTING
     <string>Jellyfish GG</string>                          -   NEEDS BOSS SCRIPT
     <string>Mega Jellyfish</string>                        -   NEEDS BOSS SCRIPT
     <string>Ghost Warrior Marmu</string>                   -   NEEDS MORE TESTING -- SEEMS FIXED?

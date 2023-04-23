@@ -18,6 +18,8 @@ namespace EnemyRandomizerMod
         public DebugColliders debugColliders;
         public EnemyDreamnailReaction edr;
         protected bool hasSeenPlayer;
+        protected Action onHit;
+        protected int hpFromLastUpdate = 0;
 
         public virtual PlayMakerFSM control { get; protected set; }
 
@@ -71,6 +73,9 @@ namespace EnemyRandomizerMod
 
             SetDreamnailInfo();
             ConfigureRelativeToReplacement();
+
+            if(thisMetadata != null && thisMetadata.EnemyHealthManager != null)
+                hpFromLastUpdate = thisMetadata.EnemyHealthManager.hp;
 #if DEBUG
             debugColliders = gameObject.AddComponent<DebugColliders>();
 #endif
@@ -78,8 +83,25 @@ namespace EnemyRandomizerMod
 
         protected virtual void Update()
         {
+            UpdatePreviousHPAndCheckForOnHit();
             UpdateFSMRefs();
             CheckFSMsUsingHiddenStates();
+        }
+
+        protected virtual void UpdatePreviousHPAndCheckForOnHit()
+        {
+            if (thisMetadata == null)
+                return;
+
+            if (thisMetadata.EnemyHealthManager == null)
+                return;
+
+            int newHp = thisMetadata.EnemyHealthManager.hp;
+            if (hpFromLastUpdate > 0 && newHp < hpFromLastUpdate)
+            {
+                onHit?.Invoke();
+                hpFromLastUpdate = newHp;
+            }
         }
 
         protected virtual void UpdateRefs(PlayMakerFSM fsm, Dictionary<string, Func<DefaultSpawnedEnemyControl, float>> refs)
@@ -99,7 +121,7 @@ namespace EnemyRandomizerMod
 
         protected virtual void UpdateFSMRefs()
         {
-            if (control != null && FloatRefs != null && FloatRefs.Count > 0)
+            if (control != null && control.enabled && FloatRefs != null && FloatRefs.Count > 0)
                 UpdateRefs(control, FloatRefs);
         }
 
@@ -503,6 +525,14 @@ namespace EnemyRandomizerMod
 
             FSMsWithResetToStateOnHide.Add(fsm, resetToState);
         }
+
+        protected virtual void DisableActions(FsmState state, params int[] indices)
+        {
+            foreach(int i in indices)
+            {
+                state.DisableAction(i);
+            }
+        }
     }
 
     public class DefaultPrefabConfig : IPrefabConfig
@@ -583,6 +613,16 @@ namespace EnemyRandomizerMod
             }
 
             yield break;
+        }
+    }
+
+    public class CorpseRemover : MonoBehaviour
+    {
+        public string replacementEffect = "Pt Feather Burst";
+        protected virtual void OnEnable()
+        {
+            EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, "Pt Feather Burst", null, true);
+            GameObject.Destroy(gameObject);
         }
     }
 }

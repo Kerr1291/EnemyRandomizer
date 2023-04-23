@@ -250,7 +250,7 @@ namespace EnemyRandomizerMod
             }
 
             var pendingLoad = pendingLoads.FirstOrDefault(x => x.Key.ScenePath == metaObject.ScenePath);
-            if(pendingLoad.Key != null)
+            if (pendingLoad.Key != null)
             {
                 pendingLoads.Remove(pendingLoad.Key);
             }
@@ -261,7 +261,7 @@ namespace EnemyRandomizerMod
             if (metaObject.IsAReplacementObject)
                 return metaObject.Source;
 
-            //TODO: add this to the modules
+            //TODO: add this to the modules DO THIS NEXT!!!!!!!!!!!!!!!
             bool canProcess = CanProcessObject(metaObject);
 
             if (!canProcess)
@@ -271,27 +271,55 @@ namespace EnemyRandomizerMod
 
             bool replaceObject = true;
 
-            //create default replacements
-            List<PrefabObject> originalReplacementObjects = metaObject.GetObjectTypeCollection(database);
+            List<PrefabObject> originalReplacementObjects = null;
+            List<PrefabObject> validReplacements = null;
 
-            List<PrefabObject> validReplacements = originalReplacementObjects;
-
-            if (!EnemyRandomizer.DoReplacementBypassCheck())
+            //are we skipping replacement?
+            if (EnemyRandomizer.DoReplacementBypassCheck())
             {
-                validReplacements = GetValidReplacements(metaObject, originalReplacementObjects);
-                if (validReplacements == null || validReplacements.Count <= 0)
-                    replaceObject = false;
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(EnemyRandomizer.debugCustomReplacement))
+                if (EnemyRandomizer.HasCustomBypassReplacement())
                 {
-                    validReplacements = new List<PrefabObject>() { database.Objects[EnemyRandomizer.debugCustomReplacement] };
+                    string customBypassReplacement = EnemyRandomizer.GetCustomBypassReplacement();
+                    if (VERBOSE_LOGGING)
+                    {
+                        Dev.Log($"[{metaObject.ObjectType}, {metaObject.ScenePath}]: Replacement bypass set to {customBypassReplacement}. Will attempt to replace object with this custom object.");
+                    }
+
+                    try
+                    {
+                        validReplacements = new List<PrefabObject>() { database.Objects[customBypassReplacement] };
+                    }
+                    catch (Exception e)
+                    {
+                        Dev.LogError($"[{customBypassReplacement}]: Invalid object key used for custom bypass replacement. Cannot use to replace object.");
+                        validReplacements = new List<PrefabObject>();
+                        replaceObject = false;
+                    }
                 }
                 else
                 {
+                    if (VERBOSE_LOGGING)
+                    {
+                        Dev.Log($"[{metaObject.ObjectType}, {metaObject.ScenePath}]: Replacement bypass set. Will NOT attempt to replace object.");
+                    }
+
                     replaceObject = false;
                 }
+            }
+            else
+            {
+                //create default replacements
+                originalReplacementObjects = metaObject.GetObjectTypeCollection(database);
+                validReplacements = originalReplacementObjects;
+
+                if (VERBOSE_LOGGING)
+                {
+                    Dev.Log($"[{metaObject.ObjectType}, {metaObject.ScenePath}]: Will attempt to replace object.");
+                }
+
+                validReplacements = GetValidReplacements(metaObject, originalReplacementObjects);
+                if (validReplacements == null || validReplacements.Count <= 0)
+                    replaceObject = false;
             }
 
             try
@@ -302,7 +330,7 @@ namespace EnemyRandomizerMod
 
                 if (replaceObject)
                 {
-                    if(TryReplaceObject(metaObject, validReplacements, rng, out var newObject))
+                    if (TryReplaceObject(metaObject, validReplacements, rng, out var newObject))
                     {
                         if (VERBOSE_LOGGING)
                         {
@@ -314,14 +342,25 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
+                    if (VERBOSE_LOGGING)
+                    {
+                        Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Object was not replaced and will be marked to prevent processing by the randomizer again.");
+                    }
                     metaObject.MarkObjectAsReplacement(metaObject);
                 }
+            }
+            catch (Exception e)
+            {
+                Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Fatal error replacing object -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+            }
 
+            try
+            {
                 metaObject = ModifyObject(metaObject);
             }
             catch(Exception e)
             {
-                Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Fatal error randomzing object ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+                Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Fatal error modifying object -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
             }
 
             return metaObject.ActivateSource();
@@ -330,6 +369,9 @@ namespace EnemyRandomizerMod
         protected bool CanProcessObject(ObjectMetadata metaObject)
         {
             bool canProcess = CanProcessNow(metaObject);
+
+            if (!canProcess && EnemyRandomizer.DoReplacementBypassCheck(true))
+                canProcess = true;
 
             if (!canProcess)
             {

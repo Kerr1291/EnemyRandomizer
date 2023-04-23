@@ -24,6 +24,11 @@ namespace EnemyRandomizerMod
 
         [XmlIgnore]
         public PrefabType prefabType;
+
+        public override string ToString()
+        {
+            return $"[Type:{prefabType}, PrefabName:{prefabName}, {source}]";
+        }
     }
 
     [XmlRoot]
@@ -75,6 +80,11 @@ namespace EnemyRandomizerMod
 
         [XmlArray]
         public List<SceneObject> sceneObjects;
+
+        public override string ToString()
+        {
+            return $"[SceneData:{name}]";
+        }
     }
 
     [XmlRoot]
@@ -110,5 +120,10 @@ namespace EnemyRandomizerMod
 
         [XmlIgnore]
         public PrefabObject LoadedObject { get; set; }
+
+        public override string ToString()
+        {
+            return $"[SceneObject -> {Scene}, Name:{Name}, Loaded:{Loaded}, Source:{path}, CustomType:{customTypeName}]";
+        }
     }
 }
