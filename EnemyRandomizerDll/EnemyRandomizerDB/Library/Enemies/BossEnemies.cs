@@ -700,6 +700,7 @@ namespace EnemyRandomizerMod
         public Vector2 buriedOrigin;
         public Vector2 eruptOrigin;
         protected PlayMakerFSM burrowEffect;
+        protected PlayMakerFSM keepY;
 
         protected GameObject pooBallW;
         protected Vector3 pooThrowOffset;
@@ -715,6 +716,12 @@ namespace EnemyRandomizerMod
             }
 
             burrowEffect = gameObject.GetDirectChildren().FirstOrDefault(x => x.name.Contains("Burrow Effect")).LocateMyFSM("Burrow Effect");
+            
+            keepY = gameObject.GetDirectChildren().FirstOrDefault(x => x.name.Contains("Burrow Effect")).LocateMyFSM("Keep Y");
+            if (keepY != null)
+            {
+                Destroy(keepY);
+            }
 
             defaultHP = thisMetadata.MaxHP;
             rageTriggerRatio = defaultHP / defaultRageHP;
@@ -727,6 +734,12 @@ namespace EnemyRandomizerMod
 
             var wake = control.GetState("Wake");
             DisableActions(wake, 1, 7, 9);
+            wake.InsertCustomAction(() => {
+                PositionBoss(.3f);
+                burrowEffect.gameObject.StickToGroundX(-.5f);
+                burrowEffect.transform.position -= new Vector3(0f, 0.2f * thisMetadata.SizeScale, 0f);
+                //gameObject.transform.position -= new Vector3(0f, -2f * thisMetadata.SizeScale, 0f);
+            }, 5);
 
             var eruptOutFirst2 = control.GetState("Erupt Out First 2");
             DisableActions(eruptOutFirst2, 0, 1, 6, 8, 11, 16);
@@ -1049,15 +1062,21 @@ namespace EnemyRandomizerMod
         }
 
         protected override void PositionBoss()
-        {
-            gameObject.StickToGround(-.5f);
+        {            
+            gameObject.StickToGroundX(.3f);
             UpdateBurrowEffect();
         }
 
-        protected virtual void UpdateBurrowEffect()
+        protected virtual void PositionBoss(float extraOffset)
+        {
+            gameObject.StickToGroundX(extraOffset);
+            UpdateBurrowEffect();
+        }
+
+        protected virtual void UpdateBurrowEffect(float extraOffsetScale = -1f)
         {
             Vector2 groundPos = transform.position;
-            Vector2 buriedPos = groundPos - new Vector2(0f, buriedYOffset * transform.localScale.y);
+            Vector2 buriedPos = groundPos + new Vector2(0f, buriedYOffset * transform.localScale.y * extraOffsetScale);
             burrowEffect.FsmVariables.GetFsmFloat("Ground Y").Value = buriedPos.y;
         }
     }
@@ -1545,6 +1564,7 @@ namespace EnemyRandomizerMod
         public Vector2 buriedOrigin;
         public Vector2 eruptOrigin;
         protected PlayMakerFSM burrowEffect;
+        protected PlayMakerFSM keepY;
         protected Vector3 pooThrowOffset;
 
         public override void Setup(ObjectMetadata other)
@@ -1554,11 +1574,27 @@ namespace EnemyRandomizerMod
             defaultHP = thisMetadata.MaxHP;
             rageTriggerRatio = defaultHP / defaultRageHP;
 
+            burrowEffect = gameObject.GetDirectChildren().FirstOrDefault(x => x.name.Contains("Burrow Effect")).LocateMyFSM("Burrow Effect");
+            //keepY = gameObject.GetDirectChildren().FirstOrDefault(x => x.name.Contains("Burrow Effect")).LocateMyFSM("Keep Y");
+
+            keepY = gameObject.GetDirectChildren().FirstOrDefault(x => x.name.Contains("Burrow Effect")).LocateMyFSM("Keep Y");
+            if (keepY != null)
+            {
+                Destroy(keepY);
+            }
+            //var keepy_init = keepY.GetState("Init");
+            //keepy_init.DisableAction(3);
+
             this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
             this.AddResetToStateOnHide(control, "Init");
 
             var wake = control.GetState("Wake");
             DisableActions(wake, 6);
+            wake.InsertCustomAction(() => {
+                PositionBoss(.3f);
+                burrowEffect.gameObject.StickToGroundX(-.5f);
+                burrowEffect.transform.position -= new Vector3(0f, 1f * thisMetadata.SizeScale, 0f);
+            }, 2);
 
             var quakedOut = control.GetState("Quaked Out");
             DisableActions(quakedOut, 1, 4, 9, 11);
@@ -1799,14 +1835,20 @@ namespace EnemyRandomizerMod
 
         protected override void PositionBoss()
         {
-            gameObject.StickToGround(-.5f);
+            gameObject.StickToGroundX(.3f);
             UpdateBurrowEffect();
         }
 
-        protected virtual void UpdateBurrowEffect()
+        protected virtual void PositionBoss(float extraOffset)
+        {
+            gameObject.StickToGroundX(extraOffset);
+            UpdateBurrowEffect();
+        }
+
+        protected virtual void UpdateBurrowEffect(float extraOffsetScale = -1f)
         {
             Vector2 groundPos = transform.position;
-            Vector2 buriedPos = groundPos - new Vector2(0f, buriedYOffset * transform.localScale.y);
+            Vector2 buriedPos = groundPos - new Vector2(0f, buriedYOffset * transform.localScale.y * extraOffsetScale);
             burrowEffect.FsmVariables.GetFsmFloat("Ground Y").Value = buriedPos.y;
         }
     }

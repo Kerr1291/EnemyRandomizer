@@ -285,6 +285,23 @@ namespace EnemyRandomizerMod
             return true;
         }
 
+        public static Vector2 ToVec2(this Vector3 v)
+        {
+            return new Vector2(v.x, v.y);
+        }
+
+        public static bool StickToGroundX(this GameObject gameObject, float extraOffsetScale = 0.53f)
+        {
+            if (gameObject.GetComponent<Collider2D>() == null)
+                return false;
+
+            RaycastHit2D closest = GetRayOn(gameObject.transform.position.ToVec2() + Vector2.up, Vector2.down, float.MaxValue);
+            SetPositionToRayCollisionPoint(gameObject, closest, extraOffsetScale);
+            float newAngle = SetRotationToRayCollisionNormal(gameObject, closest, false);
+
+            return true;
+        }
+
         public static bool StickToRoof(this GameObject gameObject, float extraOffsetScale = 0.33f, bool flipped = false)
         {
             if (gameObject.GetComponent<Collider2D>() == null)
@@ -368,6 +385,12 @@ namespace EnemyRandomizerMod
             if (closest.collider != null && collider != null)
             {
                 gameObject.transform.position = closest.point + closest.normal * collider.size.y * offsetScale * gameObject.transform.localScale.y;
+            }
+            var spritetk2d = gameObject.GetComponent<tk2dSprite>();
+            if (collider == null && spritetk2d != null && closest.collider != null)
+            {
+                var size = spritetk2d.boxCollider2D.size;
+                gameObject.transform.position = closest.point + closest.normal * size.y * offsetScale * gameObject.transform.localScale.y;
             }
 
             return gameObject.transform.position;
