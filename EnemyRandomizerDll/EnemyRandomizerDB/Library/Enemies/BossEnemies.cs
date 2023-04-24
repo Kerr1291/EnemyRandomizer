@@ -688,7 +688,7 @@ namespace EnemyRandomizerMod
         public float peakEruptHeight = 12f;
         public float eruptStartOffset = 3f;
         public float defaultHP;
-        public float defaultRageHP=600f;
+        public float defaultRageHP=350f;
         public float rageTriggerRatio;
         public float tooFarToSlamDist = 7f;
         public float tooCloseToWallDist = 5f;
@@ -697,9 +697,12 @@ namespace EnemyRandomizerMod
         public float tunnelTurnTowardPlayerDist = 10f;
         public float airDiveHeight = 15.4f;
         public float pillarHeight = 10.68f;
+        public Vector2 buriedOrigin;
         public Vector2 eruptOrigin;
+        protected PlayMakerFSM burrowEffect;
 
-        PlayMakerFSM burrowEffect;
+        protected GameObject pooBallW;
+        protected Vector3 pooThrowOffset;
 
         public override void Setup(ObjectMetadata other)
         {
@@ -722,46 +725,38 @@ namespace EnemyRandomizerMod
             var init = control.GetState("Init");
             DisableActions(init, 1, 2);
 
-            //var init2 = control.GetState("Init 2");
-            //init2.ChangeTransition("FINISHED", "Wake");
-
             var wake = control.GetState("Wake");
             DisableActions(wake, 1, 7, 9);
 
             var eruptOutFirst2 = control.GetState("Erupt Out First 2");
-            DisableActions(eruptOutFirst2, 1, 6, 8, 11, 16);
+            DisableActions(eruptOutFirst2, 0, 1, 6, 8, 11, 16);
+            eruptOutFirst2.InsertCustomAction(() => CalculateAndSetupErupt(), 8);
             eruptOutFirst2.AddCustomAction(() => { StartCoroutine(StartAndCheckEruptPeak("Erupt Out First 2", "END")); });
-            eruptOutFirst2.InsertCustomAction(() => CalculateAndSetupErupt(),0);
 
             var introFall = control.GetState("Intro Fall");
             DisableActions(introFall, 0);
             introFall.AddCustomAction(() => { StartCoroutine(TimeoutState("Intro Fall", "LAND", 2f)); });
 
             var introLand = control.GetState("Intro Land");
-            introLand.ChangeTransition("FINISHED", "Roar End");
+            introLand.InsertCustomAction(() => { UpdateBurrowEffect(); }, 0);
 
-            var rageq = control.GetState("Rage?");
-            this.OverrideState(control, "Rage?", () => {
-                if(control.FsmVariables.GetFsmBool("Raged").Value)
-                {
-                    control.SendEvent("FINISHED");
-                }
-                else
-                {
-                    if(thisMetadata.EnemyHealthManager.hp/thisMetadata.MaxHP < rageTriggerRatio)
-                    {
-                        control.FsmVariables.GetFsmBool("Raged").Value = true;
-                        control.SendEvent("RAGE");
-                    }
-                    else
-                    {
-                        control.SendEvent("FINISHED");
-                    }
-                }
-            });
+            var introRoar = control.GetState("Intro Roar");
+            DisableActions(introRoar, 1,2,6,7,12,13,14,15,16,17,18);
+
+            var music = control.GetState("Music");
+            DisableActions(music, 0, 1, 2);
+
+            var roarEnd = control.GetState("Roar End");
+            DisableActions(roarEnd, 0, 1);
 
             var rageRoar = control.GetState("Rage Roar");
-            DisableActions(rageRoar, 2,3);
+            DisableActions(rageRoar, 2, 3, 4, 5);
+
+            var roarq = control.GetState("Roar?");
+            DisableActions(roarq, 5, 6, 10, 11, 12, 13, 14, 15, 16);
+
+            var rageIn = control.GetState("Rage In");
+            DisableActions(rageIn, 3, 7);
 
             var diveIn2 = control.GetState("Dive In 2");
             DisableActions(diveIn2, 3);
@@ -770,59 +765,13 @@ namespace EnemyRandomizerMod
             DisableActions(underground, 0);
             underground.InsertCustomAction(() => CalculateAndSetupBuried(), 0);
 
-            var rageIn = control.GetState("Rage In");
-            DisableActions(rageIn, 3);
-
-            var groundslamq = control.GetState("Ground Slam?");
-            this.OverrideState(control, "Ground Slam?", () => {
-
-                var left = SpawnerExtensions.GetRayOn(pos2d + Vector2.up, Vector2.left, float.MaxValue);
-                var right = SpawnerExtensions.GetRayOn(pos2d + Vector2.up, Vector2.right, float.MaxValue);
-
-                bool isHeroLeft = heroPos2d.x < pos2d.x;
-
-                if (DistanceToPlayer() > tooFarToSlamDist)
-                {
-                    control.SendEvent("FINISHED");
-                }
-                else
-                {
-                    bool tooCloseToRight = right.distance < tooCloseToWallDist;
-                    bool tooCloseToLeft = left.distance < tooCloseToWallDist;
-
-                    if(tooCloseToLeft && isHeroLeft)
-                    {
-                        control.SendEvent("FINISHED");
-                    }
-                    else if (tooCloseToRight && !isHeroLeft)
-                    {
-                        control.SendEvent("FINISHED");
-                    }
-                    else
-                    {
-                        RNG rng = new RNG();
-                        rng.Reset();
-
-                        bool doSlam = rng.Randf() < .2f;
-                        if(doSlam)
-                        {
-                            control.SendEvent("GROUND SLAM");
-                        }
-                        else
-                        {
-                            control.SendEvent("FINISHED");
-                        }
-                    }
-                }
-            });
-
             var tunnelingL = control.GetState("Tunneling L");
-            DisableActions(tunnelingL, 3, 4, 7, 8, 9);
-            tunnelingL.AddCustomAction(() => StartCoroutine(StartAndCheckTunnelingState("Tunneling L",true)));
+            DisableActions(tunnelingL, 4, 7, 8, 9);
+            tunnelingL.AddCustomAction(() => StartCoroutine(StartAndCheckTunnelingState("Tunneling L", true)));
 
             var tunnelingR = control.GetState("Tunneling R");
-            DisableActions(tunnelingL, 0, 4, 7, 8, 9);
-            tunnelingR.AddCustomAction(() => StartCoroutine(StartAndCheckTunnelingState("Tunneling R", true)));
+            DisableActions(tunnelingR, 0, 4, 7, 8, 9);
+            tunnelingR.AddCustomAction(() => StartCoroutine(StartAndCheckTunnelingState("Tunneling R", false)));
 
             var eruptAntic = control.GetState("Erupt Antic");
             DisableActions(eruptAntic, 3);
@@ -832,13 +781,13 @@ namespace EnemyRandomizerMod
 
             var eruptOutFirst = control.GetState("Erupt Out First");
             DisableActions(eruptOutFirst, 1,3,6,10);
+            eruptOutFirst.InsertCustomAction(() => CalculateAndSetupErupt(), 3);
             eruptOutFirst.AddCustomAction(() => { StartCoroutine(StartAndCheckEruptPeak("Erupt Out First", "END")); });
-            eruptOutFirst.InsertCustomAction(() => CalculateAndSetupErupt(), 0);
 
             var eruptOut = control.GetState("Erupt Out");
             DisableActions(eruptOut, 2, 5, 9, 14);
+            eruptOut.InsertCustomAction(() => CalculateAndSetupErupt(), 5);
             eruptOut.AddCustomAction(() => { StartCoroutine(StartAndCheckEruptPeak("Erupt Out", "END")); });
-            eruptOut.InsertCustomAction(() => CalculateAndSetupErupt(), 0);
 
             var eruptFall = control.GetState("Erupt Fall");
             DisableActions(eruptFall, 0);
@@ -846,16 +795,17 @@ namespace EnemyRandomizerMod
 
             var eruptLand = control.GetState("Erupt Land");
             DisableActions(eruptLand, 4);
-
-            var roarq = control.GetState("Roar?");
-            DisableActions(roarq, 5, 6, 11, 12, 13, 14, 15, 16);
+            eruptLand.InsertCustomAction(() => { gameObject.transform.position = eruptOrigin; }, 0);
 
             var throw1 = control.GetState("Throw 1");
+            pooBallW = throw1.GetAction<SpawnObjectFromGlobalPool>(1).gameObject.Value;
             DisableActions(throw1, 1);
             throw1.AddCustomAction(() => {
-                var dungBall = EnemyRandomizerDatabase.GetDatabase().Spawn("Dung Ball Large", null);
+                pooThrowOffset = 1.5f * Vector2.right * (transform.localScale.x < 0 ? -1f : 1f);
+                var dungBall = pooBallW.Spawn(transform.position + pooThrowOffset, Quaternion.identity);
+                //var dungBall = EnemyRandomizerDatabase.GetDatabase().Spawn("Dung Ball Large", null);
                 control.FsmVariables.GetFsmGameObject("Dung Ball").Value = dungBall;
-                dungBall.transform.position = transform.position;
+                //dungBall.transform.position = transform.position;
                 dungBall.SafeSetActive(true);
             });
 
@@ -879,6 +829,73 @@ namespace EnemyRandomizerMod
                 if (pos2d.x < heroPos2d.x)
                     control.SendEvent("FINISHED");
             }, 5);
+
+            this.OverrideState(control, "Set Min X", () => { control.SendEvent("FINISHED"); });
+            this.OverrideState(control, "Set Max X", () => { control.SendEvent("FINISHED"); });
+
+
+            var rageq = control.GetState("Rage?");
+            this.OverrideState(control, "Rage?", () => {
+                if (control.FsmVariables.GetFsmBool("Raged").Value)
+                {
+                    control.SendEvent("FINISHED");
+                }
+                else
+                {
+                    if (thisMetadata.EnemyHealthManager.hp / thisMetadata.MaxHP < rageTriggerRatio)
+                    {
+                        control.FsmVariables.GetFsmBool("Raged").Value = true;
+                        control.SendEvent("RAGE");
+                    }
+                    else
+                    {
+                        control.SendEvent("FINISHED");
+                    }
+                }
+            });
+
+            var groundslamq = control.GetState("Ground Slam?");
+            this.OverrideState(control, "Ground Slam?", () => {
+
+                var left = SpawnerExtensions.GetRayOn(pos2d + Vector2.up, Vector2.left, float.MaxValue);
+                var right = SpawnerExtensions.GetRayOn(pos2d + Vector2.up, Vector2.right, float.MaxValue);
+
+                bool isHeroLeft = heroPos2d.x < pos2d.x;
+
+                if (DistanceToPlayer() > tooFarToSlamDist)
+                {
+                    control.SendEvent("FINISHED");
+                }
+                else
+                {
+                    bool tooCloseToRight = right.distance < tooCloseToWallDist;
+                    bool tooCloseToLeft = left.distance < tooCloseToWallDist;
+
+                    if (tooCloseToLeft && isHeroLeft)
+                    {
+                        control.SendEvent("FINISHED");
+                    }
+                    else if (tooCloseToRight && !isHeroLeft)
+                    {
+                        control.SendEvent("FINISHED");
+                    }
+                    else
+                    {
+                        RNG rng = new RNG();
+                        rng.Reset();
+
+                        bool doSlam = rng.Randf() < .2f;
+                        if (doSlam)
+                        {
+                            control.SendEvent("GROUND SLAM");
+                        }
+                        else
+                        {
+                            control.SendEvent("FINISHED");
+                        }
+                    }
+                }
+            });
         }
 
         protected virtual IEnumerator CheckEndAirDive()
@@ -941,17 +958,17 @@ namespace EnemyRandomizerMod
 
         protected virtual void CalculateAndSetupBuried()
         {
-            Vector2 groundPos = SpawnerExtensions.GetRayOn(pos2d + Vector2.up * 3.5f, Vector2.down, 5f).point;
-
-            Vector2 buriedPos = groundPos;// - new Vector2(0f, buriedYOffset * transform.localScale.y);
-            //var downRay = SpawnerExtensions.GetRayOn(pos2d, Vector2.down, 5f).point + Vector2.down * buriedYOffset * transform.localScale.y;
+            Vector2 groundPos = transform.position;
+            Vector2 buriedPos = groundPos - new Vector2(0f, buriedYOffset * transform.localScale.y);
+            buriedOrigin = buriedPos;
             control.FsmVariables.GetFsmFloat("Buried Y").Value = buriedPos.y;
             transform.position = new Vector3(buriedPos.x, buriedPos.y, transform.position.z);
         }
 
         protected virtual void CalculateAndSetupErupt()
         {
-            Vector2 eruptStart = pos2d + new Vector2(0f, eruptStartOffset);
+            Vector2 eruptStart = pos2d + new Vector2(0f, eruptStartOffset * transform.localScale.y);
+            eruptOrigin = eruptStart;
             control.FsmVariables.GetFsmFloat("Erupt Y").Value = eruptStart.y;
             Vector2 eruptMax = eruptStart + Vector2.up * peakEruptHeight;
             var upRay = SpawnerExtensions.GetRayOn(eruptStart, Vector2.up, peakEruptHeight + 1f);
@@ -1033,8 +1050,15 @@ namespace EnemyRandomizerMod
 
         protected override void PositionBoss()
         {
-            gameObject.StickToGround(-1f);
-            burrowEffect.FsmVariables.GetFsmFloat("Ground Y").Value = transform.position.y;
+            gameObject.StickToGround(-.5f);
+            UpdateBurrowEffect();
+        }
+
+        protected virtual void UpdateBurrowEffect()
+        {
+            Vector2 groundPos = transform.position;
+            Vector2 buriedPos = groundPos - new Vector2(0f, buriedYOffset * transform.localScale.y);
+            burrowEffect.FsmVariables.GetFsmFloat("Ground Y").Value = buriedPos.y;
         }
     }
 
@@ -1255,7 +1279,7 @@ namespace EnemyRandomizerMod
 
 
 
-            control.ChangeTransition("Intro 6", "FINISHED", "Intro Roar End");
+            control.ChangeTransition("Intro 6", "FINISHED", "ntro land End");
             //control.ChangeTransition("Stun", "FINISHED", "Reformed");
             //control.ChangeTransition("Death Start", "FINISHED", "Death Explode");
 
@@ -1518,6 +1542,10 @@ namespace EnemyRandomizerMod
         public float tunnelTurnTowardPlayerDist = 10f;
         public float airDiveHeight = 15.4f;
         public float pillarHeight = 10.68f;
+        public Vector2 buriedOrigin;
+        public Vector2 eruptOrigin;
+        protected PlayMakerFSM burrowEffect;
+        protected Vector3 pooThrowOffset;
 
         public override void Setup(ObjectMetadata other)
         {
@@ -1534,15 +1562,7 @@ namespace EnemyRandomizerMod
 
             var quakedOut = control.GetState("Quaked Out");
             DisableActions(quakedOut, 1, 4, 9, 11);
-            //eruptOutFirst2.AddCustomAction(() => { StartCoroutine(StartAndCheckEruptPeak("Erupt Out First 2", "END")); });
-            quakedOut.InsertCustomAction(() => CalculateAndSetupErupt(), 0);
-
-            //var introFall = control.GetState("Intro Fall");
-            //DisableActions(introFall, 0);
-            //introFall.AddCustomAction(() => { StartCoroutine(TimeoutState("Intro Fall", "LAND", 2f)); });
-
-            //var introEnd = control.GetState("Intro End");
-            //introEnd.ChangeTransition("FINISHED", "Roar End");
+            quakedOut.InsertCustomAction(() => CalculateAndSetupErupt(), 1);
 
             var rageq = control.GetState("Rage?");
             this.OverrideState(control, "Rage?", () => {
@@ -1578,50 +1598,7 @@ namespace EnemyRandomizerMod
             underground.InsertCustomAction(() => CalculateAndSetupBuried(), 0);
 
             var rageIn = control.GetState("Rage In");
-            DisableActions(rageIn, 2);
-
-            //var groundslamq = control.GetState("Ground Slam?");
-            //this.OverrideState(control, "Ground Slam?", () => {
-
-            //    var left = SpawnerExtensions.GetRayOn(pos2d + Vector2.up, Vector2.left, float.MaxValue);
-            //    var right = SpawnerExtensions.GetRayOn(pos2d + Vector2.up, Vector2.right, float.MaxValue);
-
-            //    bool isHeroLeft = heroPos2d.x < pos2d.x;
-
-            //    if (DistanceToPlayer() > tooFarToSlamDist)
-            //    {
-            //        control.SendEvent("FINISHED");
-            //    }
-            //    else
-            //    {
-            //        bool tooCloseToRight = right.distance < tooCloseToWallDist;
-            //        bool tooCloseToLeft = left.distance < tooCloseToWallDist;
-
-            //        if (tooCloseToLeft && isHeroLeft)
-            //        {
-            //            control.SendEvent("FINISHED");
-            //        }
-            //        else if (tooCloseToRight && !isHeroLeft)
-            //        {
-            //            control.SendEvent("FINISHED");
-            //        }
-            //        else
-            //        {
-            //            RNG rng = new RNG();
-            //            rng.Reset();
-
-            //            bool doSlam = rng.Randf() < .2f;
-            //            if (doSlam)
-            //            {
-            //                control.SendEvent("GROUND SLAM");
-            //            }
-            //            else
-            //            {
-            //                control.SendEvent("FINISHED");
-            //            }
-            //        }
-            //    }
-            //});
+            DisableActions(rageIn, 2, 6);
 
             var tunnelingL = control.GetState("Tunneling L");
             DisableActions(tunnelingL, 3, 4, 7, 8, 9);
@@ -1629,7 +1606,7 @@ namespace EnemyRandomizerMod
 
             var tunnelingR = control.GetState("Tunneling R");
             DisableActions(tunnelingL, 0, 4, 7, 8, 9);
-            tunnelingR.AddCustomAction(() => StartCoroutine(StartAndCheckTunnelingState("Tunneling R", true)));
+            tunnelingR.AddCustomAction(() => StartCoroutine(StartAndCheckTunnelingState("Tunneling R", false)));
 
             var eruptAntic = control.GetState("Erupt Antic");
             DisableActions(eruptAntic, 3);
@@ -1638,14 +1615,14 @@ namespace EnemyRandomizerMod
             DisableActions(eruptAnticR, 2);
 
             var eruptOutFirst = control.GetState("Erupt Out First");
-            DisableActions(eruptOutFirst, 1, 3, 6, 10);
+            DisableActions(eruptOutFirst, 1, 3, 6, 11);
+            eruptOutFirst.InsertCustomAction(() => CalculateAndSetupErupt(), 3);
             eruptOutFirst.AddCustomAction(() => { StartCoroutine(StartAndCheckEruptPeak("Erupt Out First", "END")); });
-            eruptOutFirst.InsertCustomAction(() => CalculateAndSetupErupt(), 0);
 
             var eruptOut = control.GetState("Erupt Out");
             DisableActions(eruptOut, 2, 5, 9, 14);
+            eruptOut.InsertCustomAction(() => CalculateAndSetupErupt(), 5);
             eruptOut.AddCustomAction(() => { StartCoroutine(StartAndCheckEruptPeak("Erupt Out", "END")); });
-            eruptOut.InsertCustomAction(() => CalculateAndSetupErupt(), 0);
 
             var eruptFall = control.GetState("Erupt Fall");
             DisableActions(eruptFall, 0);
@@ -1660,24 +1637,11 @@ namespace EnemyRandomizerMod
             var throw1 = control.GetState("Throw 1");
             DisableActions(throw1, 1);
             throw1.AddCustomAction(() => {
+                pooThrowOffset = 1.5f * Vector2.right * (transform.localScale.x < 0 ? -1f : 1f);
                 var dungBall = EnemyRandomizerDatabase.GetDatabase().Spawn("Dung Ball Large", null);
                 control.FsmVariables.GetFsmGameObject("Dung Ball").Value = dungBall;
                 dungBall.SafeSetActive(true);
             });
-
-            //var rjInAir = control.GetState("RJ In Air");
-            //DisableActions(rjInAir, 7);
-            //rjInAir.InsertCustomAction(() => StartCoroutine(CalculateAirDiveHeight()), 7);
-
-            //var airDive = control.GetState("Air Dive");
-            //DisableActions(airDive, 8);
-            //airDive.AddCustomAction(() => StartCoroutine(CheckEndAirDive()));
-
-            //var pillar = control.GetState("Pillar");
-            //pillar.InsertCustomAction(() => {
-            //    var floor = SpawnerExtensions.GetRayOn(pos2d + Vector2.up * 3.5f, Vector2.down, float.MaxValue);
-            //    pillar.GetActions<SetPosition>().ToList().ForEach(x => x.y.Value = floor.point.y + pillarHeight);
-            //}, 0);
 
             var dolphDir = control.GetState("Dolph Dir");
             dolphDir.DisableAction(5);
@@ -1686,6 +1650,8 @@ namespace EnemyRandomizerMod
                     control.SendEvent("FINISHED");
             }, 5);
 
+            this.OverrideState(control, "Set Min X", () => { control.SendEvent("FINISHED"); });
+            this.OverrideState(control, "Set Max X", () => { control.SendEvent("FINISHED"); });
         }
 
         protected virtual IEnumerator CheckEndAirDive()
@@ -1740,17 +1706,17 @@ namespace EnemyRandomizerMod
 
         protected virtual void CalculateAndSetupBuried()
         {
-            Vector2 groundPos = SpawnerExtensions.GetRayOn(pos2d + Vector2.up * 3.5f, Vector2.down, 5f).point;
-
-            Vector2 buriedPos = groundPos;// - new Vector2(0f, buriedYOffset * transform.localScale.y);
-            //var downRay = SpawnerExtensions.GetRayOn(pos2d, Vector2.down, 5f).point + Vector2.down * buriedYOffset * transform.localScale.y;
+            Vector2 groundPos = transform.position;
+            Vector2 buriedPos = groundPos - new Vector2(0f, buriedYOffset * transform.localScale.y);
+            buriedOrigin = buriedPos;
             control.FsmVariables.GetFsmFloat("Buried Y").Value = buriedPos.y;
             transform.position = new Vector3(buriedPos.x, buriedPos.y, transform.position.z);
         }
 
         protected virtual void CalculateAndSetupErupt()
         {
-            Vector2 eruptStart = pos2d + new Vector2(0f, eruptStartOffset);
+            Vector2 eruptStart = pos2d + new Vector2(0f, eruptStartOffset * transform.localScale.y);
+            eruptOrigin = eruptStart;
             control.FsmVariables.GetFsmFloat("Erupt Y").Value = eruptStart.y;
             Vector2 eruptMax = eruptStart + Vector2.up * peakEruptHeight;
             var upRay = SpawnerExtensions.GetRayOn(eruptStart, Vector2.up, peakEruptHeight + 1f);
@@ -1830,10 +1796,18 @@ namespace EnemyRandomizerMod
             yield break;
         }
 
+
         protected override void PositionBoss()
         {
-            gameObject.StickToGround(-1f);
-            burrowEffect.FsmVariables.GetFsmFloat("Ground Y").Value = transform.position.y;
+            gameObject.StickToGround(-.5f);
+            UpdateBurrowEffect();
+        }
+
+        protected virtual void UpdateBurrowEffect()
+        {
+            Vector2 groundPos = transform.position;
+            Vector2 buriedPos = groundPos - new Vector2(0f, buriedYOffset * transform.localScale.y);
+            burrowEffect.FsmVariables.GetFsmFloat("Ground Y").Value = buriedPos.y;
         }
     }
 

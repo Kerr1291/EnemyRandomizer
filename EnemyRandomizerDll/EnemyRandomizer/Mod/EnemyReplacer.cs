@@ -18,7 +18,7 @@ namespace EnemyRandomizerMod
 {
     public class EnemyReplacer
     {
-        public static bool VERBOSE_LOGGING = false;
+        public static bool VERBOSE_LOGGING = true;
 
         public EnemyRandomizerDatabase database;
         public HashSet<IRandomizerLogic> loadedLogics = new HashSet<IRandomizerLogic>();

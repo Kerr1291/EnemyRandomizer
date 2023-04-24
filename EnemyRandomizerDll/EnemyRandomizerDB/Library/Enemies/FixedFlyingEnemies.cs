@@ -25,7 +25,7 @@ namespace EnemyRandomizerMod
         /// <summary>
         /// This needs to be set each frame to make the palace fly killable
         /// </summary>
-        protected virtual void Update()
+        protected override void Update()
         {
             if (thisMetadata == null)
                 return;
@@ -225,6 +225,7 @@ namespace EnemyRandomizerMod
             var birth = FSM.GetState("Birth");
             birth.DisableAction(1);
             birth.DisableAction(7);
+            birth.DisableAction(15);//disable the reversing the scale
             birth.InsertCustomAction(() => {
                 FSM.FsmVariables.GetFsmGameObject("Hatchling").Value.SafeSetActive(true);
             }, 6);
@@ -256,8 +257,10 @@ namespace EnemyRandomizerMod
             }
         }
 
-        protected virtual void Update()
+        protected override void Update()
         {
+            base.Update();
+
             if (children == null)
                 return;
 

@@ -1,17 +1,37 @@
 ﻿
 /* CURRENT TODO
  * 
- * NEEDS TEST: KILLING WHITE PALACE ENEMY GUARD DIDN'T TRIGGER GATE OPENING
+ * Add a new system for like enemy replacer for enemies that can be randomized
+ * Add a new system for replaced enemies so that things that spawn children can get references to their replacements properly
+ * Add some kind of pre-check in for randomization to see if the enemy has a valid, non-insta-death placement before trying
+ * Add a more sophisticated check for wall/ceiling enemies to search for placements not on slopes (or use the slope normals)
+ * Make custom colo logic
+ * Fix GPZ scaling when stuff is killed
+ * Fix ghost boss replacements from not triggering their bools
+ * Scale down ghost HP and several other enemies
+ * STILL BROKEN: KILLING WHITE PALACE ENEMY GUARD DIDN'T TRIGGER GATE OPENING
  * NEEDS TEST: killing the greenpath moss knight replacement didn't work
  * NEEDS TEST: Ground enemy spawned in first arena and walked outside, gate closed... try teleporting them back in when battle starts if they're outside
- * add lumaflies to the randomize hazard list
+ * add lumaflies, bomb eggs, and more to the randomize hazard list
  * re-balance the random scale probabilities
- * fix traitor lord from jumping into ceilings
+ * fix traitor lord from jumping into ceilings (test?)
  * fix mender bug not being killable
  * fix hornet 2 from not spawning correctly
  * collector stuck in floor -- need some kind of fix
  * fix blugg items
  * fix geo randomizer golden husk not dropping item
+ * fix bee/breaking walls in hive
+ * fix hazard randos not doing all wp saws + making pits in deepnest
+ * fix boss-geo replacement and other rando check interactions
+ * "scale down" the difficulty of enemise that replace the pidgeons/fluke eggs
+ * Add blue/orange scuttlers to the rando list
+ * Add mace bug to the rando list
+ * Replace mace bug on false knight's staff with another enemy for luls
+ * DISABLE CG TINKERS
+ * DISABLE WATCHER KNIGHT TINKERS (make their load states much faster)
+ * NERF ORDEAL ZOTELING DAMAGE
+ * add poob to gruz mother
+ * make zote balloons spawn an explosion on death
  * 
  * ********since I'm loading pretty much every song anyway.... add music randomizer module
  *
@@ -24,8 +44,10 @@
  * 
  * BUGS TO FIX:
  * 
- * Fix toggling the mod off/on
- * Fix toggling randomize bosses off/on
+ * Fix corpses so their death souths are also scaled
+ * Fix larger enemies so the death sounds arn't too slow (mostly on random scaling)
+ * Fix enemies that can escape from being placed in arenas (or kill them on escape)
+ * Fix toggling the mod off/on -- is broken
  * 
  * The lancer dies but does not despawn-- look up some corpses/death effects to use when replacing the lancer's
  * Replacements in an arena in queen's gardens did not work
@@ -245,7 +267,7 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
                                                                ALSO, TRY NOT TO PICK WALLS WITH SLOPES WHEN THERE ARE ALTERNATIVES
 
     <string>Hatcher</string>                               -   FIXED -- ADDED DIE CHILDREN METHOD (test it) and changed child count to spawn more consistantly
-    <string>Centipede Hatcher</string>                     -   FIXED
+    <string>Centipede Hatcher</string>                     -   TEST SPAWNING ENEMIES IN REVERSE -- FIX SO IT SPAWNS A CAPPED AMOUNT OF ENEMIES
     <string>Zombie Hive</string>                           -   FIXED
     <string>Blocker</string>                               -   NEEDS TESTING
     
