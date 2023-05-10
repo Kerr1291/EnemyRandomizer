@@ -59,3 +59,6 @@ https://www.twitch.tv/oatmille1
 
 
 Additional thanks to anyone I may have missed and everyone in the hollow knight modding community for their hard work.
+
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W2KS9XV)
