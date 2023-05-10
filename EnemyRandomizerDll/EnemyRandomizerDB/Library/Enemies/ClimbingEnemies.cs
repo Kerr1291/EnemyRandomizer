@@ -20,7 +20,7 @@ namespace EnemyRandomizerMod
 
     public class DefaultClimberControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             gameObject.StickToClosestSurface(100f, extraOffsetScale: 0.5f, alsoStickCorpse: false, flipped: false);
         }
@@ -205,7 +205,6 @@ namespace EnemyRandomizerMod
     /////
     public class SpiderMiniControl : DefaultClimberControl
     {
-        public PlayMakerFSM control;
         public float shotSpeed = 15f; //taken from the FSM
 
         public override void Setup(ObjectMetadata other)

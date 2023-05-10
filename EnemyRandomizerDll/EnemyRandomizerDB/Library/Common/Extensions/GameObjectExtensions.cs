@@ -14,32 +14,17 @@ namespace EnemyRandomizerMod
 {
     public static class GameObjectExtensions
     {
-        //public static bool IsVisible(this GameObject enemy)
-        //{
-        //    Collider2D collider = enemy.GetComponent<Collider2D>();
-        //    MeshRenderer renderer = enemy.GetComponent<MeshRenderer>();
-        //    if (collider == null && renderer == null)
-        //        return false;
-
-        //    if (collider != null && renderer == null)
-        //        return collider.enabled;
-        //    else if (collider == null && renderer != null)
-        //        return renderer.enabled;
-        //    else //if (collider != null && renderer != null)
-        //        return collider.enabled && renderer.enabled;
-        //}
-
-        public static bool IsTouchableType(this GameObject touchableType)
+        public static GameObject FindResource(string pathName)
         {
-            if (touchableType.GetComponent<Collider>() != null)
-                return true;
-            if (touchableType.GetComponent<Collider2D>() != null)
-                return true;
-            if (touchableType.GetComponent<SpriteRenderer>() != null)
-                return true;
-            if (touchableType.GetComponent<RectTransform>() != null)
-                return true;
-            return false;
+            string[] path = pathName.Trim('/').Split('/');
+
+            if (path.Length <= 0)
+                return null;
+
+            var possiblePrefabs = Resources.FindObjectsOfTypeAll<GameObject>();
+            var found = possiblePrefabs.FirstOrDefault(x => x.GetSceneHierarchyPath() == pathName);
+
+            return found;
         }
 
         public static bool ContainsType<T>(this UnityEngine.Object obj)
@@ -606,38 +591,10 @@ namespace EnemyRandomizerMod
             if(gameObject == null)
                 yield break;
 
-            //string parentObject = gameObject.GetSceneHierarchyPath();
-            //Debug.Log(parentObject);
-
             for(int k = 0; k < gameObject.transform.childCount; ++k)
             {
                 Transform child = gameObject.transform.GetChild(k);
                 yield return child.gameObject;
-                //string objectNameAndPath = child.gameObject.GetSceneHierarchyPath();
-
-                //string inactiveString = string.Empty;
-                //if(child != null && child.gameObject != null && !child.gameObject.activeInHierarchy)
-                //    inactiveString = " (inactive)";
-
-                //Debug.Log(objectNameAndPath + inactiveString);
-
-
-                //if(printComponents)
-                //{
-                //    string componentHeader = "";
-                //    for(int i = 0; i < (objectNameAndPath.Length - child.gameObject.name.Length); ++i)
-                //        componentHeader += " ";
-
-                //    foreach(Component c in child.GetComponents<Component>())
-                //    {
-                //        c.PrintComponentType(componentHeader, file);
-
-                //        if(c is Transform)
-                //            c.PrintTransform(componentHeader, file);
-                //        else
-                //            c.PrintComponentWithReflection(componentHeader, file);
-                //    }
-                //}
             }
         }
 
@@ -647,41 +604,14 @@ namespace EnemyRandomizerMod
             if(gameObject == null)
                 yield break;
 
-            //string parentObject = gameObject.GetSceneHierarchyPath();
-            //Debug.Log(parentObject);
-
             for(int k = 0; k < gameObject.transform.childCount; ++k)
             {
                 Transform child = gameObject.transform.GetChild(k);
                 TComponent c = child.GetComponent<TComponent>();
                 if(c == null)
                     continue;
+
                 yield return c;
-                //string objectNameAndPath = child.gameObject.GetSceneHierarchyPath();
-
-                //string inactiveString = string.Empty;
-                //if(child != null && child.gameObject != null && !child.gameObject.activeInHierarchy)
-                //    inactiveString = " (inactive)";
-
-                //Debug.Log(objectNameAndPath + inactiveString);
-
-
-                //if(printComponents)
-                //{
-                //    string componentHeader = "";
-                //    for(int i = 0; i < (objectNameAndPath.Length - child.gameObject.name.Length); ++i)
-                //        componentHeader += " ";
-
-                //    foreach(Component c in child.GetComponents<Component>())
-                //    {
-                //        c.PrintComponentType(componentHeader, file);
-
-                //        if(c is Transform)
-                //            c.PrintTransform(componentHeader, file);
-                //        else
-                //            c.PrintComponentWithReflection(componentHeader, file);
-                //    }
-                //}
             }
         }
 
@@ -882,6 +812,19 @@ namespace EnemyRandomizerMod
                 return false;
 
             return go.activeInHierarchy;
+        }
+
+        public static bool IsTouchableType(this GameObject touchableType)
+        {
+            if (touchableType.GetComponent<Collider>() != null)
+                return true;
+            if (touchableType.GetComponent<Collider2D>() != null)
+                return true;
+            if (touchableType.GetComponent<SpriteRenderer>() != null)
+                return true;
+            if (touchableType.GetComponent<RectTransform>() != null)
+                return true;
+            return false;
         }
     }
 }

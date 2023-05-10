@@ -37,7 +37,7 @@ namespace EnemyRandomizerMod
 
 
     /////////////////////////////////////////////////////////////////////////////
-    /////
+    ///// TODO: add explosion to corpse
     public class BurstingBouncerControl : DefaultSpawnedEnemyControl { }
 
     public class BurstingBouncerSpawner : DefaultSpawner<BurstingBouncerControl> { }
@@ -51,7 +51,7 @@ namespace EnemyRandomizerMod
 
 
     /////////////////////////////////////////////////////////////////////////////
-    /////
+    ///// TODO: add explosion to corpse
     public class AngryBuzzerControl : DefaultSpawnedEnemyControl { }
 
     public class AngryBuzzerSpawner : DefaultSpawner<AngryBuzzerControl> { }
@@ -144,11 +144,11 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            if(this.thisMetadata.GeoManager.Value <= 0)
+            if(this.thisMetadata.Geo <= 0)
             {
                 RNG rng = new RNG();
                 rng.Reset();
-                this.thisMetadata.GeoManager.Value = rng.Rand(1, 10);
+                this.thisMetadata.Geo = rng.Rand(1, 10);
             }
         }
     }
@@ -166,7 +166,7 @@ namespace EnemyRandomizerMod
 
             RNG rng = new RNG();
             rng.Reset();
-            this.thisMetadata.GeoManager.Value = rng.Rand(1, 10);
+            this.thisMetadata.Geo = rng.Rand(1, 10);
         }
     }
 
@@ -200,7 +200,45 @@ namespace EnemyRandomizerMod
 
     public class AcidFlyerSpawner : DefaultSpawner<AcidFlyerControl> { }
 
-    public class AcidFlyerPrefabConfig : DefaultPrefabConfig<AcidFlyerControl> { }
+    public class AcidFlyerPrefabConfig : DefaultPrefabConfig<AcidFlyerControl>
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            base.SetupPrefab(p);
+
+            try
+            {
+                var db = EnemyRandomizerDatabase.GetDatabase();
+                if (db != null && !db.otherNames.Contains(EnemyRandomizerDatabase.BlockHitEffectName))
+                {
+                    var tink = p.prefab.GetComponentInChildren<TinkEffect>(true);
+
+                    var beClone = GameObject.Instantiate(tink.blockEffect);
+                    beClone.SetActive(false);
+                    GameObject.DontDestroyOnLoad(beClone);
+                    PrefabObject p2 = new PrefabObject();
+                    SceneObject sp2 = new SceneObject();
+                    sp2.components = new List<string>();
+                    sp2.Scene = p.source.Scene;
+                    p2.prefabName = EnemyRandomizerDatabase.BlockHitEffectName;
+                    beClone.name = p2.prefabName;
+                    sp2.path = beClone.name;
+                    p2.prefab = beClone;
+                    p2.source = sp2;
+                    sp2.LoadedObject = p2;
+                    sp2.Scene.sceneObjects.Add(sp2);
+                    db.otherPrefabs.Add(p2);
+                    db.Others[p2.prefabName] = p2;
+                    db.Objects[p2.prefabName] = p2;
+                    sp2.Loaded = true;
+                }
+            }
+            catch(Exception e)
+            {
+                Dev.LogError($"Error creating block hit effect:{e.Message} Stacktrace:{e.StackTrace}");
+            }
+        }
+    }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -419,7 +457,7 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            thisMetadata.GeoManager.Value = 2;
+            thisMetadata.Geo = 2;
         }
     }
 

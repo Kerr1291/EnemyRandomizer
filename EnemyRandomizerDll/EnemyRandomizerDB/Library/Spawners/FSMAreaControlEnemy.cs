@@ -49,6 +49,16 @@ namespace EnemyRandomizerMod
         {
             gameObject.StickToGround();
         }
+
+        protected override int ScaleHPFromBossToNormal(int defaultHP, int previousHP)
+        {
+            if (previousHP * 2 < defaultHP)
+                return Mathf.FloorToInt(previousHP * 2f);
+            else if (previousHP < defaultHP)
+                return previousHP;
+            else
+                return defaultHP;
+        }
     }
 }
 

@@ -23,7 +23,7 @@ namespace EnemyRandomizerMod
 {
     public partial class EnemyRandomizer : Mod, ITogglableMod, IGlobalSettings<EnemyRandomizerSettings>, ILocalSettings<EnemyRandomizerPlayerSettings>, IDisposable
     {
-        public static EnemyRandomizer Instance
+        public static EnemyRandomizer Instance 
         {
             get
             {
@@ -99,7 +99,7 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
 
         const string defaultDatabaseFilePath = "EnemyRandomizerDatabase.xml";
-        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 7.5 -- Now with more hornet]";
+        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 8.mslp_streamiversary]";
         static string currentVersion = currentVersionPrefix;
             //Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + $" CURRENT SEED:[{GlobalSettings.seed}] -- TO CHANGE SEED --> MODS > ENEMY RANDOMIZER > ENEMY RANDOMIZER MODULES";
 
@@ -167,7 +167,7 @@ namespace EnemyRandomizerMod
         public override List<(string, string)> GetPreloadNames()
         {
             if (DEBUG_SKIP_LOADING)
-                return new List<(string, string)>();
+                return new List<(string, string)>(); 
 
             return enemyReplacer.GetPreloadNames(defaultDatabaseFilePath);
         }
@@ -475,7 +475,7 @@ namespace EnemyRandomizerMod
             var pooledGO = RandomizePooledSpawn(originalGameObject);
 
             //see if this pooled game object should me pooled by the randomizer
-            if (pooledGO != null && EnemyReplacer.RandoControlledPooling.Any(x => pooledGO.name.Contains(x)))
+            if (pooledGO != null && MetaDataTypes.RandoControlledPooling.Any(x => pooledGO.name.Contains(x)))
             {
                 //can't be doing this for everything, is causing nullrefs
                 //want to do it for some things, maybe based on a list?

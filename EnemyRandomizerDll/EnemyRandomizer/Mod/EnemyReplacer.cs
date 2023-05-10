@@ -30,6 +30,11 @@ namespace EnemyRandomizerMod
             database = LoadDatabase(databaseFilePath);
             if (database == null)
                 return new List<(string, string)>();
+
+            //needed early to use internally during db load
+            EnemyRandomizerDatabase.GetDatabase -= GetCurrentDatabase;
+            EnemyRandomizerDatabase.GetDatabase += GetCurrentDatabase;
+
             return database.GetPreloadNames();
         }
 
@@ -218,6 +223,7 @@ namespace EnemyRandomizerMod
 
             if (metaData.IsBoss && !EnemyRandomizer.GlobalSettings.RandomizeBosses)
             {
+                //TODO: test
                 if(metaData.DatabaseName.Contains("Giant Fly"))
                 {
                     var fixedBossControl = original.GetOrAddComponent<GiantFlyControl>();
@@ -266,8 +272,6 @@ namespace EnemyRandomizerMod
 
             if (!canProcess)
                 return metaObject.Source;
-
-            metaObject.UpdateTransformValues();
 
             bool replaceObject = true;
 
@@ -336,8 +340,15 @@ namespace EnemyRandomizerMod
                         {
                             Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Object will be replaced by [{newObject.ObjectType}, {newObject.ObjectName}] .");
                         }
+
+                        if(newObject.Source != metaObject.Source)
+                            EnemyRandomizerDatabase.OnObjectReplaced?.Invoke((newObject, metaObject));
+
                         newObject.MarkObjectAsReplacement(metaObject);
                         metaObject = newObject;
+
+                        if (VERBOSE_LOGGING)
+                            Dev.Log($"[{newObject.ObjectType}, {newObject.ObjectName}]: Was marked as a replacement for [{metaObject.ObjectType}, {metaObject.ObjectName}] .");
                     }
                 }
                 else
@@ -351,17 +362,35 @@ namespace EnemyRandomizerMod
             }
             catch (Exception e)
             {
-                Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Fatal error replacing object -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+                Dev.LogError($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Fatal error replacing object -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
             }
 
             try
             {
+                if (VERBOSE_LOGGING)
+                    Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Trying to modify....");
+
                 metaObject = ModifyObject(metaObject);
             }
             catch(Exception e)
             {
-                Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Fatal error modifying object -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+                Dev.LogError($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Fatal error modifying object -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
             }
+
+            try
+            {
+                if (VERBOSE_LOGGING)
+                    Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Trying to fix logic....");
+
+                FixForLogic(metaObject);
+            }
+            catch (Exception e)
+            {
+                Dev.LogError($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Fatal error fixing object for logic -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+            }
+
+            if (VERBOSE_LOGGING)
+                Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Trying to finalize and activate....");
 
             return metaObject.ActivateSource();
         }
@@ -386,12 +415,12 @@ namespace EnemyRandomizerMod
                     return false;
                 }
 
-                if (metaObject.IsTemporarilyInactive())// || metaObject.IsBattleInactive())
+                if (metaObject.isTemporarilyInactive.Value)
                 {
                     if (VERBOSE_LOGGING && GetBlackBorders().Value != null && GetBlackBorders().Value.Count > 0)
                     {
                         Dev.Log($"[{metaObject.ObjectType}, {metaObject.ScenePath}]: Cannot process object yet. Queuing for activation later.");
-                        metaObject.Dump();
+                        //metaObject.Dump();
                     }
 
                     var loader = OnObjectLoadedAndActive(metaObject);
@@ -403,20 +432,28 @@ namespace EnemyRandomizerMod
                 else
                 {
                     //object is inactive, can't process at all, return original
+                    if(VERBOSE_LOGGING)
+                    {
+                        Dev.LogWarning($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Cannot process inactive object.");
+                        //metaObject.Dump();
+                    }
                 }
-
-                //if (VERBOSE_LOGGING && metaObject.HasData && !metaObject.IsAReplacementObject)
-                //{
-                //    Dev.LogWarning($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Cannot process object for some other reason.");
-                //}
             }
             else
             {
-                if (VERBOSE_LOGGING && metaObject.HasData && !metaObject.IsAReplacementObject)
+                bool result = true;
+                foreach (var logic in loadedLogics)
                 {
-                    Dev.Log($"[{metaObject.ObjectType}, {metaObject.ScenePath}]: Can process object.");
-
-                    metaObject.Dump();
+                    try
+                    {
+                        result = logic.CanReplaceObject(metaObject);
+                        if (!result)
+                            break;
+                    }
+                    catch (Exception e)
+                    {
+                        Dev.LogError($"Error trying to check logic {logic.Name} to see if {metaObject.ObjectName} can be replaced... ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                    }
                 }
             }
 
@@ -425,13 +462,13 @@ namespace EnemyRandomizerMod
 
         protected IEnumerator OnObjectLoadedAndActive(ObjectMetadata info)
         { 
-            if(info == null)
+            if(info == null || info.Source == null || info.IsDisabledBySavedGameState)
             {
                 yield break;
             }
 
-            yield return new WaitUntil(() => info == null || info.CheckIfIsActiveAndVisible() || info.Source == null);
-            if(info == null || info.Source == null)
+            yield return new WaitUntil(() => info == null || info.Source == null || (!info.IsDisabledBySavedGameState && info.ActiveSelf && info.renderersVisible.Value && info.InBounds));
+            if(info == null || info.Source == null || info.IsDisabledBySavedGameState)
             {
                 pendingLoads.Remove(info);
                 yield break;
@@ -445,23 +482,30 @@ namespace EnemyRandomizerMod
         }
 
         protected bool CanProcessNow(ObjectMetadata original)
-        { 
+        {
             if (loadedLogics == null || loadedLogics.Count <= 0)
+            {
+                if(VERBOSE_LOGGING)
+                    Dev.LogWarning($"No logics are loaded. Cannot process any objects!");
+
                 return false;
+            }
 
             bool canProcessNow = true;
             try
             {
-                if (!original.CanProcessObject())
+                if (!original.CanProcessObject)
                     canProcessNow = false;
             }
             catch (Exception e)
             {
                 canProcessNow = false;
-                Dev.Log($"Error trying to check if this object can be processed {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
-                
-                if(VERBOSE_LOGGING)
+
+                if (VERBOSE_LOGGING && !original.IsInvalidObject && original.HasData)
+                {
+                    Dev.LogError($"Error trying to check if this object can be processed {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
                     original.Dump();
+                }
             }
 
             return canProcessNow;
@@ -479,7 +523,7 @@ namespace EnemyRandomizerMod
                 }
                 catch (Exception e)
                 {
-                    Dev.Log($"Error trying to load valid replacements in logic {logic.Name} using data from {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                    Dev.LogError($"Error trying to load valid replacements in logic {logic.Name} using data from {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
                 }
             }
 
@@ -498,7 +542,7 @@ namespace EnemyRandomizerMod
                 }
                 catch (Exception e)
                 {
-                    Dev.Log($"Error trying to load RNG in logic {logic.Name} using data from {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                    Dev.LogError($"Error trying to load RNG in logic {logic.Name} using data from {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
                 }
             }
             return rng;
@@ -515,7 +559,7 @@ namespace EnemyRandomizerMod
                 }
                 catch (Exception e)
                 {
-                    Dev.Log($"Error trying to replace object in logic {logic.Name} using data from {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                    Dev.LogError($"Error trying to replace object in logic {logic.Name} using data from {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
                 }
             }
             newObject = metaObject;
@@ -533,10 +577,25 @@ namespace EnemyRandomizerMod
                 }
                 catch (Exception e)
                 {
-                    Dev.Log($"Error trying to modify object in logic {logic.Name} using data from {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                    Dev.LogError($"Error trying to modify object in logic {logic.Name} using data from {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
                 }
             }
             return metaObject;
+        }
+
+        /// <summary>
+        /// Apply special fixes to this enemy to prevent logical softlocks or other critical issues
+        /// </summary>
+        protected void FixForLogic(ObjectMetadata metaObject)
+        {
+            try
+            {
+                database.FixForLogic(metaObject);
+            }
+            catch (Exception e)
+            {
+                Dev.LogError($"Error trying to fix object {metaObject} for softlock prevention logic; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+            }
         }
 
         EnemyRandomizerDatabase LoadDatabase(string fileName)
@@ -549,7 +608,7 @@ namespace EnemyRandomizerMod
                 newDB = EnemyRandomizerDatabase.Create(Path.GetFileName(fileName));
                 if (newDB == null || newDB.scenes.Count <= 0)
                 {
-                    Dev.Log($"Failed to load database file {Path.GetFileName(fileName)} from mod directory");
+                    Dev.LogError($"Failed to load database file {Path.GetFileName(fileName)} from mod directory");
                     return null;
                 }
 
@@ -569,72 +628,6 @@ namespace EnemyRandomizerMod
         { 
             return GameManager.instance.IsGameplayScene() && !GameManager.instance.IsCinematicScene();
         }
-
-
-        public static List<string> RandoControlledPooling = new List<string>()
-        {
-            "Radiant Nail",
-            "Dust Trail",
-        };
-
-        public static List<string> ReplacementEnemiesToSkip = new List<string>()
-        {
-            "Zote Balloon Ordeal",
-            "Dream Mage Lord Phase2",
-            "Mage Lord Phase2",
-            "Corpse Garden Zombie", //don't spawn this, it's just a corpse
-        };
-
-        public static List<string> ReplacementHazardsToSkip = new List<string>()
-        {
-            "Cave Spikes tile", //small bunch of upward pointing cave spikes
-            "Cave Spikes tile(Clone)"
-        };
-
-        //TODO: temp solution for "bad effects"
-        public static List<string> ReplacementEffectsToSkip = new List<string>()
-        {
-            "tank_fill",
-            "tank_full",
-            "Bugs Idle",
-            "bee_fg_swarm",
-            "spider sil left",
-            "Butterflies FG",
-            "Butterflies BG",
-            "wind system",
-            "water component",
-            "BG_swarm_01",
-            "Ruins_Rain",
-            "Snore",
-            "BG_swarm_02",
-            "FG_swarm_02",
-            "FG_swarm_01",
-            "Particle System FG",
-            "Particle System BG",
-            "bg_dream",
-            "fung_immediate_BG",  //
-            "tank_full", //large rect of acid, LOOPING
-            "bg_dream",  //big dream circles that float in the background, LOOPING
-            "Bugs Idle", //floaty puffs of glowy moth things, LOOPING
-            "Shade Particles", //sprays out shade stuff in an wide upward spray, LOOPING
-            "Fire Particles", //emits burning fire particles, LOOPING
-            "spawn particles b", //has a serialization error? -- may need fixing/don't destroy on load or something
-            "Acid Steam", //has a serialization error?
-            "Spre Fizzle", //emits a little upward spray of green particles, LOOPING
-            "Dust Land", //emits a crescent of steamy puffs that spray upward a bit originating a bit under the given origin, LOOPING
-            "Slash Ball", //emits the huge pale lurker slash AoE, LOOPING
-            "Bone", //serialzation error?
-            "Particle System", //serialization error?
-            "Dust Land Small", //??? seems to be making lots of issues
-            "Infected Grass A", //??? seems to be making lots of issues
-            //"Dust Trail", // --- likely needs mod to control pooling
-        };
-
-
-        public static List<string> BurstEffects = new List<string>()
-        {
-            "Roar Feathers",
-        };
 
 
         public bool OnPersistentBoolItemLoaded(PersistentBoolItem item)

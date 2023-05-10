@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 using UniRx;
+using UnityEngine.Events;
 
 #if !LIBRARY
 using Dev = EnemyRandomizerMod.Dev;
@@ -18,11 +19,25 @@ namespace EnemyRandomizerMod
 {
     public partial class EnemyRandomizerDatabase
     {
+        public static string BlockHitEffectName = "Block Hit v2";
         static string DESTROY_ON_LOAD = "DestroyOnLoad";
         static string RESOURCES = "RESOURCES";
 
         public static Func<EnemyRandomizerDatabase> GetDatabase;
         public static Func<ReactiveProperty<List<GameObject>>> GetBlackBorders;
+
+        static UnityEvent<(ObjectMetadata newObject, ObjectMetadata oldObject)> onObjectReplaced;
+        public static UnityEvent<(ObjectMetadata newObject, ObjectMetadata oldObject)> OnObjectReplaced
+        {
+            get
+            {
+                if (onObjectReplaced == null)
+                {
+                    onObjectReplaced = new UnityEvent<(ObjectMetadata newObject, ObjectMetadata oldObject)>();
+                }
+                return onObjectReplaced;
+            }
+        }
 
         //Params: Position, Object Name, (Optional: null or Object Replacement Name), bool: SetActive? -- Returns the created (or replaced) game object using the randomizer's custom methods
         public static Func<Vector3, string, string, bool, GameObject> CustomSpawnWithLogic;
@@ -50,9 +65,6 @@ namespace EnemyRandomizerMod
                 if (!result)
                     return null;
 
-                if (db.badSceneData == null)
-                    db.badSceneData = new List<SceneData>();
-
                 return db;
 //#if !LIBRARY
 //            }
@@ -77,7 +89,7 @@ namespace EnemyRandomizerMod
                 });
             }
 
-            if(verboseSpawnerErrorsForDebuggingOnly)
+            if(DEBUG_VERBOSE_SPAWNER_ERRORS)
                 sceneDataPairs.ToList().ForEach(x => Dev.Log($"PAIRS TO LOAD[{x.Item1}] - [{x.Item2}]"));
 
             return sceneDataPairs.ToList();
@@ -135,12 +147,12 @@ namespace EnemyRandomizerMod
                 //iterate over the scene objects
                 s.Value.ToList().ForEach(x =>
                 {
-                    if (verboseSpawnerErrorsForDebuggingOnly)
+                    if (DEBUG_VERBOSE_SPAWNER_ERRORS)
                         Dev.Log($"SCENE:{s.Key} PATH:{x.Key} OBJECT:{x}");
 
                     if (x.Value == null)
                     {
-                        if (verboseSpawnerErrorsForDebuggingOnly)
+                        if (DEBUG_VERBOSE_SPAWNER_ERRORS)
                             Dev.LogWarning($"{x.Key} was not found in {s.Key} or references a null object!");
                         return;
                     }
@@ -193,16 +205,16 @@ namespace EnemyRandomizerMod
             {
                 try
                 {
-                    Dev.Log($"[ATTEMPTING TO LOAD RESOURCE]");
-                    Dev.Log($"[ATTEMPTING TO LOAD RESOURCE] NAME:{sceneObject.Name}");
-                    Dev.Log($"[ATTEMPTING TO LOAD RESOURCE] NAME:{sceneObject.Name} - PATH:{sceneObject.path}");
-                    Dev.Log($"[ATTEMPTING TO LOAD RESOURCE] NAME:{sceneObject.Name} - PATH:{sceneObject.path} - SCENE:{s.name}");
-                    Dev.Log($"[ATTEMPTING TO LOAD RESOURCE] NAME:{sceneObject.Name} - PATH:{sceneObject.path} - SCENE:{s.name} OBJ_SCENE:{sceneObject.Scene}");
+                    //Dev.Log($"[ATTEMPTING TO LOAD RESOURCE]");
+                    //Dev.Log($"[ATTEMPTING TO LOAD RESOURCE] NAME:{sceneObject.Name}");
+                    //Dev.Log($"[ATTEMPTING TO LOAD RESOURCE] NAME:{sceneObject.Name} - PATH:{sceneObject.path}");
+                    //Dev.Log($"[ATTEMPTING TO LOAD RESOURCE] NAME:{sceneObject.Name} - PATH:{sceneObject.path} - SCENE:{s.name}");
+                    //Dev.Log($"[ATTEMPTING TO LOAD RESOURCE] NAME:{sceneObject.Name} - PATH:{sceneObject.path} - SCENE:{s.name} OBJ_SCENE:{sceneObject.Scene}");
 
                     if (s.name == "RESOURCES" || s.name.Contains(DESTROY_ON_LOAD))
                     {
                         Dev.Log("Trying to find resource");
-                        var go = FindResource(sceneObject.path);
+                        var go = GameObjectExtensions.FindResource(sceneObject.path);
                         if (go == null)
                         {
                             Dev.Log("Cannot find resource to load; skipping");
@@ -249,6 +261,11 @@ namespace EnemyRandomizerMod
             {
                 Dev.LogError($"Failed to verify remaining unloaded objects. ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
             }
+        }
+
+        public void FixForLogic(ObjectMetadata objectToFix)
+        {
+            objectToFix.FixForLogic();
         }
 
         /// <summary>
@@ -344,6 +361,16 @@ namespace EnemyRandomizerMod
                 return false;
 
             return true;
+        }
+
+        public static bool IsDatabaseObject(string gameObjectName, EnemyRandomizerDatabase db)
+        {
+            string key = ToDatabaseKey(gameObjectName);
+
+            if (string.IsNullOrEmpty(key))
+                return false;
+
+            return (db.Objects.ContainsKey(key));
         }
 
         public static string ToDatabaseKey(string databaseKey)
@@ -451,6 +478,8 @@ namespace EnemyRandomizerMod
                 return database.hazardPrefabs;
             else if (metaObject.ObjectType == PrefabObject.PrefabType.Effect)
                 return database.effectPrefabs;
+            else if (metaObject.ObjectType == PrefabObject.PrefabType.Other)
+                return database.otherPrefabs;
             else
             {
                 Dev.LogError("Should not happen! If a new case or type has been added then update this as this will be expensive to return");

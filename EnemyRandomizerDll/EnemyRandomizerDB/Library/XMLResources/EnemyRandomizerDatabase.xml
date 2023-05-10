@@ -3,3466 +3,1175 @@
   <scenes>
     <SceneData name="DontDestroyOnLoad">
       <sceneObjects>
-        <SceneObject path="_GameManager/GlobalPool/Gas Explosion Recycle M(Clone)">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Gas Explosion Recycle L(Clone)">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/particle_orange blood(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/particle_orange blood(Clone)/splash">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Jump Trail Hero(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Nail Terrain Hit Effect(Clone)/Particle System">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/BackdashTriple Effect(Clone)/Grass">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/BackdashTriple Effect(Clone)/Bone">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/BackdashTriple Effect(Clone)/Dash Dust">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Jump Effects(Clone)/Bone/Particle">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Hard Land Effect(Clone)/Metal/Knight Hard Land Dust F">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Hard Land Effect(Clone)/Metal/Knight Hard Land Dust B">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Soft Land Effect(Clone)/Bone/Knight Soft Land Dust F">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Soft Land Effect(Clone)/Bone/Knight Soft Land Dust B">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Bounce Spore Small(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Bounce Spore Large(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Grimmball(Clone)/Flame_smoke">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Grimmball(Clone)/lava_particles_03">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Orbit Shield(Clone)/Shield/Idle Pt">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Fireball2 Spiral(Clone)/Particle System B">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Fireball2 Top(Clone)/particles">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Fireball2 Top(Clone)/particles b">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Spell Fluke Dung Lv2(Clone)/Knight Dung Cloud/Pt Normal">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Spell Fluke Dung Lv2(Clone)/Knight Dung Cloud/Pt Splats">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Knight Dung Cloud(Clone)/Pt Deep">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Ghost Hit Pt(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Plat Rocks(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Dust Land Small R(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Death Puff Large(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Death Puff Med(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Item Get Effect R(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Shroom Spore Med R(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Dust Hit Large R(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Dust Hit Large Down R(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Dust Hit Med Down R(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Dust Hit Med R(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Infected Grass B(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Infected Grass A(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Green Grass A(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/White Grass B(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/White Grass A(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Hit Puff Large(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Uninfected Death Pt(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Plat Stream Dust(Clone)/dust_child">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Plat Dust(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/break cord particle(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Geo Large(Clone)/Acid Steam">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Hit Shade(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameManager/GlobalPool/Hit Puff Med(Clone)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/abyss particles/wispy smoke">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/fungal_wastes_particles/fung_immediate_BG (1)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/hive_drip_particles/waterways_drips FG">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/resting_grounds_particles/soul_particles">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/resting_grounds_particles/soul_particles_small">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/dream_particles/bg_dream">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/dream_particles/far bg balls">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/dream_particles/immediate_BG balls">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/dream_particles/fg_dream">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/fog_canyon_particles/Fungus_drips (1)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/mines_particles/crystals_immediate_BG (4)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/outskirts_particles/wispy smoke BG (2)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/white_palace_particles/dream_particle_03 (3)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/white_palace_particles/Particle System FG">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/white_palace_particles/Particle System BG">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-      </sceneObjects>
-    </SceneData>
+        <SceneObject path="_GameManager/GlobalPool/Gas Explosion Recycle M(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Gas Explosion Recycle L(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/particle_orange blood(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/particle_orange blood(Clone)/splash"/>
+        <SceneObject path="_GameManager/GlobalPool/Nail Terrain Hit Effect(Clone)/Particle System"/>
+        <SceneObject path="_GameManager/GlobalPool/BackdashTriple Effect(Clone)/Grass"/>
+        <SceneObject path="_GameManager/GlobalPool/BackdashTriple Effect(Clone)/Bone"/>
+        <SceneObject path="_GameManager/GlobalPool/BackdashTriple Effect(Clone)/Dash Dust"/>
+        <SceneObject path="_GameManager/GlobalPool/Bounce Spore Small(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Bounce Spore Large(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Grimmball(Clone)/Flame_smoke"/>
+        <SceneObject path="_GameManager/GlobalPool/Grimmball(Clone)/lava_particles_03"/>
+        <SceneObject path="_GameManager/GlobalPool/Orbit Shield(Clone)/Shield/Idle Pt"/>
+        <SceneObject path="_GameManager/GlobalPool/Fireball2 Spiral(Clone)/Particle System B"/>
+        <SceneObject path="_GameManager/GlobalPool/Fireball2 Top(Clone)/particles"/>
+        <SceneObject path="_GameManager/GlobalPool/Fireball2 Top(Clone)/particles b"/>
+        <SceneObject path="_GameManager/GlobalPool/Spell Fluke Dung Lv2(Clone)/Knight Dung Cloud/Pt Normal"/>
+        <SceneObject path="_GameManager/GlobalPool/Spell Fluke Dung Lv2(Clone)/Knight Dung Cloud/Pt Splats"/>
+        <SceneObject path="_GameManager/GlobalPool/Knight Dung Cloud(Clone)/Pt Deep"/>
+        <SceneObject path="_GameManager/GlobalPool/Ghost Hit Pt(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Plat Rocks(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Dust Land Small R(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Death Puff Large(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Death Puff Med(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Item Get Effect R(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Shroom Spore Med R(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Dust Hit Large R(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Dust Hit Large Down R(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Dust Hit Med Down R(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Dust Hit Med R(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Infected Grass B(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Infected Grass A(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Green Grass A(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/White Grass B(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/White Grass A(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Hit Puff Large(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Uninfected Death Pt(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Plat Stream Dust(Clone)/dust_child"/>
+        <SceneObject path="_GameManager/GlobalPool/Plat Dust(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/break cord particle(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Geo Large(Clone)/Acid Steam"/>
+        <SceneObject path="_GameManager/GlobalPool/Hit Shade(Clone)"/>
+        <SceneObject path="_GameManager/GlobalPool/Hit Puff Med(Clone)"/>
+        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/abyss particles/wispy smoke"/>
+        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/fungal_wastes_particles/fung_immediate_BG (1)"/>
+        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/hive_drip_particles/waterways_drips FG"/>
+        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/resting_grounds_particles/soul_particles"/>
+        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/resting_grounds_particles/soul_particles_small"/>
+        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/dream_particles/bg_dream"/>
+        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/dream_particles/far bg balls"/>
+        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/dream_particles/immediate_BG balls"/>
+        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/dream_particles/fg_dream"/>
+        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/fog_canyon_particles/Fungus_drips (1)"/>
+        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/mines_particles/crystals_immediate_BG (4)"/>
+        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/outskirts_particles/wispy smoke BG (2)"/>
+        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/white_palace_particles/dream_particle_03 (3)"/>
+        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/white_palace_particles/Particle System FG"/>
+        <SceneObject path="_GameCameras/CameraParent/tk2dCamera/SceneParticlesController/white_palace_particles/Particle System BG"/>
+        </sceneObjects>
+      </SceneData>
     <SceneData name="RESOURCES">
       <sceneObjects>
-        <SceneObject path="Orb Get Black">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Hollow Shade Death/Shade Particles">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Acid Steam">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Crawler/Corpse Steam">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Uninfected Hit Pt">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shot Mawlek">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Spitter Shot R">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Gas Explosion M">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Death Puff Boss">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Dust Impact Med">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Death Explode Boss">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Oblobble Shot">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Gas Explosion M2">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shot Mawlek NoDrip">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Vomit Glob NoiseFix">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shot Mantis">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Electro Zap">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Mage/Cloak Ash">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Vomit Glob/Air Steam">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Dust Land Large">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Dust Land Med">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Big Fly Burster/Burst Effects/Pt Gas">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Big Fly Burster/Burst Effects/Pt Plume">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Bubble Pop">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Death Puff Dung">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shockwave Spurt L">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Falling Barrel">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shockwave Spurt">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shockwave Wave/Burst Rocks Stomp">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Steam Breath">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Dust Hit Plume R">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Dust Land Large R">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Spawn Roller v2">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Blocker/Stun Steam">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shot PickAxe">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Sentry Javelin">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Mage Lord 1/Arrive Particles">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Hornet 1/Start Pt">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Roller R">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Spitter R">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Buzzer R">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse_Mossman_Shaker/Green Grass B">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shot Orange LG 0.7">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Break Puff">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Spike Ball">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Spike Ball/Burst Grass">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Grass Ball">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Grass Ball/Spore Trail">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Lil Jellyfish">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Jellyfish/Trail">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shot Slug Spear">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Ghost Death/Scatter Pt">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Gas Projectile">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Spore Bomb/Spore Fizzle">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Gas Projectile Quick">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Acid Steam S">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Ghost Warrior Slug">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsNoEffect</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Garden Zombie">
-          <components>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shot Spine">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shot Traitor Lord">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Mega Jelly Zap">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Mega Jellyfish/Lines/B Line 1 (2)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Crystal Crawler/Crystal Short">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Crystal Shot/Hit Crystals">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Baby Centipede">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Zombie Spider 2">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Zombie Spider 1">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Vomit Glob Nosk">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Galien Mini Hammer">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Markoth Shield/Shield">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shot Markoth Nail">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shot Markoth Nail/Appear Pt">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Hornet Outskirts/Enemy Dream">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-          </components>
-        </SceneObject>
-        <!--<SceneObject path="Parasite Balloon Spawner">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsNoEffect</string>
-          </components>
-        </SceneObject>-->
-        <SceneObject path="IK Projectile DS">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="IK Projectile SH">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Dung Ball Large">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Dung Ball Small">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Dung Ball Large/Chunks">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Death Puff Boss Dung">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shot Kings Guard">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Flameball Grimmballoon">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Flameball Grimmballoon Straight">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Grimm UP Ball">
-          <components>
-            <string>DamageHero</string>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Grimm Firebat/Pt Fire">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Firebat Pillar/particle_flame_blast (1)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Flameball Nightmare Straight">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Nightmare UP Ball">
-          <components>
-            <string>DamageHero</string>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Flame Trail">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Boss Puff Plume">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Boss Puff Wave">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shockwave Spurt L Z">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shockwave Spurt Z">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Radiant Nail">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Radiant Beam R">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shot HK Glob">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shot HK Spurt">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="HK Plume">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shot HK Shadow">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="HK Plume Prime">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Paint Shot P Down">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Paint Shot B_fix">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Paint Shot R">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Paint Shot P Up">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Sheo/Pt Pink">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Sheo/Pt Red">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Sheo/Pt Blue">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Corpse Sheo/Pt Yellow">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Orb Get Black"/>
+        <SceneObject path="Hollow Shade Death/Shade Particles"/>
+        <SceneObject path="Corpse Acid Steam"/>
+        <SceneObject path="Corpse Crawler/Corpse Steam"/>
+        <SceneObject path="Uninfected Hit Pt"/>
+        <SceneObject path="Shot Mawlek"/>
+        <SceneObject path="Spitter Shot R"/>
+        <SceneObject path="Gas Explosion M"/>
+        <SceneObject path="Death Puff Boss"/>
+        <SceneObject path="Dust Impact Med"/>
+        <SceneObject path="Death Explode Boss"/>
+        <SceneObject path="Oblobble Shot"/>
+        <SceneObject path="Gas Explosion M2"/>
+        <SceneObject path="Shot Mawlek NoDrip"/>
+        <SceneObject path="Vomit Glob NoiseFix"/>
+        <SceneObject path="Shot Mantis"/>
+        <SceneObject path="Electro Zap"/>
+        <SceneObject path="Corpse Mage/Cloak Ash"/>
+        <SceneObject path="Vomit Glob/Air Steam"/>
+        <SceneObject path="Dust Land Large"/>
+        <SceneObject path="Dust Land Med"/>
+        <SceneObject path="Corpse Big Fly Burster/Burst Effects/Pt Gas"/>
+        <SceneObject path="Corpse Big Fly Burster/Burst Effects/Pt Plume"/>
+        <SceneObject path="Bubble Pop"/>
+        <SceneObject path="Death Puff Dung"/>
+        <SceneObject path="Shockwave Spurt L"/>
+        <SceneObject path="Falling Barrel"/>
+        <SceneObject path="Shockwave Spurt"/>
+        <SceneObject path="Shockwave Wave/Burst Rocks Stomp"/>
+        <SceneObject path="Corpse Steam Breath"/>
+        <SceneObject path="Dust Hit Plume R"/>
+        <SceneObject path="Dust Land Large R"/>
+        <SceneObject path="Spawn Roller v2"/>
+        <SceneObject path="Corpse Blocker/Stun Steam"/>
+        <SceneObject path="Shot PickAxe"/>
+        <SceneObject path="Sentry Javelin"/>
+        <SceneObject path="Corpse Mage Lord 1/Arrive Particles"/>
+        <SceneObject path="Corpse Hornet 1/Start Pt"/>
+        <SceneObject path="Roller R"/>
+        <SceneObject path="Spitter R"/>
+        <SceneObject path="Buzzer R"/>
+        <SceneObject path="Corpse_Mossman_Shaker/Green Grass B"></SceneObject>
+        <SceneObject path="Corpse_Mossman_Shaker/Green Grass A"/>
+        <SceneObject path="Corpse_Mossman_Shaker/Green Grass B"/>
+        <SceneObject path="Shot Orange LG 0.7"/>
+        <SceneObject path="Corpse Break Puff"/>
+        <SceneObject path="Spike Ball"/>
+        <SceneObject path="Spike Ball/Burst Grass"/>
+        <SceneObject path="Grass Ball"/>
+        <SceneObject path="Grass Ball/Spore Trail"/>
+        <SceneObject path="Lil Jellyfish"/>
+        <SceneObject path="Corpse Jellyfish/Trail"/>
+        <SceneObject path="Shot Slug Spear"/>
+        <SceneObject path="Ghost Death/Scatter Pt"/>
+        <SceneObject path="Gas Projectile"/>
+        <SceneObject path="Spore Bomb/Spore Fizzle"/>
+        <SceneObject path="Gas Projectile Quick"/>
+        <SceneObject path="Corpse Acid Steam S"/>
+        <SceneObject path="Ghost Warrior Slug"/>
+        <SceneObject path="Corpse Garden Zombie"/>
+        <SceneObject path="Shot Spine"/>
+        <SceneObject path="Shot Traitor Lord"/>
+        <SceneObject path="Mega Jelly Zap"/>
+        <SceneObject path="Corpse Mega Jellyfish/Lines/B Line 1 (2)"/>
+        <SceneObject path="Corpse Crystal Crawler/Crystal Short"/>
+        <SceneObject path="Crystal Shot/Hit Crystals"/>
+        <SceneObject path="Baby Centipede"/>
+        <SceneObject path="Zombie Spider 2"/>
+        <SceneObject path="Zombie Spider 1"/>
+        <SceneObject path="Vomit Glob Nosk"/>
+        <SceneObject path="Galien Mini Hammer"/>
+        <SceneObject path="Markoth Shield/Shield"/>
+        <SceneObject path="Shot Markoth Nail"/>
+        <SceneObject path="Shot Markoth Nail/Appear Pt"/>
+        <SceneObject path="Corpse Hornet Outskirts/Enemy Dream"/>
+        <SceneObject path="IK Projectile DS"/>
+        <SceneObject path="IK Projectile SH"/>
+        <SceneObject path="Dung Ball Large"/>
+        <SceneObject path="Dung Ball Small"/>
+        <SceneObject path="Dung Ball Large/Chunks"/>
+        <SceneObject path="Death Puff Boss Dung"/>
+        <SceneObject path="Shot Kings Guard"/>
+        <SceneObject path="Flameball Grimmballoon"/>
+        <SceneObject path="Flameball Grimmballoon Straight"/>
+        <SceneObject path="Grimm UP Ball"/>
+        <SceneObject path="Grimm Firebat/Pt Fire"/>
+        <SceneObject path="Firebat Pillar/particle_flame_blast (1)"/>
+        <SceneObject path="Flameball Nightmare Straight"/>
+        <SceneObject path="Nightmare UP Ball"/>
+        <SceneObject path="Flame Trail"/>
+        <SceneObject path="Boss Puff Plume"/>
+        <SceneObject path="Boss Puff Wave"/>
+        <SceneObject path="Shockwave Spurt L Z"/>
+        <SceneObject path="Shockwave Spurt Z"/>
+        <SceneObject path="Radiant Nail"/>
+        <SceneObject path="Radiant Beam R"/>
+        <SceneObject path="Shot HK Glob"/>
+        <SceneObject path="Shot HK Spurt"/>
+        <SceneObject path="HK Plume"/>
+        <SceneObject path="Shot HK Shadow"/>
+        <SceneObject path="HK Plume Prime"/>
+        <SceneObject path="Paint Shot P Down"/>
+        <SceneObject path="Paint Shot B_fix"/>
+        <SceneObject path="Paint Shot R"/>
+        <SceneObject path="Paint Shot P Up"/>
+        <SceneObject path="Corpse Sheo/Pt Pink"/>
+        <SceneObject path="Corpse Sheo/Pt Red"/>
+        <SceneObject path="Corpse Sheo/Pt Blue"/>
+        <SceneObject path="Corpse Sheo/Pt Yellow"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Tutorial_01">
       <sceneObjects>
-        <SceneObject path="_Enemies/Crawler 2">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Enemies/Buzzer 2">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Scenery/Stalactite Hazard">
-          <components>
-            <string>DamageHero</string>
-            <string>DamageEnemies</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Props/Tut_tablet_top (2)/Glows">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Props/Chest/Idle Glow">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Props/Stalactite Hazard 5/Dust Stalactite">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Props/Stalactite Hazard 5/Dust Fall">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Props/Stalactite Hazard 5/Dust Trail">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Scenery/Lift_dust">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Scenery/Cocoon Plant 1/health plant 01 break/Particle_health_plant_pieces (2)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Scenery/Cocoon Plant 2/health plant 02 break/Particle_health_plant_pieces_many (1)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="_Enemies/Crawler 2"/>
+        <SceneObject path="_Enemies/Buzzer 2"/>
+        <SceneObject path="_Scenery/Stalactite Hazard"/>
+        <SceneObject path="_Props/Tut_tablet_top (2)/Glows"/>
+        <SceneObject path="_Props/Chest/Idle Glow"/>
+        <SceneObject path="_Props/Stalactite Hazard 5/Dust Stalactite"/>
+        <SceneObject path="_Props/Stalactite Hazard 5/Dust Fall"/>
+        <SceneObject path="_Props/Stalactite Hazard 5/Dust Trail"/>
+        <SceneObject path="_Scenery/Lift_dust"/>
+        <SceneObject path="_Scenery/Cocoon Plant 1/health plant 01 break/Particle_health_plant_pieces (2)"/>
+        <SceneObject path="_Scenery/Cocoon Plant 2/health plant 02 break/Particle_health_plant_pieces_many (1)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_Town_Stag_Station">
       <sceneObjects>
-        <SceneObject path="station_pole/Stag_Pole_Tall_Break (2)/glass_burst pole 1 (1)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="station_pole/Stag_Pole_Tall_Break (2)/glass_burst pole 1 (1)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_nailsmith">
       <sceneObjects>
-        <SceneObject path="Nailsmith/Fire/Fire Particles">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Nailsmith/Fire/Fire Particles"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_temple">
       <sceneObjects>
-        <SceneObject path="Final Boss Door/Orange Mist">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Final Boss Door/Orange Mist"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_ruinhouse">
       <sceneObjects>
-        <SceneObject path="Sly Dazed/Haze">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Sly Dazed/Haze"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_Mansion">
       <sceneObjects>
-        <SceneObject path="Xun NPC/Leave Dust/Dust Break 1">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Xun NPC/Leave Dust/Dust Break 1"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_Fungus_Shaman">
       <sceneObjects>
-        <SceneObject path="Scream Control/Scream Item/Summon 2">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Mosquito (3)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Scream Control/Scream Item/Summon 2"/>
+        <SceneObject path="Mosquito (3)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_Ouiji">
       <sceneObjects>
-        <SceneObject path="Smoke Activator/Smoke F (1)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Smoke Activator/Smoke F (1)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_Colosseum_01">
       <sceneObjects>
-        <SceneObject path="Gold Trial Board/Burst/rag_burst">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Gold Trial Board/Burst/chain_burst">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Gold Trial Board/Burst/rag_burst"/>
+        <SceneObject path="Gold Trial Board/Burst/chain_burst"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_Colosseum_02">
       <sceneObjects>
-        <SceneObject path="Spa Steam (1)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Spa Steam (1)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_Colosseum_Bronze">
       <sceneObjects>
-        <SceneObject path="Colosseum Manager/Waves/Wave 15/Giant Buzzer Col">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Colosseum Manager/Waves/Wave 13/Colosseum Cage Small (5)/Anim/colosseum_main_cage/Jump Dust">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Colosseum Manager/Waves/Wave 1/Colosseum Cage Large">
-        </SceneObject>
+        <SceneObject path="Colosseum Manager/Waves/Wave 15/Giant Buzzer Col"/>
+        <SceneObject path="Colosseum Manager/Waves/Wave 1/Colosseum Cage Large"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_Colosseum_Silver">
       <sceneObjects>
-        <SceneObject path="Colosseum Manager/Waves/Wave 30 Obble/Mega Fat Bee">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>     
-        <SceneObject path="Colosseum Manager/Waves/Wave 26 Obble/Colosseum Cage Small (1)">
-          <components>
-            <string>Transform</string>
-            <string>SpriteRenderer</string>
-            <string>PlayMakerFSM</string>
-            <string>AudioSource</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Colosseum_Miner">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Colosseum Manager/Waves/Wave 30 Obble/Mega Fat Bee"/>
+        <SceneObject path="Colosseum Manager/Waves/Wave 26 Obble/Colosseum Cage Small (1)"/>
+        <SceneObject path="Colosseum_Miner"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_Colosseum_Gold">
       <sceneObjects>
-        <SceneObject path="Colosseum Manager/Waves/Garpedes 3/Big Centipede Col (6)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Colosseum Manager/Waves/Wave 27/Electric Mage New (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Colosseum Manager/Waves/Lobster Lancer/Entry Object/Lancer">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Colosseum Manager/Waves/Lobster Lancer/Entry Object/Lobster">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Colosseum Manager/Waves/Wave 4/Colosseum Cage Small">
-        </SceneObject>
-        <SceneObject path="Colosseum Manager/Waves/Wave 50/Colosseum Cage Large">
-        </SceneObject>
-        <SceneObject path="Colosseum Manager/Waves/Wave 12/Colosseum Cage Small (4)">
-        </SceneObject>
-        <SceneObject path="Colosseum Manager/Waves/Wave 6/Colosseum Cage Large">
-        </SceneObject>
-        <SceneObject path="Colosseum Manager/Waves/Wave 45/Colosseum Cage Small 1">
-        </SceneObject>
-        <SceneObject path="Colosseum Manager/Waves/Wave 17/Colosseum Cage Small (2)">
-        </SceneObject>
+        <SceneObject path="Colosseum Manager/Waves/Garpedes 3/Big Centipede Col (6)"/>
+        <SceneObject path="Colosseum Manager/Waves/Wave 27/Electric Mage New (1)"/>
+        <SceneObject path="Colosseum Manager/Waves/Lobster Lancer/Entry Object/Lancer"/>
+        <SceneObject path="Colosseum Manager/Waves/Lobster Lancer/Entry Object/Lobster"/>
+        <SceneObject path="Colosseum Manager/Waves/Wave 4/Colosseum Cage Small"/>
+        <SceneObject path="Colosseum Manager/Waves/Wave 50/Colosseum Cage Large"/>
+        <SceneObject path="Colosseum Manager/Waves/Wave 12/Colosseum Cage Small (4)"/>
+        <SceneObject path="Colosseum Manager/Waves/Wave 6/Colosseum Cage Large"/>
+        <SceneObject path="Colosseum Manager/Waves/Wave 45/Colosseum Cage Small 1"/>
+        <SceneObject path="Colosseum Manager/Waves/Wave 17/Colosseum Cage Small (2)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_01">
       <sceneObjects>
-        <SceneObject path="Infected Parent/Angry Buzzer">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Enemies/Climber 1">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Enemies/Zombie Runner">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Scenery/Mender Bug">
-          <components>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Uninfected Parent/BG_swarm_01/particle">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Uninfected Parent/FG_swarm_01">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Infected Parent/infected_crossroads_particles/wispy smoke FG left">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Scenery/brk_barrel_03 407/Pt Fruit">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Scenery/brk_cart_03 406/Pt Bug">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Scenery/brk_barrel_03 407/barrel_pieces_burst (4)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Scenery/Crossroads Pole Curvy/Particle_rocks_small">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Infected Parent/Angry Buzzer"/>
+        <SceneObject path="_Enemies/Climber 1"/>
+        <SceneObject path="_Enemies/Zombie Runner"/>
+        <SceneObject path="_Scenery/Mender Bug"/>
+        <SceneObject path="Uninfected Parent/BG_swarm_01/particle"/>
+        <SceneObject path="Uninfected Parent/FG_swarm_01"/>
+        <SceneObject path="Infected Parent/infected_crossroads_particles/wispy smoke FG left"/>
+        <SceneObject path="_Scenery/brk_barrel_03 407/Pt Fruit"/>
+        <SceneObject path="_Scenery/brk_cart_03 406/Pt Bug"/>
+        <SceneObject path="_Scenery/brk_barrel_03 407/barrel_pieces_burst (4)"/>
+        <SceneObject path="_Scenery/Crossroads Pole Curvy/Particle_rocks_small"/>
       </sceneObjects>
     </SceneData>
+
     <SceneData name="Crossroads_02">
       <sceneObjects>
-        <SceneObject path="Uninfected Parent/BG_swarm_01/BG_swarm_02">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Uninfected Parent/FG_swarm_02">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Uninfected Parent/BG_swarm_01/BG_swarm_02"/>
+        <SceneObject path="Uninfected Parent/FG_swarm_02"/>
       </sceneObjects>
     </SceneData>
+
     <SceneData name="Crossroads_04">
       <sceneObjects>
-        <SceneObject path="_Enemies/Zombie Hornhead">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Enemies/Giant Fly">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="UnInfected Parent/Zombie Barger">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>        
-        <SceneObject path="Infected Parent/Bursting Zombie">
-          <components>
-            <string>Transform</string>
-            <string>MeshRenderer</string>
-            <string>MeshFilter</string>
-            <string>tk2dSprite</string>
-            <string>Rigidbody2D</string>
-            <string>tk2dSpriteAnimator</string>
-            <string>PlayMakerFixedUpdate</string>
-            <string>AudioSource</string>
-            <string>SetZ</string>
-            <string>BoxCollider2D</string>
-            <string>SpriteFlash</string>
-            <string>PlayMakerFSM</string>
-            <string>FSMActivator</string>
-            <string>PersistentBoolItem</string>
-            <string>PlayMakerCollisionEnter2D</string>
-            <string>PlayMakerCollisionStay2D</string>
-            <string>DamageHero</string>
-            <string>Walker</string>
-            <string>ExtraDamageable</string>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffects</string>
-            <string>InfectedEnemyEffects</string>
-            <string>EnemyDreamnailReaction</string>
-            <string>Recoil</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Enemies/Giant Fly/Snore">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Scenery/brk_barrel_05/particle_barrel_splash (2)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Enemies/Fly Spawn/Fly">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="_Enemies/Zombie Hornhead"/>
+        <SceneObject path="_Enemies/Giant Fly"/>
+        <SceneObject path="UnInfected Parent/Zombie Barger"/>
+        <SceneObject path="Infected Parent/Bursting Zombie"/>
+        <SceneObject path="_Enemies/Giant Fly/Snore"/>
+        <SceneObject path="_Scenery/brk_barrel_05/particle_barrel_splash (2)"/>
+        <SceneObject path="_Enemies/Fly Spawn/Fly"/>
       </sceneObjects>
     </SceneData>
+
     <SceneData name="Crossroads_07">
       <sceneObjects>
-        <SceneObject path="_Props/Tute Door 1/Break Dust">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>      
-        <SceneObject path="Infected Parent/Bursting Bouncer">
-          <components>
-            <string>Transform</string>
-            <string>MeshRenderer</string>
-            <string>MeshFilter</string>
-            <string>tk2dSprite</string>
-            <string>Rigidbody2D</string>
-            <string>tk2dSpriteAnimator</string>
-            <string>PlayMakerFixedUpdate</string>
-            <string>AudioSource</string>
-            <string>SetZ</string>
-            <string>BoxCollider2D</string>
-            <string>SpriteFlash</string>
-            <string>PlayMakerFSM</string>
-            <string>PlayMakerFSM</string>
-            <string>PersonalObjectPool</string>
-            <string>FSMActivator</string>
-            <string>PersistentBoolItem</string>
-            <string>PlayMakerCollisionEnter2D</string>
-            <string>PlayMakerCollisionStay2D</string>
-            <string>PlayMakerCollisionStay</string>
-            <string>DamageHero</string>
-            <string>ExtraDamageable</string>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffects</string>
-            <string>InfectedEnemyEffects</string>
-            <string>EnemyDreamnailReaction</string>
-            <string>Recoil</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="_Props/Tute Door 1/Break Dust"/>
+        <SceneObject path="Infected Parent/Bursting Bouncer"/>
       </sceneObjects>
     </SceneData>
+
     <SceneData name="Crossroads_09">
       <sceneObjects>
-        <SceneObject path="_Enemies/Mawlek Body">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="_Enemies/Mawlek Body"/>
       </sceneObjects>
     </SceneData>
+
     <SceneData name="Crossroads_10">
       <sceneObjects>
-        <SceneObject path="Fk Break Wall/Broken/Battle Gate Break Effect">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Fk Break Wall/Broken/Battle Gate Break Effect"/>
       </sceneObjects>
     </SceneData>
+
     <SceneData name="Crossroads_10_boss">
       <sceneObjects>
-        <SceneObject path="Battle Scene/False Knight New">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsBlackKnight</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Battle Scene/False Knight New"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_10_boss_defeated">
       <sceneObjects>
-        <SceneObject path="Prayer Room/Prayer Slug">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Prayer Room/Prayer Slug"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_11_alt">
       <sceneObjects>
-        <SceneObject path="Acid Control v2/Acid Box">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Scenery/water_components/Fungus_Steam">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Scenery/water_components/acid_bursts">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Scenery/water_components/acid_bubbles">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Enemies/Battle Scene/Blocker">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Acid Control v2/Acid Box"/>
+        <SceneObject path="_Scenery/water_components/Fungus_Steam"/>
+        <SceneObject path="_Scenery/water_components/acid_bursts"/>
+        <SceneObject path="_Scenery/water_components/acid_bubbles"/>
+        <SceneObject path="_Enemies/Battle Scene/Blocker"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_12">
       <sceneObjects>
-        <SceneObject path="_Enemies/Worm 1">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Cave Spikes Invis (2)">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="_Enemies/Worm 1"/>
+        <SceneObject path="Cave Spikes Invis (2)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_14">
       <sceneObjects>
-        <SceneObject path="Scuttler Spawn 1 (2)/Orange Scuttler (12)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Scuttler Spawn 1 (2)/Orange Scuttler (12)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_15">
       <sceneObjects>
-        <SceneObject path="_Enemies/Zombie Shield 1">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Infected Parent/Spitting Zombie">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="_Enemies/Zombie Shield 1"/>
+        <SceneObject path="Infected Parent/Spitting Zombie"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_18">
       <sceneObjects>
-        <SceneObject path="Soul Totem mini_horned/Soul Particles">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Soul Totem mini_horned/Soul Particles"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_19">
       <sceneObjects>
-        <SceneObject path="_Enemies/Hatcher">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Enemies/Zombie Leaper">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Uninfected Parent/FG_swarm_03">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Uninfected Parent/glow_bug_swarm 1">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Uninfected Parent/glow_bug_swarm_FG">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Enemies/Spitter">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="_Enemies/Hatcher"/>
+        <SceneObject path="_Enemies/Zombie Leaper"/>
+        <SceneObject path="Uninfected Parent/FG_swarm_03"/>
+        <SceneObject path="Uninfected Parent/glow_bug_swarm 1"/>
+        <SceneObject path="Uninfected Parent/glow_bug_swarm_FG"/>
+        <SceneObject path="_Enemies/Spitter"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_21">
       <sceneObjects>
-        <SceneObject path="non_infected_event/Zombie Guard">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="non_infected_event/Zombie Guard/Swipe">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="non_infected_event/Zombie Guard"/>
+        <SceneObject path="non_infected_event/Zombie Guard/Swipe"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_25">
       <sceneObjects>
-        <SceneObject path="Cave Spikes tile (3)">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Cave Spikes tile (3)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_30">
       <sceneObjects>
-        <SceneObject path="Spa Glows Surface">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Spa Glows Surface"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_33">
       <sceneObjects>
-        <SceneObject path="Spike Collider">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Spike Collider"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_45">
       <sceneObjects>
-        <SceneObject path="Zombie Myla">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Zombie Myla"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_50">
       <sceneObjects>
-        <SceneObject path="Egg Sac">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Surface Water Region/Splash Surface">
-          <components>
-            <string>DamageEnemies</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Egg Sac" />
+        <SceneObject path="Surface Water Region/Splash Surface" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Ruins_House_02">
       <sceneObjects>
-        <SceneObject path="Royal Zombie Fat">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Royal Zombie 1 (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Royal Zombie Coward">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Gorgeous Husk">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Royal Zombie Fat" />
+        <SceneObject path="Royal Zombie 1 (1)" />
+        <SceneObject path="Royal Zombie Coward" />
+        <SceneObject path="Gorgeous Husk" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Ruins_Bathhouse">
       <sceneObjects>
-        <SceneObject path="ruins_rain/Ruins_Rain">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="ruins_rain/Ruins_Rain" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Ruins1_01">
       <sceneObjects>
-        <SceneObject path="Ceiling Dropper (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Ruins Sentry 1">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Ceiling Dropper (1)" />
+        <SceneObject path="Ruins Sentry 1" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Ruins1_03">
       <sceneObjects>
-        <SceneObject path="_Scenery/Ruins Flying Sentry (2)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="_Scenery/Ruins Flying Sentry (2)" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Ruins1_04">
       <sceneObjects>
-        <SceneObject path="Smoke particles">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Smoke particles" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Ruins1_05">
       <sceneObjects>
-        <SceneObject path="Ruins Flying Sentry Javelin (3)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Ruins Flying Sentry Javelin (3)" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Ruins1_05c">
       <sceneObjects>
-        <SceneObject path="Ruins Sentry Fat">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Ruins Sentry Fat" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Ruins1_09">
       <sceneObjects>
-        <SceneObject path="mage_particles/Particle System glowies">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="mage_particles/Particle System glowies" />
+      </sceneObjects>
+    </SceneData>
+    <SceneData name="GG_Blue_Room">
+      <sceneObjects>
+        <SceneObject path="gg_blue_core" />
+      </sceneObjects>
+    </SceneData>
+    <SceneData name="Ruins1_27">
+      <sceneObjects>
+        <SceneObject path="_Scenery/ruind_fountain/fountain_new/_0083_fountain" />
+        <SceneObject path="_Scenery/ruind_fountain/fountain_new/_0082_fountain" />
+        <SceneObject path="_Scenery/ruind_fountain/fountain_new/_0092_fountain" />
+        <SceneObject path="_Scenery/ruind_fountain/fountain_new/_0092_fountain" />
+      </sceneObjects>
+    </SceneData>
+    <SceneData name="GG_Workshop">
+      <sceneObjects>
+        <SceneObject path="dream_beam_animation"/>
+        <SceneObject path="GG_Statue_Gorb"/>
+        <SceneObject path="GG_Statue_Hornet"/>
+        <SceneObject path="GG_Statue_GreyPrince"/>
+        <SceneObject path="GG_Statue_Knight/Base/Statue/Knight_v01"/>
+        <SceneObject path="GG_Statue_Knight/Base/Statue/Knight_v02"/>
+        <SceneObject path="GG_Statue_Grimm"/>
+        <SceneObject path="Zote_Appear_bits/GG_Statue_Zote"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Ruins1_30">
       <sceneObjects>
-        <SceneObject path="Mage Balloon (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Mage Blob 1 (3)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Mage (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Mage Balloon (1)"/>
+        <SceneObject path="Mage Blob 1 (3)"/>
+        <SceneObject path="Mage (1)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Ruins1_24_boss">
       <sceneObjects>
-        <SceneObject path="Mage Lord">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Mage Lord Phase2">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Mage Lord"/>
+        <SceneObject path="Mage Lord Phase2"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Ruins2_03">
       <sceneObjects>
-        <SceneObject path="_Enemies/Great Shield Zombie">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="_Enemies/Great Shield Zombie"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Ruins2_03_boss">
       <sceneObjects>
-        <SceneObject path="Battle Control/Black Knight 4">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsBlackKnight</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Battle Control/Black Knight 4"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Ruins2_11_boss">
       <sceneObjects>
-        <SceneObject path="Battle Scene/Jar Collector">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Battle Scene/Jar Collector/Dust Land">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Battle Scene/Jar Collector"/>
+        <SceneObject path="Battle Scene/Jar Collector/Dust Land"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus1_01">
       <sceneObjects>
-        <SceneObject path="Moss Walker (3)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Plant Trap">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Mossman_Shaker (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Pigeon (1)">
-          <components>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffectsNoEffect</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Mossman_Runner">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Moss Walker (3)"/>
+        <SceneObject path="Plant Trap"/>
+        <SceneObject path="Mossman_Shaker (1)"/>
+        <SceneObject path="Pigeon (1)"/>
+        <SceneObject path="Mossman_Runner"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus1_04_boss">
       <sceneObjects>
-        <SceneObject path="Hornet Boss 1">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Hornet Boss 1/Sphere Ball">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Hornet Boss 1"/>
+        <SceneObject path="Hornet Boss 1/Sphere Ball"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus1_09">
       <sceneObjects>
-        <SceneObject path="Acid Flyer (17)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Acid Flyer (17)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus1_10">
       <sceneObjects>
-        <SceneObject path="Moss Charger 1 (2)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Moss Charger 1 (2)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus1_12">
       <sceneObjects>
-        <SceneObject path="Plant Turret">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Plant Turret Right">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Acid Walker">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Plant Turret"/>
+        <SceneObject path="Plant Turret Right"/>
+        <SceneObject path="Acid Walker"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus1_14">
       <sceneObjects>
-        <SceneObject path="Zap Cloud (1)">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Zap Cloud (1)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus1_19">
       <sceneObjects>
-        <SceneObject path="_Enemies/Fat Fly">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="_Enemies/Fat Fly"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus1_20_v02">
       <sceneObjects>
-        <SceneObject path="_Enemies/Giant Buzzer">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Scenery/BG_swarm_01/BG_swarm_01 (1)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="_Enemies/Giant Buzzer"/>
+        <SceneObject path="_Scenery/BG_swarm_01/BG_swarm_01 (1)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus1_21">
       <sceneObjects>
-        <SceneObject path="Moss Knight">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Moss Knight/Shot Point">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Moss Knight"/>
+        <SceneObject path="Moss Knight/Shot Point"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus1_23">
       <sceneObjects>
-        <SceneObject path="Grass Hopper (5)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Grass Hopper (5)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus1_26">
       <sceneObjects>
-        <SceneObject path="Lazy Flyer Enemy">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Lazy Flyer Enemy"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus1_29">
       <sceneObjects>
-        <SceneObject path="Mega Moss Charger">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Mega Moss Charger"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus1_35">
       <sceneObjects>
-        <SceneObject path="Warrior/Ghost Warrior No Eyes">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsNoEffect</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Warrior/Ghost Warrior No Eyes"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus1_Slug">
       <sceneObjects>
-        <SceneObject path="Giant Slug NPC/Pt Bub">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Giant Slug NPC/Pt Bub"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus2_03">
       <sceneObjects>
-        <SceneObject path="Fungoon Baby (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Mushroom Turret (2)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Fungus Flyer (2)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Zombie Fungus B">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Fungoon Baby (1)"/>
+        <SceneObject path="Mushroom Turret (2)"/>
+        <SceneObject path="Fungus Flyer (2)"/>
+        <SceneObject path="Zombie Fungus B"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus2_04">
       <sceneObjects>
-        <SceneObject path="Fung Crawler">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Fung Crawler" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus2_30">
       <sceneObjects>
-        <SceneObject path="Mushroom Brawler">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Mushroom Brawler" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus2_07">
       <sceneObjects>
-        <SceneObject path="Mushroom Baby (2)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Mushroom Roller">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Mushroom Baby (2)" />
+        <SceneObject path="Mushroom Roller" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus2_10">
       <sceneObjects>
-        <SceneObject path="Zombie Fungus A">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Zombie Fungus A" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus2_12">
       <sceneObjects>
-        <SceneObject path="Mantis">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Mantis Flyer Child">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Mantis" />
+        <SceneObject path="Mantis Flyer Child" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus2_15">
       <sceneObjects>
-        <SceneObject path="Deep Spikes (2)">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Deep Spikes (2)" />
+      </sceneObjects>
+    </SceneData>
+    <SceneData name="Fungus2_04">
+      <sceneObjects>
+        <SceneObject path="Fung Crawler"/>
+      </sceneObjects>
+    </SceneData>
+    <SceneData name="Fungus2_30">
+      <sceneObjects>
+        <SceneObject path="Mushroom Brawler"/>
+      </sceneObjects>
+    </SceneData>
+    <SceneData name="Fungus2_07">
+      <sceneObjects>
+        <SceneObject path="Mushroom Baby (2)"/>
+        <SceneObject path="Mushroom Roller"/>
+      </sceneObjects>
+    </SceneData>
+    <SceneData name="Fungus2_10">
+      <sceneObjects>
+        <SceneObject path="Zombie Fungus A"/>
+      </sceneObjects>
+    </SceneData>
+    <SceneData name="Fungus2_12">
+      <sceneObjects>
+        <SceneObject path="Mantis"/>
+        <SceneObject path="Mantis Flyer Child"/>
+      </sceneObjects>
+    </SceneData>
+    <SceneData name="Fungus2_15">
+      <sceneObjects>
+        <SceneObject path="Deep Spikes (2)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus2_29">
       <sceneObjects>
-        <SceneObject path="fungal_core_particles/Fungus_smoke particles">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="fungal_core_particles/Fungus_smoke particles FG">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="fungal_core_particles/Fungus_smoke particles"/>
+        <SceneObject path="fungal_core_particles/Fungus_smoke particles FG"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus2_32">
       <sceneObjects>
-        <SceneObject path="Warrior/Ghost Warrior Hu">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsNoEffect</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Warrior/Ghost Warrior Hu"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus2_33">
       <sceneObjects>
-        <SceneObject path="water component">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="water component"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus3_01">
       <sceneObjects>
-        <SceneObject path="Jellyfish Baby (2)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsBubble</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Enemies/Jellyfish 3">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsBubble</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Jellyfish Baby (2)"/>
+        <SceneObject path="_Enemies/Jellyfish 3"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus3_04">
       <sceneObjects>
-        <SceneObject path="Moss Flyer (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Mantis Heavy Flyer (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Moss Flyer (1)"/>
+        <SceneObject path="Mantis Heavy Flyer (1)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus3_22">
       <sceneObjects>
-        <SceneObject path="Garden Zombie (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Garden Zombie (1)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus3_23">
       <sceneObjects>
-        <SceneObject path="shadow_gate/Slash Effect/Pt Bounce">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="mega_mantis_tall_slash/slash_core/Particle_rocks_long (2)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="shadow_gate/Slash Effect/Pt Bounce"/>
+        <SceneObject path="mega_mantis_tall_slash/slash_core/Particle_rocks_long (2)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus3_23_boss">
       <sceneObjects>
-        <SceneObject path="Battle Scene/Wave 3/Mantis Traitor Lord">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Battle Scene/Wave 3/Mantis Traitor Lord"/>
+      </sceneObjects>
+    </SceneData>
+    <SceneData name="Fungus3_30">
+      <sceneObjects>
+        <SceneObject path="Health Cocoon"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus3_39">
       <sceneObjects>
-        <SceneObject path="Moss Knight Fat (2)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Shiny Spawner/Mantis Heavy Spawn">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Battle Scene/Mantis Heavy">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Moss Knight Fat (2)"/>
+        <SceneObject path="Shiny Spawner/Mantis Heavy Spawn"/>
+        <SceneObject path="Battle Scene/Mantis Heavy"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus3_40_boss">
       <sceneObjects>
-        <SceneObject path="Warrior/Ghost Warrior Marmu">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsNoEffect</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Warrior/Ghost Warrior Marmu"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus3_archive_02">
       <sceneObjects>
-        <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (12)">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Dreamer Monomon/Particle Control/tank_bubbles_new">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Mega Jellyfish Multizaps/Pattern 2/Mega Jelly Multizap (12)"/>
+        <SceneObject path="Dreamer Monomon/Particle Control/tank_bubbles_new"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Cliffs_01">
       <sceneObjects>
-        <SceneObject path="wind system 2">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="wind system 2"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Cliffs_05">
       <sceneObjects>
-        <SceneObject path="Butterflies FG 1 (1)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Butterflies BG 2">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Butterflies FG 1 (1)"/>
+        <SceneObject path="Butterflies BG 2"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="RestingGrounds_06">
       <sceneObjects>
-        <SceneObject path="Flamebearer Spawn">
-        </SceneObject>
+        <SceneObject path="Flamebearer Spawn"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="RestingGrounds_02_boss">
       <sceneObjects>
-        <SceneObject path="Warrior/Ghost Warrior Xero">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsNoEffect</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Warrior/Ghost Warrior Xero"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="RestingGrounds_10">
       <sceneObjects>
-        <SceneObject path="Grave Zombie (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Grave Zombie (1)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Mines_01">
       <sceneObjects>
-        <SceneObject path="_Scenery/mine_1_quake_floor/Loose Floor 1/Dust F">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="_Scenery/mine_1_quake_floor/Loose Floor 1/Dust F"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Mines_02">
       <sceneObjects>
-        <SceneObject path="Crystal Crawler (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Zombie Miner 1 (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Pt Crystal Dropping (10)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Crystal Crawler (1)"/>
+        <SceneObject path="Zombie Miner 1 (1)"/>
+        <SceneObject path="Pt Crystal Dropping (10)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Mines_04">
       <sceneObjects>
-        <SceneObject path="Crystal Flyer (2)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Crystal Flyer (2)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Mines_05">
       <sceneObjects>
-        <SceneObject path="Crystallised Lazer Bug (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Crystallised Lazer Bug (1)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Mines_06">
       <sceneObjects>
-        <SceneObject path="Laser Turret Frames (4)">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Laser Turret">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Laser Turret Frames (4)" />
+        <SceneObject path="Laser Turret" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Mines_10">
-      <sceneObjects>      
+      <sceneObjects>
         <SceneObject path="Flamebearer Spawn">
-          <components>
-            <string>Transform</string>
-            <string>SpriteRenderer</string>
-            <string>PlayMakerFSM</string>
-            <string>PersistentBoolItem</string>
-          </components>
         </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="Mines_11">
       <sceneObjects>
         <SceneObject path="Mines Crawler">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>    
+        </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="Mines_16">
       <sceneObjects>
-        <SceneObject path="Grub Mimic Top/Dream Dialogue">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Grub Mimic Top/Dream Dialogue" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Mines_18_boss">
       <sceneObjects>
         <SceneObject path="Mega Zombie Beam Miner (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
         </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="Mines_23">
       <sceneObjects>
         <SceneObject path="Zombie Beam Miner (2)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
         </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="Mines_32">
       <sceneObjects>
-        <SceneObject path="Battle Scene/Zombie Beam Miner Rematch">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Laser Turret Mega">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Battle Scene/Zombie Beam Miner Rematch" />
+        <SceneObject path="Laser Turret Mega" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Deepnest_03">
       <sceneObjects>
-        <SceneObject path="Zombie Hornhead Sp (4)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Zombie Runner Sp">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Spider Mini (2)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Zombie Hornhead Sp (4)" />
+        <SceneObject path="Zombie Runner Sp" />
+        <SceneObject path="Spider Mini (2)" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Deepnest_26">
       <sceneObjects>
-        <SceneObject path="Centipede Hatcher (2)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Centipede Hatcher (2)" />
       </sceneObjects>
     </SceneData>
     <SceneData name="Deepnest_34">
       <sceneObjects>
-        <SceneObject path="Slash Spider">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Slash Spider"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Deepnest_39">
       <sceneObjects>
-        <SceneObject path="Spider Flyer (2)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Tiny Spider (7)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Spider Flyer (2)"/>
+        <SceneObject path="Tiny Spider (7)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Deepnest_40">
       <sceneObjects>
-        <SceneObject path="Warrior/Ghost Warrior Galien">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsNoEffect</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Warrior/Ghost Warrior Galien"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Deepnest_41">
       <sceneObjects>
-        <SceneObject path="deep_escape_particle spider /spider sil left (1)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="deep_escape_particle spider /spider sil left (1)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Deepnest_East_01">
       <sceneObjects>
-        <SceneObject path="Blow Fly (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Bee Hatchling Ambient (3)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsNoEffect</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Hive flying Bee particles/bee_fg_swarm">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Blow Fly (1)"/>
+        <SceneObject path="Bee Hatchling Ambient (3)"/>
+        <SceneObject path="Hive flying Bee particles/bee_fg_swarm"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Deepnest_East_03">
       <sceneObjects>
-        <SceneObject path="ash_grass_03/ash_grass_particles">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Outskirts_Falling_Gladiator_Particles/Falling FG">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Outskirts_Falling_Gladiator_Particles/Falling BG">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="ash_grass_03/ash_grass_particles"/>
+        <SceneObject path="Outskirts_Falling_Gladiator_Particles/Falling FG"/>
+        <SceneObject path="Outskirts_Falling_Gladiator_Particles/Falling BG"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Deepnest_East_04">
       <sceneObjects>
-        <SceneObject path="ash_grass_02_sil (7)/ash_grass_particles_windy">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="ash_grass_02_sil (2)/ash_grass_particles_still">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Super Spitter (4)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="ash_grass_02_sil (7)/ash_grass_particles_windy"/>
+        <SceneObject path="ash_grass_02_sil (2)/ash_grass_particles_still"/>
+        <SceneObject path="Super Spitter (4)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Deepnest_East_10">
       <sceneObjects>
-        <SceneObject path="Warrior/Ghost Warrior Markoth">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsNoEffect</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Warrior/Ghost Warrior Markoth"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Deepnest_East_17">
       <sceneObjects>
-        <SceneObject path="Ruins Fossil (3)/debris_particle_fling (2)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Giant Geo Egg/Death Effects/Dust Hit Large Down">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Hopper">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Ruins Fossil (3)/debris_particle_fling (2)"/>
+        <SceneObject path="Giant Geo Egg/Death Effects/Dust Hit Large Down"/>
+        <SceneObject path="Hopper"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Deepnest_East_Hornet">
       <sceneObjects>
-        <SceneObject path="Barb Region">
-          <components>
-            <string>Transform</string>
-            <string>BoxCollider2D</string>
-            <string>PlayMakerFSM</string>
-            <string>PersonalObjectPool</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Barb Region"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Deepnest_East_Hornet_boss">
       <sceneObjects>
-        <SceneObject path="Hornet Boss 2">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Hornet Boss 2"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Abyss_04">
       <sceneObjects>
-        <SceneObject path="Abyss Crawler (10)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Abyss Crawler (10)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Abyss_15">
       <sceneObjects>
-        <SceneObject path="Shade Sibling (14)">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Shade Sibling (14)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Abyss_19">
       <sceneObjects>
-        <SceneObject path="Parasite Balloon (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Infected Knight/Overhead Slash">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Pre_Double_Jump/orange smoke">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Parasite Balloon (1)"/>
+        <SceneObject path="Infected Knight/Overhead Slash"/>
+        <SceneObject path="Pre_Double_Jump/orange smoke"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Abyss_20">
       <sceneObjects>
-        <SceneObject path="Mawlek Turret (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Mawlek Turret Ceiling">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Mawlek Turret (1)"/>
+        <SceneObject path="Mawlek Turret Ceiling"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Abyss_21">
       <sceneObjects>
-        <SceneObject path="Shiny Item DJ/Bugs Idle">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Shiny Item DJ/Bugs Idle"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Waterways_01">
       <sceneObjects>
-        <SceneObject path="_Enemies/Flip Hopper (3)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="_Enemies/Inflater (3)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="_Enemies/Flip Hopper (3)"/>
+        <SceneObject path="_Enemies/Inflater (3)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Waterways_04">
       <sceneObjects>
-        <SceneObject path="waterways_water_components (2)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Flukeman (1)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="waterways_water_components (2)"/>
+        <SceneObject path="Flukeman (1)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Waterways_05">
       <sceneObjects>
-        <SceneObject path="Waterways_tank_anim/tank_switch/tank_fill">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Waterways_tank_anim/tank_return/tank_full">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Waterways_tank_anim/tank_switch/tank_fill"/>
+        <SceneObject path="Waterways_tank_anim/tank_return/tank_full"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Waterways_05_boss">
       <sceneObjects>
-        <SceneObject path="Dung Defender">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Dung Defender"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Waterways_08">
       <sceneObjects>
-        <SceneObject path="fluke_baby_02 (32)">
-          <components>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffectsNoEffect</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="fluke_baby_01 (20)">
-          <components>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffectsNoEffect</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="fluke_baby_03 (7)">
-          <components>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffectsNoEffect</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Fluke Fly (4)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="fluke_baby_02 (32)"/>
+        <SceneObject path="fluke_baby_01 (20)"/>
+        <SceneObject path="fluke_baby_03 (7)"/>
+        <SceneObject path="Fluke Fly (4)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Waterways_12_boss">
       <sceneObjects>
-        <SceneObject path="Fluke Mother">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Fluke Mother"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="White_Palace_01">
       <sceneObjects>
-        <SceneObject path="White Palace Fly (2)">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="White_ Spikes (5)">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="White Palace Fly (2)"/>
+        <SceneObject path="White_ Spikes (5)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="White_Palace_03_hub">
       <sceneObjects>
-        <SceneObject path="White_Servant_03 (3)/Enemy">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="White_Servant_03 (3)/Enemy"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="White_Palace_04">
       <sceneObjects>
-        <SceneObject path="_Scenery/wp_saw_04_anims/saw1/wp_saw (1)">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="_Scenery/wp_saw_04_anims/saw1/wp_saw (1)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="White_Palace_11">
       <sceneObjects>
-        <SceneObject path="Royal Gaurd">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Royal Gaurd"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Hive_01">
       <sceneObjects>
-        <SceneObject path="Bee Stinger">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Bee Stinger"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Hive_03">
       <sceneObjects>
-        <SceneObject path="Flamebearer Spawn">
-        </SceneObject>
-        <SceneObject path="Big Bee (2)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Flamebearer Spawn"/>
+        <SceneObject path="Big Bee (2)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Hive_04">
       <sceneObjects>
-        <SceneObject path="hive_moving diamonds (1)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Zombie Hive (6)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="hive_moving diamonds (1)"/>
+        <SceneObject path="Zombie Hive (6)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Hive_05">
       <sceneObjects>
-        <SceneObject path="Battle Scene/Hive Knight">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Battle Scene/Hive Knight/Mouth Swarm/particle_honey_spit">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Battle Scene/Droppers/Bee Dropper">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Battle Scene/Hive Knight"/>
+        <SceneObject path="Battle Scene/Hive Knight/Mouth Swarm/particle_honey_spit"/>
+        <SceneObject path="Battle Scene/Droppers/Bee Dropper"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Grimm_Main_Tent">
       <sceneObjects>
-        <SceneObject path="Spotlight Appear/Appear_moving spotlights/Grimm_appear_smoke/wide_smoke_front">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Spotlight Appear/Appear_moving spotlights/Grimm_appear_smoke/grimm_big_appear_burst">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Spotlight Appear/Appear_moving spotlights/Grimm_appear_smoke/wide_smoke_front"/>
+        <SceneObject path="Spotlight Appear/Appear_moving spotlights/Grimm_appear_smoke/grimm_big_appear_burst"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Grimm_Main_Tent_boss">
       <sceneObjects>
-        <SceneObject path="Grimm Boss">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Grimm Boss"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Grimm_Nightmare">
       <sceneObjects>
-        <SceneObject path="Grimm Control/Nightmare Grimm Boss">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Grimm Control/Nightmare Grimm Boss"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Dream_01_False_Knight">
       <sceneObjects>
-        <SceneObject path="False Knight Dream">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="False Knight Dream"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Dream_02_Mage_Lord">
       <sceneObjects>
-        <SceneObject path="Dream Mage Lord">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Dream Mage Lord"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Dream_03_Infected_Knight">
       <sceneObjects>
-        <SceneObject path="Lost Kin">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Lost Kin"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Dream_Mighty_Zote">
       <sceneObjects>
-        <SceneObject path="Zoteling (2)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Zote Balloon (3)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Grey Prince">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Zoteling (2)"/>
+        <SceneObject path="Zote Balloon (3)"/>
+        <SceneObject path="Grey Prince"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Dream_Final_Boss">
       <sceneObjects>
-        <SceneObject path="Boss Control/Radiance">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Boss Control/Radiance Roar/Roar Feathers">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Boss Control/Radiance/Pt Feather Burst">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Boss Control/Abyss Pit/Pt Mist">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Boss Control/Abyss Pit/Pt Surface">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Boss Control/Radiance"/>
+        <SceneObject path="Boss Control/Radiance Roar/Roar Feathers"/>
+        <SceneObject path="Boss Control/Radiance/Pt Feather Burst"/>
+        <SceneObject path="Boss Control/Abyss Pit/Pt Mist"/>
+        <SceneObject path="Boss Control/Abyss Pit/Pt Surface"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_Final_Boss_Core">
       <sceneObjects>
-        <SceneObject path="Boss Control/Hollow Knight Boss">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Boss Control/Hollow Knight Boss"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Atrium">
       <sceneObjects>
-        <SceneObject path="GG_Challenge_Door (1)/Door/Lock Break/lock burst">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="gg_atrium_hidden_path/gg_roof open_effect/wispy smoke object (2)">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="GG_Challenge_Door (1)/Door/Lock Break/lock burst"/>
+        <SceneObject path="gg_atrium_hidden_path/gg_roof open_effect/wispy smoke object (2)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Hollow_Knight">
       <sceneObjects>
         <SceneObject path="Battle Scene/HK Prime">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
+          <components>HealthManager DamageHero EnemyDeathEffectsUninfected</components>
         </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Lurker">
       <sceneObjects>
         <SceneObject path="Lurker Control/Pale Lurker">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
+          <components>EnemyDreamnailReaction HealthManager DamageHero EnemyDeathEffectsUninfected</components>
         </SceneObject>
         <SceneObject path="Lurker Control/Pale Lurker/Slash Ball">
-          <components>
-            <string>DamageHero</string>
-          </components>
+          <components>DamageHero</components>
         </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Nailmasters">
       <sceneObjects>
         <SceneObject path="Brothers/Oro">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
+          <components>EnemyDreamnailReaction HealthManager DamageHero EnemyDeathEffectsUninfected</components>
         </SceneObject>
         <SceneObject path="Brothers/Mato">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Brothers/Mato/Dash Slash">
-          <components>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Brothers/Mato/Cyclone Slash">
-          <components>
-            <string>DamageHero</string>
-          </components>
+          <components>EnemyDreamnailReaction HealthManager DamageHero EnemyDeathEffectsUninfected</components>
         </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Painter">
       <sceneObjects>
         <SceneObject path="Battle Scene/Sheo Boss">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
+          <components>EnemyDreamnailReaction HealthManager DamageHero EnemyDeathEffectsUninfected</components>
         </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Pipeway">
       <sceneObjects>
         <SceneObject path="Fat Fluke">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
+          <components>EnemyDreamnailReaction HealthManager DamageHero EnemyDeathEffects</components>
         </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Radiance">
       <sceneObjects>
         <SceneObject path="Boss Control/Absolute Radiance">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
+          <components>EnemyDreamnailReaction HealthManager EnemyDeathEffectsUninfected</components>
         </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Sly">
       <sceneObjects>
-        <SceneObject path="Battle Scene/Sly Boss">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Battle Scene/Sly Boss"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Mighty_Zote">
       <sceneObjects>
-        <SceneObject path="Zote Turret">
-          <components>
-            <string>HealthManager</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Battle Control/First Zote/Zote Boss">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Battle Control/Zote Balloon Ordeal">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Battle Control/Zote Salubra">
-          <components>
-            <string>HealthManager</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Battle Control/Zote Thwomp">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Battle Control/Zote Fluke">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Battle Control/Fat Zotes/Zote Crew Fat (1)">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Battle Control/Zote Thwomp/Pt Break">
-          <components>
-            <string>ParticleSystem</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Battle Control/Zotelings/Ordeal Zoteling">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Battle Control/Tall Zotes/Zote Crew Tall">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
-        <SceneObject path="Battle Control/Dormant Warriors/Zote Crew Normal (1)">
-          <components>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Zote Turret"/>
+        <SceneObject path="Battle Control/First Zote/Zote Boss"/>
+        <SceneObject path="Battle Control/Zote Balloon Ordeal"/>
+        <SceneObject path="Battle Control/Zote Salubra"/>
+        <SceneObject path="Battle Control/Zote Thwomp"/>
+        <SceneObject path="Battle Control/Zote Fluke"/>
+        <SceneObject path="Battle Control/Fat Zotes/Zote Crew Fat (1)"/>
+        <SceneObject path="Battle Control/Zote Thwomp/Pt Break"/>
+        <SceneObject path="Battle Control/Zotelings/Ordeal Zoteling"/>
+        <SceneObject path="Battle Control/Tall Zotes/Zote Crew Tall"/>
+        <SceneObject path="Battle Control/Dormant Warriors/Zote Crew Normal (1)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Brooding_Mawlek_V">
       <sceneObjects>
-        <SceneObject path="Battle Scene/Tiso Boss/Corpse">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Battle Scene/Tiso Boss/Corpse"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Nosk_Hornet">
       <sceneObjects>
-        <SceneObject path="Battle Scene/Hornet Nosk">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Battle Scene/Hornet Nosk"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Ruins1_23">
       <sceneObjects>
-        <SceneObject path="Mage Knight">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Mage Knight"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Deepnest_East_06">
       <sceneObjects>
-        <SceneObject path="Giant Hopper (2)">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Giant Hopper (2)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Abyss_17">
       <sceneObjects>
-        <SceneObject path="Lesser Mawlek">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Lesser Mawlek"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Dream_04_White_Defender">
       <sceneObjects>
-        <SceneObject path="White Defender">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffectsUninfected</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="White Defender"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Broken_Vessel">
       <sceneObjects>
-        <SceneObject path="Infected Knight">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Infected Knight"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Nosk">
       <sceneObjects>
-        <SceneObject path="Mimic Spider">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Mimic Spider"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Soul_Tyrant">
       <sceneObjects>
-        <SceneObject path="Dream Mage Lord Phase2">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Dream Mage Lord Phase2"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Uumuu">
       <sceneObjects>
-        <SceneObject path="Mega Jellyfish GG">
-          <components>
-            <string>EnemyDreamnailReaction</string>
-            <string>HealthManager</string>
-            <string>DamageHero</string>
-            <string>EnemyDeathEffects</string>
-          </components>
-        </SceneObject>
+        <SceneObject path="Mega Jellyfish GG"/>
       </sceneObjects>
     </SceneData>
   </scenes>
   <enemyNames>
+    <string>Health Cocoon</string>
+    <string>Health Scuttler</string>
     <string>Flamebearer Spawn</string>
     <string>Flamebearer Small</string>
     <string>Flamebearer Med</string>
@@ -3509,7 +1218,6 @@
     <string>Zombie Spider 1</string>
     <string>Tiny Spider</string>
     <string>Shade Sibling</string>
-    <!--<string>Parasite Balloon Spawner</string>-->
     <string>Flukeman Top</string>
     <string>Flukeman Bot</string>
     <string>White Defender</string>
@@ -3668,6 +1376,13 @@
     <string>Zote Crew Fat</string>
     <string>Zote Crew Tall</string>
     <string>Hornet Nosk</string>
+    <string>Health Scuttler</string>
+    <string>Mace Head Bug</string>
+    <string>Big Centipede Col</string>
+    <string>Laser Turret Frames</string>
+    <string>Jelly Egg Bomb</string>
+    <string>Worm</string>
+    <string>Bee Dropper</string>
   </enemyNames>
   <hazardNames>
     <string>Barb Region</string>
@@ -3742,22 +1457,18 @@
     <string>White_ Spikes</string>
     <string>wp_saw</string>
     <string>Slash Ball</string>
-    <string>Dash Slash</string>
-    <string>Cyclone Slash</string>
+    <string>Jelly Egg Bomb</string>
+    <string>ruind_bridge_roof_04_spikes</string>
+    <string>Dung Pillar</string>
+    <string>RoofSpikes</string>
   </hazardNames>
   <effectNames>
     <string>particle_orange blood</string>
     <string>splash</string>
-    <string>Jump Trail Hero</string>
     <string>Particle System</string>
     <string>Grass</string>
     <string>Bone</string>
     <string>Dash Dust</string>
-    <string>Particle</string>
-    <string>Knight Hard Land Dust F</string>
-    <string>Knight Hard Land Dust B</string>
-    <string>Knight Soft Land Dust F</string>
-    <string>Knight Soft Land Dust B</string>
     <string>Bounce Spore Small</string>
     <string>Bounce Spore Large</string>
     <string>Flame_smoke</string>
@@ -3875,7 +1586,6 @@
     <string>rag_burst</string>
     <string>chain_burst</string>
     <string>Spa Steam</string>
-    <string>Jump Dust</string>
     <string>particle</string>
     <string>FG_swarm_01</string>
     <string>wispy smoke FG left</string>
@@ -3939,5 +1649,20 @@
     <string>lock burst</string>
     <string>wispy smoke object</string>
     <string>Pt Break</string>
-  </effectNames>  
+  </effectNames>
+  <otherNames>
+    <string>GG_Statue_Gorb</string><!--scene: GG_Workshop -->
+    <string>GG_Statue_Hornet</string><!--scene: GG_Workshop -->
+    <string>GG_Statue_GreyPrince</string><!--scene: GG_Workshop -->
+    <string>Knight_v01</string><!--scene: GG_Workshop -->
+    <string>Knight_v02</string><!--scene: GG_Workshop -->
+    <string>GG_Statue_Grimm</string><!--scene: GG_Workshop -->
+    <string>GG_Statue_Zote</string><!--scene: GG_Workshop -->
+    <string>dream_beam_animation</string><!--scene: GG_Workshop - cool floor aoe particle effect-->
+    <string>gg_blue_core</string><!-- scene: GG_Blue_Room - lifeblood core from godhome-->
+    <string>_0083_fountain</string><!--scene: Ruins1_27 - fountain (center piece)-->
+    <string>_0082_fountain</string><!--scene: Ruins1_27 - fountain (back dreamer)-->
+    <string>_0092_fountain</string><!--scene: Ruins1_27 - fountain (right dreamer)-->
+    <string>_0092_fountain</string><!--scene: Ruins1_27 - fountain (1) (left dreamer)-->
+  </otherNames>
 </EnemyRandomizerDatabase>

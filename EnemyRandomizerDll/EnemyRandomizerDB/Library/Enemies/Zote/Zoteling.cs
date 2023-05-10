@@ -14,74 +14,48 @@ using Satchel;
 using Satchel.Futils;
 namespace EnemyRandomizerMod
 {
-
-
-
-    public class ZotelingControl : DefaultSpawnedEnemyControl
+    public class ZotelingControl : FSMBossAreaControl
     {
-        public PlayMakerFSM control;
+        public override string FSMName => "Control";
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
+
+            var getLevel = control.GetState("Get Level");
+            getLevel.DisableAction(0);
+            getLevel.DisableAction(5);
+
+            var init = control.GetState("Init");
+            init.DisableAction(0);
+            init.DisableAction(5);
+            init.ChangeTransition("FINISHED", "Ball");
+
+            var ball = control.GetState("Ball");
+            ball.DisableAction(5);
+            ball.DisableAction(7);
+            ball.AddCustomAction(() => {
+                control.SendEvent("FINISHED");
+            });
+
+            var die = control.GetState("Die");
+            die.DisableAction(2);
+
+            control.ChangeTransition("Die", "FINISHED", "DestroyGO");
+
+            var endState = control.AddState("DestroyGO");
+            endState.AddCustomAction(() => { Destroy(gameObject); });
+
             Rigidbody2D body = GetComponent<Rigidbody2D>();
             if (body != null)
                 body.isKinematic = false;
-        }
 
-        protected virtual void OnEnable()
-        {
-        }
-    }
-
-    public class ZotelingSpawner : DefaultSpawner<ZotelingControl>
-    {
-        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
-        {
-            var go = base.Spawn(p, source);
-            var fsm = go.GetComponent<ZotelingControl>();
-            fsm.control = go.LocateMyFSM("Control");
-
-            if (source.IsBoss)
-            {
-                //TODO:
-            }
-            else
-            {
-                //var hm = go.GetComponent<HealthManager>();
-                //hm.hp = source.MaxHP;
-            }
-
-            return go;
+            this.InsertHiddenState(control, "Get Level", "FINISHED", "Init");
+            this.AddResetToStateOnHide(control, "Get Level");
         }
     }
 
+    public class ZotelingSpawner : DefaultSpawner<ZotelingControl> { }
 
-    public class ZotelingPrefabConfig : DefaultPrefabConfig<ZotelingControl>
-    {
-        public override void SetupPrefab(PrefabObject p)
-        {
-            base.SetupPrefab(p);
-
-            {
-                var fsm = p.prefab.LocateMyFSM("Control");
-
-                //remove the transitions related to chain spawning zotes for the event
-                fsm.RemoveTransition("Dormant", "SPAWN");
-                //fsm.RemoveTransition("Die", "FINISHED");
-                //fsm.RemoveTransition("Respawn Pause", "SPAWN");
-                fsm.RemoveTransition("Ball", "FINISHED");
-
-                //change the start transition to just begin the spawn antics
-                fsm.ChangeTransition("Init", "FINISHED", "Choice");
-                fsm.ChangeTransition("Reset", "FINISHED", "Dormant");
-
-                //remove the states that were also part of that
-                //fsm.Fsm.RemoveState("Dormant");
-                //fsm.Fsm.RemoveState("Reset");
-                //fsm.Fsm.RemoveState("Respawn Pause");
-                //fsm.Fsm.RemoveState("Ball");
-            }
-        }
-    }
+    public class ZotelingPrefabConfig : DefaultPrefabConfig<ZotelingControl> { }
 }

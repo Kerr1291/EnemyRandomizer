@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Satchel;
 using Satchel.Futils;
+using UniRx;
 
 namespace EnemyRandomizerMod
 {
@@ -15,11 +16,29 @@ namespace EnemyRandomizerMod
     /////   
     public class WhitePalaceFlyControl : DefaultSpawnedEnemyControl
     {
+        public string customOnDeathEffect = "Electro Zap";
+
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
             thisMetadata.EnemyHealthManager.hp = 1;
+
+            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+            thisMetadata.EnemyHealthManager.OnDeath += EnemyHealthManager_OnDeath;
+
+            //if hp changes at all, explode
+            thisMetadata.currentHP.SkipLatestValueOnSubscribe().Subscribe(x => EnemyHealthManager_OnDeath()).AddTo(disposables);
+        }
+
+        private void EnemyHealthManager_OnDeath()
+        {
+            disposables.Clear();
+            if (!string.IsNullOrEmpty(customOnDeathEffect))
+            {
+                EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, customOnDeathEffect, null, true);
+            }
+            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
         }
 
         /// <summary>
@@ -27,6 +46,7 @@ namespace EnemyRandomizerMod
         /// </summary>
         protected override void Update()
         {
+            base.Update();
             if (thisMetadata == null)
                 return;
 
@@ -48,16 +68,15 @@ namespace EnemyRandomizerMod
     /////
     public class HatcherControl : DefaultSpawnedEnemyControl
     {
-        public int maxBabies = 3;
         public int vanillaMaxBabies = 5;
 
         //if true, will set the max babies to 5
         public bool isVanilla;
-        public bool dieChildrenOnDeath = true;
 
-        public PlayMakerFSM FSM { get; set; }
+        public override int maxBabies => isVanilla ? vanillaMaxBabies : 3;
+        public override bool dieChildrenOnDeath => true;
 
-        public List<GameObject> children = new List<GameObject>();
+        public override string FSMName => "Hatcher";
 
         public override void Setup(ObjectMetadata other)
         {
@@ -72,81 +91,28 @@ namespace EnemyRandomizerMod
                 isVanilla = thisMetadata.Source == other.Source;
             }
 
-            if (isVanilla)
-                maxBabies = vanillaMaxBabies;
-
-            FSM = gameObject.LocateMyFSM("Hatcher");
-
-            var init = FSM.GetState("Initiate");
+            var init = control.GetState("Initiate");
             init.DisableAction(2);
 
-            var hatchedMaxCheck = FSM.GetState("Hatched Max Check");
+            var hatchedMaxCheck = control.GetState("Hatched Max Check");
             hatchedMaxCheck.DisableAction(1);
-            hatchedMaxCheck.InsertCustomAction(() => { FSM.FsmVariables.GetFsmInt("Cage Children").Value = maxBabies - children.Count; }, 0);
+            hatchedMaxCheck.InsertCustomAction(() => {
+                control.FsmVariables.GetFsmInt("Cage Children").Value = maxBabies - children.Count; }, 0);
 
-            var fire = FSM.GetState("Fire");
+            var fire = control.GetState("Fire");
             fire.DisableAction(1);
             fire.DisableAction(2);
             fire.DisableAction(6);
             fire.DisableAction(11);
             fire.InsertCustomAction(() => {
-                FSM.FsmVariables.GetFsmGameObject("Shot").Value.SafeSetActive(true);
+                ActivateAndTrackSpawnedObject(control.FsmVariables.GetFsmGameObject("Shot").Value);
             }, 6);
             fire.InsertCustomAction(() => {
                 var child = EnemyRandomizerDatabase.GetDatabase().Spawn("Fly", null);
                 children.Add(child);
-                FSM.FsmVariables.GetFsmGameObject("Shot").Value = child;
+                control.FsmVariables.GetFsmGameObject("Shot").Value = child;
             }, 0);
-            fire.AddCustomAction(() => { FSM.SendEvent("WAIT"); });
-        }
-
-        protected override void OnDestroy()
-        {
-            if (dieChildrenOnDeath)
-            {
-                children.ForEach(x =>
-                {
-                    if (x == null)
-                        return;
-
-                    var hm = x.GetComponent<HealthManager>();
-                    if (hm != null)
-                    {
-                        hm.Die(null, AttackTypes.Generic, true);
-                    }
-                });
-            }
-        }
-
-        protected override void Update()
-        {
-            base.Update();
-
-            if (children == null)
-                return;
-
-            for (int i = 0; i < children.Count;)
-            {
-                if (i >= children.Count)
-                    break;
-
-                if (children[i] == null)
-                {
-                    children.RemoveAt(i);
-                    continue;
-                }
-                else
-                {
-                    var hm = children[i].GetComponent<HealthManager>();
-                    if (hm.hp <= 0 || hm.isDead)
-                    {
-                        children.RemoveAt(i);
-                        continue;
-                    }
-                }
-
-                ++i;
-            }
+            fire.AddCustomAction(() => { control.SendEvent("WAIT"); });
         }
     }
 
@@ -168,16 +134,16 @@ namespace EnemyRandomizerMod
     ///// 
     public class CentipedeHatcherControl : DefaultSpawnedEnemyControl
     {
-        public int maxBabies = 3;
         public int vanillaMaxBabies = 5;
 
         //if true, will set the max babies to 5
         public bool isVanilla;
-        public bool dieChildrenOnDeath = true;
+        public override int maxBabies => isVanilla ? vanillaMaxBabies : 3;
+        public override bool dieChildrenOnDeath => true;
+
+        public override string FSMName => "Hatcher";
 
         public PlayMakerFSM FSM { get; set; }
-
-        public List<GameObject> children = new List<GameObject>();
 
         public override void Setup(ObjectMetadata other)
         {
@@ -191,9 +157,6 @@ namespace EnemyRandomizerMod
             {
                 isVanilla = thisMetadata.Source == other.Source;
             }
-
-            if (isVanilla)
-                maxBabies = vanillaMaxBabies;
 
             FSM = gameObject.LocateMyFSM("Centipede Hatcher");
 
@@ -227,7 +190,8 @@ namespace EnemyRandomizerMod
             birth.DisableAction(7);
             birth.DisableAction(15);//disable the reversing the scale
             birth.InsertCustomAction(() => {
-                FSM.FsmVariables.GetFsmGameObject("Hatchling").Value.SafeSetActive(true);
+                ActivateAndTrackSpawnedObject(FSM.FsmVariables.GetFsmGameObject("Hatchling").Value);
+                //FSM.FsmVariables.GetFsmGameObject("Hatchling").Value.SafeSetActive(true);
             }, 6);
 
             var checkBirths = FSM.GetState("Check Births");
@@ -236,56 +200,6 @@ namespace EnemyRandomizerMod
                 if (children.Count >= maxBabies)
                     FSM.SendEvent("HATCHED MAX");
             }, 0);
-        }
-
-
-        protected override void OnDestroy()
-        {
-            if (dieChildrenOnDeath)
-            {
-                children.ForEach(x =>
-                {
-                    if (x == null)
-                        return;
-
-                    var hm = x.GetComponent<HealthManager>();
-                    if (hm != null)
-                    {
-                        hm.Die(null, AttackTypes.Generic, true);
-                    }
-                });
-            }
-        }
-
-        protected override void Update()
-        {
-            base.Update();
-
-            if (children == null)
-                return;
-
-            for (int i = 0; i < children.Count;)
-            {
-                if (i >= children.Count)
-                    break;
-
-                if (children[i] == null)
-                {
-                    children.RemoveAt(i);
-                    continue;
-                }
-                else
-                {
-                    var hm = children[i].GetComponent<HealthManager>();
-                    if (hm.hp <= 0 || hm.isDead)
-                    {
-                        children.RemoveAt(i);
-                        continue;
-                    }
-                }
-
-                ++i;
-            }
         }
     }
 
@@ -383,25 +297,19 @@ namespace EnemyRandomizerMod
             st.InsertCustomAction(() => this.UpdateRefs(control, FloatRefs), 1);
         }
 
-        protected override bool HeroInAggroRange()
-        {
-            float dist = (transform.position - HeroController.instance.transform.position).magnitude;
-            return (dist <= aggroRadius);
-        }
-
         protected override void ScaleHP()
         {
             if (originialMetadata == null)
                 return;
 
-            float mageHP = thisMetadata.MaxHP;
-            float originalHP = originialMetadata.MaxHP;
+            float mageHP = thisMetadata.DefaultHP;
+            float originalHP = originialMetadata.DefaultHP;
 
             float ratio = mageHP / originalHP;
 
             if (ratio > hpRatioTriggerNerf)
             {
-                thisMetadata.EnemyHealthManager.hp = Mathf.FloorToInt(mageHP / 2f);
+                thisMetadata.CurrentHP = Mathf.FloorToInt(mageHP / 2f);
             }
         }
     }
@@ -444,4 +352,189 @@ namespace EnemyRandomizerMod
     /////
     //////////////////////////////////////////////////////////////////////////////
 
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    ///// 
+    public class LaserTurretFramesControl : DefaultSpawnedEnemyControl
+    {
+        public override string FSMName => "Control";
+
+        public override bool takesSpecialCharmDamage => true;
+        public override bool takesSpecialSpellDamage => true;
+
+        GameObject hitCrystals;
+        DamageEnemies damageEnemies;
+
+        public void Splat()
+        {
+            var hitEffect = thisMetadata.DB.Spawn("Hit Crystals", null);
+            hitEffect.transform.localPosition = Vector3.zero;
+            hitEffect.SetActive(true);
+        }
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            damageEnemies = gameObject.GetOrAddComponent<DamageEnemies>();
+            damageEnemies.damageDealt = 10;
+            damageEnemies.direction = 90f; //TODO: make sure this isn't backwards
+            damageEnemies.magnitudeMult = 1f;
+            damageEnemies.moveDirection = false;
+            damageEnemies.circleDirection = false;
+            damageEnemies.ignoreInvuln = false;
+            damageEnemies.attackType = AttackTypes.Generic;
+            damageEnemies.specialType = 0;
+
+            var hm = gameObject.GetOrAddComponent<HealthManager>();
+            hm.hp = 64;//TODO:
+            hm.OnDeath += Splat;
+            hm.IsInvincible = true;
+            thisMetadata.Setup(gameObject, thisMetadata.DB); //not needed?
+            thisMetadata.Geo = 7;
+            thisMetadata.MRenderer.enabled = true;
+            thisMetadata.Collider.enabled = true;
+
+            var dir = GetRandomDirectionFromSelf();
+            thisMetadata.PhysicsBody.velocity = dir * 13f;
+
+            float angle = SpawnerExtensions.RotateToDirection(dir);
+            thisMetadata.Rotation = angle;
+        }
+
+        protected override void OnEnable()
+        {
+            gameObject.StickToClosestSurface(200f, false);
+        }
+    }
+
+    public class LaserTurretFramesSpawner : DefaultSpawner<HiveKnightControl> { }
+
+    public class LaserTurretFramesPrefabConfig : DefaultPrefabConfig<HiveKnightControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    ///// 
+    public class BeeDropperControl : DefaultSpawnedEnemyControl
+    {
+        public override string FSMName => "Control";
+
+        ParticleSystem ptBurst;
+        GameObject splat;
+
+        protected virtual void Splat()
+        {
+            splat.SafeSetActive(true);
+            thisMetadata.MRenderer.enabled = false;
+            thisMetadata.Collider.enabled = false;
+            ptBurst.Emit(0);
+        }
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            RemoveFSM("Recoil");
+            RemoveFSM("Control");
+
+            ptBurst = gameObject.FindGameObjectInDirectChildren("Pt Burst").GetComponent<ParticleSystem>();
+            splat = gameObject.FindGameObjectInChildrenWithName("Splat");
+
+            var hm = gameObject.GetOrAddComponent<HealthManager>();
+            hm.hp = 10;//TODO:
+            hm.OnDeath += Splat;
+            thisMetadata.Setup(gameObject, thisMetadata.DB); //not needed?
+            thisMetadata.Geo = 11;
+            thisMetadata.PhysicsBody.isKinematic = false;
+            thisMetadata.PhysicsBody.gravityScale = 0f;
+            thisMetadata.MRenderer.enabled = true;
+            thisMetadata.Collider.enabled = true;
+
+            var dir = GetRandomDirectionFromSelf();
+            thisMetadata.PhysicsBody.velocity = dir * 13f;
+
+            float angle = SpawnerExtensions.RotateToDirection(dir);
+            thisMetadata.Rotation = angle;
+        }
+
+        public float nearToWall = .5f;
+        public float rayRange = 10f;
+        public float fastRayDistance = 5f;
+        public bool inFastCheckMode = false;
+        public float slowCheckTimer = 1f;
+        float timer;
+        int bounceCD = 5;
+        int bounceiscd = 0;
+
+        protected override void Update()
+        {
+            base.Update();
+
+            if(inFastCheckMode)
+            {
+                if (bounceiscd > 0)
+                {
+                    bounceiscd--;
+                    return;
+                }
+
+                timer = 0f;
+                var result = CheckForNearbyWalls();
+                if (result != null && result.Value.collider != null)
+                {
+                    if (result.Value.distance > fastRayDistance)
+                        inFastCheckMode = false;
+                    else
+                    {
+                        if(result.Value.distance < nearToWall)
+                        {
+                            thisMetadata.PhysicsBody.velocity = BounceReflect(thisMetadata.PhysicsBody.velocity, result.Value.normal);
+                            float angle = SpawnerExtensions.RotateToDirection(thisMetadata.PhysicsBody.velocity.normalized);
+                            thisMetadata.Rotation = angle;
+                            bounceiscd = bounceCD;
+                        }
+                    }   
+                }
+            }   
+            else
+            {
+                timer += Time.deltaTime;
+                if (timer > slowCheckTimer)
+                {
+                    timer = 0f;
+                    var result = CheckForNearbyWalls();
+                    if(result != null && result.Value.collider != null)
+                    {
+                        if (result.Value.distance < fastRayDistance)
+                            inFastCheckMode = true;
+                    }                        
+                }    
+            }
+        }
+
+        protected virtual RaycastHit2D? CheckForNearbyWalls()
+        {
+            RaycastHit2D? closest = SpawnerExtensions.GetOctagonalRays(gameObject, rayRange).Where(x => x.collider != null).OrderBy(x => x.distance).FirstOrDefault();
+            return closest;
+        }
+    }
+
+    public class BeeDropperSpawner : DefaultSpawner<BeeDropperControl> { }
+
+    public class BeeDropperPrefabConfig : DefaultPrefabConfig<BeeDropperControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
 }

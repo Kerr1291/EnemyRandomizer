@@ -21,6 +21,7 @@ namespace EnemyRandomizerMod
             "ColetteMSLP",
             "oatmille1",
             "Dwarfwoof",
+            "Sethadocious",
             "...and you; thanks for playing!"
         };
 
@@ -73,6 +74,13 @@ namespace EnemyRandomizerMod
                 applySetting: b => GlobalSettings.RandomizeBosses = b,
                 loadSetting: () => GlobalSettings.RandomizeBosses
             ),
+
+            //Blueprints.HorizontalBoolOption(
+            //    name: "Enable MSLP Journal Mode",
+            //    description: "If enabled, killed enemies will give you the journal entry of the one they replaced",
+            //    applySetting: b => GlobalSettings.MSLPJournalMode = b,
+            //    loadSetting: () => GlobalSettings.MSLPJournalMode
+            //),
             new TextPanel("------------------------"),
             new TextPanel("Credits"),
             new TextPanel("Satchel & Tons of UI help: Mulhima"),

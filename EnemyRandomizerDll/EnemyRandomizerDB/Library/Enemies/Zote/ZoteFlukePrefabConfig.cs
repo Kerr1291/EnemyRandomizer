@@ -10,28 +10,18 @@ using System;
 
 namespace EnemyRandomizerMod
 {
-
-
-
     public class ZoteFlukeControl : FSMBossAreaControl
     {
         public override string FSMName => "Control";
-
-        public float startYPos;
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            RNG geoRNG = new RNG();
-            geoRNG.Reset();
-
-            thisMetadata.EnemyHealthManager.hp = other.MaxHP;
-            thisMetadata.EnemyHealthManager.SetGeoSmall(geoRNG.Rand(2, 5));
+            thisMetadata.Geo = 21;
 
             var init = control.GetState("Init");
             init.DisableAction(2);
-
 
             this.OverrideState(control, "Pos", () => {
                 transform.position = thisMetadata.ObjectPosition;

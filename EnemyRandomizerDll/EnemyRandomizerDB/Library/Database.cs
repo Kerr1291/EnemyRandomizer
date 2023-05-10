@@ -46,9 +46,8 @@ namespace EnemyRandomizerMod
         public List<string> hazardNames;
         [XmlArray]
         public List<string> effectNames;
-
         [XmlArray]
-        public List<SceneData> badSceneData;
+        public List<string> otherNames;
 
         [XmlIgnore]
         public List<PrefabObject> enemyPrefabs = new List<PrefabObject>();
@@ -56,6 +55,8 @@ namespace EnemyRandomizerMod
         public List<PrefabObject> hazardPrefabs = new List<PrefabObject>();
         [XmlIgnore]
         public List<PrefabObject> effectPrefabs = new List<PrefabObject>();
+        [XmlIgnore]
+        public List<PrefabObject> otherPrefabs = new List<PrefabObject>();
 
 
         [XmlIgnore]
@@ -67,6 +68,8 @@ namespace EnemyRandomizerMod
         public Dictionary<string, PrefabObject> Hazards = new Dictionary<string, PrefabObject>();
         [XmlIgnore]
         public Dictionary<string, PrefabObject> Effects = new Dictionary<string, PrefabObject>();
+        [XmlIgnore]
+        public Dictionary<string, PrefabObject> Others = new Dictionary<string, PrefabObject>();
 
         [XmlIgnore]
         public Dictionary<string, PrefabObject> Objects = new Dictionary<string, PrefabObject>();

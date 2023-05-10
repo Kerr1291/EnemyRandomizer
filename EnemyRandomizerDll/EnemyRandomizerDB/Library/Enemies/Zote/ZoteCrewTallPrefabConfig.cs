@@ -10,30 +10,26 @@ using System;
 
 namespace EnemyRandomizerMod
 {
-
     public class ZoteCrewTallControl : FSMBossAreaControl
     {
         public override string FSMName => "Control";
-
-        public float startYPos;
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            RNG geoRNG = new RNG();
-            geoRNG.Reset();
-
-            thisMetadata.EnemyHealthManager.hp = other.MaxHP * 2;
-            thisMetadata.EnemyHealthManager.SetGeoSmall(geoRNG.Rand(2, 20));
+            thisMetadata.Geo = 8;
 
             var init = control.GetState("Init");
             init.DisableAction(10);
 
+            var mult = control.GetState("Multiply");
+            mult.InsertCustomAction(() => {
+                control.FsmVariables.GetFsmFloat("Deaths").Value = 0;
+            }, 0);
+
             var spawnAntic = control.GetState("Spawn Antic");
             spawnAntic.DisableAction(0);
-            control.FsmVariables.GetFsmFloat("X Pos").Value = pos2d.x;
-            spawnAntic.GetAction<SetPosition>(1).y.Value = pos2d.y;
             spawnAntic.DisableAction(2);
             spawnAntic.DisableAction(6);
             spawnAntic.DisableAction(7);
@@ -65,10 +61,6 @@ namespace EnemyRandomizerMod
         }
     }
 
-    public class ZoteCrewTallSpawner : DefaultSpawner<ZoteCrewTallControl>
-    {
-    }
-    public class ZoteCrewTallPrefabConfig : DefaultPrefabConfig<ZoteCrewTallControl>
-    {
-    }
+    public class ZoteCrewTallSpawner : DefaultSpawner<ZoteCrewTallControl> { }
+    public class ZoteCrewTallPrefabConfig : DefaultPrefabConfig<ZoteCrewTallControl> { }
 }

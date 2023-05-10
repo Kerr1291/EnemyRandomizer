@@ -427,13 +427,13 @@ namespace EnemyRandomizerMod
         {
             Vector2 direction = dir;
 
-            RaycastHit2D[] toGround = Physics2D.RaycastAll(origin, direction, max, Physics2D.AllLayers);
+            RaycastHit2D[] toSurface = Physics2D.RaycastAll(origin, direction, max, Physics2D.AllLayers);
 
             Vector2 lastGoodPoint = direction * max;
 
-            if (toGround != null)
+            if (toSurface != null)
             {
-                foreach (var v in toGround)
+                foreach (var v in toSurface)
                 {
                     if (isRaycastHitObject(v.collider.gameObject))
                     {

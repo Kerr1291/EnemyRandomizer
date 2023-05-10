@@ -23,6 +23,8 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
+            gameObject.GetComponent<BoxCollider2D>().enabled = true;
+
             var init = control.GetState("Init");
             init.DisableAction(2);
             init.AddCustomAction(() => { control.SendEvent("START"); });
@@ -44,7 +46,8 @@ namespace EnemyRandomizerMod
         protected override void Show()
         {
             base.Show();
-            control.Fsm.BroadcastEvent("GRIMMKIN SPAWN");
+            if(control != null)
+                control.Fsm.BroadcastEvent("GRIMMKIN SPAWN");
         }
     }
 
@@ -91,13 +94,6 @@ namespace EnemyRandomizerMod
             p.prefab = prefab;
 
             Dev.Log("FLAMEBEARER_CONVERSION New prefab name = " + keyName);
-
-            //if(keyName.Contains("Small"))
-            //    p.prefab.AddComponent<FlamebearerSmallControl>();
-            //else if (keyName.Contains("Med"))
-            //    p.prefab.AddComponent<FlamebearerMedControl>();
-            //else if (keyName.Contains("Large"))
-            //    p.prefab.AddComponent<FlamebearerLargeControl>();
         }
     }
 }

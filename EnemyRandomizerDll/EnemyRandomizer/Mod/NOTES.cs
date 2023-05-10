@@ -1,6 +1,39 @@
 ﻿
 /* CURRENT TODO
  * 
+ * Fix HK prime taking UI
+ * Fix NKG death removing UI
+ * Uumuu isn't attacking
+ * Where are the volt twisters? -- don't activate attacks unless player is nearish -- also reduce amount of attacks based on difficulty of area
+ * Fix enemies that replace in-ground/on-ground enemies to 
+ * Fix? zote dying removing UI (and white screen)
+ * Fix enemy spawners by adding in a hook for replaced enemies
+ * Scale projectile size too
+ * Fix white palace guard getting stuck after throwing his weapon
+ * Fix watcher knights ascending into space
+ * NKG dying stole UI?
+ * THK spawned in the ground in the white palace gate scene
+ * Some explosive bubble eggs didn't get randomized
+ * Add a check on traitor lord so he doesn't ground slam w/e shade cloak
+ * Fix radiance
+ * Fix THK credits
+ * Check if HK Prime makes UI go away
+ * Sheo was put in the floor outside colo, check on that
+ * Fix bird replacements from being put in the floor
+ * Fix infection dropping fly that didn't explode on death
+ * Fix tiny spider not shooting in the tutorial_01 area
+ * Add POOB to marmu
+ * Edit marmu's teleport to not per marmu inside walls
+ * Fix plant trap not shooting projectiles
+ * Fix the zote vengefly boss room crash
+ * Fix arena in fungal1_32
+ * Finish adding enemy pogo replacements
+ * Fix hp scaling on the bosses that spawn as enemies (pale lurker has full hp??)
+ * Fix pale lurker so it doesn't get stuck on corners
+ * Fix pale lurker so it the attacks are kill-able by the knight
+ * Fix grimm spawn so it doesn't trigger boss music
+ * Get the fart sound from fly corpse death
+ * Fix nuke fart scaling issue from mushroom farting bug
  * Add a new system for like enemy replacer for enemies that can be randomized
  * Add a new system for replaced enemies so that things that spawn children can get references to their replacements properly
  * Add some kind of pre-check in for randomization to see if the enemy has a valid, non-insta-death placement before trying
@@ -118,7 +151,6 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
  * DESIGN ITERATIONS:
  * 
  * Check on the electric mage's hp, it was nerfed to 1/2- see how it feels.
- * Reduced Electric mage aggro range to a 30 radius circle- see how it feels.
  * 
  * 
  * 
@@ -136,6 +168,8 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
  * Custom Scale (slider) in the scaling module -- will allow for everything to be (small/big)
  * 
  * Module/options to randomize only bosses
+ * 
+ * Enemies must appear once every/logical module
  * 
  * 
  */
@@ -167,6 +201,32 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
  * GG_Statue_Gorb <-maybe copy them all?
  * (remove the BossStatue component)
  * 
+ * make spawners for these
+    <string>GG_Statue_Gorb</string><!--scene: GG_Workshop -->
+    <string>GG_Statue_Hornet</string><!--scene: GG_Workshop -->
+    <string>GG_Statue_GreyPrince</string><!--scene: GG_Workshop -->
+    <string>Knight_v01</string><!--scene: GG_Workshop -->
+    <string>Knight_v02</string><!--scene: GG_Workshop -->
+    <string>GG_Statue_Grimm</string><!--scene: GG_Workshop -->
+    <string>GG_Statue_Zote</string><!--scene: GG_Workshop -->
+    <string>dream_beam_animation</string><!--scene: GG_Workshop - cool floor aoe particle effect-->
+    <string>gg_blue_core</string><!-- scene: GG_Blue_Room - lifeblood core from godhome-->
+    <string>_0083_fountain</string><!--scene: Ruins1_27 - fountain (center piece)-->
+    <string>_0082_fountain</string><!--scene: Ruins1_27 - fountain (back dreamer)-->
+    <string>_0092_fountain</string><!--scene: Ruins1_27 - fountain (right dreamer)-->
+    <string>_0092_fountain</string><!--scene: Ruins1_27 - fountain (1) (left dreamer)-->
+
+
+    <string>Health Scuttler</string>
+    <string>Mace Head Bug</string>
+
+//don't replace these as enemies, but allow these to spawn in place of certain enemies
+    <string>Big Centipede Col</string>
+    <string>Laser Turret Frames</string>
+    <string>Jelly Egg Bomb</string>
+    <string>Worm</string>
+
+ * 
  * 
 
 //fix Zombie Swipe state machine -- no fix?
@@ -187,7 +247,7 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Hatcher",null);
     EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Bursting Bouncer",null);
     EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Hornet Boss 1",null);
-    EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("White Defender",null);
+    EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Acid Flyer",null);
     BASIC FLYING ENEMIES
     <string>Mosquito</string>                              -   
     <string>Blobble</string>                               -   ""
@@ -372,7 +432,7 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Hornet Boss 2</string>                         -   WORKS
     <string>Mimic Spider</string>                          -   SPAWNS TOO FAR TO THE RIGHT
     <string>Mantis Traitor Lord</string>                   -   SEEMS TO ALMOST WORK?
-    <string>Dung Defender</string>                         -   NEEDS TESTING
+    <string>Dung Defender</string>                         -   SAME ISSUES AS WHITE DEFENDER + HIS POO BALLS BREAK QUICKLY/THROW INCORRECTLY (check their fsms?)
     <string>Fluke Mother</string>                          -   NEEDS TESTING
     <string>Hive Knight</string>                           -   NEEDS TESTING
     <string>Grimm Boss</string>                            -   NEEDS TESTING
@@ -387,7 +447,7 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     <string>Sheo Boss</string>                             -   NEEDS BOSS SCRIPT
     <string>Sly Boss</string>                              -   NEEDS BOSS SCRIPT
     <string>Hornet Nosk</string>                           -   NEEDS TESTING
-    <string>White Defender</string>                        -   NEEDS TESTING
+    <string>White Defender</string>                        -   DIRT PILE NOT ON GROUND - CAN MOVE OFF OFF SCREEN WHILE BURROWED - DIVE AND LAND DOESN'T SEEM TO REGISTER COLLISIONS?
     <string>Jellyfish GG</string>                          -   NEEDS BOSS SCRIPT
     <string>Mega Jellyfish</string>                        -   NEEDS BOSS SCRIPT
     <string>Ghost Warrior Marmu</string>                   -   NEEDS MORE TESTING -- SEEMS FIXED?

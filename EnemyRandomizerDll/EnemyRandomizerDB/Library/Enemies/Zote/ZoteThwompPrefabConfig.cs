@@ -19,6 +19,7 @@ namespace EnemyRandomizerMod
         PlayMakerFSM armourHit;
 
         public float startYPos;
+        DamageEnemies damageEnemies;
 
         public override void Setup(ObjectMetadata other)
         {
@@ -27,6 +28,18 @@ namespace EnemyRandomizerMod
             var de = gameObject.GetComponent<DamageEnemies>();
             if (de != null)
                 GameObject.Destroy(de);
+
+            //allow the zote to squash things
+            damageEnemies = gameObject.GetOrAddComponent<DamageEnemies>();
+            damageEnemies.damageDealt = 10;
+            damageEnemies.direction = 90f; //TODO: make sure this isn't backwards
+            damageEnemies.magnitudeMult = 1f;
+            damageEnemies.moveDirection = false;
+            damageEnemies.circleDirection = false;
+            damageEnemies.ignoreInvuln = false;
+            damageEnemies.attackType = AttackTypes.Generic;
+            damageEnemies.specialType = 0;
+
 
             slamEffect = gameObject.FindGameObjectInChildrenWithName("Slam Effect").LocateMyFSM("FSM");
             enemyCrusher = gameObject.FindGameObjectInChildrenWithName("Enemy Crusher").LocateMyFSM("FSM");
@@ -37,19 +50,17 @@ namespace EnemyRandomizerMod
 
             //control.ChangeTransition("Init", "FINISHED", "Set Pos");
 
-            RNG geoRNG = new RNG();
-            geoRNG.Reset();
-
-            thisMetadata.EnemyHealthManager.hp = other.MaxHP;
-            thisMetadata.EnemyHealthManager.SetGeoLarge(geoRNG.Rand(1, 5));
+            thisMetadata.Geo = 15;
 
             this.OverrideState(control, "Set Pos", () =>
             {
-                control.FsmVariables.GetFsmFloat("X Pos").Value = heroPos2d.x;
-                float ypos = roofY - this.thisMetadata.ObjectSize.y * this.thisMetadata.SizeScale;
-                control.FsmVariables.GetFsmFloat("Y Pos").Value = ypos;
-                startYPos = ypos;
-                gameObject.transform.position = new Vector3(heroPos2d.x, ypos, 0f);
+                var telepos = GetRandomPositionInLOSofSelf(5, 50, 5f, 5f);
+
+                control.FsmVariables.GetFsmFloat("X Pos").Value = telepos.x;
+                //float ypos = roofY - this.thisMetadata.ObjectSize.y * this.thisMetadata.SizeScale;
+                control.FsmVariables.GetFsmFloat("Y Pos").Value = telepos.y;
+                startYPos = telepos.y;
+                gameObject.transform.position = new Vector3(telepos.x, telepos.y, 0f);
                 gameObject.GetComponent<Collider2D>().enabled = true;
                 gameObject.GetComponent<MeshRenderer>().enabled = true;
             });
@@ -62,11 +73,12 @@ namespace EnemyRandomizerMod
 
             this.OverrideState(control, "Out", () =>
             {
-                control.FsmVariables.GetFsmFloat("X Pos").Value = heroPos2d.x;
-                float ypos = roofY - this.thisMetadata.ObjectSize.y * this.thisMetadata.SizeScale;
-                control.FsmVariables.GetFsmFloat("Y Pos").Value = ypos;
-                startYPos = ypos;
-                gameObject.transform.position = new Vector3(heroPos2d.x, ypos, 0f);
+                var telepos = GetRandomPositionInLOSofSelf(5, 50, 5f, 5f);
+                control.FsmVariables.GetFsmFloat("X Pos").Value = telepos.x;
+                //float ypos = roofY - this.thisMetadata.ObjectSize.y * this.thisMetadata.SizeScale;
+                control.FsmVariables.GetFsmFloat("Y Pos").Value = telepos.y;
+                startYPos = telepos.y;
+                gameObject.transform.position = new Vector3(heroPos2d.x, telepos.y, 0f);
                 gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
             });
 
@@ -86,13 +98,9 @@ namespace EnemyRandomizerMod
         }
     }
 
-    public class ZoteThwompSpawner : DefaultSpawner<ZoteThwompControl>
-    {
-    }
+    public class ZoteThwompSpawner : DefaultSpawner<ZoteThwompControl> { }
 
-    public class ZoteThwompPrefabConfig : DefaultPrefabConfig<ZoteThwompControl>
-    {
-    }
+    public class ZoteThwompPrefabConfig : DefaultPrefabConfig<ZoteThwompControl> { }
 
 
 

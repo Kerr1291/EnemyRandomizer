@@ -127,64 +127,11 @@ namespace EnemyRandomizerMod
             return copy;
         }
 
-        //TODO:::: ADD OPTION TO ALLOW FOR THE AUDIO PITCH TO SCALE WITH SIZE
-        public static ObjectMetadata SetScaleToOthersScale(this GameObject gameObject, ObjectMetadata other)
-        {
-            if (other == null)
-                return null;
-
-            if (!other.HasData)
-                return null;
-
-            ObjectMetadata thisMetadata = new ObjectMetadata();
-            thisMetadata.Setup(gameObject, EnemyRandomizerDatabase.GetDatabase());
-
-            var scale = thisMetadata.GetRelativeScale(other);
-            thisMetadata.ApplySizeScale(scale);
-
-            return thisMetadata;
-        }
-
-        public static void SetAudioToMatchScale(this GameObject gameObject, ObjectMetadata other)
-        {
-            if (other == null)
-                return;
-
-            if (!other.HasData)
-                return;
-
-            if (!Mathnv.FastApproximately(other.SizeScale, 1f, .01f))
-                return;
-
-            ObjectMetadata thisMetadata = new ObjectMetadata();
-            thisMetadata.Setup(gameObject, EnemyRandomizerDatabase.GetDatabase());
-
-            //TODO:....
-        }
-
-        public static void RotateNewEnemy(this GameObject gameObject, ObjectMetadata other = null)
-        {
-            if (gameObject != null)
-            {
-                if (!other.DatabaseName.Contains("Ceiling Dropper"))
-                    gameObject.transform.rotation = other.Source.transform.rotation;
-
-                //if they were a wall flying mantis, don't rotate the replacement
-                if (gameObject.name.Contains("Mantis Flyer Child"))
-                {
-                    gameObject.transform.rotation = Quaternion.identity;
-                }
-
-                //mosquitos rotate, so spawn replacements with default rotation
-                if (gameObject.name.Contains("Mosquito"))
-                {
-                    gameObject.transform.rotation = Quaternion.identity;
-                }
-            }
-        }
-
         public static bool StickToClosestSurface(this GameObject gameObject, float maxRange = 100f, bool alsoStickCorpse = true)
         {
+            if (MetaDataTypes.IsPogoLogicType(gameObject.name))
+                return false;
+
             if (gameObject.GetComponent<Collider2D>() == null)
                 return false;
 
@@ -206,6 +153,9 @@ namespace EnemyRandomizerMod
 
         public static bool StickToClosestSurface(this GameObject gameObject, float maxRange, float extraOffsetScale = 0.33f, bool alsoStickCorpse = true, bool flipped = false)
         {
+            if (MetaDataTypes.IsPogoLogicType(gameObject.name))
+                return false;
+
             if (gameObject.GetComponent<Collider2D>() == null)
                 return false;
 
@@ -227,6 +177,9 @@ namespace EnemyRandomizerMod
 
         public static bool StickToClosestSurfaceWithoutRotation(this GameObject gameObject, float maxRange, float extraOffsetScale = 0.33f)
         {
+            if (MetaDataTypes.IsPogoLogicType(gameObject.name))
+                return false;
+
             if (gameObject.GetComponent<Collider2D>() == null)
                 return false;
 
@@ -275,6 +228,9 @@ namespace EnemyRandomizerMod
 
         public static bool StickToGround(this GameObject gameObject, float extraOffsetScale = 0.53f)
         {
+            if (MetaDataTypes.IsPogoLogicType(gameObject.name))
+                return false;
+
             if (gameObject.GetComponent<Collider2D>() == null)
                 return false;
 
@@ -292,6 +248,9 @@ namespace EnemyRandomizerMod
 
         public static bool StickToGroundX(this GameObject gameObject, float extraOffsetScale = 0.53f)
         {
+            if (MetaDataTypes.IsPogoLogicType(gameObject.name))
+                return false;
+
             if (gameObject.GetComponent<Collider2D>() == null)
                 return false;
 
@@ -304,6 +263,9 @@ namespace EnemyRandomizerMod
 
         public static bool StickToRoof(this GameObject gameObject, float extraOffsetScale = 0.33f, bool flipped = false)
         {
+            if (MetaDataTypes.IsPogoLogicType(gameObject.name))
+                return false;
+
             if (gameObject.GetComponent<Collider2D>() == null)
                 return false;
 
@@ -379,18 +341,42 @@ namespace EnemyRandomizerMod
             return 0f;
         }
 
+
+        /// <summary>
+        /// Apply this via transform.equlerAngles
+        /// </summary>
+        public static float RotateToDirection(this Vector2 input, float angleOffset = 90f)
+        {
+            input = input.normalized;
+            float angle = Mathf.Atan2(input.y, input.x) * 57.2957764f + angleOffset;
+            return angle;
+        }
+
+
+        /// <summary>
+        /// Apply this via transform.equlerAngles
+        /// </summary>
+        public static void RotateToDirection(this GameObject input, Vector2 dir, float angleOffset = 90f)
+        {
+            float angle = RotateToDirection(dir, angleOffset);
+            input.transform.eulerAngles = new Vector3(0f, 0f, angle);
+        }
+
         public static Vector3 SetPositionToRayCollisionPoint(GameObject gameObject, RaycastHit2D closest, float offsetScale = 0.33f)
         {
             var collider = gameObject.GetComponent<BoxCollider2D>();
-            if (closest.collider != null && collider != null)
+            if (collider == null)
+            {
+                var sprite = gameObject.GetComponent<tk2dSprite>();
+                if (sprite != null)
+                {
+                    collider = sprite.boxCollider2D;
+                }
+            }
+
+            if (collider != null && closest.collider != null)
             {
                 gameObject.transform.position = closest.point + closest.normal * collider.size.y * offsetScale * gameObject.transform.localScale.y;
-            }
-            var spritetk2d = gameObject.GetComponent<tk2dSprite>();
-            if (collider == null && spritetk2d != null && closest.collider != null)
-            {
-                var size = spritetk2d.boxCollider2D.size;
-                gameObject.transform.position = closest.point + closest.normal * size.y * offsetScale * gameObject.transform.localScale.y;
             }
 
             return gameObject.transform.position;
@@ -577,6 +563,37 @@ namespace EnemyRandomizerMod
                 GetRayOn(gameObject, Vector2.up, maxDistanceToCheck),
                 GetRayOn(gameObject, Vector2.left, maxDistanceToCheck),
                 GetRayOn(gameObject, Vector2.right, maxDistanceToCheck),
+            };
+
+            return raycastHit2D;
+        }
+
+        public static List<RaycastHit2D> GetOctagonalRays(GameObject gameObject, float maxDistanceToCheck)
+        {
+            List<RaycastHit2D> raycastHit2D = new List<RaycastHit2D>()
+            {
+                GetRayOn(gameObject, Vector2.down, maxDistanceToCheck),
+                GetRayOn(gameObject, Vector2.up, maxDistanceToCheck),
+                GetRayOn(gameObject, Vector2.left, maxDistanceToCheck),
+                GetRayOn(gameObject, Vector2.right, maxDistanceToCheck),
+
+                GetRayOn(gameObject, (Vector2.down + Vector2.left).normalized , maxDistanceToCheck),
+                GetRayOn(gameObject, (Vector2.down + Vector2.right).normalized, maxDistanceToCheck),
+                GetRayOn(gameObject, (Vector2.up + Vector2.left).normalized, maxDistanceToCheck),
+                GetRayOn(gameObject, (Vector2.up + Vector2.right).normalized, maxDistanceToCheck),
+            };
+
+            return raycastHit2D;
+        }
+
+        public static List<RaycastHit2D> GetDiagonalRays(GameObject gameObject, float maxDistanceToCheck)
+        {
+            List<RaycastHit2D> raycastHit2D = new List<RaycastHit2D>()
+            {
+                GetRayOn(gameObject, (Vector2.down + Vector2.left).normalized , maxDistanceToCheck),
+                GetRayOn(gameObject, (Vector2.down + Vector2.right).normalized, maxDistanceToCheck),
+                GetRayOn(gameObject, (Vector2.up + Vector2.left).normalized, maxDistanceToCheck),
+                GetRayOn(gameObject, (Vector2.up + Vector2.right).normalized, maxDistanceToCheck),
             };
 
             return raycastHit2D;

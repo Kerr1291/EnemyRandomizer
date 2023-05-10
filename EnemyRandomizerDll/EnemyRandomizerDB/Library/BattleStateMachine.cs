@@ -67,15 +67,23 @@ namespace EnemyRandomizerMod
 
                 });
 
-                RNG rng = new RNG();
-                rng.Reset();
-
                 outsideArea.ToList().ForEach(x =>
                 {
-                    var point = rng.Rand(battleArea.min, battleArea.max);
-                    var worldPoint = FSMAREA.transform.TransformPoint(point);
+                    var dsec = x.GetComponent<DefaultSpawnedEnemyControl>();
+                    if(dsec != null)
+                    {
+                        var losPos = dsec.GetRandomPositionInLOSofPlayer(3f, 20f, 2f, 2f);
+                        x.transform.position = losPos;
+                    }
+                    else
+                    {
+                        RNG rng = new RNG();
+                        rng.Reset();
+                        var point = rng.Rand(battleArea.min, battleArea.max);
+                        var worldPoint = FSMAREA.transform.TransformPoint(point);
 
-                    x.transform.position = worldPoint;
+                        x.transform.position = worldPoint;
+                    }
                 });
             }
             else
@@ -85,7 +93,7 @@ namespace EnemyRandomizerMod
                 var bmos = GameObject.FindObjectsOfType<BattleManagedObject>().ToList();
                 bmos.ForEach(x =>
                 {
-                    if(x.myMetaData.CheckIfIsActiveAndVisible() && !x.myMetaData.IsBoss)
+                    if(x.myMetaData.IsActive && !x.myMetaData.IsBoss)
                     {
                         Dev.Log("Force killing pre-battle enemies for now until I implement a solution to check if they start inside the arena");
                         x.myMetaData.EnemyHealthManager.Die(null, AttackTypes.Generic, true);
@@ -351,7 +359,7 @@ namespace EnemyRandomizerMod
                     return info;
                 }).ToList();
 
-                if (infos.Count < 0 || !infos.Any(x => x.CheckIfIsActiveAndVisible()))
+                if (infos.Count < 0 || !infos.Any(x => x.IsActive))
                     OpenGates();
             }
 

@@ -84,17 +84,32 @@ namespace EnemyRandomizerMod
 
         public virtual List<PrefabObject> GetValidEnemyReplacements(ObjectMetadata originalObject, List<PrefabObject> validReplacements)
         {
-            if(MatchReplacements)
-            {
-                bool isFlyer = originalObject.IsFlying;
-                bool isStatic = !originalObject.IsMobile;
-                bool isWalker = originalObject.IsWalker;
-                bool isClimbing = originalObject.IsClimbing;
+            bool isFlyer = originalObject.IsFlying;
+            bool isStatic = !originalObject.IsMobile;
+            bool isWalker = originalObject.IsWalker;
+            bool isClimbing = originalObject.IsClimbing;
 
-                IEnumerable<PrefabObject> possible;
+            IEnumerable<PrefabObject> possible = validReplacements;
+            if (originalObject.IsPogoLogic)
+            {
+                possible = possible.Where(x => !MetaDataTypes.BadPogoReplacement.Contains(x.prefabName));
+                if(isFlyer)
+                {
+                    possible = possible.Where(x => MetaDataTypes.Flying.Contains(x.prefabName));
+                }
+                else
+                {
+                    possible = possible.Where(x => !MetaDataTypes.Flying.Contains(x.prefabName));
+                    possible = possible.Where(x => !MetaDataTypes.Static.Contains(x.prefabName));
+                }
+            }
+
+            if (MatchReplacements)
+            {
                 IEnumerable<ObjectMetadata> pMetas;
 
-                possible = validReplacements.Where(x => !EnemyReplacer.ReplacementEnemiesToSkip.Contains(x.prefabName));
+                possible = possible.Where(x => !MetaDataTypes.ReplacementEnemiesToSkip.Contains(x.prefabName));
+
                 pMetas = possible.Select(x =>
                 {
                     ObjectMetadata m = new ObjectMetadata();
@@ -132,17 +147,17 @@ namespace EnemyRandomizerMod
             }
 
 
-            return validReplacements.Where(x => !EnemyReplacer.ReplacementEnemiesToSkip.Contains(x.prefabName)).ToList();
+            return possible.Where(x => !MetaDataTypes.ReplacementEnemiesToSkip.Contains(x.prefabName)).ToList();
         }
 
         public virtual List<PrefabObject> GetValidHazardReplacements(List<PrefabObject> validReplacements)
         {
-            return validReplacements.Where(x => !EnemyReplacer.ReplacementHazardsToSkip.Contains(x.prefabName)).ToList();
+            return validReplacements.Where(x => !MetaDataTypes.ReplacementHazardsToSkip.Contains(x.prefabName)).ToList();
         }
 
         public virtual List<PrefabObject> GetValidEffectReplacements(List<PrefabObject> validReplacements)
         {
-            return validReplacements.Where(x => !EnemyReplacer.ReplacementEffectsToSkip.Contains(x.prefabName)).ToList();
+            return validReplacements.Where(x => !MetaDataTypes.ReplacementEffectsToSkip.Contains(x.prefabName)).ToList();
         }
 
         public virtual ObjectMetadata ReplaceEnemy(ObjectMetadata originalObject, List<PrefabObject> validReplacements, RNG rng)

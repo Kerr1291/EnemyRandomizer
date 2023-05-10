@@ -88,6 +88,11 @@ namespace EnemyRandomizerMod
         void OnSaveGame(EnemyRandomizerPlayerSettings settings);
 
         /// <summary>
+        /// Check the logic to see if anything should prevent this from being replaced
+        /// </summary>
+        bool CanReplaceObject(ObjectMetadata metaObject);
+
+        /// <summary>
         /// Gets the kinds of things that may be used as replacements
         /// </summary>
         List<PrefabObject> GetValidReplacements(ObjectMetadata objectToModify, List<PrefabObject> validReplacementObjects);
@@ -169,6 +174,11 @@ namespace EnemyRandomizerMod
 
         public virtual void OnSaveGame(EnemyRandomizerPlayerSettings settings)
         {
+        }
+
+        public virtual bool CanReplaceObject(ObjectMetadata metaObject)
+        {
+            return true;
         }
 
         public virtual List<PrefabObject> GetValidReplacements(ObjectMetadata originalObject, List<PrefabObject> validReplacementObjects)

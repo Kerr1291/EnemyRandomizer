@@ -23,7 +23,7 @@ namespace EnemyRandomizerMod
             RNG geoRNG = new RNG();
             geoRNG.Reset();
 
-            thisMetadata.EnemyHealthManager.hp = other.MaxHP;
+            thisMetadata.EnemyHealthManager.hp = other.DefaultHP;
             thisMetadata.EnemyHealthManager.SetGeoSmall(geoRNG.Rand(2, 12));
 
             var init = control.GetState("Init");

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Satchel;
 using Satchel.Futils;
+using UniRx;
 
 namespace EnemyRandomizerMod
 {
@@ -60,10 +61,6 @@ namespace EnemyRandomizerMod
     /////
     public class SpittingZombieControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class SpittingZombieSpawner : DefaultSpawner<SpittingZombieControl> { }
@@ -80,10 +77,6 @@ namespace EnemyRandomizerMod
     /////
     public class BurstingZombieControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class BurstingZombieSpawner : DefaultSpawner<BurstingZombieControl> { }
@@ -100,10 +93,6 @@ namespace EnemyRandomizerMod
     /////
     public class MantisHeavyControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class MantisHeavySpawner : DefaultSpawner<MantisHeavyControl> { }
@@ -120,10 +109,6 @@ namespace EnemyRandomizerMod
     /////
     public class LesserMawlekControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class LesserMawlekSpawner : DefaultSpawner<LesserMawlekControl> { }
@@ -154,10 +139,6 @@ namespace EnemyRandomizerMod
     /////
     public class Mossman_RunnerControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class Mossman_RunnerSpawner : DefaultSpawner<Mossman_RunnerControl> { }
@@ -178,10 +159,6 @@ namespace EnemyRandomizerMod
     /////
     public class BabyCentipedeControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class BabyCentipedeSpawner : DefaultSpawner<BabyCentipedeControl> { }
@@ -201,10 +178,6 @@ namespace EnemyRandomizerMod
     /////
     public class FlukemanBotControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class FlukemanBotSpawner : DefaultSpawner<FlukemanBotControl> { }
@@ -227,10 +200,6 @@ namespace EnemyRandomizerMod
     /////
     public class MageBlobControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class MageBlobSpawner : DefaultSpawner<MageBlobControl> { }
@@ -251,10 +220,6 @@ namespace EnemyRandomizerMod
     /////
     public class ZombieRunnerControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class ZombieRunnerSpawner : DefaultSpawner<ZombieRunnerControl> { }
@@ -275,10 +240,6 @@ namespace EnemyRandomizerMod
     /////
     public class ZombieHornheadControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class ZombieHornheadSpawner : DefaultSpawner<ZombieHornheadControl> { }
@@ -295,10 +256,6 @@ namespace EnemyRandomizerMod
     /////
     public class ZombieBargerControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class ZombieBargerSpawner : DefaultSpawner<ZombieBargerControl> { }
@@ -315,10 +272,6 @@ namespace EnemyRandomizerMod
     /////
     public class PrayerSlugControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class PrayerSlugSpawner : DefaultSpawner<PrayerSlugControl> { }
@@ -339,10 +292,6 @@ namespace EnemyRandomizerMod
     /////
     public class ZombieShieldControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class ZombieShieldSpawner : DefaultSpawner<ZombieShieldControl> { }
@@ -359,10 +308,6 @@ namespace EnemyRandomizerMod
     /////
     public class ZombieLeaperControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class ZombieLeaperSpawner : DefaultSpawner<ZombieLeaperControl> { }
@@ -379,10 +324,6 @@ namespace EnemyRandomizerMod
     /////
     public class ZombieGuardControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class ZombieGuardSpawner : DefaultSpawner<ZombieGuardControl> { }
@@ -408,11 +349,6 @@ namespace EnemyRandomizerMod
             var deactivate = gameObject.GetComponent<DeactivateIfPlayerdataFalse>();
             GameObject.Destroy(deactivate);
         }
-
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class ZombieMylaSpawner : DefaultSpawner<ZombieMylaControl> { }
@@ -433,10 +369,6 @@ namespace EnemyRandomizerMod
     /////
     public class RoyalZombieFatControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class RoyalZombieFatSpawner : DefaultSpawner<RoyalZombieFatControl> { }
@@ -453,10 +385,6 @@ namespace EnemyRandomizerMod
     /////
     public class RoyalZombieControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class RoyalZombieSpawner : DefaultSpawner<RoyalZombieControl> { }
@@ -473,10 +401,6 @@ namespace EnemyRandomizerMod
     /////
     public class RoyalZombieCowardControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class RoyalZombieCowardSpawner : DefaultSpawner<RoyalZombieCowardControl> { }
@@ -527,15 +451,15 @@ namespace EnemyRandomizerMod
             rng.Reset();
             if (hasSurprise)
             {
-                thisMetadata.GeoManager.Value = rng.Rand(500, 2000);
+                thisMetadata.Geo = rng.Rand(500, 2000);
             }
             else if (hasBigSurprise)
             {
-                thisMetadata.GeoManager.Value = rng.Rand(500, 2000);
+                thisMetadata.Geo = rng.Rand(500, 2000);
             }
             else
             {
-                thisMetadata.GeoManager.Value = rng.Rand(100, 1000);
+                thisMetadata.Geo = rng.Rand(100, 1000);
             }
         }
 
@@ -553,7 +477,7 @@ namespace EnemyRandomizerMod
 
             if (doSurprise || doBounceSurprise)
             {
-                thisMetadata.EnemyHealthManager.hp = thisMetadata.EnemyHealthManager.hp * 2;
+                thisMetadata.CurrentHPf = thisMetadata.CurrentHPf * 0.5f;
                 thisMetadata.ApplySizeScale(thisMetadata.SizeScale + 0.2f);
                 supEffect = EnemyRandomizerDatabase.GetDatabase().Spawn("Fire Particles", null);
                 supEffect.transform.parent = transform;
@@ -566,23 +490,17 @@ namespace EnemyRandomizerMod
 
             if (isSuperHusk)
             {
-                thisMetadata.EnemyHealthManager.hp = thisMetadata.EnemyHealthManager.hp * 4;
+                thisMetadata.CurrentHPf = thisMetadata.CurrentHPf * 0.5f;
                 thisMetadata.ApplySizeScale(thisMetadata.SizeScale + 0.4f);
                 isSuperHusk = true;
-                thisMetadata.GeoManager.Value = thisMetadata.GeoManager.Value * 4;
+                thisMetadata.Geo = thisMetadata.Geo * 4;
                 superEffect = EnemyRandomizerDatabase.GetDatabase().Spawn("Particle System B", null);
                 superEffect.transform.parent = transform;
                 superEffect.transform.localPosition = Vector3.zero;
                 superEffect.SafeSetActive(true);
+
+                thisMetadata.currentHP.Subscribe(_ => OnHit()).AddTo(disposables);
             }
-
-            onHit -= OnHit;
-            onHit += OnHit;
-        }
-
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
         }
 
         protected override void OnDestroy()
@@ -600,10 +518,7 @@ namespace EnemyRandomizerMod
 
         protected virtual void OnHit()
         {
-            if (isSuperHusk)
-            {
-                EnemyRandomizerDatabase.GetDatabase().Spawn("Shot Markoth Nail", null).SafeSetActive(true);
-            }
+            EnemyRandomizerDatabase.GetDatabase().Spawn("Shot Markoth Nail", null).SafeSetActive(true);
         }
     }
 
@@ -621,8 +536,9 @@ namespace EnemyRandomizerMod
     /////
     public class CeilingDropperControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             var roof = SpawnerExtensions.GetRoof(gameObject);
             if (roof.distance > 200f)
             {
@@ -649,10 +565,6 @@ namespace EnemyRandomizerMod
     /////
     public class RuinsSentryControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class RuinsSentrySpawner : DefaultSpawner<RuinsSentryControl> { }
@@ -672,10 +584,6 @@ namespace EnemyRandomizerMod
     /////
     public class RuinsSentryFatControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class RuinsSentryFatSpawner : DefaultSpawner<RuinsSentryFatControl> { }
@@ -694,10 +602,6 @@ namespace EnemyRandomizerMod
     /////
     public class GreatShieldZombieControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class GreatShieldZombieSpawner : DefaultSpawner<GreatShieldZombieControl> { }
@@ -717,11 +621,6 @@ namespace EnemyRandomizerMod
     /////
     public class MossWalkerControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            //TODO: test
-            gameObject.StickToGround();
-        }
     }
 
     public class MossWalkerSpawner : DefaultSpawner<MossWalkerControl> { }
@@ -738,7 +637,7 @@ namespace EnemyRandomizerMod
     /////
     public class PlantTrapControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             gameObject.StickToClosestSurface(200f, -1.5f, false, false);
         }
@@ -758,10 +657,6 @@ namespace EnemyRandomizerMod
     /////
     public class Mossman_ShakerControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class Mossman_ShakerSpawner : DefaultSpawner<Mossman_ShakerControl> { }
@@ -778,10 +673,6 @@ namespace EnemyRandomizerMod
     /////
     public class PigeonControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class PigeonSpawner : DefaultSpawner<PigeonControl> { }
@@ -805,10 +696,6 @@ namespace EnemyRandomizerMod
     /////
     public class AcidWalkerControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class AcidWalkerSpawner : DefaultSpawner<AcidWalkerControl> { }
@@ -825,7 +712,7 @@ namespace EnemyRandomizerMod
     /////
     public class PlantTurretControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             gameObject.StickToClosestSurface(200f, -.5f, true, false);
         }
@@ -845,7 +732,7 @@ namespace EnemyRandomizerMod
     /////
     public class PlantTurretRightControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             gameObject.StickToClosestSurface(200f, -.5f, true, true);
         }
@@ -870,10 +757,6 @@ namespace EnemyRandomizerMod
     /////
     public class MossKnightControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class MossKnightSpawner : DefaultSpawner<MossKnightControl> { }
@@ -890,10 +773,6 @@ namespace EnemyRandomizerMod
     /////
     public class GrassHopperControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class GrassHopperSpawner : DefaultSpawner<GrassHopperControl> { }
@@ -927,10 +806,6 @@ namespace EnemyRandomizerMod
     /////
     public class Colosseum_MinerControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class Colosseum_MinerSpawner : DefaultSpawner<Colosseum_MinerControl> { }
@@ -948,10 +823,6 @@ namespace EnemyRandomizerMod
     /////
     public class Colosseum_Shield_ZombieControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class Colosseum_Shield_ZombieSpawner : DefaultSpawner<Colosseum_Shield_ZombieControl> { }
@@ -968,10 +839,6 @@ namespace EnemyRandomizerMod
     /////
     public class Mawlek_ColControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class Mawlek_ColSpawner : DefaultSpawner<Mawlek_ColControl> { }
@@ -1004,7 +871,7 @@ namespace EnemyRandomizerMod
     /////
     public class MushroomTurretControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             gameObject.StickToClosestSurface(200f, -.5f, true, false);
         }
@@ -1024,10 +891,6 @@ namespace EnemyRandomizerMod
     /////
     public class ZombieFungusBControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class ZombieFungusBSpawner : DefaultSpawner<ZombieFungusBControl> { }
@@ -1044,10 +907,6 @@ namespace EnemyRandomizerMod
     /////
     public class FungCrawlerControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class FungCrawlerSpawner : DefaultSpawner<FungCrawlerControl> { }
@@ -1063,7 +922,7 @@ namespace EnemyRandomizerMod
     /////
     public class AbyssCrawlerControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             gameObject.StickToClosestSurface(100f, extraOffsetScale: -1f, alsoStickCorpse: false, flipped: true);
         }
@@ -1085,7 +944,7 @@ namespace EnemyRandomizerMod
     /////
     public class MinesCrawlerControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             gameObject.StickToClosestSurface(100f, extraOffsetScale: 1.3f, alsoStickCorpse: false, flipped: false);
         }
@@ -1104,10 +963,6 @@ namespace EnemyRandomizerMod
     /////
     public class CrystalCrawlerControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class CrystalCrawlerSpawner : DefaultSpawner<CrystalCrawlerControl> { }
@@ -1122,10 +977,6 @@ namespace EnemyRandomizerMod
     /////
     public class CrawlerControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class CrawlerSpawner : DefaultSpawner<CrawlerControl> { }
@@ -1140,10 +991,6 @@ namespace EnemyRandomizerMod
     /////
     public class TinySpiderControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
 
@@ -1167,10 +1014,10 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            this.thisMetadata.GeoManager.Value += 3;
+            this.thisMetadata.Geo += 3;
         }
 
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             gameObject.StickToGround(1f);
         }
@@ -1246,11 +1093,6 @@ namespace EnemyRandomizerMod
             }
         }
 
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
-
         protected virtual IEnumerator SuperEffectSpawns(Func<GameObject> spawner)
         {
             for(int i = 0; i < superEffectsToSpawn; ++i)
@@ -1277,10 +1119,6 @@ namespace EnemyRandomizerMod
     /////
     public class ZombieFungusAControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class ZombieFungusASpawner : DefaultSpawner<ZombieFungusAControl> { }
@@ -1297,7 +1135,7 @@ namespace EnemyRandomizerMod
     /////
     public class MantisControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             gameObject.StickToGround(1f);
         }
@@ -1315,10 +1153,6 @@ namespace EnemyRandomizerMod
     /////
     public class GardenZombieControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class GardenZombieSpawner : DefaultSpawner<GardenZombieControl> { }
@@ -1336,10 +1170,6 @@ namespace EnemyRandomizerMod
     /////
     public class MossKnightFatControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class MossKnightFatSpawner : DefaultSpawner<MossKnightFatControl> { }
@@ -1356,10 +1186,6 @@ namespace EnemyRandomizerMod
     /////
     public class MantisHeavySpawnControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class MantisHeavySpawnSpawner : DefaultSpawner<MantisHeavySpawnControl> { }
@@ -1381,10 +1207,6 @@ namespace EnemyRandomizerMod
     /////
     public class GraveZombieControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class GraveZombieSpawner : DefaultSpawner<GraveZombieControl> { }
@@ -1401,10 +1223,6 @@ namespace EnemyRandomizerMod
     /////
     public class ZombieMinerControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class ZombieMinerSpawner : DefaultSpawner<ZombieMinerControl> { }
@@ -1419,10 +1237,6 @@ namespace EnemyRandomizerMod
     /////
     public class ZombieBeamMinerControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class ZombieBeamMinerSpawner : DefaultSpawner<ZombieBeamMinerControl> { }
@@ -1439,10 +1253,6 @@ namespace EnemyRandomizerMod
     /////
     public class ZombieHornheadSpControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class ZombieHornheadSpSpawner : DefaultSpawner<ZombieHornheadSpControl> { }
@@ -1459,10 +1269,6 @@ namespace EnemyRandomizerMod
     /////
     public class ZombieRunnerSpControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class ZombieRunnerSpSpawner : DefaultSpawner<ZombieRunnerSpControl> { }
@@ -1476,10 +1282,6 @@ namespace EnemyRandomizerMod
     /////
     public class SlashSpiderControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class SlashSpiderSpawner : DefaultSpawner<SlashSpiderControl> { }
@@ -1494,10 +1296,6 @@ namespace EnemyRandomizerMod
     /////
     public class FlipHopperControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class FlipHopperSpawner : DefaultSpawner<FlipHopperControl> { }
@@ -1511,10 +1309,6 @@ namespace EnemyRandomizerMod
     /////
     public class FlukemanControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class FlukemanSpawner : DefaultSpawner<FlukemanControl> { }
@@ -1532,9 +1326,26 @@ namespace EnemyRandomizerMod
     /////
     public class fluke_baby_02Control : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        public string spawnOnDeath = "Inflater";
+
+        public override void Setup(ObjectMetadata other)
         {
-            gameObject.StickToGround();
+            base.Setup(other);
+            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+            thisMetadata.EnemyHealthManager.OnDeath += EnemyHealthManager_OnDeath;
+
+            //if hp changes at all, explode
+            thisMetadata.currentHP.SkipLatestValueOnSubscribe().Subscribe(x => EnemyHealthManager_OnDeath()).AddTo(disposables);
+        }
+
+        private void EnemyHealthManager_OnDeath()
+        {
+            DoBlueHealHero();
+            disposables.Clear();
+            var result = thisMetadata.DB.Spawn(spawnOnDeath, null);
+            result.transform.position = gameObject.transform.position;
+            result.SetActive(true);
+            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
         }
     }
 
@@ -1552,9 +1363,29 @@ namespace EnemyRandomizerMod
     /////
     public class fluke_baby_01Control : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        public string spawnOnDeath = "Health Scuttler";
+
+        public override void Setup(ObjectMetadata other)
         {
-            gameObject.StickToGround();
+            base.Setup(other);
+            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+            thisMetadata.EnemyHealthManager.OnDeath += EnemyHealthManager_OnDeath;
+
+            //if hp changes at all, explode
+            thisMetadata.currentHP.SkipLatestValueOnSubscribe().Subscribe(x => EnemyHealthManager_OnDeath()).AddTo(disposables);
+        }
+
+        private void EnemyHealthManager_OnDeath()
+        {
+            DoBlueHealHero();
+            disposables.Clear();
+            SpawnOnDeath(gameObject, spawnOnDeath);
+            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+        }
+
+        protected static void SpawnOnDeath(GameObject gameObject, string effect)
+        {
+            EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, effect, null, true);
         }
     }
 
@@ -1572,9 +1403,29 @@ namespace EnemyRandomizerMod
     /////
     public class fluke_baby_03Control : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        public string spawnOnDeath = "Jelly Egg Bomb";
+
+        public override void Setup(ObjectMetadata other)
         {
-            gameObject.StickToGround();
+            base.Setup(other);
+            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+            thisMetadata.EnemyHealthManager.OnDeath += EnemyHealthManager_OnDeath;
+
+            //if hp changes at all, explode
+            thisMetadata.currentHP.SkipLatestValueOnSubscribe().Subscribe(x => EnemyHealthManager_OnDeath()).AddTo(disposables);
+        }
+
+        private void EnemyHealthManager_OnDeath()
+        {
+            DoBlueHealHero();
+            disposables.Clear();
+            SpawnOnDeath(gameObject, spawnOnDeath);
+            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+        }
+
+        protected static void SpawnOnDeath(GameObject gameObject, string effect)
+        {
+            EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, effect, null, true);
         }
     }
 
@@ -1592,9 +1443,32 @@ namespace EnemyRandomizerMod
     /////
     public class EnemyControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        public string spawnOnDeath = "HK Plume Prime";
+
+        public override void Setup(ObjectMetadata other)
         {
-            gameObject.StickToGround();
+            base.Setup(other);
+
+            thisMetadata.Geo = 9;
+
+            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+            thisMetadata.EnemyHealthManager.OnDeath += EnemyHealthManager_OnDeath;
+
+            //if hp changes at all, explode
+            thisMetadata.currentHP.SkipLatestValueOnSubscribe().Subscribe(x => EnemyHealthManager_OnDeath()).AddTo(disposables);
+        }
+
+        private void EnemyHealthManager_OnDeath()
+        {
+            DoBlueHealHero();
+            disposables.Clear();
+            SpawnOnDeath(gameObject, spawnOnDeath);
+            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+        }
+
+        protected static void SpawnOnDeath(GameObject gameObject, string effect)
+        {
+            EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, effect, null, true);            
         }
     }
 
@@ -1609,13 +1483,9 @@ namespace EnemyRandomizerMod
 
 
     /////////////////////////////////////////////////////////////////////////////
-    /////
+    ///// TODO: fix his boomerang
     public class RoyalGuardControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class RoyalGuardSpawner : DefaultSpawner<RoyalGuardControl> { }
@@ -1631,7 +1501,7 @@ namespace EnemyRandomizerMod
     /////
     public class MantisFlyerChildControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             gameObject.StickToClosestSurface(200f, false);
         }
@@ -1652,9 +1522,20 @@ namespace EnemyRandomizerMod
     /////
     public class FatFlukeControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        public override void Setup(ObjectMetadata other)
         {
-            gameObject.StickToGround();
+            base.Setup(other);
+
+            if (thisMetadata.SizeScale < 0.7f)
+            {
+                thisMetadata.DamageDealt = 1;
+                thisMetadata.CurrentHPf *= 0.5f;
+            }
+            else if (thisMetadata.SizeScale < 1.5f)
+            {
+                thisMetadata.DamageDealt = 3;
+                thisMetadata.Geo += 420;
+            }
         }
     }
 
@@ -1675,10 +1556,6 @@ namespace EnemyRandomizerMod
     /////
     public class Colosseum_WormControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class Colosseum_WormSpawner : DefaultSpawner<Colosseum_WormControl> { }
@@ -1692,12 +1569,14 @@ namespace EnemyRandomizerMod
 
 
     /////////////////////////////////////////////////////////////////////////////
-    /////
+    /////  TODO: fix the item transfer
     public class EggSacControl : DefaultSpawnedEnemyControl
     {
-        protected virtual void OnEnable()
+        public override void Setup(ObjectMetadata other)
         {
-            gameObject.StickToGround();
+            base.Setup(other);
+
+            thisMetadata.Geo += 69;
         }
     }
 
@@ -1733,9 +1612,32 @@ namespace EnemyRandomizerMod
     /////////////////////////////////////////////////////////////////////////////
     /////   
 
+    public class HealthScuttlerControl : DefaultSpawnedEnemyControl
+    {
+    }
 
+    public class HealthScuttlerSpawner : DefaultSpawner<HealthScuttlerControl>
+    {
+    }
 
+    public class HealthCocoonPrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            var flingPrefab = p.prefab.GetComponent<HealthCocoon>().flingPrefabs.First().prefab;
+            var prefab = flingPrefab;//"Health Scuttler"
 
+            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(prefab.name);
+
+            Dev.Log("HealthCocoon old prefab name = " + p.prefab.name);
+
+            //get actual enemy prefab from the fsm
+            p.prefabName = keyName;
+            p.prefab = prefab;
+
+            Dev.Log("HealthCocoon New prefab name = " + keyName);
+        }
+    }
 
     /////
     //////////////////////////////////////////////////////////////////////////////

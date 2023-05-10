@@ -204,6 +204,7 @@
     <Compile Include="Library\Geo.cs" />
     <Compile Include="Library\ManagedObject.cs" />
     <Compile Include="Library\ObjectMetadata.cs" />
+    <Compile Include="Library\Spawners\DefaultSpawnedEnemyControl.cs" />
     <Compile Include="Library\Spawners\DefaultSpawner.cs" />
     <Compile Include="Library\Spawners\FSMAreaControlEnemy.cs" />
     <Compile Include="Library\Spawners\ISpawner.cs" />

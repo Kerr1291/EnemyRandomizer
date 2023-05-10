@@ -15,25 +15,25 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Control";
 
-        public float startYPos;
-
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            RNG geoRNG = new RNG();
-            geoRNG.Reset();
-
-            thisMetadata.EnemyHealthManager.hp = other.MaxHP * 2;
-            thisMetadata.EnemyHealthManager.SetGeoSmall(geoRNG.Rand(2, 10));
+            thisMetadata.Geo = 8;
 
             var init = control.GetState("Init");
-            init.DisableAction(8);
+            DisableActions(init, 8);
+
+            var mult = control.GetState("Multiply");
+            mult.InsertCustomAction(() => {
+                control.FsmVariables.GetFsmFloat("Deaths").Value = 0;
+            }, 0);
 
             var spawnAntic = control.GetState("Spawn Antic");
             spawnAntic.DisableAction(0);
-            control.FsmVariables.GetFsmFloat("X Pos").Value = pos2d.x;
-            spawnAntic.GetAction<SetPosition>(1).y.Value = pos2d.y;
+            spawnAntic.DisableAction(1);
+            //control.FsmVariables.GetFsmFloat("X Pos").Value = pos2d.x;
+            //spawnAntic.GetAction<SetPosition>(1).y.Value = pos2d.y;
             spawnAntic.DisableAction(2);
             spawnAntic.DisableAction(6);
             spawnAntic.DisableAction(7);
@@ -42,6 +42,15 @@ namespace EnemyRandomizerMod
             activated.DisableAction(2);
             activated.DisableAction(3);
             activated.GetAction<SetDamageHeroAmount>(4).damageDealt = 1;
+
+
+            var landWaves = control.GetState("Land Waves");
+            landWaves.InsertCustomAction(() => {
+                control.FsmVariables.GetFsmFloat("Shockwave Y").Value = floorY;
+            }, 0);
+
+            var land = control.GetState("Land");
+            land.DisableAction(3);
 
             var dr = control.GetState("Dr");
             dr.DisableAction(1);
@@ -78,27 +87,10 @@ namespace EnemyRandomizerMod
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Multiply");
             this.AddResetToStateOnHide(control, "Init");
-
-            CustomFloatRefs = new Dictionary<string, Func<DefaultSpawnedEnemyControl, float>>()
-            {
-                {"Shockwave Y" , x => floorY},
-            };
         }
     }
 
-    public class ZoteCrewFatSpawner : DefaultSpawner<ZoteCrewFatControl>
-    {
-    }
+    public class ZoteCrewFatSpawner : DefaultSpawner<ZoteCrewFatControl> { }
 
-    public class ZoteCrewFatPrefabConfig : DefaultPrefabConfig<ZoteCrewFatControl>
-    {
-    }
-
-
-
-
-
-
-
-
+    public class ZoteCrewFatPrefabConfig : DefaultPrefabConfig<ZoteCrewFatControl> { }
 }

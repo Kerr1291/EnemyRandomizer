@@ -24,7 +24,7 @@ namespace EnemyRandomizerMod
             RNG geoRNG = new RNG();
             geoRNG.Reset();
 
-            thisMetadata.EnemyHealthManager.hp = other.MaxHP;
+            thisMetadata.EnemyHealthManager.hp = other.DefaultHP;
             thisMetadata.EnemyHealthManager.SetGeoLarge(geoRNG.Rand(1, 5));
             thisMetadata.EnemyHealthManager.SetGeoMedium(geoRNG.Rand(1, 5));
 

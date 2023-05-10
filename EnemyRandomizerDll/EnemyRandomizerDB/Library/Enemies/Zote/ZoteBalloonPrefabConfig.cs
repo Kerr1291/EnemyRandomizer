@@ -7,6 +7,7 @@ using Satchel;
 using Satchel.Futils;
 using System.Collections.Generic;
 using System;
+using UniRx;
 
 namespace EnemyRandomizerMod
 {
@@ -16,6 +17,7 @@ namespace EnemyRandomizerMod
         public override string FSMName => "Control";
 
         public float startYPos;
+        public string explosionEffect = "Gas Explosion Recycle M";
 
         public override void Setup(ObjectMetadata other)
         {
@@ -64,6 +66,28 @@ namespace EnemyRandomizerMod
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Spawn Pos");
             //this.AddResetToStateOnHide(control, "Init");
+
+            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+            thisMetadata.EnemyHealthManager.OnDeath += EnemyHealthManager_OnDeath;
+
+            //if hp changes at all, explode
+            thisMetadata.currentHP.SkipLatestValueOnSubscribe().Subscribe(x => EnemyHealthManager_OnDeath()).AddTo(disposables);
+        }
+
+        private void EnemyHealthManager_OnDeath()
+        {
+            disposables.Clear();
+            SpawnExplosion(gameObject, explosionEffect);
+            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+        }
+
+        protected static void SpawnExplosion(GameObject gameObject, string effect)
+        {
+            EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, effect, null, true);
+        }
+
+        protected override void OnEnable()
+        {
         }
     }
 

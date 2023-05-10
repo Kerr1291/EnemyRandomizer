@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScaleRandomizedObjects", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnemyEnabler", "EnemyEnabler\EnemyEnabler.csproj", "{FCB2945F-2949-4921-BAE2-D2A564FB6EFE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplacementModulePreFilter", "ReplacementModulePreFilter\ReplacementModulePreFilter.csproj", "{E523E8F7-8985-489B-B720-757F827F95EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{FCB2945F-2949-4921-BAE2-D2A564FB6EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCB2945F-2949-4921-BAE2-D2A564FB6EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCB2945F-2949-4921-BAE2-D2A564FB6EFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E523E8F7-8985-489B-B720-757F827F95EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E523E8F7-8985-489B-B720-757F827F95EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E523E8F7-8985-489B-B720-757F827F95EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E523E8F7-8985-489B-B720-757F827F95EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

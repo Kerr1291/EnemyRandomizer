@@ -17,19 +17,15 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            RNG geoRNG = new RNG();
-            geoRNG.Reset();
-
-            thisMetadata.EnemyHealthManager.hp = other.MaxHP;
-            thisMetadata.EnemyHealthManager.SetGeoMedium(geoRNG.Rand(1, 5));
+            thisMetadata.Geo = 12;
 
             this.OverrideState(control, "Pos", () =>
             {
-                control.FsmVariables.GetFsmFloat("X Pos").Value = heroPos2d.x;
+                control.FsmVariables.GetFsmFloat("X Pos").Value = pos2d.x;
                 float ypos = roofY;
                 control.FsmVariables.GetFsmFloat("Y Pos").Value = ypos;
                 startYPos = ypos;
-                gameObject.transform.position = new Vector3(heroPos2d.x, ypos, 0f);
+                gameObject.transform.position = new Vector3(pos2d.x, ypos, 0f);
                 gameObject.GetComponent<Collider2D>().enabled = true;
                 gameObject.GetComponent<MeshRenderer>().enabled = true;
             });
@@ -67,6 +63,10 @@ namespace EnemyRandomizerMod
 
             var retract = control.GetState("Retract");
             retract.ChangeTransition("FINISHED", "Init");
+        }
+
+        protected override void OnEnable()
+        {
         }
     }
 

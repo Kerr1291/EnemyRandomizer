@@ -13,6 +13,7 @@ using Modding;
 using HutongGames.PlayMaker.Actions;
 using Satchel;
 using Satchel.Futils;
+using UniRx;
 
 namespace EnemyRandomizerMod
 {
@@ -223,12 +224,6 @@ namespace EnemyRandomizerMod
     public class LostKinControl : FSMBossAreaControl
     {
         public PlayMakerFSM balloonFSM;
-        public int maxBabies = 5;
-
-        //if true, will set the max babies to 5
-        public bool dieChildrenOnDeath = true;
-
-        public List<GameObject> children = new List<GameObject>();
 
         public override string FSMName => "IK Control";
 
@@ -298,10 +293,7 @@ namespace EnemyRandomizerMod
                     else
                     {
                         var spawnPoint = spawnRay.point - spawnRay.normal;
-                        var child = EnemyRandomizerDatabase.GetDatabase().Spawn("Parasite Balloon", null);
-                        child.transform.position = spawnPoint;
-                        child.SetActive(true);
-                        children.Add(child);
+                        SpawnAndTrackChild("Parasite Balloon", spawnPoint);
                         balloonFSM.SendEvent("FINISHED");
                     }
                 }
@@ -310,57 +302,6 @@ namespace EnemyRandomizerMod
                     balloonFSM.SendEvent("CANCEL");
                 }
             });
-        }
-
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            if (dieChildrenOnDeath)
-            {
-                children.ForEach(x =>
-                {
-                    if (x == null)
-                        return;
-
-                    var hm = x.GetComponent<HealthManager>();
-                    if (hm != null)
-                    {
-                        hm.Die(null, AttackTypes.Generic, true);
-                    }
-                });
-            }
-        }
-
-        protected override void Update()
-        {
-            base.Update();
-
-            if (children == null)
-                return;
-
-            for (int i = 0; i < children.Count;)
-            {
-                if (i >= children.Count)
-                    break;
-
-                if (children[i] == null)
-                {
-                    children.RemoveAt(i);
-                    continue;
-                }
-                else
-                {
-                    var hm = children[i].GetComponent<HealthManager>();
-                    if (hm.hp <= 0 || hm.isDead)
-                    {
-                        children.RemoveAt(i);
-                        continue;
-                    }
-                }
-
-                ++i;
-            }
         }
     }
 
@@ -699,11 +640,33 @@ namespace EnemyRandomizerMod
         public float pillarHeight = 10.68f;
         public Vector2 buriedOrigin;
         public Vector2 eruptOrigin;
-        protected PlayMakerFSM burrowEffect;
-        protected PlayMakerFSM keepY;
 
         protected GameObject pooBallW;
         protected Vector3 pooThrowOffset;
+
+        public GameObject burrowEffectClone;
+        public GameObject burrowEffectParticles;
+
+        public void PlayBurrowEffect()
+        {
+            var mr = burrowEffectClone.GetComponent<MeshRenderer>();
+            mr.enabled = true;
+
+            var sprite = burrowEffectClone.GetComponent<tk2dSpriteAnimator>();
+            sprite.PlayFromFrame(0);
+            sprite.Play("Burrow Effect");
+
+            burrowEffectParticles.GetComponent<ParticleSystem>().Emit(0);
+
+            //TODO: finish this
+            //TODO
+            //TODO
+            //TODO
+            //TODO
+            //TODO
+            //TODO
+            //TODO
+        }
 
         public override void Setup(ObjectMetadata other)
         {
@@ -715,15 +678,24 @@ namespace EnemyRandomizerMod
                 Destroy(constrainX);
             }
 
-            burrowEffect = gameObject.GetDirectChildren().FirstOrDefault(x => x.name.Contains("Burrow Effect")).LocateMyFSM("Burrow Effect");
-            
-            keepY = gameObject.GetDirectChildren().FirstOrDefault(x => x.name.Contains("Burrow Effect")).LocateMyFSM("Keep Y");
-            if (keepY != null)
-            {
-                Destroy(keepY);
-            }
+            var originalBurrowEffect = gameObject.GetDirectChildren().FirstOrDefault(x => x.name.Contains("Burrow Effect"));
 
-            defaultHP = thisMetadata.MaxHP;
+            var burrowEffect = originalBurrowEffect.LocateMyFSM("Burrow Effect");
+            if (burrowEffect != null)
+                Destroy(burrowEffect);
+
+            var keepY = originalBurrowEffect.LocateMyFSM("Keep Y");
+            if (keepY != null)
+                Destroy(keepY);
+
+            burrowEffectClone = GameObject.Instantiate(originalBurrowEffect);
+            burrowEffectClone.transform.parent = transform;
+            Destroy(originalBurrowEffect);
+            burrowEffectClone.SafeSetActive(false);
+
+            burrowEffectParticles = burrowEffectClone.FindGameObjectInChildrenWithName("Particles");
+
+            defaultHP = thisMetadata.DefaultHP;
             rageTriggerRatio = defaultHP / defaultRageHP;
 
             this.InsertHiddenState(control, "Init 2", "FINISHED", "Wake");
@@ -738,6 +710,7 @@ namespace EnemyRandomizerMod
                 PositionBoss(.3f);
                 burrowEffect.gameObject.StickToGroundX(-.5f);
                 burrowEffect.transform.position -= new Vector3(0f, 0.2f * thisMetadata.SizeScale, 0f);
+                PlayBurrowEffect();
                 //gameObject.transform.position -= new Vector3(0f, -2f * thisMetadata.SizeScale, 0f);
             }, 5);
 
@@ -855,7 +828,7 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    if (thisMetadata.EnemyHealthManager.hp / thisMetadata.MaxHP < rageTriggerRatio)
+                    if (thisMetadata.EnemyHealthManager.hp / thisMetadata.DefaultHP < rageTriggerRatio)
                     {
                         control.FsmVariables.GetFsmBool("Raged").Value = true;
                         control.SendEvent("RAGE");
@@ -1073,15 +1046,14 @@ namespace EnemyRandomizerMod
             UpdateBurrowEffect();
         }
 
-        protected virtual void UpdateBurrowEffect(float extraOffsetScale = -1f)
+        protected virtual void UpdateBurrowEffect(float extraOffsetScale = -.5f)
         {
-            Vector2 groundPos = transform.position;
-            Vector2 buriedPos = groundPos + new Vector2(0f, buriedYOffset * transform.localScale.y * extraOffsetScale);
-            burrowEffect.FsmVariables.GetFsmFloat("Ground Y").Value = buriedPos.y;
+            //Vector2 groundPos = transform.position;
+            //Vector2 buriedPos = groundPos + new Vector2(0f, buriedYOffset * transform.localScale.y * extraOffsetScale);
+            burrowEffectClone.StickToGroundX(extraOffsetScale);
+            //burrowEffectClone.FsmVariables.GetFsmFloat("Ground Y").Value = buriedPos.y;
         }
     }
-
-
 
     public class WhiteDefenderSpawner : DefaultSpawner<WhiteDefenderControl>
     {
@@ -1130,16 +1102,13 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-
-            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            //{
-            //    {"Left X" , x => edgeL},
-            //    {"Right X" , x => edgeR},
-            //    {"Ground Y" , x => floorY},
-            //};
-
             this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
             this.AddResetToStateOnHide(control, "Init");
+        }
+        
+        protected virtual void SetupCorpse()
+        {
+
         }
     }
 
@@ -1571,7 +1540,7 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            defaultHP = thisMetadata.MaxHP;
+            defaultHP = thisMetadata.DefaultHP;
             rageTriggerRatio = defaultHP / defaultRageHP;
 
             burrowEffect = gameObject.GetDirectChildren().FirstOrDefault(x => x.name.Contains("Burrow Effect")).LocateMyFSM("Burrow Effect");
@@ -1608,7 +1577,7 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    if (thisMetadata.EnemyHealthManager.hp / thisMetadata.MaxHP < rageTriggerRatio)
+                    if (thisMetadata.EnemyHealthManager.hp / thisMetadata.DefaultHP < rageTriggerRatio)
                     {
                         control.FsmVariables.GetFsmBool("Raged").Value = true;
                         control.SendEvent("RAGE");
@@ -2365,7 +2334,7 @@ namespace EnemyRandomizerMod
                     return;
                 }
 
-                float hpPercent = (float)thisMetadata.EnemyHealthManager.hp / (float)thisMetadata.MaxHP;
+                float hpPercent = (float)thisMetadata.EnemyHealthManager.hp / (float)thisMetadata.DefaultHP;
                 if(hpPercent <= escalationHPPercentage)
                 {
                     control.FsmVariables.GetFsmFloat("Run Wait Min").Value = esRunWaitMin;
@@ -2655,7 +2624,7 @@ namespace EnemyRandomizerMod
                 }
 
                 //if hornet gets scaled to a normal enemy with low hp, just enable the escalation right away
-                float hpPercent = (float)thisMetadata.EnemyHealthManager.hp / (float)thisMetadata.MaxHP;
+                float hpPercent = (float)thisMetadata.EnemyHealthManager.hp / (float)thisMetadata.DefaultHP;
                 if (hpPercent <= escalationHPPercentage || thisMetadata.EnemyHealthManager.hp < 100)
                 {
                     control.FsmVariables.GetFsmBool("Can Barb").Value = true;
@@ -2921,38 +2890,6 @@ namespace EnemyRandomizerMod
                 });
             }
         }
-
-        protected override void Update()
-        {
-            base.Update();
-
-            if (children == null)
-                return;
-
-            for (int i = 0; i < children.Count;)
-            {
-                if (i >= children.Count)
-                    break;
-
-                if (children[i] == null)
-                {
-                    children.RemoveAt(i);
-                    continue;
-                }
-                else
-                {
-                    //TODO: some other way to check if the barb has expired
-                    if(!children[i].activeInHierarchy)
-                    {
-                        Destroy(children[i]);
-                        children.RemoveAt(i);
-                        continue;
-                    }
-                }
-
-                ++i;
-            }
-        }
     }
 
     public class HornetBoss2Spawner : DefaultSpawner<HornetBoss2Control> { }
@@ -2978,6 +2915,12 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
+            var tinker = other.Source.GetComponentInChildren<TinkEffect>();
+            if (tinker != null)
+            {
+                GameObject.Destroy(tinker);
+            }
+
             DisableSendEvents(control,
                 ("Land", 2),
                 ("Roar", 1)
@@ -2997,6 +2940,11 @@ namespace EnemyRandomizerMod
             wake.DisableAction(3);
             wake.ChangeTransition("FINISHED", "Idle");
 
+            var idle = control.GetState("Idle");
+            idle.InsertCustomAction(() => {
+                thisMetadata.EnemyHealthManager.IsInvincible = false;
+            },0);
+
             var roarStart = control.GetState("Roar Start");
             roarStart.DisableAction(2);//disable roar sound
             var roar = control.GetState("Roar");//make the roar emit no waves and be silent
@@ -3007,11 +2955,6 @@ namespace EnemyRandomizerMod
 
             var roarEnd = control.GetState("Roar End");
             roarEnd.DisableAction(1);
-        }
-
-        protected override int ScaleHPFromBossToNormal(int defaultHP, int previousHP)
-        {
-            return previousHP * 2;
         }
     }
 
@@ -3034,6 +2977,12 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
+            var tinker = other.Source.GetComponentInChildren<TinkEffect>();
+            if(tinker != null)
+            {
+                GameObject.Destroy(tinker);
+            }
+
             DisableSendEvents(control,
                 ("Land", 2),
                 ("Roar", 1)
@@ -3049,6 +2998,11 @@ namespace EnemyRandomizerMod
             wake.DisableAction(2);
             wake.DisableAction(3);
 
+            var idle = control.GetState("Idle");
+            idle.InsertCustomAction(() => {
+                thisMetadata.EnemyHealthManager.IsInvincible = false;
+            }, 0);
+
             var roarStart = control.GetState("Roar Start");
             roarStart.DisableAction(2);//disable roar sound
             var roar = control.GetState("Roar");//make the roar emit no waves and be silent
@@ -3062,11 +3016,6 @@ namespace EnemyRandomizerMod
 
             if (!other.IsBoss)
                 roarEnd.GetFirstActionOfType<SetDamageHeroAmount>().damageDealt = 1;
-        }
-
-        protected override int ScaleHPFromBossToNormal(int defaultHP, int previousHP)
-        {
-            return previousHP * 2;
         }
     }
 
@@ -3713,105 +3662,108 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////   
-    public class InfectedKnightControl : DefaultSpawnedEnemyControl
+    public class InfectedKnightControl : FSMBossAreaControl
     {
-        Range xR = new Range(17.36f, 36.46f);
-        Range yR = new Range(32.16f, 37.42f);
-
-        public float XMIN { get => spawnPos.x - xR.Min; }
-        public float XMAX { get => spawnPos.x + xR.Max; }
-        public float YMIN { get => spawnPos.y - yR.Min; }
-        public float YMAX { get => spawnPos.y + yR.Max; }
-
-        public PlayMakerFSM control;
         public PlayMakerFSM balloonFSM;
-        public Vector3 spawnPos;
+        public override bool dieChildrenOnDeath => true;
+        public override int maxBabies => 3;
 
-        float dist { get => (HeroController.instance.transform.position - transform.position).magnitude; }
+        public override string FSMName => "IK Control";
+
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
+
+            var fsm = gameObject.LocateMyFSM("FSM");
+            if (fsm != null)
+                GameObject.Destroy(fsm);
+
+            balloonFSM = gameObject.LocateMyFSM("Spawn Balloon");
+
+            var pause = control.GetState("Pause");
+            pause.DisableAction(1);
+            pause.AddCustomAction(() => { control.SendEvent("FINISHED"); });
+
+            var waiting = control.GetState("Waiting");
+            waiting.DisableAction(2);
+            waiting.DisableAction(3);
+            waiting.DisableAction(4);
+            waiting.DisableAction(5);
+            waiting.AddCustomAction(() => { control.SendEvent("BATTLE START"); });
+
+            var closeGates = control.GetState("Close Gates");
+            closeGates.DisableAction(0);
+            closeGates.DisableAction(3);
+
+            var setx = control.GetState("Set X");
+            setx.DisableAction(0);
+            setx.DisableAction(2);
+
+            var introFall = control.GetState("Intro Fall");
+            introFall.DisableAction(2);
+            introFall.AddCustomAction(() => { control.SendEvent("LAND"); });
+
+            control.ChangeTransition("Intro Land", "FINISHED", "First Counter");
+            this.InsertHiddenState(control, "Intro Land", "FINISHED", "First Counter");
+
+            var inAir2 = control.GetState("In Air 2");
+            inAir2.DisableAction(3);
+            inAir2.AddAction(new Wait() { time = 3f, finishEvent = new FsmEvent("LAND") });
+
+            var inAir = control.GetState("In Air");
+            inAir.InsertCustomAction(() => {
+                control.FsmVariables.GetFsmFloat("Min Dstab Height").Value = floorY + 6f;
+                control.FsmVariables.GetFsmFloat("Air Dash Height").Value = floorY + 3f;
+            }, 0);
+
+            var inert = balloonFSM.GetState("Inert");
+            inert.AddCustomAction(() => { balloonFSM.SendEvent("START SPAWN"); });
+
+            var stop = balloonFSM.GetState("Stop");
+            inert.AddCustomAction(() => { balloonFSM.SendEvent("START SPAWN"); });
+
+            this.OverrideState(balloonFSM, "Spawn", () =>
+            {
+                if (children.Count >= maxBabies)
+                {
+                    balloonFSM.SendEvent("STOP SPAWN");
+                }
+
+                if (CanEnemySeePlayer())
+                {
+                    var randomDir = UnityEngine.Random.insideUnitCircle;
+                    var spawnRay = SpawnerExtensions.GetRayOn(gameObject, randomDir, 12f);
+
+                    if (spawnRay.distance < 5f)
+                    {
+                        balloonFSM.SendEvent("CANCEL");
+                    }
+                    else
+                    {
+
+                        var spawnPoint = spawnRay.point - spawnRay.normal;
+                        SpawnAndTrackChild("Parasite Balloon", spawnPoint);
+                        balloonFSM.SendEvent("FINISHED");
+                    }
+                }
+                else
+                {
+                    balloonFSM.SendEvent("CANCEL");
+                }
+            });
         }
 
-        IEnumerator Start()
+        protected override void PositionBoss()
         {
-            if (control == null)
-                yield break;
-
-            control.enabled = false;
-
-            while (dist > 50f)
-            {
-                yield return new WaitForEndOfFrame();
-            }
-
-            transform.position = transform.position - new Vector3(0f, -4f * transform.localScale.y, 0f);
-
-            control.enabled = true;
-
-            if (balloonFSM == null)
-                yield break;
-
-            var spawn = balloonFSM.GetState("Spawn");
-
-            var origin = spawnPos;
-            for (; ; )
-            {
-                spawnPos = transform.position;
-
-                control.Fsm.GetFsmFloat("Air Dash Height").Value = YMIN + 3;
-                control.Fsm.GetFsmFloat("Left X").Value = XMIN;
-                control.Fsm.GetFsmFloat("Min Dstab Height").Value = YMIN + 5;
-                control.Fsm.GetFsmFloat("Right X").Value = XMAX;
-
-                control.GetFirstActionOfType<RandomFloat>("Aim Jump 2").min = origin.x - 1;
-                control.GetFirstActionOfType<RandomFloat>("Aim Jump 2").max = origin.x + 1;
-                control.GetFirstActionOfType<SetPosition>("Set Pos").x = transform.position.x;
-                control.GetFirstActionOfType<SetPosition>("Set Pos").y = transform.position.y;
-
-                balloonFSM.Fsm.Variables.GetFsmFloat("X Max").Value = XMAX;
-                balloonFSM.Fsm.Variables.GetFsmFloat("X Min").Value = XMIN;
-                balloonFSM.Fsm.Variables.GetFsmFloat("Y Max").Value = YMAX;
-                balloonFSM.Fsm.Variables.GetFsmFloat("Y Min").Value = YMIN;
-                yield return new WaitForSeconds(5f);
-            }
+            gameObject.StickToGround(-1f);
         }
     }
 
-    public class InfectedKnightSpawner : DefaultSpawner<InfectedKnightControl>
-    {
-        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
-        {
-            var go = base.Spawn(p, source);
-            var ik = go.GetComponent<InfectedKnightControl>();
-            ik.control = go.LocateMyFSM("IK Control");
-            ik.spawnPos = source.ObjectPosition;
-
-            if (source.IsBoss)
-            {
-                var fsm = go.LocateMyFSM("Spawn Balloon");
-                ik.balloonFSM = fsm;
-            }
-
-            return go;
-        }
-    }
+    public class InfectedKnightSpawner : DefaultSpawner<InfectedKnightControl> { }
 
 
-    public class InfectedKnightPrefabConfig : DefaultPrefabConfig<InfectedKnightControl>
-    {
-        public override void SetupPrefab(PrefabObject p)
-        {
-            base.SetupPrefab(p);
-
-            {
-                var fsm = p.prefab.LocateMyFSM("IK Control");
-                fsm.ChangeTransition("Init", "FINISHED", "Idle");
-                fsm.ChangeTransition("Init", "ACTIVE", "Idle");
-            }
-        }
-    }
+    public class InfectedKnightPrefabConfig : DefaultPrefabConfig<InfectedKnightControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -3829,7 +3781,7 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            thisMetadata.EnemyHealthManager.hp = other.MaxHP * 2 + 1;
+            thisMetadata.EnemyHealthManager.hp = other.DefaultHP * 2 + 1;
 
             GameObject.Destroy(gameObject.LocateMyFSM("Constrain X"));
 
@@ -3910,7 +3862,7 @@ namespace EnemyRandomizerMod
             fly.DisableAction(7);
         }
 
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             ModHooks.BeforeSceneLoadHook -= MODHOOK_BeforeSceneLoad;
             ModHooks.BeforeSceneLoadHook += MODHOOK_BeforeSceneLoad;
@@ -4009,6 +3961,9 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Big Buzzer";
 
+        public override bool dieChildrenOnDeath => true;
+        public override int maxBabies => 4;
+
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
@@ -4027,8 +3982,6 @@ namespace EnemyRandomizerMod
             summon.DisableAction(3);
             summon.AddCustomAction(() =>
             {
-                var left = db.Spawn("Buzzer", null);
-                var right = db.Spawn("Buzzer", null);
 
                 var leftMax = gameObject.transform.position.Fire2DRayGlobal(Vector2.left, 50f).point;
                 var rightMax = gameObject.transform.position.Fire2DRayGlobal(Vector2.right, 50f).point;
@@ -4041,11 +3994,8 @@ namespace EnemyRandomizerMod
                 var leftShorter = (leftMax - pos2d).magnitude < (leftSpawn - pos2d).magnitude ? leftMax : leftSpawn;
                 var rightShorter = (rightMax - pos2d).magnitude < (rightSpawn - pos2d).magnitude ? rightMax : rightSpawn;
 
-                left.transform.position = leftShorter;
-                right.transform.position = rightShorter;
-
-                right.SetActive(true);
-                left.SetActive(true);
+                SpawnAndTrackChild("Buzzer", leftShorter);
+                SpawnAndTrackChild("Buzzer", rightShorter);
 
                 control.SendEvent("FINISHED");
             });
@@ -4054,23 +4004,6 @@ namespace EnemyRandomizerMod
             {
                 gameObject.GetComponent<BoxCollider2D>().enabled = true;
             }, 0);
-        }
-
-        protected virtual void Update()
-        {
-            if (control == null)
-                return;
-
-            if (gameObject.activeInHierarchy && control.enabled)
-            {
-                //TODO: temp hack to try and fix their colliders being broken
-                gameObject.GetComponents<Collider2D>().ToList().ForEach(x => x.enabled = true);
-            }
-        }
-
-        protected override int ScaleHPFromBossToNormal(int defaultHP, int previousHP)
-        {
-            return Mathf.FloorToInt(defaultHP / 2f);
         }
     }
 
@@ -4111,11 +4044,6 @@ namespace EnemyRandomizerMod
     public class GiantBuzzerColControl : FSMBossAreaControl
     {
         public override string FSMName => "Big Buzzer";
-
-        protected override int ScaleHPFromBossToNormal(int defaultHP, int previousHP)
-        {
-            return Mathf.FloorToInt(previousHP * 2f);
-        }
 
         public override void Setup(ObjectMetadata other)
         {
@@ -4177,12 +4105,9 @@ namespace EnemyRandomizerMod
         }
 
 
-        protected virtual void Update()
+        protected override void Update()
         {
-            if (control == null)
-                return;
-
-            if (gameObject.activeInHierarchy && control.enabled)
+            if (gameObject.activeInHierarchy && control != null && control.enabled)
             {
                 //TODO: temp hack to try and fix their colliders being broken
                 gameObject.GetComponents<Collider2D>().ToList().ForEach(x => x.enabled = true);

@@ -1,19 +1,18 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
-
-//NOTE: adjust aduio player oneshot pitch values and audio source component pitch values when shrinking/growing things
-//NOTE: walker enemies need their "rightScale" float changed when the base transform scale is changed so they match or sprites will squish weirdly
-//      ALSO need to scan their FSMs for states with "SetScale" actions with x values that are 1/-1 and change those to match the x scale
-//      check the "IsNone" property to see if only X is used on the SetScale floats
+using UniRx;
 
 namespace EnemyRandomizerMod
 {
     public class Geo : IEquatable<Geo>
     {
+        public ReadOnlyReactiveProperty<HealthManager> enemyHealthManager { get; protected set; }
+        public HealthManager EnemyHealthManager => enemyHealthManager == null ? null : enemyHealthManager.Value;
+
         public Geo(ObjectMetadata source)
         {
-            hm = source.EnemyHealthManager;
+            enemyHealthManager = source.enemyHealthManager;
         }
 
         public void Apply(ObjectMetadata other, float scale = 1f)
@@ -29,17 +28,15 @@ namespace EnemyRandomizerMod
             other.SetGeoLarge(Mathf.FloorToInt(LargeGeo * scale));
         }
 
-        protected HealthManager hm;
-
         public int SmallGeo
         {
             get
             {
-                return hm.GetSmallGeo();
+                return EnemyHealthManager == null ? 0 : EnemyHealthManager.GetSmallGeo();
             }
             set
             {
-                hm.SetGeoSmall(value);
+                if (EnemyHealthManager != null) EnemyHealthManager.SetGeoSmall(value);
             }
         }
 
@@ -47,11 +44,11 @@ namespace EnemyRandomizerMod
         {
             get
             {
-                return hm.GetMedGeo();
+                return EnemyHealthManager == null ? 0 : EnemyHealthManager.GetMedGeo();
             }
             set
             {
-                hm.SetGeoMedium(value);
+                if (EnemyHealthManager != null) EnemyHealthManager.SetGeoMedium(value);
             }
         }
 
@@ -59,11 +56,11 @@ namespace EnemyRandomizerMod
         {
             get
             {
-                return hm.GetLargeGeo();
+                return EnemyHealthManager == null ? 0 : EnemyHealthManager.GetLargeGeo();
             }
             set
             {
-                hm.SetGeoLarge(value);
+                if (EnemyHealthManager != null) EnemyHealthManager.SetGeoLarge(value);
             }
         }
 
@@ -192,14 +189,17 @@ namespace EnemyRandomizerMod
         public bool Equals(Geo other)
         {
             return other != null &&
-                   EqualityComparer<HealthManager>.Default.Equals(hm, other.hm) &&
+                   EqualityComparer<HealthManager>.Default.Equals(EnemyHealthManager, other.EnemyHealthManager) &&
                    Value == other.Value;
         }
 
         public override int GetHashCode()
         {
+            if (EnemyHealthManager == null)
+                return 0;
+
             int hashCode = -2140644376;
-            hashCode = hashCode * -1521134295 + EqualityComparer<HealthManager>.Default.GetHashCode(hm);
+            hashCode = hashCode * -1521134295 + EqualityComparer<HealthManager>.Default.GetHashCode(EnemyHealthManager);
             hashCode = hashCode * -1521134295 + Value.GetHashCode();
             return hashCode;
         }

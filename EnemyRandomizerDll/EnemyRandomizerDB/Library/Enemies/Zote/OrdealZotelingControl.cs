@@ -32,7 +32,7 @@ namespace EnemyRandomizerMod
             RNG geoRNG = new RNG();
             geoRNG.Reset();
 
-            thisMetadata.EnemyHealthManager.hp = other.MaxHP;
+            thisMetadata.EnemyHealthManager.hp = other.DefaultHP;
             thisMetadata.EnemyHealthManager.SetGeoMedium(geoRNG.Rand(0, 5));
             thisMetadata.EnemyHealthManager.SetGeoSmall(geoRNG.Rand(1, 10));
 
@@ -78,6 +78,10 @@ namespace EnemyRandomizerMod
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Ball");
             this.AddResetToStateOnHide(control, "Init");
+        }
+
+        protected override void OnEnable()
+        {
         }
     }
 

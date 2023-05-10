@@ -13,83 +13,76 @@ using Satchel.Futils;
 
 namespace EnemyRandomizerMod
 {
-    public class GGZoteCorpseFixer : MonoBehaviour
+    public class ZoteBossControl : FSMBossAreaControl
     {
-        IEnumerator Start()
+        public override string FSMName => "Control";
+
+        public override void Setup(ObjectMetadata other)
         {
-            Dev.Log("trying to fix corpse white flash");
+            base.Setup(other);
+
+            thisMetadata.Geo = 1;
+
             var whiteScreenEffect = gameObject.GetComponentsInChildren<PlayMakerFSM>(true).FirstOrDefault(x => x.gameObject.name == "white_solid").gameObject;
-
-            if (whiteScreenEffect == null)
+            if (whiteScreenEffect != null)
             {
-                Dev.LogError("Failed to find white screen effect");
-                yield break;
+                Destroy(whiteScreenEffect);
             }
 
-            var corpseFSM = gameObject.LocateMyFSM("Control");
-            var fsm = whiteScreenEffect.LocateMyFSM("FSM");
-
-            while (fsm == null)
+            var corpse = thisMetadata.Corpse;
+            if(corpse != null)
             {
-                fsm = whiteScreenEffect.LocateMyFSM("FSM");
-                yield return null;
+                var white2 = corpse.GetComponentsInChildren<PlayMakerFSM>(true).FirstOrDefault(x => x.gameObject.name == "white_solid");
+                if (white2 != null)
+                    Destroy(white2.gameObject);
+
+                var corpseFSM = corpse.LocateMyFSM("Control");
+
+                var init = corpseFSM.GetState("Init");
+                DisableActions(init, 0,1,8,9,10,11,15);
+
+                var end = corpseFSM.GetState("End");
+                DisableActions(end, 0, 1, 2, 3);
+
+                var inAir = corpseFSM.GetState("In Air");
+                DisableActions(inAir, 0);
+                inAir.AddCustomAction(() => { StartCoroutine(TimeoutState("In Air", "LAND", 2f)); });
+
+                var burst = corpseFSM.GetState("Burst");
+                burst.DisableAction(5);
+                burst.ChangeTransition("FINISHED", "End");
+
+                var land = corpseFSM.GetState("Land");
+                DisableActions(land, 0, 3, 4, 5, 6, 7, 13);
             }
 
-            while (fsm.GetState("Init") == null)
-                yield return null;
+            var roara = control.GetState("Roar Antic");
+            roara.ChangeTransition("FINISHED", "Roar End");
 
-            while (fsm.GetState("Down") == null)
-                yield return null;
+            Dev.Log("getting death effects");
+            var deathEffects = gameObject.GetComponentInChildren<EnemyDeathEffectsUninfected>(true);
+            deathEffects.doKillFreeze = false;
+        }
 
-            if (fsm.ActiveStateName == "Init")
-                fsm.SendEvent("UP");
-
-            while (fsm.ActiveStateName != "Upped")
-                yield return null;
-
-            HeroController.instance.RegainControl();
-            HeroController.instance.StartAnimationControl();
-
-            if (fsm.ActiveStateName == "Upped")
-                fsm.SendEvent("DOWN");
-
-            while (corpseFSM.ActiveStateName != "Notify")
-                yield return null;
-
-            while (corpseFSM.ActiveStateName == "Notify")
+        protected virtual IEnumerator TimeoutState(string currentState, string endEvent, float timeout)
+        {
+            while (control.ActiveStateName == currentState)
             {
-                corpseFSM.SendEvent("CORPSE END");
-                yield return null;
+                timeout -= Time.deltaTime;
+
+                if (timeout <= 0f)
+                {
+                    control.SendEvent(endEvent);
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
             }
 
-            Destroy(this);
             yield break;
         }
     }
+        
+    public class ZoteBossSpawner : DefaultSpawner<ZoteBossControl> { }
 
-    internal class ZoteBossPrefabConfig : IPrefabConfig
-    {
-        public virtual void SetupPrefab(PrefabObject p)
-        {
-            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(p.prefab.name);
-            p.prefabName = keyName;
-
-            var Prefab = p.prefab;
-            
-            Dev.Log("getting death effects");
-            var deathEffects = Prefab.GetComponentInChildren<EnemyDeathEffectsUninfected>(true);
-            //var baseDeathEffects = deathEffects as EnemyDeathEffects;
-
-            deathEffects.doKillFreeze = false;
-
-            var corpsePrefab = (GameObject)deathEffects.GetType().BaseType.GetField("corpsePrefab", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(deathEffects);
-
-            if (corpsePrefab == null)
-                Dev.LogError("Failed to find corpse prefab zote boss");
-            else
-            {
-                corpsePrefab.AddComponent<GGZoteCorpseFixer>();
-            }
-        }
-    }
+    public class ZoteBossPrefabConfig : DefaultPrefabConfig<ZoteBossControl> { }
 }

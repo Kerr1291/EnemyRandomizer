@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Satchel;
 using Satchel.Futils;
+using UniRx;
 
 namespace EnemyRandomizerMod
 {
@@ -28,7 +29,7 @@ namespace EnemyRandomizerMod
             this.AddResetToStateOnHide(control, "Init");
         }
 
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             gameObject.StickToGround(1f);
         }
@@ -76,11 +77,6 @@ namespace EnemyRandomizerMod
             //    this.thisMetadata.EnemyHealthManager.Die(null, AttackTypes.Generic, true);
             //});
         }
-
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
     }
 
     public class MenderBugSpawner : DefaultSpawner<MenderBugControl> { }
@@ -100,11 +96,17 @@ namespace EnemyRandomizerMod
     /////
     public class BlockerControl : DefaultSpawnedEnemyControl
     {
+        public override string FSMName => "Blocker Control";
+
+        public override bool dieChildrenOnDeath => true;
+
+        public override int maxBabies => 2; 
+
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            var fsm = gameObject.LocateMyFSM("Blocker Control");
+            var fsm = control;
 
             //allow players without spells to kill blockers
             int level = GameManager.instance.GetPlayerDataInt("fireballLevel");
@@ -143,7 +145,8 @@ namespace EnemyRandomizerMod
             //have it skip the roller assign state
             fsm.ChangeTransition("Fire", "FINISHED", "Shot Anim End");
         }
-        protected virtual void OnEnable()
+
+        protected override void OnEnable()
         {
             gameObject.StickToGround(1f);
         }
@@ -165,16 +168,14 @@ namespace EnemyRandomizerMod
     /////  
     public class ZombieHiveControl : DefaultSpawnedEnemyControl
     {
-        public int maxBabies = 3;
         public int vanillaMaxBabies = 5;
 
         //if true, will set the max babies to 5
         public bool isVanilla;
-        public bool dieChildrenOnDeath = true;
 
-        public PlayMakerFSM FSM { get; set; }
+        public override int maxBabies => isVanilla ? vanillaMaxBabies : 3;
 
-        public List<GameObject> children = new List<GameObject>();
+        public override string FSMName => "Hive Zombie";
 
         public override void Setup(ObjectMetadata other)
         {
@@ -189,10 +190,7 @@ namespace EnemyRandomizerMod
                 isVanilla = thisMetadata.Source == other.Source;
             }
 
-            if (isVanilla)
-                maxBabies = vanillaMaxBabies;
-
-            FSM = gameObject.LocateMyFSM("Hive Zombie");
+            var FSM = control;
 
             var init = FSM.GetState("Init");
             init.DisableAction(1);
@@ -214,6 +212,7 @@ namespace EnemyRandomizerMod
             spot1.InsertCustomAction(() => {
                 var child = EnemyRandomizerDatabase.GetDatabase().Spawn("Bee Hatchling Ambient", null);
                 children.Add(child);
+
                 FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = child;
             },0); ;
             spot1.InsertCustomAction(() => {
@@ -233,58 +232,6 @@ namespace EnemyRandomizerMod
             spot2.InsertCustomAction(() => {
                 FSM.FsmVariables.GetFsmGameObject("Hatchling").Value.SafeSetActive(true);
             }, 4);
-        }
-
-        protected virtual void OnEnable()
-        {
-            gameObject.StickToGround();
-        }
-
-        protected override void OnDestroy()
-        {
-            if (dieChildrenOnDeath)
-            {
-                children.ForEach(x =>
-                {
-                    if (x == null)
-                        return;
-
-                    var hm = x.GetComponent<HealthManager>();
-                    if (hm != null)
-                    {
-                        hm.Die(null, AttackTypes.Generic, true);
-                    }
-                });
-            }
-        }
-
-        protected virtual void Update()
-        {
-            if (children == null)
-                return;
-
-            for (int i = 0; i < children.Count;)
-            {
-                if (i >= children.Count)
-                    break;
-
-                if (children[i] == null)
-                {
-                    children.RemoveAt(i);
-                    continue;
-                }
-                else
-                {
-                    var hm = children[i].GetComponent<HealthManager>();
-                    if (hm.hp <= 0 || hm.isDead)
-                    {
-                        children.RemoveAt(i);
-                        continue;
-                    }
-                }
-
-                ++i;
-            }
         }
     }
 
@@ -314,7 +261,7 @@ namespace EnemyRandomizerMod
             control.RemoveTransition("Battle Inert", "BATTLE START");
         }
 
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             gameObject.StickToGround(1f);
         }
@@ -353,7 +300,7 @@ namespace EnemyRandomizerMod
             control.RemoveTransition("Battle Inert", "BATTLE START");
         }
 
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
             gameObject.StickToGround(1f);
         }

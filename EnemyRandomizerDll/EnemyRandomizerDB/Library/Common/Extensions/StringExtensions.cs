@@ -458,6 +458,27 @@ namespace EnemyRandomizerMod
             return stringBuilder.ToString();
         }
 
+        public static string RemoveAll(this string nameKey, string stringToRemove)
+        {
+            while (nameKey.Contains(stringToRemove))
+            {
+                nameKey = nameKey.Remove(stringToRemove);
+            }
+            return nameKey.Trim();
+        }
+
+        public static string ReplaceAll(this string nameKey, string stringToRemove, string stringToInsert)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            while (nameKey.Contains(stringToRemove))
+            {
+                stringBuilder.Append(nameKey.SubstringBefore(stringToRemove) + stringToInsert);
+                nameKey = nameKey.SubstringAfter(stringToRemove);
+            }
+            stringBuilder.Append(nameKey);
+            return stringBuilder.ToString().Trim();
+        }
+
         public static string Left( this string s, int length )
         {
             if( s == null )
