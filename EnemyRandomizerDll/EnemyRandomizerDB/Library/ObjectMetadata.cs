@@ -230,6 +230,7 @@ namespace EnemyRandomizerMod
                 return null;
             }).ToReadOnlyReactiveProperty();
 
+            customAvailableItem = new ReactiveProperty<GameObject>(null);
             availableItem = corpse.Select(x =>
             {
                 if (VERBOSE_DEBUG)
@@ -257,7 +258,7 @@ namespace EnemyRandomizerMod
                 return null;
             }).ToReadOnlyReactiveProperty();
 
-            hasAvailableItem = availableItem.Select(x => x != null).ToReadOnlyReactiveProperty();
+            //hasAvailableItem = availableItem.Select(x => x != null).ToReadOnlyReactiveProperty();
         }
 
         protected virtual void GenerateRandoReactives()
@@ -622,10 +623,21 @@ namespace EnemyRandomizerMod
             get => isBattleEnemy == null ? false : isBattleEnemy.Value;
         }
 
-        public ReadOnlyReactiveProperty<bool> hasAvailableItem { get; protected set; }
+        //public ReadOnlyReactiveProperty<bool> hasAvailableItem { get; protected set; }
         public bool HasAvailableItem
         {
-            get => hasAvailableItem == null ? false : hasAvailableItem.Value;
+            get
+            {
+                if (customAvailableItem != null && customAvailableItem.Value != null)
+                    return true;
+
+                if (availableItem != null && customAvailableItem.Value != null)
+                    return true;
+
+                return false;
+
+                //hasAvailableItem == null ? false : hasAvailableItem.Value;
+            }
         }
 
         public ReadOnlyReactiveProperty<bool> isSmasher { get; protected set; }
@@ -702,9 +714,26 @@ namespace EnemyRandomizerMod
 
         //These values will become null after a replacement
         public ReadOnlyReactiveProperty<GameObject> availableItem { get; protected set; }
+        public ReactiveProperty<GameObject> customAvailableItem { get; protected set; }
         public GameObject AvailableItem
         {
-            get => availableItem == null ? null : availableItem.Value;
+            get
+            {
+                if (customAvailableItem != null && customAvailableItem.Value != null)
+                    return customAvailableItem.Value;
+
+                if (availableItem != null)
+                    return availableItem.Value;
+
+                return null;
+            }
+            set
+            {
+                if (customAvailableItem == null)
+                    customAvailableItem = new ReactiveProperty<GameObject>(value);
+                else
+                    customAvailableItem.Value = value;
+            }
         }
 
         public ReadOnlyReactiveProperty<PersistentBoolItem> sceneSaveData { get; protected set; }
@@ -1305,6 +1334,11 @@ namespace EnemyRandomizerMod
             }
         }
 
+        public virtual void ImportItem(ObjectMetadata other)
+        {
+            AvailableItem = other.AvailableItem;
+        }
+
         static bool DEBUG_WARN_IF_NOT_FOUND = false;
 
         public void Dump()
@@ -1479,56 +1513,73 @@ namespace EnemyRandomizerMod
 
         public static List<string> Bosses = new List<string>() {
             "Giant Fly",
+            "Mega Moss Charger",
+            "Mawlek Body",
+
+            "Black Knight",
+            "Fluke Mother",
+            "Mantis Traitor Lord",
+
             "Hornet Boss 1",
             "Hornet Boss 2",
-            "False Knight New",
-            "False Knight Dream",
-            "Grey Prince",
-            "Zote Boss",
-            "Dung Defender",
-            "White Defender",
+
             "Giant Buzzer",
             "Giant Buzzer Col",
             "Mega Fat Bee", //obblobble boss
             "Lobster",
             "Lancer",
-            "Mawlek Body",
-            "Mage Lord",
-            "Mage Lord Phase2",
-            "Black Knight",
-            "Mega Moss Charger",
-            "Mantis Traitor Lord",
+
+            "Dung Defender",
+            "White Defender",
+
             "Mega Zombie Beam Miner",
             "Zombie Beam Miner Rematch",
-            "Mimic Spider",
-            "Infected Knight",
-            "Fluke Mother",
-            "Hive Knight",
+
             "Grimm Boss",
             "Nightmare Grimm Boss",
+
+            "Infected Knight",
+            "Lost Kin",
+
+            "False Knight New",
+            "False Knight Dream",
+
+            "Mage Lord",
+            "Mage Lord Phase2",
             "Dream Mage Lord",
             "Dream Mage Lord Phase2",
-            "Lost Kin",
-            "Radiance",
-            "Hollow Knight Boss",
-            "HK Prime",
+
+            "Jar Collector",
+            "Hornet Nosk",
+            "Mimic Spider",
+            "Mega Jellyfish",
+            "Jellyfish GG",
+
+            "Hive Knight",
+
             "Pale Lurker",
             "Oro",
             "Mato",
             "Sheo Boss",
             "Sly Boss",
-            "Jar Collector",
-            "Hornet Nosk",
-            "Mega Jellyfish",
-            "Jellyfish GG",
+
+            "Grey Prince",
+            "Zote Boss",
+
+            "Hollow Knight Boss",
+            "HK Prime",
+
+            "Radiance",
+            "Absolute Radiance",
+
             "Ghost Warrior Xero",
             "Ghost Warrior Marmu",
             "Ghost Warrior Galien",
+
             "Ghost Warrior Slug",
             "Ghost Warrior No Eyes",
             "Ghost Warrior Hu",
             "Ghost Warrior Markoth",
-            "Absolute Radiance",
             };
 
         public static List<string> IsWallMounted = new List<string>() {
@@ -1642,6 +1693,13 @@ namespace EnemyRandomizerMod
             "Zote Turret",
             "White Palace Fly",
             "Electro Zap",
+            "Zote Balloon",
+            "Zote Balloon Ordeal",
+            "Plant Turret",
+            "Plant Turret Right",
+            "Mushroom Turret",
+            "Laser Turret Frames",
+            "Fluke Mother",
             };
 
         public static List<string> IsSummonedByEvent = new List<string>() {
@@ -1918,7 +1976,7 @@ namespace EnemyRandomizerMod
             {"Hatcher Baby", "HatcherBaby"},
             {"Roller R", "RollerR"},
             {"Spitter R", "SpitterR"},
-            {"Buzzer R", "BuzzerR"},
+            {"Buzzer R", "Buzzer"},
             {"Mossman_Runner", "MossmanRunner"},
             {"Jellyfish", "Jellyfish"},
             {"Lil Jellyfish", "LilJellyfish"},
@@ -1948,7 +2006,7 @@ namespace EnemyRandomizerMod
             {"Mage", "Mage"},
             {"Electric Mage", "ElectricMage"},
             {"Mage Blob", "MageBlob"},
-            {"Lancer", "Lancer"},
+            {"Lancer", "LobsterLancer"},
             {"Climber", "Climber"},
             {"Zombie Runner", "ZombieRunner"},
             {"Mender Bug", "MenderBug"},
@@ -1979,21 +2037,21 @@ namespace EnemyRandomizerMod
             {"Mage Lord", "MageLord"},
             {"Mage Lord Phase2", "MageLordPhase2"},
             {"Great Shield Zombie", "GreatShieldZombie"},
-            {"Great Shield Zombie bottom", "GreatShieldZombieBottom"},
+            {"Great Shield Zombie bottom", "GreatShieldZombie"},
             {"Black Knight", "BlackKnight"},
             {"Jar Collector", "JarCollector"},
             {"Moss Walker", "MossWalker"},
             {"Plant Trap", "SnapperTrap"},
             {"Mossman_Shaker", "MossmanShaker"},
             {"Pigeon", "Pigeon"},
-            {"Hornet Boss 1", "HornetBoss1"},
+            {"Hornet Boss 1", "Hornet"},
             {"Acid Flyer", "AcidFlyer"},
             {"Moss Charger", "MossCharger"},
             {"Acid Walker", "AcidWalker"},
             {"Plant Turret", "PlantShooter"},
             {"Plant Turret Right", "PlantShooter"},
             {"Fat Fly", "FatFly"},
-            {"Giant Buzzer", "GiantBuzzer"},
+            {"Giant Buzzer", "BigBuzzer"},
             {"Moss Knight", "MossKnight"},
             {"Grass Hopper", "GrassHopper"},
             {"Lazy Flyer Enemy", "LazyFlyerEnemy"},
@@ -2030,7 +2088,7 @@ namespace EnemyRandomizerMod
             {"Mines Crawler", "MinesCrawler"},
             {"Mega Zombie Beam Miner", "MegaBeamMiner"},
             {"Zombie Beam Miner", "BeamMiner"},
-            {"Zombie Beam Miner Rematch", "ZombieBeamMinerRematch"},
+            {"Zombie Beam Miner Rematch", "MegaBeamMiner"},
             {"Spider Mini", "SpiderMini"},
             {"Zombie Hornhead Sp", "SpiderCorpse"},
             {"Zombie Runner Sp", "SpiderCorpse"},
@@ -2040,9 +2098,9 @@ namespace EnemyRandomizerMod
             {"Spider Flyer", "SpiderFlyer"},
             {"Ghost Warrior Galien", "GhostGalien"},
             {"Blow Fly", "BlowFly"},
-            {"Bee Hatchling Ambient", "BeeHatchlingAmbient"},
+            {"Bee Hatchling Ambient", "BeeHatchling"},
             {"Ghost Warrior Markoth", "GhostMarkoth"},
-            {"Hornet Boss 2", "HornetBoss2"},
+            {"Hornet Boss 2", "DreamGuard"},
             {"Abyss Crawler", "AbyssCrawler"},
             {"Infected Knight", "InfectedKnight"},
             {"Parasite Balloon", "ParasiteBalloon"},
@@ -2050,19 +2108,6 @@ namespace EnemyRandomizerMod
             {"Mawlek Turret Ceiling", "MawlekTurret"},
             {"Flip Hopper", "FlipHopper"},
             {"Inflater", "Inflater"},
-
-             
-        /*
-         * 
-Given an entry in this format   
-{"Health Cocoon", "PLAYERDATANAME"},
-Convert it to this format
-{"Health Cocoon", "HealthCocoon"},
-Where DATABASENAME will be replaced by the key value, but without spaces.
-Example Result: 
-{"Health Cocoon", "HealthCocoon"},
-         */
-
             {"Fluke Fly", "FlukeFly"},
             {"Flukeman", "Flukeman"},
             {"Dung Defender", "DungDefender"},

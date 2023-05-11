@@ -7,10 +7,8 @@ using System;
 namespace EnemyRandomizerMod
 {
 
-    public class ZoteTurretControl : FSMBossAreaControl
+    public class ZoteTurretControl : FSMAreaControlEnemy
     {
-        public override string FSMName => "Control";
-
         public float startYPos;
 
         public override void Setup(ObjectMetadata other)
@@ -63,10 +61,6 @@ namespace EnemyRandomizerMod
 
             var retract = control.GetState("Retract");
             retract.ChangeTransition("FINISHED", "Init");
-        }
-
-        protected override void OnEnable()
-        {
         }
     }
 

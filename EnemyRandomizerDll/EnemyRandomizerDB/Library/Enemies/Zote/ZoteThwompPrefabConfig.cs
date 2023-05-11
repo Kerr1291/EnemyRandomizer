@@ -10,10 +10,8 @@ using System;
 
 namespace EnemyRandomizerMod
 {
-    public class ZoteThwompControl : FSMBossAreaControl
+    public class ZoteThwompControl : FSMAreaControlEnemy
     {
-        public override string FSMName => "Control";
-
         PlayMakerFSM slamEffect;
         PlayMakerFSM enemyCrusher;
         PlayMakerFSM armourHit;

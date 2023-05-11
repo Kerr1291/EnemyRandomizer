@@ -14,10 +14,8 @@ using Satchel;
 using Satchel.Futils;
 namespace EnemyRandomizerMod
 {
-    public class ZotelingControl : FSMBossAreaControl
+    public class ZotelingControl : FSMAreaControlEnemy
     {
-        public override string FSMName => "Control";
-
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);

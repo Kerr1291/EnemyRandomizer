@@ -24,6 +24,15 @@ namespace EnemyRandomizerMod
 
         //if true, will set the max babies to 5
         public virtual bool dieChildrenOnDeath => false;
+        public virtual bool useCustomPositonOnShow => false;
+        public virtual bool showWhenHeroIsInAggroRange => false;
+
+        protected bool didShowWhenHeroWasInAggroRange = false;
+
+        public virtual bool explodeOnDeath => false;
+        public virtual string spawnEntityOnDeath => null;
+        public virtual bool doBlueHealHeroOnDeath => false;
+        public virtual bool didOriginalDoBlueHealHeroOnDeath => originialMetadata != null && originialMetadata.DatabaseName.Contains("Health");
 
         public List<GameObject> children = new List<GameObject>();
 
@@ -40,18 +49,18 @@ namespace EnemyRandomizerMod
         protected virtual Dictionary<string, Func<DefaultSpawnedEnemyControl, float>> FloatRefs => CustomFloatRefs;
 
         protected virtual string FSMHiddenStateName => "Hidden";
-        protected List<PlayMakerFSM> FSMsUsingHiddenStates { get; set; }
-        protected Dictionary<PlayMakerFSM, string> FSMsWithResetToStateOnHide { get; set; }
+        protected virtual List<PlayMakerFSM> FSMsUsingHiddenStates { get; set; }
+        protected virtual Dictionary<PlayMakerFSM, string> FSMsWithResetToStateOnHide { get; set; }
 
-        public Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-        public Vector2 pos2dWithOffset => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y) + new Vector2(0, 1f);
-        public Vector2 heroPos2d => new Vector2(HeroController.instance.transform.position.x, HeroController.instance.transform.position.y);
-        public Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 1f);
-        public float floorY => heroPosWithOffset.FireRayGlobal(Vector2.down, float.MaxValue).point.y;
-        public float roofY => heroPosWithOffset.FireRayGlobal(Vector2.up, float.MaxValue).point.y;
-        public float edgeL => heroPosWithOffset.FireRayGlobal(Vector2.left, float.MaxValue).point.x;
-        public float edgeR => heroPosWithOffset.FireRayGlobal(Vector2.right, float.MaxValue).point.x;
-        public float aggroRange => 50f;
+        public virtual Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+        public virtual Vector2 pos2dWithOffset => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y) + new Vector2(0, 1f);
+        public virtual Vector2 heroPos2d => new Vector2(HeroController.instance.transform.position.x, HeroController.instance.transform.position.y);
+        public virtual Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 1f);
+        public virtual float floorY => heroPosWithOffset.FireRayGlobal(Vector2.down, float.MaxValue).point.y;
+        public virtual float roofY => heroPosWithOffset.FireRayGlobal(Vector2.up, float.MaxValue).point.y;
+        public virtual float edgeL => heroPosWithOffset.FireRayGlobal(Vector2.left, float.MaxValue).point.x;
+        public virtual float edgeR => heroPosWithOffset.FireRayGlobal(Vector2.right, float.MaxValue).point.x;
+        public virtual float aggroRange => 40f;
 
         public bool hasCustomDreamnailReaction;
         public string customDreamnailKey;
@@ -87,22 +96,44 @@ namespace EnemyRandomizerMod
 #if DEBUG
             debugColliders = gameObject.AddComponent<DebugColliders>();
 #endif
+            ImportItemFromReplacement();
+        }
 
-            if(originialMetadata != null && originialMetadata.DatabaseName.Contains("Health"))
+        protected virtual void ImportItemFromReplacement()
+        {
+            if(originialMetadata != null && originialMetadata != thisMetadata && originialMetadata.Source != thisMetadata.Source && originialMetadata.HasAvailableItem)
             {
-                thisMetadata.EnemyHealthManager.OnDeath -= DoBlueHealHero;
-                thisMetadata.EnemyHealthManager.OnDeath += DoBlueHealHero;
+                thisMetadata.ImportItem(originialMetadata);
+            }
+        }
+
+        protected virtual void SpawnAndFlingItem()
+        {
+            if(thisMetadata.HasAvailableItem)
+            {
+                FlingUtils.SelfConfig fling = new FlingUtils.SelfConfig()
+                {
+                    Object = thisMetadata.AvailableItem.Spawn(transform.position),
+                    SpeedMin = 5f,
+                    SpeedMax = 10f,
+                    AngleMin = 0f,
+                    AngleMax = 180f
+                };
+                FlingUtils.FlingObject(fling, null, Vector3.zero);
             }
         }
 
         protected virtual void OnEnable()
         {
-            if (!thisMetadata.IsFlying)
+            if (useCustomPositonOnShow)
+                SetCustomPositionOnShow();
+            else
+                SetDefaultPosition();
+
+            if (showWhenHeroIsInAggroRange)
             {
-                if (thisMetadata.IsMobile)
-                {
-                    gameObject.StickToGround();
-                }
+                if (!HeroInAggroRange())
+                    Hide();
             }
         }
 
@@ -113,22 +144,107 @@ namespace EnemyRandomizerMod
 
         protected virtual void OnDestroy()
         {
-            originialMetadata.Dispose();
-            thisMetadata.Dispose();
-            disposables.Dispose();
             if (hasCustomDreamnailReaction)
             {
                 On.EnemyDreamnailReaction.SetConvoTitle -= EnemyDreamnailReaction_SetConvoTitle;
                 On.Language.Language.Get_string_string -= Language_Get_string_string;
             }
-            DieChildrenOnDeath();
+
+            if(dieChildrenOnDeath)
+                DieChildrenOnDeath();
+
+            if(explodeOnDeath)
+                ExplodeOnDeath();
+
+            if(!string.IsNullOrEmpty(spawnEntityOnDeath))
+                SpawnEntityOnDeath();
+
+            if (doBlueHealHeroOnDeath || didOriginalDoBlueHealHeroOnDeath)
+                DoBlueHealHero();
+
+            if (thisMetadata.HasAvailableItem)
+                SpawnAndFlingItem();
+
+            originialMetadata.Dispose();
+            thisMetadata.Dispose();
+            disposables.Dispose();
+        }
+
+        protected virtual void ExplodeOnDeath()
+        {
+            if (!explodeOnDeath)
+                return;
+
+            EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Gas Explosion Recycle L", null, true);
+        }
+
+        protected virtual void SpawnExplosionAt(Vector3 pos)
+        {
+            EnemyRandomizerDatabase.CustomSpawnWithLogic(pos, "Gas Explosion Recycle M", null, true);
+        }
+
+        protected virtual void SpawnEntityOnDeath()
+        {
+            if (string.IsNullOrEmpty(spawnEntityOnDeath))
+                return;
+
+            EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, spawnEntityOnDeath, null, true);
+        }
+
+        protected virtual bool RollProbability(out int result, int needValueOrLess = 5, int maxPossibleValue = 20)
+        {
+            RNG rng = new RNG();
+            rng.Reset();
+            result = rng.Rand(0, maxPossibleValue);
+            return result < needValueOrLess;
+        }
+
+        protected virtual void SetGeoRandomBetween(int minGeo, int maxGeo)
+        {
+            RNG rng = new RNG();
+            rng.Reset();
+            thisMetadata.Geo = rng.Rand(minGeo, maxGeo);
         }
 
         protected virtual void Update()
         {
+            if(showWhenHeroIsInAggroRange)
+            {
+                if(!didShowWhenHeroWasInAggroRange && HeroInAggroRange())
+                {
+                    didShowWhenHeroWasInAggroRange = true;
+                    Show();
+                }
+            }
+
+
             UpdateFSMRefs();
             CheckFSMsUsingHiddenStates();
             UpdateAndTrackChildren();
+        }
+
+        protected virtual Func<GameObject> GetRandomAttackSpawnerFunc()
+        {
+            RNG rng = new RNG();
+            rng.Reset();
+
+            List<Func<GameObject>> trailEffects = new List<Func<GameObject>>()
+                {
+                    //WARNING: using "CustomSpawnWithLogic" will override any replacement randomization modules
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Mega Jelly Zap", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Falling Barrel", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Electro Zap", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Shot PickAxe", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Dung Ball Small", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Paint Shot P Down", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Paint Shot B_fix", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Paint Shot R", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Gas Explosion Recycle L", null, false),
+                    () => EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Lil Jellyfish", null, false),
+                };
+
+            var selection = trailEffects.GetRandomElementFromList(rng);
+            return selection;
         }
 
         protected virtual void UpdateRefs(PlayMakerFSM fsm, Dictionary<string, Func<DefaultSpawnedEnemyControl, float>> refs)
@@ -180,6 +296,14 @@ namespace EnemyRandomizerMod
             {
                 return true;
             }
+        }
+
+
+        protected virtual Vector2 DirectionToPlayer()
+        {
+            Vector2 vector = pos2d;
+            Vector2 vector2 = heroPos2d;
+            return (vector2 - vector).normalized;
         }
 
         protected virtual float DistanceToPlayer()
@@ -248,6 +372,9 @@ namespace EnemyRandomizerMod
                 if (ControlCameraLocks)
                     UnlockCameras(cams);
             }
+
+            if (useCustomPositonOnShow)
+                SetCustomPositionOnShow();
         }
 
         protected virtual void CheckFSMsUsingHiddenStates()
@@ -317,6 +444,76 @@ namespace EnemyRandomizerMod
                 return orig(key, sheetTitle);
             }
         }
+
+        protected virtual GameObject AddParticleEffect_TorchFire(int fireSize = 5, Transform customParent = null)
+        {
+            GameObject effect = EnemyRandomizerDatabase.GetDatabase().Spawn("Fire Particles", null);
+            if(customParent == null)
+                effect.transform.parent = transform;
+            else
+                effect.transform.parent = customParent;
+
+            effect.transform.localPosition = Vector3.zero;
+            var pe = effect.GetComponent<ParticleSystem>();
+            pe.startSize = fireSize;
+            pe.simulationSpace = ParticleSystemSimulationSpace.World;
+            effect.SafeSetActive(true);
+            return effect;
+        }
+
+        protected virtual GameObject AddParticleEffect_TorchShadeEmissions()
+        {
+            GameObject effect = EnemyRandomizerDatabase.GetDatabase().Spawn("Particle System B", null);
+            effect.transform.parent = transform;
+            effect.transform.localPosition = Vector3.zero;
+            effect.SafeSetActive(true);
+            return effect;
+        }
+
+        protected virtual ParticleSystem AddParticleEffect_WhiteSoulEmissions()
+        {
+            var glow = EnemyRandomizerDatabase.GetDatabase().Spawn("Summon", null);
+            var ge = glow.GetComponent<ParticleSystem>();
+            glow.transform.parent = transform;
+            glow.transform.localPosition = Vector3.zero;
+            ge.simulationSpace = ParticleSystemSimulationSpace.World;
+            ge.startSize = 3;
+            glow.SetActive(true);
+            return ge;
+        }
+
+        protected virtual void StartTrailEffectSpawns(int count, float spawnRate, string entityToSpawn)
+        {
+            StartCoroutine(TrailEffectSpawns(count,spawnRate,entityToSpawn));
+        }
+
+        protected virtual IEnumerator TrailEffectSpawns(int count, float spawnRate, string entityToSpawn)
+        {
+            for (int i = 0; i < count; ++i)
+            {
+                var result = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, entityToSpawn, null, false);
+                result.transform.position = transform.position;
+                result.SetActive(true);
+                yield return new WaitForSeconds(spawnRate);
+            }
+        }
+
+        protected virtual void StartTrailEffectSpawns(int count, float spawnRate, Func<GameObject> spawner)
+        {
+            StartCoroutine(TrailEffectSpawns(count, spawnRate, spawner));
+        }
+
+        protected virtual IEnumerator TrailEffectSpawns(int count, float spawnRate, Func<GameObject> spawner)
+        {
+            for (int i = 0; i < count; ++i)
+            {
+                var result = spawner.Invoke();
+                result.transform.position = transform.position;
+                result.SetActive(true);
+                yield return new WaitForSeconds(spawnRate);
+            }
+        }
+
 
         protected virtual void ConfigureRelativeToReplacement()
         {
@@ -395,7 +592,64 @@ namespace EnemyRandomizerMod
 
         protected virtual int ScaleHPFromBossToNormal(int defaultHP, int previousHP)
         {
-            return previousHP;
+            if (previousHP * 2 < defaultHP)
+                return Mathf.FloorToInt(previousHP * 2f);
+            else if (previousHP < defaultHP)
+                return previousHP;
+            else
+                return defaultHP;
+        }
+
+        protected virtual void SetCustomPositionOnShow()
+        {
+            gameObject.StickToGround();
+        }
+
+        protected virtual void SetDefaultPosition()
+        {
+            if (!thisMetadata.IsFlying)
+            {
+                if (thisMetadata.IsMobile)
+                {
+                    gameObject.StickToGround();
+                }
+            }
+        }
+
+        protected virtual void AddTimeoutAction(FsmState state, string eventName, float timeout)
+        {
+            state.AddCustomAction(() => { StartTimeoutState(state.Name, eventName, timeout); });
+        }
+
+        protected virtual void DisableKillFreeze()
+        {
+            var deathEffects = gameObject.GetComponentInChildren<EnemyDeathEffectsUninfected>(true);
+            if (deathEffects != null)
+            {
+                deathEffects.doKillFreeze = false;
+            }
+        }
+
+        protected virtual void StartTimeoutState(string currentState, string endEvent, float timeout)
+        {
+            StartCoroutine(TimeoutState(currentState, endEvent, timeout));
+        }
+
+        protected virtual IEnumerator TimeoutState(string currentState, string endEvent, float timeout)
+        {
+            while (control.ActiveStateName == currentState)
+            {
+                timeout -= Time.deltaTime;
+
+                if (timeout <= 0f)
+                {
+                    control.SendEvent(endEvent);
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+
+            yield break;
         }
 
         protected virtual int ScaleHPFromNormalToBoss(int defaultHP, int previousHP)
@@ -694,12 +948,12 @@ namespace EnemyRandomizerMod
             return reflection;
         }
 
-        public void DoBlueHealHero()
+        public virtual void DoBlueHealHero()
         {
             StartCoroutine(this.BlueHealHero());
         }
 
-        private IEnumerator BlueHealHero(float maxHealDistance = 40f)
+        protected virtual IEnumerator BlueHealHero(float maxHealDistance = 40f)
         {
             var flash = HeroController.instance.GetComponent<SpriteFlash>();
             
@@ -811,6 +1065,14 @@ namespace EnemyRandomizerMod
             handle.Dispose();
         }
 
+        protected virtual void SetXScaleSign(bool makeNegative)
+        {
+            float scale = transform.localScale.x;
+            if (scale > 0 && makeNegative)
+                transform.localScale = new Vector3(-scale, transform.localScale.y, transform.localScale.z);
+            else if (scale < 0 && !makeNegative)
+                transform.localScale = new Vector3(-scale, transform.localScale.y, transform.localScale.z);
+        }
 
         protected virtual void DieChildrenOnDeath()
         {
@@ -882,6 +1144,44 @@ namespace EnemyRandomizerMod
                 int dmgAmount = damageInstance.DamageDealt;
                 thisMetadata.EnemyHealthManager.ApplyExtraDamage(dmgAmount);
             }
+        }
+
+        public static bool CreateNewDatabasePrefabObject(string databaseID, GameObject source, SceneData sourceScene, PrefabObject.PrefabType prefabType = PrefabObject.PrefabType.Other)
+        {
+            bool result = false;
+            try
+            {
+                var db = EnemyRandomizerDatabase.GetDatabase();
+                if (db != null && !db.otherNames.Contains(databaseID))
+                {
+                    var beClone = GameObject.Instantiate(source);
+                    beClone.SetActive(false);
+                    GameObject.DontDestroyOnLoad(beClone);
+                    PrefabObject p2 = new PrefabObject();
+                    SceneObject sp2 = new SceneObject();
+                    sp2.components = new List<string>();
+                    sp2.Scene = sourceScene;
+                    p2.prefabName = databaseID;
+                    p2.prefabType = prefabType;
+                    beClone.name = p2.prefabName;
+                    sp2.path = beClone.name;
+                    p2.prefab = beClone;
+                    p2.source = sp2;
+                    sp2.LoadedObject = p2;
+                    sp2.Scene.sceneObjects.Add(sp2);
+                    db.otherPrefabs.Add(p2);
+                    db.Others[p2.prefabName] = p2;
+                    db.Objects[p2.prefabName] = p2;
+                    sp2.Loaded = true;
+                    result = true;
+                }
+            }
+            catch(Exception e)
+            {
+                Dev.Log($"Error creating new database prefab object with ID {databaseID} from source {source}. ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+            }
+
+            return result;
         }
     }
 }

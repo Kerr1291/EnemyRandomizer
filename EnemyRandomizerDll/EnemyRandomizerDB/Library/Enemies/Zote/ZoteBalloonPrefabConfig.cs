@@ -12,12 +12,11 @@ using UniRx;
 namespace EnemyRandomizerMod
 {
 
-    public class ZoteBalloonControl : FSMBossAreaControl
+    public class ZoteBalloonControl : FSMAreaControlEnemy
     {
-        public override string FSMName => "Control";
+        public override bool explodeOnDeath => true;
 
         public float startYPos;
-        public string explosionEffect = "Gas Explosion Recycle M";
 
         public override void Setup(ObjectMetadata other)
         {
@@ -67,28 +66,24 @@ namespace EnemyRandomizerMod
             this.InsertHiddenState(control, "Init", "FINISHED", "Spawn Pos");
             //this.AddResetToStateOnHide(control, "Init");
 
-            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
-            thisMetadata.EnemyHealthManager.OnDeath += EnemyHealthManager_OnDeath;
+            //thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+            //thisMetadata.EnemyHealthManager.OnDeath += EnemyHealthManager_OnDeath;
 
-            //if hp changes at all, explode
-            thisMetadata.currentHP.SkipLatestValueOnSubscribe().Subscribe(x => EnemyHealthManager_OnDeath()).AddTo(disposables);
+            ////if hp changes at all, explode
+            //thisMetadata.currentHP.SkipLatestValueOnSubscribe().Subscribe(x => EnemyHealthManager_OnDeath()).AddTo(disposables);
         }
 
-        private void EnemyHealthManager_OnDeath()
-        {
-            disposables.Clear();
-            SpawnExplosion(gameObject, explosionEffect);
-            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
-        }
+        //private void EnemyHealthManager_OnDeath()
+        //{
+        //    disposables.Clear();
+        //    SpawnExplosion(gameObject, explosionEffect);
+        //    thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+        //}
 
-        protected static void SpawnExplosion(GameObject gameObject, string effect)
-        {
-            EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, effect, null, true);
-        }
-
-        protected override void OnEnable()
-        {
-        }
+        //protected static void SpawnExplosion(GameObject gameObject, string effect)
+        //{
+        //    EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, effect, null, true);
+        //}
     }
 
     public class ZoteBalloonSpawner : DefaultSpawner<ZoteBalloonControl>

@@ -16,49 +16,12 @@ namespace EnemyRandomizerMod
     {
         //most common fsm name for enemy controls
         public override string FSMName => "Control";
-
-        protected bool hasEnabled = false;
-
-        protected virtual void OnEnable()
-        {
-            if (!HeroInAggroRange())
-                Hide();
-        }
-
-        protected override void Update()
-        {
-            base.Update();
-
-            if (!hasEnabled && HeroInAggroRange())
-            {
-                hasEnabled = true;
-                Show();
-            }
-        }
+        public override bool showWhenHeroIsInAggroRange => true;
     }
 
     public class FSMBossAreaControl : FSMAreaControlEnemy
     {
-        protected override void Show()
-        {
-            base.Show();
-            PositionBoss();
-        }
-
-        protected virtual void PositionBoss()
-        {
-            gameObject.StickToGround();
-        }
-
-        protected override int ScaleHPFromBossToNormal(int defaultHP, int previousHP)
-        {
-            if (previousHP * 2 < defaultHP)
-                return Mathf.FloorToInt(previousHP * 2f);
-            else if (previousHP < defaultHP)
-                return previousHP;
-            else
-                return defaultHP;
-        }
+        public override bool useCustomPositonOnShow => true;
     }
 }
 

@@ -16,29 +16,25 @@ namespace EnemyRandomizerMod
     /////   
     public class WhitePalaceFlyControl : DefaultSpawnedEnemyControl
     {
+        public override string spawnEntityOnDeath => isZapFly ? null : customOnDeathEffect;
         public string customOnDeathEffect = "Electro Zap";
+
+        public int chanceToBeZapFly = 1;
+        public int chanceToBeMaxZapFly = 10;
+        public bool isZapFly;
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            thisMetadata.EnemyHealthManager.hp = 1;
+            isZapFly = RollProbability(out _, chanceToBeZapFly, chanceToBeMaxZapFly);
 
-            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
-            thisMetadata.EnemyHealthManager.OnDeath += EnemyHealthManager_OnDeath;
-
-            //if hp changes at all, explode
-            thisMetadata.currentHP.SkipLatestValueOnSubscribe().Subscribe(x => EnemyHealthManager_OnDeath()).AddTo(disposables);
-        }
-
-        private void EnemyHealthManager_OnDeath()
-        {
-            disposables.Clear();
-            if (!string.IsNullOrEmpty(customOnDeathEffect))
+            if(isZapFly)
             {
-                EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, customOnDeathEffect, null, true);
+                thisMetadata.Sprite.color = Color.cyan * .4f;
             }
-            thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+
+            thisMetadata.CurrentHP = 1;
         }
 
         /// <summary>
@@ -50,8 +46,8 @@ namespace EnemyRandomizerMod
             if (thisMetadata == null)
                 return;
 
-            if (thisMetadata.EnemyHealthManager.hp > 1)
-                thisMetadata.EnemyHealthManager.hp = 1;
+            if (thisMetadata.CurrentHP > 1)
+                thisMetadata.CurrentHP = 1;
         }
     }
 
@@ -115,8 +111,6 @@ namespace EnemyRandomizerMod
             fire.AddCustomAction(() => { control.SendEvent("WAIT"); });
         }
     }
-
-
 
     public class HatcherSpawner : DefaultSpawner<HatcherControl> { }
 
@@ -221,32 +215,30 @@ namespace EnemyRandomizerMod
 
         protected override bool ControlCameraLocks => false;
 
-        protected override Dictionary<string, Func<DefaultSpawnedEnemyControl, float>> FloatRefs =>
-            new Dictionary<string, Func<DefaultSpawnedEnemyControl, float>>()
-            {
-                    { "X Max", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.right, 500f).point.x; } },
-                    { "X Min", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.left, 500f).point.x; } },
-                    { "Y Max", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.up, 500f).point.y; } },
-                    { "Y Min", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.down, 500f).point.y; } },
-            };
-
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
+
+            var wake = control.GetState("Wake");
+            DisableActions(wake, 1, 2, 3);
+            wake.InsertCustomAction(() => {
+                var pos = GetRandomPositionInLOSofSelf(5f, 30f, 1f, 1f);
+                transform.position = pos;
+            }, 0);
+
+            var st = control.GetState("Select Target");
+            //disable the teleplane actions
+            OverrideState(control, "Select Target", () =>
+            {
+                var pos = GetRandomPositionInLOSofSelf(5f, 20f, 1f, 4f);
+                control.FsmVariables.GetFsmVector3("Teleport Point").Value = new Vector3(pos.x, pos.y, 0.006f);
+                control.SendEvent("TELEPORT");
+            });
 
             control.ChangeTransition("Tele Away", "FINISHED", "Init");
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
             this.AddResetToStateOnHide(control, "Init");
-
-            var st = control.GetState("Select Target");
-
-            //disable the teleplane actions
-            st.DisableAction(1);
-            st.DisableAction(2);
-
-            //add an action that updates the refs
-            st.InsertCustomAction(() => this.UpdateRefs(control, FloatRefs), 1);
         }
     }
 
@@ -267,34 +259,39 @@ namespace EnemyRandomizerMod
         public override string FSMName => "Electric Mage";
 
         public float hpRatioTriggerNerf = 2f;
-        public float aggroRadius = 30f;
+        public override float aggroRange => 20f;
 
         protected override bool ControlCameraLocks => false;
-
-        protected override Dictionary<string, Func<DefaultSpawnedEnemyControl, float>> FloatRefs =>
-            new Dictionary<string, Func<DefaultSpawnedEnemyControl, float>>()
-            {
-                    { "X Max", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.right, 500f).point.x; } },
-                    { "X Min", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.left, 500f).point.x; } },
-                    { "Y Max", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.up, 500f).point.y; } },
-                    { "Y Min", x => { return x.heroPosWithOffset.FireRayGlobal(Vector2.down, 500f).point.y; } },
-            };
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
-            this.AddResetToStateOnHide(control, "Init");
+            var wake = control.GetState("Wake");
+            DisableActions(wake, 0, 1, 2);
+            wake.InsertCustomAction(() => {
+                var pos = GetRandomPositionInLOSofSelf(5f, 30f, 1f, 1f);
+                transform.position = pos;
+            }, 0);
 
             var st = control.GetState("Select Target");
-
             //disable the teleplane actions
-            st.DisableAction(1);
-            st.DisableAction(2);
+            OverrideState(control, "Select Target", () =>
+            {
+                var pos = GetRandomPositionInLOSofSelf(5f, 20f, 1f, 4f);
+                control.FsmVariables.GetFsmVector3("Teleport Point").Value = new Vector3(pos.x, pos.y, 0.006f);
+                control.SendEvent("TELEPORT");
+            });
 
-            //add an action that updates the refs
-            st.InsertCustomAction(() => this.UpdateRefs(control, FloatRefs), 1);
+
+            var gen = control.GetState("Gen");
+            gen.InsertCustomAction(() => {
+                if (!HeroInAggroRange())
+                    control.SendEvent("END");
+            }, 0);
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
+            this.AddResetToStateOnHide(control, "Init");
         }
 
         protected override void ScaleHP()
@@ -326,23 +323,23 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     ///// (Oblobbles)
-    public class MegaFatBeeControl : DefaultSpawnedEnemyControl
+    public class MegaFatBeeControl : FSMAreaControlEnemy
     {
-        public PlayMakerFSM FSM { get; set; }
+        public override string FSMName => "fat fly bounce";
+
         public PlayMakerFSM FSMattack { get; set; }
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            FSM = gameObject.LocateMyFSM("fat fly bounce");
             FSMattack = gameObject.LocateMyFSM("Fatty Fly Attack");
 
-            var init = FSM.GetState("Initialise");
+            var init = control.GetState("Initialise");
             init.DisableAction(2);
 
             //skip the swoop in animation
-            FSM.ChangeTransition("Initialise", "FINISHED", "Activate");
+            control.ChangeTransition("Initialise", "FINISHED", "Activate");
         }
     }
 

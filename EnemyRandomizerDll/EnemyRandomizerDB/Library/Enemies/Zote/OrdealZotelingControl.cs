@@ -15,10 +15,8 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class OrdealZotelingControl : FSMBossAreaControl
+    public class OrdealZotelingControl : FSMAreaControlEnemy
     {
-        public override string FSMName => "Control";
-
         public float startYPos;
 
         public override void Setup(ObjectMetadata other)
@@ -78,10 +76,6 @@ namespace EnemyRandomizerMod
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Ball");
             this.AddResetToStateOnHide(control, "Init");
-        }
-
-        protected override void OnEnable()
-        {
         }
     }
 

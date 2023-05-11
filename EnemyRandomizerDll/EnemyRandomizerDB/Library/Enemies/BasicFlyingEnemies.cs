@@ -37,8 +37,20 @@ namespace EnemyRandomizerMod
 
 
     /////////////////////////////////////////////////////////////////////////////
-    ///// TODO: add explosion to corpse
-    public class BurstingBouncerControl : DefaultSpawnedEnemyControl { }
+    ///// 
+    public class BurstingBouncerControl : DefaultSpawnedEnemyControl
+    {
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            var corpse = thisMetadata.Corpse;
+            if (corpse != null)
+            {
+                corpse.GetOrAddComponent<ExplodeOnCorpseRemoved>();
+            }
+        }
+    }
 
     public class BurstingBouncerSpawner : DefaultSpawner<BurstingBouncerControl> { }
 
@@ -52,7 +64,19 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     ///// TODO: add explosion to corpse
-    public class AngryBuzzerControl : DefaultSpawnedEnemyControl { }
+    public class AngryBuzzerControl : DefaultSpawnedEnemyControl
+    {
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            var corpse = thisMetadata.Corpse;
+            if (corpse != null)
+            {
+                corpse.GetOrAddComponent<ExplodeOnCorpseRemoved>();
+            }
+        }
+    }
 
     public class AngryBuzzerSpawner : DefaultSpawner<AngryBuzzerControl> { }
 
@@ -146,9 +170,7 @@ namespace EnemyRandomizerMod
 
             if(this.thisMetadata.Geo <= 0)
             {
-                RNG rng = new RNG();
-                rng.Reset();
-                this.thisMetadata.Geo = rng.Rand(1, 10);
+                SetGeoRandomBetween(1, 10);
             }
         }
     }
@@ -164,9 +186,10 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            RNG rng = new RNG();
-            rng.Reset();
-            this.thisMetadata.Geo = rng.Rand(1, 10);
+            if (this.thisMetadata.Geo <= 0)
+            {
+                SetGeoRandomBetween(1, 10);
+            }
         }
     }
 
@@ -557,7 +580,25 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class JellyfishControl : DefaultSpawnedEnemyControl { }
+    public class JellyfishControl : DefaultSpawnedEnemyControl
+    {
+        public override string FSMName => "Jellyfish";
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+
+            var spawnerFunc = GetRandomAttackSpawnerFunc();
+
+            var detach = control.GetState("Detach");
+            detach.AddCustomAction(() => {
+                var go = spawnerFunc?.Invoke();
+                go.transform.parent = null;
+                go.transform.position = transform.position;
+                go.SafeSetActive(true);
+            });
+        }
+    }
 
     public class JellyfishSpawner : DefaultSpawner<JellyfishControl> { }
 

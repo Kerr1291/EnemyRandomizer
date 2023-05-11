@@ -258,13 +258,13 @@ namespace EnemyRandomizerMod
         protected virtual void OnEnable()
         {
             Setup();
-            events.onEnable.Invoke();
+            events?.onEnable?.Invoke();
         }
 
         protected virtual void OnDisable()
         {
             Position = start;
-            events.onDisable.Invoke();
+            events?.onDisable?.Invoke();
         }
 
         protected virtual void Arrive()
@@ -289,7 +289,7 @@ namespace EnemyRandomizerMod
             }
             else if(arriveBehaviour == ArriveBehaviour.Custom)
             {
-                events.onArriveCustom.Invoke();
+                events?.onArriveCustom?.Invoke();
             }
             arrived = false;
         }
@@ -327,7 +327,7 @@ namespace EnemyRandomizerMod
         {
             Position = start;
             Setup();
-            events.onLoop.Invoke();
+            events?.onLoop?.Invoke();
         }
 
         protected virtual void ForceMoveToTarget()
@@ -347,7 +347,7 @@ namespace EnemyRandomizerMod
                 if(distSq < ArrivedDistanceSq)
                 {
                     arrived = true;
-                    events.onArrive.Invoke();
+                    events?.onArrive?.Invoke();
                 }
             }
         }
@@ -379,10 +379,10 @@ namespace EnemyRandomizerMod
             if(arrived)
                 return;
 
-            if(events.onUpdate != null)
-                events.onUpdate.Invoke();
-            if(events.onUpdateWithThis != null)
-                events.onUpdateWithThis.Invoke(this);
+            if(events?.onUpdate != null)
+                events?.onUpdate?.Invoke();
+            if(events?.onUpdateWithThis != null)
+                events?.onUpdateWithThis?.Invoke(this);
         }
 
         [SerializeField]

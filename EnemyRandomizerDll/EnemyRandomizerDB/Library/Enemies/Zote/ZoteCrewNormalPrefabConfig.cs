@@ -10,21 +10,15 @@ using System;
 
 namespace EnemyRandomizerMod
 {
-    public class ZoteCrewNormalControl : FSMBossAreaControl
+    public class ZoteCrewNormalControl : FSMAreaControlEnemy
     {
-        public override string FSMName => "Control";
-
         public float startYPos;
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            RNG geoRNG = new RNG();
-            geoRNG.Reset();
-
-            thisMetadata.EnemyHealthManager.hp = other.DefaultHP;
-            thisMetadata.EnemyHealthManager.SetGeoSmall(geoRNG.Rand(2, 12));
+            thisMetadata.Geo = 11;
 
             var init = control.GetState("Init");
             init.DisableAction(8);
@@ -71,13 +65,4 @@ namespace EnemyRandomizerMod
     public class ZoteCrewNormalPrefabConfig : DefaultPrefabConfig<ZoteCrewNormalControl>
     {
     }
-
-
-
-
-
-
-
-
-
 }

@@ -83,10 +83,18 @@ namespace EnemyRandomizerMod
             waves.InsertCustomAction(() => {
                 var s = megaMantisTallSlash.Spawn(transform.position, Quaternion.identity);
                 control.FsmVariables.GetFsmGameObject("Projectile").Value = s;
+                if (!PlayerData.instance.canShadowDash && PlayerData.instance.quakeLevel <= 0)
+                {
+                    s.transform.localScale = new Vector3(.1f, .1f, .1f);
+                }
             }, 3);
             waves.InsertCustomAction(() => {
                 var s = megaMantisTallSlash.Spawn(transform.position, Quaternion.identity);
                 control.FsmVariables.GetFsmGameObject("Projectile").Value = s;
+                if (!PlayerData.instance.canShadowDash && PlayerData.instance.quakeLevel <= 0)
+                {
+                    s.transform.localScale = new Vector3(.1f, .1f, .1f);
+                }
             }, 0);
         }
 
@@ -96,7 +104,7 @@ namespace EnemyRandomizerMod
             poob.enabled = true;
         }
 
-        protected override void PositionBoss()
+        protected override void SetCustomPositionOnShow()
         {
             gameObject.StickToGround(1f);
         }
@@ -354,7 +362,12 @@ namespace EnemyRandomizerMod
             teleportQ.DisableAction(3);
             teleportQ.DisableAction(7);
             teleportQ.InsertCustomAction(() => {
-                var telePoint = heroPos2d + SpawnerExtensions.GetRayOn(heroPos2d, Vector2.up, 10f).point;
+                var aboveHero = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.up, 10f);
+                var telePoint = heroPosWithOffset;
+                if (aboveHero.collider != null && aboveHero.distance > 2f)
+                {
+                    telePoint = telePoint + Vector2.up * (aboveHero.distance - 2f);
+                }
                 control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
                 transform.position = telePoint;
                 control.FsmVariables.GetFsmVector3("Teleport Point").Value = transform.position;
@@ -984,22 +997,22 @@ namespace EnemyRandomizerMod
             yield break;
         }
 
-        protected virtual IEnumerator TimeoutState(string currentState, string endEvent, float timeout)
-        {
-            while (control.ActiveStateName == currentState)
-            {
-                timeout -= Time.deltaTime;
+        //protected virtual IEnumerator TimeoutState(string currentState, string endEvent, float timeout)
+        //{
+        //    while (control.ActiveStateName == currentState)
+        //    {
+        //        timeout -= Time.deltaTime;
 
-                if(timeout <= 0f)
-                {
-                    control.SendEvent(endEvent);
-                    break;
-                }
-                yield return new WaitForEndOfFrame();
-            }
+        //        if(timeout <= 0f)
+        //        {
+        //            control.SendEvent(endEvent);
+        //            break;
+        //        }
+        //        yield return new WaitForEndOfFrame();
+        //    }
 
-            yield break;
-        }
+        //    yield break;
+        //}
 
         protected virtual IEnumerator StartAndCheckTunnelingState(string currentState, bool isMovingLeft)
         {
@@ -1034,7 +1047,7 @@ namespace EnemyRandomizerMod
             yield break;
         }
 
-        protected override void PositionBoss()
+        protected override void SetCustomPositionOnShow()
         {            
             gameObject.StickToGroundX(.3f);
             UpdateBurrowEffect();
@@ -1098,17 +1111,89 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Control";
 
+        int p1HP;
+        int p2HP => (int)(p1HP * .4f);
+        int p3HP => (int)(p2HP * .6f);
+
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
+            var corpseRemover = thisMetadata.Corpse.AddComponent<CorpseRemover>();
+            corpseRemover.replacementEffect = "Death Explode Boss";
+
+            if (p1HP <= 0)
+                p1HP = thisMetadata.CurrentHP;
+
+            var roar = control.GetState("Roar");
+            roar.AddCustomAction(() => {
+                var bee = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position + Vector3.up, "Bee Dropper", null, true);
+                var beeBody = bee.GetComponent<Rigidbody2D>();
+                if(beeBody != null)
+                {
+                    beeBody.velocity = UnityEngine.Random.insideUnitCircle * 5f;
+                    if (beeBody.velocity.y < 0) { beeBody.velocity = new Vector2(beeBody.velocity.x, -beeBody.velocity.y); }
+                }
+            });
+            roar.AddAction(new Wait() { time = 0.25f });
+            roar.AddCustomAction(() => {
+                var bee = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position + Vector3.up, "Bee Dropper", null, true);
+                var beeBody = bee.GetComponent<Rigidbody2D>();
+                if (beeBody != null)
+                {
+                    beeBody.velocity = UnityEngine.Random.insideUnitCircle * 5f;
+                    if (beeBody.velocity.y < 0) { beeBody.velocity = new Vector2(beeBody.velocity.x, -beeBody.velocity.y); }
+                }
+            });
+            roar.AddAction(new Wait() { time = 0.25f });
+            roar.AddCustomAction(() => {
+                var bee = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position + Vector3.up, "Bee Dropper", null, true);
+                var beeBody = bee.GetComponent<Rigidbody2D>();
+                if (beeBody != null)
+                {
+                    beeBody.velocity = UnityEngine.Random.insideUnitCircle * 5f;
+                    if (beeBody.velocity.y < 0) { beeBody.velocity = new Vector2(beeBody.velocity.x, -beeBody.velocity.y); }
+                }
+            });
+            roar.AddAction(new Wait() { time = 0.25f });
+            roar.AddCustomAction(() => {
+                var bee = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position + Vector3.up, "Bee Dropper", null, true);
+                var beeBody = bee.GetComponent<Rigidbody2D>();
+                if (beeBody != null)
+                {
+                    beeBody.velocity = UnityEngine.Random.insideUnitCircle * 5f;
+                    if (beeBody.velocity.y < 0) { beeBody.velocity = new Vector2(beeBody.velocity.x, -beeBody.velocity.y); }
+                }
+            });
+            roar.AddCustomAction(() => { control.SendEvent("FINISHED"); });
+
+
+            var aimL = control.GetState("Aim L");
+            aimL.DisableAction(3);
+            aimL.AddCustomAction(() => {
+                if (SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.right, 10f).distance < 8f)
+                    control.SendEvent("R");
+                else
+                    control.SendEvent("FINISHED");
+            });
+
+            var aimR = control.GetState("Aim R");
+            aimR.DisableAction(3);
+            aimR.AddCustomAction(() => {
+                if (SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.left, 10f).distance < 8f)
+                    control.SendEvent("L");
+                else
+                    control.SendEvent("FINISHED");
+            });
+
             this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
             this.AddResetToStateOnHide(control, "Init");
         }
-        
-        protected virtual void SetupCorpse()
-        {
 
+        protected override void ScaleHP()
+        {
+            base.ScaleHP();
+            p1HP = thisMetadata.CurrentHP;
         }
     }
 
@@ -1126,28 +1211,61 @@ namespace EnemyRandomizerMod
     /////
     public class GrimmBossControl : FSMBossAreaControl
     {
+        public override bool explodeOnDeath => true;
+
         public override string FSMName => "Control";
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
+            var corpse = thisMetadata.Corpse;
+            if(corpse != null)
+            {
+                var cr = corpse.AddComponent<CorpseRemover>();
+                cr.replacementEffect = "Death Explode Boss";
+            }
+
+            if (thisMetadata.CurrentHP <= 0)
+                thisMetadata.CurrentHP = 800;
+
+            var cx = gameObject.LocateMyFSM("constrain_x");
+            if (cx != null)
+                Destroy(cx);
+            var cy = gameObject.LocateMyFSM("Constrain_Y");
+            if (cy != null)
+                Destroy(cy);
+
+
             //control.ChangeTransition("Init", "FINISHED", "GG Bow");
             control.ChangeTransition("Stun", "FINISHED", "Reformed");
             control.ChangeTransition("Death Explode", "FINISHED", "Send Death Event");
 
-            var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
-            //bpsp.x.Value = HeroX;
-            //bpsp.x.Value = HeroY + 15f;
+            var balloonPos = control.GetState("Balloon Pos");
+            balloonPos.DisableAction(0);
+            balloonPos.InsertCustomAction(() =>
+            {
+                var pos = GetRandomPositionInLOSofPlayer(1f, 30f, 2f, 6f);
+                transform.position = pos;
+            }, 0);
 
-            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            //{
-            //    {"AD Max X" , x => edgeR},
-            //    {"AD Min X" , x => edgeL},
-            //    {"Max X" , x => edgeR},
-            //    {"Min X" , x => edgeL},
-            //    {"Ground Y" , x => floorY},
-            //};
+
+            var moveChoice = control.GetState("Move Choice");
+            moveChoice.InsertCustomAction(() => {
+                control.FsmVariables.GetFsmFloat("Ground Y").Value = SpawnerExtensions.GetGroundRay(HeroController.instance.gameObject).point.y;
+                control.FsmVariables.GetFsmFloat("AD Min X").Value = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.left, 20f).point.x;
+                control.FsmVariables.GetFsmFloat("AD Max X").Value = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.right, 20f).point.x;
+                control.FsmVariables.GetFsmFloat("AD Mid X").Value = heroPosWithOffset.x;
+                control.FsmVariables.GetFsmFloat("Min X").Value = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.left, 20f).point.x;
+                control.FsmVariables.GetFsmFloat("Max X").Value = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.right, 20f).point.x;
+            }, 0);
+
+
+            var adFire = control.GetState("AD Fire");
+            AddTimeoutAction(adFire, "LAND", 1f);
+
+            var adEdge = control.GetState("AD Edge");
+            AddTimeoutAction(adFire, "LAND", 1f);
 
             this.InsertHiddenState(control, "Init", "FINISHED", "GG Bow");
             this.AddResetToStateOnHide(control, "Init");
@@ -1175,23 +1293,53 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
+
+            var corpse = thisMetadata.Corpse;
+            if (corpse != null)
+            {
+                var cr = corpse.AddComponent<CorpseRemover>();
+                cr.replacementEffect = "Death Explode Boss";
+            }
+
+            if (thisMetadata.CurrentHP <= 0)
+                thisMetadata.CurrentHP = 800;
+
+            var cx = gameObject.LocateMyFSM("constrain_x");
+            if (cx != null)
+                Destroy(cx);
+            var cy = gameObject.LocateMyFSM("Constrain_Y");
+            if (cy != null)
+                Destroy(cy);
+
             //control.ChangeTransition("Set Balloon HP", "FINISHED", "Tele Out");
             control.ChangeTransition("Stun", "FINISHED", "Reformed");
             control.ChangeTransition("Death Start", "FINISHED", "Death Explode");
 
-            var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
-            //bpsp.x.Value = HeroX;
-            //bpsp.x.Value = HeroY + 15f;
+            var balloonPos = control.GetState("Balloon Pos");
+            balloonPos.DisableAction(0);
+            balloonPos.InsertCustomAction(() =>
+            {
+                var pos = GetRandomPositionInLOSofPlayer(1f, 30f, 2f, 6f);
+                transform.position = pos;
+            }, 0);
 
-            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            //{
-            //    {"AD Max X" , x => edgeR},
-            //    {"AD Min X" , x => edgeL},
-            //    {"Max X" , x => edgeR},
-            //    {"Min X" , x => edgeL},
-            //    {"Mid Y" , x => MidY},
-            //    {"Ground Y" , x => floorY},
-            //};
+
+            var moveChoice = control.GetState("Move Choice");
+            moveChoice.InsertCustomAction(() => {
+                control.FsmVariables.GetFsmFloat("Ground Y").Value = SpawnerExtensions.GetGroundRay(HeroController.instance.gameObject).point.y;
+                control.FsmVariables.GetFsmFloat("AD Min X").Value = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.left, 20f).point.x;
+                control.FsmVariables.GetFsmFloat("AD Max X").Value = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.right, 20f).point.x;
+                control.FsmVariables.GetFsmFloat("AD Mid X").Value = heroPosWithOffset.x;
+                control.FsmVariables.GetFsmFloat("Min X").Value = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.left, 20f).point.x;
+                control.FsmVariables.GetFsmFloat("Max X").Value = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.right, 20f).point.x;
+            }, 0);
+
+
+            var adFire = control.GetState("AD Fire");
+            AddTimeoutAction(adFire, "LAND", 1f);
+
+            var adEdge = control.GetState("AD Edge");
+            AddTimeoutAction(adFire, "LAND", 1f);
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Tele Out");
             this.AddResetToStateOnHide(control, "Init");
@@ -1212,33 +1360,32 @@ namespace EnemyRandomizerMod
     /////
     public class HollowKnightBossControl : FSMBossAreaControl
     {
-        public override string FSMName => "Control";
-
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
+            var phaseControl = gameObject.LocateMyFSM("Phase Control");
+            if (phaseControl != null)
+                Destroy(phaseControl);
 
-
-            //control.ChangeTransition("Set Balloon HP", "FINISHED", "Tele Out");
-            //control.ChangeTransition("Stun", "FINISHED", "Reformed");
-            //control.ChangeTransition("Death Start", "FINISHED", "Death Explode");
+            var corpse = thisMetadata.Corpse;
+            if (corpse != null)
+            {
+                var cr = corpse.AddComponent<CorpseRemover>();
+                cr.replacementEffect = "Death Explode Boss";
+            }
 
             //TEMP
             this.OverrideState(control, "Long Roar End", () => Destroy(gameObject));
 
-            //var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
-            //bpsp.x.Value = HeroX;
-            //bpsp.x.Value = HeroY + 15f;
-
-            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            //{
-            //    {"Right X" , x => edgeR},
-            //    {"Left X" , x => edgeL},
-            //    {"TeleRange Max" , x => edgeR},
-            //    {"TeleRange Min" , x => edgeL},
-            //    {"PuppetSlam Y" , x => floorY},
-            //};
+            var movetest = control.GetState("Move test");
+            movetest.InsertCustomAction(() => {
+                control.FsmVariables.GetFsmFloat("PuppetSlam Y").Value = SpawnerExtensions.GetGroundRay(HeroController.instance.gameObject).point.y;
+                control.FsmVariables.GetFsmFloat("Left X").Value = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.left, 20f).point.x;
+                control.FsmVariables.GetFsmFloat("Right X").Value = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.right, 20f).point.x;
+                control.FsmVariables.GetFsmFloat("TeleRange Min").Value = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.left, 20f).point.x;
+                control.FsmVariables.GetFsmFloat("TeleRange Max").Value = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.right, 20f).point.x;
+            }, 0);
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Init Idle");
             this.AddResetToStateOnHide(control, "Init");
@@ -1259,15 +1406,11 @@ namespace EnemyRandomizerMod
     /////
     public class HKPrimeControl : FSMBossAreaControl
     {
-        public override string FSMName => "Control";
-
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-
-
-            control.ChangeTransition("Intro 6", "FINISHED", "ntro land End");
+            control.ChangeTransition("Intro 6", "FINISHED", "Intro land End");
             //control.ChangeTransition("Stun", "FINISHED", "Reformed");
             //control.ChangeTransition("Death Start", "FINISHED", "Death Explode");
 
@@ -1313,25 +1456,7 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-
-
-            //control.ChangeTransition("Intro 6", "FINISHED", "Intro Roar End");
-            //control.ChangeTransition("Stun", "FINISHED", "Reformed");
-            //control.ChangeTransition("Death Start", "FINISHED", "Death Explode");
-
-            //TEMP
-            //this.OverrideState(control, "Long Roar End", () => Destroy(gameObject));
-
-            //var bpsp = control.GetState("Balloon Pos").GetFirstActionOfType<SetPosition>();
-            //bpsp.x.Value = HeroX;
-            //bpsp.x.Value = HeroY + 15f;
-
-            //CustomFloatRefs = new Dictionary<string, Func<FSMAreaControlEnemy, float>>()
-            //{
-            //    {"Mid Y" , x => edgeL + (edgeR-edgeL)/2f},
-            //    {"Left Pos" , x => edgeL},
-            //    {"Right Pos" , x => edgeR},
-            //};
+            //TODO: make lurker balls killable
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Get High");
             this.AddResetToStateOnHide(control, "Init");
@@ -1802,7 +1927,7 @@ namespace EnemyRandomizerMod
         }
 
 
-        protected override void PositionBoss()
+        protected override void SetCustomPositionOnShow()
         {
             gameObject.StickToGroundX(.3f);
             UpdateBurrowEffect();
@@ -2436,7 +2561,7 @@ namespace EnemyRandomizerMod
 
             var landy = control.GetState("Land Y");
             landy.DisableAction(0);
-            landy.AddCustomAction(() => { PositionBoss(); });
+            landy.AddCustomAction(() => { SetCustomPositionOnShow(); });
 
             var hardland = control.GetState("Hard Land");
             hardland.InsertCustomAction(() => {
@@ -2477,7 +2602,7 @@ namespace EnemyRandomizerMod
             poob.enabled = true;
         }
 
-        protected override void PositionBoss()
+        protected override void SetCustomPositionOnShow()
         {
             gameObject.StickToGround(1f);
         }
@@ -2723,7 +2848,7 @@ namespace EnemyRandomizerMod
 
             var landy = control.GetState("Land Y");
             landy.DisableAction(0);
-            landy.AddCustomAction(() => { PositionBoss(); });
+            landy.AddCustomAction(() => { SetCustomPositionOnShow(); });
 
             var hardland = control.GetState("Hard Land");
             hardland.InsertCustomAction(() => {
@@ -2806,7 +2931,7 @@ namespace EnemyRandomizerMod
             poob.enabled = true;
         }
 
-        protected override void PositionBoss()
+        protected override void SetCustomPositionOnShow()
         {
             gameObject.StickToGround(1f);
         }
@@ -3385,9 +3510,9 @@ namespace EnemyRandomizerMod
             base.Show();
         }
 
-        protected override void PositionBoss()
+        protected override void SetCustomPositionOnShow()
         {
-            base.PositionBoss();
+            base.SetCustomPositionOnShow();
             control.FsmVariables.GetFsmFloat("Start X").Value = transform.position.x;
             control.FsmVariables.GetFsmFloat("Start Y").Value = transform.position.y;
         }
@@ -3754,7 +3879,7 @@ namespace EnemyRandomizerMod
             });
         }
 
-        protected override void PositionBoss()
+        protected override void SetCustomPositionOnShow()
         {
             gameObject.StickToGround(-1f);
         }
@@ -3864,6 +3989,7 @@ namespace EnemyRandomizerMod
 
         protected override void OnEnable()
         {
+            base.OnEnable();
             ModHooks.BeforeSceneLoadHook -= MODHOOK_BeforeSceneLoad;
             ModHooks.BeforeSceneLoadHook += MODHOOK_BeforeSceneLoad;
             On.HutongGames.PlayMaker.FsmState.OnEnter -= FsmState_OnEnter;

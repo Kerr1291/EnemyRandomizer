@@ -11,10 +11,8 @@ using System;
 namespace EnemyRandomizerMod
 {
 
-    public class ZoteCrewFatControl : FSMBossAreaControl
+    public class ZoteCrewFatControl : FSMAreaControlEnemy
     {
-        public override string FSMName => "Control";
-
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);

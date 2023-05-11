@@ -20,7 +20,7 @@ namespace EnemyRandomizerMod
 
     public class DefaultClimberControl : DefaultSpawnedEnemyControl
     {
-        protected override void OnEnable()
+        protected override void SetDefaultPosition()
         {
             gameObject.StickToClosestSurface(100f, extraOffsetScale: 0.5f, alsoStickCorpse: false, flipped: false);
         }

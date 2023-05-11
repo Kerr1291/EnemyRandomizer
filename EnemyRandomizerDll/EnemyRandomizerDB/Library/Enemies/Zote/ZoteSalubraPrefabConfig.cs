@@ -10,10 +10,8 @@ using System;
 
 namespace EnemyRandomizerMod
 {
-    public class ZoteSalubraControl : FSMBossAreaControl
+    public class ZoteSalubraControl : FSMAreaControlEnemy
     {
-        public override string FSMName => "Control";
-
         public float startYPos;
         public float maxSuck = 5f;
 
@@ -25,7 +23,7 @@ namespace EnemyRandomizerMod
             geoRNG.Reset();
 
             thisMetadata.EnemyHealthManager.hp = other.DefaultHP;
-            thisMetadata.EnemyHealthManager.SetGeoLarge(geoRNG.Rand(1, 5));
+            thisMetadata.EnemyHealthManager.SetGeoLarge(geoRNG.Rand(1, 15));
             thisMetadata.EnemyHealthManager.SetGeoMedium(geoRNG.Rand(1, 5));
 
             var init = control.GetState("Init");
@@ -89,8 +87,7 @@ namespace EnemyRandomizerMod
 
             suck.InsertCustomAction(() => {
 
-                float dist = (heroPos2d - pos2d).magnitude;
-                if(dist > maxSuck)
+                if(DistanceToPlayer() > maxSuck)
                 {
                     control.SendEvent("FINISHED");
                 }

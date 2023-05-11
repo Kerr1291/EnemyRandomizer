@@ -103,6 +103,14 @@ namespace EnemyRandomizerMod
         }
     }
 
+    public class ExplodeOnCorpseRemoved : MonoBehaviour
+    {
+        protected virtual void OnDestroy()
+        {
+            EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Gas Explosion Recycle L", null, true);
+        }
+    }
+
     public class PositionFixer : MonoBehaviour
     {
         public Vector2 positionLock;

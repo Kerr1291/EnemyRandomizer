@@ -39,7 +39,9 @@ namespace EnemyRandomizerMod
             }
         }
 
-        //Params: Position, Object Name, (Optional: null or Object Replacement Name), bool: SetActive? -- Returns the created (or replaced) game object using the randomizer's custom methods
+        /// <summary>
+        /// Params: Position, Object Name, (Optional: null or Object Replacement Name), bool: SetActive? -- Returns the created (or replaced) game object using the randomizer's custom methods
+        /// </summary>
         public static Func<Vector3, string, string, bool, GameObject> CustomSpawnWithLogic;
 
         /// <summary>

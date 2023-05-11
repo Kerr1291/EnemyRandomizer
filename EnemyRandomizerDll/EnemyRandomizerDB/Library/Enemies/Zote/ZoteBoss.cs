@@ -46,7 +46,7 @@ namespace EnemyRandomizerMod
 
                 var inAir = corpseFSM.GetState("In Air");
                 DisableActions(inAir, 0);
-                inAir.AddCustomAction(() => { StartCoroutine(TimeoutState("In Air", "LAND", 2f)); });
+                AddTimeoutAction(inAir, "LAND", 2f);
 
                 var burst = corpseFSM.GetState("Burst");
                 burst.DisableAction(5);
@@ -59,26 +59,7 @@ namespace EnemyRandomizerMod
             var roara = control.GetState("Roar Antic");
             roara.ChangeTransition("FINISHED", "Roar End");
 
-            Dev.Log("getting death effects");
-            var deathEffects = gameObject.GetComponentInChildren<EnemyDeathEffectsUninfected>(true);
-            deathEffects.doKillFreeze = false;
-        }
-
-        protected virtual IEnumerator TimeoutState(string currentState, string endEvent, float timeout)
-        {
-            while (control.ActiveStateName == currentState)
-            {
-                timeout -= Time.deltaTime;
-
-                if (timeout <= 0f)
-                {
-                    control.SendEvent(endEvent);
-                    break;
-                }
-                yield return new WaitForEndOfFrame();
-            }
-
-            yield break;
+            DisableKillFreeze();
         }
     }
         

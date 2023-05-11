@@ -15,19 +15,35 @@ namespace EnemyRandomizerMod
 {
     public abstract class FlamebearerControl : FSMAreaControlEnemy
     {
-        public override string FSMName => gameObject.GetComponent<PlayMakerFSM>().FsmName; //not actually sure
-
         public abstract int Level { get; }
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
+            var hpScaler = gameObject.LocateMyFSM("hp_scaler");
+            if (hpScaler != null)
+            {
+                Destroy(hpScaler);
+            }
+
             gameObject.GetComponent<BoxCollider2D>().enabled = true;
 
             var init = control.GetState("Init");
             init.DisableAction(2);
             init.AddCustomAction(() => { control.SendEvent("START"); });
+
+            var setLevel = control.GetState("Set Level");
+            OverrideState(control, "Set Level", () => {
+                if (Level == 1)
+                    control.SendEvent("Level 1");
+                else if (Level == 1)
+                    control.SendEvent("Level 2");
+                else if (Level == 1)
+                    control.SendEvent("Level 3");
+                else 
+                    control.SendEvent("FINISHED");
+            });
 
             float hpScale = GameObject.FindObjectsOfType<FlamebearerControl>().Length;
 
