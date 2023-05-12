@@ -524,9 +524,8 @@ namespace EnemyRandomizerMod
     /////
     public class CeilingDropperControl : DefaultSpawnedEnemyControl
     {
-        protected override void OnEnable()
+        protected override void SetDefaultPosition()       
         {
-            base.OnEnable();
             var roof = SpawnerExtensions.GetRoof(gameObject);
             if (roof.distance > 200f)
             {
@@ -979,6 +978,7 @@ namespace EnemyRandomizerMod
     /////
     public class TinySpiderControl : DefaultSpawnedEnemyControl
     {
+        //not the kind that shoots
     }
 
 

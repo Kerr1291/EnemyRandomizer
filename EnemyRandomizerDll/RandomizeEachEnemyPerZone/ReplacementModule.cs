@@ -88,6 +88,8 @@ namespace EnemyRandomizerMod
             bool isStatic = !originalObject.IsMobile;
             bool isWalker = originalObject.IsWalker;
             bool isClimbing = originalObject.IsClimbing;
+            bool isBattleArena = originalObject.IsBattleEnemy;
+            bool isBoss = originalObject.IsBoss;
 
             IEnumerable<PrefabObject> possible = validReplacements;
             if (originalObject.IsPogoLogic)
@@ -104,7 +106,7 @@ namespace EnemyRandomizerMod
                 }
             }
 
-            if (MatchReplacements)
+            if (!originalObject.IsPogoLogic && MatchReplacements)
             {
                 IEnumerable<ObjectMetadata> pMetas;
 
@@ -117,35 +119,53 @@ namespace EnemyRandomizerMod
                     return m;
                 });
 
-                if (isFlyer)
+                if(isBoss)
                 {
-                    pMetas = pMetas.Where(x => x.IsFlying);
+                    pMetas = pMetas.Where(x => x.IsBoss);
                 }
                 else
                 {
-                    pMetas = pMetas.Where(x => !x.IsFlying);
+                    pMetas = pMetas.Where(x => !x.IsBoss);
 
-                    if (isWalker)
+                    if (isFlyer)
                     {
-                        pMetas = pMetas.Where(x => x.IsWalker);
+                        pMetas = pMetas.Where(x => x.IsFlying);
+                    }
+                    else
+                    {
+                        pMetas = pMetas.Where(x => !x.IsFlying);
+
+                        if (isWalker)
+                        {
+                            pMetas = pMetas.Where(x => x.IsWalker);
+                        }
+
+                        if (isClimbing)
+                        {
+                            pMetas = pMetas.Where(x => x.IsClimbing);
+                        }
                     }
 
-                    if(isClimbing)
+                    if (isStatic)
                     {
-                        pMetas = pMetas.Where(x => x.IsClimbing);
+                        pMetas = pMetas.Where(x => !x.IsMobile);
                     }
-                }
-
-                if(isStatic)
-                {
-                    pMetas = pMetas.Where(x => !x.IsMobile);
                 }
 
                 possible = pMetas.Select(x => x.ObjectPrefab);
-
-                return possible.ToList();
             }
 
+            if(!originalObject.IsPogoLogic && isBattleArena)
+            {
+                possible = possible.Where(x =>
+                {
+                    if(MetaDataTypes.SafeForArenas.TryGetValue(x.prefabName, out var isok))
+                    {
+                        return isok;
+                    }
+                    return false;
+                }).ToList();
+            }
 
             return possible.Where(x => !MetaDataTypes.ReplacementEnemiesToSkip.Contains(x.prefabName)).ToList();
         }

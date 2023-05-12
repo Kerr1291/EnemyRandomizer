@@ -234,11 +234,46 @@ namespace EnemyRandomizerMod
             if (gameObject.GetComponent<Collider2D>() == null)
                 return false;
 
+            if (MetaDataTypes.InGroundEnemy.Contains(EnemyRandomizerDatabase.ToDatabaseKey(gameObject.name)))
+            {
+                gameObject.transform.position = gameObject.transform.position.ToVec2() + GetUpFromSelfAngle(gameObject.transform.localEulerAngles.z, false) * 2f;
+            }
+
             RaycastHit2D closest = GetGround(gameObject);
             SetPositionToRayCollisionPoint(gameObject, closest, extraOffsetScale);
             float newAngle = SetRotationToRayCollisionNormal(gameObject, closest, false);
 
             return true;
+        }
+
+        public static Vector2 GetUpFromSelfAngle(float selfAngle, bool isFlipped)
+        {
+            Vector2 up = Vector2.zero;
+
+            float angle = selfAngle % 360f;
+            if (!isFlipped)
+            {
+                angle = (angle + 180f) % 360f;
+            }
+
+            if (angle < 5f && angle < 355f)
+            {
+                up = Vector2.up;
+            }
+            else if (angle > 85f && angle < 95f)
+            {
+                up = Vector2.left;
+            }
+            else if (angle > 175f && angle < 185f)
+            {
+                up = Vector2.down;
+            }
+            else if (angle > 265f || angle < 275f)
+            {
+                up = Vector2.right;
+            }
+
+            return up;
         }
 
         public static Vector2 ToVec2(this Vector3 v)

@@ -841,10 +841,21 @@ namespace EnemyRandomizerMod
             get => canProcessObject == null ? false : canProcessObject.Value;
         }
 
+        public bool IsInGroundEnemy
+        {
+            get
+            {
+                return MetaDataTypes.InGroundEnemy.Contains(DatabaseName);
+            }
+        }
+
         public ReactiveProperty<string> playerDataName { get; protected set; }
         public string PlayerDataName
         {
-            get => playerDataName == null ? null : playerDataName.Value;
+            get
+            {
+                return playerDataName == null ? null : playerDataName.Value;
+            }
             set
             {
                 IsCustomPlayerDataName = true;
@@ -1074,6 +1085,7 @@ namespace EnemyRandomizerMod
                     string result = GetCustomPlayerDataNameFromReplacement(ObjectThisReplaced.DatabaseName);
                     if(!string.IsNullOrEmpty(result))
                     {
+                        //this sets custom to true
                         PlayerDataName = result;
                     }
                     else
@@ -1111,6 +1123,7 @@ namespace EnemyRandomizerMod
         {
             if (!IsCustomPlayerDataName)
                 return;
+
 
             PlayerData playerData = GameManager.instance.playerData;
             string text = "killed" +   PlayerDataName;
@@ -1868,6 +1881,18 @@ namespace EnemyRandomizerMod
             "Ruins Flying Sentry Javelin",
             "Ghost Warrior Xero",
             "Ghost Warrior Markoth",
+            "Moss Charger",
+            "Mega Moss Charger"
+        };
+
+        public static List<string> InGroundEnemy = new List<string>()
+        {
+            "Pigeon",
+            "Dung Defender",
+            "White Defender",
+            "Plant Trap",
+            "Moss Charger",
+            "Mega Moss Charger"
         };
 
         public static List<string> RandoControlledPooling = new List<string>()
@@ -1881,6 +1906,9 @@ namespace EnemyRandomizerMod
             "Zote Balloon Ordeal",
             "Dream Mage Lord Phase2",
             "Mage Lord Phase2",
+            "Mega Jellyfish",
+            "Mega Jellyfish GG",
+            "Radiance",
             "Corpse Garden Zombie", //don't spawn this, it's just a corpse
         };
 
@@ -2160,6 +2188,234 @@ namespace EnemyRandomizerMod
             {"Jelly Egg Bomb", "JellyEggBomb"},
             {"Worm", "ColWorm"},
             {"Bee Dropper", "Pigeon"}
+        };
+
+
+
+
+        public static Dictionary<string, bool> SafeForArenas = new Dictionary<string, bool>()
+        {
+            {"Health Cocoon", false},
+            {"Health Scuttler", false},
+            {"Orange Scuttler", false},
+            {"Abyss Tendril", false},
+            {"Flamebearer Small", false},
+            {"Flamebearer Med", false},
+            {"Flamebearer Large", false},
+            {"Mosquito", true},
+            {"Colosseum_Armoured_Roller", true},
+            {"Colosseum_Miner", true},
+            {"Zote Boss", true},
+            {"Bursting Bouncer", true},
+            {"Super Spitter", true},
+            {"Super Spitter Col", true},
+            {"Giant Fly Col", true},
+            {"Colosseum_Shield_Zombie", true},
+            {"Buzzer Col", true},
+            {"Blobble", true},
+            {"Colosseum_Armoured_Mosquito", true},
+            {"Colosseum_Flying_Sentry", true},
+            {"Hopper", true},
+            {"Giant Hopper", true},
+            {"Ceiling Dropper Col", true},
+            {"Colosseum_Worm", true},
+            {"Spitting Zombie", true},
+            {"Bursting Zombie", true},
+            {"Angry Buzzer", true},
+            {"Mawlek Col", true},
+            {"Mantis Heavy", true},
+            {"Lesser Mawlek", true},
+            {"Mantis Heavy Flyer", true},
+            {"Colosseum Grass Hopper", true},
+            {"Fly", true},
+            {"Roller", true},
+            {"Hatcher Baby", false},
+            {"Roller R", false},
+            {"Spitter R", false},
+            {"Buzzer R", false},
+            {"Mossman_Runner", true},
+            {"Jellyfish", true},
+            {"Lil Jellyfish", false},
+            {"Mantis Flyer Child", false},
+            {"Ghost Warrior Slug", false},
+            {"Corpse Garden Zombie", false},
+            {"Baby Centipede", true},
+            {"Zombie Spider 2", true},
+            {"Zombie Spider 1", true},
+            {"Tiny Spider", true},
+            {"Shade Sibling", true},
+            {"Flukeman Top", true},
+            {"Flukeman Bot", true},
+            {"White Defender", false},
+
+
+            {"Jellyfish GG", false},
+            {"Colosseum_Armoured_Roller R", false},
+            {"Colosseum_Armoured_Mosquito R", false},
+            {"Super Spitter R", false},
+            {"Crawler", true},
+            {"Buzzer", true},
+            {"Giant Buzzer Col", true},
+            {"Mega Fat Bee", true},
+            {"Lobster", true},
+            {"Mage Knight", true},
+            {"Mage", true},
+            {"Electric Mage", true},
+            {"Mage Blob", true},
+            {"Lancer", true},
+            {"Climber", true},
+            {"Zombie Runner", true},
+            {"Mender Bug", false},
+            {"Spitter", true},
+            {"Zombie Hornhead", true},
+            {"Giant Fly", true},
+            {"Zombie Barger", true},
+            {"Mawlek Body", true},
+            {"False Knight New", true},
+            {"Prayer Slug", true},
+            {"Blocker", true},
+            {"Zombie Shield", true},
+            {"Hatcher", true},
+            {"Zombie Leaper", true},
+            {"Zombie Guard", true},
+            {"Zombie Myla", true},
+            {"Egg Sac", false},
+            {"Royal Zombie Fat", true},
+            {"Royal Zombie", true},
+            {"Royal Zombie Coward", true},
+            {"Gorgeous Husk", true},
+            {"Ceiling Dropper", true},
+            {"Ruins Sentry", true},
+            {"Ruins Flying Sentry", true},
+            {"Ruins Flying Sentry Javelin", true},
+            {"Ruins Sentry Fat", true},
+            {"Mage Balloon", true},
+            {"Mage Lord", true},
+            {"Mage Lord Phase2", false},
+            {"Great Shield Zombie", true},
+            {"Great Shield Zombie bottom", false},
+            {"Black Knight", true},
+            {"Jar Collector", false},
+            {"Moss Walker", true},
+            {"Plant Trap", true},
+            {"Mossman_Shaker", true},
+            {"Pigeon", false},
+            {"Hornet Boss 1", true},
+            {"Acid Flyer", false},
+            {"Moss Charger", false},
+            {"Acid Walker", false},
+            {"Plant Turret", false},
+            {"Plant Turret Right", false},
+            {"Fat Fly", true},
+            {"Giant Buzzer", true},
+            {"Moss Knight", true},
+            {"Grass Hopper", true},
+            {"Lazy Flyer Enemy", true},
+            {"Mega Moss Charger", false},
+
+
+
+            {"Ghost Warrior No Eyes", false},
+            {"Fungoon Baby", true},
+            {"Mushroom Turret", false},
+            {"Fungus Flyer", true},
+            {"Zombie Fungus B", true},
+            {"Fung Crawler", true},
+            {"Mushroom Brawler", true},
+            {"Mushroom Baby", true},
+            {"Mushroom Roller", true},
+            {"Zombie Fungus A", true},
+            {"Mantis", true},
+            {"Ghost Warrior Hu", false},
+            {"Jellyfish Baby", false},
+            {"Moss Flyer", true},
+            {"Garden Zombie", true},
+            {"Mantis Traitor Lord", true},
+            {"Moss Knight Fat", true},
+            {"Mantis Heavy Spawn", true},
+            {"Ghost Warrior Marmu", true},
+            {"Mega Jellyfish", false},
+            {"Ghost Warrior Xero", false},
+            {"Grave Zombie", true},
+            {"Crystal Crawler", true},
+            {"Zombie Miner", true},
+            {"Crystal Flyer", true},
+            {"Crystallised Lazer Bug", false},
+            {"Mines Crawler", true},
+            {"Mega Zombie Beam Miner", true},
+            {"Zombie Beam Miner", true},
+            {"Zombie Beam Miner Rematch", true},
+            {"Spider Mini", true},
+            {"Zombie Hornhead Sp", true},
+            {"Zombie Runner Sp", true},
+            {"Centipede Hatcher", true},
+            {"Mimic Spider", true},
+            {"Slash Spider", true},
+            {"Spider Flyer", true},
+            {"Ghost Warrior Galien", false},
+            {"Blow Fly", true},
+            {"Bee Hatchling Ambient", true},
+            {"Ghost Warrior Markoth", false},
+            {"Hornet Boss 2", true},
+            {"Abyss Crawler", true},
+            {"Infected Knight", true},
+            {"Parasite Balloon", true},
+            {"Mawlek Turret", true},
+            {"Mawlek Turret Ceiling", true},
+            {"Flip Hopper", true},
+            {"Inflater", true},
+            {"Fluke Fly", true},
+            {"Flukeman", true},
+            {"Dung Defender", false},
+            {"fluke_baby_02", false},
+            {"fluke_baby_01", false},
+            {"fluke_baby_03", false},
+            {"Fluke Mother", true},
+            {"White Palace Fly", true},
+            {"Enemy", true},
+            {"Royal Gaurd", true},
+            {"Zombie Hive", true},
+            {"Bee Stinger", true},
+            {"Big Bee", true},
+            {"Hive Knight", false},
+            {"Grimm Boss", false},
+            {"Nightmare Grimm Boss", false},
+            {"False Knight Dream", true},
+            {"Dream Mage Lord", false},
+            {"Dream Mage Lord Phase2", false},
+            {"Lost Kin", true},
+            {"Zoteling", true},
+            {"Zoteling Buzzer", true},
+            {"Zoteling Hopper", true},
+            {"Zote Balloon", false},
+            {"Grey Prince", true},
+            {"Radiance", false},
+            {"Hollow Knight Boss", true},
+            {"HK Prime", true},
+            {"Pale Lurker", true},
+            {"Oro", true},
+            {"Mato", true},
+            {"Sheo Boss", true},
+            {"Fat Fluke", true},
+            {"Absolute Radiance", true},
+            {"Sly Boss", true},
+            {"Zote Turret", true},
+            {"Zote Balloon Ordeal", false},
+            {"Ordeal Zoteling", false},
+            {"Zote Salubra", false},
+            {"Zote Thwomp", true},
+            {"Zote Fluke", false},
+            {"Zote Crew Normal", true},
+            {"Zote Crew Fat", true},
+            {"Zote Crew Tall", true},
+            {"Hornet Nosk", true},
+            {"Health Scuttler", false},
+            {"Mace Head Bug", false},
+            {"Big Centipede Col", false},
+            {"Laser Turret Frames", false},
+            {"Jelly Egg Bomb", false},
+            {"Worm", false},
+            {"Bee Dropper", false}
         };
     }
 }

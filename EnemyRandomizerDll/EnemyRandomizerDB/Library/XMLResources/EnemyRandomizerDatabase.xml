@@ -660,6 +660,7 @@
     <SceneData name="Fungus2_32">
       <sceneObjects>
         <SceneObject path="Warrior/Ghost Warrior Hu"/>
+        <SceneObject path="Ring Holder"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus2_33">
@@ -737,6 +738,10 @@
     <SceneData name="RestingGrounds_02_boss">
       <sceneObjects>
         <SceneObject path="Warrior/Ghost Warrior Xero"/>
+        <SceneObject path="Warrior/Ghost Warrior Xero/Sword 1"/>
+        <SceneObject path="Warrior/Ghost Warrior Xero/Sword 2"/>
+        <SceneObject path="Warrior/Ghost Warrior Xero/Sword 3"/>
+        <SceneObject path="Warrior/Ghost Warrior Xero/Sword 4"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="RestingGrounds_10">
@@ -1651,6 +1656,11 @@
     <string>Pt Break</string>
   </effectNames>
   <otherNames>
+    <string>Sword 1</string><!--used by ghost warrior xero -->
+    <string>Sword 2</string><!--used by ghost warrior xero -->
+    <string>Sword 3</string><!--used by ghost warrior xero -->
+    <string>Sword 4</string><!--used by ghost warrior xero -->
+    <string>Ring Holder</string><!--used by ghost warrior hu -->
     <string>GG_Statue_Gorb</string><!--scene: GG_Workshop -->
     <string>GG_Statue_Hornet</string><!--scene: GG_Workshop -->
     <string>GG_Statue_GreyPrince</string><!--scene: GG_Workshop -->

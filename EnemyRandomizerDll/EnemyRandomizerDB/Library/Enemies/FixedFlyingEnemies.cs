@@ -404,7 +404,7 @@ namespace EnemyRandomizerMod
             thisMetadata.Rotation = angle;
         }
 
-        protected override void OnEnable()
+        protected override void SetDefaultPosition()
         {
             gameObject.StickToClosestSurface(200f, false);
         }

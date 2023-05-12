@@ -280,6 +280,7 @@ namespace EnemyRandomizerMod
 
             bool isColo = BattleManager.Instance.Value.gameObject.scene.name.Contains("Room_Colosseum_");
             bool isWhitePalace = BattleManager.Instance.Value.gameObject.scene.name.Contains("White_Palace_");
+            bool isFungus1_32 = BattleManager.Instance.Value.gameObject.scene.name.Contains("Fungus1_32");
 
             if (FSM.FsmVariables.Contains("Battle Enemies"))
             {
@@ -324,6 +325,11 @@ namespace EnemyRandomizerMod
                 FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
             }
 
+            if(isFungus1_32 && GameObject.FindObjectsOfType<BattleManagedObject>().Where(x => x != bmo).Count() <= 0)
+            {
+                forceOpenGates = true;
+            }
+
             if (FSM.FsmVariables.Contains("Children"))
             {
                 var be = FSM.FsmVariables.GetFsmInt("Children");
@@ -364,16 +370,29 @@ namespace EnemyRandomizerMod
             }
 
             if (forceOpenGates)
-                OpenGates();
+                OpenGates(isWhitePalace);
         }
 
         public void RegisterEnemy(BattleManagedObject bmo)
         {
         }
 
-        public static void OpenGates()
+        public static void OpenGates(bool isWhitePalace = false)
         {
             PlayMakerFSM.BroadcastEvent("BG OPEN");
+            if(isWhitePalace)
+            {
+                var door2 = GameObject.Find("Palace Gate");
+                if(door2 != null)
+                {
+                    var fsm = door2.LocateMyFSM("control");
+                    if(fsm != null)
+                    {
+                        PlayerData.instance.duskKnightDefeated = true;
+                        fsm.SetState("Open Pause");
+                    }
+                }
+            }
             //var fsms = GameObject.FindObjectsOfType<PlayMakerFSM>();
             //{
             //    fsms

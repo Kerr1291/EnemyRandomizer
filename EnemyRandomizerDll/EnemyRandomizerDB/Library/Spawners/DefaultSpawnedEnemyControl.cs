@@ -165,9 +165,63 @@ namespace EnemyRandomizerMod
             if (thisMetadata.HasAvailableItem)
                 SpawnAndFlingItem();
 
+            //TODO: see if the default works, first
+            //ForceUpdateJournal();
+
             originialMetadata.Dispose();
             thisMetadata.Dispose();
             disposables.Dispose();
+        }
+
+        protected virtual void ForceUpdateJournal()
+        {
+            var pdName = thisMetadata.PlayerDataName;
+            RecordCustomJournalOnDeath(pdName);
+        }
+
+        protected virtual void RecordCustomJournalOnDeath(string pdName)
+        {
+            PlayerData playerData = GameManager.instance.playerData;
+            string text = "killed" + pdName;
+            string text2 = "kills" + pdName;
+            string text3 = "newData" + pdName;
+            bool flag = false;
+            if (!playerData.GetBool(text))
+            {
+                flag = true;
+                playerData.SetBool(text, true);
+                playerData.SetBool(text3, true);
+            }
+            bool flag2 = false;
+            int num = playerData.GetInt(text2);
+            if (num > 0)
+            {
+                num--;
+                playerData.SetInt(text2, num);
+                if (num <= 0)
+                {
+                    flag2 = true;
+                }
+            }
+            if (playerData.hasJournal)
+            {
+                bool flag3 = false;
+                if (flag2)
+                {
+                    flag3 = true;
+                    playerData.journalEntriesCompleted++;
+                }
+                else if (flag)
+                {
+                    flag3 = true;
+                    playerData.journalNotesCompleted++;
+                }
+                if (flag3)
+                {
+                    //in lieu of the proper journal unlock effect, just do something
+                    EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "dream_particle_03", null, true);
+                }
+            }
         }
 
         protected virtual void ExplodeOnDeath()
@@ -221,6 +275,89 @@ namespace EnemyRandomizerMod
             UpdateFSMRefs();
             CheckFSMsUsingHiddenStates();
             UpdateAndTrackChildren();
+        }
+
+        protected IEnumerator DistanceFlyChase(GameObject self, GameObject target, float distance, float acceleration, float speedMax, float? followHeightOffset = null)
+        {
+            var rb2d = self.GetComponent<Rigidbody2D>();
+            if ( rb2d == null)
+            {
+                yield break;
+            }
+            var distanceAway = Mathf.Sqrt(Mathf.Pow( self.transform.position.x -  target.transform.position.x, 2f) + Mathf.Pow( self.transform.position.y -  target.transform.position.y, 2f));
+            Vector2 velocity =  rb2d.velocity;
+            if ( distanceAway >  distance )
+            {
+                if ( self.transform.position.x <  target.transform.position.x)
+                {
+                    velocity.x +=  acceleration ;
+                }
+                else
+                {
+                    velocity.x -=  acceleration ;
+                }
+                if (followHeightOffset == null)
+                {
+                    if ( self.transform.position.y <  target.transform.position.y)
+                    {
+                        velocity.y +=  acceleration ;
+                    }
+                    else
+                    {
+                        velocity.y -=  acceleration ;
+                    }
+                }
+            }
+            else
+            {
+                if ( self.transform.position.x <  target.transform.position.x)
+                {
+                    velocity.x -=  acceleration ;
+                }
+                else
+                {
+                    velocity.x +=  acceleration ;
+                }
+                if (followHeightOffset == null)
+                {
+                    if ( self.transform.position.y <  target.transform.position.y)
+                    {
+                        velocity.y -=  acceleration ;
+                    }
+                    else
+                    {
+                        velocity.y +=  acceleration ;
+                    }
+                }
+            }
+            if (followHeightOffset != null)
+            {
+                if ( self.transform.position.y <  target.transform.position.y + followHeightOffset.Value)
+                {
+                    velocity.y +=  acceleration ;
+                }
+                if ( self.transform.position.y >  target.transform.position.y + followHeightOffset.Value)
+                {
+                    velocity.y -=  acceleration ;
+                }
+            }
+            if (velocity.x >  speedMax )
+            {
+                velocity.x =  speedMax ;
+            }
+            if (velocity.x < - speedMax )
+            {
+                velocity.x = - speedMax ;
+            }
+            if (velocity.y >  speedMax )
+            {
+                velocity.y =  speedMax ;
+            }
+            if (velocity.y < - speedMax )
+            {
+                velocity.y = - speedMax ;
+            }
+             rb2d.velocity = velocity;
         }
 
         protected virtual Func<GameObject> GetRandomAttackSpawnerFunc()
@@ -614,6 +751,11 @@ namespace EnemyRandomizerMod
                     gameObject.StickToGround();
                 }
             }
+            else
+            {
+                if (originialMetadata.IsInGroundEnemy)
+                    transform.position = transform.position.ToVec2() + GetUpFromSelfAngle(false) * 2f;
+            }
         }
 
         protected virtual void AddTimeoutAction(FsmState state, string eventName, float timeout)
@@ -644,6 +786,23 @@ namespace EnemyRandomizerMod
                 if (timeout <= 0f)
                 {
                     control.SendEvent(endEvent);
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+
+            yield break;
+        }
+
+        protected virtual IEnumerator TimeoutState(PlayMakerFSM fsm, string currentState, string endEvent, float timeout)
+        {
+            while (fsm.ActiveStateName == currentState)
+            {
+                timeout -= Time.deltaTime;
+
+                if (timeout <= 0f)
+                {
+                    fsm.SendEvent(endEvent);
                     break;
                 }
                 yield return new WaitForEndOfFrame();

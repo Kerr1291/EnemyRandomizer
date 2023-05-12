@@ -1,70 +1,85 @@
 ﻿
 /* CURRENT TODO
  * 
- * Fix HK prime taking UI
- * Fix NKG death removing UI
- * Uumuu isn't attacking
+ * Fix HK prime taking UI    ---- DONE?
+ * Fix NKG death removing UI    ---- DONE?
+ * Uumuu isn't attacking   --- WILL DO LATER
  * Where are the volt twisters? -- don't activate attacks unless player is nearish -- also reduce amount of attacks based on difficulty of area
- * Fix enemies that replace in-ground/on-ground enemies to 
- * Fix? zote dying removing UI (and white screen)
- * Fix enemy spawners by adding in a hook for replaced enemies
- * Scale projectile size too
- * Fix white palace guard getting stuck after throwing his weapon
- * Fix watcher knights ascending into space
- * NKG dying stole UI?
+ * Fix enemies that replace in-ground/on-ground enemies to  -- SORTA?
+ * Fix? zote dying removing UI (and white screen)  -- FIXED?
+ * Fix enemy spawners by adding in a hook for replaced enemies  -- PARTIALLY FIXED?
+ * Scale projectile size too 
+ * Fix white palace guard getting stuck after throwing his weapon  -- FIXED?
+ * Fix watcher knights ascending into space  -- FIXED?
+ * NKG dying stole UI?  -- FIXED?
  * THK spawned in the ground in the white palace gate scene
  * Some explosive bubble eggs didn't get randomized
- * Add a check on traitor lord so he doesn't ground slam w/e shade cloak
- * Fix radiance
- * Fix THK credits
- * Check if HK Prime makes UI go away
- * Sheo was put in the floor outside colo, check on that
- * Fix bird replacements from being put in the floor
- * Fix infection dropping fly that didn't explode on death
- * Fix tiny spider not shooting in the tutorial_01 area
- * Add POOB to marmu
- * Edit marmu's teleport to not per marmu inside walls
+ * Add a check on traitor lord so he doesn't ground slam w/e shade cloak  -- FIXED?
+ * Fix radiance -- WILL DO LATER, DISABLED FOR NOW
+ * Fix THK credits  -- FIXED?
+ * Check if HK Prime makes UI go away  -- FIXED?
+ * Sheo was put in the floor outside colo, check on that  -- FIXED?
+ * Fix bird replacements from being put in the floor-- FIXED?
+ * Fix infection dropping fly that didn't explode on death-- FIXED?
+ * Fix tiny spider not shooting in the tutorial_01 area-- tiny spider doesnt shoot, mini spider does.... was it mini???
+ * Add POOB to marmu-- FIXED?
+ * Edit marmu's teleport to not per marmu inside walls-- FIXED?
  * Fix plant trap not shooting projectiles
- * Fix the zote vengefly boss room crash
- * Fix arena in fungal1_32
- * Finish adding enemy pogo replacements
- * Fix hp scaling on the bosses that spawn as enemies (pale lurker has full hp??)
- * Fix pale lurker so it doesn't get stuck on corners
- * Fix pale lurker so it the attacks are kill-able by the knight
- * Fix grimm spawn so it doesn't trigger boss music
- * Get the fart sound from fly corpse death
- * Fix nuke fart scaling issue from mushroom farting bug
- * Add a new system for like enemy replacer for enemies that can be randomized
- * Add a new system for replaced enemies so that things that spawn children can get references to their replacements properly
- * Add some kind of pre-check in for randomization to see if the enemy has a valid, non-insta-death placement before trying
- * Add a more sophisticated check for wall/ceiling enemies to search for placements not on slopes (or use the slope normals)
- * Make custom colo logic
- * Fix GPZ scaling when stuff is killed
+ * Fix the zote vengefly boss room crash--??????
+ * Fix arena in fungal1_32--- FIXED?
+ * Finish adding enemy pogo replacements--- FIXED?
+ * Fix hp scaling on the bosses that spawn as enemies (pale lurker has full hp??)-- FIXED?
+ * Fix pale lurker so it doesn't get stuck on corners--LATER
+ * Fix pale lurker so it the attacks are kill-able by the knight--LATER
+ * Fix grimm spawn so it doesn't trigger boss music-- FIXED?
+ * Get the fart sound from fly corpse death--LATER
+ * Fix nuke fart scaling issue from mushroom farting bug--LATER
+ * Add a new system for like enemy replacer for enemies that can be randomized-- FIXED?
+ * Add a new system for replaced enemies so that things that spawn children can get references to their replacements properly-- FIXED?
+ * Add some kind of pre-check in for randomization to see if the enemy has a valid, non-insta-death placement before trying--LATER
+ * Add a more sophisticated check for wall/ceiling enemies to search for placements not on slopes (or use the slope normals)--LATER
+ * 
+ * 
+ * Make custom colo logic -- TODO TONIGHT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * 
+ * 
+ * Fix GPZ scaling when stuff is killed-- FIXED?
+ * 
+ * 
  * Fix ghost boss replacements from not triggering their bools
- * Scale down ghost HP and several other enemies
- * STILL BROKEN: KILLING WHITE PALACE ENEMY GUARD DIDN'T TRIGGER GATE OPENING
- * NEEDS TEST: killing the greenpath moss knight replacement didn't work
- * NEEDS TEST: Ground enemy spawned in first arena and walked outside, gate closed... try teleporting them back in when battle starts if they're outside
- * add lumaflies, bomb eggs, and more to the randomize hazard list
- * re-balance the random scale probabilities
- * fix traitor lord from jumping into ceilings (test?)
- * fix mender bug not being killable
- * fix hornet 2 from not spawning correctly
- * collector stuck in floor -- need some kind of fix
- * fix blugg items
- * fix geo randomizer golden husk not dropping item
- * fix bee/breaking walls in hive
- * fix hazard randos not doing all wp saws + making pits in deepnest
- * fix boss-geo replacement and other rando check interactions
- * "scale down" the difficulty of enemise that replace the pidgeons/fluke eggs
- * Add blue/orange scuttlers to the rando list
- * Add mace bug to the rando list
- * Replace mace bug on false knight's staff with another enemy for luls
- * DISABLE CG TINKERS
+ * 
+ * 
+ * Scale down ghost HP and several other enemies-- FIXED?
+ * STILL BROKEN: KILLING WHITE PALACE ENEMY GUARD DIDN'T TRIGGER GATE OPENING-- FIXED?
+ * NEEDS TEST: killing the greenpath moss knight replacement didn't work -- FIXED?
+ * NEEDS TEST: Ground enemy spawned in first arena and walked outside, gate closed... try teleporting them back in when battle starts if they're outside-- FIXED?
+ * add lumaflies, bomb eggs, and more to the randomize hazard list -- SOME MISSING?
+ * re-balance the random scale probabilities -- LATER
+ * fix traitor lord from jumping into ceilings (test?)-- FIXED?
+ * fix mender bug not being killable --?????
+ * fix hornet 2 from not spawning correctly-- FIXED?
+ * collector stuck in floor -- need some kind of fix --????
+ * fix blugg items-- FIXED?
+ * fix geo randomizer golden husk not dropping item --NO IDEA. TEST THIS
+ * fix bee/breaking walls in hive-- FIXED?
+ * fix hazard randos not doing all wp saws + making pits in deepnest --LATER
+ * fix boss-geo replacement and other rando check interactions--???????????? NO IDEA
+ * 
+ * 
+ * 
+ * "scale down" the difficulty of enemise that replace the pidgeons/fluke eggs -- NEED TO DO THIS
+ * 
+ * 
+ * Add blue/orange scuttlers to the rando list-- FIXED?
+ * Add mace bug to the rando list--LATER
+ * Replace mace bug on false knight's staff with another enemy for luls--LATER
+ * DISABLE CG TINKERS-- FIXED?
  * DISABLE WATCHER KNIGHT TINKERS (make their load states much faster)
- * NERF ORDEAL ZOTELING DAMAGE
- * add poob to gruz mother
- * make zote balloons spawn an explosion on death
+ * NERF ORDEAL ZOTELING DAMAGE-- FIXED?
+ * add poob to gruz mother-- FIXED?
+ * make zote balloons spawn an explosion on death-- FIXED?
+ * 
+ * MAKE SMASHER REPLACEMENT LIST
  * 
  * ********since I'm loading pretty much every song anyway.... add music randomizer module
  *
@@ -78,13 +93,13 @@
  * BUGS TO FIX:
  * 
  * Fix corpses so their death souths are also scaled
- * Fix larger enemies so the death sounds arn't too slow (mostly on random scaling)
+ * Fix larger enemies so the death sounds arn't too slow (mostly on random scaling)-- FIXED?
  * Fix enemies that can escape from being placed in arenas (or kill them on escape)
- * Fix toggling the mod off/on -- is broken
+ * Fix toggling the mod off/on -- is broken -- LOL
  * 
- * The lancer dies but does not despawn-- look up some corpses/death effects to use when replacing the lancer's
- * Replacements in an arena in queen's gardens did not work
- * Replacements in an arena in crossroads did not work (the one for glowing womb)
+ * The lancer dies but does not despawn-- look up some corpses/death effects to use when replacing the lancer's-- FIXED?
+ * Replacements in an arena in queen's gardens did not work-- FIXED?
+ * Replacements in an arena in crossroads did not work (the one for glowing womb)-- FIXED?
  * 
  * 
  * 

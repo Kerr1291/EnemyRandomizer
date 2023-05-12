@@ -317,9 +317,6 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Mossy Control";
 
-        public bool didInit = false;
-        public bool isVisible = false;
-        public bool isRunning = false;
         public RaycastHit2D floorSpawn;
         public RaycastHit2D floorLeft;
         public RaycastHit2D floorRight;
@@ -384,8 +381,6 @@ namespace EnemyRandomizerMod
             hs.DisableAction(2);
             hs.AddCustomAction(() =>
             {
-                isVisible = false;
-                isRunning = false;
                 control.SendEvent("IN RANGE");
             });
 
