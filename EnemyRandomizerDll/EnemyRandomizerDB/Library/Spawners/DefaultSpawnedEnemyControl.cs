@@ -94,7 +94,7 @@ namespace EnemyRandomizerMod
             ConfigureRelativeToReplacement();
 
 #if DEBUG
-            debugColliders = gameObject.AddComponent<DebugColliders>();
+            debugColliders = gameObject.AddComponent<DebugColliders>(); 
 #endif
             ImportItemFromReplacement();
         }

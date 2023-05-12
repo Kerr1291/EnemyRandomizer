@@ -221,15 +221,12 @@ namespace EnemyRandomizerMod
         {
             var metaData = original.ToMetadata(database);
 
-            if (metaData.IsBoss && !EnemyRandomizer.GlobalSettings.RandomizeBosses)
+            //special logic for the giant fly boss
+            if (original.name.Contains("Giant Fly"))
             {
-                //TODO: test
-                if(metaData.DatabaseName.Contains("Giant Fly"))
-                {
-                    var fixedBossControl = original.GetOrAddComponent<GiantFlyControl>();
-                    fixedBossControl.Setup(metaData);
-                }
-
+                var fixedBossControl = original.GetOrAddComponent<GiantFlyControl>();
+                fixedBossControl.Setup(metaData);
+                metaData.MarkObjectAsReplacement(metaData);
                 return original;
             }
 
