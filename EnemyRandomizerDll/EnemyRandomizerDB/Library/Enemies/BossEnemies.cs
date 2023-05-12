@@ -486,10 +486,10 @@ namespace EnemyRandomizerMod
 
             var sleep = control.GetState("Sleep");
             sleep.DisableAction(0);
-            sleep.AddCustomAction(() => { control.SendEvent("WAKE"); });
-            sleep.ChangeTransition("FINISHED", "Teleport In");
+            //sleep.AddCustomAction(() => { control.SendEvent("WAKE"); });
+            //sleep.ChangeTransition("FINISHED", "Teleport In");
 
-            this.InsertHiddenState(control, "Sleep", "FINISHED", "Teleport In");
+            this.InsertHiddenState(control, "Sleep", "WAKE", "Teleport In");
 
             var teleportIn = control.GetState("Teleport In");
             teleportIn.DisableAction(3);
@@ -1122,9 +1122,12 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            var corpseRemover = thisMetadata.Corpse.AddComponent<CorpseRemover>();
-            if(corpseRemover != null)
-                corpseRemover.replacementEffect = "Death Explode Boss";
+            if (thisMetadata.Corpse != null)
+            {
+                var corpseRemover = thisMetadata.Corpse.AddComponent<CorpseRemover>();
+                if (corpseRemover != null)
+                    corpseRemover.replacementEffect = "Death Explode Boss";
+            }
 
             if (p1HP <= 0)
                 p1HP = thisMetadata.CurrentHP;

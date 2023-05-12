@@ -99,7 +99,7 @@ namespace EnemyRandomizerMod
                     }
                 }
 
-                return ModuleOptions;
+                return CustomOptions.Concat(ModuleOptions).ToList();
             }
         }
 

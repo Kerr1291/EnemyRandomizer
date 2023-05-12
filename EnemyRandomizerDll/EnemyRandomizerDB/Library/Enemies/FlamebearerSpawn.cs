@@ -29,10 +29,6 @@ namespace EnemyRandomizerMod
 
             gameObject.GetComponent<BoxCollider2D>().enabled = true;
 
-            var init = control.GetState("Init");
-            init.DisableAction(2);
-            init.AddCustomAction(() => { control.SendEvent("START"); });
-
             var setLevel = control.GetState("Set Level");
             OverrideState(control, "Set Level", () => {
                 if (Level == 1)
@@ -45,12 +41,17 @@ namespace EnemyRandomizerMod
                     control.SendEvent("FINISHED");
             });
 
+            this.InsertHiddenState(control, "Init", "START", "Set Level");
+        }
+
+        protected override void ScaleHP()
+        {
             float hpScale = GameObject.FindObjectsOfType<FlamebearerControl>().Length;
 
             if (hpScale < 1f)
-                hpScale = 1f;
+                hpScale = 2f;
             else if (hpScale > 1f)
-                hpScale *= 2f;
+                hpScale *= 4f;
 
             float curHP = thisMetadata.EnemyHealthManager.hp;
             float newHP = curHP / hpScale;
@@ -59,12 +60,12 @@ namespace EnemyRandomizerMod
             thisMetadata.EnemyHealthManager.hp = Mathf.Clamp(Mathf.FloorToInt(newHP), 1, Mathf.FloorToInt(curHP));
         }
 
-        protected override void Show()
-        {
-            base.Show();
-            if(control != null)
-                control.Fsm.BroadcastEvent("GRIMMKIN SPAWN");
-        }
+        //protected override void Show()
+        //{
+        //    base.Show();
+        //    if(control != null)
+        //        control.Fsm.BroadcastEvent("GRIMMKIN SPAWN");
+        //}
     }
 
     public class FlamebearerSmallControl : FlamebearerControl
@@ -109,7 +110,54 @@ namespace EnemyRandomizerMod
             p.prefabName = keyName;
             p.prefab = prefab;
 
+
+            Dev.Log("MODIFYING FSM");
+
+            var control = prefab.LocateMyFSM("Control");
+
+            Dev.Log("GOT CONTROL "+ control);
+
+            var init = control.GetState("Init");
+
+            Dev.Log("GOT INIT " + init);
+
+            Dev.Log($"init BEFORE {init.Actions.Length}");
+            init.DisableAction(2);
+            init.AddCustomAction(() => { control.SendEvent("START"); });
+            p.prefab.AddComponent<FlameBearerFixer>();
+            Dev.Log($"init AFTER {init.Actions.Length}");
+
             Dev.Log("FLAMEBEARER_CONVERSION New prefab name = " + keyName);
+        }
+    }
+
+    public class FlameBearerFixer : MonoBehaviour
+    {
+        IEnumerator Start()
+        {
+            var fsm = gameObject.LocateMyFSM("Control");
+            var init = fsm.GetState("Init");
+            init.DisableAction(2);
+            init.AddCustomAction(() => { fsm.SendEvent("START"); });
+            yield return new WaitUntil(() => fsm.ActiveStateName == "Init");
+            for(; ; )
+            {
+                if (fsm == null)
+                    yield break;
+
+                if(fsm.ActiveStateName == "Init")
+                {
+                    var active = fsm.GetState(fsm.ActiveStateName);
+                    if (active.ActiveActionIndex >= 22)
+                        fsm.SendEvent("START");
+                }
+                else
+                {
+                    yield break;
+                }
+
+                yield return null;
+            }
         }
     }
 }

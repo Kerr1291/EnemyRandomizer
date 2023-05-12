@@ -168,8 +168,12 @@ namespace EnemyRandomizerMod
             //TODO: see if the default works, first
             //ForceUpdateJournal();
 
-            originialMetadata.Dispose();
-            thisMetadata.Dispose();
+            if(originialMetadata != null)
+                originialMetadata.Dispose();
+
+            if(originialMetadata != thisMetadata)
+                thisMetadata.Dispose();
+
             disposables.Dispose();
         }
 
@@ -753,7 +757,7 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                if (originialMetadata.IsInGroundEnemy)
+                if (originialMetadata != null && originialMetadata.IsInGroundEnemy)
                     transform.position = transform.position.ToVec2() + GetUpFromSelfAngle(false) * 2f;
             }
         }

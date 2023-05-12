@@ -1381,7 +1381,6 @@
     <string>Zote Crew Fat</string>
     <string>Zote Crew Tall</string>
     <string>Hornet Nosk</string>
-    <string>Health Scuttler</string>
     <string>Mace Head Bug</string>
     <string>Big Centipede Col</string>
     <string>Laser Turret Frames</string>
@@ -1673,6 +1672,10 @@
     <string>_0083_fountain</string><!--scene: Ruins1_27 - fountain (center piece)-->
     <string>_0082_fountain</string><!--scene: Ruins1_27 - fountain (back dreamer)-->
     <string>_0092_fountain</string><!--scene: Ruins1_27 - fountain (right dreamer)-->
-    <string>_0092_fountain</string><!--scene: Ruins1_27 - fountain (1) (left dreamer)-->
+    <string>_0092_fountain (1)</string><!--scene: Ruins1_27 - fountain (1) (left dreamer)-->
+    <string>Fountain Center</string><!--scene: Ruins1_27 - fountain (center piece)-->
+    <string>Fountain Back</string><!--scene: Ruins1_27 - fountain (back dreamer)-->
+    <string>Fountain Right</string><!--scene: Ruins1_27 - fountain (right dreamer)-->
+    <string>Fountain Left</string><!--scene: Ruins1_27 - fountain (1) (left dreamer)-->
   </otherNames>
 </EnemyRandomizerDatabase>

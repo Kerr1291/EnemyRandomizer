@@ -2181,7 +2181,6 @@ namespace EnemyRandomizerMod
             {"Zote Crew Fat", "ZoteCrewFat"},
             {"Zote Crew Tall", "ZoteCrewTall"},
             {"Hornet Nosk", "HornetNosk"},
-            {"Health Scuttler", "HealthScuttler"},
             {"Mace Head Bug", "MaceHeadBug"},
             {"Big Centipede Col", "BigCentipede"},
             {"Laser Turret Frames", "LaserBug"},
@@ -2192,7 +2191,7 @@ namespace EnemyRandomizerMod
 
 
 
-
+        //make markoth shield start rotating
         public static Dictionary<string, bool> SafeForArenas = new Dictionary<string, bool>()
         {
             {"Health Cocoon", false},
@@ -2205,73 +2204,73 @@ namespace EnemyRandomizerMod
             {"Mosquito", true},
             {"Colosseum_Armoured_Roller", true},
             {"Colosseum_Miner", true},
-            {"Zote Boss", true},
-            {"Bursting Bouncer", true},
+            {"Zote Boss", true},//? -- inactive?
+            {"Bursting Bouncer", true},//corpse didnt explode
             {"Super Spitter", true},
-            {"Super Spitter Col", true},
-            {"Giant Fly Col", true},
+            {"Super Spitter Col", false},//didnt spawn
+            {"Giant Fly Col", false},//didn't spawn
             {"Colosseum_Shield_Zombie", true},
-            {"Buzzer Col", true},
+            {"Buzzer Col", false},//didn't spawn
             {"Blobble", true},
             {"Colosseum_Armoured_Mosquito", true},
             {"Colosseum_Flying_Sentry", true},
             {"Hopper", true},
             {"Giant Hopper", true},
-            {"Ceiling Dropper Col", true},
-            {"Colosseum_Worm", true},
+            {"Ceiling Dropper Col", false},//didn't spawn
+            {"Colosseum_Worm", false},//?? didn't spawn
             {"Spitting Zombie", true},
             {"Bursting Zombie", true},
             {"Angry Buzzer", true},
-            {"Mawlek Col", true},
+            {"Mawlek Col", false},//?? didn't spawn
             {"Mantis Heavy", true},
             {"Lesser Mawlek", true},
             {"Mantis Heavy Flyer", true},
-            {"Colosseum Grass Hopper", true},
+            {"Colosseum Grass Hopper", false},//??? didn't spawn
             {"Fly", true},
             {"Roller", true},
             {"Hatcher Baby", false},
             {"Roller R", false},
-            {"Spitter R", false},
+            {"Spitter R", true},
             {"Buzzer R", false},
             {"Mossman_Runner", true},
             {"Jellyfish", true},
-            {"Lil Jellyfish", false},
-            {"Mantis Flyer Child", false},
-            {"Ghost Warrior Slug", false},
+            {"Lil Jellyfish", false},//bomb, worked
+            {"Mantis Flyer Child", false},//spawned in ground
+            {"Ghost Warrior Slug", false},//isn't attacking and drifts left -- movement broken like markoth
             {"Corpse Garden Zombie", false},
             {"Baby Centipede", true},
-            {"Zombie Spider 2", true},
-            {"Zombie Spider 1", true},
+            {"Zombie Spider 2", false},//nullref
+            {"Zombie Spider 1", false},//didn't spawn
             {"Tiny Spider", true},
             {"Shade Sibling", true},
-            {"Flukeman Top", true},
-            {"Flukeman Bot", true},
-            {"White Defender", false},
+            {"Flukeman Top", false},//dont spawn
+            {"Flukeman Bot", false},//don't spawn
+            {"White Defender", false},//error on spawn
 
 
             {"Jellyfish GG", false},
-            {"Colosseum_Armoured_Roller R", false},
-            {"Colosseum_Armoured_Mosquito R", false},
-            {"Super Spitter R", false},
+            {"Colosseum_Armoured_Roller R", false},  //dont spawn
+            {"Colosseum_Armoured_Mosquito R", false},//dont spawn
+            {"Super Spitter R", false}, //dont spawn
             {"Crawler", true},
             {"Buzzer", true},
-            {"Giant Buzzer Col", true},
-            {"Mega Fat Bee", true},
-            {"Lobster", true},
+            {"Giant Buzzer Col", true},//coun't hurt
+            {"Mega Fat Bee", true}, //???? didn't see it spawn
+            {"Lobster", true},//was placed inside floor
             {"Mage Knight", true},
-            {"Mage", true},
-            {"Electric Mage", true},
+            {"Mage", false},//spawned outside arena
+            {"Electric Mage", false},//teleported away
             {"Mage Blob", true},
-            {"Lancer", true},
+            {"Lancer", false},//error, spawned stuck and couldn't die as well
             {"Climber", true},
             {"Zombie Runner", true},
             {"Mender Bug", false},
             {"Spitter", true},
             {"Zombie Hornhead", true},
-            {"Giant Fly", true},
+            {"Giant Fly", false}, //spawn error, needs fix
             {"Zombie Barger", true},
-            {"Mawlek Body", true},
-            {"False Knight New", true},
+            {"Mawlek Body", false},//spawn errror
+            {"False Knight New", true}, ///???? some errors but killable
             {"Prayer Slug", true},
             {"Blocker", true},
             {"Zombie Shield", true},
@@ -2279,7 +2278,7 @@ namespace EnemyRandomizerMod
             {"Zombie Leaper", true},
             {"Zombie Guard", true},
             {"Zombie Myla", true},
-            {"Egg Sac", false},
+            {"Egg Sac", false},//didnt transfer item
             {"Royal Zombie Fat", true},
             {"Royal Zombie", true},
             {"Royal Zombie Coward", true},
@@ -2290,12 +2289,12 @@ namespace EnemyRandomizerMod
             {"Ruins Flying Sentry Javelin", true},
             {"Ruins Sentry Fat", true},
             {"Mage Balloon", true},
-            {"Mage Lord", true},
-            {"Mage Lord Phase2", false},
+            {"Mage Lord", false},//error? fix?
+            {"Mage Lord Phase2", true},//works -- cant find his orb idle spot
             {"Great Shield Zombie", true},
-            {"Great Shield Zombie bottom", false},
-            {"Black Knight", true},
-            {"Jar Collector", false},
+            {"Great Shield Zombie bottom", false},//skip, doesn't spawn
+            {"Black Knight", false},//??? still yeets into space
+            {"Jar Collector", false},//jars are spawning inactive enemies -- spawned in floor
             {"Moss Walker", true},
             {"Plant Trap", true},
             {"Mossman_Shaker", true},
@@ -2310,14 +2309,14 @@ namespace EnemyRandomizerMod
             {"Giant Buzzer", true},
             {"Moss Knight", true},
             {"Grass Hopper", true},
-            {"Lazy Flyer Enemy", true},
+            {"Lazy Flyer Enemy", false},
             {"Mega Moss Charger", false},
 
 
 
             {"Ghost Warrior No Eyes", false},
             {"Fungoon Baby", true},
-            {"Mushroom Turret", false},
+            {"Mushroom Turret", false},//spawned in floor
             {"Fungus Flyer", true},
             {"Zombie Fungus B", true},
             {"Fung Crawler", true},
@@ -2335,21 +2334,21 @@ namespace EnemyRandomizerMod
             {"Mantis Heavy Spawn", true},
             {"Ghost Warrior Marmu", true},
             {"Mega Jellyfish", false},
-            {"Ghost Warrior Xero", false},
+            {"Ghost Warrior Xero", false},//killing caused nullrefs
             {"Grave Zombie", true},
             {"Crystal Crawler", true},
             {"Zombie Miner", true},
             {"Crystal Flyer", true},
             {"Crystallised Lazer Bug", false},
             {"Mines Crawler", true},
-            {"Mega Zombie Beam Miner", true},
+            {"Mega Zombie Beam Miner", true},//nullrefs on spawn
             {"Zombie Beam Miner", true},
-            {"Zombie Beam Miner Rematch", true},
+            {"Zombie Beam Miner Rematch", true},//nullrefs on spawn
             {"Spider Mini", true},
             {"Zombie Hornhead Sp", true},
             {"Zombie Runner Sp", true},
             {"Centipede Hatcher", true},
-            {"Mimic Spider", true},
+            {"Mimic Spider", true},//nullref
             {"Slash Spider", true},
             {"Spider Flyer", true},
             {"Ghost Warrior Galien", false},
@@ -2358,28 +2357,28 @@ namespace EnemyRandomizerMod
             {"Ghost Warrior Markoth", false},
             {"Hornet Boss 2", true},
             {"Abyss Crawler", true},
-            {"Infected Knight", true},
+            {"Infected Knight", true},//didn't spawn
             {"Parasite Balloon", true},
             {"Mawlek Turret", true},
-            {"Mawlek Turret Ceiling", true},
+            {"Mawlek Turret Ceiling", false},//didn't spawn
             {"Flip Hopper", true},
             {"Inflater", true},
             {"Fluke Fly", true},
             {"Flukeman", true},
             {"Dung Defender", false},
             {"fluke_baby_02", false},
-            {"fluke_baby_01", false},
-            {"fluke_baby_03", false},
-            {"Fluke Mother", true},
+            {"fluke_baby_01", false},//no blue mask
+            {"fluke_baby_03", false},//no explode
+            {"Fluke Mother", false}, //nullref
             {"White Palace Fly", true},
             {"Enemy", true},
-            {"Royal Gaurd", true},
+            {"Royal Gaurd", true},//fix boomerang -- elite not spawning
             {"Zombie Hive", true},
             {"Bee Stinger", true},
             {"Big Bee", true},
-            {"Hive Knight", false},
-            {"Grimm Boss", false},
-            {"Nightmare Grimm Boss", false},
+            {"Hive Knight", false},//not spawning
+            {"Grimm Boss", false},//teleports into walls
+            {"Nightmare Grimm Boss", false},//stuck on spawn -- still steals HUD -- death doesn't delete
             {"False Knight Dream", true},
             {"Dream Mage Lord", false},
             {"Dream Mage Lord Phase2", false},
@@ -2390,32 +2389,31 @@ namespace EnemyRandomizerMod
             {"Zote Balloon", false},
             {"Grey Prince", true},
             {"Radiance", false},
-            {"Hollow Knight Boss", true},
-            {"HK Prime", true},
+            {"Hollow Knight Boss", false},//fell through world
+            {"HK Prime", false},//didn't spawn
             {"Pale Lurker", true},
-            {"Oro", true},
-            {"Mato", true},
-            {"Sheo Boss", true},
+            {"Oro", false},//didn't delete
+            {"Mato", false},//didn't activate or die
+            {"Sheo Boss", false},//didn't die
             {"Fat Fluke", true},
-            {"Absolute Radiance", true},
-            {"Sly Boss", true},
+            {"Absolute Radiance", false},//nullref
+            {"Sly Boss", false},//didn't die
             {"Zote Turret", true},
-            {"Zote Balloon Ordeal", false},
+            {"Zote Balloon Ordeal", false},//skip
             {"Ordeal Zoteling", false},
             {"Zote Salubra", false},
             {"Zote Thwomp", true},
-            {"Zote Fluke", false},
-            {"Zote Crew Normal", true},
+            {"Zote Fluke", false},//add poob
+            {"Zote Crew Normal", false},//spawns in floor
             {"Zote Crew Fat", true},
-            {"Zote Crew Tall", true},
+            {"Zote Crew Tall", false},//spawns in floor
             {"Hornet Nosk", true},
-            {"Health Scuttler", false},
             {"Mace Head Bug", false},
             {"Big Centipede Col", false},
-            {"Laser Turret Frames", false},
-            {"Jelly Egg Bomb", false},
-            {"Worm", false},
-            {"Bee Dropper", false}
+            {"Laser Turret Frames", false},//nullref
+            {"Jelly Egg Bomb", false},//not loaded?
+            {"Worm", false}, //need flipped
+            {"Bee Dropper", false} //needs some starting velocity, a collider so it can be hit?, and POOB component
         };
     }
 }

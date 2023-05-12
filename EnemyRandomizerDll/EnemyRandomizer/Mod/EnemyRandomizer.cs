@@ -518,6 +518,9 @@ namespace EnemyRandomizerMod
 
         string MODHOOK_BeforeSceneLoad(string sceneName)
         {
+#if DEBUG
+            DebugTestEnemies.Instance.loaded = true;
+#endif
             ResetBattleSceneCheck();
             return sceneName;
         }
@@ -667,6 +670,51 @@ namespace EnemyRandomizerMod
             ObjectPool.Recycle(gameObject);
         }
     }
+
+#if DEBUG
+    public class DebugTestEnemies : GameSingleton<DebugTestEnemies>
+    {
+        IEnumerator<string> iter;
+
+        public bool loaded = false;
+
+        void ResetIter()
+        {
+            iter = MetaDataTypes.CustomReplacementName.Keys.ToList().GetEnumerator();
+        }
+
+        void Awake()
+        {
+            ResetIter();
+        }
+
+        public virtual void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.Semicolon))
+            {
+                Dev.Log("TRYING TO SPAWN");
+                if (iter.MoveNext())
+                {
+                    Dev.Log("SPAWNING ?");
+                    var spawnName = iter.Current;
+                    Dev.Log("SPAWNING " + spawnName);
+                    EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy(spawnName, null);
+                }
+                else
+                {
+                    Dev.Log("HIT END -- RESETTING");
+                    ResetIter();
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Quote))
+            {
+                Dev.Log("MANUAL RESET");
+                ResetIter();
+            }
+        }
+    }
+#endif
 }
 
 

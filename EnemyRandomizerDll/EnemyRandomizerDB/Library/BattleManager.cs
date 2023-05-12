@@ -90,6 +90,35 @@ namespace EnemyRandomizerMod
                 }
             }
 
+            //just a hacky spot to apply this meme
+            if(currentScene.name == "Ruins1_27")
+            {
+                var center = GameObject.Find("_0083_fountain");
+                var back = GameObject.Find("_0082_fountain");
+                var right = GameObject.Find("_0092_fountain");
+                var left = GameObject.Find("_0092_fountain (1)");
+
+                var newCenter = EnemyRandomizerDatabase.GetDatabase().Spawn("GG_Statue_Gorb", null);
+                var newBack = EnemyRandomizerDatabase.GetDatabase().Spawn("Knight_v01", null);
+                var newRight = EnemyRandomizerDatabase.GetDatabase().Spawn("GG_Statue_Zote", null);
+                var newLeft = EnemyRandomizerDatabase.GetDatabase().Spawn("GG_Statue_GreyPrince", null);
+
+                newCenter.transform.position = center.transform.position;
+                newBack.transform.position = back.transform.position;
+                newRight.transform.position = right.transform.position;
+                newLeft.transform.position = left.transform.position;
+                
+                GameObject.Destroy(center);
+                GameObject.Destroy(back);
+                GameObject.Destroy(right);
+                GameObject.Destroy(left);
+
+                newCenter.SafeSetActive(true);
+                newBack.SafeSetActive(true);
+                newRight.SafeSetActive(true);
+                newLeft.SafeSetActive(true);
+            }
+
             BattleManager.DidSceneCheck = true;
         }
 

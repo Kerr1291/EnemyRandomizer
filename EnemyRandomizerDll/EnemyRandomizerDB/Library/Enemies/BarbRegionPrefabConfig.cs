@@ -70,4 +70,220 @@ namespace EnemyRandomizerMod
             //    p.prefab.AddComponent<FlamebearerLargeControl>();
         }
     }
+
+
+
+
+
+
+    public class FountainCenterControl : MonoBehaviour
+    {
+    }
+
+    public class FountainCenterSpawner : DefaultSpawner { }
+
+    public class FountainCenterPrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            base.SetupPrefab(p);
+            p.prefab.AddComponent<FountainCenterControl>();
+        }
+    }
+
+    public class _0083_fountainPrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            var prefab = p.prefab;
+            prefab.name = "Fountain Center";
+
+            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(prefab.name);
+
+            Dev.Log("Loaded Fountain center = " + p.prefab.name);
+
+            p.prefabName = "Fountain Center";
+            p.prefab = prefab;
+        }
+    }
+
+
+
+
+
+
+
+
+    public class FountainBackControl : MonoBehaviour { }
+
+    public class FountainBackSpawner : DefaultSpawner { }
+
+    public class FountainBackPrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            base.SetupPrefab(p);
+            p.prefab.AddComponent<FountainBackControl>();
+        }
+    }
+
+    public class _0082_fountainPrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            var prefab = p.prefab;
+            prefab.name = "Fountain Back";
+
+            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(prefab.name);
+
+            Dev.Log("Loaded Fountain center = " + p.prefab.name);
+
+            p.prefabName = prefab.name;
+            p.prefab = prefab;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+    public class FountainLeftControl : MonoBehaviour { }
+
+    public class FountainLeftSpawner : DefaultSpawner { }
+
+    public class FountainLeftPrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            base.SetupPrefab(p);
+            p.prefab.AddComponent<FountainLeftControl>();
+        }
+    }
+
+
+
+
+
+
+
+    public class FountainRightControl : MonoBehaviour { }
+
+    public class FountainRightSpawner : DefaultSpawner { }
+
+    public class FountainRightPrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            base.SetupPrefab(p);
+            p.prefab.AddComponent<FountainRightControl>();
+        }
+    }
+
+    public class _0092_fountainPrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            var prefab = p.prefab;
+
+            if(p.source.path.Contains("(1)"))
+            {
+                prefab.name = "Fountain Left";
+            }
+            else
+            {
+                prefab.name = "Fountain Right";
+            }
+
+            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(prefab.name);
+
+            Dev.Log("Loaded = " + p.prefab.name);
+
+            p.prefabName = prefab.name;
+            p.prefab = prefab;
+        }
+    }
+
+    public class _0092_fountain_1PrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            var prefab = p.prefab;
+
+            {
+                prefab.name = "Fountain Left";
+            }
+
+            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(prefab.name);
+
+            Dev.Log("Loaded = " + p.prefab.name);
+
+            p.prefabName = prefab.name;
+            p.prefab = prefab;
+        }
+    }
+
+
+
+
+    public class GG_Statue_ZotePrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            var prefab = p.prefab;
+            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(prefab.name);
+            p.prefabName = prefab.name;
+            p.prefab = prefab;
+            var bossStatue = p.prefab.GetComponentInChildren<BossStatue>(true);
+            if (bossStatue != null)
+                GameObject.Destroy(bossStatue);
+        }
+    }
+
+
+    public class GG_Statue_GorbPrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            var prefab = p.prefab;
+            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(prefab.name);
+            p.prefabName = prefab.name;
+            p.prefab = prefab;
+            var bossStatue = p.prefab.GetComponentInChildren<BossStatue>(true);
+            if (bossStatue != null)
+                GameObject.Destroy(bossStatue);
+        }
+    }
+
+    public class GG_Statue_GreyPrincePrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            var prefab = p.prefab;
+            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(prefab.name);
+            p.prefabName = prefab.name;
+            p.prefab = prefab;
+            var bossStatue = p.prefab.GetComponentInChildren<BossStatue>(true);
+            if (bossStatue != null)
+                GameObject.Destroy(bossStatue);
+        }
+    }
+
+    public class Knight_v01PrincePrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            var prefab = p.prefab;
+            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(prefab.name);
+            p.prefabName = prefab.name;
+            p.prefab = prefab;
+            var bossStatue = p.prefab.GetComponentInChildren<BossStatue>(true);
+            if (bossStatue != null)
+                GameObject.Destroy(bossStatue);
+        }
+    }
 }

@@ -365,11 +365,16 @@ namespace EnemyRandomizerMod
             {"Colosseum_Armoured_Mosquito R", "Colosseum_Armoured_Mosquito" },
             {"Ceiling Dropper Col", "Ceiling Dropper" },
             {"Buzzer Col", "Buzzer" },
+            {"_0092_fountain (1)", "_0092_fountain_1"},
             {"Giant Fly Col", "Giant Fly" },
         };
 
         static List<string> keysEndingWithASpecialCharacter = new List<string>()
         {
+            {"Sword 1"},
+            {"Sword 2"},
+            {"Sword 3"},
+            {"Sword 4"},
             {"Zombie Spider 1"},
             {"Zombie Spider 2"},
             {"Zombie Fungus A"},
@@ -378,7 +383,7 @@ namespace EnemyRandomizerMod
             {"Hornet Boss 2"},
         };
 
-
+        
         //Don't load data for these enemies
         static List<string> badEnemyDatabaseKeys = new List<string>()
         {

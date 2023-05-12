@@ -26,7 +26,6 @@ namespace EnemyRandomizerMod
             base.Setup(other);
 
             this.InsertHiddenState(control, "Facing Right?", "FINISHED", "Wake");
-            this.AddResetToStateOnHide(control, "Init");
         }
 
         protected override void SetDefaultPosition()
@@ -68,7 +67,6 @@ namespace EnemyRandomizerMod
             fly.ChangeTransition("DESTROY", "Init");
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
-            this.AddResetToStateOnHide(control, "Init");
         }
     }
 
