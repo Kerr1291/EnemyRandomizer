@@ -360,11 +360,15 @@ namespace EnemyRandomizerMod
             teleportQ.DisableAction(3);
             teleportQ.DisableAction(7);
             teleportQ.InsertCustomAction(() => {
-                var aboveHero = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.up, 10f);
+                var aboveHero = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.up, 20f);
                 var telePoint = heroPosWithOffset;
                 if (aboveHero.collider != null && aboveHero.distance > 2f)
                 {
-                    telePoint = telePoint + Vector2.up * (aboveHero.distance - 2f);
+                    float distFromHero = (aboveHero.distance - 2f);
+                    if (distFromHero < 6f)
+                        distFromHero = 6;
+
+                    telePoint = telePoint + Vector2.up * distFromHero;
                 }
                 control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
                 transform.position = telePoint;
@@ -474,22 +478,28 @@ namespace EnemyRandomizerMod
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
-
+              
             var destroyIfDefeated = gameObject.LocateMyFSM("Destroy If Defeated");
-            GameObject.Destroy(destroyIfDefeated);
+            if(destroyIfDefeated != null)
+                GameObject.Destroy(destroyIfDefeated);
 
-            var init = control.GetState("Init");
-            init.DisableAction(1);
-            init.DisableAction(4);
-            init.DisableAction(5);
-            init.AddCustomAction(() => { control.SendEvent("FINISHED"); });
+            try
+            {
+                var init = control.GetState("Init");
+                init.DisableAction(1);
+                init.DisableAction(4);
+                init.DisableAction(5);
+                init.AddCustomAction(() => { control.SendEvent("FINISHED"); });
+            } catch (Exception e) { Dev.LogError($"ERROR CONFIGURING INIT -- {e.Message} {e.StackTrace}"); }
 
+            try
+            { 
             var sleep = control.GetState("Sleep");
             sleep.DisableAction(0);
             //sleep.AddCustomAction(() => { control.SendEvent("WAKE"); });
             //sleep.ChangeTransition("FINISHED", "Teleport In");
 
-            this.InsertHiddenState(control, "Sleep", "WAKE", "Teleport In");
+            this.InsertHiddenState(control, "Init", "FINISHED", "Teleport In");
 
             var teleportIn = control.GetState("Teleport In");
             teleportIn.DisableAction(3);
@@ -517,7 +527,10 @@ namespace EnemyRandomizerMod
                 control.FsmVariables.GetFsmVector3("Teleport Point").Value = telePoint;
             }, 0);
             teleportIn.ChangeTransition("FINISHED", "Set Idle Timer");
+            }
+            catch (Exception e) { Dev.LogError($"ERROR CONFIGURING SLEEP TELE IN -- {e.Message} {e.StackTrace}"); }
 
+            try { 
             var teleAway = control.GetState("Tele Away");
             teleAway.DisableAction(1);
             teleAway.DisableAction(2);
@@ -556,10 +569,13 @@ namespace EnemyRandomizerMod
                 transform.position = telePoint;
                 control.FsmVariables.GetFsmVector3("Teleport Point").Value = telePoint;
             }, 0);
-
+            }
+            catch (Exception e) { Dev.LogError($"ERROR CONFIGURING TELE AWAY VALID TELE -- {e.Message} {e.StackTrace}"); }
             var shot = control.GetState("Shot");
             shot.DisableAction(2);
 
+            try
+            { 
             var teleQuake = control.GetState("Tele Quake");
             teleQuake.DisableAction(2);
             teleQuake.DisableAction(3);
@@ -594,8 +610,10 @@ namespace EnemyRandomizerMod
                 gameObject.StickToGround();
             }, 0);
 
-            var teleOut = control.GetState("Tele Out");
+            var teleOut = control.GetState("HS Tele Out");
             teleOut.DisableAction(2);
+            }
+            catch (Exception e) { Dev.LogError($"ERROR CONFIGURING QUAKE Q DOWN LAND -- {e.Message} {e.StackTrace}"); }
         }
 
         IEnumerator SendFinishedOnGroundOrDelay()
@@ -2099,11 +2117,26 @@ namespace EnemyRandomizerMod
 
         IEnumerator chasing;
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            if (thisMetadata == null)
+                return;
+
+            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+            EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Galien Mini Hammer", null, true);
+            if (chasing != null)
+            {
+                StopCoroutine(chasing);
+            }
+
+            chasing = DistanceFlyChase(gameObject, HeroController.instance.gameObject, 5f, 0.3f, 7f, 2f);
+            StartCoroutine(chasing);
+        }
+
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
-
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
 
             {
                 var fsm = gameObject.LocateMyFSM("FSM");
@@ -2117,22 +2150,27 @@ namespace EnemyRandomizerMod
                     Destroy(fsm);
             }
 
-            //slightly change the ghost movement, no more teleports for now and also chase the player 
             {
-                var attack = control.GetState("Warp In");
-                attack.InsertCustomAction(() => {
-                    EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Galien Mini Hammer", null, true);
-                }, 0);
-
-                OverrideState(control, "Hover", () => { 
-                    if (chasing != null)
-                    {
-                        StopCoroutine(chasing);
-                    }
-                    chasing = DistanceFlyChase(gameObject, HeroController.instance.gameObject, 5f, 0.3f, 7f, 2f);
-                    StartCoroutine(chasing);
-                });
+                var fsm = gameObject.LocateMyFSM("Movement");
+                if (fsm != null)
+                    Destroy(fsm);
             }
+
+            //slightly change the ghost movement, no more teleports for now and also chase the player 
+            //{
+            //    var attack = control.GetState("Warp In");
+            //    attack.InsertCustomAction(() => {
+
+            //        var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+            //        EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Galien Mini Hammer", null, true);
+            //    }, 0);
+
+            //    OverrideState(control, "Hover", () => { 
+            //    });
+            //    control.GetState("Hover").AddAction(new Wait() { time = 10f });
+            //}
+
+            //this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
 
             var summon = gameObject.LocateMyFSM("Summon Minis");
             var summona1 = summon.GetState("Summon Antic");
@@ -2146,9 +2184,8 @@ namespace EnemyRandomizerMod
                 EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Galien Mini Hammer", null, true);
             }, 0);
             TimeoutState(summon, "Summon Antic 2", "SUMMON", 1f);
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
         }
+
         protected override void SetCustomPositionOnShow()
         {
         }
@@ -2178,11 +2215,24 @@ namespace EnemyRandomizerMod
         public GameObject sword3;
         public GameObject sword4;
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            if (thisMetadata == null)
+                return;
+            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+            if (chasing != null)
+            {
+                StopCoroutine(chasing);
+            }
+            chasing = DistanceFlyChase(gameObject, HeroController.instance.gameObject, 5f, 10f, 9f, 2f);
+            StartCoroutine(chasing);
+        }
+
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
 
             sword1 = thisMetadata.DB.Spawn("Sword 1", null);
             sword2 = thisMetadata.DB.Spawn("Sword 2", null);
@@ -2207,17 +2257,18 @@ namespace EnemyRandomizerMod
                     Destroy(fsm);
             }
 
+            {
+                var fsm = gameObject.LocateMyFSM("Movement");
+                if (fsm != null)
+                    Destroy(fsm);
+            }
+
 
             {
-                control.ChangeTransition("Warp In", "FINISHED", "Hover");
-                OverrideState(control, "Hover", () => {
-                    if (chasing != null)
-                    {
-                        StopCoroutine(chasing);
-                    }
-                    chasing = DistanceFlyChase(gameObject, HeroController.instance.gameObject, 5f, 10f, 9f, 2f);
-                    StartCoroutine(chasing);
-                });
+                //control.ChangeTransition("Warp In", "FINISHED", "Hover");
+                //OverrideState(control, "Hover", () => {
+                //});
+                //control.GetState("Hover").AddAction(new Wait() { time = 10f });
 
                 var attacking = gameObject.LocateMyFSM("Attacking");
                 var init = attacking.GetState("Init");
@@ -2231,7 +2282,7 @@ namespace EnemyRandomizerMod
                 attacking.ChangeTransition("Wait", "FINISHED", "Antic");
             }
 
-            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
+            //this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
         }
         protected override void SetCustomPositionOnShow()
         {
@@ -2255,6 +2306,20 @@ namespace EnemyRandomizerMod
         public virtual string ATTACKFSM => "Attacking";
 
         public GameObject ringHolder;
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            if (thisMetadata == null)
+                return;
+            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+            if (chasing != null)
+            {
+                StopCoroutine(chasing);
+            }
+            chasing = DistanceFlyChase(gameObject, HeroController.instance.gameObject, 5f, 0.3f, 8f, 2f);
+            StartCoroutine(chasing);
+        }
 
         protected virtual void ConfigureRingPositions()
         {
@@ -2293,7 +2358,6 @@ namespace EnemyRandomizerMod
             ringHolder = thisMetadata.DB.Spawn("Ring Holder", null);            
             ConfigureRingPositions();
 
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
 
             {
                 var fsm = gameObject.LocateMyFSM("FSM");
@@ -2308,15 +2372,16 @@ namespace EnemyRandomizerMod
             }
 
             {
-                control.ChangeTransition("Warp In", "FINISHED", "Hover");
-                OverrideState(control, "Hover", () => {
-                    if (chasing != null)
-                    {
-                        StopCoroutine(chasing);
-                    }
-                    chasing = DistanceFlyChase(gameObject, HeroController.instance.gameObject, 5f, 0.3f, 8f, 2f);
-                    StartCoroutine(chasing);
-                });
+                var fsm = gameObject.LocateMyFSM("Movement");
+                if (fsm != null)
+                    Destroy(fsm);
+            }
+
+            {
+                //control.ChangeTransition("Warp In", "FINISHED", "Hover");
+                //OverrideState(control, "Hover", () => {
+                //});
+                //control.GetState("Hover").AddAction(new Wait() { time = 10f });
 
                 var attacking = gameObject.LocateMyFSM("Attacking");
                 var init = attacking.GetState("Init");
@@ -2332,7 +2397,7 @@ namespace EnemyRandomizerMod
                 attacking.ChangeTransition("Choice 2", "MEGA", "Choice");
             }
 
-            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
+            //this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
         }
         protected override void SetCustomPositionOnShow()
         {
@@ -2356,11 +2421,24 @@ namespace EnemyRandomizerMod
 
         IEnumerator chasing;
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            if (thisMetadata == null)
+                return;
+            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+            if (chasing != null)
+            {
+                StopCoroutine(chasing);
+            }
+            chasing = DistanceFlyChase(gameObject, HeroController.instance.gameObject, 5f, 0.3f, 5f, 2f);
+            StartCoroutine(chasing);
+        }
+
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
 
             {
                 var fsm = gameObject.LocateMyFSM("FSM");
@@ -2381,21 +2459,22 @@ namespace EnemyRandomizerMod
             }
 
             {
-                control.ChangeTransition("Warp In", "FINISHED", "Hover");
-                OverrideState(control, "Hover", () => {
-                    if (chasing != null)
-                    {
-                        StopCoroutine(chasing);
-                    }
-                    chasing = DistanceFlyChase(gameObject, HeroController.instance.gameObject, 5f, 0.3f, 5f, 2f);
-                    StartCoroutine(chasing);
-                });
+                var fsm = gameObject.LocateMyFSM("Movement");
+                if (fsm != null)
+                    Destroy(fsm);
+            }
+
+            {
+                //control.ChangeTransition("Warp In", "FINISHED", "Hover");
+                //OverrideState(control, "Hover", () => {
+                //});
+                //control.GetState("Hover").AddAction(new Wait() { time = 10f });
 
                 var attacking = gameObject.LocateMyFSM("Attacking");
                 attacking.ChangeTransition("Wait", "FINISHED", "Antic");
             }
 
-            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
+            //this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
         }
         protected override void SetCustomPositionOnShow()
         {
@@ -2418,11 +2497,25 @@ namespace EnemyRandomizerMod
 
         IEnumerator chasing;
 
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            if (thisMetadata == null)
+                return;
+            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+            if (chasing != null)
+            {
+                StopCoroutine(chasing);
+            }
+            chasing = DistanceFlyChase(gameObject, HeroController.instance.gameObject, 5f, 10f, 2f, 2f);
+            StartCoroutine(chasing);
+        }
+
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
 
             {
                 var fsm = gameObject.LocateMyFSM("FSM");
@@ -2436,19 +2529,20 @@ namespace EnemyRandomizerMod
                     Destroy(fsm);
             }
 
-            //slightly change the ghost movement, no more teleports for now and also chase the player 
             {
-                OverrideState(control, "Hover", () => {
-                    if (chasing != null)
-                    {
-                        StopCoroutine(chasing);
-                    }
-                    chasing = DistanceFlyChase(gameObject, HeroController.instance.gameObject, 5f, 10f, 2f, 2f);
-                    StartCoroutine(chasing);
-                });
+                var fsm = gameObject.LocateMyFSM("Movement");
+                if (fsm != null)
+                    Destroy(fsm);
             }
 
-            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
+            //slightly change the ghost movement, no more teleports for now and also chase the player 
+            //{
+            //    OverrideState(control, "Hover", () => {
+            //    });
+            //    control.GetState("Hover").AddAction(new Wait() { time = 10f });
+            //}
+
+            //this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
         }
         protected override void SetCustomPositionOnShow()
         {
@@ -2470,11 +2564,25 @@ namespace EnemyRandomizerMod
 
         IEnumerator chasing;
 
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            if (thisMetadata == null)
+                return;
+            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+            if (chasing != null)
+            {
+                StopCoroutine(chasing);
+            }
+            chasing = DistanceFlyChase(gameObject, HeroController.instance.gameObject, 5f, 0.3f, 5f, 2f);
+            StartCoroutine(chasing);
+        }
+
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
 
             {
                 var fsm = gameObject.LocateMyFSM("FSM");
@@ -2488,17 +2596,18 @@ namespace EnemyRandomizerMod
                     Destroy(fsm);
             }
 
+            {
+                var fsm = gameObject.LocateMyFSM("Movement");
+                if (fsm != null)
+                    Destroy(fsm);
+            }
+
             //slightly change the ghost movement, no more teleports for now and also chase the player 
             {
-                control.ChangeTransition("Warp In", "FINISHED", "Hover");
-                OverrideState(control, "Hover", () => {
-                    if (chasing != null)
-                    {
-                        StopCoroutine(chasing);
-                    }
-                    chasing = DistanceFlyChase(gameObject, HeroController.instance.gameObject, 5f, 0.3f, 5f, 2f);
-                    StartCoroutine(chasing);
-                });
+                //control.ChangeTransition("Warp In", "FINISHED", "Hover");
+                //OverrideState(control, "Hover", () => {
+                //});
+                //control.GetState("Hover").AddAction(new Wait() { time = 10f });
 
                 var shieldAttack = gameObject.LocateMyFSM("Shield Attack");
                 var init = shieldAttack.GetState("Init");
@@ -2527,7 +2636,7 @@ namespace EnemyRandomizerMod
                 });
             }
 
-            this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
+            //this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
         }
 
 
@@ -2570,7 +2679,7 @@ namespace EnemyRandomizerMod
             //};
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Start");
-            this.AddResetToStateOnHide(control, "Init");
+            //this.AddResetToStateOnHide(control, "Init");
 
             this.thisMetadata.EnemyHealthManager.IsInvincible = false;
 
@@ -3364,9 +3473,9 @@ namespace EnemyRandomizerMod
             yield break;
         }
 
-        protected override void OnDestroy()
+        protected virtual void OnDestroy()
         {
-            base.OnDestroy();
+            //base.OnDestroy();
             if (dieChildrenOnDeath)
             {
                 children.ForEach(x =>
@@ -3408,7 +3517,6 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
 
             var tinker = other.Source.GetComponentInChildren<TinkEffect>();
             if (tinker != null)
@@ -3436,6 +3544,7 @@ namespace EnemyRandomizerMod
 
             var idle = control.GetState("Idle");
             idle.InsertCustomAction(() => {
+                var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
                 thisMetadata.EnemyHealthManager.IsInvincible = false;
             },0);
 
@@ -3471,7 +3580,6 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
 
             var tinker = other.Source.GetComponentInChildren<TinkEffect>();
             if(tinker != null)
@@ -3495,6 +3603,7 @@ namespace EnemyRandomizerMod
 
             var idle = control.GetState("Idle");
             idle.InsertCustomAction(() => {
+                var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
                 thisMetadata.EnemyHealthManager.IsInvincible = false;
             }, 0);
 
@@ -3761,14 +3870,13 @@ namespace EnemyRandomizerMod
 
     public class MawlekBodyControl : FSMBossAreaControl
     {
-        public override string FSMName => "Mawklek Control";
+        public override string FSMName => "Mawlek Control";
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
 
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
 
             thisMetadata.PhysicsBody.gravityScale = 3f;
 
@@ -3784,6 +3892,7 @@ namespace EnemyRandomizerMod
             base.SetCustomPositionOnShow();
             control.FsmVariables.GetFsmFloat("Start X").Value = transform.position.x;
             control.FsmVariables.GetFsmFloat("Start Y").Value = transform.position.y;
+            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
         }
     }
 
@@ -3864,7 +3973,7 @@ namespace EnemyRandomizerMod
 
 
     /////////////////////////////////////////////////////////////////////////////
-    /////
+    ////
     public class JarCollectorControl : FSMBossAreaControl
     {
         public override string FSMName => "Control";
@@ -3941,7 +4050,10 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+
+            var hpscaler = gameObject.LocateMyFSM("hp_scaler");
+            if (hpscaler != null)
+                Destroy(hpscaler);
 
             var corpse = thisMetadata.Corpse;
             if (corpse != null)
@@ -3982,6 +4094,7 @@ namespace EnemyRandomizerMod
             ec.DisableAction(0);
             ec.InsertCustomAction(() =>
             {
+                var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
                 control.FsmVariables.GetFsmInt("Current Enemies").Value = CurrentEnemies;
             }, 0);
 
@@ -4029,10 +4142,14 @@ namespace EnemyRandomizerMod
             spawn.AddCustomAction(() =>
             {
                 var go = GameObject.Instantiate(spawnAction.storeObject.Value);
-                if (go == null)
-                    Dev.LogError("NO JAR PREFAB FOUND!");
-                else
+
+                if(go != null)
                 {
+                    float dist = 1.5f;
+                    var throwDir = GetRandomDirectionVectorFromSelf(true);
+                    var throwPoint = throwDir * dist + pos2dWithOffset;
+                    go.transform.position = throwPoint;
+
                     var jar = go.GetComponent<SpawnJarControl>();
                     if (jar == null)
                         Dev.LogError("NO JAR COMPONENT FOUND!");
@@ -4042,24 +4159,30 @@ namespace EnemyRandomizerMod
                         var selectedSpawn = possibleSpawns.GetRandomElementFromList(rng);
                         var thingToSpawn = thisMetadata.DB.Spawn(selectedSpawn.Item1, null);
                         jar.SetEnemySpawn(selectedSpawn.Item1.prefab, selectedSpawn.Item2);
-                        FlingUtils.FlingObject(new FlingUtils.SelfConfig
-                        {
-                            Object = go,
-                            SpeedMin = 20f,
-                            SpeedMax = 30f,
-                            AngleMin = 70f,
-                            AngleMax = 110f
-                        }, gameObject.transform, Vector3.zero);
+
+                        var spawner = jar.gameObject.GetOrAddComponent<SpawnOnDestroyOrDisable>();
+                        spawner.spawnEntity = selectedSpawn.Item1.prefab.name;
+                        spawner.setHealthOnSpawn = selectedSpawn.Item2;
+
                         var body = jar.GetComponent<Rigidbody2D>();
                         if (body != null)
+                        {
+                            body.velocity = throwDir * 15f;
                             body.angularVelocity = 15f;
+                        }
 
                         go.SetActive(true);
+                        jar.GetComponent<SpriteRenderer>().enabled = true;
+                        jar.transform.localScale = jar.transform.localScale * 0.5f;
                     }
                     catch (Exception e)
                     {
                         Dev.LogError($"Error flinging custom collector jar! ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
                     }
+                }
+                else
+                {
+                    Dev.LogError("NO JAR PREFAB FOUND!");
                 }
             });
 
@@ -4079,6 +4202,11 @@ namespace EnemyRandomizerMod
             {
                 Dev.LogError($"Error fixing additional fsms! ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
             }
+        }
+
+        protected override void SetCustomPositionOnShow()
+        {
+            gameObject.StickToGroundX(1f);
         }
     }
 
@@ -4108,7 +4236,6 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
 
             var fsm = gameObject.LocateMyFSM("FSM");
             if (fsm != null)
@@ -4137,7 +4264,10 @@ namespace EnemyRandomizerMod
 
             var introFall = control.GetState("Intro Fall");
             introFall.DisableAction(2);
-            introFall.AddCustomAction(() => { control.SendEvent("LAND"); });
+            introFall.AddCustomAction(() => {
+
+                var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+                control.SendEvent("LAND"); });
 
             control.ChangeTransition("Intro Land", "FINISHED", "First Counter");
             this.InsertHiddenState(control, "Intro Land", "FINISHED", "First Counter");
@@ -4273,31 +4403,37 @@ namespace EnemyRandomizerMod
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
 
-            var init = control.GetState("Init");
-            init.ChangeTransition("FINISHED", "Wake");
-            init.DisableAction(0);
-            init.DisableAction(2);
-            init.DisableAction(6);
+            if (thisMetadata != originialMetadata)
+            {
+                var init = control.GetState("Init");
+                init.ChangeTransition("FINISHED", "Wake");
+                init.DisableAction(0);
+                init.DisableAction(2);
+                init.DisableAction(6);
 
-            var wake = control.GetState("Wake");
-            wake.DisableAction(0);
-            wake.DisableAction(1);
-            wake.DisableAction(2);
-            wake.DisableAction(3);
-            wake.DisableAction(5);
-            wake.DisableAction(6);
+                var wake = control.GetState("Wake");
+                wake.DisableAction(0);
+                wake.DisableAction(1);
+                wake.DisableAction(2);
+                wake.DisableAction(3);
+                wake.DisableAction(5);
+                wake.DisableAction(6);
 
-            var fly = control.GetState("Fly");
-            fly.DisableAction(5);
-            fly.DisableAction(6);
-            fly.DisableAction(7);
+                var fly = control.GetState("Fly");
+                fly.DisableAction(5);
+                fly.DisableAction(6);
+                fly.DisableAction(7);
+            }
         }
 
         protected override void OnEnable()
         {
             base.OnEnable();
+
+            if (thisMetadata == null)
+                return;
+
             ModHooks.BeforeSceneLoadHook -= MODHOOK_BeforeSceneLoad;
             ModHooks.BeforeSceneLoadHook += MODHOOK_BeforeSceneLoad;
             On.HutongGames.PlayMaker.FsmState.OnEnter -= FsmState_OnEnter;
@@ -4306,6 +4442,7 @@ namespace EnemyRandomizerMod
 
         protected override void SetCustomPositionOnShow()
         {
+            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
         }
 
         public void SelfSpawnBabies()
@@ -4383,9 +4520,9 @@ namespace EnemyRandomizerMod
         }
     }
 
-    public class GiantFlySpawner : DefaultSpawner<GiantBuzzerControl> { }
+    public class GiantFlySpawner : DefaultSpawner<GiantFlyControl> { }
 
-    public class GiantFlyPrefabConfig : DefaultPrefabConfig<GiantBuzzerControl> { }
+    public class GiantFlyPrefabConfig : DefaultPrefabConfig<GiantFlyControl> { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -4401,11 +4538,11 @@ namespace EnemyRandomizerMod
 
         public override bool dieChildrenOnDeath => true;
         public override int maxBabies => 4;
+        public override string spawnEntityOnDeath => "Death Explode Boss";
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
 
             var db = EnemyRandomizerDatabase.GetDatabase();
 
@@ -4439,6 +4576,7 @@ namespace EnemyRandomizerMod
 
             control.GetState("Idle").InsertCustomAction(() =>
             {
+                var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
                 gameObject.GetComponentsInChildren<Collider2D>(true).ToList().ForEach(x => x.enabled = true);
             }, 0);
 
@@ -4490,11 +4628,11 @@ namespace EnemyRandomizerMod
         public override int maxBabies => 4;
 
         public override string FSMName => "Big Buzzer";
+        public override string spawnEntityOnDeath => "Death Explode Boss";
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
 
             var db = EnemyRandomizerDatabase.GetDatabase();
 
@@ -4539,9 +4677,11 @@ namespace EnemyRandomizerMod
 
             control.GetState("Idle").InsertCustomAction(() =>
             {
+                var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
                 gameObject.GetComponentsInChildren<Collider2D>(true).ToList().ForEach(x => x.enabled = true);
             }, 0);
         }
+
         protected override void SetCustomPositionOnShow()
         {
         }
@@ -4568,10 +4708,31 @@ namespace EnemyRandomizerMod
 
         public Vector3 originalScale;
 
+        public bool hasSetupYet = false;
+
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+
+            //thisMetadata.CurrentHP = 40;
+
+            //{
+            //    var checkHP = gameObject.LocateMyFSM("Check Health");
+            //    if (checkHP != null)
+            //        Destroy(checkHP);
+            //}
+
+            AddTimeoutAction(control.GetState("Rise"), "FALL", 2f);
+            AddTimeoutAction(control.GetState("Fall"), "FALL", 1f);
+
+            AddTimeoutAction(control.GetState("Rise 2"), "FALL", 2f);
+            AddTimeoutAction(control.GetState("Fall 2"), "FALL", 1f);
+
+            AddTimeoutAction(control.GetState("S Rise"), "FALL", 2f);
+            AddTimeoutAction(control.GetState("S Fall"), "FALL", 1f);
+
+            AddTimeoutAction(control.GetState("JA Rise"), "FALL", 2f);
+            AddTimeoutAction(control.GetState("JA Fall"), "FALL", 1f);
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Start Fall");
 
@@ -4605,24 +4766,31 @@ namespace EnemyRandomizerMod
             var state1 = control.GetState("State 1");
             state1.DisableAction(1);
             state1.DisableAction(4);
+            state1.AddCustomAction(() => { hasSetupYet = true; });
 
             control.ChangeTransition("Check", "JUMP", "First Idle");
 
             var jump = control.GetState("Jump");
             jump.DisableAction(4);
 
+            jump.AddCustomAction(() => { hasSetupYet = true; });
+
             originalScale = transform.localScale;
 
             var turnr = control.GetState("Turn R");
             turnr.DisableAction(5);
             turnr.InsertCustomAction(() => {
-                transform.localScale = new Vector3(originalScale.x * 1.3f, originalScale.y, originalScale.z);
+                var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+                transform.localScale = new Vector3(originalScale.x * -1.3f * thisMetadata.SizeScale, originalScale.y * thisMetadata.SizeScale, originalScale.z * thisMetadata.SizeScale);
+                hasSetupYet = true;
             }, 5);
 
             var turnl = control.GetState("Turn L");
             turnl.DisableAction(5);
             turnl.InsertCustomAction(() => {
-                transform.localScale = new Vector3(originalScale.x * -1.3f, originalScale.y, originalScale.z);
+                var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+                transform.localScale = new Vector3(originalScale.x * 1.3f * thisMetadata.SizeScale, originalScale.y * thisMetadata.SizeScale, originalScale.z * thisMetadata.SizeScale);
+                hasSetupYet = true;
             }, 5);
 
             var checkDirection = control.GetState("Check Direction");
@@ -4631,6 +4799,11 @@ namespace EnemyRandomizerMod
             checkDirection.RemoveTransition("FINISHED");
             checkDirection.RemoveTransition("CANCEL");
             this.OverrideState(control, "Check Direction", () => {
+                if(!hasSetupYet)
+                {
+                    control.SetState("Init");
+                    return;
+                }
                 EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Death Explode Boss", null, true);
                 Destroy(gameObject);
             });
@@ -4658,11 +4831,31 @@ namespace EnemyRandomizerMod
         public override string FSMName => "FalseyControl";
 
         public Vector3 originalScale;
+        public bool hasSetupYet = false;
 
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+
+            AddTimeoutAction(control.GetState("Rise"), "FALL", 2f);
+            AddTimeoutAction(control.GetState("Fall"), "FALL", 1f);
+
+            AddTimeoutAction(control.GetState("Rise 2"), "FALL", 2f);
+            AddTimeoutAction(control.GetState("Fall 2"), "FALL", 1f);
+
+            AddTimeoutAction(control.GetState("S Rise"), "FALL", 2f);
+            AddTimeoutAction(control.GetState("S Fall"), "FALL", 1f);
+
+            AddTimeoutAction(control.GetState("JA Rise"), "FALL", 2f);
+            AddTimeoutAction(control.GetState("JA Fall"), "FALL", 1f);
+
+            AddTimeoutAction(control.GetState("JA Rise 2"), "FALL", 2f);
+            AddTimeoutAction(control.GetState("JA Fall 2"), "FALL", 1f);
+
+            AddTimeoutAction(control.GetState("Start Fall"), "FALL", 1f);
+
+            AddTimeoutAction(control.GetState("Esc Rise"), "FALL", 2f);
+            AddTimeoutAction(control.GetState("Esc Fall"), "FALL", 1f);
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Start Fall");
 
@@ -4697,22 +4890,28 @@ namespace EnemyRandomizerMod
             var idle = control.GetState("Idle");
             idle.DisableAction(0);
             idle.ChangeTransition("ESCAPED", "Init");
+            idle.AddCustomAction(() => { hasSetupYet = true; });
 
             var jump = control.GetState("Jump");
             jump.DisableAction(6);
+            jump.AddCustomAction(() => { hasSetupYet = true; });
 
             originalScale = transform.localScale;
 
             var turnr = control.GetState("Turn R");
             turnr.DisableAction(5);
             turnr.InsertCustomAction(() => {
-                transform.localScale = new Vector3(originalScale.x * 1.3f, originalScale.y, originalScale.z);
+                var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+                transform.localScale = new Vector3(originalScale.x * -1.3f * thisMetadata.SizeScale, originalScale.y * thisMetadata.SizeScale, originalScale.z * thisMetadata.SizeScale);
+                hasSetupYet = true;
             }, 5);
 
             var turnl = control.GetState("Turn L");
             turnl.DisableAction(5);
             turnl.InsertCustomAction(() => {
-                transform.localScale = new Vector3(originalScale.x * -1.3f, originalScale.y, originalScale.z);
+                var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
+                transform.localScale = new Vector3(originalScale.x * 1.3f * thisMetadata.SizeScale, originalScale.y * thisMetadata.SizeScale, originalScale.z * thisMetadata.SizeScale);
+                hasSetupYet = true;
             }, 5);
 
             var checkDirection = control.GetState("Check Direction");
@@ -4720,6 +4919,11 @@ namespace EnemyRandomizerMod
             checkDirection.RemoveTransition("TURN R");
             checkDirection.RemoveTransition("FINISHED");
             this.OverrideState(control, "Check Direction", () => {
+                if (!hasSetupYet)
+                {
+                    control.SetState("Init");
+                    return;
+                }
                 EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Death Explode Boss", null, true);
                 Destroy(gameObject);
             });
@@ -4778,7 +4982,7 @@ namespace EnemyRandomizerMod
             control.GetFirstActionOfType<SetFsmVector3>("First Tele").setValue = transform.position;
             control.GetFirstActionOfType<SetFsmVector3>("Rage1 Tele").setValue = transform.position;
 
-            AddResetToStateOnHide(control, "Init");
+            //AddResetToStateOnHide(control, "Init");
 
             var climbPlatsState = control.GetState("Climb Plats1");
             climbPlatsState.Actions = new FsmStateAction[] {
@@ -5011,13 +5215,18 @@ namespace EnemyRandomizerMod
             var init = control.GetState("Init");
             init.DisableAction(6);
 
-            this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
+            this.InsertHiddenState(control, "Init", "FINISHED", "First Aim");
 
             this.OverrideState(control, "Defeat", () =>
             {
                 this.thisMetadata.EnemyHealthManager.hasSpecialDeath = false;
                 this.thisMetadata.EnemyHealthManager.SetSendKilledToObject(null);
                 this.thisMetadata.EnemyHealthManager.Die(null, AttackTypes.Generic, true);
+                if (thisMetadata.EnemyHealthManager.hp <= 0)
+                {
+                    EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Death Explode Boss", null, true);
+                    Destroy(gameObject);
+                }
             });
         }
     }
@@ -5072,6 +5281,59 @@ namespace EnemyRandomizerMod
 
 
 
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    ///// (Oblobbles)
+    public class MegaFatBeeControl : FSMBossAreaControl
+    {
+        public override string FSMName => "fat fly bounce";
+
+        public PlayMakerFSM FSMattack { get; set; }
+
+        public Vector2 spawnPos;
+        public override string spawnEntityOnDeath => "Death Explode Boss";
+
+        public override void Setup(ObjectMetadata other)
+        {
+            base.Setup(other);
+            spawnPos = other.ObjectPosition;
+
+            FSMattack = gameObject.LocateMyFSM("Fatty Fly Attack");
+
+            var init = control.GetState("Initialise");
+            init.DisableAction(2);
+
+            //skip the swoop in animation
+            control.ChangeTransition("Initialise", "FINISHED", "Activate");
+            var activate = control.GetState("Fly 2");
+            activate.InsertCustomAction(() => {
+                var wallLeft = SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.left, 100f);
+                var wallRight = SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.right, 100f);
+                control.FsmVariables.GetFsmFloat("X Max").Value = wallRight.point.x;
+                control.FsmVariables.GetFsmFloat("X Min").Value = wallLeft.point.x;
+            }, 0);
+        }
+
+        protected override void SetCustomPositionOnShow()
+        {
+            thisMetadata.ObjectPosition = spawnPos;
+            gameObject.GetOrAddComponent<PreventOutOfBounds>();
+        }
+    }
+
+    public class MegaFatBeeSpawner : DefaultSpawner<MegaFatBeeControl> { }
+
+    public class MegaFatBeePrefabConfig : DefaultPrefabConfig<MegaFatBeeControl> { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
     /////////////////////////////////////////////////////////////////////////////
     /////
     public class BlackKnightControl : FSMBossAreaControl
@@ -5081,6 +5343,15 @@ namespace EnemyRandomizerMod
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
+
+            control.GetState("Antic Air").AddCustomAction(() => {
+                gameObject.GetOrAddComponent<PreventOutOfBounds>();
+            });
+
+            AddTimeoutAction(control.GetState("Antic Air"), "LAND", 1f);
+            AddTimeoutAction(control.GetState("Jump Air"), "LAND", 1f);
+            AddTimeoutAction(control.GetState("Bounce Air"), "LAND", 1f);
+            AddTimeoutAction(control.GetState("Charge"), "LAND", 1f);
 
             this.InsertHiddenState(control, "Init Facing", "FINISHED", "Bugs In");
 

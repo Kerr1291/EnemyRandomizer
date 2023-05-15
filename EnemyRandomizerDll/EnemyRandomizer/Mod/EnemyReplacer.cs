@@ -18,7 +18,7 @@ namespace EnemyRandomizerMod
 {
     public class EnemyReplacer
     {
-        public static bool VERBOSE_LOGGING = true;
+        public static bool VERBOSE_LOGGING = false;
 
         public EnemyRandomizerDatabase database;
         public HashSet<IRandomizerLogic> loadedLogics = new HashSet<IRandomizerLogic>();
@@ -221,12 +221,13 @@ namespace EnemyRandomizerMod
         {
             var metaData = original.ToMetadata(database);
 
-            //special logic for the giant fly boss
+            //special logic for the original giant fly boss
             if (original.name.Contains("Giant Fly"))
             {
                 var fixedBossControl = original.GetOrAddComponent<GiantFlyControl>();
                 fixedBossControl.Setup(metaData);
                 metaData.MarkObjectAsReplacement(metaData);
+                metaData.ActivateSource();
                 return original;
             }
 
@@ -345,7 +346,7 @@ namespace EnemyRandomizerMod
                         metaObject = newObject;
 
                         if (VERBOSE_LOGGING)
-                            Dev.Log($"[{newObject.ObjectType}, {newObject.ObjectName}]: Was marked as a replacement for [{metaObject.ObjectType}, {metaObject.ObjectName}] .");
+                            Dev.Log($"[{newObject.ObjectType}, {newObject.ObjectName}]: Was marked as a replacement for [{newObject.ObjectThisReplaced.ObjectType}, {newObject.ObjectThisReplaced.ObjectName}] .");
                     }
                 }
                 else

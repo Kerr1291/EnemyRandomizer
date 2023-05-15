@@ -92,7 +92,7 @@ namespace EnemyRandomizerMod
             breakAntic.DisableAction(1);
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Set Pos");
-            this.AddResetToStateOnHide(control, "Init");
+            //this.AddResetToStateOnHide(control, "Init");
         }
     }
 

@@ -187,28 +187,6 @@ namespace EnemyRandomizerMod
             isWalker = walker.Select(x => x != null).ToReadOnlyReactiveProperty();
 
             physicsBody = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<Rigidbody2D>()).ToReadOnlyReactiveProperty();
-            sceneSaveData = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<PersistentBoolItem>()).ToReadOnlyReactiveProperty();
-            isDisabledBySavedGameState = sceneSaveData.Where(_ => HasData).Select(x =>
-            {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:isDisabledBySavedGameState - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                if (x == null)
-                    return false;
-
-                if (x.isActiveAndEnabled)
-                {
-                    return x.persistentBoolData.activated;
-                }
-                else
-                {
-                    var data = global::SceneData.instance.FindMyState(x.persistentBoolData);
-                    if (data != null)
-                        return data.activated;
-                    else
-                        return false;
-                }
-            }).ToReadOnlyReactiveProperty();
-
             collider = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<Collider2D>()).ToReadOnlyReactiveProperty();
             mRenderer = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<MeshRenderer>()).ToReadOnlyReactiveProperty();
             sprite = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<tk2dSprite>()).ToReadOnlyReactiveProperty();
@@ -261,15 +239,57 @@ namespace EnemyRandomizerMod
             //hasAvailableItem = availableItem.Select(x => x != null).ToReadOnlyReactiveProperty();
         }
 
+        public static bool CheckIfIsBattleEnemy(GameObject sceneObject)
+        {
+            if (sceneObject == null)
+                return false;
+
+            if (sceneObject.GetComponent<HealthManager>() == null)
+                return false;
+
+            bool isBattleEnemy = false;
+            if (!isBattleEnemy)
+            {
+                if (sceneObject.GetComponent<BattleManagedObject>())
+                    isBattleEnemy = true;
+
+                if (!isBattleEnemy)
+                {
+                    isBattleEnemy = sceneObject.GetSceneHierarchyPath().Split('/').Any(x => BattleManager.battleControllers.Any(y => x.Contains(y)));
+
+                    if (!isBattleEnemy)
+                    {
+                        bool hasScene = MetaDataTypes.BattleEnemies.TryGetValue("ANY", out var enemies);
+                        if (hasScene)
+                        {
+                            var dbName = EnemyRandomizerDatabase.ToDatabaseKey(sceneObject.name);
+                            isBattleEnemy = enemies.Contains(dbName);
+                        }
+
+                        if (!isBattleEnemy)
+                        {
+                            hasScene = MetaDataTypes.BattleEnemies.TryGetValue(sceneObject.scene.name, out var enemies2);
+                            if (hasScene)
+                            {
+                                var dbName = EnemyRandomizerDatabase.ToDatabaseKey(sceneObject.name);
+                                isBattleEnemy = enemies2.Contains(dbName);
+                            }
+                        }
+                    }
+                }
+            }
+            return isBattleEnemy;
+        }
+
         protected virtual void GenerateRandoReactives()
         {
             battleRandoObject = validReplacement.CombineLatest(nonNullSource, (x0, x1) =>
             {
                 if (VERBOSE_DEBUG)
                     Dev.Log($"{ObjectName} - in:battleRandoObject - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                if (!x0.IsBattleEnemy)
+                if (!CheckIfIsBattleEnemy(x0.Source))
                     return null;
-
+                Dev.Log("This is a battle enemy " + ObjectName);
                 BattleManagedObject bmo = x1.GetComponent<BattleManagedObject>();
                 if (bmo == null)
                 {
@@ -285,7 +305,7 @@ namespace EnemyRandomizerMod
                 if (VERBOSE_DEBUG)
                     Dev.Log($"{ObjectName} - in:randoObject - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
                 ManagedObject mo = x1.GetComponent<ManagedObject>();
-                if (!x0.IsBattleEnemy)
+                if (!CheckIfIsBattleEnemy(x0.Source))
                 {
                     if (mo == null)
                     {
@@ -399,13 +419,6 @@ namespace EnemyRandomizerMod
                         Dev.Log($"{ObjectName} - in:isVisible - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
                     return (active && inbounds && isrender);
                 }).ToReadOnlyReactiveProperty();
-
-            isActive = isVisible.CombineLatest(isDisabledBySavedGameState, (isVisible, isDisabled) =>
-            {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:isActive - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                return !isDisabled && isVisible;
-            }).ToReadOnlyReactiveProperty();
         }
 
         protected virtual void GenerateReplacementReactives()
@@ -417,28 +430,34 @@ namespace EnemyRandomizerMod
                 return x.activeInHierarchy;
             }).ToReadOnlyReactiveProperty();
 
-            isTemporarilyInactive = hasData.CombineLatest(isAReplacementObject, activeInHeirarchy, nonNullHealthManager, isDisabledBySavedGameState, isActive,
-                (has, isRepl, goActive, nnHM, isDisabled, active) =>
+            isTemporarilyInactive = hasData.CombineLatest(isAReplacementObject, activeInHeirarchy, nonNullHealthManager, isVisible,
+                (has, isRepl, goActive, nnHM, isCurrentlyVisible) =>
                 {
                     if (VERBOSE_DEBUG)
                         Dev.Log($"{ObjectName} - in:isTemporarilyInactive - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                    return has && !isRepl && goActive && nnHM && !isDisabled && !active;
+                    return has && !isRepl && goActive && nnHM && !IsDisabledBySavedGameState && !isCurrentlyVisible;
                 }).ToReadOnlyReactiveProperty();
 
-            isBattleInactive = hasData.CombineLatest(isAReplacementObject, isBattleEnemy, activeInHeirarchy, nonNullHealthManager, isDisabledBySavedGameState, isActive,
-                (has, isRepl, isBE, goActive, nnHM, isDisabled, active) =>
+            isBattleInactive = hasData.CombineLatest(isAReplacementObject, isBattleEnemy, activeInHeirarchy, nonNullHealthManager, isVisible,
+                (has, isRepl, isBE, goActive, nnHM, isCurrentlyVisible) =>
                 {
                     if (VERBOSE_DEBUG)
                         Dev.Log($"{ObjectName} - in:isBattleInactive - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                    return has && !isRepl && isBE && !goActive && nnHM && !isDisabled && !active;
+                    return has && !isRepl && isBE && !goActive && nnHM && !IsDisabledBySavedGameState && !isCurrentlyVisible;
                 }).ToReadOnlyReactiveProperty();
 
-            canProcessObject = hasData.CombineLatest(isInvalidObject, isActive, objectType, isAReplacementObject,
-                (has, isInvalidObject, isActive, oT, isAReplacementO) =>
+            canProcessObject = hasData.CombineLatest(isInvalidObject, isVisible, objectType, isAReplacementObject,
+                (has, isInvalidObject, isCurrentlyVisible, oT, isAReplacementO) =>
                 {
+                    if(oT == PrefabType.Enemy)
+                    {
+                        if (IsDisabledBySavedGameState)
+                            return false;
+                    }
+
                     if (VERBOSE_DEBUG)
                         Dev.Log($"{ObjectName} - in:canProcessObject - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                    return has && !isInvalidObject && (isActive || oT == PrefabType.Effect) && !isAReplacementO;
+                    return has && !isInvalidObject && (isCurrentlyVisible || oT == PrefabType.Effect) && !isAReplacementO;
                 }).ToReadOnlyReactiveProperty();
         }
 
@@ -561,10 +580,53 @@ namespace EnemyRandomizerMod
 
         public string MapZone => GameManager.instance.GetCurrentMapZone();
 
-        public ReadOnlyReactiveProperty<bool> isDisabledBySavedGameState { get; protected set; }
+        public string PBD_id => ObjectName;
+        public string PBD_sceneName => SceneName;
+        public PersistentBoolData PBD_local => global::SceneData.instance.FindMyState(new PersistentBoolData() { id = PBD_id, sceneName = PBD_sceneName });
+        public PersistentBoolData PBD_world => ObjectThisReplaced == null ? PBD_local : ObjectThisReplaced.PBD_world;
+
         public bool IsDisabledBySavedGameState
         {
-            get => isDisabledBySavedGameState == null ? false : isDisabledBySavedGameState.Value;
+            get
+            {
+                if (VERBOSE_DEBUG)
+                    Dev.Log($"{ObjectName} - check:isDisabledBySavedGameState - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
+                if (Source == null || IsInvalidObject || !HasData)
+                {
+                    return false;
+                }
+
+                if(ObjectThisReplaced != null)
+                {
+                    return ObjectThisReplaced.IsDisabledBySavedGameState;
+                }
+                else
+                {
+                    if (PBD_world == null)
+                        return false;
+
+                    return PBD_world.activated;
+                }
+            }
+            set
+            {
+                if (Source == null || IsInvalidObject || !HasData)
+                {
+                    return;
+                }
+
+                if (ObjectThisReplaced != null)
+                {
+                    ObjectThisReplaced.IsDisabledBySavedGameState = value;
+                }
+                else
+                {
+                    if (PBD_world == null)
+                        return;
+
+                    PBD_world.activated = value;
+                }
+            }
         }
 
         public ReadOnlyReactiveProperty<bool> isBoss { get; protected set; }
@@ -620,7 +682,7 @@ namespace EnemyRandomizerMod
         public ReadOnlyReactiveProperty<bool> isBattleEnemy { get; protected set; }
         public bool IsBattleEnemy
         {
-            get => isBattleEnemy == null ? false : isBattleEnemy.Value;
+            get => isBattleEnemy == null ? false : (isBattleEnemy.Value ? true : (CheckIfIsBattleEnemy(Source)));
         }
 
         //public ReadOnlyReactiveProperty<bool> hasAvailableItem { get; protected set; }
@@ -688,12 +750,6 @@ namespace EnemyRandomizerMod
             set { if (enemyDamageDealt != null && Source != null && Source.GetComponent<DamageEnemies>() != null) Source.GetComponent<DamageEnemies>().damageDealt = value; }
         }
 
-        public ReadOnlyReactiveProperty<bool> isActive { get; protected set; }
-        public bool IsActive
-        {
-            get => isActive == null ? false : isActive.Value;
-        }
-
         public ReadOnlyReactiveProperty<bool> isSummonedByEvent { get; protected set; }
         public bool IsSummonedByEvent
         {
@@ -735,9 +791,6 @@ namespace EnemyRandomizerMod
                     customAvailableItem.Value = value;
             }
         }
-
-        public ReadOnlyReactiveProperty<PersistentBoolItem> sceneSaveData { get; protected set; }
-        public PersistentBoolItem SceneSaveData => sceneSaveData == null ? null : sceneSaveData.Value;
 
         public ReadOnlyReactiveProperty<HealthManager> enemyHealthManager { get; protected set; }
         public HealthManager EnemyHealthManager => enemyHealthManager == null ? (Source == null ? null : Source.GetComponent<HealthManager>()) : enemyHealthManager.Value;
@@ -820,7 +873,7 @@ namespace EnemyRandomizerMod
         public PreInstantiateGameObject PreInstantiateGO => preInstantiateGO == null ? null : preInstantiateGO.Value;
 
         public ReadOnlyReactiveProperty<bool> isAReplacementObject { get; protected set; }
-        public bool IsAReplacementObject => isAReplacementObject == null ? false : isAReplacementObject.Value;
+        public bool IsAReplacementObject => isAReplacementObject == null ? false : (isAReplacementObject.Value ? true : (Source == null ? false : Source.GetComponent<ManagedObject>() != null));
 
         public ReadOnlyReactiveProperty<bool> isVisible { get; protected set; }
         public bool IsVisible => isVisible == null ? false : isVisible.Value;
@@ -875,7 +928,7 @@ namespace EnemyRandomizerMod
 
         public virtual void DestroySource(bool disableObjectBeforeDestroy = true)
         {
-            Dev.Log($"{ScenePath} Destroying This");
+            Dev.Log($"{ScenePath} Destroying This {Source}");
             if (Source != null)
             {
                 if (ObjectName.Contains("Fly") && SceneName == "Crossroads_04")
@@ -1063,9 +1116,13 @@ namespace EnemyRandomizerMod
         {
             //error?
             if (Source == null)
+            {
+                Dev.LogError("Cannot activate a null object (this hsould never even get close to happening)! The metadata for this object had the name "+ObjectName);
                 return null;
+            }
 
-            if (ObjectThisReplaced != null && this != ObjectThisReplaced)
+            //nothing to do here if these objects are the same
+            if (ObjectThisReplaced != null && this != ObjectThisReplaced && Source != ObjectThisReplaced.Source)
             {
                 var oedf = ObjectThisReplaced.DeathEffects;
                 var nedf = DeathEffects;
@@ -1103,7 +1160,8 @@ namespace EnemyRandomizerMod
 
             Source.SafeSetActive(true);
 
-            if (ObjectThisReplaced != null && this != ObjectThisReplaced)
+            //nothing to do here if these objects are the same
+            if (ObjectThisReplaced != null && this != ObjectThisReplaced && Source != ObjectThisReplaced.Source)
                 ObjectThisReplaced.DestroySource();
 
             return Source;
@@ -1163,7 +1221,7 @@ namespace EnemyRandomizerMod
                 if (flag3)
                 {
                     //in lieu of the proper journal unlock effect, just blow up in a very noticable way
-                    EnemyRandomizerDatabase.CustomSpawnWithLogic(Source.transform.position, "Death Explode Boss", null, true);
+                    EnemyRandomizerDatabase.CustomSpawnWithLogic(Source.transform.position, "Item Get Effect R", null, true);
                 }
             }
         }
@@ -1836,7 +1894,104 @@ namespace EnemyRandomizerMod
                     "Jar Collector",
                     "Black Knight",
                 }
-            }
+            },
+
+
+            {"Abyss_17",
+                new List<string>()
+                {
+                    "Lesser Mawlek",
+                }
+            },
+            {"Abyss_19",
+                new List<string>()
+                {
+                    "Infected Knight",
+                }
+            },
+            {"Crossroads_04",
+                new List<string>()
+                {
+                    "Giant Fly",
+                    "Fly",
+                }
+            },
+            {"Crossroads_08",
+                new List<string>()
+                {
+                    "Spitter",
+                }
+            },
+            {"Crossroads_22",
+                new List<string>()
+                {
+                    "Hatcher",
+                    "Spitter",
+                }
+            },
+            {"Deepnest_33",
+                new List<string>()
+                {
+                    "Zombie Spider 1",
+                    "Zombie Spider 2",
+                }
+            },
+            {"Fungus1_21",
+                new List<string>()
+                {
+                    "Moss Knight",
+                }
+            },
+            {"Fungus1_32",
+                new List<string>()
+                {
+                    "Moss Knight B",
+                    "Moss Knight C",
+                    "Moss Knight",
+                }
+            },
+            {"Fungus2_05",
+                new List<string>()
+                {
+                    "Mushroom Baby",
+                    "Mushroom Brawler",
+                }
+            },
+            {"Fungus3_archive_02_boss",
+                new List<string>()
+                {
+                    "Mega Jellyfish",
+                }
+            },
+            {"Mines_18_boss",
+                new List<string>()
+                {
+                    "Mega Zombie Beam Miner",
+                }
+            },
+            {"Ruins1_23",
+                new List<string>()
+                {
+                    "Mage Blob",
+                    "Mage Knight",
+                    "Mage",
+                }
+            },
+            {"Ruins2_01_b",
+                new List<string>()
+                {
+                    "Royal Zombie Fat",
+                    "Royal Zombie",
+                    "Royal Zombie Coward",
+                }
+            },
+            {"Ruins2_03",
+                new List<string>()
+                {
+                    "Ruins Flying Sentry Javelin",
+                    "Great Shield Zombie",
+                }
+            },
         };
 
         public static List<string> PogoLogicEnemies = new List<string>() 
@@ -1909,6 +2064,8 @@ namespace EnemyRandomizerMod
             "Mega Jellyfish",
             "Mega Jellyfish GG",
             "Radiance",
+            "Giant Buzzer",//temporarily broken
+            "Giant Buzzer Col",//temporarily broken
             "Corpse Garden Zombie", //don't spawn this, it's just a corpse
         };
 
@@ -2198,13 +2355,13 @@ namespace EnemyRandomizerMod
             {"Health Scuttler", false},
             {"Orange Scuttler", false},
             {"Abyss Tendril", false},
-            {"Flamebearer Small", false},
-            {"Flamebearer Med", false},
-            {"Flamebearer Large", false},
+            {"Flamebearer Small", false},//these work, but they're annoying and don't stay in the arenas
+            {"Flamebearer Med", false},  //these work, but they're annoying and don't stay in the arenas
+            {"Flamebearer Large", false},//these work, but they're annoying and don't stay in the arenas
             {"Mosquito", true},
             {"Colosseum_Armoured_Roller", true},
             {"Colosseum_Miner", true},
-            {"Zote Boss", true},//? -- inactive?
+            {"Zote Boss", true},// TEST FIXES
             {"Bursting Bouncer", true},//corpse didnt explode
             {"Super Spitter", true},
             {"Super Spitter Col", false},//didnt spawn
@@ -2306,7 +2463,7 @@ namespace EnemyRandomizerMod
             {"Plant Turret", false},
             {"Plant Turret Right", false},
             {"Fat Fly", true},
-            {"Giant Buzzer", true},
+            {"Giant Buzzer", false},
             {"Moss Knight", true},
             {"Grass Hopper", true},
             {"Lazy Flyer Enemy", false},

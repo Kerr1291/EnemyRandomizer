@@ -50,7 +50,7 @@ namespace EnemyRandomizerMod
 
         protected virtual string FSMHiddenStateName => "Hidden";
         protected virtual List<PlayMakerFSM> FSMsUsingHiddenStates { get; set; }
-        protected virtual Dictionary<PlayMakerFSM, string> FSMsWithResetToStateOnHide { get; set; }
+        //protected virtual Dictionary<PlayMakerFSM, string> FSMsWithResetToStateOnHide { get; set; }
 
         public virtual Vector2 pos2d => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
         public virtual Vector2 pos2dWithOffset => new Vector2(gameObject.transform.position.x, gameObject.transform.position.y) + new Vector2(0, 1f);
@@ -77,8 +77,19 @@ namespace EnemyRandomizerMod
 
         protected virtual IEnumerable<CameraLockArea> cams { get; set; }
 
+        bool setupCalled = false;
+
         public virtual void Setup(ObjectMetadata other)
         {
+            if(setupCalled)
+            {
+                Dev.LogError("SETUP CALLED A SECOND TIME!!!!!");
+                return;
+            }
+
+            Dev.Log("SETUP BEING CALLED");
+            setupCalled = true;
+
             disposables.Clear();
             thisMetadata = new ObjectMetadata();
             thisMetadata.Setup(gameObject, EnemyRandomizerDatabase.GetDatabase());
@@ -99,6 +110,46 @@ namespace EnemyRandomizerMod
             ImportItemFromReplacement();
         }
 
+        protected virtual void EnemyHealthManager_OnDeath()
+        {
+            try
+            {
+                if (hasCustomDreamnailReaction)
+                {
+                    On.EnemyDreamnailReaction.SetConvoTitle -= EnemyDreamnailReaction_SetConvoTitle;
+                    On.Language.Language.Get_string_string -= Language_Get_string_string;
+                }
+
+                if (dieChildrenOnDeath)
+                    DieChildrenOnDeath();
+
+                if (explodeOnDeath)
+                    ExplodeOnDeath();
+
+                if (!string.IsNullOrEmpty(spawnEntityOnDeath))
+                    SpawnEntityOnDeath();
+
+                if (doBlueHealHeroOnDeath || didOriginalDoBlueHealHeroOnDeath)
+                    DoBlueHealHero();
+
+                if (thisMetadata != null && thisMetadata.HasAvailableItem)
+                    SpawnAndFlingItem();
+
+                //TODO: see if the default works, first
+                //ForceUpdateJournal();
+
+                if (originialMetadata != null)
+                    originialMetadata.Dispose();
+
+                if (originialMetadata != thisMetadata)
+                    thisMetadata.Dispose();
+
+                if (disposables != null)
+                    disposables.Dispose();
+            }
+            catch (Exception e) { Dev.LogError($"Something bad happened with {name}"); }
+        }
+
         protected virtual void ImportItemFromReplacement()
         {
             if(originialMetadata != null && originialMetadata != thisMetadata && originialMetadata.Source != thisMetadata.Source && originialMetadata.HasAvailableItem)
@@ -109,7 +160,7 @@ namespace EnemyRandomizerMod
 
         protected virtual void SpawnAndFlingItem()
         {
-            if(thisMetadata.HasAvailableItem)
+            if(thisMetadata.AvailableItem != null)
             {
                 FlingUtils.SelfConfig fling = new FlingUtils.SelfConfig()
                 {
@@ -125,6 +176,10 @@ namespace EnemyRandomizerMod
 
         protected virtual void OnEnable()
         {
+            //not ready yet..
+            if (thisMetadata == null)
+                return;
+
             if (useCustomPositonOnShow)
                 SetCustomPositionOnShow();
             else
@@ -135,46 +190,23 @@ namespace EnemyRandomizerMod
                 if (!HeroInAggroRange())
                     Hide();
             }
+
+            if (thisMetadata != null)
+            {
+                thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+                thisMetadata.EnemyHealthManager.OnDeath += EnemyHealthManager_OnDeath;
+            }
         }
 
         protected virtual void OnDisable()
         {
-            disposables.Clear();
-        }
+            if(disposables != null)
+                disposables.Clear();
 
-        protected virtual void OnDestroy()
-        {
-            if (hasCustomDreamnailReaction)
+            if (thisMetadata != null)
             {
-                On.EnemyDreamnailReaction.SetConvoTitle -= EnemyDreamnailReaction_SetConvoTitle;
-                On.Language.Language.Get_string_string -= Language_Get_string_string;
+                thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
             }
-
-            if(dieChildrenOnDeath)
-                DieChildrenOnDeath();
-
-            if(explodeOnDeath)
-                ExplodeOnDeath();
-
-            if(!string.IsNullOrEmpty(spawnEntityOnDeath))
-                SpawnEntityOnDeath();
-
-            if (doBlueHealHeroOnDeath || didOriginalDoBlueHealHeroOnDeath)
-                DoBlueHealHero();
-
-            if (thisMetadata.HasAvailableItem)
-                SpawnAndFlingItem();
-
-            //TODO: see if the default works, first
-            //ForceUpdateJournal();
-
-            if(originialMetadata != null)
-                originialMetadata.Dispose();
-
-            if(originialMetadata != thisMetadata)
-                thisMetadata.Dispose();
-
-            disposables.Dispose();
         }
 
         protected virtual void ForceUpdateJournal()
@@ -223,7 +255,7 @@ namespace EnemyRandomizerMod
                 if (flag3)
                 {
                     //in lieu of the proper journal unlock effect, just do something
-                    EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "dream_particle_03", null, true);
+                    EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Item Get Effect R", null, true);
                 }
             }
         }
@@ -496,13 +528,7 @@ namespace EnemyRandomizerMod
 
         protected virtual void Hide()
         {
-            if (control.enabled)
-            {
-                control.enabled = false;
-                StopPhysicsBody();
-            }
-
-            CheckFSMsWithResetOnHideStates();
+            //CheckFSMsWithResetOnHideStates();
         }
 
         protected virtual void Show()
@@ -526,7 +552,7 @@ namespace EnemyRandomizerMod
             if (FSMsUsingHiddenStates == null || FSMsUsingHiddenStates.Count <= 0)
                 return;
 
-            List<PlayMakerFSM> activatedFSMs = new List<PlayMakerFSM>();
+            //List<PlayMakerFSM> activatedFSMs = new List<PlayMakerFSM>();
 
             foreach (var fsm in FSMsUsingHiddenStates)
             {
@@ -537,29 +563,31 @@ namespace EnemyRandomizerMod
                 {
                     fsm.SendEvent("SHOW");
 
-                    activatedFSMs.Add(fsm);
+                    //activatedFSMs.Add(fsm);
                 }
             }
 
-            activatedFSMs.ForEach(x => FSMsUsingHiddenStates.Remove(x));
+            //TODO: try removing this
+            //activatedFSMs.ForEach(x => FSMsUsingHiddenStates.Remove(x));
         }
 
-        protected virtual void CheckFSMsWithResetOnHideStates()
-        {
-            if (FSMsWithResetToStateOnHide == null)
-                return;
+        //protected virtual void CheckFSMsWithResetOnHideStates()
+        //{
+        //    if (FSMsWithResetToStateOnHide == null)
+        //        return;
 
-            if (FSMsUsingHiddenStates.Count <= 0)
-                return;
+        //    if (FSMsUsingHiddenStates.Count <= 0)
+        //        return;
 
-            foreach (var fsmStatePair in FSMsWithResetToStateOnHide)
-            {
-                if (!fsmStatePair.Key.enabled)
-                    continue;
+        //    foreach (var fsmStatePair in FSMsWithResetToStateOnHide)
+        //    {
+        //        StopPhysicsBody();
+        //        if (!fsmStatePair.Key.enabled)
+        //            continue;
 
-                fsmStatePair.Key.SetState(fsmStatePair.Value);
-            }
-        }
+        //        fsmStatePair.Key.SetState(fsmStatePair.Value);
+        //    }
+        //}
 
         //protected virtual void OnDisable()
         //{
@@ -868,18 +896,14 @@ namespace EnemyRandomizerMod
 
         protected virtual void SetupNormalEnemyAsBoss()
         {
-            this.thisMetadata.Geo *= 5;
+            thisMetadata.Geo = thisMetadata.Geo * 5 + 100;
         }
 
         protected virtual void SetupBossAsNormalEnemy()
         {
+            SetGeoRandomBetween(0, 25);
             if (originialMetadata != null)
-            {
-                RNG rng = new RNG();
-                rng.Reset();
-                int extra = rng.Rand(0, 24);
-                thisMetadata.Geo = originialMetadata.Geo + extra;
-            }
+                thisMetadata.Geo = originialMetadata.Geo;
         }
 
         protected virtual void DisableSendEvents(PlayMakerFSM fsm, params (string StateName, int ActionIndex)[] stateActions)
@@ -1000,13 +1024,13 @@ namespace EnemyRandomizerMod
             catch (Exception e) { Dev.Log($"Error in adding an aggro range state to FSM:{fsm.name} PRE STATE:{preHideStateName} EVENT:{preHideTransitionEventName} POST-STATE:{postHideStateName}"); }
         }
 
-        protected virtual void AddResetToStateOnHide(PlayMakerFSM fsm, string resetToState)
-        {
-            if (FSMsWithResetToStateOnHide == null)
-                FSMsWithResetToStateOnHide = new Dictionary<PlayMakerFSM, string>();
+        //protected virtual void AddResetToStateOnHide(PlayMakerFSM fsm, string resetToState)
+        //{
+        //    if (FSMsWithResetToStateOnHide == null)
+        //        FSMsWithResetToStateOnHide = new Dictionary<PlayMakerFSM, string>();
 
-            FSMsWithResetToStateOnHide.Add(fsm, resetToState);
-        }
+        //    FSMsWithResetToStateOnHide.Add(fsm, resetToState);
+        //}
 
         protected virtual void DisableActions(FsmState state, params int[] indices)
         {
@@ -1016,8 +1040,17 @@ namespace EnemyRandomizerMod
             }
         }
 
+        public virtual Vector2 GetRandomDirectionVectorFromSelf(bool upwardOnly = false)
+        {
+            Vector2 movementDir = UnityEngine.Random.insideUnitCircle;
+            if (upwardOnly && movementDir.y < 0)
+                movementDir.y = -movementDir.y;
 
-        public virtual Vector3 GetRandomDirectionFromSelf(float mindDist = 2f)
+            return movementDir;
+        }
+
+
+        public virtual Vector3 GetRandomDirectionFromSelf(float mindDist = 2f, bool upwardOnly = false)
         {
             int tries = 10;
             int i = 0;

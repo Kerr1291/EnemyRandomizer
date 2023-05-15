@@ -61,13 +61,15 @@ namespace EnemyRandomizerMod
         {
             var newObject = base.Spawn(p, source);
             var control = newObject.GetOrAddComponent<TControlComponent>();
-            if (source == null || !source.IsPogoLogic)
+            if (source != null && source.IsPogoLogic)
             {
-                control.Setup(source);
+                GameObject.Destroy(control);
             }
             else
             {
-                GameObject.Destroy(control);
+                newObject.SetActive(true);
+                control.Setup(source);
+                newObject.SetActive(false);
             }
             return newObject;
         }
@@ -100,6 +102,40 @@ namespace EnemyRandomizerMod
         {
             EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, replacementEffect, null, true);
             GameObject.Destroy(gameObject);
+        }
+    }
+
+    public class SpawnOnDestroyOrDisable : MonoBehaviour
+    {
+        public string spawnEntity = "Fly";
+        public bool didEnable = false;
+        public bool didSpawn = false;
+
+        public int? setHealthOnSpawn;
+
+        protected virtual void OnEnable()
+        {
+            didEnable = true;
+        }
+
+        protected virtual void OnDestroy()
+        {
+            if (!didEnable)
+                return;
+            if (didSpawn)
+                return;
+            didSpawn = true;
+            var thing = EnemyRandomizerDatabase.GetDatabase().Spawn(spawnEntity, null);
+            thing.transform.position = gameObject.transform.position;
+            if (thing != null)
+            {
+                var thinghm = thing.GetComponent<HealthManager>();
+                if (setHealthOnSpawn != null && thinghm != null)
+                {
+                    thinghm.hp = setHealthOnSpawn.Value;
+                }
+            }
+            thing.SafeSetActive(true);
         }
     }
 

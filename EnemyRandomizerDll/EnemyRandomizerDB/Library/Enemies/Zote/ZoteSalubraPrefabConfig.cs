@@ -109,7 +109,7 @@ namespace EnemyRandomizerMod
             this.OverrideState(control, "Dead", () => { });
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Appear");
-            this.AddResetToStateOnHide(control, "Init");
+            //this.AddResetToStateOnHide(control, "Init");
 
         }
     }

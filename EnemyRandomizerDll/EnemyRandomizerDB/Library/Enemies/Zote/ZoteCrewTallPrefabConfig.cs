@@ -55,7 +55,12 @@ namespace EnemyRandomizerMod
             this.OverrideState(control, "Death Reset", () => { GameObject.Destroy(gameObject); });
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Multiply");
-            this.AddResetToStateOnHide(control, "Init");
+            //this.AddResetToStateOnHide(control, "Init");
+        }
+
+        protected override void SetDefaultPosition()
+        {
+            gameObject.StickToGroundX(1f);
         }
     }
 

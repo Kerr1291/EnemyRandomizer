@@ -67,7 +67,7 @@ namespace EnemyRandomizerMod
             this.OverrideState(control, "Sleeping", () => { GameObject.Destroy(gameObject); });
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Pos");
-            this.AddResetToStateOnHide(control, "Init");
+            //this.AddResetToStateOnHide(control, "Init");
         }
     }
 

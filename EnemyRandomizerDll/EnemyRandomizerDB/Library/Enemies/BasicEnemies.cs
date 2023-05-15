@@ -96,6 +96,11 @@ namespace EnemyRandomizerMod
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
+        }
+
+        protected override void SetDefaultPosition()
+        {
+            base.SetDefaultPosition();
             gameObject.GetOrAddComponent<PreventOutOfBounds>();
         }
     }
@@ -171,7 +176,7 @@ namespace EnemyRandomizerMod
             base.Setup(other);
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Choose Dig Point");
-            this.AddResetToStateOnHide(control, "Init");
+            //this.AddResetToStateOnHide(control, "Init");
 
             var chooseDigPoint = control.GetState("Choose Dig Point");
             DisableActions(chooseDigPoint, 0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
@@ -626,7 +631,7 @@ namespace EnemyRandomizerMod
     {
         protected override void SetDefaultPosition()
         {
-            gameObject.StickToClosestSurface(200f, -1.5f, false, false);
+            gameObject.StickToClosestSurface(200f, 0f, false, false);
         }
     }
 
@@ -701,7 +706,7 @@ namespace EnemyRandomizerMod
     {
         protected override void SetDefaultPosition()
         {
-            gameObject.StickToClosestSurface(200f, -.5f, true, false);
+            gameObject.StickToClosestSurface(200f, 0f, true, false);
         }
     }
 
@@ -721,7 +726,7 @@ namespace EnemyRandomizerMod
     {
         protected override void SetDefaultPosition()
         {
-            gameObject.StickToClosestSurface(200f, -.5f, true, true);
+            gameObject.StickToClosestSurface(200f, 0f, true, true);
         }
     }
 
@@ -860,7 +865,7 @@ namespace EnemyRandomizerMod
     {
         protected override void SetDefaultPosition()
         {
-            gameObject.StickToClosestSurface(200f, -.5f, true, false);
+            gameObject.StickToClosestSurface(200f, 0f, true, false);
         }
     }
 
@@ -1402,7 +1407,7 @@ namespace EnemyRandomizerMod
 
         public GameObject lastBoomerang;
 
-        public int eliteChance = 1;
+        public int eliteChance = 2;
         public bool isElite;
 
         public override void Setup(ObjectMetadata other)
@@ -1440,7 +1445,7 @@ namespace EnemyRandomizerMod
             //replace default boomerang with our custom one
             throwState.DisableAction(0);
             throwState.InsertCustomAction(() => {
-                lastBoomerang = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position + new Vector3(0f, -1.5f, 0f),
+                lastBoomerang = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position + new Vector3(0f, 1.5f, 0f),
                     ShotKingsGuard, null, true);
                 control.FsmVariables.GetFsmGameObject("Boomerang").Value = lastBoomerang;
 

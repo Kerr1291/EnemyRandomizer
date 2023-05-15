@@ -25,9 +25,13 @@ namespace EnemyRandomizerMod
         public FsmState waitingState = null;
         public bool waitingOnBossKill = false;
         public string waitingEvent = null;
+        public bool battleStarted = false;
+        public int preKilledEnemies = 0;
 
         public virtual void Dispose()
         {
+            preKilledEnemies = 0;
+            battleStarted = false;
             ((IDisposable)disposables).Dispose();
 
             On.HutongGames.PlayMaker.FsmState.OnEnter -= FsmState_OnEnter;
@@ -37,6 +41,8 @@ namespace EnemyRandomizerMod
 
         public BattleStateMachine(Scene scene, PlayMakerFSM fsm)
         {
+            preKilledEnemies = 0;
+            battleStarted = false;
             BattleScene = scene;
             FSM = fsm;
             FSMAREA = fsm.GetComponent<BoxCollider2D>();
@@ -53,7 +59,10 @@ namespace EnemyRandomizerMod
 
         protected void OnBattleStarted()
         {
-            if(FSMAREA != null)
+            Dev.Log("BATTLE STARTED");
+            battleStarted = true;
+            BattleManager.Instance.Value.StartCoroutine(ForceProgressWatchdog(12f));
+            if (FSMAREA != null)
             {
                 var battleArea = FSMAREA.bounds;
                 var bmos = GameObject.FindObjectsOfType<BattleManagedObject>().ToList();
@@ -93,13 +102,85 @@ namespace EnemyRandomizerMod
                 var bmos = GameObject.FindObjectsOfType<BattleManagedObject>().ToList();
                 bmos.ForEach(x =>
                 {
-                    if(x.myMetaData.IsActive && !x.myMetaData.IsBoss)
+                    if(!x.myMetaData.IsDisabledBySavedGameState
+                    && x.myMetaData.ActiveInHeirarchy
+                    && x.myMetaData.IsVisible
+                    && x.myMetaData.IsAReplacementObject)
                     {
                         Dev.Log("Force killing pre-battle enemies for now until I implement a solution to check if they start inside the arena");
                         x.myMetaData.EnemyHealthManager.Die(null, AttackTypes.Generic, true);
                     }
                 });
             }
+        }
+
+        IEnumerator ForceProgressWatchdog(float timer = 10f)
+        {
+            Dev.Log("WATCHDOG STARTED");
+            float updateRate = 0f;
+            float t = 0f;
+            for(; ; )
+            {
+                if (!battleStarted)
+                {
+                    Dev.Log("WATCHDOG CANCELED");
+                    yield break;
+                }
+
+                if(battleStarted && preKilledEnemies > 0)
+                {
+                    DecrementBattleEnemies();
+                    preKilledEnemies--;
+                    yield return new WaitForEndOfFrame();
+                    continue;
+                }
+
+                if(updateRate > 1f)
+                {
+                    int count = GameObject.FindObjectsOfType<BattleManagedObject>()
+                        .Select(x => x.GetComponent<DefaultSpawnedEnemyControl>())
+                        .Count(x =>
+                        {
+                            if (x.control != null)
+                                return x.control.enabled == true;
+                            else
+                                return x.gameObject.activeInHierarchy == true;
+                        });
+
+                    if(count > 0)
+                    {
+                        t = 0f;
+                    }
+                    else
+                    {
+                        //try force next
+                        if (t > (timer * 0.5f) && FSM.Fsm.ActiveState.Transitions.Length > 0)
+                        {
+                            Dev.Log("TIMEOUT -- SENDING NEXT");
+                            FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
+                        }
+                    }
+
+                    if(t > timer)
+                    {
+                        Dev.Log("TIMEOUT -- ENDING BATTLE");
+                        OpenGates();
+                    }
+
+                    updateRate = 0f;
+                }
+
+                yield return new WaitForEndOfFrame();
+                t += Time.deltaTime;
+                updateRate += Time.deltaTime;
+            }
+        }
+
+        protected virtual void OnBattleEnded()
+        {
+            Dev.Log("BATTLE OVER");
+            preKilledEnemies = 0;
+            battleStarted = false;
         }
 
         private void FsmState_OnEnter(On.HutongGames.PlayMaker.FsmState.orig_OnEnter orig, FsmState self)
@@ -112,6 +193,11 @@ namespace EnemyRandomizerMod
             if(self.Actions.OfType<SendEventByName>().Any(x => x.sendEvent != null && x.sendEvent.Value == "BG CLOSE"))
             {
                 OnBattleStarted();
+            }
+
+            if (self.Actions.OfType<SendEventByName>().Any(x => x.sendEvent != null && x.sendEvent.Value == "BG OPEN"))
+            {
+                OnBattleEnded();
             }
 
             if (self.Name == "Idle")
@@ -268,6 +354,23 @@ namespace EnemyRandomizerMod
             }
         }
 
+        public void DecrementBattleEnemies()
+        {
+            if (FSM.FsmVariables.Contains("Battle Enemies"))
+            {
+                var be = FSM.FsmVariables.GetFsmInt("Battle Enemies");
+                if (be.Value > 0)
+                {
+                    be.Value--;
+
+                    if (be.Value <= 0 && FSM.Fsm.ActiveState.Transitions.Length > 0)
+                    {
+                        FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
+                    }
+                }
+            }
+        }
+
         public void RegisterEnemyDeath(BattleManagedObject bmo)
         {
             bool updatedSomething = false;
@@ -277,6 +380,9 @@ namespace EnemyRandomizerMod
             //skip doing this for those
             if (bmo != null && bmo.gameObject.GetSceneHierarchyPath().Contains("Pre Battle Enemies"))
                 return;
+
+            if(!battleStarted)
+                preKilledEnemies++;
 
             bool isColo = BattleManager.Instance.Value.gameObject.scene.name.Contains("Room_Colosseum_");
             bool isWhitePalace = BattleManager.Instance.Value.gameObject.scene.name.Contains("White_Palace_");
@@ -365,12 +471,18 @@ namespace EnemyRandomizerMod
                     return info;
                 }).ToList();
 
-                if (infos.Count < 0 || !infos.Any(x => x.IsActive))
+                if (infos.Count <= 0 || !infos.Any(x => x.IsVisible))
+                {
+                    battleStarted = false;
                     OpenGates();
+                }
             }
 
             if (forceOpenGates)
+            {
+                battleStarted = false;
                 OpenGates(isWhitePalace);
+            }
         }
 
         public void RegisterEnemy(BattleManagedObject bmo)

@@ -57,7 +57,7 @@ namespace EnemyRandomizerMod
             this.OverrideState(control, "Retry Frame", () => { });
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Pos");
-            this.AddResetToStateOnHide(control, "Retract");
+            //this.AddResetToStateOnHide(control, "Retract");
 
             var retract = control.GetState("Retract");
             retract.ChangeTransition("FINISHED", "Init");

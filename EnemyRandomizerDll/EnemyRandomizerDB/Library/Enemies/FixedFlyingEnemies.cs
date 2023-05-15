@@ -238,7 +238,7 @@ namespace EnemyRandomizerMod
             control.ChangeTransition("Tele Away", "FINISHED", "Init");
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
-            this.AddResetToStateOnHide(control, "Init");
+            //this.AddResetToStateOnHide(control, "Init");
         }
     }
 
@@ -291,7 +291,7 @@ namespace EnemyRandomizerMod
             }, 0);
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
-            this.AddResetToStateOnHide(control, "Init");
+            //this.AddResetToStateOnHide(control, "Init");
         }
 
         protected override void ScaleHP()
@@ -319,35 +319,6 @@ namespace EnemyRandomizerMod
 
 
 
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    ///// (Oblobbles)
-    public class MegaFatBeeControl : FSMAreaControlEnemy
-    {
-        public override string FSMName => "fat fly bounce";
-
-        public PlayMakerFSM FSMattack { get; set; }
-
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            FSMattack = gameObject.LocateMyFSM("Fatty Fly Attack");
-
-            var init = control.GetState("Initialise");
-            init.DisableAction(2);
-
-            //skip the swoop in animation
-            control.ChangeTransition("Initialise", "FINISHED", "Activate");
-        }
-    }
-
-    public class MegaFatBeeSpawner : DefaultSpawner<MegaFatBeeControl> { }
-
-    public class MegaFatBeePrefabConfig : DefaultPrefabConfig<MegaFatBeeControl> { }
-    /////
-    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -432,6 +403,7 @@ namespace EnemyRandomizerMod
         ParticleSystem ptBurst;
         GameObject splat;
 
+
         protected virtual void Splat()
         {
             splat.SafeSetActive(true);
@@ -452,6 +424,7 @@ namespace EnemyRandomizerMod
 
             var hm = gameObject.GetOrAddComponent<HealthManager>();
             hm.hp = 10;//TODO:
+            
             hm.OnDeath += Splat;
             thisMetadata.Setup(gameObject, thisMetadata.DB); //not needed?
             thisMetadata.Geo = 11;
@@ -479,6 +452,11 @@ namespace EnemyRandomizerMod
         protected override void Update()
         {
             base.Update();
+
+            if(thisMetadata != null && thisMetadata.PhysicsBody != null && thisMetadata.PhysicsBody.velocity.magnitude < 1f)
+            {
+                thisMetadata.PhysicsBody.velocity = new Vector2(1f, 1f);
+            }
 
             if(inFastCheckMode)
             {

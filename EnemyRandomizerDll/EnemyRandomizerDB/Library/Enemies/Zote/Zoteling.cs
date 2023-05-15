@@ -16,18 +16,41 @@ namespace EnemyRandomizerMod
 {
     public class ZotelingControl : FSMAreaControlEnemy
     {
+        public override string spawnEntityOnDeath => "Item Get Effect R";
+
         public override void Setup(ObjectMetadata other)
         {
             base.Setup(other);
 
-            var getLevel = control.GetState("Get Level");
-            getLevel.DisableAction(0);
-            getLevel.DisableAction(5);
+            SetupLevel();
+            SetupDormant();
+            SetupBall();
+            SetupTheRest();
 
-            var init = control.GetState("Init");
-            init.DisableAction(0);
-            init.DisableAction(5);
-            init.ChangeTransition("FINISHED", "Ball");
+
+            this.InsertHiddenState(control, "Get Level", "FINISHED", "Init");
+        }
+
+        void SetupLevel()
+        {
+
+            OverrideState(control, "Get Level", () => {
+                control.FsmVariables.GetFsmInt("Level").Value = 1;
+                control.FsmVariables.GetFsmInt("Damage").Value = 1;
+                control.SendEvent("FINISHED");
+            });
+        }
+
+        void SetupDormant()
+        {
+            OverrideState(control, "Dormant", () => {
+                control.SendEvent("SPAWN");
+            });
+
+        }
+
+        void SetupBall()
+        {
 
             var ball = control.GetState("Ball");
             ball.DisableAction(5);
@@ -35,21 +58,16 @@ namespace EnemyRandomizerMod
             ball.AddCustomAction(() => {
                 control.SendEvent("FINISHED");
             });
+        }
 
-            var die = control.GetState("Die");
-            die.DisableAction(2);
+        void SetupTheRest()
+        {
 
-            control.ChangeTransition("Die", "FINISHED", "DestroyGO");
-
-            var endState = control.AddState("DestroyGO");
-            endState.AddCustomAction(() => { Destroy(gameObject); });
+            OverrideState(control, "Reset", () => { Destroy(gameObject); });
 
             Rigidbody2D body = GetComponent<Rigidbody2D>();
             if (body != null)
                 body.isKinematic = false;
-
-            this.InsertHiddenState(control, "Get Level", "FINISHED", "Init");
-            this.AddResetToStateOnHide(control, "Get Level");
         }
     }
 

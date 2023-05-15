@@ -697,8 +697,9 @@ namespace EnemyRandomizerMod
                 {
                     Dev.Log("SPAWNING ?");
                     var spawnName = iter.Current;
-                    Dev.Log("SPAWNING " + spawnName);
+                    Dev.Log("DO SPAWNING " + spawnName);
                     EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy(spawnName, null);
+                    Dev.Log("DONE SPAWNING " + spawnName);
                 }
                 else
                 {
@@ -709,6 +710,7 @@ namespace EnemyRandomizerMod
 
             if (Input.GetKeyDown(KeyCode.Quote))
             {
+                Dev.Log("MANUAL RESET");
                 Dev.Log("MANUAL RESET");
                 ResetIter();
             }
