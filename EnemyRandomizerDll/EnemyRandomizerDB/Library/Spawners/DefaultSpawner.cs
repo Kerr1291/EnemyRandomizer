@@ -13,19 +13,9 @@ namespace EnemyRandomizerMod
         }
     }
 
-    public class DefaultPrefabConfig<TControlComponent> : DefaultPrefabConfig
-        where TControlComponent : DefaultSpawnedEnemyControl
-    {
-        public override void SetupPrefab(PrefabObject p)
-        {
-            base.SetupPrefab(p);
-            p.prefab.AddComponent<TControlComponent>();
-        }
-    }
-
     public class DefaultSpawner : ISpawner
     {
-        public virtual GameObject Spawn(PrefabObject p, ObjectMetadata source)
+        public virtual ObjectMetadata Spawn(PrefabObject p, ObjectMetadata source, EnemyRandomizerDatabase database)
         {
             GameObject gameObject = null;
 
@@ -50,26 +40,34 @@ namespace EnemyRandomizerMod
                 gameObject.name = gameObject.name + "(" + System.Guid.NewGuid().ToString() + ")"; //name values in parenthesis will be trimmed out when converting to a database key'd name
             else
                 gameObject.name = gameObject.name + $" ([{source.ObjectPosition.GetHashCode()}][{source.ScenePath.GetHashCode()}])"; //name values in parenthesis will be trimmed out when converting to a database key'd name
-            return gameObject;
+
+            return new ObjectMetadata(gameObject, database);
         }
     }
 
     public class DefaultSpawner<TControlComponent> : DefaultSpawner
         where TControlComponent : DefaultSpawnedEnemyControl
     {
-        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
+        public override ObjectMetadata Spawn(PrefabObject p, ObjectMetadata source, EnemyRandomizerDatabase database)
         {
-            var newObject = base.Spawn(p, source);
-            var control = newObject.GetOrAddComponent<TControlComponent>();
+            var newObject = base.Spawn(p, source, database);
+            var control = newObject.Source.GetOrAddComponent<TControlComponent>();
             if (source != null && source.IsPogoLogic)
             {
                 GameObject.Destroy(control);
             }
             else
             {
-                newObject.SetActive(true);
+                Dev.Log("enabling newly spawned object for setup");
+                newObject.Source.SetActive(true);
+
+                Dev.Log("starting setup of control component");
                 control.Setup(source);
-                newObject.SetActive(false);
+
+                Dev.Log("disabling newly setup object");
+                newObject.Source.SetActive(false);
+
+                Dev.Log("object disabled");
             }
             return newObject;
         }
@@ -105,7 +103,7 @@ namespace EnemyRandomizerMod
         }
     }
 
-    public class SpawnOnDestroyOrDisable : MonoBehaviour
+    public class SpawnOnDestroy : MonoBehaviour
     {
         public string spawnEntity = "Fly";
         public bool didEnable = false;
@@ -124,18 +122,29 @@ namespace EnemyRandomizerMod
                 return;
             if (didSpawn)
                 return;
+            if (gameObject == null)
+                return;
+            if (!gameObject.scene.IsValid())
+                return;
+            if (!gameObject.scene.isLoaded)
+                return;
+
+            var active = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            if (!active.IsValid() || active.name != gameObject.scene.name)
+                return;
+
             didSpawn = true;
-            var thing = EnemyRandomizerDatabase.GetDatabase().Spawn(spawnEntity, null);
-            thing.transform.position = gameObject.transform.position;
+            var thing = EnemyRandomizerDatabase.GetDatabase().Spawn(spawnEntity);
+            thing.ObjectPosition = gameObject.transform.position;
             if (thing != null)
             {
-                var thinghm = thing.GetComponent<HealthManager>();
+                var thinghm = thing.EnemyHealthManager;
                 if (setHealthOnSpawn != null && thinghm != null)
                 {
                     thinghm.hp = setHealthOnSpawn.Value;
                 }
             }
-            thing.SafeSetActive(true);
+            thing.ActivateSource();
         }
     }
 

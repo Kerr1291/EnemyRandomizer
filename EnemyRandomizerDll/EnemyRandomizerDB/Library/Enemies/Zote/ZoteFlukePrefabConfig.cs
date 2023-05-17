@@ -16,7 +16,7 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            thisMetadata.Geo = 21;
+            Geo = 21;
 
             var init = control.GetState("Init");
             init.DisableAction(2);
@@ -74,7 +74,7 @@ namespace EnemyRandomizerMod
     public class ZoteFlukeSpawner : DefaultSpawner<ZoteFlukeControl>
     {
     }
-    public class ZoteFlukePrefabConfig : DefaultPrefabConfig<ZoteFlukeControl>
+    public class ZoteFlukePrefabConfig : DefaultPrefabConfig
     {
     }
 

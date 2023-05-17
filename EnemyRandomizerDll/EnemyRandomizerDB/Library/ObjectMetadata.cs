@@ -20,385 +20,419 @@ using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.CompilerServices;
 using Cysharp.Threading.Tasks.Linq;
 using Cysharp.Threading.Tasks.Triggers;
+using System;
 
 namespace EnemyRandomizerMod
 {
-    public class ObjectMetadata : System.IDisposable
+    public class ObjectMetadata
     {
         public const int VERBOSE_HEADER_OFFSET = -1;
         public static bool VERBOSE_DEBUG = false;
 
-        public ObjectMetadata() { GenerateReactives(); }
-        public ObjectMetadata(GameObject obj) { GenerateReactives(); Setup(obj, EnemyRandomizerDatabase.GetDatabase()); }
-        public ObjectMetadata(GameObject obj, EnemyRandomizerDatabase db) { GenerateReactives(); Setup(obj, db); }
+        public ObjectMetadata() { }
+        public ObjectMetadata(GameObject obj) { Setup(obj, EnemyRandomizerDatabase.GetDatabase()); }
+        public ObjectMetadata(GameObject obj, EnemyRandomizerDatabase db) { Setup(obj, db); }
 
-        public ReactiveProperty<EnemyRandomizerDatabase> db { get; protected set; }
-        public EnemyRandomizerDatabase DB
+
+
+        public EnemyRandomizerDatabase DB { get; protected set; }
+        public GameObject Source { get; protected set; }
+
+        static ReadOnlyReactiveProperty<List<GameObject>> nonNullBB { get; set; }
+
+        static ReadOnlyReactiveProperty<float> bb_xmin { get; set; }// = float.MaxValue;
+        static ReadOnlyReactiveProperty<float> bb_xmax { get; set; }// = float.MinValue;
+        static ReadOnlyReactiveProperty<float> bb_ymin { get; set; }// = float.MaxValue;
+        static ReadOnlyReactiveProperty<float> bb_ymax { get; set; }// = float.MinValue;
+
+        protected virtual void SetupBB()
         {
-            get => db.Value;
-            set => db.Value = value;
+            if (EnemyRandomizerDatabase.GetBlackBorders == null)
+            {
+                Dev.LogError("GetBlackBorders hasn't been setup set (This really should never happen)... Fatal error (might crash?)");
+            }
+
+            if (blackBorders == null)
+            {
+                blackBorders = EnemyRandomizerDatabase.GetBlackBorders().ToReadOnlyReactiveProperty();
+            }
+            if (nonNullBB == null)
+            {
+                nonNullBB = blackBorders.Select(bbs => (bbs != null && bbs.Count > 0) ? bbs : null).Where(x => x != null).ToReadOnlyReactiveProperty();
+            }
         }
 
-        IObservable<GameObject> nonNullSource;
-        IObservable<string> validDBName;
-        IObservable<HealthManager> nonNullHealthManager;
-        IObservable<EnemyRandomizerDatabase> validDB;
-        IObservable<string> validObjectName;
-        IObservable<ObjectMetadata> validReplacement;
-        IObservable<string> validScenePath;
-        IObservable<string> validSceneName;
-        IObservable<List<GameObject>> nonNullBB;
-
-        protected virtual void GenerateBaseReactives()
+        protected virtual void SetupBounds()
         {
-            source = new ReactiveProperty<GameObject>(null);
-            objectThisReplaced = new ReactiveProperty<ObjectMetadata>(null);
-            db = new ReactiveProperty<EnemyRandomizerDatabase>(null);
-            objectName = new ReactiveProperty<string>(null);
-            scenePath = new ReactiveProperty<string>(string.Empty);
-            sceneName = new ReactiveProperty<string>(string.Empty);
-            sizeScale = new ReactiveProperty<float>(1f);
-
-            validDB = db.Where(x => x != null);
-            validObjectName = objectName.Where(x => !string.IsNullOrEmpty(x));
-            nonNullSource = source.Where(x => x != null);
-            validReplacement = objectThisReplaced.Where(x => x != null);
-            validScenePath = scenePath.Where(x => !string.IsNullOrEmpty(x));
-            validSceneName = sceneName.Where(x => !string.IsNullOrEmpty(x));
-
-            nonNullSource.Subscribe(x =>
+            if (bb_xmin == null)
             {
-                objectName.Value = x.name;
-                //if (VERBOSE_DEBUG)
-                //    Dev.Log($"{ObjectName} - in:nonNullSource - {Dev.FunctionHeader(VERBSE_HEADER_OFFSET)}");
-                scenePath.Value = x.GetSceneHierarchyPath();
-                sceneName.Value = (x.scene.IsValid() ? x.scene.name : null);
-            }).AddTo(disposables);
-
-            hasData = validObjectName.CombineLatest(validDB, (x0, x1) =>
-            {
-                //if (VERBOSE_DEBUG)
-                //    Dev.Log($"{ObjectName} - in:hasData - {Dev.FunctionHeader(VERBSE_HEADER_OFFSET)}");
-                return EnemyRandomizerDatabase.IsDatabaseObject(x0, x1);
-            }).ToReadOnlyReactiveProperty();
-
-            databaseName = validObjectName.Where(_ => HasData).CombineLatest(hasData, (oname, hdata) =>
-            {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:databaseName - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                return hdata ? EnemyRandomizerDatabase.ToDatabaseKey(oname) : string.Empty;
-            }).ToReadOnlyReactiveProperty();
-
-            validDBName = databaseName.Where(x => !string.IsNullOrEmpty(x));
-            objectType = validDBName.CombineLatest(validDB, (x0, x1) => MetaDataTypes.GetObjectType(x0, x1)).ToReadOnlyReactiveProperty();
-            objectPrefab = validDBName.CombineLatest(validDB, (x0, x1) => MetaDataTypes.GetObjectPrefab(x0, x1)).ToReadOnlyReactiveProperty();
+                bb_xmin = nonNullBB.Select(x => x.Where(z => Mathf.FloorToInt(z.transform.localScale.x) == 20).Min(o => (o.transform.position.x - 10f))).ToReadOnlyReactiveProperty();
+                bb_xmax = nonNullBB.Select(x => x.Where(z => Mathf.FloorToInt(z.transform.localScale.x) == 20).Max(o => (o.transform.position.x + 10f))).ToReadOnlyReactiveProperty();
+                bb_ymin = nonNullBB.Select(x => x.Where(z => Mathf.FloorToInt(z.transform.localScale.y) == 20).Min(o => (o.transform.position.y - 10f))).ToReadOnlyReactiveProperty();
+                bb_ymax = nonNullBB.Select(x => x.Where(z => Mathf.FloorToInt(z.transform.localScale.y) == 20).Max(o => (o.transform.position.y + 10f))).ToReadOnlyReactiveProperty();
+            }
         }
 
-        protected virtual void GenerateObjectValidityReactives()
+        protected virtual void SetupExtras()
         {
-            isInvalidObject = validScenePath.Select(x => MetaDataTypes.CheckIfIsBadObject(x)).ToReadOnlyReactiveProperty();
-
-            blackBorders = EnemyRandomizerDatabase.GetBlackBorders().ToReadOnlyReactiveProperty();
+            IsSmasher = DatabaseName.Contains("Big Bee");
+            OriginalGeo = (new Geo(Source)).Value;
         }
 
-        protected virtual void GenerateTypeReactives()
+        public override string ToString()
         {
-            isBoss = validDBName.Select(x => MetaDataTypes.Bosses.Contains(x)).ToReadOnlyReactiveProperty();
-            tinker = nonNullSource.Where(_ => HasData).Select(x => x.GetComponentInChildren<TinkEffect>()).ToReadOnlyReactiveProperty();
-            isTinker = tinker.Select(x => x != null).ToReadOnlyReactiveProperty();
-            isFlyingFromComponents = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<Walker>() == null && x.GetComponent<Climber>() == null && x.GetComponent<Rigidbody2D>() != null && x.GetComponent<Rigidbody2D>().gravityScale == 0).ToReadOnlyReactiveProperty();
-            isFlying = validDBName.Select(x => MetaDataTypes.Flying.Contains(x)).CombineLatest(isFlyingFromComponents, (x0, x1) => x0 || x1).ToReadOnlyReactiveProperty();
-
-            isCrawling = validDBName.Select(x => MetaDataTypes.Crawling.Contains(x)).CombineLatest(nonNullSource, (x0, x1) => x0 || x1.GetComponent<Crawler>() != null).ToReadOnlyReactiveProperty();
-            isClimbing = validDBName.Select(x => MetaDataTypes.Climbing.Contains(x)).CombineLatest(nonNullSource, (x0, x1) => x0 || x1.GetComponent<Climber>() != null).ToReadOnlyReactiveProperty();
-            isMobile = validDBName.Select(x => !MetaDataTypes.Static.Contains(x)).ToReadOnlyReactiveProperty();
-
-            isSmasher = nonNullSource.Where(_ => HasData).Select(x => x.EnumerateChildren().Any(y => y.name == "Smasher")).ToReadOnlyReactiveProperty();
-
-            isSummonedByEvent = validDBName.Select(x => MetaDataTypes.IsSummonedByEvent.Contains(x)).ToReadOnlyReactiveProperty();
-            isEnemySpawner = validDBName.Select(x => MetaDataTypes.SpawnerEnemies.Contains(x)).ToReadOnlyReactiveProperty();
+            return $"[{ObjectType}, {ObjectName}]";
         }
 
-        protected virtual void GenerateLogicReactives()
+        public bool Setup(GameObject sceneObject, EnemyRandomizerDatabase database)
         {
-            isPogoLogic = validObjectName.Where(_ => HasData).CombineLatest(objectThisReplaced, (x0, x1) =>
+            SizeScale = 1f;
+            ObjectName = sceneObject.name;
+            ScenePath = sceneObject.GetSceneHierarchyPath();
+            SceneName = (sceneObject.scene.IsValid() ? sceneObject.scene.name : null);
+
+            DB = database;
+            Source = sceneObject;
+
+            if (IsInvalidObject || !IsDatabaseObject)
+                return false;
+
+            try
             {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:isPogoLogic - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                return MetaDataTypes.IsPogoLogicType(x0) || (x1 != null && MetaDataTypes.IsPogoLogicType(x1.ObjectName));
-            }).ToReadOnlyReactiveProperty();
+                SetupBB();
+                SetupBounds();
+                SetupExtras();
+            }
+            catch(Exception e)
+            {
+                Dev.LogError($"Error metadata for {sceneObject} with {database} --  ERROR:{e.Message}  STACKTRACE:{e.StackTrace}");
+                return false;
+            }
+
+            return true;
         }
 
-        protected virtual void GenerateGameComponentReactives()
+        static ReadOnlyReactiveProperty<List<GameObject>> blackBorders { get; set; }
+
+        public string SceneName { get; protected set; }
+
+        public string ObjectName { get; protected set; }
+
+        public string ScenePath { get; protected set; }
+
+        protected Vector2? originalObjectSize;
+        public Vector2 OriginalObjectSize
         {
-            nonNullHealthManager = nonNullSource.Where(_ => HasData).Select(x =>
+            get
             {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:nonNullHealthManager - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                return x.GetComponent<HealthManager>();
-            });
+                if (originalObjectSize.HasValue)
+                    return originalObjectSize.Value;
 
-            enemyHealthManager = nonNullHealthManager.ToReadOnlyReactiveProperty();
-
-            isInvincible = nonNullSource.Where(_ => HasData).CombineLatest(isTinker, (x0, x1) =>
-            {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:isInvincible - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                bool isHMInvincible = false;
-                if (!x1)
+                if (MetaDataTypes.HasUniqueSizeEnemies.Contains(DatabaseName))
                 {
-                    var hm = x0.GetComponent<HealthManager>();
-                    if (hm != null)
+                    if (Source == null)
+                        return originalObjectSize.Value;
+
+                    originalObjectSize = MetaDataTypes.GetSizeFromUniqueObject(Source);
+                    return originalObjectSize.Value;
+                }
+                else
+                {
+                    if (Source == null)
+                        return originalObjectSize.Value;
+                    originalObjectSize = MetaDataTypes.SetSizeFromComponents(Source);
+                    return originalObjectSize.Value;
+                }
+            }
+        }
+
+        protected string databaseName;
+        public string DatabaseName
+        {
+            get
+            {
+                if(string.IsNullOrEmpty(databaseName))
+                {
+                    databaseName = !string.IsNullOrEmpty(ObjectName) ? EnemyRandomizerDatabase.ToDatabaseKey(ObjectName) : string.Empty;
+                }
+
+                return databaseName;
+            }
+        }
+
+        protected Vector2 previousObjectPosition;
+        public Vector2 ObjectPosition
+        {
+            get
+            {
+                if(Source == null)
+                {
+                    return previousObjectPosition;
+                }
+
+                previousObjectPosition = Source.transform.position.ToVec2();
+                return previousObjectPosition;
+            }
+            set
+            {
+                if (Source != null)
+                {
+                    previousObjectPosition = new Vector3(value.x, value.y, Source.transform.position.z);
+                    Source.transform.position = previousObjectPosition;
+                }
+            }
+        }
+
+        protected Vector2 previousObjectScale;
+        public Vector2 ObjectScale
+        {
+            get
+            {
+                if (Source == null)
+                {
+                    return previousObjectScale;
+                }
+
+                previousObjectScale = Source.transform.localScale.ToVec2();
+                return previousObjectScale;
+            }
+            set
+            {
+                if (Source != null)
+                {
+                    previousObjectScale = new Vector3(value.x, value.y, Source.transform.localScale.z);
+                    Source.transform.localScale = previousObjectScale;
+                }
+            }
+        }
+
+        protected float previousRotation;
+        public float Rotation
+        {
+            get
+            {
+                if (Source == null)
+                {
+                    return previousRotation;
+                }
+
+                previousRotation = Source.transform.localEulerAngles.z;
+                return previousRotation;
+            }
+            set
+            {
+                if (Source != null)
+                {
+                    previousRotation = value;
+                    Source.transform.localEulerAngles = new Vector3(Source.transform.localEulerAngles.x, Source.transform.localEulerAngles.y, previousRotation);
+                }
+            }
+        }
+
+        public ObjectMetadata ObjectThisReplaced { get; protected set; }
+
+        public float SizeScale { get; set; }
+
+        public bool IsDatabaseObject
+        {
+            get
+            {
+                if (DB == null && EnemyRandomizerDatabase.GetDatabase != null)
+                {
+                    var tdb = EnemyRandomizerDatabase.GetDatabase();
+                    return EnemyRandomizerDatabase.IsDatabaseObject(ObjectName, tdb);
+                }
+                else
+                {
+                    return EnemyRandomizerDatabase.IsDatabaseObject(ObjectName, DB);
+                }
+            }
+        }
+
+
+        public virtual bool IsBoss =>
+                (ObjectThisReplaced != null ? ObjectThisReplaced.IsBoss :
+                ((IsInvalidObject || DatabaseName == null || DB == null) ? false : EnemyRandomizerDatabase.IsDatabaseKey(DatabaseName, DB) && MetaDataTypes.Bosses.Contains(DatabaseName)));
+
+       
+        public virtual bool IsFlying => DatabaseName == null ? false : (MetaDataTypes.Flying.Contains(DatabaseName) || IsFlyingFromComponents);
+
+        public virtual bool IsCrawling => DatabaseName == null ? false : MetaDataTypes.Crawling.Contains(DatabaseName) || IsCrawlingFromComponents;
+
+        public virtual bool IsClimbing => DatabaseName == null ? false : MetaDataTypes.Climbing.Contains(DatabaseName) || IsClimbingFromComponents;
+
+        public virtual bool IsMobile => DatabaseName == null ? false : !MetaDataTypes.Static.Contains(DatabaseName);
+
+        public virtual bool IsInGroundEnemy => DatabaseName == null ? false : MetaDataTypes.InGroundEnemy.Contains(DatabaseName);
+
+       
+        public virtual bool IsEnemySpawner => DatabaseName == null ? false : MetaDataTypes.SpawnerEnemies.Contains(DatabaseName);
+
+       
+        public bool IsPogoLogic => (ObjectThisReplaced != null && ObjectThisReplaced.IsPogoLogic) || (string.IsNullOrEmpty(ObjectName) ? false : MetaDataTypes.IsPogoLogicType(ObjectName));
+
+        public bool IsInvalidObject => string.IsNullOrEmpty(ScenePath) ? true : MetaDataTypes.AlwaysDeleteObject.Any(x => ScenePath.Contains(x));
+
+        public string MapZone => GameManager.instance.GetCurrentMapZone();
+
+        public PersistentBoolData PersistentBoolDataRef => (ObjectThisReplaced == null ?
+             (((IsInvalidObject || string.IsNullOrEmpty(ObjectName) || string.IsNullOrEmpty(SceneName)) ? null :
+               (global::SceneData.instance.FindMyState(new PersistentBoolData() { id = ObjectName, sceneName = SceneName })))) :
+               ObjectThisReplaced.PersistentBoolDataRef);
+
+        public bool IsDisabledBySavedGameState => (PersistentBoolDataRef == null ? false : PersistentBoolDataRef.activated);
+
+        public PrefabObject ObjectPrefab => MetaDataTypes.GetObjectPrefab(DatabaseName, DB);
+
+        public PrefabObject.PrefabType ObjectType => MetaDataTypes.GetObjectType(DatabaseName, DB);
+
+
+
+
+
+
+
+
+        public bool IsSmasher { get; protected set; }
+
+        public int OriginalGeo { get; protected set; }
+        protected bool WasTinker { get; set; }
+        public virtual bool IsTinker
+        {
+            get
+            {
+                if (Tinker == null)
+                    return WasTinker;
+
+                WasTinker = Tinker != null;
+                return WasTinker;
+            }
+        }
+
+        protected bool WasInvincible { get; set; }
+        public bool IsInvincible
+        {
+            get
+            {
+                if (Source == null)
+                    return WasInvincible;
+
+                WasInvincible = (EnemyHealthManager != null && EnemyHealthManager.IsInvincible) || IsTinker;
+                return WasInvincible;
+            }
+        }
+
+        public int OriginalPrefabHP
+        {
+            get
+            {
+                return (ObjectPrefab == null || ObjectType != PrefabType.Enemy || ObjectPrefab.prefab == null || ObjectPrefab.prefab.GetComponent<HealthManager>() == null) ? 0 : ObjectPrefab.prefab.GetComponent<HealthManager>().hp;
+            }
+        }
+
+        protected bool WasBattleEnemy { get; set; }
+        public bool IsBattleEnemy
+        {
+            get
+            {
+                if (Source == null)
+                    return WasBattleEnemy;
+
+                if (EnemyHealthManager == null)
+                {
+                    WasBattleEnemy = false;
+                    return WasBattleEnemy;
+                }
+
+                if (BattleRandoObject != null)
+                {
+                    WasBattleEnemy = true;
+                    return WasBattleEnemy;
+                }
+
+                if (SceneName.Contains("Room_Colosseum"))
+                {
+                    WasBattleEnemy = true;
+                    return WasBattleEnemy;
+                }
+
+                if (ScenePath.Split('/').Any(x => BattleManager.battleControllers.Any(y => x.Contains(y))))
+                {
+                    WasBattleEnemy = true;
+                    return WasBattleEnemy;
+                }
+
+                if (ObjectThisReplaced != null && ObjectThisReplaced.ScenePath.Split('/').Any(x => BattleManager.battleControllers.Any(y => x.Contains(y))))
+                {
+                    WasBattleEnemy = true;
+                    return WasBattleEnemy;
+                }
+
+                if (MetaDataTypes.BattleEnemies.ContainsKey(SceneName))
+                {
+                    MetaDataTypes.BattleEnemies.TryGetValue("ANY", out var abe);
+                    bool sceneHasBattleEnemies = MetaDataTypes.BattleEnemies.TryGetValue(SceneName, out var localbe);
+
+                    if (ObjectThisReplaced != null)
                     {
-                        isHMInvincible = hm.IsInvincible;
+                        //more general methods failed, now apply brute force methods....
+                        if (abe.Contains(ObjectThisReplaced.DatabaseName) || (sceneHasBattleEnemies && localbe.Contains(ObjectThisReplaced.DatabaseName)))
+                        {
+                            WasBattleEnemy = true;
+                            return WasBattleEnemy;
+                        }
+                    }
+                    else
+                    {
+                        if (abe.Contains(DatabaseName) || (sceneHasBattleEnemies && localbe.Contains(DatabaseName)))
+                        {
+                            WasBattleEnemy = true;
+                            return WasBattleEnemy;
+                        }
                     }
                 }
-                return isHMInvincible || x1;
-            }).ToReadOnlyReactiveProperty();
 
-            defaultHP = objectPrefab.Where(x => x.prefab != null).Select(x => x.prefab.GetComponent<HealthManager>())
-                                    .Where(x => x != null).Select(x => x.hp).ToReadOnlyReactiveProperty();
-
-            currentHP = nonNullHealthManager.Select(x => x.hp).ToReadOnlyReactiveProperty();
-
-            geoManager = nonNullHealthManager.Select(x => new Geo(this)).ToReadOnlyReactiveProperty();
-
-            heroDamage = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<DamageHero>()).ToReadOnlyReactiveProperty();
-            damageDealt = heroDamage.Select(x =>
-            {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:damageDealt - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                if (x == null)
-                    return 0;
-                return x.damageDealt;
-            }).ToReadOnlyReactiveProperty();
-
-            enemyDamage = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<DamageEnemies>()).ToReadOnlyReactiveProperty();
-            enemyDamageDealt = enemyDamage.Select(x =>
-            {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:enemyDamageDealt - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                if (x == null)
-                    return 0;
-                return x.damageDealt;
-            }).ToReadOnlyReactiveProperty();
-
-            walker = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<Walker>()).ToReadOnlyReactiveProperty();
-            isWalker = walker.Select(x => x != null).ToReadOnlyReactiveProperty();
-
-            physicsBody = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<Rigidbody2D>()).ToReadOnlyReactiveProperty();
-            collider = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<Collider2D>()).ToReadOnlyReactiveProperty();
-            mRenderer = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<MeshRenderer>()).ToReadOnlyReactiveProperty();
-            sprite = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<tk2dSprite>()).ToReadOnlyReactiveProperty();
-            deathEffects = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<EnemyDeathEffects>()).ToReadOnlyReactiveProperty();
-            animator = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<tk2dSpriteAnimator>()).ToReadOnlyReactiveProperty();
-            preInstantiateGO = nonNullSource.Where(_ => HasData).Select(x => x.GetComponent<PreInstantiateGameObject>()).ToReadOnlyReactiveProperty();
-
-            corpse = deathEffects.Where(_ => HasData).Select(x =>
-            {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:corpse - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                if (x == null)
-                    return null;
-
-                var c = x.GetCorpseFromDeathEffects();
-                if (c != null)
-                    return c;
-
-                return null;
-            }).ToReadOnlyReactiveProperty();
-
-            customAvailableItem = new ReactiveProperty<GameObject>(null);
-            availableItem = corpse.Select(x =>
-            {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:availableItem - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                if (x == null)
-                    return null;
-                return x.GetComponent<PreInstantiateGameObject>();
-            }).Select(x =>
-            {
-                if (x == null)
-                    return null;
-                return x.InstantiatedGameObject;
-            }).Select(x =>
-            {
-                if (x == null)
-                    return null;
-                if (x.name.Contains("Shiny Item"))
-                    return x.GetComponent<PersistentBoolItem>();
-                return null;
-            }).Select(x => {
-                if (x == null)
-                    return null;
-                if (!x.persistentBoolData.activated)
-                    return x.gameObject;
-                return null;
-            }).ToReadOnlyReactiveProperty();
-
-            //hasAvailableItem = availableItem.Select(x => x != null).ToReadOnlyReactiveProperty();
+                return WasBattleEnemy;
+            }
         }
 
-        public static bool CheckIfIsBattleEnemy(GameObject sceneObject)
+        public GameObject AvailableItem
         {
-            if (sceneObject == null)
-                return false;
-
-            if (sceneObject.GetComponent<HealthManager>() == null)
-                return false;
-
-            bool isBattleEnemy = false;
-            if (!isBattleEnemy)
+            get
             {
-                if (sceneObject.GetComponent<BattleManagedObject>())
-                    isBattleEnemy = true;
-
-                if (!isBattleEnemy)
+                var c = Corpse;
+                if (c != null)
                 {
-                    isBattleEnemy = sceneObject.GetSceneHierarchyPath().Split('/').Any(x => BattleManager.battleControllers.Any(y => x.Contains(y)));
-
-                    if (!isBattleEnemy)
+                    var cpigo = c.GetComponent<PreInstantiateGameObject>();
+                    if(cpigo != null)
                     {
-                        bool hasScene = MetaDataTypes.BattleEnemies.TryGetValue("ANY", out var enemies);
-                        if (hasScene)
+                        if(cpigo.InstantiatedGameObject != null)
                         {
-                            var dbName = EnemyRandomizerDatabase.ToDatabaseKey(sceneObject.name);
-                            isBattleEnemy = enemies.Contains(dbName);
-                        }
-
-                        if (!isBattleEnemy)
-                        {
-                            hasScene = MetaDataTypes.BattleEnemies.TryGetValue(sceneObject.scene.name, out var enemies2);
-                            if (hasScene)
+                            if(cpigo.name.Contains("Shiny Item") && cpigo.GetComponent<PersistentBoolItem>() != null)
                             {
-                                var dbName = EnemyRandomizerDatabase.ToDatabaseKey(sceneObject.name);
-                                isBattleEnemy = enemies2.Contains(dbName);
+                                var pbi = cpigo.GetComponent<PersistentBoolItem>();
+                                if(!pbi.persistentBoolData.activated)
+                                {
+                                    return pbi.gameObject;
+                                }
                             }
                         }
                     }
                 }
+                return null;
             }
-            return isBattleEnemy;
+            set
+            {
+                //TODO: load something with a JellyEgg component and extract the shinyItem from it and use it as a replacement template             
+            }
         }
 
-        protected virtual void GenerateRandoReactives()
+        public bool RenderersVisible
         {
-            battleRandoObject = validReplacement.CombineLatest(nonNullSource, (x0, x1) =>
+            get
             {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:battleRandoObject - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                if (!CheckIfIsBattleEnemy(x0.Source))
-                    return null;
-                Dev.Log("This is a battle enemy " + ObjectName);
-                BattleManagedObject bmo = x1.GetComponent<BattleManagedObject>();
-                if (bmo == null)
-                {
-                    bmo = x1.AddComponent<BattleManagedObject>();
-                    bmo.Setup(x0);
-                    bmo.replaced = true;
-                }
-                return bmo;
-            }).ToReadOnlyReactiveProperty();
-
-            randoObject = validReplacement.CombineLatest(nonNullSource, (x0, x1) =>
-            {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:randoObject - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                ManagedObject mo = x1.GetComponent<ManagedObject>();
-                if (!CheckIfIsBattleEnemy(x0.Source))
-                {
-                    if (mo == null)
-                    {
-                        mo = x1.AddComponent<ManagedObject>();
-                        mo.Setup(x0);
-                        mo.replaced = true;
-                    }
-                }
-                return mo;
-            }).ToReadOnlyReactiveProperty();
-
-
-            var checkIsBoss = isBoss;
-            var checkIsBattleRandoObject = battleRandoObject.Select(x => x != null);
-            var checkIsScenePathBattleObject = validScenePath.Select(x => x.Split('/').Any(y => BattleManager.battleControllers.Any(z => y.Contains(z))));
-            var checkIsANYInBattleEnemiesMap = validDBName.Select(x => MetaDataTypes.BattleEnemies["ANY"].Contains(x));
-            var checkIsSCENEInBattleEnemiesMap = validDBName.CombineLatest(validSceneName, (x0, x1) => MetaDataTypes.BattleEnemies.ContainsKey(x1) && MetaDataTypes.BattleEnemies[x1].Contains(x0));
-            var checkIsNonNullLocalBattleScene = nonNullHealthManager.Select(x => x.GetBattleScene()).Select(x => x != null);
-
-            isBattleEnemy = isBoss.CombineLatest(
-                checkIsBattleRandoObject,
-                checkIsScenePathBattleObject,
-                checkIsANYInBattleEnemiesMap,
-                checkIsSCENEInBattleEnemiesMap,
-                checkIsNonNullLocalBattleScene,
-                (x0, x1, x2, x3, x4, x5) => x0 || x1 || x2 || x3 || x4 || x5).ToReadOnlyReactiveProperty();
-
-            isAReplacementObject = objectThisReplaced.Select(x =>
-            {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:isAReplacementObject - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                return x != null;
-            }).ToReadOnlyReactiveProperty();
-        }
-
-        protected virtual void GenerateTransformReactives()
-        {
-            nonNullSource.Where(_ => HasData && objectSize == null).Where(x => MetaDataTypes.HasUniqueSizeEnemies.Contains(EnemyRandomizerDatabase.ToDatabaseKey(x.name))).Subscribe(x => objectSize = new ReactiveProperty<Vector2>(MetaDataTypes.SetSizeFromUniqueObject(x))).AddTo(disposables);
-            nonNullSource.Where(_ => HasData && objectSize == null).Where(x => !MetaDataTypes.HasUniqueSizeEnemies.Contains(EnemyRandomizerDatabase.ToDatabaseKey(x.name))).Subscribe(x => objectSize = new ReactiveProperty<Vector2>(MetaDataTypes.SetSizeFromComponents(x))).AddTo(disposables);
-
-            objectPosition = nonNullSource.Where(_ => HasData).Select(x => x.transform).SelectMany(x => x.ObserveEveryValueChanged(y => y.position.ToVec2())).ToReadOnlyReactiveProperty();
-            objectScale = nonNullSource.Where(_ => HasData && ObjectType != PrefabType.None).Select(x => x.transform).SelectMany(x => x.ObserveEveryValueChanged(y => y.localScale.ToVec2())).ToReadOnlyReactiveProperty();
-            rotation = nonNullSource.Where(_ => HasData && ObjectType != PrefabType.None).Select(x => x.transform).SelectMany(x => x.ObserveEveryValueChanged(y => y.localEulerAngles.z)).ToReadOnlyReactiveProperty();
-        }
-
-        IEnumerable<GameObject> bb_leftRight;
-        IEnumerable<GameObject> bb_topBot;
-        float bb_xmin = float.MaxValue;
-        float bb_xmax = float.MinValue;
-        float bb_ymin = float.MaxValue;
-        float bb_ymax = float.MinValue;
-
-        protected virtual void GenerateIsVisibleReactives()
-        {
-            nonNullBB = blackBorders.Where(_ => HasData).Where(x => x != null && x.Count > 0);
-
-            nonNullBB.Where(_ => HasData).Subscribe(x =>
-            {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:nonNullBB - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                bb_leftRight = x.Where(z => z.transform.localScale.x == 20);
-                bb_topBot = x.Where(z => z.transform.localScale.y == 20);
-
-                bb_xmin = bb_leftRight.Min(o => (o.transform.position.x - 10f));
-                bb_xmax = bb_leftRight.Max(o => (o.transform.position.x + 10f));
-                bb_ymin = bb_topBot.Min(o => (o.transform.position.y - 10f));
-                bb_ymax = bb_topBot.Max(o => (o.transform.position.y + 10f));
-
-                //Dev.Log($"{ScenePath} pos:{pos}");
-                //Dev.Log($"{ScenePath} BOUNDS[ xmin:{xmin} xmax:{xmax} ymin:{ymin} ymax:{ymax}]");
-            }).AddTo(disposables);
-
-            activeSelf = nonNullSource.Select(x => x.activeSelf).ToReadOnlyReactiveProperty();
-            inBounds = objectPosition.CombineLatest(blackBorders, (pos, _) =>
-            {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:inBounds - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                if (pos.x < bb_xmin)
-                    return false;
-                else if (pos.x > bb_xmax)
-                    return false;
-                else if (pos.y < bb_ymin)
-                    return false;
-                else if (pos.y > bb_ymax)
-                    return false;
-
-                return true;
-            }).ToReadOnlyReactiveProperty();
-
-            renderersVisible = collider.CombineLatest(mRenderer, (col, mr) =>
-            {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:renderersVisible - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
+                var col = Collider;
+                var mr = MRenderer;
                 if (col != null || mr != null)
                 {
                     if (col != null && mr == null)
@@ -410,498 +444,175 @@ namespace EnemyRandomizerMod
                 }
 
                 return false;
-            }).ToReadOnlyReactiveProperty();
-
-            isVisible = renderersVisible.CombineLatest(inBounds, activeSelf,
-                (isrender, inbounds, active) =>
-                {
-                    if (VERBOSE_DEBUG)
-                        Dev.Log($"{ObjectName} - in:isVisible - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                    return (active && inbounds && isrender);
-                }).ToReadOnlyReactiveProperty();
-        }
-
-        protected virtual void GenerateReplacementReactives()
-        {
-            activeInHeirarchy = nonNullSource.Select(x =>
-            {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:activeInHeirarchy - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                return x.activeInHierarchy;
-            }).ToReadOnlyReactiveProperty();
-
-            isTemporarilyInactive = hasData.CombineLatest(isAReplacementObject, activeInHeirarchy, nonNullHealthManager, isVisible,
-                (has, isRepl, goActive, nnHM, isCurrentlyVisible) =>
-                {
-                    if (VERBOSE_DEBUG)
-                        Dev.Log($"{ObjectName} - in:isTemporarilyInactive - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                    return has && !isRepl && goActive && nnHM && !IsDisabledBySavedGameState && !isCurrentlyVisible;
-                }).ToReadOnlyReactiveProperty();
-
-            isBattleInactive = hasData.CombineLatest(isAReplacementObject, isBattleEnemy, activeInHeirarchy, nonNullHealthManager, isVisible,
-                (has, isRepl, isBE, goActive, nnHM, isCurrentlyVisible) =>
-                {
-                    if (VERBOSE_DEBUG)
-                        Dev.Log($"{ObjectName} - in:isBattleInactive - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                    return has && !isRepl && isBE && !goActive && nnHM && !IsDisabledBySavedGameState && !isCurrentlyVisible;
-                }).ToReadOnlyReactiveProperty();
-
-            canProcessObject = hasData.CombineLatest(isInvalidObject, isVisible, objectType, isAReplacementObject,
-                (has, isInvalidObject, isCurrentlyVisible, oT, isAReplacementO) =>
-                {
-                    if(oT == PrefabType.Enemy)
-                    {
-                        if (IsDisabledBySavedGameState)
-                            return false;
-                    }
-
-                    if (VERBOSE_DEBUG)
-                        Dev.Log($"{ObjectName} - in:canProcessObject - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                    return has && !isInvalidObject && (isCurrentlyVisible || oT == PrefabType.Effect) && !isAReplacementO;
-                }).ToReadOnlyReactiveProperty();
-        }
-
-        protected virtual void GenerateReactives()
-        {
-            GenerateBaseReactives();
-            GenerateObjectValidityReactives();
-            GenerateTypeReactives();
-            GenerateLogicReactives();
-            GenerateGameComponentReactives();
-            GenerateRandoReactives();
-            GenerateTransformReactives();
-            GenerateIsVisibleReactives();
-            GenerateReplacementReactives();
-        }
-
-        public virtual void MarkObjectAsReplacement(ObjectMetadata oldObject)
-        {
-            ObjectThisReplaced = oldObject;
-        }
-
-        public bool Setup(GameObject sceneObject, EnemyRandomizerDatabase database)
-        {
-            DB = database;
-            Source = sceneObject;
-
-            if (IsInvalidObject || !HasData)
-                return false;
-
-            return true;
-        }
-
-        public ReactiveProperty<GameObject> source { get; protected set; }
-        public GameObject Source
-        {
-            get => source.Value;
-            set => source.Value = value;
-        }
-
-        public ReactiveProperty<string> sceneName { get; protected set; }
-        public string SceneName => sceneName == null ? null : sceneName.Value;
-
-        public ReactiveProperty<string> objectName { get; protected set; }
-        public string ObjectName => objectName == null ? null : objectName.Value;
-
-        public ReactiveProperty<string> scenePath { get; protected set; }
-        public string ScenePath => scenePath == null ? null : scenePath.Value;
-
-        public ReactiveProperty<Vector2> objectSize { get; protected set; }
-        public Vector2 ObjectSize
-        {
-            get => objectSize == null ? Vector2.zero : objectSize.Value;
-            set { if (objectSize != null) objectSize.Value = value; }
-        }
-
-        public ReadOnlyReactiveProperty<string> databaseName { get; protected set; }
-        public string DatabaseName
-        {
-            get => databaseName == null ? null : databaseName.Value;
-        }
-
-        public ReadOnlyReactiveProperty<Vector2> objectPosition { get; protected set; }
-        public Vector2 ObjectPosition
-        {
-            get => objectPosition == null ? (Source == null ? Vector2.zero : Source.transform.position.ToVec2()) : objectPosition.Value;
-            set { if (Source != null) Source.transform.position = new Vector3(value.x, value.y, Source.transform.position.z); }
-        }
-
-        public ReadOnlyReactiveProperty<Vector2> objectScale { get; protected set; }
-        public Vector2 ObjectScale
-        {
-            get => objectScale == null ? (Source == null ? Vector2.one : Source.transform.localScale.ToVec2()) : objectScale.Value;
-            set { if (Source != null) Source.transform.localScale = new Vector3(value.x, value.y, Source.transform.localScale.z); }
-        }
-
-        public ReadOnlyReactiveProperty<float> rotation { get; protected set; }
-        public float Rotation
-        {
-            get => rotation == null ? (Source == null ? 0f : Source.transform.localEulerAngles.z) : rotation.Value;
-            set { if (Source != null) Source.transform.localEulerAngles = new Vector3(Source.transform.localEulerAngles.x, Source.transform.localEulerAngles.y, value); }
-        }
-
-        public ReactiveProperty<ObjectMetadata> objectThisReplaced { get; protected set; }
-        public ObjectMetadata ObjectThisReplaced
-        {
-            get => objectThisReplaced.Value;
-            set => objectThisReplaced.Value = value;
-        }
-
-        public ReactiveProperty<float> sizeScale { get; protected set; }
-        public float SizeScale
-        {
-            get => sizeScale == null ? 0 : sizeScale.Value;
-            set { if (sizeScale != null) sizeScale.Value = value; }
-        }
-
-        public ReadOnlyReactiveProperty<bool> hasData { get; protected set; }
-        public bool HasData
-        {
-            get => hasData == null ? false : hasData.Value;
-        }
-
-        public ReadOnlyReactiveProperty<PrefabObject.PrefabType> objectType { get; protected set; }
-        public PrefabObject.PrefabType ObjectType
-        {
-            get => objectType == null ? PrefabType.None : objectType.Value;
-        }
-
-        public ReadOnlyReactiveProperty<PrefabObject> objectPrefab { get; protected set; }
-        public PrefabObject ObjectPrefab
-        {
-            get => objectPrefab == null ? null : objectPrefab.Value;
-        }
-
-        public ReadOnlyReactiveProperty<bool> isInvalidObject { get; protected set; }
-        public bool IsInvalidObject
-        {
-            get => isInvalidObject == null ? true : isInvalidObject.Value;
-        }
-
-        public string MapZone => GameManager.instance.GetCurrentMapZone();
-
-        public string PBD_id => ObjectName;
-        public string PBD_sceneName => SceneName;
-        public PersistentBoolData PBD_local => global::SceneData.instance.FindMyState(new PersistentBoolData() { id = PBD_id, sceneName = PBD_sceneName });
-        public PersistentBoolData PBD_world => ObjectThisReplaced == null ? PBD_local : ObjectThisReplaced.PBD_world;
-
-        public bool IsDisabledBySavedGameState
-        {
-            get
-            {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - check:isDisabledBySavedGameState - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                if (Source == null || IsInvalidObject || !HasData)
-                {
-                    return false;
-                }
-
-                if(ObjectThisReplaced != null)
-                {
-                    return ObjectThisReplaced.IsDisabledBySavedGameState;
-                }
-                else
-                {
-                    if (PBD_world == null)
-                        return false;
-
-                    return PBD_world.activated;
-                }
-            }
-            set
-            {
-                if (Source == null || IsInvalidObject || !HasData)
-                {
-                    return;
-                }
-
-                if (ObjectThisReplaced != null)
-                {
-                    ObjectThisReplaced.IsDisabledBySavedGameState = value;
-                }
-                else
-                {
-                    if (PBD_world == null)
-                        return;
-
-                    PBD_world.activated = value;
-                }
             }
         }
 
-        public ReadOnlyReactiveProperty<bool> isBoss { get; protected set; }
-        public bool IsBoss
-        {
-            get => isBoss == null ? false : isBoss.Value;
-        }
-
-        public ReadOnlyReactiveProperty<bool> isFlyingFromComponents { get; protected set; }
-
-        public ReadOnlyReactiveProperty<bool> isFlying { get; protected set; }
-        public bool IsFlying
-        {
-            get => isFlying == null ? false : isFlying.Value;
-        }
-
-        public ReadOnlyReactiveProperty<bool> isCrawling { get; protected set; }
-        public bool IsCrawling
-        {
-            get => isCrawling == null ? false : isCrawling.Value;
-        }
-
-        public ReadOnlyReactiveProperty<bool> isClimbing { get; protected set; }
-        public bool IsClimbing
-        {
-            get => isClimbing == null ? false : isClimbing.Value;
-        }
-
-        public ReadOnlyReactiveProperty<TinkEffect> tinker { get; protected set; }
-        public TinkEffect Tinker
-        {
-            get => tinker == null ? (Source == null ? null : Source.GetComponent<TinkEffect>()) : tinker.Value;
-        }
-
-        public ReadOnlyReactiveProperty<bool> isTinker { get; protected set; }
-        public bool IsTinker
-        {
-            get => isTinker == null ? (Source == null ? false : Source.GetComponent<TinkEffect>() != null) : isTinker.Value;
-        }
-
-        public ReadOnlyReactiveProperty<bool> isMobile { get; protected set; }
-        public bool IsMobile
-        {
-            get => isMobile == null ? false : isMobile.Value;
-        }
-
-        public ReadOnlyReactiveProperty<bool> isWalker { get; protected set; }
-        public bool IsWalker
-        {
-            get => isWalker == null ? false : isWalker.Value;
-        }
-
-        public ReadOnlyReactiveProperty<bool> isBattleEnemy { get; protected set; }
-        public bool IsBattleEnemy
-        {
-            get => isBattleEnemy == null ? false : (isBattleEnemy.Value ? true : (CheckIfIsBattleEnemy(Source)));
-        }
-
-        //public ReadOnlyReactiveProperty<bool> hasAvailableItem { get; protected set; }
-        public bool HasAvailableItem
-        {
-            get
-            {
-                if (customAvailableItem != null && customAvailableItem.Value != null)
-                    return true;
-
-                if (availableItem != null && customAvailableItem.Value != null)
-                    return true;
-
-                return false;
-
-                //hasAvailableItem == null ? false : hasAvailableItem.Value;
-            }
-        }
-
-        public ReadOnlyReactiveProperty<bool> isSmasher { get; protected set; }
-        public bool IsSmasher => isSmasher == null ? false : isSmasher.Value;
-
-        public ReadOnlyReactiveProperty<bool> isPogoLogic { get; protected set; }
-        public bool IsPogoLogic
-        {
-            get => isPogoLogic == null ? false : isPogoLogic.Value;
-        }
-
-        public ReadOnlyReactiveProperty<int> currentHP { get; protected set; }
-        public int CurrentHP
-        {
-            get => currentHP == null ? -1 : currentHP.Value;
-            set { if (EnemyHealthManager != null) EnemyHealthManager.hp = value; }
-        }
-        public float CurrentHPf
-        {
-            get => CurrentHP;
-            set => CurrentHP = Mathf.FloorToInt(value);
-        }
-
-        public ReadOnlyReactiveProperty<int> defaultHP { get; protected set; }
-        public int DefaultHP
-        {
-            get => defaultHP == null ? -1 : defaultHP.Value;
-        }
-
-        public ReadOnlyReactiveProperty<bool> isInvincible { get; protected set; }
-        public bool IsInvincible
-        {
-            get => isInvincible == null ? false : isInvincible.Value;
-            set { if (EnemyHealthManager != null) { EnemyHealthManager.IsInvincible = value; } }
-        }
-
-        public ReadOnlyReactiveProperty<int> damageDealt { get; protected set; }
-        public int DamageDealt
-        {
-            get => damageDealt == null ? 0 : damageDealt.Value;
-            set { if (damageDealt != null && Source != null && Source.GetComponent<DamageHero>() != null) Source.GetComponent<DamageHero>().damageDealt = value; }
-        }
-
-        public ReadOnlyReactiveProperty<int> enemyDamageDealt { get; protected set; }
-        public int EnemyDamageDealt
-        {
-            get => enemyDamageDealt == null ? 0 : enemyDamageDealt.Value;
-            set { if (enemyDamageDealt != null && Source != null && Source.GetComponent<DamageEnemies>() != null) Source.GetComponent<DamageEnemies>().damageDealt = value; }
-        }
-
-        public ReadOnlyReactiveProperty<bool> isSummonedByEvent { get; protected set; }
-        public bool IsSummonedByEvent
-        {
-            get => isSummonedByEvent == null ? false : isSummonedByEvent.Value;
-        }
-
-        public ReadOnlyReactiveProperty<bool> isEnemySpawner { get; protected set; }
-        public bool IsEnemySpawner
-        {
-            get => isEnemySpawner == null ? false : isEnemySpawner.Value;
-        }
-
-        public ReadOnlyReactiveProperty<List<GameObject>> blackBorders { get; protected set; }
-        public List<GameObject> BlackBorders
-        {
-            get => blackBorders == null ? null : blackBorders.Value;
-        }
-
-        //These values will become null after a replacement
-        public ReadOnlyReactiveProperty<GameObject> availableItem { get; protected set; }
-        public ReactiveProperty<GameObject> customAvailableItem { get; protected set; }
-        public GameObject AvailableItem
-        {
-            get
-            {
-                if (customAvailableItem != null && customAvailableItem.Value != null)
-                    return customAvailableItem.Value;
-
-                if (availableItem != null)
-                    return availableItem.Value;
-
-                return null;
-            }
-            set
-            {
-                if (customAvailableItem == null)
-                    customAvailableItem = new ReactiveProperty<GameObject>(value);
-                else
-                    customAvailableItem.Value = value;
-            }
-        }
-
-        public ReadOnlyReactiveProperty<HealthManager> enemyHealthManager { get; protected set; }
-        public HealthManager EnemyHealthManager => enemyHealthManager == null ? (Source == null ? null : Source.GetComponent<HealthManager>()) : enemyHealthManager.Value;
-
-        public ReadOnlyReactiveProperty<Geo> geoManager { get; protected set; }
-        public int Geo
-        {
-            get => geoManager == null ? 0 : geoManager.Value;
-            set { if (geoManager != null) {
-                    var geo = geoManager.Value;
-                    geo.Value = value; } }
-        }
-
-        public ReadOnlyReactiveProperty<Collider2D> collider { get; protected set; }
-        public Collider2D Collider => collider == null ? null : collider.Value;
-
-        public ReadOnlyReactiveProperty<MeshRenderer> mRenderer { get; protected set; }
-        public MeshRenderer MRenderer => mRenderer == null ? null : mRenderer.Value;
-
-        public ReadOnlyReactiveProperty<bool> renderersVisible { get; protected set; }
-        public bool RenderersVisible => renderersVisible == null ? false : renderersVisible.Value;
-
-        public ReadOnlyReactiveProperty<bool> inBounds { get; protected set; }
         public bool InBounds
         {
             get
             {
-                if (VERBOSE_DEBUG)
-                    Dev.Log($"{ObjectName} - in:inBounds - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
-                if (ObjectPosition.x < bb_xmin)
+                if (bb_xmin == null)
                     return false;
-                else if (ObjectPosition.x > bb_xmax)
+
+                if (bb_xmax == null)
                     return false;
-                else if (ObjectPosition.y < bb_ymin)
+
+                if (bb_ymin == null)
                     return false;
-                else if (ObjectPosition.y > bb_ymax)
+
+                if (bb_ymax == null)
+                    return false;
+
+                if (ObjectPosition.x < bb_xmin.Value)
+                    return false;
+                else if (ObjectPosition.x > bb_xmax.Value)
+                    return false;
+                else if (ObjectPosition.y < bb_ymin.Value)
+                    return false;
+                else if (ObjectPosition.y > bb_ymax.Value)
+                    return false;
+
+                //if (VERBOSE_DEBUG)
+                //    Dev.Log($"{ObjectName} - IS in:inBounds - {Dev.FunctionHeader(VERBOSE_HEADER_OFFSET)}");
+
+                return true;
+            }
+        }
+
+        public bool IsVisible
+        {
+            get
+            {
+                return Source != null && Source.activeInHierarchy && RenderersVisible && InBounds;
+            }
+        }
+
+        public bool ActiveSelf => (Source == null ? false : Source.activeSelf);
+
+        public bool ActiveInHeirarchy => (Source == null ? false : Source.activeInHierarchy);
+
+        public HealthManager EnemyHealthManager => (Source == null ? null : Source.GetComponent<HealthManager>());
+
+        public tk2dSprite Sprite => (Source == null ? null : Source.GetComponent<tk2dSprite>());
+
+        public tk2dSpriteAnimator Animator => (Source == null ? null : Source.GetComponent<tk2dSpriteAnimator>());
+
+        public DamageHero HeroDamage => (Source == null ? null : Source.GetComponent<DamageHero>());
+
+        public DamageEnemies EnemyDamage => (Source == null ? null : Source.GetComponent<DamageEnemies>());
+
+        public Walker Walker => (Source == null ? null : Source.GetComponent<Walker>());
+
+        public TinkEffect Tinker => (Source == null ? null : Source.GetComponent<TinkEffect>());
+
+        public EnemyDeathEffects DeathEffects => (Source == null ? null : Source.GetComponent<EnemyDeathEffects>());
+
+        public ManagedObject RandoObject => (Source == null ? null : Source.GetComponent<ManagedObject>());
+
+        public BattleManagedObject BattleRandoObject => (Source == null ? null : Source.GetComponent<BattleManagedObject>());
+
+        public Rigidbody2D PhysicsBody => (Source == null ? null : Source.GetComponent<Rigidbody2D>());
+
+        public Collider2D Collider => (Source == null ? null : Source.GetComponent<Collider2D>());
+
+        public MeshRenderer MRenderer => (Source == null ? null : Source.GetComponent<MeshRenderer>());
+
+        public PreInstantiateGameObject PreInstantiatedGameObject => (Source == null ? null : Source.GetComponent<PreInstantiateGameObject>());
+
+        public virtual bool IsWalker => (Source == null ? null : Source.GetComponent<Walker>());
+        public virtual bool IsFlyingFromComponents => Source == null ? false : (Source.GetComponent<Walker>() == null && Source.GetComponent<Climber>() == null && Source.GetComponent<Rigidbody2D>() != null && Source.GetComponent<Rigidbody2D>().gravityScale == 0);
+
+        
+        public virtual bool IsCrawlingFromComponents => Source == null ? false : (Source.GetComponent<Crawler>() != null);
+
+        public virtual bool IsClimbingFromComponents => Source == null ? false : (Source.GetComponent<Climber>() != null);
+
+
+        public bool IsAReplacementObject => (ObjectThisReplaced != null ? true : (Source != null && Source.GetComponent<ManagedObject>() != null));
+
+
+        public bool IsTemporarilyInactive
+        {
+            get
+            {
+                if (Source == null)
+                    return false;
+
+                if (!IsDatabaseObject)
+                    return false;
+
+                if (IsAReplacementObject)
+                    return false;
+
+                if (EnemyHealthManager == null)
+                    return false;
+
+                if (IsDisabledBySavedGameState)
+                    return false;
+
+                if (IsVisible)
                     return false;
 
                 return true;
             }
         }
 
-        public ReadOnlyReactiveProperty<bool> activeSelf { get; protected set; }
-        public bool ActiveSelf => activeSelf == null ? ( Source == null ? false : Source.activeSelf) : activeSelf.Value;
-
-        public ReadOnlyReactiveProperty<bool> activeInHeirarchy { get; protected set; }
-        public bool ActiveInHeirarchy => activeInHeirarchy == null ? (Source == null ? false : Source.activeInHierarchy) : activeInHeirarchy.Value;
-
-        public ReadOnlyReactiveProperty<tk2dSprite> sprite { get; protected set; }
-        public tk2dSprite Sprite => sprite == null ? null : sprite.Value;
-
-        public ReadOnlyReactiveProperty<tk2dSpriteAnimator> animator { get; protected set; }
-        public tk2dSpriteAnimator Animator => animator == null ? null : animator.Value;
-
-        public ReadOnlyReactiveProperty<DamageHero> heroDamage { get; protected set; }
-        public DamageHero HeroDamage => heroDamage == null ? null : heroDamage.Value;
-
-        public ReadOnlyReactiveProperty<DamageEnemies> enemyDamage { get; protected set; }
-        public DamageEnemies EnemyDamage => enemyDamage == null ? null : enemyDamage.Value;
-
-        public ReadOnlyReactiveProperty<Walker> walker { get; protected set; }
-        public Walker Walker => walker == null ? null : walker.Value;
-
-        public ReadOnlyReactiveProperty<GameObject> corpse { get; protected set; }
-        public GameObject Corpse => corpse == null ? null : corpse.Value;
-
-        public ReadOnlyReactiveProperty<EnemyDeathEffects> deathEffects { get; protected set; }
-        public EnemyDeathEffects DeathEffects => deathEffects == null ? null : deathEffects.Value;
-
-        public ReadOnlyReactiveProperty<ManagedObject> randoObject { get; protected set; }
-        public ManagedObject RandoObject => randoObject == null ? null : randoObject.Value;
-
-        public ReadOnlyReactiveProperty<BattleManagedObject> battleRandoObject { get; protected set; }
-        public BattleManagedObject BattleRandoObject => battleRandoObject == null ? null : battleRandoObject.Value;
-
-        public ReadOnlyReactiveProperty<Rigidbody2D> physicsBody { get; protected set; }
-        public Rigidbody2D PhysicsBody => physicsBody == null ? null : physicsBody.Value;
-
-        public ReadOnlyReactiveProperty<PreInstantiateGameObject> preInstantiateGO { get; protected set; }
-        public PreInstantiateGameObject PreInstantiateGO => preInstantiateGO == null ? null : preInstantiateGO.Value;
-
-        public ReadOnlyReactiveProperty<bool> isAReplacementObject { get; protected set; }
-        public bool IsAReplacementObject => isAReplacementObject == null ? false : (isAReplacementObject.Value ? true : (Source == null ? false : Source.GetComponent<ManagedObject>() != null));
-
-        public ReadOnlyReactiveProperty<bool> isVisible { get; protected set; }
-        public bool IsVisible => isVisible == null ? false : isVisible.Value;
-
-        public ReadOnlyReactiveProperty<bool> isTemporarilyInactive { get; protected set; }
-        public bool IsTemporarilyInactive
-        {
-            get => isTemporarilyInactive == null ? false : isTemporarilyInactive.Value;
-        }
-        public ReadOnlyReactiveProperty<bool> isBattleInactive { get; protected set; }
         public bool IsBattleInactive
-        {
-            get => isBattleInactive == null ? false : isBattleInactive.Value;
-        }
-        public ReadOnlyReactiveProperty<bool> canProcessObject { get; protected set; }
-        public bool CanProcessObject
-        {
-            get => canProcessObject == null ? false : canProcessObject.Value;
-        }
-
-        public bool IsInGroundEnemy
         {
             get
             {
-                return MetaDataTypes.InGroundEnemy.Contains(DatabaseName);
+                if (Source == null)
+                    return false;
+
+                if (!IsDatabaseObject)
+                    return false;
+
+                if (IsAReplacementObject)
+                    return false;
+
+                if (!IsBattleEnemy)
+                    return false;
+
+                if (EnemyHealthManager == null)
+                    return false;
+
+                if (IsDisabledBySavedGameState)
+                    return false;
+
+                if (IsVisible)
+                    return false;
+
+                return true;
             }
         }
 
+        public bool CanProcessObject
+        {
+            get
+            {
+                if (Source == null)
+                    return false;
+
+                if (IsInvalidObject)
+                    return false;
+
+                if (!IsDatabaseObject)
+                    return false;
+
+                if (IsAReplacementObject)
+                    return false;
+
+                if (ObjectType == PrefabType.Enemy && IsDisabledBySavedGameState)
+                    return false;
+
+                if (ObjectType != PrefabType.Effect && !IsVisible)
+                    return false;
+
+                return true;
+            }
+        }
+
+        public bool IsCustomPlayerDataName { get; protected set; }
         public ReactiveProperty<string> playerDataName { get; protected set; }
         public string PlayerDataName
         {
@@ -922,15 +633,22 @@ namespace EnemyRandomizerMod
                 }
             }
         }
-        public bool IsCustomPlayerDataName { get; protected set; }
+
+        public GameObject Corpse
+        {
+            get
+            {
+                return Source.GetCorpseObject();
+            }
+        }
 
         protected CompositeDisposable disposables = new CompositeDisposable();
 
         public virtual void DestroySource(bool disableObjectBeforeDestroy = true)
         {
-            Dev.Log($"{ScenePath} Destroying This {Source}");
             if (Source != null)
             {
+                Dev.Log($"Destroying this {this}");
                 if (ObjectName.Contains("Fly") && SceneName == "Crossroads_04")
                 {
                     //this seems to correctly decrement the count from the battle manager
@@ -949,8 +667,8 @@ namespace EnemyRandomizerMod
 
         public virtual float GetRelativeScale(ObjectMetadata other, float min = .1f, float max = 2.5f)
         {
-            var oldSize = other.ObjectSize;
-            var newSize = ObjectSize;
+            var oldSize = other.OriginalObjectSize;
+            var newSize = OriginalObjectSize;
 
             float scaleX = oldSize.x / newSize.x;
             float scaleY = oldSize.y / newSize.y;
@@ -963,11 +681,6 @@ namespace EnemyRandomizerMod
                 scale = max;
 
             return scale;
-        }
-
-        public virtual void SetPosition(Vector2 pos)
-        {
-            ObjectPosition = pos;
         }
 
         public virtual void ApplySizeScale(float scale)
@@ -1013,112 +726,41 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public virtual void SetAudioToMatchScale()
+        public virtual void SetAudioToMatchScale(bool scaleCorpse = true)
         {
-            SetAudioToMatchScale(Source);
+            Source.SetAudioToMatchScale(SizeScale);
 
-            //TODO: add an option to include the corpse
-            GameObject corpse = SpawnerExtensions.GetCorpseObject(Source);
-            if (corpse != null)
+            if (scaleCorpse)
             {
-                SetAudioToMatchScale(corpse);
+                //TODO: add an option to include the corpse
+                GameObject corpse = Source.GetCorpseObject();
+                if (corpse != null)
+                {
+                    corpse.SetAudioToMatchScale(SizeScale);
+                }
             }
         }
 
-        public virtual void SetAudioToMatchScale(GameObject go)
-        {
-            if (Source == null || Mathnv.FastApproximately(SizeScale, 1f, .01f))
-                return;
-
-            float size_min = 0.1f;
-            float size_max = 2.5f;
-
-            Range size_rangeTop = new Range(1f, size_max);
-            Range size_rangeBot = new Range(size_min, 1f);
-
-            float pitch_max = 2f; //higher pitch for smaller enemies
-            float pitch_min = .7f; //lower pitch for bigger enemies
-
-            Range pitch_rangeTop = new Range(1f, pitch_max);
-            Range pitch_rangeBot = new Range(pitch_min, 1f);
-
-            float t = 0f;
-            float pitch = 0f;
-
-            if (SizeScale < 1f)
-            {
-                // .7   .1 - 1
-                //      (.9) * .7
-                // .7 / .9
-                // = .78
-                // 1 - .78
-                // = .22
-                // eval(.22)
-                // =
-
-                float range = 1f - size_min;
-                float ratio = SizeScale / range;
-                float inver = 1f - ratio;
-                float fpitch = 1f + (pitch_max - 1f) * inver;
-
-                t = inver;
-                pitch = fpitch;
-
-                //t = 1f - size_rangeBot.NormalizedValue(SizeScale);
-                //pitch = pitch_rangeTop.Evaluate(t);
-            }
-            else//if(SizeScale > 1f)
-            {
-
-                float range = 2.5f - 1f;
-                float ratio = SizeScale / range;
-
-                if (ratio > 1f)
-                    ratio = 1f;
-
-                float inver = 1f - ratio;
-                float fpitch = 1f - (1f - pitch_min) * inver;
-
-                t = inver;
-                pitch = fpitch;
-
-
-                //t = 1f - size_rangeTop.NormalizedValue(SizeScale);
-                //pitch = pitch_rangeBot.Evaluate(t);
-            }
-
-            Dev.Log($"{ScenePath} audio pitch from size {SizeScale} to t {t} to pitch {pitch}");
-
-            var audioSources = go.GetComponentsInChildren<AudioSource>(true);
-            var audioSourcesPitchRandomizer = go.GetComponentsInChildren<AudioSourcePitchRandomizer>(true);
-            var audioPlayOneShot = go.GetActionsOfType<AudioPlayerOneShot>();
-            var audioPlayRandom = go.GetActionsOfType<AudioPlayRandom>();
-            var audioPlayOneShotSingle = go.GetActionsOfType<AudioPlayerOneShotSingle>();
-            var audioPlayRandomSingle = go.GetActionsOfType<AudioPlayRandomSingle>();
-            var audioPlayAudioEvent = go.GetActionsOfType<PlayAudioEvent>();
-
-            audioSources.ToList().ForEach(x => x.pitch = pitch);
-            audioSourcesPitchRandomizer.ToList().ForEach(x => x.pitchLower = pitch);
-            audioSourcesPitchRandomizer.ToList().ForEach(x => x.pitchUpper = pitch);
-            audioPlayOneShot.ToList().ForEach(x => x.pitchMin = pitch);
-            audioPlayOneShot.ToList().ForEach(x => x.pitchMax = pitch);
-            audioPlayRandom.ToList().ForEach(x => x.pitchMin = pitch);
-            audioPlayRandom.ToList().ForEach(x => x.pitchMax = pitch);
-            audioPlayOneShotSingle.ToList().ForEach(x => x.pitchMax = pitch);
-            audioPlayOneShotSingle.ToList().ForEach(x => x.pitchMin = pitch);
-            audioPlayRandomSingle.ToList().ForEach(x => x.pitchMin = pitch);
-            audioPlayRandomSingle.ToList().ForEach(x => x.pitchMax = pitch);
-            audioPlayAudioEvent.ToList().ForEach(x => x.pitchMin = pitch);
-            audioPlayAudioEvent.ToList().ForEach(x => x.pitchMax = pitch);
-        }
-
-        public virtual GameObject ActivateSource()
+        public virtual void ActivateSource(ObjectMetadata objectToReplace = null)
         {
             //error?
             if (Source == null)
             {
                 Dev.LogError("Cannot activate a null object (this hsould never even get close to happening)! The metadata for this object had the name "+ObjectName);
-                return null;
+                return;
+            }
+
+            ObjectThisReplaced = objectToReplace;
+
+            if (IsBattleEnemy)
+            {
+                BattleManagedObject bmo = Source.GetOrAddComponent<BattleManagedObject>();
+                bmo.Setup(this, objectToReplace);
+            }
+            else
+            {
+                ManagedObject mo = Source.GetOrAddComponent<ManagedObject>();
+                mo.Setup(this, objectToReplace);
             }
 
             //nothing to do here if these objects are the same
@@ -1156,15 +798,18 @@ namespace EnemyRandomizerMod
                         EnemyHealthManager.OnDeath += RecordCustomJournalOnDeath;
                     }
                 }
+
+                EnemyRandomizerDatabase.OnObjectReplaced?.Invoke((this, ObjectThisReplaced));
             }
 
             Source.SafeSetActive(true);
 
             //nothing to do here if these objects are the same
             if (ObjectThisReplaced != null && this != ObjectThisReplaced && Source != ObjectThisReplaced.Source)
+            {
+                Dev.Log($"{this} is replacing {ObjectThisReplaced} and so {ObjectThisReplaced} will now be destroyed...");
                 ObjectThisReplaced.DestroySource();
-
-            return Source;
+            }
         }
 
         protected virtual string GetCustomPlayerDataNameFromReplacement(string replacementName)
@@ -1226,6 +871,83 @@ namespace EnemyRandomizerMod
             }
         }
 
+        protected virtual void FixForPogos()
+        {
+            float tweenDirection = 1f;
+            float tweenRate = 3f;
+
+            if (ObjectThisReplaced.IsFlying && ObjectThisReplaced.IsMobile)
+            {
+                var tweener = ObjectThisReplaced.Source.GetComponentsInChildren<PlayMakerFSM>().FirstOrDefault(x => x.FsmName == "Tween");
+                tweenDirection = tweener.FsmVariables.GetFsmVector3("Move Vector").Value.y;
+                tweenRate = tweener.FsmVariables.GetFsmFloat("Speed").Value;
+            }
+
+            StripMovements(true);
+            MakeTinker(true, true);
+            PlayIdleAnimation();
+
+            var collider = Source.GetComponent<BoxCollider2D>();
+            if (collider != null)
+            {
+                collider.enabled = true;
+            }
+
+            //this will be the white palace fly
+            if (!ObjectThisReplaced.IsMobile)
+            {
+                ObjectPosition = ObjectThisReplaced.Source.transform.position;
+                LockIntoPosition(ObjectThisReplaced.Source.transform.position);
+            }
+            //this will be acid flyer or acid walker
+            else if (ObjectThisReplaced.IsTinker)
+            {
+                if (ObjectThisReplaced.IsFlying)
+                {
+                    //v = d / t
+                    //v t = d
+                    //t = d / v
+                    //tween travel time
+                    var tween = Source.GetOrAddComponent<CustomTweener>();
+                    tween.from = ObjectThisReplaced.Source.transform.position;
+                    tween.to = tween.from + Vector3.up * 1f * tweenDirection;
+                    tween.travelTime = Mathf.Abs((tweenRate / tweenDirection) * 4f);
+                }
+                //walker
+                else
+                {
+                    if (!IsWalker)
+                    {
+                        var walker = Source.GetOrAddComponent<Walker>();
+                        walker.walkSpeedL = 2f;
+                        walker.walkSpeedR = 2f;
+                        walker.startInactive = false;
+                        walker.ignoreHoles = false;
+                        walker.StartMoving();
+                    }
+                }
+            }
+        }
+
+        public virtual bool SkipForLogic()
+        {
+            //for now we only need to do logic if we are an enemy
+            if (ObjectType != PrefabType.Enemy)
+                return false;
+
+            if (Source == null)
+                return false;
+
+            //didn't replace anything
+            if (ObjectThisReplaced != null)
+                return false;
+
+            if (!IsDatabaseObject)
+                return false;
+
+            return MetaDataTypes.SkipReplacementOfEnemyForLogicReasons.Contains(DatabaseName);
+        }
+
         public virtual void FixForLogic()
         {
             //for now we only need to do logic if we are an enemy
@@ -1250,60 +972,7 @@ namespace EnemyRandomizerMod
             //did we replace a pogo logic enemy?
             if (ObjectThisReplaced.IsPogoLogic)
             {
-                float tweenDirection = 1f;
-                float tweenRate = 3f;
-
-                if (ObjectThisReplaced.IsFlying && ObjectThisReplaced.IsMobile)
-                {
-                    var tweener = ObjectThisReplaced.Source.GetComponentsInChildren<PlayMakerFSM>().FirstOrDefault(x => x.FsmName == "Tween");
-                    tweenDirection = tweener.FsmVariables.GetFsmVector3("Move Vector").Value.y;
-                    tweenRate = tweener.FsmVariables.GetFsmFloat("Speed").Value;
-                }
-
-                StripMovements(true);
-                MakeTinker(true);
-                PlayIdleAnimation();
-
-                var collider = Source.GetComponent<BoxCollider2D>();
-                if(collider != null)
-                {
-                    collider.enabled = true;
-                }
-
-                //this will be the white palace fly
-                if (!ObjectThisReplaced.IsMobile)
-                {
-                    SetPosition(ObjectThisReplaced.Source.transform.position);
-                    LockIntoPosition(ObjectThisReplaced.Source.transform.position);
-                } 
-                //this will be acid flyer or acid walker
-                else if (ObjectThisReplaced.IsTinker)
-                {
-                    if (ObjectThisReplaced.IsFlying)
-                    {
-                        //v = d / t
-                        //v t = d
-                        //t = d / v
-                        //tween travel time
-                        var tween = Source.GetOrAddComponent<CustomTweener>();
-                        tween.from = ObjectThisReplaced.Source.transform.position;
-                        tween.to = tween.from + Vector3.up * 1f * tweenDirection;
-                        tween.travelTime = Mathf.Abs( (tweenRate / tweenDirection) * 4f );
-                    }
-                    //walker
-                    else
-                    {
-                        if(!IsWalker)
-                        {
-                            var walker = Source.GetOrAddComponent<Walker>();
-                            walker.walkSpeedL = 2f;
-                            walker.walkSpeedR = 2f;
-                            walker.startInactive = false;
-                            walker.ignoreHoles = false;
-                            walker.StartMoving();
-                        }
-                    }
-                }
+                FixForPogos();
             }
 
             if (ObjectThisReplaced.IsSmasher)
@@ -1388,20 +1057,37 @@ namespace EnemyRandomizerMod
         {
             var smasher = Source.CopyAndAddSmasher(ObjectThisReplaced);
             var col = smasher.GetComponent<BoxCollider2D>();
-            var size = ObjectSize;
+            var size = OriginalObjectSize;
             col.size = size * 1.2f;
 
             smasher.transform.localPosition = Vector3.zero;
             smasher.SetActive(true);
         }
 
-        public virtual void MakeTinker(bool makeInvincible)
+        public virtual void MakeTinker(bool makeInvincible, bool makeSpellVulnerable)
         {
             var tinkEffect = Source.GetOrAddComponent<TinkEffect>();
-            tinkEffect.blockEffect = DB.Spawn(EnemyRandomizerDatabase.BlockHitEffectName, null);            
+            var tinkMetaDataObject = DB.Spawn(EnemyRandomizerDatabase.BlockHitEffectName);
+
+            if (tinkMetaDataObject == null)
+            {
+                Dev.LogError($"Failed to make {Source} into a tinker using effect name {EnemyRandomizerDatabase.BlockHitEffectName}");
+                return;
+            }
+
+            tinkEffect.blockEffect = tinkMetaDataObject.Source;
             if (makeInvincible)
             {
-                IsInvincible = true;
+                if(EnemyHealthManager != null)
+                {
+                    EnemyHealthManager.IsInvincible = true;
+                }
+            }
+
+            if(makeSpellVulnerable)
+            {
+                var extraDamage = Source.GetOrAddComponent<ExtraDamageable>();
+                extraDamage.GetType().GetField("isSpellVulnerable", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(extraDamage, true);
             }
         }
 
@@ -1466,11 +1152,6 @@ namespace EnemyRandomizerMod
             }
             return false;
         }
-
-        public void Dispose()
-        {
-            ((System.IDisposable)disposables).Dispose();
-        }
     }
 
     public static class MetaDataTypes
@@ -1506,7 +1187,7 @@ namespace EnemyRandomizerMod
             return null;
         }
 
-        public static Vector2 SetSizeFromUniqueObject(GameObject sceneObject)
+        public static Vector2 GetSizeFromUniqueObject(GameObject sceneObject)
         {
             Dev.Log($"Setting size for object {sceneObject}");
             if (EnemyRandomizerDatabase.ToDatabaseKey(sceneObject.name) == "Acid Flyer")
@@ -1773,77 +1454,77 @@ namespace EnemyRandomizerMod
             "Fluke Mother",
             };
 
-        public static List<string> IsSummonedByEvent = new List<string>() {
-            "Giant Fly Col",
-            "Buzzer Col",
-            "Colosseum_Armoured_Roller",
-            "Colosseum_Miner",
-            "Colosseum_Armoured_Mosquito",
-            "Colosseum_Flying_Sentry",
-            "Ceiling Dropper Col",
-            "Colosseum_Worm",
-            "Mawlek Col",
-            "Colosseum Grass Hopper",
-            "Hatcher Baby",
-            "Zombie Spider 2",
-            "Zombie Spider 1",
-            "Flukeman Top",
-            "Flukeman Bot",
-            "Colosseum_Armoured_Roller R",
-            "Colosseum_Armoured_Mosquito R",
-            "Giant Buzzer Col",
-            "Mega Fat Bee",
-            "Lobster",
-            "Mage Knight",
-            "Mage",
-            "Electric Mage",
-            "Mender Bug",
-            "Mawlek Body",
-            "False Knight New",
-            "Mage Lord",
-            "Mage Lord Phase2",
-            "Black Knight",
-            "Moss Knight",
-            "Jar Collector",
-            "Giant Buzzer",
-            "Mega Moss Charger",
-            "Mantis Traitor Lord",
-            "Mega Zombie Beam Miner",
-            "Zombie Beam Miner",
-            "Zombie Beam Miner Rematch",
-            "Mimic Spider",
-            "Hornet Boss 2",
-            "Infected Knight",
-            "Dung Defender",
-            "Fluke Mother",
-            "Hive Knight",
-            "Grimm Boss",
-            "Nightmare Grimm Boss",
-            "False Knight Dream",
-            "Dream Mage Lord",
-            "Dream Mage Lord Phase2",
-            "Lost Kin",
-            "Grey Prince",
-            "Radiance",
-            "Hollow Knight Boss",
-            "HK Prime",
-            "Pale Lurker",
-            "Oro",
-            "Mato",
-            "Sheo Boss",
-            "Absolute Radiance",
-            "Sly Boss",
-            "Hornet Nosk",
-            "Mega Jellyfish",
-            "Jellyfish GG",
-            "Ghost Warrior Xero",
-            "Ghost Warrior Marmu",
-            "Ghost Warrior Galien",
-            "Ghost Warrior Slug",
-            "Ghost Warrior No Eyes",
-            "Ghost Warrior Hu",
-            "Ghost Warrior Markoth",
-            };
+        //public static List<string> IsSummonedByEvent = new List<string>() {
+        //    "Giant Fly Col",
+        //    "Buzzer Col",
+        //    "Colosseum_Armoured_Roller",
+        //    "Colosseum_Miner",
+        //    "Colosseum_Armoured_Mosquito",
+        //    "Colosseum_Flying_Sentry",
+        //    "Ceiling Dropper Col",
+        //    "Colosseum_Worm",
+        //    "Mawlek Col",
+        //    "Colosseum Grass Hopper",
+        //    "Hatcher Baby",
+        //    "Zombie Spider 2",
+        //    "Zombie Spider 1",
+        //    "Flukeman Top",
+        //    "Flukeman Bot",
+        //    "Colosseum_Armoured_Roller R",
+        //    "Colosseum_Armoured_Mosquito R",
+        //    "Giant Buzzer Col",
+        //    "Mega Fat Bee",
+        //    "Lobster",
+        //    "Mage Knight",
+        //    "Mage",
+        //    "Electric Mage",
+        //    "Mender Bug",
+        //    "Mawlek Body",
+        //    "False Knight New",
+        //    "Mage Lord",
+        //    "Mage Lord Phase2",
+        //    "Black Knight",
+        //    "Moss Knight",
+        //    "Jar Collector",
+        //    "Giant Buzzer",
+        //    "Mega Moss Charger",
+        //    "Mantis Traitor Lord",
+        //    "Mega Zombie Beam Miner",
+        //    "Zombie Beam Miner",
+        //    "Zombie Beam Miner Rematch",
+        //    "Mimic Spider",
+        //    "Hornet Boss 2",
+        //    "Infected Knight",
+        //    "Dung Defender",
+        //    "Fluke Mother",
+        //    "Hive Knight",
+        //    "Grimm Boss",
+        //    "Nightmare Grimm Boss",
+        //    "False Knight Dream",
+        //    "Dream Mage Lord",
+        //    "Dream Mage Lord Phase2",
+        //    "Lost Kin",
+        //    "Grey Prince",
+        //    "Radiance",
+        //    "Hollow Knight Boss",
+        //    "HK Prime",
+        //    "Pale Lurker",
+        //    "Oro",
+        //    "Mato",
+        //    "Sheo Boss",
+        //    "Absolute Radiance",
+        //    "Sly Boss",
+        //    "Hornet Nosk",
+        //    "Mega Jellyfish",
+        //    "Jellyfish GG",
+        //    "Ghost Warrior Xero",
+        //    "Ghost Warrior Marmu",
+        //    "Ghost Warrior Galien",
+        //    "Ghost Warrior Slug",
+        //    "Ghost Warrior No Eyes",
+        //    "Ghost Warrior Hu",
+        //    "Ghost Warrior Markoth",
+        //    };
 
         public static List<string> AlwaysDeleteObject = new List<string>() {
             "Fly Spawn",
@@ -2118,6 +1799,16 @@ namespace EnemyRandomizerMod
         public static List<string> BurstEffects = new List<string>()
         {
             "Roar Feathers",
+        };
+
+
+        /// <summary>
+        /// Typically we're going to do this because altering the enemy or arena in other ways is more interesting
+        /// or we're keeping it to preserve some other logic.
+        /// </summary>
+        public static List<string> SkipReplacementOfEnemyForLogicReasons = new List<string>()
+        {
+            "Giant Fly",
         };
 
 

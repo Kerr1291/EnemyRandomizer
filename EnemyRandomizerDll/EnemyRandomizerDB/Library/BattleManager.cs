@@ -90,7 +90,8 @@ namespace EnemyRandomizerMod
                 }
             }
 
-            //just a hacky spot to apply this meme
+            //TODO: move this into a better spot for generating our custom content
+            //make our custom fountain
             if(currentScene.name == "Ruins1_27")
             {
                 var center = GameObject.Find("_0083_fountain");
@@ -98,25 +99,17 @@ namespace EnemyRandomizerMod
                 var right = GameObject.Find("_0092_fountain");
                 var left = GameObject.Find("_0092_fountain (1)");
 
-                var newCenter = EnemyRandomizerDatabase.GetDatabase().Spawn("GG_Statue_Gorb", null);
-                var newBack = EnemyRandomizerDatabase.GetDatabase().Spawn("Knight_v01", null);
-                var newRight = EnemyRandomizerDatabase.GetDatabase().Spawn("GG_Statue_Zote", null);
-                var newLeft = EnemyRandomizerDatabase.GetDatabase().Spawn("GG_Statue_GreyPrince", null);
+                var core = EnemyRandomizerDatabase.CustomSpawnWithLogic(center.transform.position.ToVec2() + Vector2.up * 5f, "gg_blue_core", null, true);
+                var newCenter = EnemyRandomizerDatabase.CustomSpawnWithLogic(center.transform.position, "GG_Statue_Gorb", null, true);
+                var newBack = EnemyRandomizerDatabase.CustomSpawnWithLogic(back.transform.position, "Knight_v01", null, true);
+                var newRight = EnemyRandomizerDatabase.CustomSpawnWithLogic(right.transform.position, "GG_Statue_Zote", null, true);
+                var newLeft = EnemyRandomizerDatabase.CustomSpawnWithLogic(left.transform.position, "GG_Statue_GreyPrince", null, true);
+                var floor_effect = EnemyRandomizerDatabase.CustomSpawnWithLogic(SpawnerExtensions.GetRayOn(center.transform.position, Vector2.down, 50f).point, "dream_beam_animation", null, true);
 
-                newCenter.transform.position = center.transform.position;
-                newBack.transform.position = back.transform.position;
-                newRight.transform.position = right.transform.position;
-                newLeft.transform.position = left.transform.position;
-                
                 GameObject.Destroy(center);
                 GameObject.Destroy(back);
                 GameObject.Destroy(right);
                 GameObject.Destroy(left);
-
-                newCenter.SafeSetActive(true);
-                newBack.SafeSetActive(true);
-                newRight.SafeSetActive(true);
-                newLeft.SafeSetActive(true);
             }
 
             BattleManager.DidSceneCheck = true;

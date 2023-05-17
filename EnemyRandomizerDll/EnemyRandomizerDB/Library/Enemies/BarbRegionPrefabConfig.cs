@@ -11,6 +11,7 @@ using System;
 using Satchel;
 using Satchel.Futils;
 using HutongGames.PlayMaker.Actions;
+using HutongGames.PlayMaker;
 
 namespace EnemyRandomizerMod
 {
@@ -39,7 +40,7 @@ namespace EnemyRandomizerMod
     {
     }
 
-    public class HornetBarbPrefabConfig : DefaultPrefabConfig<HornetBarbControl>
+    public class HornetBarbPrefabConfig : DefaultPrefabConfig
     {
     }
 
@@ -284,6 +285,50 @@ namespace EnemyRandomizerMod
             var bossStatue = p.prefab.GetComponentInChildren<BossStatue>(true);
             if (bossStatue != null)
                 GameObject.Destroy(bossStatue);
+        }
+    }
+
+
+    public class gg_blue_corePrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            var prefab = p.prefab;
+            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(prefab.name);
+            p.prefabName = prefab.name;
+            p.prefab = prefab;
+            var dpdpt = p.prefab.GetComponentInChildren<DeactivateIfPlayerdataTrue>(true);
+            if (dpdpt != null)
+                GameObject.Destroy(dpdpt);
+            var dreamReact = p.prefab.LocateMyFSM("Dream React");
+            {
+                var state = dreamReact.GetState("Take Control");
+                var alist = state.Actions.ToList();
+                for (int i = 0; i < alist.Count; ++i)
+                {
+                    state.DisableAction(i);
+                }
+            }
+            {
+                var state = dreamReact.GetState("Regain Control");
+                var alist = state.Actions.ToList();
+                for (int i = 0; i < alist.Count; ++i)
+                {
+                    state.DisableAction(i);
+                }
+            }
+        }
+    }
+
+
+    public class dream_beam_animationPrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            var prefab = p.prefab;
+            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(prefab.name);
+            p.prefabName = prefab.name;
+            p.prefab = prefab;
         }
     }
 }

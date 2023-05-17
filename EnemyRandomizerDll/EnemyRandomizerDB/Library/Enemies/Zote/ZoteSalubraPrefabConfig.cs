@@ -22,7 +22,7 @@ namespace EnemyRandomizerMod
             RNG geoRNG = new RNG();
             geoRNG.Reset();
 
-            thisMetadata.EnemyHealthManager.hp = other.DefaultHP;
+            thisMetadata.EnemyHealthManager.hp = other.Source != null ? other.EnemyHealthManager.hp : other.OriginalPrefabHP;
             thisMetadata.EnemyHealthManager.SetGeoLarge(geoRNG.Rand(1, 15));
             thisMetadata.EnemyHealthManager.SetGeoMedium(geoRNG.Rand(1, 5));
 
@@ -118,7 +118,7 @@ namespace EnemyRandomizerMod
     {
     }
 
-    public class ZoteSalubraPrefabConfig : DefaultPrefabConfig<ZoteSalubraControl>
+    public class ZoteSalubraPrefabConfig : DefaultPrefabConfig
     {
     }
 

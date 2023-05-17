@@ -18,7 +18,7 @@ namespace EnemyRandomizerMod
 {
     public class EnemyReplacer
     {
-        public static bool VERBOSE_LOGGING = false;
+        public static bool VERBOSE_LOGGING = true;
 
         public EnemyRandomizerDatabase database;
         public HashSet<IRandomizerLogic> loadedLogics = new HashSet<IRandomizerLogic>();
@@ -221,15 +221,8 @@ namespace EnemyRandomizerMod
         {
             var metaData = original.ToMetadata(database);
 
-            //special logic for the original giant fly boss
-            if (original.name.Contains("Giant Fly"))
-            {
-                var fixedBossControl = original.GetOrAddComponent<GiantFlyControl>();
-                fixedBossControl.Setup(metaData);
-                metaData.MarkObjectAsReplacement(metaData);
-                metaData.ActivateSource();
+            if (metaData == null)
                 return original;
-            }
 
             return OnObjectLoaded(metaData);
         }
@@ -237,54 +230,69 @@ namespace EnemyRandomizerMod
         public GameObject RandomizeHazard(DamageHero originalHazard)
         {
             var metaData = originalHazard.gameObject.ToMetadata(database);
+
+            if (metaData == null)
+                return originalHazard.gameObject;
+
             return OnObjectLoaded(metaData);
         }
 
         public GameObject RandomizeEffect(GameObject original)
         {
             var metaData = original.ToMetadata(database);
+
+            if (metaData == null)
+                return original;
+
             return OnObjectLoaded(metaData);
         }
 
-        public GameObject OnObjectLoaded(ObjectMetadata metaObject)
+        public GameObject OnObjectLoaded(ObjectMetadata objectToReplace)
         {
-            if (VERBOSE_LOGGING && metaObject.HasData && !metaObject.IsAReplacementObject && metaObject.Source != null)
+            if (VERBOSE_LOGGING && objectToReplace.IsDatabaseObject && !objectToReplace.IsAReplacementObject && objectToReplace.Source != null)
             {
-                Dev.Log($"[{metaObject.ObjectType}, {metaObject.ScenePath}]: Unrandomized object loaded.");
+                Dev.Log($"[{objectToReplace.ObjectType}, {objectToReplace.ScenePath}]: Unrandomized object loaded.");
+
+                if(objectToReplace.ScenePath.Contains("]["))
+                {
+                    Dev.LogError($"[{objectToReplace.ObjectType}, {objectToReplace.ScenePath}]: THIS WAS RANDOMIZED AND SHOULD NOT BE PROCESSED AGAIN!!! DUMPING ALL INFO");
+                    objectToReplace.Dump();
+                }
             }
 
-            var pendingLoad = pendingLoads.FirstOrDefault(x => x.Key.ScenePath == metaObject.ScenePath);
+            var pendingLoad = pendingLoads.FirstOrDefault(x => x.Key.ScenePath == objectToReplace.ScenePath);
             if (pendingLoad.Key != null)
             {
                 pendingLoads.Remove(pendingLoad.Key);
             }
 
-            if (metaObject.Source == null)
+            if (objectToReplace.Source == null)
                 return null;
 
-            if (metaObject.IsAReplacementObject)
-                return metaObject.Source;
+            if (objectToReplace.IsAReplacementObject)
+                return objectToReplace.Source;
 
-            //TODO: add this to the modules DO THIS NEXT!!!!!!!!!!!!!!!
-            bool canProcess = CanProcessObject(metaObject);
+            bool canProcess = CanProcessObject(objectToReplace);
 
             if (!canProcess)
-                return metaObject.Source;
+                return objectToReplace.Source;
 
             bool replaceObject = true;
 
             List<PrefabObject> originalReplacementObjects = null;
             List<PrefabObject> validReplacements = null;
 
+            bool logicSkip = SkipForLogic(objectToReplace);
+
             //are we skipping replacement?
-            if (EnemyRandomizer.DoReplacementBypassCheck())
+            if (logicSkip || EnemyRandomizer.DoReplacementBypassCheck())
             {
-                if (EnemyRandomizer.HasCustomBypassReplacement())
+                if (!logicSkip && EnemyRandomizer.HasCustomBypassReplacement())
                 {
                     string customBypassReplacement = EnemyRandomizer.GetCustomBypassReplacement();
                     if (VERBOSE_LOGGING)
                     {
-                        Dev.Log($"[{metaObject.ObjectType}, {metaObject.ScenePath}]: Replacement bypass set to {customBypassReplacement}. Will attempt to replace object with this custom object.");
+                        Dev.Log($"[{objectToReplace.ObjectType}, {objectToReplace.ScenePath}]: Replacement bypass set to {customBypassReplacement}. Will attempt to replace object with this custom object.");
                     }
 
                     try
@@ -300,9 +308,13 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    if (VERBOSE_LOGGING)
+                    if (VERBOSE_LOGGING && !logicSkip)
                     {
-                        Dev.Log($"[{metaObject.ObjectType}, {metaObject.ScenePath}]: Replacement bypass set. Will NOT attempt to replace object.");
+                        Dev.Log($"[{objectToReplace.ObjectType}, {objectToReplace.ScenePath}]: Replacement bypass set. Will NOT attempt to replace object.");
+                    }
+                    else if (VERBOSE_LOGGING && !logicSkip)
+                    {
+                        Dev.Log($"[{objectToReplace.ObjectType}, {objectToReplace.ScenePath}]: Logic skip set. Will NOT attempt to replace object.");
                     }
 
                     replaceObject = false;
@@ -311,86 +323,90 @@ namespace EnemyRandomizerMod
             else
             {
                 //create default replacements
-                originalReplacementObjects = metaObject.GetObjectTypeCollection(database);
+                originalReplacementObjects = objectToReplace.GetObjectTypeCollection(database);
                 validReplacements = originalReplacementObjects;
 
                 if (VERBOSE_LOGGING)
                 {
-                    Dev.Log($"[{metaObject.ObjectType}, {metaObject.ScenePath}]: Will attempt to replace object.");
+                    Dev.Log($"[{objectToReplace.ObjectType}, {objectToReplace.ScenePath}]: Will attempt to replace object.");
                 }
 
-                validReplacements = GetValidReplacements(metaObject, originalReplacementObjects);
+                validReplacements = GetValidReplacements(objectToReplace, originalReplacementObjects);
                 if (validReplacements == null || validReplacements.Count <= 0)
                     replaceObject = false;
             }
 
+            //create default rng
+            RNG rng = new RNG(EnemyRandomizer.PlayerSettings.enemyRandomizerSeed);
             try
             {
-                //create default rng
-                RNG rng = new RNG(EnemyRandomizer.PlayerSettings.enemyRandomizerSeed);
-                rng = GetRNG(metaObject, rng);
+                //give the logics a chance to configure the rng
+                rng = GetRNG(objectToReplace, rng);
+            }
+            catch (Exception e)
+            {
+                Dev.LogError($"[{objectToReplace.ObjectType}, {objectToReplace.ObjectName}]: Error configuring the random number generator -- default will be used -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+            }
 
+            ObjectMetadata replacementObject = null;
+            try
+            {
                 if (replaceObject)
                 {
-                    if (TryReplaceObject(metaObject, validReplacements, rng, out var newObject))
+                    if (GetObjectReplacement(objectToReplace, validReplacements, rng, out replacementObject))
                     {
                         if (VERBOSE_LOGGING)
-                        {
-                            Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Object will be replaced by [{newObject.ObjectType}, {newObject.ObjectName}] .");
-                        }
-
-                        if(newObject.Source != metaObject.Source)
-                            EnemyRandomizerDatabase.OnObjectReplaced?.Invoke((newObject, metaObject));
-
-                        newObject.MarkObjectAsReplacement(metaObject);
-                        metaObject = newObject;
-
+                            Dev.Log($"{objectToReplace}: Object will be replaced by {replacementObject} .");
+                    }
+                    else
+                    {
                         if (VERBOSE_LOGGING)
-                            Dev.Log($"[{newObject.ObjectType}, {newObject.ObjectName}]: Was marked as a replacement for [{newObject.ObjectThisReplaced.ObjectType}, {newObject.ObjectThisReplaced.ObjectName}] .");
+                            Dev.Log($"{objectToReplace}: Object was not replaced by any module.");
                     }
                 }
                 else
                 {
                     if (VERBOSE_LOGGING)
                     {
-                        Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Object was not replaced and will be marked to prevent processing by the randomizer again.");
+                        Dev.Log($"{objectToReplace}: Object was not replaced.");
                     }
-                    metaObject.MarkObjectAsReplacement(metaObject);
                 }
             }
             catch (Exception e)
             {
-                Dev.LogError($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Fatal error replacing object -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+                Dev.LogError($"{objectToReplace}: Fatal error replacing object -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+            }
+
+            var objectToModifyAndActivate = replacementObject == null ? objectToReplace : replacementObject;
+            if (!logicSkip)
+            {
+                try
+                {
+                    ModifyObject(objectToReplace, objectToModifyAndActivate);
+                }
+                catch (Exception e)
+                {
+                    Dev.LogError($"{objectToModifyAndActivate}: Fatal error modifying object -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+                }
             }
 
             try
             {
                 if (VERBOSE_LOGGING)
-                    Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Trying to modify....");
+                    Dev.Log($"{objectToModifyAndActivate}: Trying to fix logic....");
 
-                metaObject = ModifyObject(metaObject);
-            }
-            catch(Exception e)
-            {
-                Dev.LogError($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Fatal error modifying object -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
-            }
-
-            try
-            {
-                if (VERBOSE_LOGGING)
-                    Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Trying to fix logic....");
-
-                FixForLogic(metaObject);
+                FixForLogic(objectToModifyAndActivate);
             }
             catch (Exception e)
             {
-                Dev.LogError($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Fatal error fixing object for logic -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+                Dev.LogError($"{objectToModifyAndActivate}: Fatal error fixing object for logic -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
             }
 
             if (VERBOSE_LOGGING)
-                Dev.Log($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Trying to finalize and activate....");
+                Dev.Log($"{objectToModifyAndActivate}: Trying to finalize and activate....");
 
-            return metaObject.ActivateSource();
+            objectToModifyAndActivate.ActivateSource(objectToReplace);
+            return objectToModifyAndActivate.Source;
         }
 
         protected bool CanProcessObject(ObjectMetadata metaObject)
@@ -413,7 +429,7 @@ namespace EnemyRandomizerMod
                     return false;
                 }
 
-                if (metaObject.isTemporarilyInactive.Value)
+                if (metaObject.IsTemporarilyInactive)
                 {
                     if (VERBOSE_LOGGING && GetBlackBorders().Value != null && GetBlackBorders().Value.Count > 0)
                     {
@@ -465,13 +481,13 @@ namespace EnemyRandomizerMod
                 yield break;
             }
 
-            yield return new WaitUntil(() => info == null || info.Source == null || (!info.IsDisabledBySavedGameState && info.ActiveSelf && info.renderersVisible.Value && info.InBounds));
+            yield return new WaitUntil(() => info == null || info.Source == null || (!info.IsDisabledBySavedGameState && info.ActiveSelf && info.RenderersVisible && info.InBounds));
             if(info == null || info.Source == null || info.IsDisabledBySavedGameState)
             {
                 pendingLoads.Remove(info);
                 yield break;
             }
-            yield return new WaitUntil(() => GetBlackBorders().Value != null && GetBlackBorders().Value.Count > 0);
+            yield return new WaitUntil(() => GetBlackBorders() != null && GetBlackBorders().Value != null && GetBlackBorders().Value.Count > 0);
             if (info != null)
             {
                 OnObjectLoaded(info);
@@ -499,7 +515,7 @@ namespace EnemyRandomizerMod
             {
                 canProcessNow = false;
 
-                if (VERBOSE_LOGGING && !original.IsInvalidObject && original.HasData)
+                if (VERBOSE_LOGGING && !original.IsInvalidObject && original.IsDatabaseObject)
                 {
                     Dev.LogError($"Error trying to check if this object can be processed {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
                     original.Dump();
@@ -546,39 +562,43 @@ namespace EnemyRandomizerMod
             return rng;
         }
 
-        protected bool TryReplaceObject(ObjectMetadata original, List<PrefabObject> validReplacements, RNG rng, out ObjectMetadata newObject)
+        protected bool GetObjectReplacement(ObjectMetadata original, List<PrefabObject> validReplacements, RNG rng, out ObjectMetadata newObject)
         {
-            ObjectMetadata metaObject = null;
+            ObjectMetadata currentPotentialReplacement = null;
             foreach (var logic in loadedLogics)
             {
                 try
                 {
-                    metaObject = logic.GetReplacement(metaObject, original, validReplacements, rng);
+                    currentPotentialReplacement = logic.GetReplacement(currentPotentialReplacement, original, validReplacements, rng);
                 }
                 catch (Exception e)
                 {
                     Dev.LogError($"Error trying to replace object in logic {logic.Name} using data from {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
                 }
             }
-            newObject = metaObject;
-            return newObject != original;
+            newObject = currentPotentialReplacement;
+            return newObject != original || ((currentPotentialReplacement != null && original != null) && (newObject.Source != original.Source));
         }
 
-        protected ObjectMetadata ModifyObject(ObjectMetadata metaObject)
+        protected void ModifyObject(ObjectMetadata objectToReplace, ObjectMetadata replacementObject)
         {
-            ObjectMetadata original = metaObject.ObjectThisReplaced;
+            ObjectMetadata original = objectToReplace;
             foreach (var logic in loadedLogics)
             {
                 try
                 {
-                    metaObject = logic.ModifyObject(metaObject, original);
+                    logic.ModifyObject(replacementObject, original);
                 }
                 catch (Exception e)
                 {
-                    Dev.LogError($"Error trying to modify object in logic {logic.Name} using data from {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                    Dev.LogError($"Error trying to modify object {replacementObject} in logic {logic.Name} using data from {original} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
                 }
             }
-            return metaObject;
+        }
+
+        protected bool SkipForLogic(ObjectMetadata metaObject)
+        {
+            return metaObject.SkipForLogic();
         }
 
         /// <summary>
@@ -588,7 +608,7 @@ namespace EnemyRandomizerMod
         {
             try
             {
-                database.FixForLogic(metaObject);
+                metaObject.FixForLogic();
             }
             catch (Exception e)
             {

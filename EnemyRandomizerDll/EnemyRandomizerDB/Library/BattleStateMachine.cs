@@ -181,6 +181,9 @@ namespace EnemyRandomizerMod
             Dev.Log("BATTLE OVER");
             preKilledEnemies = 0;
             battleStarted = false;
+
+            if(FSM != null)
+                UnlockCameras(GetCameraLocksFromScene(FSM.gameObject));
         }
 
         private void FsmState_OnEnter(On.HutongGames.PlayMaker.FsmState.orig_OnEnter orig, FsmState self)
@@ -505,6 +508,7 @@ namespace EnemyRandomizerMod
                     }
                 }
             }
+
             //var fsms = GameObject.FindObjectsOfType<PlayMakerFSM>();
             //{
             //    fsms
@@ -530,6 +534,19 @@ namespace EnemyRandomizerMod
             //            x.SendEvent("BG CLOSE");
             //        });
             //}
+        }
+
+        public static IEnumerable<CameraLockArea> GetCameraLocksFromScene(GameObject gameObject)
+        {
+            return gameObject.GetComponentsFromScene<CameraLockArea>();
+        }
+
+        public static void UnlockCameras(IEnumerable<CameraLockArea> cameraLocks)
+        {
+            foreach (var c in cameraLocks)
+            {
+                c.gameObject.SetActive(false);
+            }
         }
     }
 }

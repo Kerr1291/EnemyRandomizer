@@ -265,49 +265,75 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public void FixForLogic(ObjectMetadata objectToFix)
+        /// <summary>
+        /// Spawn an object from the database. All objects may be checked via the Objects property in the database.
+        /// </summary>
+        /// <param name="p">The name of the database object to spawn</param>
+        /// <returns>The object that was spawned. Returns null on failure.</returns>
+        public ObjectMetadata Spawn(string name)
         {
-            objectToFix.FixForLogic();
+            if (!Objects.TryGetValue(name, out PrefabObject p))
+                return null;
+
+            Dev.Log("spawn done for "+ name);
+            return Spawn(p);
         }
+
 
         /// <summary>
         /// Spawn an object from the database. All objects may be checked via the Objects property in the database.
         /// </summary>
         /// <param name="p">The name of the database object to spawn</param>
-        /// <param name="source">Optional: source data that may be used to configure the object</param>
-        /// <param name="defaultType">Optional: the fallback spawner to use if the object doesn't have one defined</param>
+        /// <param name="defaultType">The fallback spawner to use if the object doesn't have one known to the database</param>
         /// <returns>The object that was spawned. Returns null on failure.</returns>
-        public GameObject Spawn(string name, ObjectMetadata source)
+        public ObjectMetadata Spawn(PrefabObject p, Type defaultType = null)
         {
-            if (!Objects.TryGetValue(name, out PrefabObject p))
+            if (defaultType == null)
+                defaultType = typeof(DefaultSpawner);
+
+            bool isDefault = GetSpawner(p, defaultType, out var spawner);
+            //Dev.Log("Spawner is " + spawner);
+            if (spawner == null)
                 return null;
 
-            return Spawn(p, source);
+            //Dev.Log("finally trying to spawn "+p.prefabName);
+            var result = spawner.Spawn(p, null, this);
+
+            Dev.Log("spawn done");
+            if (result != null && isDefault)
+            {
+                var defaultControl = result.Source.GetOrAddComponent<DefaultSpawnedEnemyControl>();
+                defaultControl.Setup(null);
+            }
+
+            Dev.Log("returning result");
+            return result;
         }
 
         /// <summary>
         /// Spawn an object from the database. All objects may be checked via the Objects property in the database.
         /// </summary>
-        /// <param name="p">The database object to spawn</param>
-        /// <param name="source">Optional: source data that may be used to configure the object</param>
-        /// <param name="defaultType">Optional: the fallback spawner to use if the object doesn't have one defined</param>
+        /// <param name="source">A valid Metadata object that references the thing to replace</param>
+        /// <param name="p">The database reference to the object that will replace the source</param>
+        /// <param name="defaultType">The fallback spawner to use if the object doesn't have one known to the database</param>
         /// <returns>The object that was spawned. Returns null on failure.</returns>
-        public GameObject Spawn(PrefabObject p, ObjectMetadata source, Type defaultType = null)
+        public ObjectMetadata Replace(ObjectMetadata source, PrefabObject p, Type defaultType = null)
         {  
             if (defaultType == null)
                 defaultType = typeof(DefaultSpawner);
 
             bool isDefault = GetSpawner(p, defaultType, out var spawner);
-            Dev.Log("Spawner is " + spawner);
+            //Dev.Log("Spawner is " + spawner);
             if (spawner == null)
                 return null;
 
-            Dev.Log("finally trying to spawn "+p.prefabName);
-            var result = spawner.Spawn(p, source);
+            //Dev.Log("finally trying to spawn "+p.prefabName);
+            var result = spawner.Spawn(p, source, this);
+            Dev.Log("replace done");
 
-            if(result != null && isDefault)
+            if (result != null && isDefault)
             {
-                var defaultControl = result.AddComponent<DefaultSpawnedEnemyControl>();
+                var defaultControl = result.Source.GetOrAddComponent<DefaultSpawnedEnemyControl>();
                 defaultControl.Setup(source);
             }
 
@@ -375,6 +401,14 @@ namespace EnemyRandomizerMod
             return (db.Objects.ContainsKey(key));
         }
 
+        public static bool IsDatabaseKey(string databaseKey, EnemyRandomizerDatabase db)
+        {
+            if (string.IsNullOrEmpty(databaseKey))
+                return false;
+
+            return (db.Objects.ContainsKey(databaseKey));
+        }
+
         public static string ToDatabaseKey(string databaseKey)
         {
             //check the string vs a known list of acceptable values first
@@ -409,23 +443,23 @@ namespace EnemyRandomizerMod
             return databaseKey;
         }
 
-        public static GameObject CustomSpawn(Vector3 pos, string objectName, bool setActive = true)
+        public static ObjectMetadata CustomSpawn(Vector3 pos, string objectName, bool setActive = true)
         {
             try
             {
-                var enemy = EnemyRandomizerDatabase.GetDatabase().Spawn(objectName, null);
+                var enemy = EnemyRandomizerDatabase.GetDatabase().Spawn(objectName);
+                Dev.Log("custom spawn done");
                 if (enemy != null)
                 {
-                    enemy.transform.position = pos;
-                    //var defaultEnemyControl = enemy.GetComponent<DefaultSpawnedEnemyControl>();
+                    enemy.ObjectPosition = pos;
                     if (setActive)
-                        enemy.SetActive(true);
+                        enemy.ActivateSource();
                     return enemy;
                 }
             }
             catch (Exception e)
             {
-                Dev.LogError("Custom Spawn Error: " + e.Message);
+                Dev.LogError("Custom Spawn Error: " + e.Message + e.StackTrace);
             }
 
             return null;
@@ -453,9 +487,10 @@ namespace EnemyRandomizerMod
                 return null;
             }
 
-            ObjectMetadata metaObject = new ObjectMetadata();
-            metaObject.Setup(gameObject, database);
-            return metaObject;
+            if (!EnemyRandomizerDatabase.IsDatabaseObject(gameObject))
+                return null;
+
+            return new ObjectMetadata(gameObject, database);
         }
 
         public static List<PrefabObject> GetObjectTypeCollection(this ObjectMetadata metaObject, EnemyRandomizerDatabase database = null)

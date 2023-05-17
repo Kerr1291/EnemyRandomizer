@@ -427,27 +427,27 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public static GameObject GetCorpseFromDeathEffects(this EnemyDeathEffects e)
-        {
-            var rootType = e.GetType();
+        //public static GameObject GetCorpseFromDeathEffects(this EnemyDeathEffects e)
+        //{
+        //    var rootType = e.GetType();
 
-            System.Reflection.FieldInfo GetCorpseField(Type t)
-            {
-                return t.GetField("corpse", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            }
+        //    System.Reflection.FieldInfo GetCorpseField(Type t)
+        //    {
+        //        return t.GetField("corpse", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        //    }
 
-            while (rootType != typeof(EnemyDeathEffects) && rootType != null)
-            {
-                if (GetCorpseField(rootType) != null)
-                    break;
-                rootType = rootType.BaseType;
-            }
+        //    while (rootType != typeof(EnemyDeathEffects) && rootType != null)
+        //    {
+        //        if (GetCorpseField(rootType) != null)
+        //            break;
+        //        rootType = rootType.BaseType;
+        //    }
 
-            if (rootType == null)
-                return null;
+        //    if (rootType == null)
+        //        return null;
 
-            return (GameObject)GetCorpseField(rootType).GetValue(e);
-        }
+        //    return (GameObject)GetCorpseField(rootType).GetValue(e);
+        //}
 
 
         public static string GetPlayerDataNameFromDeathEffects(this EnemyDeathEffects e)

@@ -111,7 +111,7 @@ namespace EnemyRandomizerMod
 
     public class MantisTraitorLordSpawner : DefaultSpawner<MantisTraitorLordControl> { }
 
-    public class MantisTraitorLordPrefabConfig : DefaultPrefabConfig<MantisTraitorLordControl> { }
+    public class MantisTraitorLordPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -209,7 +209,7 @@ namespace EnemyRandomizerMod
 
     public class MimicSpiderSpawner : DefaultSpawner<MimicSpiderControl> { }
 
-    public class MimicSpiderPrefabConfig : DefaultPrefabConfig<MimicSpiderControl> { }
+    public class MimicSpiderPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -315,7 +315,7 @@ namespace EnemyRandomizerMod
     public class LostKinSpawner : DefaultSpawner<LostKinControl> { }
 
 
-    public class LostKinPrefabConfig : DefaultPrefabConfig<LostKinControl> { }
+    public class LostKinPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -456,7 +456,7 @@ namespace EnemyRandomizerMod
 
     public class MageLordPhase2Spawner : DefaultSpawner<MageLordPhase2Control> { }
 
-    public class MageLordPhase2PrefabConfig : DefaultPrefabConfig<MageLordPhase2Control> { }
+    public class MageLordPhase2PrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -649,7 +649,7 @@ namespace EnemyRandomizerMod
 
     public class MageLordSpawner : DefaultSpawner<MageLordControl> { }
 
-    public class MageLordPrefabConfig : DefaultPrefabConfig<MageLordControl> { }
+    public class MageLordPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -730,7 +730,7 @@ namespace EnemyRandomizerMod
 
             burrowEffectParticles = burrowEffectClone.FindGameObjectInChildrenWithName("Particles");
 
-            defaultHP = thisMetadata.DefaultHP;
+            defaultHP = thisMetadata.OriginalPrefabHP;
             rageTriggerRatio = defaultHP / defaultRageHP;
 
             this.InsertHiddenState(control, "Init 2", "FINISHED", "Wake");
@@ -862,7 +862,7 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    if (thisMetadata.EnemyHealthManager.hp / thisMetadata.DefaultHP < rageTriggerRatio)
+                    if (CurrentHPf / MaxHPf < rageTriggerRatio)
                     {
                         control.FsmVariables.GetFsmBool("Raged").Value = true;
                         control.SendEvent("RAGE");
@@ -1091,19 +1091,20 @@ namespace EnemyRandomizerMod
 
     public class WhiteDefenderSpawner : DefaultSpawner<WhiteDefenderControl>
     {
-        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
+        public override ObjectMetadata Spawn(PrefabObject p, ObjectMetadata source, EnemyRandomizerDatabase database)
         {
-            var wd = base.Spawn(p, source);
-            GameObject corpse = SpawnerExtensions.GetCorpseObject(wd);
+            var wd = base.Spawn(p, source, database);
+            Dev.Log("wd spawn done");
+            GameObject corpse = wd.Corpse;
             if (corpse != null)
             {
-                SpawnerExtensions.AddCorpseRemoverWithEffect(corpse);
+                corpse.AddCorpseRemoverWithEffect();
             }
             return wd;
         }
     }
 
-    public class WhiteDefenderPrefabConfig : DefaultPrefabConfig<WhiteDefenderControl> { }
+    public class WhiteDefenderPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1138,92 +1139,102 @@ namespace EnemyRandomizerMod
 
         public override void Setup(ObjectMetadata other)
         {
+            Dev.Log($"Begin Setup for {gameObject} with {other}");
             base.Setup(other);
+            Dev.Log($"Enter Hive Knight Setup for {gameObject} with {other}");
 
+            SetupCorpse();
+            SetupPhase1HP();
+            SetupRoar();
+            SetupL();
+            SetupR();
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
+        }
+
+        private void SetupPhase1HP()
+        {
+            if (p1HP <= 0)
+                p1HP = CurrentHP;
+        }
+
+        private void SetupCorpse()
+        {
             if (thisMetadata.Corpse != null)
             {
                 var corpseRemover = thisMetadata.Corpse.AddComponent<CorpseRemover>();
                 if (corpseRemover != null)
                     corpseRemover.replacementEffect = "Death Explode Boss";
             }
+        }
 
-            if (p1HP <= 0)
-                p1HP = thisMetadata.CurrentHP;
-
-            var roar = control.GetState("Roar");
-            roar.AddCustomAction(() => {
-                var bee = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position + Vector3.up, "Bee Dropper", null, true);
-                var beeBody = bee.GetComponent<Rigidbody2D>();
-                if(beeBody != null)
-                {
-                    beeBody.velocity = UnityEngine.Random.insideUnitCircle * 5f;
-                    if (beeBody.velocity.y < 0) { beeBody.velocity = new Vector2(beeBody.velocity.x, -beeBody.velocity.y); }
-                }
-            });
-            roar.AddAction(new Wait() { time = 0.25f });
-            roar.AddCustomAction(() => {
-                var bee = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position + Vector3.up, "Bee Dropper", null, true);
-                var beeBody = bee.GetComponent<Rigidbody2D>();
-                if (beeBody != null)
-                {
-                    beeBody.velocity = UnityEngine.Random.insideUnitCircle * 5f;
-                    if (beeBody.velocity.y < 0) { beeBody.velocity = new Vector2(beeBody.velocity.x, -beeBody.velocity.y); }
-                }
-            });
-            roar.AddAction(new Wait() { time = 0.25f });
-            roar.AddCustomAction(() => {
-                var bee = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position + Vector3.up, "Bee Dropper", null, true);
-                var beeBody = bee.GetComponent<Rigidbody2D>();
-                if (beeBody != null)
-                {
-                    beeBody.velocity = UnityEngine.Random.insideUnitCircle * 5f;
-                    if (beeBody.velocity.y < 0) { beeBody.velocity = new Vector2(beeBody.velocity.x, -beeBody.velocity.y); }
-                }
-            });
-            roar.AddAction(new Wait() { time = 0.25f });
-            roar.AddCustomAction(() => {
-                var bee = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position + Vector3.up, "Bee Dropper", null, true);
-                var beeBody = bee.GetComponent<Rigidbody2D>();
-                if (beeBody != null)
-                {
-                    beeBody.velocity = UnityEngine.Random.insideUnitCircle * 5f;
-                    if (beeBody.velocity.y < 0) { beeBody.velocity = new Vector2(beeBody.velocity.x, -beeBody.velocity.y); }
-                }
-            });
-            roar.AddCustomAction(() => { control.SendEvent("FINISHED"); });
-
-
-            var aimL = control.GetState("Aim L");
-            aimL.DisableAction(3);
-            aimL.AddCustomAction(() => {
-                if (SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.right, 10f).distance < 8f)
-                    control.SendEvent("R");
-                else
-                    control.SendEvent("FINISHED");
-            });
-
+        private void SetupR()
+        {
             var aimR = control.GetState("Aim R");
             aimR.DisableAction(3);
-            aimR.AddCustomAction(() => {
+            aimR.AddCustomAction(() =>
+            {
                 if (SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.left, 10f).distance < 8f)
                     control.SendEvent("L");
                 else
                     control.SendEvent("FINISHED");
             });
-
-            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
         }
+
+        private void SetupL()
+        {
+            var aimL = control.GetState("Aim L");
+            aimL.DisableAction(3);
+            aimL.AddCustomAction(() =>
+            {
+                if (SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.right, 10f).distance < 8f)
+                    control.SendEvent("R");
+                else
+                    control.SendEvent("FINISHED");
+            });
+        }
+
+        protected virtual void SetupRoar()
+        {
+            Dev.Log($"control = {control}");
+            Dev.Log($"fsm = {control.FsmStates}");
+            Dev.Log($"len = {control.FsmStates.Length}");
+            Dev.Log($"ror = {control.GetState("Roar")}");
+
+            control.FsmStates.ToList().ForEach(x => Dev.Log($"HIVE KNIGHT STATE {x.Name}"));
+            FsmState roar = control.GetState("Roar");
+            AddedBeeToRoar(roar);
+            AddedBeeToRoar(roar);
+            AddedBeeToRoar(roar);
+            AddedBeeToRoar(roar);
+            roar.AddCustomAction(() => { control.SendEvent("FINISHED"); });
+        }
+
+        protected virtual void AddedBeeToRoar(FsmState roar)
+        {
+            roar.AddAction(new Wait() { time = 0.25f });
+            roar.AddCustomAction(() => {
+                var bee = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position + Vector3.up, "Bee Dropper", null, true);
+                var beeBody = bee.GetComponent<Rigidbody2D>();
+                if (beeBody != null)
+                {
+                    beeBody.velocity = UnityEngine.Random.insideUnitCircle * 5f;
+                    if (beeBody.velocity.y < 0) { beeBody.velocity = new Vector2(beeBody.velocity.x, -beeBody.velocity.y); }
+                }
+            });
+        }
+
 
         protected override void ScaleHP()
         {
             base.ScaleHP();
-            p1HP = thisMetadata.CurrentHP;
+            p1HP = CurrentHP;
         }
     }
 
     public class HiveKnightSpawner : DefaultSpawner<HiveKnightControl> { }
 
-    public class HiveKnightPrefabConfig : DefaultPrefabConfig<HiveKnightControl> { }
+    public class HiveKnightPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1250,8 +1261,8 @@ namespace EnemyRandomizerMod
                 cr.replacementEffect = "Death Explode Boss";
             }
 
-            if (thisMetadata.CurrentHP <= 0)
-                thisMetadata.CurrentHP = 800;
+            if (CurrentHP <= 0)
+                CurrentHP = 800;
 
             var cx = gameObject.LocateMyFSM("constrain_x");
             if (cx != null)
@@ -1301,7 +1312,7 @@ namespace EnemyRandomizerMod
 
     public class GrimmBossSpawner : DefaultSpawner<GrimmBossControl> { }
 
-    public class GrimmBossPrefabConfig : DefaultPrefabConfig<GrimmBossControl> { }
+    public class GrimmBossPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1328,8 +1339,8 @@ namespace EnemyRandomizerMod
                 cr.replacementEffect = "Death Explode Boss";
             }
 
-            if (thisMetadata.CurrentHP <= 0)
-                thisMetadata.CurrentHP = 800;
+            if (CurrentHP <= 0)
+                CurrentHP = 800;
 
             var cx = gameObject.LocateMyFSM("constrain_x");
             if (cx != null)
@@ -1382,7 +1393,7 @@ namespace EnemyRandomizerMod
 
     public class NightmareGrimmBossSpawner : DefaultSpawner<NightmareGrimmBossControl> { }
 
-    public class NightmareGrimmBossPrefabConfig : DefaultPrefabConfig<NightmareGrimmBossControl> { }
+    public class NightmareGrimmBossPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1427,7 +1438,7 @@ namespace EnemyRandomizerMod
 
     public class HollowKnightBossSpawner : DefaultSpawner<HollowKnightBossControl> { }
 
-    public class HollowKnightBossPrefabConfig : DefaultPrefabConfig<HollowKnightBossControl> { }
+    public class HollowKnightBossPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1473,11 +1484,11 @@ namespace EnemyRandomizerMod
 
             var phaseq = control.GetState("Phase ?");
             OverrideState(control, "Phase ?", () => {
-                if (thisMetadata.CurrentHP > thisMetadata.DefaultHP / 2)
+                if (CurrentHPf > MaxHPf / 2)
                     control.SendEvent("PHASE1");
-                else if (thisMetadata.CurrentHP > thisMetadata.DefaultHP / 4)
+                else if (CurrentHP > MaxHPf / 4)
                     control.SendEvent("PHASE2");
-                else //if (thisMetadata.CurrentHP > thisMetadata.DefaultHP / 2)
+                else //if (CurrentHP > thisMetadata.DefaultHP / 2)
                     control.SendEvent("PHASE3");
             });
 
@@ -1538,7 +1549,7 @@ namespace EnemyRandomizerMod
 
     public class HKPrimeSpawner : DefaultSpawner<HKPrimeControl> { }
 
-    public class HKPrimePrefabConfig : DefaultPrefabConfig<HKPrimeControl> { }
+    public class HKPrimePrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1575,7 +1586,7 @@ namespace EnemyRandomizerMod
 
     public class PaleLurkerSpawner : DefaultSpawner<PaleLurkerControl> { }
 
-    public class PaleLurkerPrefabConfig : DefaultPrefabConfig<PaleLurkerControl> { }
+    public class PaleLurkerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1617,7 +1628,7 @@ namespace EnemyRandomizerMod
 
     public class OroSpawner : DefaultSpawner<OroControl> { }
 
-    public class OroPrefabConfig : DefaultPrefabConfig<OroControl> { }
+    public class OroPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1660,7 +1671,7 @@ namespace EnemyRandomizerMod
 
     public class MatoSpawner : DefaultSpawner<MatoControl> { }
 
-    public class MatoPrefabConfig : DefaultPrefabConfig<MatoControl> { }
+    public class MatoPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1701,7 +1712,7 @@ namespace EnemyRandomizerMod
 
     public class SheoBossSpawner : DefaultSpawner<SheoBossControl> { }
 
-    public class SheoBossPrefabConfig : DefaultPrefabConfig<SheoBossControl> { }
+    public class SheoBossPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1743,7 +1754,7 @@ namespace EnemyRandomizerMod
 
     public class SlyBossSpawner : DefaultSpawner<SlyBossControl> { }
 
-    public class SlyBossPrefabConfig : DefaultPrefabConfig<SlyBossControl> { }
+    public class SlyBossPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1792,7 +1803,7 @@ namespace EnemyRandomizerMod
 
     public class HornetNoskSpawner : DefaultSpawner<HornetNoskControl> { }
 
-    public class HornetNoskPrefabConfig : DefaultPrefabConfig<HornetNoskControl> { }
+    public class HornetNoskPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -1833,7 +1844,7 @@ namespace EnemyRandomizerMod
                 cr.replacementEffect = "Death Explode Boss";
             }
 
-            defaultHP = thisMetadata.DefaultHP;
+            defaultHP = thisMetadata.OriginalPrefabHP;
             rageTriggerRatio = defaultHP / defaultRageHP;
 
             burrowEffect = gameObject.GetDirectChildren().FirstOrDefault(x => x.name.Contains("Burrow Effect")).LocateMyFSM("Burrow Effect");
@@ -1869,7 +1880,7 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    if (thisMetadata.EnemyHealthManager.hp / thisMetadata.DefaultHP < rageTriggerRatio)
+                    if (CurrentHPf / MaxHPf < rageTriggerRatio)
                     {
                         control.FsmVariables.GetFsmBool("Raged").Value = true;
                         control.SendEvent("RAGE");
@@ -1935,7 +1946,7 @@ namespace EnemyRandomizerMod
             DisableActions(throw1, 1);
             throw1.AddCustomAction(() => {
                 pooThrowOffset = 1.5f * Vector2.right * (transform.localScale.x < 0 ? -1f : 1f);
-                var dungBall = EnemyRandomizerDatabase.GetDatabase().Spawn("Dung Ball Large", null);
+                var dungBall = SpawnEntityAt("Dung Ball Large", pooThrowOffset, false);
                 control.FsmVariables.GetFsmGameObject("Dung Ball").Value = dungBall;
                 dungBall.SafeSetActive(true);
             });
@@ -2099,7 +2110,7 @@ namespace EnemyRandomizerMod
 
     public class DungDefenderSpawner : DefaultSpawner<DungDefenderControl> { }
 
-    public class DungDefenderPrefabConfig : DefaultPrefabConfig<DungDefenderControl> { }
+    public class DungDefenderPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -2193,7 +2204,7 @@ namespace EnemyRandomizerMod
 
     public class GhostWarriorGalienSpawner : DefaultSpawner<GhostWarriorGalienControl> { }
 
-    public class GhostWarriorGalienPrefabConfig : DefaultPrefabConfig<GhostWarriorGalienControl> { }
+    public class GhostWarriorGalienPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -2233,11 +2244,10 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-
-            sword1 = thisMetadata.DB.Spawn("Sword 1", null);
-            sword2 = thisMetadata.DB.Spawn("Sword 2", null);
-            sword3 = thisMetadata.DB.Spawn("Sword 3", null);
-            sword4 = thisMetadata.DB.Spawn("Sword 4", null);
+            sword1 = SpawnEntity("Sword 1", false);
+            sword2 = SpawnEntity("Sword 2", false);
+            sword3 = SpawnEntity("Sword 3", false);
+            sword4 = SpawnEntity("Sword 4", false);
 
             {
                 var fsm = gameObject.LocateMyFSM("FSM");
@@ -2291,7 +2301,7 @@ namespace EnemyRandomizerMod
 
     public class GhostWarriorXeroSpawner : DefaultSpawner<GhostWarriorXeroControl> { }
 
-    public class GhostWarriorXeroPrefabConfig : DefaultPrefabConfig<GhostWarriorXeroControl> { }
+    public class GhostWarriorXeroPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -2355,7 +2365,7 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            ringHolder = thisMetadata.DB.Spawn("Ring Holder", null);            
+            ringHolder = SpawnEntity("Ring Holder", false);            
             ConfigureRingPositions();
 
 
@@ -2406,7 +2416,7 @@ namespace EnemyRandomizerMod
 
     public class GhostWarriorHuSpawner : DefaultSpawner<GhostWarriorHuControl> { }
 
-    public class GhostWarriorHuPrefabConfig : DefaultPrefabConfig<GhostWarriorHuControl> { }
+    public class GhostWarriorHuPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -2483,7 +2493,7 @@ namespace EnemyRandomizerMod
 
     public class GhostWarriorSlugSpawner : DefaultSpawner<GhostWarriorSlugControl> { }
 
-    public class GhostWarriorSlugPrefabConfig : DefaultPrefabConfig<GhostWarriorSlugControl> { }
+    public class GhostWarriorSlugPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -2551,7 +2561,7 @@ namespace EnemyRandomizerMod
 
     public class GhostWarriorNoEyesSpawner : DefaultSpawner<GhostWarriorNoEyesControl> { }
 
-    public class GhostWarriorNoEyesPrefabConfig : DefaultPrefabConfig<GhostWarriorNoEyesControl> { }
+    public class GhostWarriorNoEyesPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -2647,7 +2657,7 @@ namespace EnemyRandomizerMod
 
     public class GhostWarriorMarkothSpawner : DefaultSpawner<GhostWarriorMarkothControl> { }
 
-    public class GhostWarriorMarkothPrefabConfig : DefaultPrefabConfig<GhostWarriorMarkothControl> { }
+    public class GhostWarriorMarkothPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -2692,7 +2702,7 @@ namespace EnemyRandomizerMod
 
     public class JellyfishGGSpawner : DefaultSpawner<JellyfishGGControl> { }
 
-    public class JellyfishGGPrefabConfig : DefaultPrefabConfig<JellyfishGGControl> { }
+    public class JellyfishGGPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -2710,7 +2720,7 @@ namespace EnemyRandomizerMod
 
     public class MegaJellyfishSpawner : DefaultSpawner<MegaJellyfishControl> { }
 
-    public class MegaJellyfishPrefabConfig : DefaultPrefabConfig<MegaJellyfishControl> { }
+    public class MegaJellyfishPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
     ///
@@ -2733,7 +2743,7 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            var db = EnemyRandomizerDatabase.GetDatabase();
+            var db = thisMetadata.DB;
 
             var spawn2 = control.GetState("Spawn 2");
 
@@ -2788,12 +2798,12 @@ namespace EnemyRandomizerMod
             customSpawn.AddCustomAction(() =>
             {
 
-                var fly = db.Spawn("Fluke Fly", null);
+                var fly = db.Spawn("Fluke Fly");
 
                 var spawn = GetRandomPositionInLOSofSelf(0f, 2f, 0f, 0f);
-                fly.transform.position = spawn;
+                fly.ObjectPosition = spawn;
 
-                ActivateAndTrackSpawnedObject(fly);
+                ActivateAndTrackSpawnedObject(fly.Source);
 
                 control.SendEvent("FINISHED");
             });
@@ -2812,7 +2822,7 @@ namespace EnemyRandomizerMod
 
     public class FlukeMotherSpawner : DefaultSpawner<FlukeMotherControl> { }
 
-    public class FlukeMotherPrefabConfig : DefaultPrefabConfig<FlukeMotherControl> { }
+    public class FlukeMotherPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -2939,7 +2949,7 @@ namespace EnemyRandomizerMod
                     return;
                 }
 
-                float hpPercent = (float)thisMetadata.EnemyHealthManager.hp / (float)thisMetadata.DefaultHP;
+                float hpPercent = CurrentHPf / MaxHPf;
                 if(hpPercent <= escalationHPPercentage)
                 {
                     control.FsmVariables.GetFsmFloat("Run Wait Min").Value = esRunWaitMin;
@@ -3142,7 +3152,7 @@ namespace EnemyRandomizerMod
 
     public class HornetBoss1Spawner : DefaultSpawner<HornetBoss1Control> { }
 
-    public class HornetBoss1PrefabConfig : DefaultPrefabConfig<HornetBoss1Control> { }
+    public class HornetBoss1PrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -3227,7 +3237,7 @@ namespace EnemyRandomizerMod
                 }
 
                 //if hornet gets scaled to a normal enemy with low hp, just enable the escalation right away
-                float hpPercent = (float)thisMetadata.EnemyHealthManager.hp / (float)thisMetadata.DefaultHP;
+                float hpPercent = CurrentHPf / MaxHPf;
                 if (hpPercent <= escalationHPPercentage || thisMetadata.EnemyHealthManager.hp < 100)
                 {
                     control.FsmVariables.GetFsmBool("Can Barb").Value = true;
@@ -3390,10 +3400,10 @@ namespace EnemyRandomizerMod
 
                 var spawnPoint = spawnRay.point;
 
-                var newBarb = EnemyRandomizerDatabase.GetDatabase().Spawn("Hornet Barb", null);
+                var newBarb = SpawnEntity("Hornet Barb");
 
                 ObjectMetadata barbMeta = new ObjectMetadata();
-                barbMeta.Setup(newBarb, EnemyRandomizerDatabase.GetDatabase());
+                barbMeta.Setup(newBarb, thisMetadata.DB);
                 barbMeta.ApplySizeScale(thisMetadata.SizeScale);
                 newBarb.transform.position = spawnPoint;
                 ActivateAndTrackSpawnedObject(newBarb);
@@ -3476,27 +3486,29 @@ namespace EnemyRandomizerMod
         protected virtual void OnDestroy()
         {
             //base.OnDestroy();
-            if (dieChildrenOnDeath)
+            if (dieChildrenOnDeath && children != null)
             {
                 children.ForEach(x =>
                 {
                     if (x == null)
                         return;
 
-                    var boom = EnemyRandomizerDatabase.CustomSpawnWithLogic(x.transform.position, "Gas Explosion Recycle M", null, false);
+                    var boom = EnemyRandomizerDatabase.CustomSpawnWithLogic(x.transform.position, "Gas Explosion Recycle L", null, false);
                     ObjectMetadata boomMeta = new ObjectMetadata();
                     boomMeta.Setup(boom, EnemyRandomizerDatabase.GetDatabase());
                     boomMeta.ApplySizeScale(0.5f);
                     boom.SetActive(true);
                     Destroy(x);
                 });
+
+                children.Clear();
             }
         }
     }
 
     public class HornetBoss2Spawner : DefaultSpawner<HornetBoss2Control> { }
 
-    public class HornetBoss2PrefabConfig : DefaultPrefabConfig<HornetBoss2Control> { }
+    public class HornetBoss2PrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -3563,7 +3575,7 @@ namespace EnemyRandomizerMod
 
     public class MegaZombieBeamMinerSpawner : DefaultSpawner<MegaZombieBeamMinerControl> { }
 
-    public class MegaZombieBeamMinerPrefabConfig : DefaultPrefabConfig<MegaZombieBeamMinerControl> { }
+    public class MegaZombieBeamMinerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -3625,7 +3637,7 @@ namespace EnemyRandomizerMod
 
     public class ZombieBeamMinerRematchSpawner : DefaultSpawner<ZombieBeamMinerRematchControl> { }
 
-    public class ZombieBeamMinerRematchPrefabConfig : DefaultPrefabConfig<ZombieBeamMinerRematchControl> { }
+    public class ZombieBeamMinerRematchPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -3639,7 +3651,7 @@ namespace EnemyRandomizerMod
 
     public class DreamMageLordSpawner : DefaultSpawner<DreamMageLordControl> { }
 
-    public class DreamMageLordPrefabConfig : DefaultPrefabConfig<DreamMageLordControl> { }
+    public class DreamMageLordPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -3653,7 +3665,7 @@ namespace EnemyRandomizerMod
 
     public class DreamMageLordPhase2Spawner : DefaultSpawner<DreamMageLordPhase2Control> { }
 
-    public class DreamMageLordPhase2PrefabConfig : DefaultPrefabConfig<DreamMageLordPhase2Control> { }
+    public class DreamMageLordPhase2PrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
     ///
@@ -3734,9 +3746,9 @@ namespace EnemyRandomizerMod
             wallLeft = SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.left, 50f);
             wallRight = SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.right, 50f);
 
-            if (floorsize < (thisMetadata.ObjectSize.x * this.thisMetadata.SizeScale))
+            if (floorsize < (thisMetadata.OriginalObjectSize.x * this.thisMetadata.SizeScale))
             {
-                float ratio = (floorsize) / (thisMetadata.ObjectSize.x * this.thisMetadata.SizeScale);
+                float ratio = (floorsize) / (thisMetadata.OriginalObjectSize.x * this.thisMetadata.SizeScale);
                 thisMetadata.ApplySizeScale(ratio * .5f);
             }
 
@@ -3813,7 +3825,7 @@ namespace EnemyRandomizerMod
                 leapStart.InsertCustomAction(() =>
                 {
                     //impossible leap
-                    float leapSize = (thisMetadata.ObjectSize.x * this.thisMetadata.SizeScale * 3);
+                    float leapSize = (thisMetadata.OriginalObjectSize.x * this.thisMetadata.SizeScale * 3);
                     if ((wallLeft.point.x + leapSize > pos2d.x) || (wallRight.point.x - leapSize < pos2d.x))
                     {
                         control.SendEvent("RECHOOSE");
@@ -3856,7 +3868,7 @@ namespace EnemyRandomizerMod
 
     public class MegaMossChargerSpawner : DefaultSpawner<MegaMossChargerControl> { }
 
-    public class MegaMossChargerPrefabConfig : DefaultPrefabConfig<MegaMossChargerControl> { }
+    public class MegaMossChargerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -3898,7 +3910,7 @@ namespace EnemyRandomizerMod
 
     public class MawlekBodySpawner : DefaultSpawner<MawlekBodyControl> { }
 
-    public class MawlekBodyPrefabConfig : DefaultPrefabConfig<MawlekBodyControl> { }
+    public class MawlekBodyPrefabConfig : DefaultPrefabConfig { }
 
 
 
@@ -3961,7 +3973,7 @@ namespace EnemyRandomizerMod
     {
     }
 
-    public class GhostWarriorMarmuPrefabConfig : DefaultPrefabConfig<GhostWarriorMarmuControl>
+    public class GhostWarriorMarmuPrefabConfig : DefaultPrefabConfig
     {
     }
     /////
@@ -4160,7 +4172,7 @@ namespace EnemyRandomizerMod
                         var thingToSpawn = thisMetadata.DB.Spawn(selectedSpawn.Item1, null);
                         jar.SetEnemySpawn(selectedSpawn.Item1.prefab, selectedSpawn.Item2);
 
-                        var spawner = jar.gameObject.GetOrAddComponent<SpawnOnDestroyOrDisable>();
+                        var spawner = jar.gameObject.GetOrAddComponent<SpawnOnDestroy>();
                         spawner.spawnEntity = selectedSpawn.Item1.prefab.name;
                         spawner.setHealthOnSpawn = selectedSpawn.Item2;
 
@@ -4212,7 +4224,7 @@ namespace EnemyRandomizerMod
 
     public class JarCollectorSpawner : DefaultSpawner<JarCollectorControl> { }
 
-    public class JarCollectorPrefabConfig : DefaultPrefabConfig<JarCollectorControl> { }
+    public class JarCollectorPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -4328,7 +4340,7 @@ namespace EnemyRandomizerMod
     public class InfectedKnightSpawner : DefaultSpawner<InfectedKnightControl> { }
 
 
-    public class InfectedKnightPrefabConfig : DefaultPrefabConfig<InfectedKnightControl> { }
+    public class InfectedKnightPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -4377,7 +4389,7 @@ namespace EnemyRandomizerMod
 
     public class GreyPrinceSpawner : DefaultSpawner<GreyPrinceControl> { }
 
-    public class GreyPrincePrefabConfig : DefaultPrefabConfig<GreyPrinceControl> { }
+    public class GreyPrincePrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -4460,36 +4472,33 @@ namespace EnemyRandomizerMod
 
             try
             {
-                Dev.Log("has database ref: " + EnemyRandomizerDatabase.GetDatabase.GetInvocationList().Length);
+                if(EnemyRandomizerDatabase.GetDatabase != null)
+                    Dev.Log("has database ref: " + EnemyRandomizerDatabase.GetDatabase.GetInvocationList().Length);
                 if (EnemyRandomizerDatabase.GetDatabase != null)
                 {
                     for (int i = 0; i < babiesToSpawn; ++i)
                     {
-                        GameObject result = null;
+                        ObjectMetadata result = null;
                         if (EnemyRandomizerDatabase.GetDatabase().Enemies.TryGetValue("Fly", out var src))
                         {
                             Dev.Log("trying to spawn via prefab " + src.prefabName);
-                            result = EnemyRandomizerDatabase.GetDatabase().Spawn(src, null);
+                            result = EnemyRandomizerDatabase.GetDatabase().Spawn(src);
 
                             if (areBattleBabies)
                             {
-                                var bmo = result.GetOrAddComponent<BattleManagedObject>();
-                                ObjectMetadata metaInfo = new ObjectMetadata();
-                                metaInfo.Setup(result, EnemyRandomizerDatabase.GetDatabase());
-                                bmo.Setup(metaInfo);
+                                var bmo = result.Source.GetOrAddComponent<BattleManagedObject>();
+                                bmo.Setup(result, null);
                             }
                         }
                         else
                         {
                             Dev.Log("trying to spawn via string");
-                            result = EnemyRandomizerDatabase.GetDatabase().Spawn("Fly", null);
+                            result = EnemyRandomizerDatabase.GetDatabase().Spawn("Fly");
 
                             if (areBattleBabies)
                             {
-                                var bmo = result.GetOrAddComponent<BattleManagedObject>();
-                                ObjectMetadata metaInfo = new ObjectMetadata();
-                                metaInfo.Setup(result, EnemyRandomizerDatabase.GetDatabase());
-                                bmo.Setup(metaInfo);
+                                var bmo = result.Source.GetOrAddComponent<BattleManagedObject>();
+                                bmo.Setup(result, null);
                             }
                         }
 
@@ -4497,8 +4506,8 @@ namespace EnemyRandomizerMod
                         Dev.Log("self.Owner = " + owner);
                         if (result != null && owner != null)
                         {
-                            result.transform.position = owner.transform.position;
-                            result.SetActive(true);
+                            result.ObjectPosition = owner.transform.position;
+                            result.ActivateSource();
                         }
                     }
                 }
@@ -4522,7 +4531,7 @@ namespace EnemyRandomizerMod
 
     public class GiantFlySpawner : DefaultSpawner<GiantFlyControl> { }
 
-    public class GiantFlyPrefabConfig : DefaultPrefabConfig<GiantFlyControl> { }
+    public class GiantFlyPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -4591,7 +4600,7 @@ namespace EnemyRandomizerMod
 
     public class GiantBuzzerSpawner : DefaultSpawner<GiantBuzzerControl>
     {
-        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
+        public override ObjectMetadata Spawn(PrefabObject p, ObjectMetadata source, EnemyRandomizerDatabase database)
         {
             int buzzersInScene = GameObject.FindObjectsOfType<GiantBuzzerControl>().Length;
 
@@ -4600,17 +4609,16 @@ namespace EnemyRandomizerMod
                 GameManager.instance.GetPlayerDataInt("zoteDeathPos") == 0 ||
                 buzzersInScene > 0)
             {
-                var db = EnemyRandomizerDatabase.GetDatabase();
-                return base.Spawn(db.Enemies["Giant Buzzer Col"], source);
+                return base.Spawn(database.Enemies["Giant Buzzer Col"], source, database);
             }
             else
             {
-                return base.Spawn(p, source);
+                return base.Spawn(p, source, database);
             }
         }
     }
 
-    public class GiantBuzzerPrefabConfig : DefaultPrefabConfig<GiantBuzzerControl> { }
+    public class GiantBuzzerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
     ///
@@ -4687,15 +4695,9 @@ namespace EnemyRandomizerMod
         }
     }
 
-    public class GiantBuzzerColSpawner : DefaultSpawner<GiantBuzzerColControl>
-    {
-        public override GameObject Spawn(PrefabObject p, ObjectMetadata source)
-        {
-            return base.Spawn(p, source);
-        }
-    }
+    public class GiantBuzzerColSpawner : DefaultSpawner<GiantBuzzerColControl> { }
 
-    public class GiantBuzzerColPrefabConfig : DefaultPrefabConfig<GiantBuzzerColControl> { }
+    public class GiantBuzzerColPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -4714,7 +4716,7 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            //thisMetadata.CurrentHP = 40;
+            //CurrentHP = 40;
 
             //{
             //    var checkHP = gameObject.LocateMyFSM("Check Health");
@@ -4816,7 +4818,7 @@ namespace EnemyRandomizerMod
 
     public class FalseKnightDreamSpawner : DefaultSpawner<FalseKnightDreamControl> { }
 
-    public class FalseKnightDreamPrefabConfig : DefaultPrefabConfig<FalseKnightDreamControl> { }
+    public class FalseKnightDreamPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -4936,7 +4938,7 @@ namespace EnemyRandomizerMod
 
     public class FalseKnightNewSpawner : DefaultSpawner<FalseKnightNewControl> { }
 
-    public class FalseKnightNewPrefabConfig : DefaultPrefabConfig<FalseKnightNewControl> { }
+    public class FalseKnightNewPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -5136,7 +5138,7 @@ namespace EnemyRandomizerMod
     {
     }
 
-    public class AbsoluteRadiancePrefabConfig : DefaultPrefabConfig<AbsoluteRadianceControl>
+    public class AbsoluteRadiancePrefabConfig : DefaultPrefabConfig
     {
     }
     /////
@@ -5186,7 +5188,7 @@ namespace EnemyRandomizerMod
 
     public class LobsterSpawner : DefaultSpawner<LobsterControl> { }
 
-    public class LobsterPrefabConfig : DefaultPrefabConfig<LobsterControl> { }
+    public class LobsterPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -5233,7 +5235,7 @@ namespace EnemyRandomizerMod
 
     public class LancerSpawner : DefaultSpawner<LancerControl> { }
 
-    public class LancerPrefabConfig : DefaultPrefabConfig<LancerControl> { }
+    public class LancerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
     ///
@@ -5269,7 +5271,7 @@ namespace EnemyRandomizerMod
 
     public class MageKnightSpawner : DefaultSpawner<MageKnightControl> { }
 
-    public class MageKnightPrefabConfig : DefaultPrefabConfig<MageKnightControl> { }
+    public class MageKnightPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
     ///
@@ -5324,7 +5326,7 @@ namespace EnemyRandomizerMod
 
     public class MegaFatBeeSpawner : DefaultSpawner<MegaFatBeeControl> { }
 
-    public class MegaFatBeePrefabConfig : DefaultPrefabConfig<MegaFatBeeControl> { }
+    public class MegaFatBeePrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -5364,7 +5366,7 @@ namespace EnemyRandomizerMod
 
     public class BlackKnightSpawner : DefaultSpawner<BlackKnightControl> { }
 
-    public class BlackKnightPrefabConfig : DefaultPrefabConfig<BlackKnightControl> { }
+    public class BlackKnightPrefabConfig : DefaultPrefabConfig { }
 
     /////
     //////////////////////////////////////////////////////////////////////////////
@@ -5597,7 +5599,7 @@ namespace EnemyRandomizerMod
     {
     }
 
-    public class RadiancePrefabConfig : DefaultPrefabConfig<RadianceControl>
+    public class RadiancePrefabConfig : DefaultPrefabConfig
     {
     }
     /////

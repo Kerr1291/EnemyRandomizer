@@ -16,7 +16,7 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            thisMetadata.Geo = 8;
+            Geo = 8;
 
             var init = control.GetState("Init");
             init.DisableAction(10);
@@ -65,5 +65,5 @@ namespace EnemyRandomizerMod
     }
 
     public class ZoteCrewTallSpawner : DefaultSpawner<ZoteCrewTallControl> { }
-    public class ZoteCrewTallPrefabConfig : DefaultPrefabConfig<ZoteCrewTallControl> { }
+    public class ZoteCrewTallPrefabConfig : DefaultPrefabConfig { }
 }

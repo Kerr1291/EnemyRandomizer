@@ -7,31 +7,23 @@ namespace EnemyRandomizerMod
 {
     public class Geo : IEquatable<Geo>
     {
-        public ReadOnlyReactiveProperty<HealthManager> enemyHealthManager { get; protected set; }
-        public HealthManager EnemyHealthManager => enemyHealthManager == null ? null : enemyHealthManager.Value;
+        public HealthManager EnemyHealthManager { get; protected set; }
 
-        public Geo(ObjectMetadata source)
+        public Geo(GameObject source)
         {
-            enemyHealthManager = source.enemyHealthManager;
-        }
-
-        public void Apply(ObjectMetadata other, float scale = 1f)
-        {
-            Geo otherGeo = new Geo(other);
-            otherGeo.Value = (int)((float)Value * scale);
-        }
-
-        public void Apply(HealthManager other, float scale = 1f)
-        {
-            other.SetGeoSmall(Mathf.FloorToInt(SmallGeo * scale));
-            other.SetGeoMedium(Mathf.FloorToInt(MedGeo * scale));
-            other.SetGeoLarge(Mathf.FloorToInt(LargeGeo * scale));
+            Dev.Log("creating geo manager");
+            if (source != null)
+            {
+                Dev.Log("getting health manager");
+                EnemyHealthManager = source.GetComponent<HealthManager>();
+            }
         }
 
         public int SmallGeo
         {
             get
             {
+                Dev.Where();
                 return EnemyHealthManager == null ? 0 : EnemyHealthManager.GetSmallGeo();
             }
             set
@@ -44,6 +36,7 @@ namespace EnemyRandomizerMod
         {
             get
             {
+                Dev.Where();
                 return EnemyHealthManager == null ? 0 : EnemyHealthManager.GetMedGeo();
             }
             set
@@ -56,6 +49,7 @@ namespace EnemyRandomizerMod
         {
             get
             {
+                Dev.Where();
                 return EnemyHealthManager == null ? 0 : EnemyHealthManager.GetLargeGeo();
             }
             set
@@ -68,10 +62,20 @@ namespace EnemyRandomizerMod
         {
             get
             {
-                return SmallGeo + MedGeo + LargeGeo;
+                try
+                {
+                    Dev.Log("getting geo value ");
+                    return SmallGeo + MedGeo + LargeGeo;
+                }
+                catch(Exception e)
+                {
+                    Dev.Log("Caught error getting geo value");
+                    return 0;
+                }
             }
             set
             {
+                Dev.Where();
                 int lg = 0;
                 int med = 0;
                 int sm = 0;
@@ -92,92 +96,90 @@ namespace EnemyRandomizerMod
                     sm = rem;
                 }
 
+                Dev.Log("setting geo values");
                 LargeGeo = lg;
                 MedGeo = med;
                 SmallGeo = sm;
+                Dev.Log("done setting geo values");
             }
         }
 
         public static Geo operator *(Geo a, float b)
         {
+            Dev.Log("scaling geo values");
             a.Value = (int)((float)a.Value * b);
             return a;
         }
 
         public static Geo operator /(Geo a, float b)
         {
+            Dev.Where();
+            if (Mathnv.FastApproximately(b, 0f, 0.001f))
+                return a;
+
             a.Value = (int)((float)a.Value / b);
             return a;
         }
 
         public static bool operator <(Geo a, Geo b)
         {
-            if (a == null && b != null)
-                return false;
-            if (a != null && b == null)
-                return false;
-            if (a == null && b == null)
-                return false;
-            return a.Value < b.Value;
+            Dev.Where();
+            if (ReferenceEquals(a, null))
+                return true;
+
+            return a.CompareTo(b) < 0;
         }
 
         public static bool operator >(Geo a, Geo b)
         {
-            if (a == null && b != null)
+            Dev.Where();
+            if (ReferenceEquals(a, null))
                 return false;
-            if (a != null && b == null)
-                return false;
-            if (a == null && b == null)
-                return false;
-            return a.Value < b.Value;
+
+            return a.CompareTo(b) > 0; ;
         }
 
         public static bool operator ==(Geo a, Geo b)
         {
-            if (a == null && b != null)
-                return false;
-            if (a != null && b == null)
-                return false;
-            if (a == null && b == null)
+            Dev.Where();
+            // Check if both objects are null or reference the same instance
+            if (ReferenceEquals(a, b))
                 return true;
+
+            // Check if either object is null, as we've already checked for both being null or referencing the same instance
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+                return false;
+
             return a.Value == b.Value;
         }
 
         public static bool operator !=(Geo a, Geo b)
         {
-            if (a == null && b != null)
-                return true;
-            if (a != null && b == null)
-                return true;
-            if (a == null && b == null)
-                return false;
-            return a.Value != b.Value;
+            Dev.Where();
+            return !(a == b);
         }
 
         public static bool operator <=(Geo a, Geo b)
         {
-            if (a == null && b != null)
-                return false;
-            if (a != null && b == null)
-                return false;
-            if (a == null && b == null)
+            Dev.Where();
+            if (ReferenceEquals(a, null))
                 return true;
-            return a.Value <= b.Value;
+
+            return a.CompareTo(b) <= 0;
         }
 
         public static bool operator >=(Geo a, Geo b)
         {
-            if (a == null && b != null)
+            Dev.Where();
+            if (ReferenceEquals(a, null))
                 return false;
-            if (a != null && b == null)
-                return false;
-            if (a == null && b == null)
-                return true;
-            return a.Value <= b.Value;
+
+            return a.CompareTo(b) >= 0;
         }
 
         public override string ToString()
         {
+            Dev.Where();
             return $"[Geo(L:{LargeGeo} M:{MedGeo} S:{SmallGeo})]";
         }
 
@@ -186,26 +188,35 @@ namespace EnemyRandomizerMod
             return Equals(obj as Geo);
         }
 
-        public bool Equals(Geo other)
-        {
-            return other != null &&
-                   EqualityComparer<HealthManager>.Default.Equals(EnemyHealthManager, other.EnemyHealthManager) &&
-                   Value == other.Value;
-        }
-
         public override int GetHashCode()
         {
-            if (EnemyHealthManager == null)
-                return 0;
+            Dev.Where();
+            return Value.GetHashCode();
+        }
 
-            int hashCode = -2140644376;
-            hashCode = hashCode * -1521134295 + EqualityComparer<HealthManager>.Default.GetHashCode(EnemyHealthManager);
-            hashCode = hashCode * -1521134295 + Value.GetHashCode();
-            return hashCode;
+        bool IEquatable<Geo>.Equals(Geo other)
+        {
+            Dev.Where();
+            if (ReferenceEquals(this, other))
+                return true;
+
+            if (ReferenceEquals(other, null) || GetType() != other.GetType())
+                return false;
+
+            return this == (Geo)other;
+        }
+
+        public int CompareTo(Geo other)
+        {
+            if (ReferenceEquals(other, null))
+                return 1;
+
+            return Value.CompareTo(other.Value);
         }
 
         public static implicit operator int(Geo other)
         {
+            Dev.Where();
             return other.SmallGeo + other.MedGeo + other.LargeGeo;
         }
     }

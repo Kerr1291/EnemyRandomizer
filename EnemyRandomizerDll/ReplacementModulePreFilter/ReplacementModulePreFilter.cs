@@ -123,36 +123,5 @@ namespace EnemyRandomizerMod
 
             return true;
         }
-
-        /// <summary>
-        /// Gets the kinds of things that may be used as replacements
-        /// </summary>
-        //public override List<PrefabObject> GetValidReplacements(ObjectMetadata sourceData, List<PrefabObject> validReplacementObjects)
-        //{
-        //    if (sourceData.ObjectType == PrefabObject.PrefabType.Enemy)
-        //    {
-        //        return validReplacementObjects.Where(x => OptionEnabled(x.prefabName)).ToList();
-        //    }
-
-        //    return base.GetValidReplacements(sourceData, validReplacementObjects);
-        //}
-
-
-
-        /// <summary>
-        /// Use some kind of logic to replace things
-        /// </summary>
-        public override ObjectMetadata GetReplacement(ObjectMetadata newObject, ObjectMetadata originalObject, List<PrefabObject> validReplacements, RNG rng)
-        {
-            return base.GetReplacement(newObject, originalObject, validReplacements, rng);
-        }
-
-        /// <summary>
-        /// Use some kind of logic to optionally modify an object 
-        /// </summary>
-        public override ObjectMetadata ModifyObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
-        {
-            return base.ModifyObject(objectToModify, originalObject);
-        }
     }
 }

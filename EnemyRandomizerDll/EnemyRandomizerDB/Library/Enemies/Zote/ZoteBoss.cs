@@ -79,7 +79,7 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            thisMetadata.Geo = 1;
+            Geo = 1;
 
             var whiteScreenEffectfsm = gameObject.GetComponentsInChildren<PlayMakerFSM>(true).FirstOrDefault(x => x.gameObject.name == "white_solid");
             if (whiteScreenEffectfsm != null)
@@ -152,7 +152,7 @@ namespace EnemyRandomizerMod
         
     public class ZoteBossSpawner : DefaultSpawner<ZoteBossControl> { }
 
-    public class ZoteBossPrefabConfig : DefaultPrefabConfig<ZoteBossControl>
+    public class ZoteBossPrefabConfig : DefaultPrefabConfig
     {
         public override void SetupPrefab(PrefabObject p)
         {

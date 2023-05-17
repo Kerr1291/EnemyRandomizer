@@ -18,7 +18,7 @@ namespace EnemyRandomizerMod
 
     public class BuzzerSpawner : DefaultSpawner<BuzzerControl> { }
 
-    public class BuzzerPrefabConfig : DefaultPrefabConfig<BuzzerControl> { }
+    public class BuzzerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -30,7 +30,7 @@ namespace EnemyRandomizerMod
 
     public class MosquitoSpawner : DefaultSpawner<MosquitoControl> { }
 
-    public class MosquitoPrefabConfig : DefaultPrefabConfig<MosquitoControl> { }
+    public class MosquitoPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -54,7 +54,7 @@ namespace EnemyRandomizerMod
 
     public class BurstingBouncerSpawner : DefaultSpawner<BurstingBouncerControl> { }
 
-    public class BurstingBouncerPrefabConfig : DefaultPrefabConfig<BurstingBouncerControl> { }
+    public class BurstingBouncerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -80,7 +80,7 @@ namespace EnemyRandomizerMod
 
     public class AngryBuzzerSpawner : DefaultSpawner<AngryBuzzerControl> { }
 
-    public class AngryBuzzerPrefabConfig : DefaultPrefabConfig<AngryBuzzerControl> { }
+    public class AngryBuzzerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
     
@@ -95,7 +95,7 @@ namespace EnemyRandomizerMod
 
     public class MantisHeavyFlyerSpawner : DefaultSpawner<MantisHeavyFlyerControl> { }
 
-    public class MantisHeavyFlyerPrefabConfig : DefaultPrefabConfig<MantisHeavyFlyerControl> { }
+    public class MantisHeavyFlyerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -109,7 +109,7 @@ namespace EnemyRandomizerMod
 
     public class FlySpawner : DefaultSpawner<FlyControl> { }
 
-    public class FlyPrefabConfig : DefaultPrefabConfig<FlyControl> { }
+    public class FlyPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
     
@@ -122,7 +122,7 @@ namespace EnemyRandomizerMod
 
     public class BlobbleSpawner : DefaultSpawner<BlobbleControl> { }
 
-    public class BlobblePrefabConfig : DefaultPrefabConfig<BlobbleControl> { }
+    public class BlobblePrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
     
@@ -136,7 +136,7 @@ namespace EnemyRandomizerMod
 
     public class ShadeSiblingSpawner : DefaultSpawner<ShadeSiblingControl> { }
 
-    public class ShadeSiblingPrefabConfig : DefaultPrefabConfig<ShadeSiblingControl> { }
+    public class ShadeSiblingPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
     
@@ -148,7 +148,7 @@ namespace EnemyRandomizerMod
 
     public class FlukemanTopSpawner : DefaultSpawner<FlukemanTopControl> { }
 
-    public class FlukemanTopPrefabConfig : DefaultPrefabConfig<FlukemanTopControl> { }
+    public class FlukemanTopPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -168,7 +168,7 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            if(this.thisMetadata.Geo <= 0)
+            if(this.Geo <= 0)
             {
                 SetGeoRandomBetween(1, 10);
             }
@@ -177,7 +177,7 @@ namespace EnemyRandomizerMod
 
     public class SpitterSpawner : DefaultSpawner<SpitterControl> { }
 
-    public class SpitterPrefabConfig : DefaultPrefabConfig<SpitterControl> { }
+    public class SpitterPrefabConfig : DefaultPrefabConfig { }
 
 
     public class SpitterRControl : DefaultSpawnedEnemyControl
@@ -186,7 +186,7 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            if (this.thisMetadata.Geo <= 0)
+            if (this.Geo <= 0)
             {
                 SetGeoRandomBetween(1, 10);
             }
@@ -195,7 +195,7 @@ namespace EnemyRandomizerMod
 
     public class SpitterRSpawner : DefaultSpawner<SpitterRControl> { }
 
-    public class SpitterRPrefabConfig : DefaultPrefabConfig<SpitterRControl> { }
+    public class SpitterRPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -211,7 +211,7 @@ namespace EnemyRandomizerMod
 
     public class FungoonBabySpawner : DefaultSpawner<FungoonBabyControl> { }
 
-    public class FungoonBabyPrefabConfig : DefaultPrefabConfig<FungoonBabyControl> { }
+    public class FungoonBabyPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -223,7 +223,7 @@ namespace EnemyRandomizerMod
 
     public class AcidFlyerSpawner : DefaultSpawner<AcidFlyerControl> { }
 
-    public class AcidFlyerPrefabConfig : DefaultPrefabConfig<AcidFlyerControl>
+    public class AcidFlyerPrefabConfig : DefaultPrefabConfig
     {
         public override void SetupPrefab(PrefabObject p)
         {
@@ -274,7 +274,7 @@ namespace EnemyRandomizerMod
 
     public class MageBalloonSpawner : DefaultSpawner<MageBalloonControl> { }
 
-    public class MageBalloonPrefabConfig : DefaultPrefabConfig<MageBalloonControl> { }
+    public class MageBalloonPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -286,7 +286,7 @@ namespace EnemyRandomizerMod
 
     public class RuinsFlyingSentrySpawner : DefaultSpawner<RuinsFlyingSentryControl> { }
 
-    public class RuinsFlyingSentryPrefabConfig : DefaultPrefabConfig<RuinsFlyingSentryControl> { }
+    public class RuinsFlyingSentryPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -300,7 +300,7 @@ namespace EnemyRandomizerMod
 
     public class RuinsFlyingSentryJavelinSpawner : DefaultSpawner<RuinsFlyingSentryJavelinControl> { }
 
-    public class RuinsFlyingSentryJavelinPrefabConfig : DefaultPrefabConfig<RuinsFlyingSentryJavelinControl> { }
+    public class RuinsFlyingSentryJavelinPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -315,7 +315,7 @@ namespace EnemyRandomizerMod
 
     public class FatFlySpawner : DefaultSpawner<FatFlyControl> { }
 
-    public class FatFlyPrefabConfig : DefaultPrefabConfig<FatFlyControl> { }
+    public class FatFlyPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -328,7 +328,7 @@ namespace EnemyRandomizerMod
 
     public class LazyFlyerEnemySpawner : DefaultSpawner<LazyFlyerEnemyControl> { }
 
-    public class LazyFlyerEnemyPrefabConfig : DefaultPrefabConfig<LazyFlyerEnemyControl> { }
+    public class LazyFlyerEnemyPrefabConfig : DefaultPrefabConfig { }
 
     /////
     //////////////////////////////////////////////////////////////////////////////
@@ -343,7 +343,7 @@ namespace EnemyRandomizerMod
 
     public class SuperSpitterSpawner : DefaultSpawner<SuperSpitterControl> { }
 
-    public class SuperSpitterPrefabConfig : DefaultPrefabConfig<SuperSpitterControl> { }
+    public class SuperSpitterPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -357,7 +357,7 @@ namespace EnemyRandomizerMod
 
     public class Colosseum_Armoured_MosquitoSpawner : DefaultSpawner<Colosseum_Armoured_MosquitoControl> { }
 
-    public class Colosseum_Armoured_MosquitoPrefabConfig : DefaultPrefabConfig<Colosseum_Armoured_MosquitoControl> { }
+    public class Colosseum_Armoured_MosquitoPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -370,7 +370,7 @@ namespace EnemyRandomizerMod
 
     public class FungusFlyerSpawner : DefaultSpawner<FungusFlyerControl> { }
 
-    public class FungusFlyerPrefabConfig : DefaultPrefabConfig<FungusFlyerControl> { }
+    public class FungusFlyerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -385,7 +385,7 @@ namespace EnemyRandomizerMod
 
     public class Colosseum_Flying_SentrySpawner : DefaultSpawner<Colosseum_Flying_SentryControl> { }
 
-    public class Colosseum_Flying_SentryPrefabConfig : DefaultPrefabConfig<Colosseum_Flying_SentryControl> { }
+    public class Colosseum_Flying_SentryPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -401,7 +401,7 @@ namespace EnemyRandomizerMod
 
     public class JellyfishBabySpawner : DefaultSpawner<JellyfishBabyControl> { }
 
-    public class JellyfishBabyPrefabConfig : DefaultPrefabConfig<JellyfishBabyControl> { }
+    public class JellyfishBabyPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -415,7 +415,7 @@ namespace EnemyRandomizerMod
 
     public class MossFlyerSpawner : DefaultSpawner<MossFlyerControl> { }
 
-    public class MossFlyerPrefabConfig : DefaultPrefabConfig<MossFlyerControl> { }
+    public class MossFlyerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -430,7 +430,7 @@ namespace EnemyRandomizerMod
 
     public class CrystalFlyerSpawner : DefaultSpawner<CrystalFlyerControl> { }
 
-    public class CrystalFlyerPrefabConfig : DefaultPrefabConfig<CrystalFlyerControl> { }
+    public class CrystalFlyerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -449,7 +449,7 @@ namespace EnemyRandomizerMod
 
     public class SpiderFlyerSpawner : DefaultSpawner<SpiderFlyerControl> { }
 
-    public class SpiderFlyerPrefabConfig : DefaultPrefabConfig<SpiderFlyerControl> { }
+    public class SpiderFlyerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -464,7 +464,7 @@ namespace EnemyRandomizerMod
 
     public class BlowFlySpawner : DefaultSpawner<BlowFlyControl> { }
 
-    public class BlowFlyPrefabConfig : DefaultPrefabConfig<BlowFlyControl> { }
+    public class BlowFlyPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -480,13 +480,13 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            thisMetadata.Geo = 2;
+            Geo = 2;
         }
     }
 
     public class BeeHatchlingAmbientSpawner : DefaultSpawner<BeeHatchlingAmbientControl> { }
 
-    public class BeeHatchlingAmbientPrefabConfig : DefaultPrefabConfig<BeeHatchlingAmbientControl> { }
+    public class BeeHatchlingAmbientPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -500,7 +500,7 @@ namespace EnemyRandomizerMod
 
     public class ParasiteBalloonSpawner : DefaultSpawner<ParasiteBalloonControl> { }
 
-    public class ParasiteBalloonPrefabConfig : DefaultPrefabConfig<ParasiteBalloonControl> { }
+    public class ParasiteBalloonPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -518,7 +518,7 @@ namespace EnemyRandomizerMod
 
     public class InflaterSpawner : DefaultSpawner<InflaterControl> { }
 
-    public class InflaterPrefabConfig : DefaultPrefabConfig<InflaterControl> { }
+    public class InflaterPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -532,7 +532,7 @@ namespace EnemyRandomizerMod
 
     public class FlukeFlySpawner : DefaultSpawner<FlukeFlyControl> { }
 
-    public class FlukeFlyPrefabConfig : DefaultPrefabConfig<FlukeFlyControl> { }
+    public class FlukeFlyPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -549,7 +549,7 @@ namespace EnemyRandomizerMod
 
     public class BeeStingerSpawner : DefaultSpawner<BeeStingerControl> { }
 
-    public class BeeStingerPrefabConfig : DefaultPrefabConfig<BeeStingerControl> { }
+    public class BeeStingerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -564,7 +564,7 @@ namespace EnemyRandomizerMod
 
     public class BigBeeSpawner : DefaultSpawner<BigBeeControl> { }
 
-    public class BigBeePrefabConfig : DefaultPrefabConfig<BigBeeControl> { }
+    public class BigBeePrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -602,7 +602,7 @@ namespace EnemyRandomizerMod
 
     public class JellyfishSpawner : DefaultSpawner<JellyfishControl> { }
 
-    public class JellyfishPrefabConfig : DefaultPrefabConfig<JellyfishControl> { }
+    public class JellyfishPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -614,7 +614,7 @@ namespace EnemyRandomizerMod
 
     public class LilJellyfishSpawner : DefaultSpawner<LilJellyfishControl> { }
 
-    public class LilJellyfishPrefabConfig : DefaultPrefabConfig<LilJellyfishControl> { }
+    public class LilJellyfishPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 

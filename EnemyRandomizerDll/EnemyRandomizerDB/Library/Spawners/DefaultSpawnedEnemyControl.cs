@@ -17,17 +17,121 @@ namespace EnemyRandomizerMod
         public ObjectMetadata originialMetadata;
         public DebugColliders debugColliders;
         public EnemyDreamnailReaction edr;
+
+        public HealthManager EnemyHealthManager => gameObject.GetComponent<HealthManager>();
+        public tk2dSprite Sprite => gameObject.GetComponent<tk2dSprite>();
+        public tk2dSpriteAnimator Animator => gameObject.GetComponent<tk2dSpriteAnimator>();
+        public DamageHero HeroDamage => gameObject.GetComponent<DamageHero>();
+        public DamageEnemies EnemyDamage => gameObject.GetComponent<DamageEnemies>();
+        public Walker Walker => gameObject.GetComponent<Walker>();
+        public TinkEffect Tinker => gameObject.GetComponent<TinkEffect>();
+        public EnemyDeathEffects DeathEffects => gameObject.GetComponent<EnemyDeathEffects>();
+        public ManagedObject RandoObject => gameObject.GetComponent<ManagedObject>();
+        public BattleManagedObject BattleRandoObject => gameObject.GetComponent<BattleManagedObject>();
+        public Rigidbody2D PhysicsBody => gameObject.GetComponent<Rigidbody2D>();
+        public Collider2D Collider => gameObject.GetComponent<Collider2D>();
+        public MeshRenderer MRenderer => gameObject.GetComponent<MeshRenderer>();
+        public PreInstantiateGameObject PreInstantiatedGameObject => gameObject.GetComponent<PreInstantiateGameObject>();
+
+
         protected bool hasSeenPlayer;
         public virtual int maxBabies => 5;
         public virtual bool takesSpecialCharmDamage => this.thisMetadata.IsTinker ? true : false;
         public virtual bool takesSpecialSpellDamage => this.thisMetadata.IsTinker ? true : false;
 
+
+
+        protected Geo geoManager;
+        public Geo GeoManager {
+            get
+            {
+                Dev.Log("getting geo manager");
+                if (geoManager == null)
+                    geoManager = new Geo(gameObject);
+
+                Dev.Log("returning geo manager");
+                return geoManager;
+            }
+        }
+
+        public int Geo
+        {
+            get => GeoManager.Value;
+            set => GeoManager.Value = value;
+        }
+
+        public int previousHP = -1;
+        public int CurrentHP
+        {
+            get => EnemyHealthManager == null ? 0 : EnemyHealthManager.hp;
+            set
+            {
+                if (EnemyHealthManager != null)
+                    EnemyHealthManager.hp = value;
+                else
+                { }
+            }
+        }
+
+        public float CurrentHPf
+        {
+            get => CurrentHP;
+            set => CurrentHP = Mathf.FloorToInt(value);
+        }
+
+        /// <summary>
+        /// override this to change the max hp of an enemy
+        /// </summary>
+        public int defaultScaledMaxHP = -1;
+        public virtual int MaxHP => defaultScaledMaxHP;// thisMetadata == null ? 0 : thisMetadata.OriginalPrefabHP;
+
+        public float MaxHPf => (float)MaxHP;
+
+
+        public int DamageDealt
+        {
+            get
+            {
+                if(GetComponent<DamageHero>() != null)
+                {
+                    return GetComponent<DamageHero>().damageDealt;
+                }
+                return 0;
+            }
+            set
+            {
+                if (GetComponent<DamageHero>() != null)
+                {
+                    GetComponent<DamageHero>().damageDealt = value;
+                }
+            }
+        }
+
+        public int EnemyDamageDealt
+        {
+            get
+            {
+                if (GetComponent<DamageEnemies>() != null)
+                {
+                    return GetComponent<DamageEnemies>().damageDealt;
+                }
+                return 0;
+            }
+            set
+            {
+                if (GetComponent<DamageEnemies>() != null)
+                {
+                    GetComponent<DamageEnemies>().damageDealt = value;
+                }
+            }
+        }
+
         //if true, will set the max babies to 5
         public virtual bool dieChildrenOnDeath => false;
         public virtual bool useCustomPositonOnShow => false;
         public virtual bool showWhenHeroIsInAggroRange => false;
-
         protected bool didShowWhenHeroWasInAggroRange = false;
+
 
         public virtual bool explodeOnDeath => false;
         public virtual string spawnEntityOnDeath => null;
@@ -35,8 +139,6 @@ namespace EnemyRandomizerMod
         public virtual bool didOriginalDoBlueHealHeroOnDeath => originialMetadata != null && originialMetadata.DatabaseName.Contains("Health");
 
         public List<GameObject> children = new List<GameObject>();
-
-        protected CompositeDisposable disposables = new CompositeDisposable();
 
         public virtual PlayMakerFSM control { get; protected set; }
 
@@ -87,27 +189,42 @@ namespace EnemyRandomizerMod
                 return;
             }
 
-            Dev.Log("SETUP BEING CALLED");
+            Dev.Log($"Attempting Setup for {gameObject} with {other}");
             setupCalled = true;
 
-            disposables.Clear();
-            thisMetadata = new ObjectMetadata();
-            thisMetadata.Setup(gameObject, EnemyRandomizerDatabase.GetDatabase());
+            Dev.Log($"Generating the metadata object for this");
+            thisMetadata = new ObjectMetadata(gameObject, EnemyRandomizerDatabase.GetDatabase());
+            Dev.Log($"Metadata generated: {thisMetadata}");
             originialMetadata = other;
 
+            Dev.Log("getting camera locks");
             if (ControlCameraLocks)
                 cams = GetCameraLocksFromScene();
 
+            Dev.Log("locating my fsm");
             if (control == null)
                 control = gameObject.LocateMyFSM(FSMName);
 
+            if (!string.IsNullOrEmpty(FSMName) && control == null)
+                Dev.LogError($"Could not locate my fsm: {FSMName}");
+
+            Dev.Log("setting dreamnail info");
             SetDreamnailInfo();
+
+            Dev.Log("configuring relative to replacement");
             ConfigureRelativeToReplacement();
 
 #if DEBUG
-            debugColliders = gameObject.AddComponent<DebugColliders>(); 
+
+            Dev.Log("setting up debug colliders");
+            debugColliders = gameObject.AddComponent<DebugColliders>();
 #endif
+
+
+            Dev.Log("importing item from replacement");
             ImportItemFromReplacement();
+
+            Dev.Log("finished setting up");
         }
 
         protected virtual void EnemyHealthManager_OnDeath()
@@ -132,27 +249,18 @@ namespace EnemyRandomizerMod
                 if (doBlueHealHeroOnDeath || didOriginalDoBlueHealHeroOnDeath)
                     DoBlueHealHero();
 
-                if (thisMetadata != null && thisMetadata.HasAvailableItem)
+                if (thisMetadata != null && thisMetadata.AvailableItem != null)
                     SpawnAndFlingItem();
 
                 //TODO: see if the default works, first
                 //ForceUpdateJournal();
-
-                if (originialMetadata != null)
-                    originialMetadata.Dispose();
-
-                if (originialMetadata != thisMetadata)
-                    thisMetadata.Dispose();
-
-                if (disposables != null)
-                    disposables.Dispose();
             }
             catch (Exception e) { Dev.LogError($"Something bad happened with {name}"); }
         }
 
         protected virtual void ImportItemFromReplacement()
         {
-            if(originialMetadata != null && originialMetadata != thisMetadata && originialMetadata.Source != thisMetadata.Source && originialMetadata.HasAvailableItem)
+            if(originialMetadata != null && originialMetadata != thisMetadata && originialMetadata.Source != thisMetadata.Source && originialMetadata.AvailableItem != null)
             {
                 thisMetadata.ImportItem(originialMetadata);
             }
@@ -191,74 +299,71 @@ namespace EnemyRandomizerMod
                     Hide();
             }
 
-            if (thisMetadata != null)
+            if (EnemyHealthManager != null)
             {
-                thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
-                thisMetadata.EnemyHealthManager.OnDeath += EnemyHealthManager_OnDeath;
+                EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+                EnemyHealthManager.OnDeath += EnemyHealthManager_OnDeath;
             }
         }
 
         protected virtual void OnDisable()
         {
-            if(disposables != null)
-                disposables.Clear();
-
-            if (thisMetadata != null)
+            if (EnemyHealthManager != null)
             {
-                thisMetadata.EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
+                EnemyHealthManager.OnDeath -= EnemyHealthManager_OnDeath;
             }
         }
 
-        protected virtual void ForceUpdateJournal()
-        {
-            var pdName = thisMetadata.PlayerDataName;
-            RecordCustomJournalOnDeath(pdName);
-        }
+        //protected virtual void ForceUpdateJournal()
+        //{
+        //    var pdName = thisMetadata.PlayerDataName;
+        //    RecordCustomJournalOnDeath(pdName);
+        //}
 
-        protected virtual void RecordCustomJournalOnDeath(string pdName)
-        {
-            PlayerData playerData = GameManager.instance.playerData;
-            string text = "killed" + pdName;
-            string text2 = "kills" + pdName;
-            string text3 = "newData" + pdName;
-            bool flag = false;
-            if (!playerData.GetBool(text))
-            {
-                flag = true;
-                playerData.SetBool(text, true);
-                playerData.SetBool(text3, true);
-            }
-            bool flag2 = false;
-            int num = playerData.GetInt(text2);
-            if (num > 0)
-            {
-                num--;
-                playerData.SetInt(text2, num);
-                if (num <= 0)
-                {
-                    flag2 = true;
-                }
-            }
-            if (playerData.hasJournal)
-            {
-                bool flag3 = false;
-                if (flag2)
-                {
-                    flag3 = true;
-                    playerData.journalEntriesCompleted++;
-                }
-                else if (flag)
-                {
-                    flag3 = true;
-                    playerData.journalNotesCompleted++;
-                }
-                if (flag3)
-                {
-                    //in lieu of the proper journal unlock effect, just do something
-                    EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Item Get Effect R", null, true);
-                }
-            }
-        }
+        //protected virtual void RecordCustomJournalOnDeath(string pdName)
+        //{
+        //    PlayerData playerData = GameManager.instance.playerData;
+        //    string text = "killed" + pdName;
+        //    string text2 = "kills" + pdName;
+        //    string text3 = "newData" + pdName;
+        //    bool flag = false;
+        //    if (!playerData.GetBool(text))
+        //    {
+        //        flag = true;
+        //        playerData.SetBool(text, true);
+        //        playerData.SetBool(text3, true);
+        //    }
+        //    bool flag2 = false;
+        //    int num = playerData.GetInt(text2);
+        //    if (num > 0)
+        //    {
+        //        num--;
+        //        playerData.SetInt(text2, num);
+        //        if (num <= 0)
+        //        {
+        //            flag2 = true;
+        //        }
+        //    }
+        //    if (playerData.hasJournal)
+        //    {
+        //        bool flag3 = false;
+        //        if (flag2)
+        //        {
+        //            flag3 = true;
+        //            playerData.journalEntriesCompleted++;
+        //        }
+        //        else if (flag)
+        //        {
+        //            flag3 = true;
+        //            playerData.journalNotesCompleted++;
+        //        }
+        //        if (flag3)
+        //        {
+        //            //in lieu of the proper journal unlock effect, just do something
+        //            EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Item Get Effect R", null, true);
+        //        }
+        //    }
+        //}
 
         protected virtual void ExplodeOnDeath()
         {
@@ -271,6 +376,16 @@ namespace EnemyRandomizerMod
         protected virtual void SpawnExplosionAt(Vector3 pos)
         {
             EnemyRandomizerDatabase.CustomSpawnWithLogic(pos, "Gas Explosion Recycle M", null, true);
+        }
+
+        protected virtual GameObject SpawnEntityAt(string entityName, Vector3 pos, bool setActive = false)
+        {
+            return EnemyRandomizerDatabase.CustomSpawnWithLogic(pos, entityName, null, true);
+        }
+
+        protected virtual GameObject SpawnEntity(string entityName, bool setActive = false)
+        {
+            return EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, entityName, null, true);
         }
 
         protected virtual void SpawnEntityOnDeath()
@@ -291,13 +406,36 @@ namespace EnemyRandomizerMod
 
         protected virtual void SetGeoRandomBetween(int minGeo, int maxGeo)
         {
+            Dev.Log("setting geo to random value");
             RNG rng = new RNG();
             rng.Reset();
-            thisMetadata.Geo = rng.Rand(minGeo, maxGeo);
+            Geo = rng.Rand(minGeo, maxGeo);
+            Dev.Log("done setting geo to random value");
+        }
+
+        protected virtual void OnHit()
+        {
+
         }
 
         protected virtual void Update()
         {
+            if(thisMetadata != null && thisMetadata.OriginalPrefabHP > 0 && MaxHP > 0 && CurrentHP > 0)
+            {
+                if(previousHP < 0)
+                {
+                    previousHP = CurrentHP;
+                }
+                else
+                {
+                    if(CurrentHP < previousHP)
+                    {
+                        OnHit();
+                        previousHP = CurrentHP;
+                    }
+                }
+            }
+
             if(showWhenHeroIsInAggroRange)
             {
                 if(!didShowWhenHeroWasInAggroRange && HeroInAggroRange())
@@ -616,7 +754,7 @@ namespace EnemyRandomizerMod
 
         protected virtual GameObject AddParticleEffect_TorchFire(int fireSize = 5, Transform customParent = null)
         {
-            GameObject effect = EnemyRandomizerDatabase.GetDatabase().Spawn("Fire Particles", null);
+            GameObject effect = SpawnEntity("Fire Particles", false);
             if(customParent == null)
                 effect.transform.parent = transform;
             else
@@ -632,7 +770,7 @@ namespace EnemyRandomizerMod
 
         protected virtual GameObject AddParticleEffect_TorchShadeEmissions()
         {
-            GameObject effect = EnemyRandomizerDatabase.GetDatabase().Spawn("Particle System B", null);
+            GameObject effect = SpawnEntity("Particle System B");
             effect.transform.parent = transform;
             effect.transform.localPosition = Vector3.zero;
             effect.SafeSetActive(true);
@@ -641,7 +779,7 @@ namespace EnemyRandomizerMod
 
         protected virtual ParticleSystem AddParticleEffect_WhiteSoulEmissions()
         {
-            var glow = EnemyRandomizerDatabase.GetDatabase().Spawn("Summon", null);
+            var glow = SpawnEntity("Summon");
             var ge = glow.GetComponent<ParticleSystem>();
             glow.transform.parent = transform;
             glow.transform.localPosition = Vector3.zero;
@@ -689,19 +827,26 @@ namespace EnemyRandomizerMod
             if (thisMetadata != null && thisMetadata.ObjectType != PrefabObject.PrefabType.Enemy)
                 return;
 
+            Dev.Log($"{thisMetadata} -- {originialMetadata} -- r config");
             if (thisMetadata != null && originialMetadata != null)
             {
+                Dev.Log($"{thisMetadata} -- {originialMetadata} -- check boss");
                 if (thisMetadata.IsBoss && !originialMetadata.IsBoss)
                 {
+                    Dev.Log($"{thisMetadata} -- {originialMetadata} -- setup boss as normal");
                     SetupBossAsNormalEnemy();
                 }
 
+                Dev.Log($"{thisMetadata} -- {originialMetadata} -- check boss 2");
                 if (!thisMetadata.IsBoss && originialMetadata.IsBoss)
                 {
+                    Dev.Log($"{thisMetadata} -- {originialMetadata} -- setup normal as boss config");
                     SetupNormalEnemyAsBoss();
                 }
             }
 
+
+            Dev.Log($"{thisMetadata} -- {originialMetadata} -- scale hp");
             ScaleHP();
         }
 
@@ -711,23 +856,25 @@ namespace EnemyRandomizerMod
             {
                 if (thisMetadata.IsBoss && !originialMetadata.IsBoss)
                 {
-                    thisMetadata.EnemyHealthManager.hp = ScaleHPFromBossToNormal(thisMetadata.EnemyHealthManager.hp, originialMetadata.EnemyHealthManager.hp);
+                    CurrentHP = ScaleHPFromBossToNormal(thisMetadata.EnemyHealthManager.hp, originialMetadata.EnemyHealthManager.hp);
                 }
 
                 else if (!thisMetadata.IsBoss && originialMetadata.IsBoss)
                 {
-                    thisMetadata.EnemyHealthManager.hp = ScaleHPFromBossToNormal(thisMetadata.EnemyHealthManager.hp, originialMetadata.EnemyHealthManager.hp);
+                    CurrentHP = ScaleHPFromBossToNormal(thisMetadata.EnemyHealthManager.hp, originialMetadata.EnemyHealthManager.hp);
                 }
 
                 else if (thisMetadata.IsBoss && originialMetadata.IsBoss)
                 {
-                    thisMetadata.EnemyHealthManager.hp = ScaleHPFromNormalToNormal(thisMetadata.EnemyHealthManager.hp, originialMetadata.EnemyHealthManager.hp);
+                    CurrentHP = ScaleHPFromNormalToNormal(thisMetadata.EnemyHealthManager.hp, originialMetadata.EnemyHealthManager.hp);
                 }
 
                 else if (!thisMetadata.IsBoss && !originialMetadata.IsBoss)
                 {
-                    thisMetadata.EnemyHealthManager.hp = ScaleHPFromBossToBoss(thisMetadata.EnemyHealthManager.hp, originialMetadata.EnemyHealthManager.hp);
+                    CurrentHP = ScaleHPFromBossToBoss(thisMetadata.EnemyHealthManager.hp, originialMetadata.EnemyHealthManager.hp);
                 }
+
+                defaultScaledMaxHP = CurrentHP;
             }
         }
 
@@ -896,14 +1043,19 @@ namespace EnemyRandomizerMod
 
         protected virtual void SetupNormalEnemyAsBoss()
         {
-            thisMetadata.Geo = thisMetadata.Geo * 5 + 100;
+            Dev.Log("setting up boss geo");
+            //Geo = Geo * 5 + 100;
+            SetGeoRandomBetween(25, 250);
+            Dev.Log("done setting up boss geo");
         }
 
         protected virtual void SetupBossAsNormalEnemy()
         {
+            Dev.Log("setting boss as normal enemy geo");
             SetGeoRandomBetween(0, 25);
-            if (originialMetadata != null)
-                thisMetadata.Geo = originialMetadata.Geo;
+            Dev.Log("done setting boss as normal enemy geo");
+            //if (originialMetadata != null)
+            //    Geo = originialMetadata.OriginalGeo;
         }
 
         protected virtual void DisableSendEvents(PlayMakerFSM fsm, params (string StateName, int ActionIndex)[] stateActions)
@@ -1225,14 +1377,20 @@ namespace EnemyRandomizerMod
             return telePoint;
         }
 
-        protected virtual void ActivateAndTrackSpawnedObject(GameObject objectThatWillBeReplaced)
+        protected virtual GameObject ActivateAndTrackSpawnedObject(GameObject objectThatWillBeReplaced)
         {
+            GameObject spawnedObject = objectThatWillBeReplaced;
             var handle = EnemyRandomizerDatabase.OnObjectReplaced.AsObservable().Subscribe(x =>
             {
+                if (children == null)
+                    return;
+
                 if (children.Contains(x.oldObject.Source))
                     children.Remove(x.oldObject.Source);
                 if (!children.Contains(x.newObject.Source))
                     children.Add(x.newObject.Source);
+
+                spawnedObject = x.newObject.Source;
             });
 
             var child = objectThatWillBeReplaced;
@@ -1240,25 +1398,36 @@ namespace EnemyRandomizerMod
             child.SafeSetActive(true);
 
             handle.Dispose();
+
+            return spawnedObject;
         }
 
 
-        protected virtual void SpawnAndTrackChild(string objectName, Vector3 spawnPoint)
+        protected virtual GameObject SpawnAndTrackChild(string objectName, Vector3 spawnPoint, bool setActive = true)
         {
+            GameObject spawnedObject = null;
             var handle = EnemyRandomizerDatabase.OnObjectReplaced.AsObservable().Subscribe(x =>
             {
+                if (children == null)
+                    return;
+
                 if (children.Contains(x.oldObject.Source))
                     children.Remove(x.oldObject.Source);
                 if (!children.Contains(x.newObject.Source))
                     children.Add(x.newObject.Source);
+
+                spawnedObject = x.newObject.Source;
             });
 
-            var child = thisMetadata.DB.Spawn(objectName, null);// "Parasite Balloon", null);
+            var child = SpawnEntity(objectName);// "Parasite Balloon", null);
             child.transform.position = spawnPoint;
             children.Add(child);
-            child.SafeSetActive(true);
-
+            if (setActive)
+            {
+                child.SafeSetActive(true);
+            }
             handle.Dispose();
+            return spawnedObject;
         }
 
         protected virtual void SetXScaleSign(bool makeNegative)
@@ -1272,7 +1441,7 @@ namespace EnemyRandomizerMod
 
         protected virtual void DieChildrenOnDeath()
         {
-            if (dieChildrenOnDeath)
+            if (dieChildrenOnDeath && children != null)
             {
                 children.ForEach(x =>
                 {
@@ -1285,6 +1454,9 @@ namespace EnemyRandomizerMod
                         hm.Die(null, AttackTypes.Generic, true);
                     }
                 });
+
+
+                children.Clear();
             }
         }
 
@@ -1306,7 +1478,7 @@ namespace EnemyRandomizerMod
                 else
                 {
                     var hm = children[i].GetComponent<HealthManager>();
-                    if (hm.hp <= 0 || hm.isDead)
+                    if (hm == null || hm.hp <= 0 || hm.isDead)
                     {
                         children.RemoveAt(i);
                         continue;

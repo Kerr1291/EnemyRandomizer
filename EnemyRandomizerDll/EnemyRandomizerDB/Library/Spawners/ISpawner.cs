@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Satchel;
 using Satchel.Futils;
+using HutongGames.PlayMaker.Actions;
 
 namespace EnemyRandomizerMod
 {
@@ -14,7 +15,7 @@ namespace EnemyRandomizerMod
 
     public interface ISpawner
     {
-        GameObject Spawn(PrefabObject p, ObjectMetadata source);
+        ObjectMetadata Spawn(PrefabObject p, ObjectMetadata source, EnemyRandomizerDatabase database);
     }
 
     public static class SpawnerExtensions
@@ -33,7 +34,7 @@ namespace EnemyRandomizerMod
             return groundOrPlatformName.Any(x => gameObject.name.Contains(x));
         }
 
-        public static GameObject GetCorpse<T>(this GameObject prefab)
+        static GameObject GetCorpse<T>(this GameObject prefab)
             where T : EnemyDeathEffects
         {
             var deathEffects = prefab.GetComponentInChildren<T>(true);
@@ -70,7 +71,7 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public static GameObject GetCorpsePrefab<T>(this GameObject prefab)
+        static GameObject GetCorpsePrefab<T>(this GameObject prefab)
             where T : EnemyDeathEffects
         {
             var deathEffects = prefab.GetComponentInChildren<T>(true);
@@ -105,7 +106,7 @@ namespace EnemyRandomizerMod
             if (other == null)
                 return;
 
-            if (!other.HasData)
+            if (!other.IsDatabaseObject)
                 return;
 
             if(other.Source != null)
@@ -115,7 +116,7 @@ namespace EnemyRandomizerMod
         //use this when the other object has a smasher
         public static GameObject CopyAndAddSmasher(this GameObject gameObject, ObjectMetadata other)
         {
-            if (other == null || !other.HasData || other.Source == null)
+            if (other == null || !other.IsDatabaseObject || other.Source == null)
                 return null;
 
             if (!other.IsSmasher)
@@ -318,7 +319,7 @@ namespace EnemyRandomizerMod
             return fixer;
         }
 
-        public static CorpseRemover AddCorpseRemoverWithEffect(GameObject corpse, string effect = null)
+        public static CorpseRemover AddCorpseRemoverWithEffect(this GameObject corpse, string effect = null)
         {
             var remover = corpse.gameObject.AddComponent<CorpseRemover>();
             if (!string.IsNullOrEmpty(effect))
@@ -328,8 +329,11 @@ namespace EnemyRandomizerMod
             return remover;
         }
 
-        public static GameObject GetCorpseObject(GameObject gameObject)
+        public static GameObject GetCorpseObject(this GameObject gameObject)
         {
+            if (gameObject == null)
+                return null;
+
             var corpse = gameObject.GetCorpse<EnemyDeathEffects>();
             if (corpse == null)
             {
@@ -376,6 +380,91 @@ namespace EnemyRandomizerMod
             return 0f;
         }
 
+
+        public static void SetAudioToMatchScale(this GameObject go, float sizeScale)
+        {
+            if (go == null || Mathnv.FastApproximately(sizeScale, 1f, .01f))
+                return;
+
+            float size_min = 0.1f;
+            float size_max = 2.5f;
+
+            Range size_rangeTop = new Range(1f, size_max);
+            Range size_rangeBot = new Range(size_min, 1f);
+
+            float pitch_max = 2f; //higher pitch for smaller enemies
+            float pitch_min = .7f; //lower pitch for bigger enemies
+
+            Range pitch_rangeTop = new Range(1f, pitch_max);
+            Range pitch_rangeBot = new Range(pitch_min, 1f);
+
+            float t = 0f;
+            float pitch = 0f;
+
+            if (sizeScale < 1f)
+            {
+                // .7   .1 - 1
+                //      (.9) * .7
+                // .7 / .9
+                // = .78
+                // 1 - .78
+                // = .22
+                // eval(.22)
+                // =
+
+                float range = 1f - size_min;
+                float ratio = sizeScale / range;
+                float inver = 1f - ratio;
+                float fpitch = 1f + (pitch_max - 1f) * inver;
+
+                t = inver;
+                pitch = fpitch;
+
+                //t = 1f - size_rangeBot.NormalizedValue(SizeScale);
+                //pitch = pitch_rangeTop.Evaluate(t);
+            }
+            else//if(SizeScale > 1f)
+            {
+                float range = size_max - 1f;
+                float ratio = (sizeScale - 1f) / range;
+
+                if (ratio > 1f)
+                    ratio = 1f;
+
+                float fpitch = 1f - (1f - pitch_min) * ratio;
+
+                t = ratio;
+                pitch = fpitch;
+
+
+                //t = 1f - size_rangeTop.NormalizedValue(SizeScale);
+                //pitch = pitch_rangeBot.Evaluate(t);
+            }
+
+            Dev.Log($"{go.GetSceneHierarchyPath()} audio pitch from size {sizeScale} to t {t} to pitch {pitch}");
+
+            var audioSources = go.GetComponentsInChildren<AudioSource>(true);
+            var audioSourcesPitchRandomizer = go.GetComponentsInChildren<AudioSourcePitchRandomizer>(true);
+            var audioPlayOneShot = go.GetActionsOfType<AudioPlayerOneShot>();
+            var audioPlayRandom = go.GetActionsOfType<AudioPlayRandom>();
+            var audioPlayOneShotSingle = go.GetActionsOfType<AudioPlayerOneShotSingle>();
+            var audioPlayRandomSingle = go.GetActionsOfType<AudioPlayRandomSingle>();
+            var audioPlayAudioEvent = go.GetActionsOfType<PlayAudioEvent>();
+
+            audioSources.ToList().ForEach(x => x.pitch = pitch);
+            audioSourcesPitchRandomizer.ToList().ForEach(x => x.pitchLower = pitch);
+            audioSourcesPitchRandomizer.ToList().ForEach(x => x.pitchUpper = pitch);
+            audioPlayOneShot.ToList().ForEach(x => x.pitchMin = pitch);
+            audioPlayOneShot.ToList().ForEach(x => x.pitchMax = pitch);
+            audioPlayRandom.ToList().ForEach(x => x.pitchMin = pitch);
+            audioPlayRandom.ToList().ForEach(x => x.pitchMax = pitch);
+            audioPlayOneShotSingle.ToList().ForEach(x => x.pitchMax = pitch);
+            audioPlayOneShotSingle.ToList().ForEach(x => x.pitchMin = pitch);
+            audioPlayRandomSingle.ToList().ForEach(x => x.pitchMin = pitch);
+            audioPlayRandomSingle.ToList().ForEach(x => x.pitchMax = pitch);
+            audioPlayAudioEvent.ToList().ForEach(x => x.pitchMin = pitch);
+            audioPlayAudioEvent.ToList().ForEach(x => x.pitchMax = pitch);
+        }
 
         /// <summary>
         /// Apply this via transform.equlerAngles

@@ -73,5 +73,5 @@ namespace EnemyRandomizerMod
 
     public class ZotelingSpawner : DefaultSpawner<ZotelingControl> { }
 
-    public class ZotelingPrefabConfig : DefaultPrefabConfig<ZotelingControl> { }
+    public class ZotelingPrefabConfig : DefaultPrefabConfig { }
 }

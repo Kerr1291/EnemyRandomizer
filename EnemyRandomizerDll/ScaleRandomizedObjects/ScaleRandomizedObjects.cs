@@ -37,31 +37,29 @@ namespace EnemyRandomizerMod
             EnemyRandomizer.Instance.enemyReplacer.loadedLogics.Add(this);
         }
 
-        public override ObjectMetadata ModifyObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
+        public override void ModifyObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
         {
             if (objectToModify.ObjectType == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value)
             {
-                return ScaleObject(objectToModify, originalObject);
+                ScaleObject(objectToModify, originalObject);
             }
 
             else if (objectToModify.ObjectType == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value)
             {
-                return ScaleObject(objectToModify, originalObject);
+                ScaleObject(objectToModify, originalObject);
             }
 
             else if (objectToModify.ObjectType == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value)
             {
-                return ScaleObject(objectToModify, originalObject);
+                ScaleObject(objectToModify, originalObject);
             }
-
-            return objectToModify;
         }
 
-        public virtual ObjectMetadata ScaleObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
+        public virtual void ScaleObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
         {
             if(Settings.GetOption(CustomOptions[3].Name).value)
             {
-                return ApplySizeScale(objectToModify, originalObject);
+                ApplyRelativeSizeScale(objectToModify, originalObject);
             }
             else
             {
@@ -71,26 +69,23 @@ namespace EnemyRandomizerMod
                 float scale = prng.Rand(.2f, 3f);
                 objectToModify.ApplySizeScale(scale);
             }
-            return objectToModify;
-        }
-
-        public virtual ObjectMetadata ApplySizeScale(ObjectMetadata objectToModify, ObjectMetadata originalObject)
-        {
-            //TODO: maybe apply some default scaling to bigger enemies, for now just return them
-            if (originalObject == null)
-                return objectToModify;
-
-            float scale = objectToModify.GetRelativeScale(originalObject, .2f);
-            Dev.Log($"Relative scale of {objectToModify.DatabaseName} to {originalObject.DatabaseName} is {scale}");
-            objectToModify.ApplySizeScale(scale);
 
             //should we also scale the audio to match?
             if (Settings.GetOption(CustomOptions[4].Name).value)
             {
                 objectToModify.SetAudioToMatchScale();
             }
+        }
 
-            return objectToModify;
+        public virtual void ApplyRelativeSizeScale(ObjectMetadata objectToModify, ObjectMetadata originalObject)
+        {
+            //TODO: maybe apply some default scaling to bigger enemies, for now just return them
+            if (originalObject != null)
+            {
+                float scale = objectToModify.GetRelativeScale(originalObject, .2f);
+                Dev.Log($"Relative scale of {objectToModify.DatabaseName} to {originalObject.DatabaseName} is {scale}");
+                objectToModify.ApplySizeScale(scale);
+            }
         }
     }
 }

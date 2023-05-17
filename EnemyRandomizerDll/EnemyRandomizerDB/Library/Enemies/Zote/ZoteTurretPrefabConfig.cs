@@ -15,7 +15,7 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            thisMetadata.Geo = 12;
+            Geo = 12;
 
             this.OverrideState(control, "Pos", () =>
             {
@@ -68,7 +68,7 @@ namespace EnemyRandomizerMod
     {
     }
 
-    public class ZoteTurretPrefabConfig : DefaultPrefabConfig<ZoteTurretControl>
+    public class ZoteTurretPrefabConfig : DefaultPrefabConfig
     {
     }
 }

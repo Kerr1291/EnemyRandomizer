@@ -36,7 +36,7 @@ namespace EnemyRandomizerMod
 
     public class MushroomBrawlerSpawner : DefaultSpawner<MushroomBrawlerControl> { }
 
-    public class MushroomBrawlerPrefabConfig : DefaultPrefabConfig<MushroomBrawlerControl> { }
+    public class MushroomBrawlerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -72,7 +72,7 @@ namespace EnemyRandomizerMod
 
     public class MenderBugSpawner : DefaultSpawner<MenderBugControl> { }
 
-    public class MenderBugPrefabConfig : DefaultPrefabConfig<MenderBugControl> { }
+    public class MenderBugPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
     ///
@@ -133,7 +133,7 @@ namespace EnemyRandomizerMod
             var setgoa = roller.GetFirstActionOfType<SetGameObject>();
 
             //TODO: fix up their FSMs to work correctly with the activate and track method
-            setgoa.gameObject = EnemyRandomizerDatabase.GetDatabase().Spawn("Roller", null);
+            setgoa.gameObject = SpawnAndTrackChild("Roller", transform.position, false);
 
             //have it skip the roller assign state
             fsm.ChangeTransition("Fire", "FINISHED", "Shot Anim End");
@@ -147,7 +147,7 @@ namespace EnemyRandomizerMod
 
     public class BlockerSpawner : DefaultSpawner<BlockerControl> { }
 
-    public class BlockerPrefabConfig : DefaultPrefabConfig<BlockerControl> { }
+    public class BlockerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -203,13 +203,11 @@ namespace EnemyRandomizerMod
             spot1.DisableAction(4);
             spot1.DisableAction(8);
             spot1.InsertCustomAction(() => {
-                var child = EnemyRandomizerDatabase.GetDatabase().Spawn("Bee Hatchling Ambient", null);
-                children.Add(child);
-
+                var child = SpawnAndTrackChild("Bee Hatchling Ambient", transform.position, false);
                 FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = child;
             },0); ;
             spot1.InsertCustomAction(() => {
-                FSM.FsmVariables.GetFsmGameObject("Hatchling").Value.SafeSetActive(true);
+                FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = ActivateAndTrackSpawnedObject(FSM.FsmVariables.GetFsmGameObject("Hatchling").Value);
             }, 4);
 
             var spot2 = FSM.GetState("Spot 2");
@@ -218,19 +216,18 @@ namespace EnemyRandomizerMod
             spot2.DisableAction(4);
             spot2.DisableAction(8);
             spot2.InsertCustomAction(() => {
-                var child = EnemyRandomizerDatabase.GetDatabase().Spawn("Bee Hatchling Ambient", null);
-                children.Add(child);
+                var child = SpawnAndTrackChild("Bee Hatchling Ambient", transform.position, false);
                 FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = child;
             }, 0); ;
             spot2.InsertCustomAction(() => {
-                FSM.FsmVariables.GetFsmGameObject("Hatchling").Value.SafeSetActive(true);
+                FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = ActivateAndTrackSpawnedObject(FSM.FsmVariables.GetFsmGameObject("Hatchling").Value);
             }, 4);
         }
     }
 
     public class ZombieHiveSpawner : DefaultSpawner<ZombieHiveControl> { }
 
-    public class ZombieHivePrefabConfig : DefaultPrefabConfig<ZombieHiveControl> { }
+    public class ZombieHivePrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -262,7 +259,7 @@ namespace EnemyRandomizerMod
 
     public class ZombieSpider1Spawner : DefaultSpawner<ZombieSpider1Control> { }
 
-    public class ZombieSpider1PrefabConfig : DefaultPrefabConfig<ZombieSpider1Control> { }
+    public class ZombieSpider1PrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
     
@@ -300,7 +297,7 @@ namespace EnemyRandomizerMod
     }
 
     public class ZombieSpider2Spawner : DefaultSpawner<ZombieSpider2Control> { }
-    public class ZombieSpider2PrefabConfig : DefaultPrefabConfig<ZombieSpider2Control> { }
+    public class ZombieSpider2PrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -367,9 +364,9 @@ namespace EnemyRandomizerMod
             wallLeft = SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.left, 50f);
             wallRight = SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.right, 50f);
 
-            if (floorsize < (thisMetadata.ObjectSize.x * this.thisMetadata.SizeScale))
+            if (floorsize < (thisMetadata.OriginalObjectSize.x * this.thisMetadata.SizeScale))
             {
-                float ratio = (floorsize) / (thisMetadata.ObjectSize.x * this.thisMetadata.SizeScale);
+                float ratio = (floorsize) / (thisMetadata.OriginalObjectSize.x * this.thisMetadata.SizeScale);
                 thisMetadata.ApplySizeScale(ratio * .5f);
             }
 
@@ -435,7 +432,7 @@ namespace EnemyRandomizerMod
 
     public class MossChargerSpawner : DefaultSpawner<MossChargerControl> { }
 
-    public class MossChargerPrefabConfig : DefaultPrefabConfig<MossChargerControl> { }
+    public class MossChargerPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 

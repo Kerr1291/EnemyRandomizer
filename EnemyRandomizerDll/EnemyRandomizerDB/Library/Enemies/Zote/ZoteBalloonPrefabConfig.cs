@@ -70,7 +70,7 @@ namespace EnemyRandomizerMod
             //thisMetadata.EnemyHealthManager.OnDeath += EnemyHealthManager_OnDeath;
 
             ////if hp changes at all, explode
-            //thisMetadata.currentHP.SkipLatestValueOnSubscribe().Subscribe(x => EnemyHealthManager_OnDeath()).AddTo(disposables);
+            //CurrentHP.SkipLatestValueOnSubscribe().Subscribe(x => EnemyHealthManager_OnDeath()).AddTo(disposables);
         }
 
         //private void EnemyHealthManager_OnDeath()
@@ -90,7 +90,7 @@ namespace EnemyRandomizerMod
     {
     }
 
-    public class ZoteBalloonPrefabConfig : DefaultPrefabConfig<ZoteBalloonControl>
+    public class ZoteBalloonPrefabConfig : DefaultPrefabConfig
     {
     }
 

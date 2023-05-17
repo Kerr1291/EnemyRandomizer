@@ -48,7 +48,7 @@ namespace EnemyRandomizerMod
 
             //control.ChangeTransition("Init", "FINISHED", "Set Pos");
 
-            thisMetadata.Geo = 15;
+            Geo = 15;
 
             this.OverrideState(control, "Set Pos", () =>
             {
@@ -98,7 +98,7 @@ namespace EnemyRandomizerMod
 
     public class ZoteThwompSpawner : DefaultSpawner<ZoteThwompControl> { }
 
-    public class ZoteThwompPrefabConfig : DefaultPrefabConfig<ZoteThwompControl> { }
+    public class ZoteThwompPrefabConfig : DefaultPrefabConfig { }
 
 
 

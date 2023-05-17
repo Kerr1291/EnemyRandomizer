@@ -20,7 +20,7 @@ namespace EnemyRandomizerMod
         {
             "ColetteMSLP",
             "oatmille1",
-            "Dwarfwoof",
+            "Dwarfwoot",
             "Sethadocious",
             "...and you; thanks for playing!"
         };
@@ -68,12 +68,12 @@ namespace EnemyRandomizerMod
                 },
                 loadSetting: () => GlobalSettings.UseCustomSeed
             ),
-            Blueprints.HorizontalBoolOption(
-                name: "Allow Boss Replacement",
-                description: "If disabled, bosses will never be touched by the mod",
-                applySetting: b => GlobalSettings.RandomizeBosses = b,
-                loadSetting: () => GlobalSettings.RandomizeBosses
-            ),
+            //Blueprints.HorizontalBoolOption(
+            //    name: "Allow Boss Replacement",
+            //    description: "If disabled, bosses will never be touched by the mod",
+            //    applySetting: b => GlobalSettings.RandomizeBosses = b,
+            //    loadSetting: () => GlobalSettings.RandomizeBosses
+            //),
 
             //Blueprints.HorizontalBoolOption(
             //    name: "Enable MSLP Journal Mode",

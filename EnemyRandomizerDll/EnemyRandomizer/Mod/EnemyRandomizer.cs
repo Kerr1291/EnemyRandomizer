@@ -99,7 +99,7 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
 
         const string defaultDatabaseFilePath = "EnemyRandomizerDatabase.xml";
-        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 8.mslp_streamiversary]";
+        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 8.ohgodpleasedontcrash]";
         static string currentVersion = currentVersionPrefix;
             //Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + $" CURRENT SEED:[{GlobalSettings.seed}] -- TO CHANGE SEED --> MODS > ENEMY RANDOMIZER > ENEMY RANDOMIZER MODULES";
 
@@ -512,8 +512,9 @@ namespace EnemyRandomizerMod
             if (DoBypassCheck())
                 return false;
 
-            bool result = RandomizeEnemy(healthManagerObject) == null;
-            return result;
+            RandomizeEnemy(healthManagerObject);
+
+            return true;
         }
 
         string MODHOOK_BeforeSceneLoad(string sceneName)
@@ -623,14 +624,11 @@ namespace EnemyRandomizerMod
                 EnemyRandomizer.bypassNextReplacement = true;
                 EnemyRandomizer.debugCustomReplacement = replacement;
 
-                var enemy = EnemyRandomizerDatabase.GetDatabase().Spawn(enemyName, null);
+                var pos = HeroController.instance.transform.position + Vector3.right * 5f;
+                var enemy = EnemyRandomizerDatabase.CustomSpawn(pos, enemyName, true);
                 if (enemy != null)
                 {
-                    var pos = HeroController.instance.transform.position + Vector3.right * 5f;
-                    enemy.transform.position = pos;
-                    var defaultEnemyControl = enemy.GetComponent<DefaultSpawnedEnemyControl>();
-                    enemy.SetActive(true);
-                    return enemy;
+                    return enemy.Source;
                 }
             }
             catch (Exception e)
@@ -652,7 +650,7 @@ namespace EnemyRandomizerMod
                 EnemyRandomizer.bypassNextReplacement = true;
                 EnemyRandomizer.debugCustomReplacement = replacement;
 
-                return EnemyRandomizerDatabase.CustomSpawn(pos, objectName, setActive);
+                return EnemyRandomizerDatabase.CustomSpawn(pos, objectName, setActive).Source;
             }
             catch (Exception e)
             {

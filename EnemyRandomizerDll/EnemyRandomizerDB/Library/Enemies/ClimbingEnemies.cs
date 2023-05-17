@@ -161,7 +161,7 @@ namespace EnemyRandomizerMod
 
     public class ClimberSpawner : DefaultSpawner<ClimberControl> { }
 
-    public class ClimberPrefabConfig : DefaultPrefabConfig<ClimberControl> { }
+    public class ClimberPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -186,7 +186,7 @@ namespace EnemyRandomizerMod
 
     public class CrystallisedLazerBugSpawner : DefaultSpawner<CrystallisedLazerBugControl> { }
 
-    public class CrystallisedLazerBugPrefabConfig : DefaultPrefabConfig<CrystallisedLazerBugControl> { }
+    public class CrystallisedLazerBugPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
     ///
@@ -220,7 +220,7 @@ namespace EnemyRandomizerMod
                 var shot = control.FsmVariables.GetFsmGameObject("Shot").Value;
                 if(shot == null)
                 {
-                    var spitterShot = EnemyRandomizerDatabase.GetDatabase().Spawn("Spitter Shot R", null);
+                    var spitterShot = SpawnEntity("Spitter Shot R");
                     if (spitterShot != null)
                     {
                         shot = spitterShot;
@@ -255,7 +255,7 @@ namespace EnemyRandomizerMod
 
     public class SpiderMiniSpawner : DefaultSpawner<SpiderMiniControl> { }
 
-    public class SpiderMiniPrefabConfig : DefaultPrefabConfig<SpiderMiniControl> { }
+    public class SpiderMiniPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 }

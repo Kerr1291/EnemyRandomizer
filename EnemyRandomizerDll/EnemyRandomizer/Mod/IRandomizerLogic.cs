@@ -105,12 +105,12 @@ namespace EnemyRandomizerMod
         /// <summary>
         /// Use some kind of logic to replace things
         /// </summary>
-        ObjectMetadata GetReplacement(ObjectMetadata objectToModify, ObjectMetadata originalObject, List<PrefabObject> validReplacementObjects, RNG rng);
+        ObjectMetadata GetReplacement(ObjectMetadata currentPotentialReplacement, ObjectMetadata originalObject, List<PrefabObject> validReplacementObjects, RNG rng);
         
         /// <summary>
         /// Use some kind of logic to optionally modify an object 
         /// </summary>
-        ObjectMetadata ModifyObject(ObjectMetadata objectToModify, ObjectMetadata originalObject);
+        void ModifyObject(ObjectMetadata objectToModify, ObjectMetadata originalObject);
 
         /// <summary>
         /// Use some kind of logic to create/modify persitent bool item's data
@@ -196,9 +196,8 @@ namespace EnemyRandomizerMod
             return newObject == null ? originalObject : newObject;
         }
 
-        public virtual ObjectMetadata ModifyObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
+        public virtual void ModifyObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
         {
-            return objectToModify;
         }
 
         public virtual PersistentBoolData ReplacePersistentBoolItemData(PersistentBoolItem other)

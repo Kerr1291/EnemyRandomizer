@@ -195,15 +195,70 @@ namespace EnemyRandomizerMod
             return ReplaceObject(originalObject, validReplacements, rng);
         }
 
+        protected virtual PrefabObject GetObject(PrefabObject prefab, List<PrefabObject> validReplacements, RNG rng)
+        {
+            //if it's a flamebearer, try one more pick since they appear 3x more than anything else
+            if (prefab.prefabName.Contains("Flame"))
+            {
+                prefab = validReplacements.GetRandomElementFromList(rng);
+            }
+            //if it's a ghost warrior, pick again since there's several ghost bosses
+            else if (prefab.prefabName.Contains("Ghost"))
+            {
+                prefab = validReplacements.GetRandomElementFromList(rng);
+            }
+            else //other enemy types with multiple entries
+            if (prefab.prefabName.Contains("Mage"))
+            {
+                prefab = validReplacements.GetRandomElementFromList(rng);
+            }
+            else //other enemy types with multiple entries
+            if (prefab.prefabName.Contains("Ruins"))
+            {
+                prefab = validReplacements.GetRandomElementFromList(rng);
+            }
+            else //other enemy types with multiple entries
+            if (prefab.prefabName.Contains("Mushroom"))
+            {
+                prefab = validReplacements.GetRandomElementFromList(rng);
+            }
+            else //other enemy types with multiple entries
+            if (prefab.prefabName.Contains("Fluke") || prefab.prefabName.Contains("fluke"))
+            {
+                prefab = validReplacements.GetRandomElementFromList(rng);
+            }
+            else //other enemy types with multiple entries
+            if (prefab.prefabName.Contains("Zote"))
+            {
+                prefab = validReplacements.GetRandomElementFromList(rng);
+            }
+            else //other enemy types with multiple entries
+            if (prefab.prefabName.Contains("Colosseum"))
+            {
+                prefab = validReplacements.GetRandomElementFromList(rng);
+            }
+            return prefab;
+        }
+
         protected virtual ObjectMetadata ReplaceObject(ObjectMetadata originalObject, List<PrefabObject> validReplacements, RNG rng)
         {
-            var prefab = validReplacements.GetRandomElementFromList(rng);
-            GameObject newObject = Database.Spawn(prefab, originalObject);
-            newObject.SetParentToOthersParent(originalObject);
-            newObject.transform.position = originalObject.ObjectPosition;
-            ObjectMetadata metaObject = new ObjectMetadata();
-            metaObject.Setup(newObject, Database);
-            return metaObject;
+            //TODO: weight the list for a more even distro of kinds of enemies
+            var replacementPrefab = validReplacements.GetRandomElementFromList(rng);
+
+            //lame shuffle
+            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
+            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
+            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
+            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
+            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
+            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
+            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
+            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
+
+            var newObject = Database.Replace(originalObject, replacementPrefab);
+            newObject.Source.SetParentToOthersParent(originalObject);
+            newObject.ObjectPosition = originalObject.ObjectPosition;
+            return newObject;
         }
     }
 }

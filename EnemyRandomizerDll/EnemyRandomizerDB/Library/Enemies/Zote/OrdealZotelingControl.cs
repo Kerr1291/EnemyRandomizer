@@ -30,7 +30,7 @@ namespace EnemyRandomizerMod
             RNG geoRNG = new RNG();
             geoRNG.Reset();
 
-            thisMetadata.EnemyHealthManager.hp = other.DefaultHP;
+            thisMetadata.EnemyHealthManager.hp = other.OriginalPrefabHP;
             thisMetadata.EnemyHealthManager.SetGeoMedium(geoRNG.Rand(0, 5));
             thisMetadata.EnemyHealthManager.SetGeoSmall(geoRNG.Rand(1, 10));
 
@@ -83,7 +83,7 @@ namespace EnemyRandomizerMod
 
     public class OrdealZotelingSpawner : DefaultSpawner<OrdealZotelingControl> { }
 
-    public class OrdealZotelingPrefabConfig : DefaultPrefabConfig<OrdealZotelingControl> { }
+    public class OrdealZotelingPrefabConfig : DefaultPrefabConfig { }
 
     /////
     //////////////////////////////////////////////////////////////////////////////
