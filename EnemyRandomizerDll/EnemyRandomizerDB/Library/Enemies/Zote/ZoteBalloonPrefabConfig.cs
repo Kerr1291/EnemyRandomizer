@@ -18,15 +18,15 @@ namespace EnemyRandomizerMod
 
         public float startYPos;
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
             RNG geoRNG = new RNG();
             geoRNG.Reset();
 
-            thisMetadata.EnemyHealthManager.hp = 1;
-            thisMetadata.EnemyHealthManager.SetGeoSmall(geoRNG.Rand(1, 5));
+            EnemyHealthManager.hp = 1;
+            EnemyHealthManager.SetGeoSmall(geoRNG.Rand(1, 5));
 
             var init = control.GetState("Init");
             init.DisableAction(2);
@@ -36,11 +36,11 @@ namespace EnemyRandomizerMod
             var setpos = control.GetState("Set Pos");
             setpos.RemoveTransition("ZERO HP");
 
-            this.OverrideState(control, "Set Pos", () =>
+            control.OverrideState("Set Pos", () =>
             {
                 RNG rng = new RNG();
                 rng.Reset();
-                gameObject.transform.localScale = new Vector3(rng.Rand(1f, 1.3f)*thisMetadata.SizeScale, rng.Rand(-4f,4f)*thisMetadata.SizeScale, gameObject.transform.localScale.z);
+                gameObject.transform.localScale = new Vector3(rng.Rand(1f, 1.3f)*SizeScale, rng.Rand(-4f,4f)*SizeScale, gameObject.transform.localScale.z);
 
                 var xpos = gameObject.transform.position.x;
                 control.FsmVariables.GetFsmFloat("Pos X").Value = xpos;
@@ -61,7 +61,7 @@ namespace EnemyRandomizerMod
             var death = control.GetState("Die");
             death.DisableAction(4);
 
-            this.OverrideState(control, "Reset", () => { GameObject.Destroy(gameObject); });
+            control.OverrideState( "Reset", () => { GameObject.Destroy(gameObject); });
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Spawn Pos");
             //this.AddResetToStateOnHide(control, "Init");

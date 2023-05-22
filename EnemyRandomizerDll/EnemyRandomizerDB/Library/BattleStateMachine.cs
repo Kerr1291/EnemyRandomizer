@@ -65,7 +65,7 @@ namespace EnemyRandomizerMod
             if (FSMAREA != null)
             {
                 var battleArea = FSMAREA.bounds;
-                var bmos = GameObject.FindObjectsOfType<BattleManagedObject>().ToList();
+                var bmos = GameObject.FindObjectsOfType<SpawnedObjectControl>().ToList();
                 var outsideArea = bmos.Where(x =>
                 {
                     var pos = x.transform.position;
@@ -81,7 +81,7 @@ namespace EnemyRandomizerMod
                     var dsec = x.GetComponent<DefaultSpawnedEnemyControl>();
                     if(dsec != null)
                     {
-                        var losPos = dsec.GetRandomPositionInLOSofPlayer(3f, 20f, 2f, 2f);
+                        var losPos = dsec.gameObject.GetRandomPositionInLOSofPlayer(3f, 20f, 2f, 2f);
                         x.transform.position = losPos;
                     }
                     else
@@ -99,16 +99,16 @@ namespace EnemyRandomizerMod
             {
                 Dev.LogWarning("Battle has started and we have no collider to check if all previous battle enemies are in the arena!");
 
-                var bmos = GameObject.FindObjectsOfType<BattleManagedObject>().ToList();
+                var bmos = SpawnedObjectControl.GetAllBattle.ToList();
                 bmos.ForEach(x =>
                 {
-                    if(!x.myMetaData.IsDisabledBySavedGameState
-                    && x.myMetaData.ActiveInHeirarchy
-                    && x.myMetaData.IsVisible
-                    && x.myMetaData.IsAReplacementObject)
+                    if( x.gameObject.activeInHierarchy
+                    && !x.gameObject.IsDisabledBySavedGameState()
+                    &&  x.gameObject.HasReplacedAnObject()
+                    &&  x.gameObject.IsVisible())
                     {
                         Dev.Log("Force killing pre-battle enemies for now until I implement a solution to check if they start inside the arena");
-                        x.myMetaData.EnemyHealthManager.Die(null, AttackTypes.Generic, true);
+                        x.gameObject.KillObjectNow();
                     }
                 });
             }
@@ -137,15 +137,15 @@ namespace EnemyRandomizerMod
 
                 if(updateRate > 1f)
                 {
-                    int count = GameObject.FindObjectsOfType<BattleManagedObject>()
-                        .Select(x => x.GetComponent<DefaultSpawnedEnemyControl>())
-                        .Count(x =>
-                        {
-                            if (x.control != null)
-                                return x.control.enabled == true;
-                            else
-                                return x.gameObject.activeInHierarchy == true;
-                        });
+                    int count = SpawnedObjectControl.GetAllBattle.Count();
+                        //.Select(x => x.GetComponent<DefaultSpawnedEnemyControl>())
+                        //.Count(x =>
+                        //{
+                        //    if (x.control != null)
+                        //        return x.control.enabled == true;
+                        //    else
+                        //        return x.gameObject.activeInHierarchy == true;
+                        //});
 
                     if(count > 0)
                     {
@@ -374,7 +374,7 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public void RegisterEnemyDeath(BattleManagedObject bmo)
+        public void RegisterEnemyDeath(SpawnedObjectControl bmo)
         {
             bool updatedSomething = false;
             bool forceOpenGates = false;
@@ -427,14 +427,14 @@ namespace EnemyRandomizerMod
                 FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
             }
 
-            if(isWhitePalace && bmo.replacedMetaData.DatabaseName.Contains("Royal Guard"))
+            if(isWhitePalace && (bmo != null && bmo.name.Contains("Royal Guard")))
             {
                 triggerNextWave = false;
                 forceOpenGates = true;
                 FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
             }
 
-            if(isFungus1_32 && GameObject.FindObjectsOfType<BattleManagedObject>().Where(x => x != bmo).Count() <= 0)
+            if(isFungus1_32 && GameObject.FindObjectsOfType<SpawnedObjectControl>().Where(x => x != bmo).Count() <= 0)
             {
                 forceOpenGates = true;
             }
@@ -467,14 +467,9 @@ namespace EnemyRandomizerMod
             //when everything is dead
             if (!updatedSomething || (updatedSomething && forceOpenGates && waitingOnBossKill))
             {
-                var infos = GameObject.FindObjectsOfType<BattleManagedObject>().Select(x =>
-                {
-                    var info = new ObjectMetadata();
-                    info.Setup(x.gameObject, EnemyRandomizerDatabase.GetDatabase());
-                    return info;
-                }).ToList();
+                var allBattle = SpawnedObjectControl.GetAllBattle;
 
-                if (infos.Count <= 0 || !infos.Any(x => x.IsVisible))
+                if (!allBattle.Any(x => x.gameObject.IsVisible()))
                 {
                     battleStarted = false;
                     OpenGates();
@@ -488,9 +483,9 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public void RegisterEnemy(BattleManagedObject bmo)
-        {
-        }
+        //public void RegisterEnemy(BattleManagedObject bmo)
+        //{
+        //}
 
         public static void OpenGates(bool isWhitePalace = false)
         {

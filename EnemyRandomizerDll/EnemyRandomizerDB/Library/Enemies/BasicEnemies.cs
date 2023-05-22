@@ -93,16 +93,6 @@ namespace EnemyRandomizerMod
     /////
     public class MantisHeavyControl : DefaultSpawnedEnemyControl
     {
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-        }
-
-        protected override void SetDefaultPosition()
-        {
-            base.SetDefaultPosition();
-            gameObject.GetOrAddComponent<PreventOutOfBounds>();
-        }
     }
 
     public class MantisHeavySpawner : DefaultSpawner<MantisHeavyControl> { }
@@ -171,7 +161,7 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Centipede";
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
@@ -179,7 +169,7 @@ namespace EnemyRandomizerMod
             //this.AddResetToStateOnHide(control, "Init");
 
             var chooseDigPoint = control.GetState("Choose Dig Point");
-            DisableActions(chooseDigPoint, 0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+            chooseDigPoint.DisableActions(0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
             chooseDigPoint.AddCustomAction(() => {
 
                 var groundUnderHero = SpawnerExtensions.GetGroundRay(HeroController.instance.gameObject);
@@ -188,21 +178,17 @@ namespace EnemyRandomizerMod
 
                 transform.position = underGroundPoint;
 
-                thisMetadata.MRenderer.enabled = false;
-                thisMetadata.PhysicsBody.isKinematic = false;
-                thisMetadata.HeroDamage.damageDealt = 0;
-                if(thisMetadata.EnemyHealthManager != null)
-                    thisMetadata.EnemyHealthManager.IsInvincible = true;
-                thisMetadata.Collider.enabled = true;
+                MRenderer.enabled = false;
+                PhysicsBody.isKinematic = false;
+                HeroDamage.damageDealt = 0;
+                if(EnemyHealthManager != null)
+                    EnemyHealthManager.IsInvincible = true;
+                Collider.enabled = true;
 
             });
 
             var dig = control.GetState("Dig");
-            DisableActions(dig, 4);
-        }
-
-        protected override void SetDefaultPosition()
-        {
+            dig.DisableActions(4);
         }
     }
 
@@ -211,10 +197,6 @@ namespace EnemyRandomizerMod
     public class BabyCentipedePrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
 
 
@@ -385,7 +367,7 @@ namespace EnemyRandomizerMod
     /////
     public class ZombieMylaControl : DefaultSpawnedEnemyControl
     {
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
@@ -474,13 +456,13 @@ namespace EnemyRandomizerMod
         public override string spawnEntityOnDeath => entityToSpawnOnDeath;
         protected string entityToSpawnOnDeath;
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
-            willExplodeOnDeath = RollProbability(out int _, isExplodingHuskChance, isSpecialHuskChanceMax);
-            bool willEmitOnDeath = RollProbability(out int _, isEmissionHuskChance, isSpecialHuskChanceMax);
-            isSuperHusk = RollProbability(out int _, isSuperHuskChance, isSpecialHuskChanceMax);
+            willExplodeOnDeath = SpawnerExtensions.RollProbability(out int _, isExplodingHuskChance, isSpecialHuskChanceMax);
+            bool willEmitOnDeath = SpawnerExtensions.RollProbability(out int _, isEmissionHuskChance, isSpecialHuskChanceMax);
+            isSuperHusk = SpawnerExtensions.RollProbability(out int _, isSuperHuskChance, isSpecialHuskChanceMax);
                                     
             if (willExplodeOnDeath || willEmitOnDeath)
             {
@@ -489,12 +471,12 @@ namespace EnemyRandomizerMod
                     entityToSpawnOnDeath = "Galien Mini Hammer";
                 }
 
-                SetGeoRandomBetween(420, 1420);
+                Geo = SpawnerExtensions.GetRandomValueBetween(420, 1420);
 
                 CurrentHPf = CurrentHPf * 0.5f;
-                thisMetadata.ApplySizeScale(thisMetadata.SizeScale + 0.2f);
+                gameObject.ScaleObject(SizeScale + 0.2f);
 
-                AddParticleEffect_TorchFire();
+                gameObject.AddParticleEffect_TorchFire();
             }   
 
             if (isSuperHusk)
@@ -502,16 +484,16 @@ namespace EnemyRandomizerMod
                 Geo = Geo * 2;
 
                 CurrentHPf = CurrentHPf * 0.5f;
-                thisMetadata.ApplySizeScale(thisMetadata.SizeScale + 0.4f);
+                gameObject.ScaleObject(SizeScale + 0.4f);
 
-                AddParticleEffect_TorchShadeEmissions();
+                gameObject.AddParticleEffect_TorchShadeEmissions();
             }
         }
 
-        protected override void OnHit()
+        protected override void OnHit(int dmgAmount)
         {
             if(isSuperHusk)
-                SpawnEntity("Shot Markoth Nail",true);
+                gameObject.SpawnEntity("Shot Markoth Nail", true);
         }
     }
 
@@ -529,18 +511,8 @@ namespace EnemyRandomizerMod
     /////
     public class CeilingDropperControl : DefaultSpawnedEnemyControl
     {
-        protected override void SetDefaultPosition()       
-        {
-            var roof = SpawnerExtensions.GetRoof(gameObject);
-            if (roof.distance > 200f)
-            {
-                gameObject.StickToClosestSurface(200f, .5f, false, true);
-            }
-            else
-            {
-                gameObject.StickToRoof(.5f, true);
-            }
-        }
+        public override float spawnPositionOffset => .5f;
+        public override bool spawnOrientationIsFlipped => true;
     }
 
     public class CeilingDropperSpawner : DefaultSpawner<CeilingDropperControl> { }
@@ -629,10 +601,7 @@ namespace EnemyRandomizerMod
     /////
     public class PlantTrapControl : DefaultSpawnedEnemyControl
     {
-        protected override void SetDefaultPosition()
-        {
-            gameObject.StickToClosestSurface(200f, 0f, false, false);
-        }
+        public override float spawnPositionOffset => 0f;
     }
 
     public class PlantTrapSpawner : DefaultSpawner<PlantTrapControl> { }
@@ -704,10 +673,8 @@ namespace EnemyRandomizerMod
     /////
     public class PlantTurretControl : DefaultSpawnedEnemyControl
     {
-        protected override void SetDefaultPosition()
-        {
-            gameObject.StickToClosestSurface(200f, 0f, true, false);
-        }
+        public override float spawnPositionOffset => 0f;
+        public override bool spawnShouldStickCorpse => true;
     }
 
     public class PlantTurretSpawner : DefaultSpawner<PlantTurretControl> { }
@@ -724,10 +691,9 @@ namespace EnemyRandomizerMod
     /////
     public class PlantTurretRightControl : DefaultSpawnedEnemyControl
     {
-        protected override void SetDefaultPosition()
-        {
-            gameObject.StickToClosestSurface(200f, 0f, true, true);
-        }
+        public override float spawnPositionOffset => 0f;
+        public override bool spawnShouldStickCorpse => true;
+        public override bool spawnOrientationIsFlipped => true;
     }
 
     public class PlantTurretRightSpawner : DefaultSpawner<PlantTurretRightControl> { }
@@ -863,10 +829,8 @@ namespace EnemyRandomizerMod
     /////
     public class MushroomTurretControl : DefaultSpawnedEnemyControl
     {
-        protected override void SetDefaultPosition()
-        {
-            gameObject.StickToClosestSurface(200f, 0f, true, false);
-        }
+        public override float spawnPositionOffset => 0f;
+        public override bool spawnShouldStickCorpse => true;
     }
 
     public class MushroomTurretSpawner : DefaultSpawner<MushroomTurretControl> { }
@@ -914,10 +878,9 @@ namespace EnemyRandomizerMod
     /////
     public class AbyssCrawlerControl : DefaultSpawnedEnemyControl
     {
-        protected override void SetDefaultPosition()
-        {
-            gameObject.StickToClosestSurface(100f, extraOffsetScale: -1f, alsoStickCorpse: false, flipped: true);
-        }
+        public override float spawnPositionOffset => -1f;
+        public override bool spawnShouldStickCorpse => false;
+        public override bool spawnOrientationIsFlipped => true;
     }
 
     public class AbyssCrawlerSpawner : DefaultSpawner<AbyssCrawlerControl> { }
@@ -936,10 +899,8 @@ namespace EnemyRandomizerMod
     /////
     public class MinesCrawlerControl : DefaultSpawnedEnemyControl
     {
-        protected override void SetDefaultPosition()
-        {
-            gameObject.StickToClosestSurface(100f, extraOffsetScale: 1.3f, alsoStickCorpse: false, flipped: false);
-        }
+        public override float spawnPositionOffset => 1.3f;
+
     }
 
     public class MinesCrawlerSpawner : DefaultSpawner<MinesCrawlerControl> { }
@@ -1003,17 +964,7 @@ namespace EnemyRandomizerMod
     /////
     public class MushroomBabyControl : DefaultSpawnedEnemyControl
     {
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            SetGeoRandomBetween(1, 50);
-        }
-
-        protected override void SetDefaultPosition()
-        {
-            gameObject.StickToGround(1f);
-        }
+        public override float spawnPositionOffset => 1f;
     }
 
     public class MushroomBabySpawner : DefaultSpawner<MushroomBabyControl> { }
@@ -1036,31 +987,31 @@ namespace EnemyRandomizerMod
 
         protected Func<GameObject> attackSpawner;
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
             var control = gameObject.LocateMyFSM("Mush Roller");
-            attackSpawner = GetRandomAttackSpawnerFunc();
+            attackSpawner = gameObject.GetRandomAttackSpawnerFunc();
 
-            bool isSuperShroom = RollProbability(out int _, chanceToSpawnSuperShroomOutOf100, 100);
+            bool isSuperShroom = SpawnerExtensions.RollProbability(out int _, chanceToSpawnSuperShroomOutOf100, 100);
 
             if (isSuperShroom)
             {
                 var airTrail = control.GetState("In Air");
                 airTrail.DisableAction(3);
                 airTrail.InsertCustomAction(() => {
-                    StartTrailEffectSpawns(superEffectsToSpawn, spawnRate, attackSpawner);
+                    this.StartTrailEffectSpawns(superEffectsToSpawn, spawnRate, attackSpawner);
                 }, 3);
 
                 var groundTrail = control.GetState("Roll");
                 groundTrail.DisableAction(3);
                 groundTrail.InsertCustomAction(() => {
-                    StartTrailEffectSpawns(superEffectsToSpawn, spawnRate, attackSpawner);
+                    this.StartTrailEffectSpawns(superEffectsToSpawn, spawnRate, attackSpawner);
                 }, 3);
 
                 //add some visual notification that this enemy is different
-                AddParticleEffect_WhiteSoulEmissions();
+                gameObject.AddParticleEffect_WhiteSoulEmissions();
             }
         }
     }
@@ -1095,10 +1046,7 @@ namespace EnemyRandomizerMod
     /////
     public class MantisControl : DefaultSpawnedEnemyControl
     {
-        protected override void SetDefaultPosition()
-        {
-            gameObject.StickToGround(1f);
-        }
+        public override float spawnPositionOffset => 1f;
     }
 
     public class MantisSpawner : DefaultSpawner<MantisControl> { }
@@ -1291,13 +1239,10 @@ namespace EnemyRandomizerMod
         public override string spawnEntityOnDeath => spawnOnDeath;
         public string spawnOnDeath = "Inflater";
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
-            Geo = 2;
-
-            var effect = AddParticleEffect_WhiteSoulEmissions();
-            effect.startColor = Color.green;
+            gameObject.AddParticleEffect_WhiteSoulEmissions(Color.green);
         }
     }
 
@@ -1319,13 +1264,10 @@ namespace EnemyRandomizerMod
         public override string spawnEntityOnDeath => spawnOnDeath;
         public string spawnOnDeath = "Health Scuttler";
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
-            Geo = 1;
-
-            var effect = AddParticleEffect_WhiteSoulEmissions();
-            effect.startColor = Color.cyan;
+            gameObject.AddParticleEffect_WhiteSoulEmissions(Color.cyan);
         }
     }
 
@@ -1348,13 +1290,10 @@ namespace EnemyRandomizerMod
         public string spawnOnDeath = "Jelly Egg Bomb";
 
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
-
-            Geo = 3;
-
-            AddParticleEffect_TorchFire();
+            gameObject.AddParticleEffect_TorchFire();
         }
     }
 
@@ -1376,13 +1315,10 @@ namespace EnemyRandomizerMod
         public override string spawnEntityOnDeath => spawnOnDeath;
         public string spawnOnDeath = "HK Plume Prime";
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
-
-            Geo = 9;
-
-            AddParticleEffect_WhiteSoulEmissions();
+            gameObject.AddParticleEffect_WhiteSoulEmissions();
         }
     }
 
@@ -1410,18 +1346,18 @@ namespace EnemyRandomizerMod
         public int eliteChance = 2;
         public bool isElite;
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
-            isElite = RollProbability(out _, eliteChance, 10);
+            isElite = SpawnerExtensions.RollProbability(out _, eliteChance, 10);
 
             if(isElite)
             {
-                SetGeoRandomBetween(200, 420);
+                Geo = SpawnerExtensions.GetRandomValueBetween(200, 420);
 
-                thisMetadata.Sprite.color = Color.red;
-                AddParticleEffect_TorchFire();
+                Sprite.color = Color.red;
+                gameObject.AddParticleEffect_TorchFire();
             }
 
             var throwState = control.GetState("Throw");
@@ -1432,10 +1368,10 @@ namespace EnemyRandomizerMod
                 var throwObjectPrefab = throwObjectAction.gameObject.Value;
 
                 var kgShot = throwObjectPrefab;
-                var scene = thisMetadata.ObjectPrefab.source.Scene;
-                if(CreateNewDatabasePrefabObject(ShotKingsGuard, kgShot, scene, PrefabObject.PrefabType.Hazard))
+                var scene = gameObject.GetObjectPrefab().source.Scene;
+                if(SpawnerExtensions.CreateNewDatabasePrefabObject(ShotKingsGuard, kgShot, scene, PrefabObject.PrefabType.Hazard))
                 {
-                    KingsGuardShotObj = thisMetadata.DB.Objects[ShotKingsGuard];
+                    KingsGuardShotObj = EnemyRandomizerDatabase.GetDatabase().Objects[ShotKingsGuard];
                 }
             }
 
@@ -1458,7 +1394,7 @@ namespace EnemyRandomizerMod
                     homing.startupRate = new AnimationCurve();
                     homing.accelerationOverDistance = new AnimationCurve();
                     homing.maxVelocity = 30f;
-                    homing.initialVelocity = DirectionToPlayer() * 5f;
+                    homing.initialVelocity = gameObject.DirectionToPlayer() * 5f;
                     homing.startupRate.AddKey(0f, 0f);
                     homing.startupRate.AddKey(0.5f, 0.5f);
                     homing.startupRate.AddKey(1f, 1f);
@@ -1470,11 +1406,11 @@ namespace EnemyRandomizerMod
                     homing.StartCoroutine(DestroyBoomerangAfterTime(5f));
 
                     lastBoomerang.SetActive(true);
-                    AddParticleEffect_TorchFire(2, lastBoomerang.transform);
+                    gameObject.AddParticleEffect_TorchFire(2, lastBoomerang.transform);
                 }
             }, 0);
             //TODO: add a check to see if anything was thrown
-            AddTimeoutAction(throwState, "CAUGHT", isElite ? .7f : 2f);
+            control.AddTimeoutAction(throwState, "CAUGHT", isElite ? .7f : 2f);
 
             var throwCatch = control.GetState("Throw Catch");
             throwCatch.InsertCustomAction(() => {
@@ -1509,7 +1445,7 @@ namespace EnemyRandomizerMod
             yield return new WaitForSeconds(5f);
             if(lastBoomerang != null)
             {
-                SpawnExplosionAt(lastBoomerang.transform.position);
+                lastBoomerang.transform.position.SpawnExplosionAt();
                 Destroy(lastBoomerang);
                 lastBoomerang = null;
             }
@@ -1529,10 +1465,6 @@ namespace EnemyRandomizerMod
     /////
     public class MantisFlyerChildControl : DefaultSpawnedEnemyControl
     {
-        protected override void SetDefaultPosition()
-        {
-            gameObject.StickToClosestSurface(200f, false);
-        }
     }
 
     public class MantisFlyerChildSpawner : DefaultSpawner<MantisFlyerChildControl> { }
@@ -1550,21 +1482,21 @@ namespace EnemyRandomizerMod
     /////
     public class FatFlukeControl : DefaultSpawnedEnemyControl
     {
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
-            if (thisMetadata.SizeScale < 0.7f)
+            if (SizeScale < 0.7f)
             {
                 DamageDealt = 1;
                 CurrentHPf *= 0.5f;
             }
-            else if (thisMetadata.SizeScale > 1.5f)
+            else if (SizeScale > 1.5f)
             {
                 DamageDealt = 3;
                 Geo += 220;
             }
-            else if (thisMetadata.SizeScale > 2.4f)
+            else if (SizeScale > 2.4f)
             {
                 DamageDealt = 4;
                 Geo += 420;
@@ -1606,7 +1538,7 @@ namespace EnemyRandomizerMod
     /////  TODO: fix the item transfer
     public class EggSacControl : DefaultSpawnedEnemyControl
     {
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 

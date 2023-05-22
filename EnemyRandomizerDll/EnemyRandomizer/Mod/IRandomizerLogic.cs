@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using Satchel.BetterMenus;
+using UnityEngine;
 
 namespace EnemyRandomizerMod
 {
@@ -90,27 +91,27 @@ namespace EnemyRandomizerMod
         /// <summary>
         /// Check the logic to see if anything should prevent this from being replaced
         /// </summary>
-        bool CanReplaceObject(ObjectMetadata metaObject);
+        bool CanReplaceObject(GameObject gameObject);
 
         /// <summary>
         /// Gets the kinds of things that may be used as replacements
         /// </summary>
-        List<PrefabObject> GetValidReplacements(ObjectMetadata objectToModify, List<PrefabObject> validReplacementObjects);
+        List<PrefabObject> GetValidReplacements(GameObject objectToModify, List<PrefabObject> validReplacementObjects);
 
         /// <summary>
         /// Configure the RNG/seed for the next thing to be replaced
         /// </summary>
-        RNG GetRNG(ObjectMetadata objectToModify, RNG rng, int seed);
+        RNG GetRNG(GameObject objectToModify, RNG rng, int seed);
 
         /// <summary>
-        /// Use some kind of logic to replace things
+        /// Use some kind of logic to replace things, return currentPotentialReplacement as the default or something new if you want to substitute the thing that will be spawned
         /// </summary>
-        ObjectMetadata GetReplacement(ObjectMetadata currentPotentialReplacement, ObjectMetadata originalObject, List<PrefabObject> validReplacementObjects, RNG rng);
+        GameObject GetReplacement(GameObject currentPotentialReplacement, GameObject originalObject, List<PrefabObject> validReplacementObjects, RNG rng);
         
         /// <summary>
         /// Use some kind of logic to optionally modify an object 
         /// </summary>
-        void ModifyObject(ObjectMetadata objectToModify, ObjectMetadata originalObject);
+        void ModifyObject(GameObject objectToModify, GameObject originalObject);
 
         /// <summary>
         /// Use some kind of logic to create/modify persitent bool item's data
@@ -176,27 +177,27 @@ namespace EnemyRandomizerMod
         {
         }
 
-        public virtual bool CanReplaceObject(ObjectMetadata metaObject)
+        public virtual bool CanReplaceObject(GameObject metaObject)
         {
             return true;
         }
 
-        public virtual List<PrefabObject> GetValidReplacements(ObjectMetadata originalObject, List<PrefabObject> validReplacementObjects)
+        public virtual List<PrefabObject> GetValidReplacements(GameObject originalObject, List<PrefabObject> validReplacementObjects)
         {
             return validReplacementObjects;
         }
 
-        public virtual RNG GetRNG(ObjectMetadata objectToModify, RNG rng, int seed)
+        public virtual RNG GetRNG(GameObject objectToModify, RNG rng, int seed)
         {
             return rng;
         }
 
-        public virtual ObjectMetadata GetReplacement(ObjectMetadata newObject, ObjectMetadata originalObject, List<PrefabObject> validReplacements, RNG rng)
+        public virtual GameObject GetReplacement(GameObject currentPotentialReplacement, GameObject originalObject, List<PrefabObject> validReplacements, RNG rng)
         {
-            return newObject == null ? originalObject : newObject;
+            return currentPotentialReplacement;
         }
 
-        public virtual void ModifyObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
+        public virtual void ModifyObject(GameObject objectToModify, GameObject originalObject)
         {
         }
 
@@ -255,37 +256,3 @@ namespace EnemyRandomizerMod
         }
     }
 }
-
-
-
-
-
-///// <summary>
-///// Gets the kinds of hazards that may be used as replacements
-///// </summary>
-//List<PrefabObject> GetAllowedHazardReplacements(ObjectMetadata sourceData);
-
-///// <summary>
-///// Use some kind of logic to replace/modify hazards
-///// </summary>
-//GameObject ReplaceHazardObject(GameObject other, List<PrefabObject> allowedReplacements, RNG rng);
-
-///// <summary>
-///// Use some kind of logic to modify a (potentially) new hazard using the given source data
-///// </summary>
-//ObjectMetadata ModifyHazardObject(ObjectMetadata other, ObjectMetadata sourceData);
-
-///// <summary>
-///// Gets the kinds of effects that may be used as replacements
-///// </summary>
-//List<PrefabObject> GetAllowedEffectReplacements(ObjectMetadata sourceData);
-
-///// <summary>
-///// Use some kind of logic to replace effects/projectiles
-///// </summary>
-//GameObject ReplacePooledObject(GameObject other, List<PrefabObject> allowedReplacements, RNG rng);
-
-///// <summary>
-///// Use some kind of logic to modify a (potentially) new effect/projectile using the given source data
-///// </summary>
-//ObjectMetadata ModifyPooledObject(ObjectMetadata other, ObjectMetadata sourceData);

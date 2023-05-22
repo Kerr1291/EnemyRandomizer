@@ -15,16 +15,12 @@ namespace EnemyRandomizerMod
         public float startYPos;
         public float maxSuck = 5f;
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
             RNG geoRNG = new RNG();
             geoRNG.Reset();
-
-            thisMetadata.EnemyHealthManager.hp = other.Source != null ? other.EnemyHealthManager.hp : other.OriginalPrefabHP;
-            thisMetadata.EnemyHealthManager.SetGeoLarge(geoRNG.Rand(1, 15));
-            thisMetadata.EnemyHealthManager.SetGeoMedium(geoRNG.Rand(1, 5));
 
             var init = control.GetState("Init");
             init.DisableAction(4);
@@ -34,9 +30,9 @@ namespace EnemyRandomizerMod
             var appearAnim = appear.GetAction<Tk2dPlayAnimationWithEvents>(1);
             appear.RemoveTransition("RETRY");
 
-            this.OverrideState(control, "Retry", () => { });
+            control.OverrideState( "Retry", () => { });
 
-            this.OverrideState(control, "Appear", () =>
+            control.OverrideState( "Appear", () =>
             {
                 gameObject.GetComponent<Collider2D>().enabled = false;
                 gameObject.GetComponent<MeshRenderer>().enabled = true;
@@ -87,7 +83,7 @@ namespace EnemyRandomizerMod
 
             suck.InsertCustomAction(() => {
 
-                if(DistanceToPlayer() > maxSuck)
+                if(gameObject.DistanceToPlayer() > maxSuck)
                 {
                     control.SendEvent("FINISHED");
                 }
@@ -106,7 +102,7 @@ namespace EnemyRandomizerMod
             death.DisableAction(10);
             death.DisableAction(11);
 
-            this.OverrideState(control, "Dead", () => { });
+            control.OverrideState("Dead", () => { });
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Appear");
             //this.AddResetToStateOnHide(control, "Init");

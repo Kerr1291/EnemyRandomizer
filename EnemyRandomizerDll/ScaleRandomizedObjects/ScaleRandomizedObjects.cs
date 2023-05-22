@@ -37,55 +37,58 @@ namespace EnemyRandomizerMod
             EnemyRandomizer.Instance.enemyReplacer.loadedLogics.Add(this);
         }
 
-        public override void ModifyObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
+        public override void ModifyObject(GameObject objectToModify, GameObject originalObject)
         {
-            if (objectToModify.ObjectType == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value)
+            if (objectToModify.ObjectType() == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value)
             {
                 ScaleObject(objectToModify, originalObject);
             }
 
-            else if (objectToModify.ObjectType == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value)
+            else if (objectToModify.ObjectType() == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value)
             {
                 ScaleObject(objectToModify, originalObject);
             }
 
-            else if (objectToModify.ObjectType == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value)
+            else if (objectToModify.ObjectType() == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value)
             {
                 ScaleObject(objectToModify, originalObject);
             }
         }
 
-        public virtual void ScaleObject(ObjectMetadata objectToModify, ObjectMetadata originalObject)
+        public virtual void ScaleObject(GameObject objectToModify, GameObject originalObject)
         {
-            if(Settings.GetOption(CustomOptions[3].Name).value)
+            float scale = 1f;
+            if (Settings.GetOption(CustomOptions[3].Name).value)
             {
-                ApplyRelativeSizeScale(objectToModify, originalObject);
+                scale = ApplyRelativeSizeScale(objectToModify, originalObject);
             }
             else
             {
                 Dev.LogWarning("Using randomized scale. This might create some enemies that are way too big or small");
                 RNG prng = new RNG();
-                prng.Seed = objectToModify.ObjectName.GetHashCode() + objectToModify.SceneName.GetHashCode();
-                float scale = prng.Rand(.2f, 3f);
-                objectToModify.ApplySizeScale(scale);
+                prng.Seed = objectToModify.ObjectName().GetHashCode() + objectToModify.SceneName().GetHashCode();
+                scale = prng.Rand(.2f, 3f);
+                objectToModify.ScaleObject(scale);
             }
 
             //should we also scale the audio to match?
             if (Settings.GetOption(CustomOptions[4].Name).value)
             {
-                objectToModify.SetAudioToMatchScale();
+                objectToModify.SetAudioToMatchScale(scale);
             }
         }
 
-        public virtual void ApplyRelativeSizeScale(ObjectMetadata objectToModify, ObjectMetadata originalObject)
+        public virtual float ApplyRelativeSizeScale(GameObject objectToModify, GameObject originalObject)
         {
+            float scale = 1f;
             //TODO: maybe apply some default scaling to bigger enemies, for now just return them
             if (originalObject != null)
             {
-                float scale = objectToModify.GetRelativeScale(originalObject, .2f);
-                Dev.Log($"Relative scale of {objectToModify.DatabaseName} to {originalObject.DatabaseName} is {scale}");
-                objectToModify.ApplySizeScale(scale);
+                scale = objectToModify.GetRelativeScale(originalObject, .2f);
+                Dev.Log($"Relative scale of {objectToModify.GetDatabaseKey()} to {originalObject.GetDatabaseKey()} is {scale}");
+                objectToModify.ScaleObject(scale);
             }
+            return scale;
         }
     }
 }

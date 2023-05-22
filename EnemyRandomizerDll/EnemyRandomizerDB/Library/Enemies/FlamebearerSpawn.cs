@@ -17,7 +17,7 @@ namespace EnemyRandomizerMod
     {
         public abstract int Level { get; }
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
@@ -30,7 +30,7 @@ namespace EnemyRandomizerMod
             gameObject.GetComponent<BoxCollider2D>().enabled = true;
 
             var setLevel = control.GetState("Set Level");
-            OverrideState(control, "Set Level", () => {
+            control.OverrideState("Set Level", () => {
                 if (Level == 1)
                     control.SendEvent("Level 1");
                 else if (Level == 1)
@@ -44,8 +44,9 @@ namespace EnemyRandomizerMod
             this.InsertHiddenState(control, "Init", "START", "Set Level");
         }
 
-        protected override void ScaleHP()
+        protected override int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
         {
+            var result = base.GetStartingMaxHP(objectThatWillBeReplaced);
             float hpScale = GameObject.FindObjectsOfType<FlamebearerControl>().Length;
 
             if (hpScale < 1f)
@@ -53,19 +54,12 @@ namespace EnemyRandomizerMod
             else if (hpScale > 1f)
                 hpScale *= 4f;
 
-            float curHP = thisMetadata.EnemyHealthManager.hp;
+            float curHP = result;
             float newHP = curHP / hpScale;
 
             //maps get insane when there's lots of these.... so scale down their HP really fast if there's more than 1
-            thisMetadata.EnemyHealthManager.hp = Mathf.Clamp(Mathf.FloorToInt(newHP), 1, Mathf.FloorToInt(curHP));
+            return Mathf.Clamp(Mathf.FloorToInt(newHP), 1, Mathf.FloorToInt(curHP));
         }
-
-        //protected override void Show()
-        //{
-        //    base.Show();
-        //    if(control != null)
-        //        control.Fsm.BroadcastEvent("GRIMMKIN SPAWN");
-        //}
     }
 
     public class FlamebearerSmallControl : FlamebearerControl

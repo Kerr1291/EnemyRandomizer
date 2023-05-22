@@ -53,10 +53,11 @@ namespace EnemyRandomizerMod
         {
             if (Instance.HasValue && Instance.Value != null)
             {
-                var bmo = gameObject.GetComponent<BattleManagedObject>();
-                if (bmo != null)
+                //var bmo = gameObject.GetComponent<BattleManagedObject>();
+                //if (bmo != null)
+                if(gameObject != null && gameObject.IsBattleEnemy())
                 {
-                    StateMachine.Value.RegisterEnemyDeath(bmo);
+                    StateMachine.Value.RegisterEnemyDeath(gameObject.GetComponent<SpawnedObjectControl>());
                     //bmo.myWave.RegisterEnemyDeath(bmo);
                 }
             }

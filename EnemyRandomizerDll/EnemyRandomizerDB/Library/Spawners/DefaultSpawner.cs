@@ -15,62 +15,154 @@ namespace EnemyRandomizerMod
 
     public class DefaultSpawner : ISpawner
     {
-        public virtual ObjectMetadata Spawn(PrefabObject p, ObjectMetadata source, EnemyRandomizerDatabase database)
+        public virtual bool corpseRemovedByEffect => false;
+        public virtual string corpseRemoveEffectName => null;
+
+        public virtual bool spawnEffectOnCorpseRemoved => false;
+        public virtual string spawnEffectOnCorpseRemovedEffectName => null;
+
+        public virtual EnemyRandomizerDatabase defaultDatabase => EnemyRandomizerDatabase.GetDatabase();
+
+        public virtual GameObject Spawn(PrefabObject prefabToSpawn, GameObject objectToReplace)
         {
             GameObject gameObject = null;
 
-            if(p.prefab == null)
+            if (prefabToSpawn.prefab == null)
             {
-                Dev.LogError("Cannot Instantiate a null object!");
+                Dev.LogError($"Cannot Instantiate a null object {prefabToSpawn}!");
+                return null;
             }    
 
             try
             {
-                gameObject = GameObject.Instantiate(p.prefab);
+                gameObject = GameObject.Instantiate(prefabToSpawn.prefab);
             }
             catch(Exception e)
             {
-                Dev.LogError($"Error when trying to instantiate {p.prefab} from {p.prefabType} at {p.source.path} in {p.source.Name}");
+                Dev.LogError($"Error when trying to instantiate {prefabToSpawn}");
             }
 
             if (gameObject == null)
                 return null;
 
-            if(source == null)
+            //format the name cleanly (remove the (clone) part)
+            gameObject.name = EnemyRandomizerDatabase.ToDatabaseKey(gameObject.name);
+
+            //apply a unique identifier
+            if (objectToReplace == null)
                 gameObject.name = gameObject.name + "(" + System.Guid.NewGuid().ToString() + ")"; //name values in parenthesis will be trimmed out when converting to a database key'd name
             else
-                gameObject.name = gameObject.name + $" ([{source.ObjectPosition.GetHashCode()}][{source.ScenePath.GetHashCode()}])"; //name values in parenthesis will be trimmed out when converting to a database key'd name
+                gameObject.name = gameObject.name + $" ([{objectToReplace.GetObjectPrefab().prefab.transform.position.GetHashCode()}][{objectToReplace.GetSceneHierarchyPath().GetHashCode()}])"; //name values in parenthesis will be trimmed out when converting to a database key'd name
 
-            return new ObjectMetadata(gameObject, database);
+            //parent it properly
+            if (objectToReplace != null)
+            {
+                gameObject.SetParentToOthersParent(objectToReplace);
+                gameObject.transform.position = objectToReplace.transform.position;
+            }
+
+            //don't do any more setup if it's replacing a pogo logic enemy
+            if (objectToReplace != null && objectToReplace.CheckIfIsPogoLogicType())
+            {
+                if (gameObject.GetComponent<SpawnedObjectControl>() != null)
+                {
+                    throw new InvalidOperationException("This object was already setup (somehow)");
+                }
+
+                var spawnedControl = gameObject.AddComponent<SpawnedObjectControl>();
+                spawnedControl.thisMetadata = new ObjectMetadata(gameObject);
+            }
+            else
+            {
+                var controller = AddController(gameObject);
+
+                controller.thisMetadata = new ObjectMetadata(gameObject);
+                controller.Setup(objectToReplace);
+
+                SetupSpawnedObject(controller);
+            }
+
+            return gameObject;
+        }
+
+        /// <summary>
+        /// Override this to add a different controller than the default
+        /// </summary>
+        public virtual DefaultSpawnedEnemyControl AddController(GameObject newlySpawnedObject)
+        {
+            Dev.Log("starting setup of default component");
+            return newlySpawnedObject.GetOrAddComponent<DefaultSpawnedEnemyControl>();
+        }
+
+        public virtual void SetupSpawnedObject(DefaultSpawnedEnemyControl newlySpawnedObject)
+        {
+            var gameObject = newlySpawnedObject.gameObject;
+
+            if (corpseRemovedByEffect)
+            {
+                GameObject corpse = gameObject.GetCorpseObject();
+                if (corpse != null)
+                {
+                    corpse.AddCorpseRemoverWithEffect(gameObject, corpseRemoveEffectName);
+                }
+            }
+
+            if (spawnEffectOnCorpseRemoved)
+            {
+                GameObject corpse = gameObject.GetCorpseObject();
+                if (corpse != null)
+                {
+                    corpse.AddEffectSpawnerOnCorpseRemoved(gameObject, spawnEffectOnCorpseRemovedEffectName);
+                }
+            }
         }
     }
 
     public class DefaultSpawner<TControlComponent> : DefaultSpawner
         where TControlComponent : DefaultSpawnedEnemyControl
     {
-        public override ObjectMetadata Spawn(PrefabObject p, ObjectMetadata source, EnemyRandomizerDatabase database)
+        public override DefaultSpawnedEnemyControl AddController(GameObject newlySpawnedObject)
         {
-            var newObject = base.Spawn(p, source, database);
-            var control = newObject.Source.GetOrAddComponent<TControlComponent>();
-            if (source != null && source.IsPogoLogic)
+            Dev.Log("starting setup of custom control component");
+            return newlySpawnedObject.GetOrAddComponent<TControlComponent>();
+        }
+    }
+
+    public abstract class SpawnEffect : MonoBehaviour
+    {
+        public string effectToSpawn = "Gas Explosion Recycle L";
+        public virtual bool destroyGameObject => false;
+        public virtual bool allowRandomizationOfSpawn => false;
+
+        protected virtual void Spawn()
+        {
+            if (!gameObject.IsInAValidScene())
+                return;
+
+            if (allowRandomizationOfSpawn)
             {
-                GameObject.Destroy(control);
+                EnemyRandomizerDatabase.CustomSpawn(transform.position, effectToSpawn, true);
             }
             else
             {
-                Dev.Log("enabling newly spawned object for setup");
-                newObject.Source.SetActive(true);
-
-                Dev.Log("starting setup of control component");
-                control.Setup(source);
-
-                Dev.Log("disabling newly setup object");
-                newObject.Source.SetActive(false);
-
-                Dev.Log("object disabled");
+                EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, effectToSpawn, null, true);
             }
-            return newObject;
+
+            if(destroyGameObject)
+                GameObject.Destroy(gameObject);
         }
+    }
+
+    public class CorpseRemover : SpawnEffect
+    {
+        public override bool destroyGameObject => true;
+
+        protected virtual void OnEnable() { Spawn(); }
+    }
+
+    public class SpawnEffectOnDestroy : SpawnEffect
+    {
+        protected virtual void OnDestroy() { Spawn(); }
     }
 
     public class CorpseOrientationFixer : MonoBehaviour
@@ -93,105 +185,13 @@ namespace EnemyRandomizerMod
         }
     }
 
-    public class CorpseRemover : MonoBehaviour
-    {
-        public string replacementEffect = "Pt Feather Burst";
-        protected virtual void OnEnable()
-        {
-            EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, replacementEffect, null, true);
-            GameObject.Destroy(gameObject);
-        }
-    }
-
-    public class SpawnOnDestroy : MonoBehaviour
-    {
-        public string spawnEntity = "Fly";
-        public bool didEnable = false;
-        public bool didSpawn = false;
-
-        public int? setHealthOnSpawn;
-
-        protected virtual void OnEnable()
-        {
-            didEnable = true;
-        }
-
-        protected virtual void OnDestroy()
-        {
-            if (!didEnable)
-                return;
-            if (didSpawn)
-                return;
-            if (gameObject == null)
-                return;
-            if (!gameObject.scene.IsValid())
-                return;
-            if (!gameObject.scene.isLoaded)
-                return;
-
-            var active = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-            if (!active.IsValid() || active.name != gameObject.scene.name)
-                return;
-
-            didSpawn = true;
-            var thing = EnemyRandomizerDatabase.GetDatabase().Spawn(spawnEntity);
-            thing.ObjectPosition = gameObject.transform.position;
-            if (thing != null)
-            {
-                var thinghm = thing.EnemyHealthManager;
-                if (setHealthOnSpawn != null && thinghm != null)
-                {
-                    thinghm.hp = setHealthOnSpawn.Value;
-                }
-            }
-            thing.ActivateSource();
-        }
-    }
-
-    public class ExplodeOnCorpseRemoved : MonoBehaviour
-    {
-        protected virtual void OnDestroy()
-        {
-            EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Gas Explosion Recycle L", null, true);
-        }
-    }
-
-    public class PositionFixer : MonoBehaviour
+    public class PositionLocker : MonoBehaviour
     {
         public Vector2 positionLock;
 
         protected virtual void Update()
         {
             transform.position = positionLock;
-        }
-    }
-
-    public class CustomTweener : MonoBehaviour
-    {
-        public float travelTime;
-        public Vector3 from;
-        public Vector3 to;
-
-        float t;
-        bool flipped;
-
-        protected virtual void Update()
-        {
-            if(flipped)
-            {
-                gameObject.transform.position = Vector3.Slerp(to, from, t / travelTime);
-            }
-            else
-            {
-                gameObject.transform.position = Vector3.Slerp(from, to, t / travelTime);
-            }
-
-            t += Time.deltaTime;
-            if (t >= travelTime)
-            {
-                t = 0f;
-                flipped = !flipped;
-            }
         }
     }
 }

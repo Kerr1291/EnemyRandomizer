@@ -21,16 +21,13 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Shroom Brawler";
 
-        public override void Setup(ObjectMetadata other)
+        public override float spawnPositionOffset => 1f;
+
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
             this.InsertHiddenState(control, "Facing Right?", "FINISHED", "Wake");
-        }
-
-        protected override void SetDefaultPosition()
-        {
-            gameObject.StickToGround(1f);
         }
     }
 
@@ -52,7 +49,7 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Mender Bug Ctrl";
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
@@ -89,13 +86,13 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Blocker Control";
 
-        public override bool dieChildrenOnDeath => true;
+        public override float spawnPositionOffset => 1f;
 
-        public override int maxBabies => 2; 
-
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
+
+            ChildController.maxChildren = 2;
 
             var fsm = control;
 
@@ -103,7 +100,7 @@ namespace EnemyRandomizerMod
             int level = GameManager.instance.GetPlayerDataInt("fireballLevel");
             if (level <= 0)
             {
-                thisMetadata.EnemyHealthManager.InvincibleFromDirection = -1;
+                EnemyHealthManager.InvincibleFromDirection = -1;
 
                 //disable the invincible state
                 var init = fsm.GetState("Init");
@@ -115,7 +112,7 @@ namespace EnemyRandomizerMod
             }
 
             //ignore the checks, allow it to spawn rollers all the time
-            this.OverrideState(fsm, "Can Roller?", () =>
+            fsm.OverrideState("Can Roller?", () =>
             {
                 //TODO: actual logic for spawning rollers, for now, some rng
                 RNG rng = new RNG();
@@ -133,15 +130,10 @@ namespace EnemyRandomizerMod
             var setgoa = roller.GetFirstActionOfType<SetGameObject>();
 
             //TODO: fix up their FSMs to work correctly with the activate and track method
-            setgoa.gameObject = SpawnAndTrackChild("Roller", transform.position, false);
+            setgoa.gameObject = ChildController.SpawnAndTrackChild("Roller", transform.position, false);
 
             //have it skip the roller assign state
             fsm.ChangeTransition("Fire", "FINISHED", "Shot Anim End");
-        }
-
-        protected override void SetDefaultPosition()
-        {
-            gameObject.StickToGround(1f);
         }
     }
 
@@ -166,11 +158,9 @@ namespace EnemyRandomizerMod
         //if true, will set the max babies to 5
         public bool isVanilla;
 
-        public override int maxBabies => isVanilla ? vanillaMaxBabies : 3;
-
         public override string FSMName => "Hive Zombie";
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
@@ -180,8 +170,11 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                isVanilla = thisMetadata.Source == other.Source;
+                isVanilla = gameObject == other;
             }
+
+            ChildController.maxChildren = isVanilla ? vanillaMaxBabies : 3;
+
 
             var FSM = control;
 
@@ -191,7 +184,7 @@ namespace EnemyRandomizerMod
             var hatchedAmount = FSM.GetState("Hatched Amount");
             hatchedAmount.DisableAction(0);
             hatchedAmount.AddCustomAction(() => {
-                if (children.Count >= maxBabies)
+                if (ChildController.AtMaxChildren)
                     FSM.SendEvent("CANCEL");
                 else 
                     FSM.SendEvent("FINISHED");
@@ -203,11 +196,11 @@ namespace EnemyRandomizerMod
             spot1.DisableAction(4);
             spot1.DisableAction(8);
             spot1.InsertCustomAction(() => {
-                var child = SpawnAndTrackChild("Bee Hatchling Ambient", transform.position, false);
+                var child = ChildController.SpawnAndTrackChild("Bee Hatchling Ambient", transform.position, false);
                 FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = child;
             },0); ;
             spot1.InsertCustomAction(() => {
-                FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = ActivateAndTrackSpawnedObject(FSM.FsmVariables.GetFsmGameObject("Hatchling").Value);
+                FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = ChildController.ActivateAndTrackSpawnedObject(FSM.FsmVariables.GetFsmGameObject("Hatchling").Value);
             }, 4);
 
             var spot2 = FSM.GetState("Spot 2");
@@ -216,11 +209,11 @@ namespace EnemyRandomizerMod
             spot2.DisableAction(4);
             spot2.DisableAction(8);
             spot2.InsertCustomAction(() => {
-                var child = SpawnAndTrackChild("Bee Hatchling Ambient", transform.position, false);
+                var child = ChildController.SpawnAndTrackChild("Bee Hatchling Ambient", transform.position, false);
                 FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = child;
             }, 0); ;
             spot2.InsertCustomAction(() => {
-                FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = ActivateAndTrackSpawnedObject(FSM.FsmVariables.GetFsmGameObject("Hatchling").Value);
+                FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = ChildController.ActivateAndTrackSpawnedObject(FSM.FsmVariables.GetFsmGameObject("Hatchling").Value);
             }, 4);
         }
     }
@@ -239,7 +232,9 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Chase";
 
-        public override void Setup(ObjectMetadata other)
+        public override float spawnPositionOffset => 1f;
+
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
@@ -249,11 +244,6 @@ namespace EnemyRandomizerMod
             //change the start transition to just begin the spawn antics
             control.ChangeTransition("Check Battle", "BATTLE", "Wait 2");
             control.RemoveTransition("Battle Inert", "BATTLE START");
-        }
-
-        protected override void SetDefaultPosition()
-        {
-            gameObject.StickToGround(1f);
         }
     }
 
@@ -278,7 +268,9 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Chase";
 
-        public override void Setup(ObjectMetadata other)
+        public override float spawnPositionOffset => 1f;
+
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
@@ -288,11 +280,6 @@ namespace EnemyRandomizerMod
             //change the start transition to just begin the spawn antics
             control.ChangeTransition("Check Battle", "BATTLE", "Wait 2");
             control.RemoveTransition("Battle Inert", "BATTLE START");
-        }
-
-        protected override void SetDefaultPosition()
-        {
-            gameObject.StickToGround(1f);
         }
     }
 
@@ -339,7 +326,7 @@ namespace EnemyRandomizerMod
             return true;
         }
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
@@ -352,7 +339,7 @@ namespace EnemyRandomizerMod
             //can't spawn here, just explode
             if(floorSpawn.collider == null)
             {
-                thisMetadata.EnemyHealthManager.Die(null, AttackTypes.Generic, true);
+                gameObject.KillObjectNow();
                 return;
             }
 
@@ -364,10 +351,10 @@ namespace EnemyRandomizerMod
             wallLeft = SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.left, 50f);
             wallRight = SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.right, 50f);
 
-            if (floorsize < (thisMetadata.OriginalObjectSize.x * this.thisMetadata.SizeScale))
+            if (floorsize < (gameObject.GetOriginalObjectSize().x * SizeScale))
             {
-                float ratio = (floorsize) / (thisMetadata.OriginalObjectSize.x * this.thisMetadata.SizeScale);
-                thisMetadata.ApplySizeScale(ratio * .5f);
+                float ratio = (floorsize) / (gameObject.GetOriginalObjectSize().x * SizeScale);
+                gameObject.ScaleObject(ratio * .5f);
             }
 
             //just skip this state
@@ -380,7 +367,7 @@ namespace EnemyRandomizerMod
             });
 
             var heroBeyondq = control.GetState("Hero Beyond?");
-            OverrideState(control, "Hero Beyond?", () =>
+            control.OverrideState("Hero Beyond?", () =>
             {
                 if(HeroInAggroRange())
                     control.SendEvent("FINISHED");
@@ -388,7 +375,7 @@ namespace EnemyRandomizerMod
                     control.SendEvent("CANCEL");
             });
 
-            OverrideState(control, "Emerge Right", () => {
+            control.OverrideState("Emerge Right", () => {
                 if (heroPos2d.x > floorCenter)
                 {
                     control.SendEvent("LEFT");
@@ -399,11 +386,11 @@ namespace EnemyRandomizerMod
                 control.FsmVariables.GetFsmFloat("Current Charge Speed").Value = -15f;
                 control.FsmVariables.GetFsmFloat("Emerge Speed").Value = -4f;
                 emergePoint = new Vector3(floorsize * .25f + floorCenter, floorSpawn.point.y, 0f);
-                SetXScaleSign(true);
+                gameObject.SetXScaleSign(true);
                 control.SendEvent("FINISHED");
             });
 
-            OverrideState(control, "Emerge Left", () => {
+            control.OverrideState("Emerge Left", () => {
                 if (heroPos2d.x < floorCenter)
                 {
                     control.SendEvent("RIGHT");
@@ -414,18 +401,18 @@ namespace EnemyRandomizerMod
                 control.FsmVariables.GetFsmFloat("Current Charge Speed").Value = 15f;
                 control.FsmVariables.GetFsmFloat("Emerge Speed").Value = 4f;
                 emergePoint = new Vector3(floorCenter - floorsize * .25f, floorSpawn.point.y, 0f);
-                SetXScaleSign(false);
+                gameObject.SetXScaleSign(false);
                 control.SendEvent("FINISHED");
             });
 
             var emerge = control.GetState("Emerge");
-            DisableActions(emerge, 1, 2, 3, 4, 5);
+            emerge.DisableActions(1, 2, 3, 4, 5);
             emerge.InsertCustomAction(() => {
                 transform.position = emergePoint;
             }, 0);
 
             var submergeCD = control.GetState("Submerge CD");
-            DisableActions(submergeCD, 6);
+            submergeCD.DisableActions(6);
         }
     }
 

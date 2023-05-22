@@ -21,7 +21,7 @@ namespace EnemyRandomizerMod
 
     public class FSMBossAreaControl : FSMAreaControlEnemy
     {
-        public override bool useCustomPositonOnShow => true;
+        public override bool useCustomPositonOnSpawn => true;
     }
 }
 

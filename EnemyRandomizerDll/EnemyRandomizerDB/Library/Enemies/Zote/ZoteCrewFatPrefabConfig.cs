@@ -13,14 +13,12 @@ namespace EnemyRandomizerMod
 
     public class ZoteCrewFatControl : FSMAreaControlEnemy
     {
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
-            Geo = 8;
-
             var init = control.GetState("Init");
-            DisableActions(init, 8);
+            init.DisableActions(8);
 
             var mult = control.GetState("Multiply");
             mult.InsertCustomAction(() => {
@@ -81,7 +79,7 @@ namespace EnemyRandomizerMod
             death.DisableAction(10);
             death.AddCustomAction(() => { GameObject.Destroy(gameObject); });
 
-            this.OverrideState(control, "Death Reset", () => { GameObject.Destroy(gameObject); });
+            control.OverrideState("Death Reset", () => { GameObject.Destroy(gameObject); });
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Multiply");
             //this.AddResetToStateOnHide(control, "Init");

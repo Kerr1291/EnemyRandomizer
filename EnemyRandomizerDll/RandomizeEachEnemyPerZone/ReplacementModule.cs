@@ -42,19 +42,19 @@ namespace EnemyRandomizerMod
             //EnemyRandomizer.Instance.enemyReplacer.loadedLogics.Add(this);
         }
 
-        public override List<PrefabObject> GetValidReplacements(ObjectMetadata originalObject, List<PrefabObject> validReplacementObjects)
+        public override List<PrefabObject> GetValidReplacements(GameObject originalObject, List<PrefabObject> validReplacementObjects)
         {
-            if (originalObject.ObjectType == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value)
+            if (originalObject.ObjectType() == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value)
             {
                 return GetValidEnemyReplacements(originalObject, validReplacementObjects);
             }
 
-            else if (originalObject.ObjectType == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value)
+            else if (originalObject.ObjectType() == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value)
             {
                 return GetValidHazardReplacements(validReplacementObjects);
             }
 
-            else if (originalObject.ObjectType == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value)
+            else if (originalObject.ObjectType() == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value)
             {
                 return GetValidEffectReplacements(validReplacementObjects);
             }
@@ -62,37 +62,37 @@ namespace EnemyRandomizerMod
             return validReplacementObjects;
         }
 
-        public override ObjectMetadata GetReplacement(ObjectMetadata newObject, ObjectMetadata originalObject, List<PrefabObject> validReplacements, RNG rng)
+        public override GameObject GetReplacement(GameObject currentPotentialReplacement, GameObject originalObject, List<PrefabObject> validReplacements, RNG rng)
         {
-            if (originalObject.ObjectType == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value)
+            if (originalObject.ObjectType() == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value)
             {
-                return ReplaceEnemy(originalObject, validReplacements, rng);
+                return ReplaceEnemy(currentPotentialReplacement, originalObject, validReplacements, rng);
             }
 
-            else if (originalObject.ObjectType == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value)
+            else if (originalObject.ObjectType() == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value)
             {
-                return ReplaceHazardObject(originalObject, validReplacements, rng);
+                return ReplaceHazardObject(currentPotentialReplacement, originalObject, validReplacements, rng);
             }
 
-            else if (originalObject.ObjectType == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value)
+            else if (originalObject.ObjectType() == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value)
             {
-                return ReplacePooledObject(originalObject, validReplacements, rng);
+                return ReplacePooledObject(currentPotentialReplacement, originalObject, validReplacements, rng);
             }
 
-            return newObject == null ? originalObject : newObject;
+            return base.GetReplacement(currentPotentialReplacement, originalObject, validReplacements, rng);
         }
 
-        public virtual List<PrefabObject> GetValidEnemyReplacements(ObjectMetadata originalObject, List<PrefabObject> validReplacements)
+        public virtual List<PrefabObject> GetValidEnemyReplacements(GameObject originalObject, List<PrefabObject> validReplacements)
         {
-            bool isFlyer = originalObject.IsFlying;
-            bool isStatic = !originalObject.IsMobile;
-            bool isWalker = originalObject.IsWalker;
-            bool isClimbing = originalObject.IsClimbing;
-            bool isBattleArena = originalObject.IsBattleEnemy;
-            bool isBoss = originalObject.IsBoss;
+            bool isFlyer = originalObject.IsFlying();
+            bool isStatic = !originalObject.IsMobile();
+            bool isWalker = originalObject.IsWalker();
+            bool isClimbing = originalObject.IsClimbing();
+            bool isBattleArena = originalObject.IsBattleEnemy();
+            bool isBoss = originalObject.IsBoss();
 
             IEnumerable<PrefabObject> possible = validReplacements;
-            if (originalObject.IsPogoLogic)
+            if (originalObject.CheckIfIsPogoLogicType())
             {
                 possible = possible.Where(x => !MetaDataTypes.BadPogoReplacement.Contains(x.prefabName));
                 if(isFlyer)
@@ -106,56 +106,48 @@ namespace EnemyRandomizerMod
                 }
             }
 
-            if (!originalObject.IsPogoLogic && MatchReplacements)
+            if (!originalObject.CheckIfIsPogoLogicType() && MatchReplacements)
             {
-                IEnumerable<ObjectMetadata> pMetas;
-
                 possible = possible.Where(x => !MetaDataTypes.ReplacementEnemiesToSkip.Contains(x.prefabName));
 
-                pMetas = possible.Select(x =>
-                {
-                    ObjectMetadata m = new ObjectMetadata();
-                    m.Setup(x.prefab, Database);
-                    return m;
-                });
 
                 if(isBoss)
                 {
-                    pMetas = pMetas.Where(x => x.IsBoss);
+                    possible = possible.Where(x => SpawnerExtensions.IsBoss(x.prefabName));
                 }
                 else
                 {
-                    pMetas = pMetas.Where(x => !x.IsBoss);
+                    possible = possible.Where(x => !SpawnerExtensions.IsBoss(x.prefabName));
 
                     if (isFlyer)
                     {
-                        pMetas = pMetas.Where(x => x.IsFlying);
+                        possible = possible.Where(x => SpawnerExtensions.IsFlying(x.prefabName));
                     }
                     else
                     {
-                        pMetas = pMetas.Where(x => !x.IsFlying);
+                        possible = possible.Where(x => !SpawnerExtensions.IsFlying(x.prefabName));
 
                         if (isWalker)
                         {
-                            pMetas = pMetas.Where(x => x.IsWalker);
+                            possible = possible.Where(x => SpawnerExtensions.IsMobile(x.prefabName));
                         }
 
                         if (isClimbing)
                         {
-                            pMetas = pMetas.Where(x => x.IsClimbing);
+                            possible = possible.Where(x => SpawnerExtensions.IsClimbing(x.prefabName));
                         }
                     }
 
                     if (isStatic)
                     {
-                        pMetas = pMetas.Where(x => !x.IsMobile);
+                        possible = possible.Where(x => !SpawnerExtensions.IsMobile(x.prefabName));
                     }
                 }
 
-                possible = pMetas.Select(x => x.ObjectPrefab);
+                //possible = pMetas.Select(x => x.ObjectPrefab);
             }
 
-            if(!originalObject.IsPogoLogic && isBattleArena)
+            if(!originalObject.CheckIfIsPogoLogicType() && isBattleArena)
             {
                 possible = possible.Where(x =>
                 {
@@ -180,19 +172,19 @@ namespace EnemyRandomizerMod
             return validReplacements.Where(x => !MetaDataTypes.ReplacementEffectsToSkip.Contains(x.prefabName)).ToList();
         }
 
-        public virtual ObjectMetadata ReplaceEnemy(ObjectMetadata originalObject, List<PrefabObject> validReplacements, RNG rng)
+        public virtual GameObject ReplaceEnemy(GameObject potentialReplacement, GameObject originalObject, List<PrefabObject> validReplacements, RNG rng)
         {
-            return ReplaceObject(originalObject, validReplacements, rng);
+            return ReplaceObject(potentialReplacement, originalObject, validReplacements, rng);
         }
 
-        public virtual ObjectMetadata ReplaceHazardObject(ObjectMetadata originalObject, List<PrefabObject> validReplacements, RNG rng)
+        public virtual GameObject ReplaceHazardObject(GameObject potentialReplacement, GameObject originalObject, List<PrefabObject> validReplacements, RNG rng)
         {
-            return ReplaceObject(originalObject, validReplacements, rng);
+            return ReplaceObject(potentialReplacement, originalObject, validReplacements, rng);
         }
 
-        public virtual ObjectMetadata ReplacePooledObject(ObjectMetadata originalObject, List<PrefabObject> validReplacements, RNG rng)
+        public virtual GameObject ReplacePooledObject(GameObject potentialReplacement, GameObject originalObject, List<PrefabObject> validReplacements, RNG rng)
         {
-            return ReplaceObject(originalObject, validReplacements, rng);
+            return ReplaceObject(potentialReplacement, originalObject, validReplacements, rng);
         }
 
         protected virtual PrefabObject GetObject(PrefabObject prefab, List<PrefabObject> validReplacements, RNG rng)
@@ -240,25 +232,43 @@ namespace EnemyRandomizerMod
             return prefab;
         }
 
-        protected virtual ObjectMetadata ReplaceObject(ObjectMetadata originalObject, List<PrefabObject> validReplacements, RNG rng)
+        protected virtual GameObject ReplaceObject(GameObject potentialReplacement, GameObject originalObject, List<PrefabObject> validReplacements, RNG rng)
         {
             //TODO: weight the list for a more even distro of kinds of enemies
             var replacementPrefab = validReplacements.GetRandomElementFromList(rng);
 
-            //lame shuffle
-            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
-            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
-            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
-            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
-            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
-            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
-            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
-            replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
+            //lame shuffle -- TODO replace with a weighted table pull
+            {
+                for (int i = 0; i < 10; ++i)
+                {
+                    if (originalObject.GetObjectPrefab() == replacementPrefab)
+                    {
+                        replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
+                    }
+                }
+            }
 
-            var newObject = Database.Replace(originalObject, replacementPrefab);
-            newObject.Source.SetParentToOthersParent(originalObject);
-            newObject.ObjectPosition = originalObject.ObjectPosition;
-            return newObject;
+            //try and prevent vanilla objects
+            if(validReplacements.Count > 1 && originalObject.GetObjectPrefab() == replacementPrefab)
+            {
+                int maxTries = 100;
+                for (int i = 0; i < maxTries; ++i)
+                {
+                    if(originalObject.GetObjectPrefab() == replacementPrefab)
+                    {
+                        replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
+                    }
+                }
+            }
+
+            //is it vanilla? then we're not replacing anything
+            if(originalObject.GetObjectPrefab() == replacementPrefab)
+            {
+                return potentialReplacement;
+            }
+
+            //do the replace
+            return Database.Replace(originalObject, replacementPrefab);
         }
     }
 }

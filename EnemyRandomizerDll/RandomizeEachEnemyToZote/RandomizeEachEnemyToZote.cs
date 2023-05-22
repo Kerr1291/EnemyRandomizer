@@ -15,9 +15,9 @@ namespace EnemyRandomizerMod
 
         public override bool EnableByDefault => false;
 
-        public override List<PrefabObject> GetValidReplacements(ObjectMetadata sourceData, List<PrefabObject> validReplacementObjects)
+        public override List<PrefabObject> GetValidReplacements(GameObject sourceData, List<PrefabObject> validReplacementObjects)
         {
-            if (sourceData.ObjectType == PrefabObject.PrefabType.Enemy)
+            if (sourceData.ObjectType() == PrefabObject.PrefabType.Enemy)
             {
                 return GetValidEnemyReplacements(validReplacementObjects);
             }

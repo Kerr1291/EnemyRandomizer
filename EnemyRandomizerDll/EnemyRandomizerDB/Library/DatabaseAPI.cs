@@ -26,14 +26,14 @@ namespace EnemyRandomizerMod
         public static Func<EnemyRandomizerDatabase> GetDatabase;
         public static Func<ReactiveProperty<List<GameObject>>> GetBlackBorders;
 
-        static UnityEvent<(ObjectMetadata newObject, ObjectMetadata oldObject)> onObjectReplaced;
-        public static UnityEvent<(ObjectMetadata newObject, ObjectMetadata oldObject)> OnObjectReplaced
+        static UnityEvent<(GameObject newObject, GameObject oldObject)> onObjectReplaced;
+        public static UnityEvent<(GameObject newObject, GameObject oldObject)> OnObjectReplaced
         {
             get
             {
                 if (onObjectReplaced == null)
                 {
-                    onObjectReplaced = new UnityEvent<(ObjectMetadata newObject, ObjectMetadata oldObject)>();
+                    onObjectReplaced = new UnityEvent<(GameObject newObject, GameObject oldObject)>();
                 }
                 return onObjectReplaced;
             }
@@ -270,12 +270,12 @@ namespace EnemyRandomizerMod
         /// </summary>
         /// <param name="p">The name of the database object to spawn</param>
         /// <returns>The object that was spawned. Returns null on failure.</returns>
-        public ObjectMetadata Spawn(string name)
+        public GameObject Spawn(string name)
         {
             if (!Objects.TryGetValue(name, out PrefabObject p))
                 return null;
 
-            Dev.Log("spawn done for "+ name);
+            Dev.Log("trying to spawn "+ name);
             return Spawn(p);
         }
 
@@ -286,58 +286,39 @@ namespace EnemyRandomizerMod
         /// <param name="p">The name of the database object to spawn</param>
         /// <param name="defaultType">The fallback spawner to use if the object doesn't have one known to the database</param>
         /// <returns>The object that was spawned. Returns null on failure.</returns>
-        public ObjectMetadata Spawn(PrefabObject p, Type defaultType = null)
+        public GameObject Spawn(PrefabObject p, Type defaultType = null)
         {
             if (defaultType == null)
                 defaultType = typeof(DefaultSpawner);
 
             bool isDefault = GetSpawner(p, defaultType, out var spawner);
-            //Dev.Log("Spawner is " + spawner);
+            Dev.Log("Spawner is " + spawner);
             if (spawner == null)
                 return null;
 
-            //Dev.Log("finally trying to spawn "+p.prefabName);
-            var result = spawner.Spawn(p, null, this);
-
-            Dev.Log("spawn done");
-            if (result != null && isDefault)
-            {
-                var defaultControl = result.Source.GetOrAddComponent<DefaultSpawnedEnemyControl>();
-                defaultControl.Setup(null);
-            }
-
-            Dev.Log("returning result");
-            return result;
+            Dev.Log("finally trying to spawn "+p.prefabName);
+            return spawner.Spawn(p, null);
         }
 
         /// <summary>
         /// Spawn an object from the database. All objects may be checked via the Objects property in the database.
         /// </summary>
-        /// <param name="source">A valid Metadata object that references the thing to replace</param>
-        /// <param name="p">The database reference to the object that will replace the source</param>
+        /// <param name="objectToReplace">A valid Metadata object that references the thing to replace</param>
+        /// <param name="prefabToSpawn">The database reference to the object that will replace the source</param>
         /// <param name="defaultType">The fallback spawner to use if the object doesn't have one known to the database</param>
         /// <returns>The object that was spawned. Returns null on failure.</returns>
-        public ObjectMetadata Replace(ObjectMetadata source, PrefabObject p, Type defaultType = null)
+        public GameObject Replace(GameObject objectToReplace, PrefabObject prefabToSpawn, Type defaultType = null)
         {  
             if (defaultType == null)
                 defaultType = typeof(DefaultSpawner);
 
-            bool isDefault = GetSpawner(p, defaultType, out var spawner);
-            //Dev.Log("Spawner is " + spawner);
+            bool isDefault = GetSpawner(prefabToSpawn, defaultType, out var spawner);
+            Dev.Log("in replace, Spawner is " + spawner);
             if (spawner == null)
                 return null;
 
-            //Dev.Log("finally trying to spawn "+p.prefabName);
-            var result = spawner.Spawn(p, source, this);
-            Dev.Log("replace done");
-
-            if (result != null && isDefault)
-            {
-                var defaultControl = result.Source.GetOrAddComponent<DefaultSpawnedEnemyControl>();
-                defaultControl.Setup(source);
-            }
-
-            return result;
+            Dev.Log($"trying to spawn {prefabToSpawn} as a replacement for {objectToReplace}");
+            return spawner.Spawn(prefabToSpawn, objectToReplace);
         }
 
         public static string ModAssetPath
@@ -377,11 +358,11 @@ namespace EnemyRandomizerMod
 
         public static bool IsDatabaseObject(GameObject gameObject)
         {
-            if (excludedComponents.Any(x => gameObject.GetComponent(x)))
-                return false;
+            //if (excludedComponents.Any(x => gameObject.GetComponent(x)))
+            //    return false;
 
-            if (!dataBaseObjectComponents.Any(x => gameObject.GetComponent(x)))
-                return false;
+            //if (!dataBaseObjectComponents.Any(x => gameObject.GetComponent(x)))
+            //    return false;
 
             string key = ToDatabaseKey(gameObject.name);
 
@@ -391,22 +372,34 @@ namespace EnemyRandomizerMod
             return true;
         }
 
-        public static bool IsDatabaseObject(string gameObjectName, EnemyRandomizerDatabase db)
+        public static bool IsDatabaseObject(string gameObjectName, EnemyRandomizerDatabase db = null)
         {
             string key = ToDatabaseKey(gameObjectName);
 
             if (string.IsNullOrEmpty(key))
                 return false;
 
-            return (db.Objects.ContainsKey(key));
+            var DB = db == null ? EnemyRandomizerDatabase.GetDatabase() : db;
+
+            return (DB.Objects.ContainsKey(key));
         }
 
-        public static bool IsDatabaseKey(string databaseKey, EnemyRandomizerDatabase db)
+        public static bool IsDatabaseKey(string databaseKey, EnemyRandomizerDatabase db = null)
         {
             if (string.IsNullOrEmpty(databaseKey))
                 return false;
 
-            return (db.Objects.ContainsKey(databaseKey));
+            var DB = db == null ? EnemyRandomizerDatabase.GetDatabase() : db;
+
+            return (DB.Objects.ContainsKey(databaseKey));
+        }
+
+        public static string GetDatabaseKey(GameObject gameObject)
+        {
+            if (gameObject == null)
+                return null;
+
+            return ToDatabaseKey(gameObject.name);
         }
 
         public static string ToDatabaseKey(string databaseKey)
@@ -443,17 +436,15 @@ namespace EnemyRandomizerMod
             return databaseKey;
         }
 
-        public static ObjectMetadata CustomSpawn(Vector3 pos, string objectName, bool setActive = true)
+        public static GameObject CustomSpawn(Vector3 pos, string objectName, bool setActive = true)
         {
             try
             {
                 var enemy = EnemyRandomizerDatabase.GetDatabase().Spawn(objectName);
-                Dev.Log("custom spawn done");
                 if (enemy != null)
                 {
-                    enemy.ObjectPosition = pos;
                     if (setActive)
-                        enemy.ActivateSource();
+                        enemy.SetActive(true);
                     return enemy;
                 }
             }
@@ -468,18 +459,34 @@ namespace EnemyRandomizerMod
 
     public static class DatabaseExt
     {
-        /// <summary>
-        /// Get the metadata wrapper for this game object, if no database is provided this call will try and use the global getter
-        /// </summary>
-        public static ObjectMetadata ToMetadata(this GameObject gameObject, EnemyRandomizerDatabase database = null)
+        ///// <summary>
+        ///// Get the metadata wrapper for this game object, if no database is provided this call will try and use the global getter
+        ///// </summary>
+        //public static ObjectMetadata ToMetadata(this GameObject gameObject, EnemyRandomizerDatabase database = null)
+        //{
+        //    if(database == null)
+        //    {
+        //        if (EnemyRandomizerDatabase.GetDatabase != null)
+        //        {
+        //            database = EnemyRandomizerDatabase.GetDatabase();
+        //        }
+        //    }
+
+        //    if (database == null)
+        //    {
+        //        Dev.LogError("A database reference is required to generate the metadata object. None was provided and the fallback global getter was null.");
+        //        return null;
+        //    }
+
+        //    if (!EnemyRandomizerDatabase.IsDatabaseObject(gameObject))
+        //        return null;
+
+        //    return ObjectMetadata.Get(gameObject);
+        //}
+
+        public static List<PrefabObject> GetObjectTypeCollection(this GameObject gameObject)
         {
-            if(database == null)
-            {
-                if (EnemyRandomizerDatabase.GetDatabase != null)
-                {
-                    database = EnemyRandomizerDatabase.GetDatabase();
-                }
-            }
+            var database = EnemyRandomizerDatabase.GetDatabase();
 
             if (database == null)
             {
@@ -487,35 +494,13 @@ namespace EnemyRandomizerMod
                 return null;
             }
 
-            if (!EnemyRandomizerDatabase.IsDatabaseObject(gameObject))
-                return null;
-
-            return new ObjectMetadata(gameObject, database);
-        }
-
-        public static List<PrefabObject> GetObjectTypeCollection(this ObjectMetadata metaObject, EnemyRandomizerDatabase database = null)
-        {
-            if (database == null)
-            {
-                if (EnemyRandomizerDatabase.GetDatabase != null)
-                {
-                    database = EnemyRandomizerDatabase.GetDatabase();
-                }
-            }
-
-            if (database == null)
-            {
-                Dev.LogError("A database reference is required to generate the metadata object. None was provided and the fallback global getter was null.");
-                return null;
-            }
-
-            if (metaObject.ObjectType == PrefabObject.PrefabType.Enemy)
+            if (gameObject.ObjectType() == PrefabObject.PrefabType.Enemy)
                 return database.enemyPrefabs;
-            else if (metaObject.ObjectType == PrefabObject.PrefabType.Hazard)
+            else if (gameObject.ObjectType() == PrefabObject.PrefabType.Hazard)
                 return database.hazardPrefabs;
-            else if (metaObject.ObjectType == PrefabObject.PrefabType.Effect)
+            else if (gameObject.ObjectType() == PrefabObject.PrefabType.Effect)
                 return database.effectPrefabs;
-            else if (metaObject.ObjectType == PrefabObject.PrefabType.Other)
+            else if (gameObject.ObjectType() == PrefabObject.PrefabType.Other)
                 return database.otherPrefabs;
             else
             {

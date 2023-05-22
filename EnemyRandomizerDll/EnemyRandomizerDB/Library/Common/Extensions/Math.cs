@@ -453,5 +453,20 @@ namespace EnemyRandomizerMod
             }
             return new RaycastHit2D() { point = lastGoodPoint, distance = max, normal = -dir };
         }
+
+
+        public static int CountIntersections(Vector2 origin, Vector2 dir, float max, Func<GameObject, bool> isRaycastHitObject)
+        {
+            Vector2 direction = dir;
+
+            RaycastHit2D[] toSurface = Physics2D.RaycastAll(origin, direction, max, Physics2D.AllLayers);
+
+            if (toSurface != null)
+            {
+                return toSurface.Where(x => x.collider != null).Select(x => x.collider).Sum(x => isRaycastHitObject(x.gameObject) ? 1 : 0);
+            }
+
+            return 0;
+        }
     }
 }

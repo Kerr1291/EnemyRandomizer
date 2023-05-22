@@ -107,7 +107,7 @@ namespace EnemyRandomizerMod
                 onStartGameRNG.Seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
         }
 
-        public override RNG GetRNG(ObjectMetadata sourceData, RNG rng, int seed)
+        public override RNG GetRNG(GameObject sourceData, RNG rng, int seed)
         {
             if (Settings.GetOption(CustomOptions[0].Name).value)
             {
@@ -115,19 +115,19 @@ namespace EnemyRandomizerMod
             }
             else if (Settings.GetOption(CustomOptions[1].Name).value)
             {
-                return RandomizeEachObject(sourceData.ObjectName, sourceData.SceneName, seed);
+                return RandomizeEachObject(sourceData.ObjectName(), sourceData.SceneName(), seed);
             }
             else if (Settings.GetOption(CustomOptions[2].Name).value)
             {
-                return RandomizeEachRoom(sourceData.DatabaseName, sourceData.SceneName, seed);
+                return RandomizeEachRoom(sourceData.GetDatabaseKey(), sourceData.SceneName(), seed);
             }
             else if (Settings.GetOption(CustomOptions[3].Name).value)
             {
-                return RandomizeEachZone(sourceData.DatabaseName, seed);
+                return RandomizeEachZone(sourceData.GetDatabaseKey(), seed);
             }
             else if (Settings.GetOption(CustomOptions[4].Name).value)
             {
-                return RandomizeEachGame(sourceData.DatabaseName, seed);
+                return RandomizeEachGame(sourceData.GetDatabaseKey(), seed);
             }
             else
             {

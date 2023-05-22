@@ -22,7 +22,7 @@ namespace EnemyRandomizerMod
         public static Logger.IDevLogger Logger {
             get
             {
-                return DevLogger.Instance;
+                return DevLogger.applicationIsQuitting ? null : DevLogger.Instance;
             }
             set
             {
@@ -40,7 +40,7 @@ namespace EnemyRandomizerMod
         {
             try
             {
-                if( Logger != null )
+                if( Logger != null && !DevLogger.applicationIsQuitting )
                 {
                     if( Logger.IgnoreFilters != null && Logger.IgnoreFilters.Count > 0 )
                     {
@@ -98,7 +98,7 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    UnityEngine.Debug.Log( s );
+                    UnityEngine.Debug.Log(DevLogger.applicationIsQuitting ? "[APPLICATION_IS_QUITTING]: " + s : s);
                 }
             }
             catch(Exception)
@@ -167,6 +167,12 @@ namespace EnemyRandomizerMod
 
         public static void Where( int stackFrameOffset = 0 )
         {
+            if(DevLogger.applicationIsQuitting)
+            {
+                InvokeLog(" :::: " + Dev.FunctionHeader(stackFrameOffset), UnformattedFunctionHeader(stackFrameOffset), 0);
+                return;
+            }
+
             if( Logger != null &&  !Logger.LoggingEnabled )
                 return;
             string logString = string.Empty;
@@ -180,7 +186,12 @@ namespace EnemyRandomizerMod
 
         public static void LogError( string text )
         {
-            if( Logger != null && !Logger.LoggingEnabled )
+            if (DevLogger.applicationIsQuitting)
+            {
+                InvokeLog(text, text, 2);
+                return;
+            }
+            if ( Logger != null && !Logger.LoggingEnabled )
                 return;
             string logString = string.Empty;
             try
@@ -196,7 +207,12 @@ namespace EnemyRandomizerMod
 
         public static void LogWarning( string text )
         {
-            if( Logger != null && !Logger.LoggingEnabled )
+            if (DevLogger.applicationIsQuitting)
+            {
+                InvokeLog(text, text, 1);
+                return;
+            }
+            if ( Logger != null && !Logger.LoggingEnabled )
                 return;
 
             string logString = string.Empty;
@@ -214,7 +230,7 @@ namespace EnemyRandomizerMod
         public static string ToLogString( string text, int frameOffset = 0 )
         {
             if( Logger != null && !Logger.LoggingEnabled )
-                return string.Empty;
+                return text;
 
             string logString = string.Empty;
             try
@@ -228,7 +244,7 @@ namespace EnemyRandomizerMod
         public static string ToLogString( string header, string text )
         {
             if( Logger != null && !Logger.LoggingEnabled )
-                return string.Empty;
+                return text;
 
             string logString = string.Empty;
             try
@@ -241,15 +257,24 @@ namespace EnemyRandomizerMod
 
         public static void Log( string text )
         {
-            if( Logger != null && !Logger.LoggingEnabled )
+            if (DevLogger.applicationIsQuitting)
+            {
+                InvokeLog(text, text, 0);
+                return;
+            }
+            if ( Logger != null && !Logger.LoggingEnabled )
                 return;
 
             string logString = string.Empty;
             try
             {
+#if DEBUG
                 logString = ( Dev.FunctionHeader() + Dev.Colorize( text, _log_color ) );
+#else
+                logString = ( Dev.FunctionHeader() + text);
+#endif
             }
-            catch( Exception )
+            catch ( Exception )
             {
                 UnityEngine.Debug.Log( text );
             }
@@ -258,7 +283,12 @@ namespace EnemyRandomizerMod
 
         public static void Log( string text, int r, int g, int b )
         {
-            if( Logger != null && !Logger.LoggingEnabled )
+            if (DevLogger.applicationIsQuitting)
+            {
+                InvokeLog(text, text, 0);
+                return;
+            }
+            if ( Logger != null && !Logger.LoggingEnabled )
                 return;
 
             string logString = string.Empty;
@@ -275,7 +305,12 @@ namespace EnemyRandomizerMod
 
         public static void Log( string text, float r, float g, float b )
         {
-            if( Logger != null && !Logger.LoggingEnabled )
+            if (DevLogger.applicationIsQuitting)
+            {
+                InvokeLog(text, text, 0);
+                return;
+            }
+            if ( Logger != null && !Logger.LoggingEnabled )
                 return;
 
             string logString = string.Empty;
@@ -292,6 +327,12 @@ namespace EnemyRandomizerMod
 
         public static void Log( string text, Color color )
         {
+            if(DevLogger.applicationIsQuitting)
+            {
+                InvokeLog(text, text, 0);
+                return;
+            }
+
             if( Logger != null && !Logger.LoggingEnabled )
                 return;
 
@@ -313,103 +354,103 @@ namespace EnemyRandomizerMod
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="var"></param>
-        public static void LogVar<T>( T var )
-        {
-            if( Logger != null && !Logger.LoggingEnabled )
-                return;
+        //public static void LogVar<T>( T var )
+        //{
+        //    if( Logger != null && !Logger.LoggingEnabled )
+        //        return;
 
-            string var_name = string.Empty;
+        //    string var_name = string.Empty;
 
-            try
-            {
-                var_name = GetVarName( var );
-            }
-            catch( Exception )
-            {
-                var_name = var == null ? "Null" : var.GetType().Name;
-            }
+        //    try
+        //    {
+        //        var_name = GetVarName( var );
+        //    }
+        //    catch( Exception )
+        //    {
+        //        var_name = var == null ? "Null" : var.GetType().Name;
+        //    }
 
-            string var_value = Convert.ToString( var );
+        //    string var_value = Convert.ToString( var );
 
-            string logString = string.Empty;
-            try
-            {
-                logString = ( Dev.FunctionHeader() + Dev.Colorize( var_name, _param_color ) + " = " + Dev.Colorize( var_value, _log_color ) );
-            }
-            catch( Exception ) { }
-            InvokeLog( logString, var_name + " = " + var_value, 0 );
-        }
+        //    string logString = string.Empty;
+        //    try
+        //    {
+        //        logString = ( Dev.FunctionHeader() + Dev.Colorize( var_name, _param_color ) + " = " + Dev.Colorize( var_value, _log_color ) );
+        //    }
+        //    catch( Exception ) { }
+        //    InvokeLog( logString, var_name + " = " + var_value, 0 );
+        //}
 
         /// <summary>
         /// Print the value of the variable in a simple and clean way
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="var"></param>
-        public static void LogVar<T>( string label, T var )
-        {
-            if( Logger != null && !Logger.LoggingEnabled )
-                return;
-            string var_name = label;
-            string var_value = Convert.ToString( var );
+        //public static void LogVar<T>( string label, T var )
+        //{
+        //    if( Logger != null && !Logger.LoggingEnabled )
+        //        return;
+        //    string var_name = label;
+        //    string var_value = Convert.ToString( var );
 
 
-            string logString = string.Empty;
-            try
-            {
-                logString = ( Dev.FunctionHeader() + Dev.Colorize( var_name, _param_color ) + " = " + Dev.Colorize( var_value, _log_color ) );
-            }
-            catch( Exception ) { }
-            InvokeLog( logString, var_name + " = " + var_value, 0 );
-        }
-
-        /// <summary>
-        /// Print the content of the array passed in
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="array"></param>
-        public static void LogVarArray<T>( IList<T> array )
-        {
-            if( Logger != null && !Logger.LoggingEnabled )
-                return;
-            int size = array.Count;
-            for( int i = 0; i < size; ++i )
-            {
-                try
-                {
-                    string vname = array.GetType().Name + " of " + typeof( T ).GetType().Name + " " + "[" + Dev.Colorize( Convert.ToString( i ), _log_color ) + "]";
-                    string vname_noformat = array.GetType().Name + " of " + typeof( T ).GetType().Name + " " + "[" + Convert.ToString( i ) + "]";
-                    string logString = Dev.FunctionHeader() + Dev.Colorize( vname, _param_color ) + " = " + Dev.Colorize( Convert.ToString( array[ i ] ), _log_color );
-                    InvokeLog( logString, vname_noformat + " = " + Convert.ToString( array[ i ] ), 0 );
-                }
-                catch( Exception ) { }
-            }
-        }
+        //    string logString = string.Empty;
+        //    try
+        //    {
+        //        logString = ( Dev.FunctionHeader() + Dev.Colorize( var_name, _param_color ) + " = " + Dev.Colorize( var_value, _log_color ) );
+        //    }
+        //    catch( Exception ) { }
+        //    InvokeLog( logString, var_name + " = " + var_value, 0 );
+        //}
 
         /// <summary>
         /// Print the content of the array passed in
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="array"></param>
-        public static void LogVarArray<T>( string label, IList<T> array )
-        {
-            if( Logger != null && !Logger.LoggingEnabled )
-                return;
-            int size = array.Count;
-            for( int i = 0; i < size; ++i )
-            {
-                try
-                {
-                    string vname = label + "[" + Dev.Colorize( Convert.ToString( i ), _log_color ) + "]";
-                    string logString = Dev.FunctionHeader() + Dev.Colorize( vname, _param_color ) + " = " + Dev.Colorize( Convert.ToString( array[ i ] ), _log_color );
-                    string vname_noformat = array.GetType().Name + " of " + typeof( T ).GetType().Name + " " + "[" + Convert.ToString( i ) + "]";
-                    InvokeLog( logString, vname_noformat + " = " + Convert.ToString( array[ i ] ), 0 );
-                }
-                catch( Exception ) { }
-            }
-        }
-        #endregion
+        //public static void LogVarArray<T>( IList<T> array )
+        //{
+        //    if( Logger != null && !Logger.LoggingEnabled )
+        //        return;
+        //    int size = array.Count;
+        //    for( int i = 0; i < size; ++i )
+        //    {
+        //        try
+        //        {
+        //            string vname = array.GetType().Name + " of " + typeof( T ).GetType().Name + " " + "[" + Dev.Colorize( Convert.ToString( i ), _log_color ) + "]";
+        //            string vname_noformat = array.GetType().Name + " of " + typeof( T ).GetType().Name + " " + "[" + Convert.ToString( i ) + "]";
+        //            string logString = Dev.FunctionHeader() + Dev.Colorize( vname, _param_color ) + " = " + Dev.Colorize( Convert.ToString( array[ i ] ), _log_color );
+        //            InvokeLog( logString, vname_noformat + " = " + Convert.ToString( array[ i ] ), 0 );
+        //        }
+        //        catch( Exception ) { }
+        //    }
+        //}
 
-        #region Internal
+        /// <summary>
+        /// Print the content of the array passed in
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        //public static void LogVarArray<T>( string label, IList<T> array )
+        //{
+        //    if( Logger != null && !Logger.LoggingEnabled )
+        //        return;
+        //    int size = array.Count;
+        //    for( int i = 0; i < size; ++i )
+        //    {
+        //        try
+        //        {
+        //            string vname = label + "[" + Dev.Colorize( Convert.ToString( i ), _log_color ) + "]";
+        //            string logString = Dev.FunctionHeader() + Dev.Colorize( vname, _param_color ) + " = " + Dev.Colorize( Convert.ToString( array[ i ] ), _log_color );
+        //            string vname_noformat = array.GetType().Name + " of " + typeof( T ).GetType().Name + " " + "[" + Convert.ToString( i ) + "]";
+        //            InvokeLog( logString, vname_noformat + " = " + Convert.ToString( array[ i ] ), 0 );
+        //        }
+        //        catch( Exception ) { }
+        //    }
+        //}
+#endregion
+
+#region Internal
 
         public static string ColorStr( int r, int g, int b )
         {
@@ -424,7 +465,7 @@ namespace EnemyRandomizerMod
         static string Colorize( string text, string colorhex )
         {
             if( Logger == null )
-                return string.Empty;
+                return text;
 
             string str = text;
             try
@@ -439,6 +480,11 @@ namespace EnemyRandomizerMod
 
         public static string FunctionHeader( int frameOffset = 0 )
         {
+            if(Dev.Logger == null)
+            {
+                return Dev.GetFunctionHeader(frameOffset);
+            }
+
             if(!Dev.Logger.ShowMethodName)
             {
                 string fileLineHeader = "";
@@ -454,29 +500,30 @@ namespace EnemyRandomizerMod
                 return fileLineHeader;
             }
 
-            return Dev.Colorize( Dev.GetFunctionHeader( frameOffset, Logger == null ? true : Dev.Logger.ShowFileAndLineNumber ), Dev._method_color );
+            return Dev.Colorize( Dev.GetFunctionHeader( frameOffset, false ), Dev._method_color );
         }
 
         public static string UnformattedFunctionHeader( int frameOffset = 0 )
         {
-            return Dev.GetFunctionHeader( frameOffset, Logger == null ? true : Dev.Logger.ShowFileAndLineNumber );
+            return Dev.GetFunctionHeader(frameOffset, false);// false : Dev.Logger.ShowFileAndLineNumber );
         }
 
-        public static string FunctionHeader( int frameOffset, bool showFileAndLineNumber )
-        {
-            return Dev.Colorize( Dev.GetFunctionHeader( frameOffset, showFileAndLineNumber ), Dev._method_color );
-        }
+        //public static string FunctionHeader( int frameOffset, bool showFileAndLineNumber )
+        //{
+        //    return Dev.Colorize( Dev.GetFunctionHeader( frameOffset, showFileAndLineNumber ), Dev._method_color );
+        //}
 
         public static string ColorizeHeaderString(string header)
         {
-            return Dev.Colorize( header, Dev._method_color );
+#if DEBUG
+            return Dev.Logger == null ? header : Dev.Colorize( header, Dev._method_color );
+#else
+            return header;
+#endif
         }
 
         static string GetFunctionHeader(int frameOffset = 0, bool fileInfo = false)
         {
-            if( Logger == null )
-                return string.Empty;
-
             try
             {
                 if( frameOffset <= -BaseFunctionHeader )
@@ -502,7 +549,7 @@ namespace EnemyRandomizerMod
                 //build parameters string
                 string parameters_name = "";
 
-                if( Dev.Logger.ShowMethodParameters )
+                if(Dev.Logger != null && Dev.Logger.ShowMethodParameters )
                 {
                     System.Reflection.ParameterInfo[] parameters = method.GetParameters();
                     bool add_comma = false;
@@ -543,7 +590,7 @@ namespace EnemyRandomizerMod
                 if( fileInfo )
                     fileLineHeader = file + "(" + line + "):";
 
-                if( Dev.Logger.ShowClassName )
+                if(Dev.Logger == null || Dev.Logger.ShowClassName )
                     return fileLineHeader + class_name + "." + function_name + " ";
                 else
                     return fileLineHeader + function_name + " ";
@@ -557,7 +604,7 @@ namespace EnemyRandomizerMod
 #endregion
 
 
-        #region Settings
+#region Settings
 
         static string _method_color {
             get {
@@ -623,7 +670,7 @@ namespace EnemyRandomizerMod
                 Dev.Logger.ParamColor = temp;
             }
         }
-        #endregion
+#endregion
     }
 
 }

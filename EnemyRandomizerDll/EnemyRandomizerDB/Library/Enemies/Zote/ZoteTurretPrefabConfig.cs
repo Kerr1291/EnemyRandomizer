@@ -11,13 +11,13 @@ namespace EnemyRandomizerMod
     {
         public float startYPos;
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
             Geo = 12;
 
-            this.OverrideState(control, "Pos", () =>
+            control.OverrideState( "Pos", () =>
             {
                 control.FsmVariables.GetFsmFloat("X Pos").Value = pos2d.x;
                 float ypos = roofY;
@@ -53,8 +53,8 @@ namespace EnemyRandomizerMod
             die.DisableAction(6);
 
             //should never happen now
-            this.OverrideState(control, "Death Pause", () => { });
-            this.OverrideState(control, "Retry Frame", () => { });
+            control.OverrideState( "Death Pause", () => { });
+            control.OverrideState( "Retry Frame", () => { });
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Pos");
             //this.AddResetToStateOnHide(control, "Retract");

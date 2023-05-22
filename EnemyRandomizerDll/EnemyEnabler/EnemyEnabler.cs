@@ -107,9 +107,9 @@ namespace EnemyRandomizerMod
         /// <summary>
         /// Gets the kinds of things that may be used as replacements
         /// </summary>
-        public override List<PrefabObject> GetValidReplacements(ObjectMetadata sourceData, List<PrefabObject> validReplacementObjects)
+        public override List<PrefabObject> GetValidReplacements(GameObject sourceData, List<PrefabObject> validReplacementObjects)
         {
-            if(sourceData.ObjectType == PrefabObject.PrefabType.Enemy)
+            if(sourceData.ObjectType() == PrefabObject.PrefabType.Enemy)
             {
                 return validReplacementObjects.Where(x => OptionEnabled(x.prefabName)).ToList();
             }

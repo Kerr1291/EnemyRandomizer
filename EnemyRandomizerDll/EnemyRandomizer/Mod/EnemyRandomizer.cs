@@ -628,7 +628,7 @@ namespace EnemyRandomizerMod
                 var enemy = EnemyRandomizerDatabase.CustomSpawn(pos, enemyName, true);
                 if (enemy != null)
                 {
-                    return enemy.Source;
+                    return enemy;
                 }
             }
             catch (Exception e)
@@ -650,7 +650,7 @@ namespace EnemyRandomizerMod
                 EnemyRandomizer.bypassNextReplacement = true;
                 EnemyRandomizer.debugCustomReplacement = replacement;
 
-                return EnemyRandomizerDatabase.CustomSpawn(pos, objectName, setActive).Source;
+                return EnemyRandomizerDatabase.CustomSpawn(pos, objectName, setActive);
             }
             catch (Exception e)
             {

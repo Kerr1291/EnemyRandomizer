@@ -20,10 +20,7 @@ namespace EnemyRandomizerMod
 
     public class DefaultClimberControl : DefaultSpawnedEnemyControl
     {
-        protected override void SetDefaultPosition()
-        {
-            gameObject.StickToClosestSurface(100f, extraOffsetScale: 0.5f, alsoStickCorpse: false, flipped: false);
-        }
+        public override float spawnPositionOffset => .5f;
 
         //protected virtual void OnCollisionEnter2D(Collision2D collision)
         //{
@@ -175,13 +172,6 @@ namespace EnemyRandomizerMod
     /////
     public class CrystallisedLazerBugControl : DefaultClimberControl
     {
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            //TODO: some logic to determine if it's safe to leave the enemy as invincible
-            thisMetadata.EnemyHealthManager.IsInvincible = false;
-        }
     }
 
     public class CrystallisedLazerBugSpawner : DefaultSpawner<CrystallisedLazerBugControl> { }
@@ -207,7 +197,7 @@ namespace EnemyRandomizerMod
     {
         public float shotSpeed = 15f; //taken from the FSM
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
@@ -217,10 +207,12 @@ namespace EnemyRandomizerMod
             fire.DisableAction(3);
             fire.InsertCustomAction(() =>
             {
+                var dirToHero = gameObject.DirectionToPlayer();
+
                 var shot = control.FsmVariables.GetFsmGameObject("Shot").Value;
                 if(shot == null)
                 {
-                    var spitterShot = SpawnEntity("Spitter Shot R");
+                    var spitterShot = SpawnerExtensions.SpawnEntityAt("Spitter Shot R", pos2d + dirToHero, true);
                     if (spitterShot != null)
                     {
                         shot = spitterShot;
@@ -228,10 +220,9 @@ namespace EnemyRandomizerMod
                     }
                 }
 
-                var dir = (heroPos2d - pos2d).normalized;
                 var body = shot.GetComponent<Rigidbody2D>();
                 if (body != null)
-                    body.velocity = dir * shotSpeed;
+                    body.velocity = dirToHero * shotSpeed;
             },3);
 
             var spit = control.GetState("Spit");

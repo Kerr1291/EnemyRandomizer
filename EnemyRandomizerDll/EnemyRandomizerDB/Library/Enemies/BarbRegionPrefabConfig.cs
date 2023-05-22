@@ -19,7 +19,7 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Control";
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
@@ -27,7 +27,7 @@ namespace EnemyRandomizerMod
             init.DisableAction(7);
 
             var dc = control.GetState("Distance Check");
-            this.OverrideState(control, "Distance Check", () => { control.SendEvent("FINISHED"); });
+            control.OverrideState("Distance Check", () => { control.SendEvent("FINISHED"); });
         }
 
         public void ActivateBarb()

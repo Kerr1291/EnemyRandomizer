@@ -18,7 +18,7 @@ namespace EnemyRandomizerMod
     {
         public override string spawnEntityOnDeath => "Item Get Effect R";
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
@@ -34,7 +34,7 @@ namespace EnemyRandomizerMod
         void SetupLevel()
         {
 
-            OverrideState(control, "Get Level", () => {
+            control.OverrideState( "Get Level", () => {
                 control.FsmVariables.GetFsmInt("Level").Value = 1;
                 control.FsmVariables.GetFsmInt("Damage").Value = 1;
                 control.SendEvent("FINISHED");
@@ -43,7 +43,7 @@ namespace EnemyRandomizerMod
 
         void SetupDormant()
         {
-            OverrideState(control, "Dormant", () => {
+            control.OverrideState( "Dormant", () => {
                 control.SendEvent("SPAWN");
             });
 
@@ -63,7 +63,7 @@ namespace EnemyRandomizerMod
         void SetupTheRest()
         {
 
-            OverrideState(control, "Reset", () => { Destroy(gameObject); });
+            control.OverrideState( "Reset", () => { Destroy(gameObject); });
 
             Rigidbody2D body = GetComponent<Rigidbody2D>();
             if (body != null)

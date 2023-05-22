@@ -38,21 +38,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     ///// 
-    public class BurstingBouncerControl : DefaultSpawnedEnemyControl
+    public class BurstingBouncerControl : DefaultSpawnedEnemyControl { }
+
+    public class BurstingBouncerSpawner : DefaultSpawner<BurstingBouncerControl>
     {
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            var corpse = thisMetadata.Corpse;
-            if (corpse != null)
-            {
-                corpse.GetOrAddComponent<ExplodeOnCorpseRemoved>();
-            }
-        }
+        public override bool spawnEffectOnCorpseRemoved => true;
+        public override string spawnEffectOnCorpseRemovedEffectName => "Gas Explosion Recycle L";
     }
-
-    public class BurstingBouncerSpawner : DefaultSpawner<BurstingBouncerControl> { }
 
     public class BurstingBouncerPrefabConfig : DefaultPrefabConfig { }
     /////
@@ -64,21 +56,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     ///// TODO: add explosion to corpse
-    public class AngryBuzzerControl : DefaultSpawnedEnemyControl
+    public class AngryBuzzerControl : DefaultSpawnedEnemyControl { }
+
+    public class AngryBuzzerSpawner : DefaultSpawner<AngryBuzzerControl>
     {
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            var corpse = thisMetadata.Corpse;
-            if (corpse != null)
-            {
-                corpse.GetOrAddComponent<ExplodeOnCorpseRemoved>();
-            }
-        }
+        public override bool spawnEffectOnCorpseRemoved => true;
+        public override string spawnEffectOnCorpseRemovedEffectName => "Gas Explosion Recycle L";
     }
-
-    public class AngryBuzzerSpawner : DefaultSpawner<AngryBuzzerControl> { }
 
     public class AngryBuzzerPrefabConfig : DefaultPrefabConfig { }
     /////
@@ -164,15 +148,6 @@ namespace EnemyRandomizerMod
     /////
     public class SpitterControl : DefaultSpawnedEnemyControl
     {
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            if(this.Geo <= 0)
-            {
-                SetGeoRandomBetween(1, 10);
-            }
-        }
     }
 
     public class SpitterSpawner : DefaultSpawner<SpitterControl> { }
@@ -182,15 +157,6 @@ namespace EnemyRandomizerMod
 
     public class SpitterRControl : DefaultSpawnedEnemyControl
     {
-        public override void Setup(ObjectMetadata other)
-        {
-            base.Setup(other);
-
-            if (this.Geo <= 0)
-            {
-                SetGeoRandomBetween(1, 10);
-            }
-        }
     }
 
     public class SpitterRSpawner : DefaultSpawner<SpitterRControl> { }
@@ -476,7 +442,7 @@ namespace EnemyRandomizerMod
     /////
     public class BeeHatchlingAmbientControl : DefaultSpawnedEnemyControl
     {
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
@@ -584,11 +550,11 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Jellyfish";
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
-            var spawnerFunc = GetRandomAttackSpawnerFunc();
+            var spawnerFunc = gameObject.GetRandomAttackSpawnerFunc();
 
             var detach = control.GetState("Detach");
             detach.AddCustomAction(() => {

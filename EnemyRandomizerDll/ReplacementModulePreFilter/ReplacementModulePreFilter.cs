@@ -114,11 +114,11 @@ namespace EnemyRandomizerMod
         /// <summary>
         /// Gets the kinds of things that may be used as replacements
         /// </summary>
-        public override bool CanReplaceObject(ObjectMetadata sourceData)
+        public override bool CanReplaceObject(GameObject sourceData)
         {
-            if (sourceData.ObjectType == PrefabObject.PrefabType.Enemy)
+            if (sourceData.ObjectType() == PrefabObject.PrefabType.Enemy)
             {
-                return OptionEnabled(sourceData.ObjectPrefab.prefabName);
+                return OptionEnabled(sourceData.GetObjectPrefab().prefabName);
             }
 
             return true;

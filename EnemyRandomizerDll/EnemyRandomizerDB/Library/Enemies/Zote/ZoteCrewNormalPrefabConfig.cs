@@ -14,7 +14,9 @@ namespace EnemyRandomizerMod
     {
         public float startYPos;
 
-        public override void Setup(ObjectMetadata other)
+        public override float spawnPositionOffset => 1f;
+
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
@@ -51,15 +53,10 @@ namespace EnemyRandomizerMod
             death.DisableAction(9);
             death.AddCustomAction(() => { GameObject.Destroy(gameObject); });
 
-            this.OverrideState(control, "Death Reset", () => { GameObject.Destroy(gameObject); });
+            control.OverrideState( "Death Reset", () => { GameObject.Destroy(gameObject); });
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Multiply");
             //this.AddResetToStateOnHide(control, "Init");
-        }
-
-        protected override void SetDefaultPosition()
-        {
-            gameObject.StickToGroundX(1f);
         }
     }
 

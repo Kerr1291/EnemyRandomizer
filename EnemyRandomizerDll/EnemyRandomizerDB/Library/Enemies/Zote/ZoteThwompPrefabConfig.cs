@@ -19,7 +19,7 @@ namespace EnemyRandomizerMod
         public float startYPos;
         DamageEnemies damageEnemies;
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
@@ -48,11 +48,9 @@ namespace EnemyRandomizerMod
 
             //control.ChangeTransition("Init", "FINISHED", "Set Pos");
 
-            Geo = 15;
-
-            this.OverrideState(control, "Set Pos", () =>
+            control.OverrideState( "Set Pos", () =>
             {
-                var telepos = GetRandomPositionInLOSofSelf(5, 50, 5f, 5f);
+                var telepos = gameObject.GetRandomPositionInLOSofSelf(5, 50, 5f, 5f);
 
                 control.FsmVariables.GetFsmFloat("X Pos").Value = telepos.x;
                 //float ypos = roofY - this.thisMetadata.ObjectSize.y * this.thisMetadata.SizeScale;
@@ -69,9 +67,9 @@ namespace EnemyRandomizerMod
                 control.FsmVariables.GetFsmFloat("Y Pos").Value = startYPos;
             }, 5);
 
-            this.OverrideState(control, "Out", () =>
+            control.OverrideState( "Out", () =>
             {
-                var telepos = GetRandomPositionInLOSofSelf(5, 50, 5f, 5f);
+                var telepos = gameObject.GetRandomPositionInLOSofSelf(5, 50, 5f, 5f);
                 control.FsmVariables.GetFsmFloat("X Pos").Value = telepos.x;
                 //float ypos = roofY - this.thisMetadata.ObjectSize.y * this.thisMetadata.SizeScale;
                 control.FsmVariables.GetFsmFloat("Y Pos").Value = telepos.y;

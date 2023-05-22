@@ -23,7 +23,7 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerDatabase database;
         public HashSet<IRandomizerLogic> loadedLogics = new HashSet<IRandomizerLogic>();
         public HashSet<IRandomizerLogic> previousLogic = new HashSet<IRandomizerLogic>();
-        public Dictionary<ObjectMetadata, IEnumerator> pendingLoads = new Dictionary<ObjectMetadata, IEnumerator>();
+        public Dictionary<GameObject, IEnumerator> pendingLoads = new Dictionary<GameObject, IEnumerator>();
 
         public List<(string, string)> GetPreloadNames(string databaseFilePath)
         {
@@ -97,6 +97,8 @@ namespace EnemyRandomizerMod
 
             EnemyRandomizerDatabase.GetBlackBorders -= GetBlackBorders;
             EnemyRandomizerDatabase.GetBlackBorders += GetBlackBorders;
+
+            SpawnerExtensions.SetupBoundsReactives();
 
             EnemyRandomizerDatabase.CustomSpawnWithLogic -= EnemyRandomizer.CustomSpawn;
             EnemyRandomizerDatabase.CustomSpawnWithLogic += EnemyRandomizer.CustomSpawn;
@@ -219,70 +221,85 @@ namespace EnemyRandomizerMod
 
         public GameObject RandomizeEnemy(GameObject original)
         {
-            var metaData = original.ToMetadata(database);
-
-            if (metaData == null)
-                return original;
-
-            return OnObjectLoaded(metaData);
+            return OnObjectLoaded(original);
         }
 
         public GameObject RandomizeHazard(DamageHero originalHazard)
         {
-            var metaData = originalHazard.gameObject.ToMetadata(database);
-
-            if (metaData == null)
-                return originalHazard.gameObject;
-
-            return OnObjectLoaded(metaData);
+            return OnObjectLoaded(originalHazard.gameObject);
         }
 
         public GameObject RandomizeEffect(GameObject original)
         {
-            var metaData = original.ToMetadata(database);
-
-            if (metaData == null)
-                return original;
-
-            return OnObjectLoaded(metaData);
+            return OnObjectLoaded(original);
         }
 
-        public GameObject OnObjectLoaded(ObjectMetadata objectToReplace)
+        public GameObject OnObjectLoaded(GameObject loadedObjectToProcess)
         {
-            if (VERBOSE_LOGGING && objectToReplace.IsDatabaseObject && !objectToReplace.IsAReplacementObject && objectToReplace.Source != null)
+            if (VERBOSE_LOGGING && ObjectMetadata.Get(loadedObjectToProcess) == null || ObjectMetadata.GetOriginal(loadedObjectToProcess) == null)
             {
-                Dev.Log($"[{objectToReplace.ObjectType}, {objectToReplace.ScenePath}]: Unrandomized object loaded.");
-
-                if(objectToReplace.ScenePath.Contains("]["))
+                Dev.Log($"[{loadedObjectToProcess}]: Unrandomized object loaded.");
+            }
+            else if(VERBOSE_LOGGING)
+            {
+                if (loadedObjectToProcess.name.Contains("]["))
                 {
-                    Dev.LogError($"[{objectToReplace.ObjectType}, {objectToReplace.ScenePath}]: THIS WAS RANDOMIZED AND SHOULD NOT BE PROCESSED AGAIN!!! DUMPING ALL INFO");
-                    objectToReplace.Dump();
+                    Dev.LogError($"[{ObjectMetadata.Get(loadedObjectToProcess)}]: THIS WAS RANDOMIZED AND SHOULD NOT BE PROCESSED AGAIN!!! DUMPING ALL INFO");
+                    ObjectMetadata.Get(loadedObjectToProcess).Dump();
                 }
             }
 
-            var pendingLoad = pendingLoads.FirstOrDefault(x => x.Key.ScenePath == objectToReplace.ScenePath);
-            if (pendingLoad.Key != null)
+            if (loadedObjectToProcess != null)
             {
-                pendingLoads.Remove(pendingLoad.Key);
+                var pendingLoad = pendingLoads.FirstOrDefault(x => x.Key.GetSceneHierarchyPath() == loadedObjectToProcess.GetSceneHierarchyPath());
+                if (pendingLoad.Key != null)
+                {
+                    if (VERBOSE_LOGGING)
+                    {
+                        Dev.Log($"[{loadedObjectToProcess}]: Removing pending load with key {pendingLoad.Key}.");
+                    }
+                    pendingLoads.Remove(pendingLoad.Key);
+                }
+            }
+            else
+            //if (objectToReplace == null)
+            {
+                if (VERBOSE_LOGGING)
+                {
+                    Dev.Log($"[{loadedObjectToProcess}]: Cancelling enemy randomizer processing because object is now null.");
+                }
+                return null;
             }
 
-            if (objectToReplace.Source == null)
-                return null;
+            var thisMetaData = ObjectMetadata.Get(loadedObjectToProcess);
+            var originalMetaData = ObjectMetadata.GetOriginal(loadedObjectToProcess);
 
-            if (objectToReplace.IsAReplacementObject)
-                return objectToReplace.Source;
+            if (thisMetaData != null && originalMetaData != null)
+            {
+                if (VERBOSE_LOGGING)
+                {
+                    Dev.Log($"[{thisMetaData}]: Skipping enemy randomizer processing because this object has already replaced {originalMetaData}.");
+                }
+                return loadedObjectToProcess;
+            }
 
-            bool canProcess = CanProcessObject(objectToReplace);
+            bool willProcess = WillProcessObject(loadedObjectToProcess);
 
-            if (!canProcess)
-                return objectToReplace.Source;
+            if (!willProcess)
+            {
+                if (VERBOSE_LOGGING)
+                {
+                    Dev.Log($"[{loadedObjectToProcess.ObjectType()}, {loadedObjectToProcess.GetSceneHierarchyPath()}]: WillProcessObject --> returned false: will not process this object now.");
+                }
+                return loadedObjectToProcess;
+            }
 
             bool replaceObject = true;
 
             List<PrefabObject> originalReplacementObjects = null;
             List<PrefabObject> validReplacements = null;
 
-            bool logicSkip = SkipForLogic(objectToReplace);
+            bool logicSkip = SkipForLogic(loadedObjectToProcess);
 
             //are we skipping replacement?
             if (logicSkip || EnemyRandomizer.DoReplacementBypassCheck())
@@ -292,7 +309,7 @@ namespace EnemyRandomizerMod
                     string customBypassReplacement = EnemyRandomizer.GetCustomBypassReplacement();
                     if (VERBOSE_LOGGING)
                     {
-                        Dev.Log($"[{objectToReplace.ObjectType}, {objectToReplace.ScenePath}]: Replacement bypass set to {customBypassReplacement}. Will attempt to replace object with this custom object.");
+                        Dev.Log($"[{loadedObjectToProcess.ObjectType()}, {loadedObjectToProcess.GetSceneHierarchyPath()}]: Replacement bypass set to {customBypassReplacement}. Will attempt to replace object with this custom object.");
                     }
 
                     try
@@ -310,11 +327,11 @@ namespace EnemyRandomizerMod
                 {
                     if (VERBOSE_LOGGING && !logicSkip)
                     {
-                        Dev.Log($"[{objectToReplace.ObjectType}, {objectToReplace.ScenePath}]: Replacement bypass set. Will NOT attempt to replace object.");
+                        Dev.Log($"[{loadedObjectToProcess.ObjectType()}, {loadedObjectToProcess.GetSceneHierarchyPath()}]: Replacement bypass set. Will NOT attempt to replace object.");
                     }
                     else if (VERBOSE_LOGGING && !logicSkip)
                     {
-                        Dev.Log($"[{objectToReplace.ObjectType}, {objectToReplace.ScenePath}]: Logic skip set. Will NOT attempt to replace object.");
+                        Dev.Log($"[{loadedObjectToProcess.ObjectType()}, {loadedObjectToProcess.GetSceneHierarchyPath()}]: Logic skip set. Will NOT attempt to replace object.");
                     }
 
                     replaceObject = false;
@@ -323,15 +340,15 @@ namespace EnemyRandomizerMod
             else
             {
                 //create default replacements
-                originalReplacementObjects = objectToReplace.GetObjectTypeCollection(database);
+                originalReplacementObjects = loadedObjectToProcess.GetObjectTypeCollection();
                 validReplacements = originalReplacementObjects;
 
                 if (VERBOSE_LOGGING)
                 {
-                    Dev.Log($"[{objectToReplace.ObjectType}, {objectToReplace.ScenePath}]: Will attempt to replace object.");
+                    Dev.Log($"[{loadedObjectToProcess.ObjectType()}, {loadedObjectToProcess.GetSceneHierarchyPath()}]: Will attempt to replace object.");
                 }
 
-                validReplacements = GetValidReplacements(objectToReplace, originalReplacementObjects);
+                validReplacements = GetValidReplacements(loadedObjectToProcess, originalReplacementObjects);
                 if (validReplacements == null || validReplacements.Count <= 0)
                     replaceObject = false;
             }
@@ -341,166 +358,274 @@ namespace EnemyRandomizerMod
             try
             {
                 //give the logics a chance to configure the rng
-                rng = GetRNG(objectToReplace, rng);
+                rng = GetRNG(loadedObjectToProcess, rng);
             }
             catch (Exception e)
             {
-                Dev.LogError($"[{objectToReplace.ObjectType}, {objectToReplace.ObjectName}]: Error configuring the random number generator -- default will be used -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+                Dev.LogError($"[{loadedObjectToProcess.ObjectType()}, {loadedObjectToProcess.GetSceneHierarchyPath()}]: Error configuring the random number generator -- default will be used -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
             }
 
-            ObjectMetadata replacementObject = null;
+            GameObject replacementObject = null;
             try
             {
                 if (replaceObject)
                 {
-                    if (GetObjectReplacement(objectToReplace, validReplacements, rng, out replacementObject))
+                    if (GetObjectReplacement(loadedObjectToProcess, validReplacements, rng, out replacementObject))
                     {
                         if (VERBOSE_LOGGING)
-                            Dev.Log($"{objectToReplace}: Object will be replaced by {replacementObject} .");
+                            Dev.Log($"{loadedObjectToProcess}: Object will be replaced by {replacementObject} .");
                     }
                     else
                     {
                         if (VERBOSE_LOGGING)
-                            Dev.Log($"{objectToReplace}: Object was not replaced by any module.");
+                            Dev.Log($"{loadedObjectToProcess}: Object was not replaced by any module.");
                     }
                 }
                 else
                 {
                     if (VERBOSE_LOGGING)
                     {
-                        Dev.Log($"{objectToReplace}: Object was not replaced.");
+                        Dev.Log($"{loadedObjectToProcess}: Object was not replaced.");
                     }
                 }
             }
             catch (Exception e)
             {
-                Dev.LogError($"{objectToReplace}: Fatal error replacing object -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+                Dev.LogError($"{loadedObjectToProcess}: Fatal error replacing object -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
             }
 
-            var objectToModifyAndActivate = replacementObject == null ? objectToReplace : replacementObject;
+            var objectToModifyAndActivate = replacementObject == null ? loadedObjectToProcess : replacementObject;
+            var objectToSourceAndDestroy = replacementObject != null ? loadedObjectToProcess : replacementObject;
             if (!logicSkip)
             {
                 try
                 {
-                    ModifyObject(objectToReplace, objectToModifyAndActivate);
+                    ModifyObject(objectToSourceAndDestroy, objectToModifyAndActivate);
                 }
                 catch (Exception e)
                 {
-                    Dev.LogError($"{objectToModifyAndActivate}: Fatal error modifying object -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+                    Dev.LogError($"{objectToModifyAndActivate}: Fatal error modifying object using {objectToModifyAndActivate} as source -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
                 }
             }
 
-            try
+            if (objectToSourceAndDestroy != null)
             {
-                if (VERBOSE_LOGGING)
-                    Dev.Log($"{objectToModifyAndActivate}: Trying to fix logic....");
+                try
+                {
+                    if (VERBOSE_LOGGING)
+                        Dev.Log($"{objectToModifyAndActivate}: Trying to fix logic....");
 
-                FixForLogic(objectToModifyAndActivate);
-            }
-            catch (Exception e)
-            {
-                Dev.LogError($"{objectToModifyAndActivate}: Fatal error fixing object for logic -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+                    FixForLogic(objectToModifyAndActivate, objectToSourceAndDestroy);
+                }
+                catch (Exception e)
+                {
+                    Dev.LogError($"{objectToModifyAndActivate}: Fatal error fixing object for logic -- ERROR:{e.Message} STACKTRACE:{e.StackTrace}]");
+                }
             }
 
             if (VERBOSE_LOGGING)
                 Dev.Log($"{objectToModifyAndActivate}: Trying to finalize and activate....");
 
-            objectToModifyAndActivate.ActivateSource(objectToReplace);
-            return objectToModifyAndActivate.Source;
+            objectToModifyAndActivate.FinalizeReplacement(objectToSourceAndDestroy);
+
+            if (VERBOSE_LOGGING)
+                Dev.Log($"{objectToModifyAndActivate}: Is this object active? {objectToModifyAndActivate} --> [{objectToModifyAndActivate.activeInHierarchy}]");
+
+            return objectToModifyAndActivate;
         }
 
-        protected bool CanProcessObject(ObjectMetadata metaObject)
+        protected bool WillProcessObject(GameObject objectToProcess)
         {
-            bool canProcess = CanProcessNow(metaObject);
+            bool canProcess = CanProcessNow(objectToProcess);
 
             if (!canProcess && EnemyRandomizer.DoReplacementBypassCheck(true))
+            {
+                if (VERBOSE_LOGGING)
+                    Dev.LogWarning($"{objectToProcess}: Replacement bypass invoked, forcing this object to be process-able...");
                 canProcess = true;
+            }
 
             if (!canProcess)
             {
-                if (metaObject.IsInvalidObject)
+                if (objectToProcess.IsInvalidSceneObject())
                 {
                     if (VERBOSE_LOGGING)
                     {
-                        Dev.Log($"[{metaObject.ObjectType}, {metaObject.ScenePath}]: Destroying invalid object.");
+                        Dev.Log($"[{objectToProcess}]: Destroying invalid object.");
                     }
 
-                    metaObject.DestroySource();
+                    SpawnerExtensions.DestroyObject(objectToProcess);
                     return false;
                 }
 
-                if (metaObject.IsTemporarilyInactive)
+                if (objectToProcess.IsTemporarilyInactive())
                 {
                     if (VERBOSE_LOGGING && GetBlackBorders().Value != null && GetBlackBorders().Value.Count > 0)
                     {
-                        Dev.Log($"[{metaObject.ObjectType}, {metaObject.ScenePath}]: Cannot process object yet. Queuing for activation later.");
+                        Dev.Log($"[{objectToProcess}]: Cannot process object yet. Queuing for activation later.");
                         //metaObject.Dump();
                     }
 
-                    var loader = OnObjectLoadedAndActive(metaObject);
+                    var loader = OnObjectLoadedAndActive(objectToProcess);
                     GameManager.instance.StartCoroutine(loader);
-                    pendingLoads.Add(metaObject, loader);
+                    pendingLoads.Add(objectToProcess, loader);
 
                     //going to return original -- can't process the object yet
                 }
                 else
                 {
-                    //object is inactive, can't process at all, return original
-                    if(VERBOSE_LOGGING)
+
+                    if (VERBOSE_LOGGING && objectToProcess.ObjectType() == PrefabObject.PrefabType.Enemy)
                     {
-                        Dev.LogWarning($"[{metaObject.ObjectType}, {metaObject.ObjectName}]: Cannot process inactive object.");
-                        //metaObject.Dump();
+                        if (VERBOSE_LOGGING && objectToProcess == null)
+                        {
+                            Dev.LogWarning($"[{objectToProcess}]: objectToProcess is null.");
+                        }
+
+                        if (VERBOSE_LOGGING && !objectToProcess.IsInAValidScene())
+                        {
+                            Dev.LogWarning($"[{objectToProcess}]: NOT IsValidScene {objectToProcess.SceneName()}.");
+                        }
+
+                        if (VERBOSE_LOGGING && !objectToProcess.IsDatabaseObject())
+                        {
+                            Dev.LogWarning($"[{objectToProcess}]: NOT a IsDatabaseObject.");
+                        }
+
+                        if (VERBOSE_LOGGING && objectToProcess.HasReplacedAnObject())
+                        {
+                            Dev.LogWarning($"[{objectToProcess}]: This has replaced an object already");
+                        }
+
+                        if (VERBOSE_LOGGING && objectToProcess.IsDisabledBySavedGameState())
+                        {
+                            Dev.LogWarning($"[{objectToProcess}]: IsDisabledBySavedGameState.");
+                        }
+
+                        if (VERBOSE_LOGGING && objectToProcess.IsVisible())
+                        {
+                            Dev.LogWarning($"[{objectToProcess}]: IsVisible.");
+                        }
+
+                        if (VERBOSE_LOGGING && !objectToProcess.IsVisible())
+                        {
+                            Dev.LogWarning($"[{objectToProcess}]: NOT IsVisible.");
+                        }
+
+                        if (VERBOSE_LOGGING && objectToProcess.IsInvalidSceneObject())
+                        {
+                            Dev.LogWarning($"[{objectToProcess}]: IsInvalidSceneObject.");
+                        }
+
+                        if (VERBOSE_LOGGING)
+                        {
+                            Dev.LogWarning($"[{objectToProcess}]: Will not process object.");
+                            //objectToProcess.Dump();
+                            Dev.LogError("TODO: implement new object dumping stats here....");
+                        }
+                    }
+                    else
+                    {
+                        if (VERBOSE_LOGGING)
+                            Dev.LogWarning($"[{objectToProcess}]: Will not process object.");
                     }
                 }
             }
             else
             {
-                bool result = true;
+                bool doesLogicAllowProcessing = true;
                 foreach (var logic in loadedLogics)
                 {
                     try
                     {
-                        result = logic.CanReplaceObject(metaObject);
-                        if (!result)
+                        //TODO: rename CanProcessObject
+                        doesLogicAllowProcessing = logic.CanReplaceObject(objectToProcess);
+                        if (!doesLogicAllowProcessing)
+                        {
+                            if (VERBOSE_LOGGING)
+                                Dev.LogWarning($"{objectToProcess}: The logic {logic} does not allow this to be processed.");
                             break;
+                        }
                     }
                     catch (Exception e)
                     {
-                        Dev.LogError($"Error trying to check logic {logic.Name} to see if {metaObject.ObjectName} can be replaced... ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                        Dev.LogError($"Error trying to check logic {logic.Name} to see if {objectToProcess.ObjectName()} can be replaced... ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
                     }
                 }
+                canProcess = doesLogicAllowProcessing;
             }
 
             return canProcess;
         }
 
-        protected IEnumerator OnObjectLoadedAndActive(ObjectMetadata info)
-        { 
-            if(info == null || info.Source == null || info.IsDisabledBySavedGameState)
+        protected IEnumerator OnObjectLoadedAndActive(GameObject loadedObjectToProcess)
+        {
+            yield return null;
+            if(loadedObjectToProcess == null || loadedObjectToProcess.IsDisabledBySavedGameState())
             {
+                if (VERBOSE_LOGGING && loadedObjectToProcess == null)
+                    Dev.LogWarning($"The object is null.");
+
+                if (VERBOSE_LOGGING && loadedObjectToProcess != null && loadedObjectToProcess.IsDisabledBySavedGameState())
+                    Dev.LogWarning($"{loadedObjectToProcess}: The object is disabled by game state.");
                 yield break;
             }
 
-            yield return new WaitUntil(() => info == null || info.Source == null || (!info.IsDisabledBySavedGameState && info.ActiveSelf && info.RenderersVisible && info.InBounds));
-            if(info == null || info.Source == null || info.IsDisabledBySavedGameState)
+            if (GetBlackBorders() == null || GetBlackBorders().Value == null || GetBlackBorders().Value.Count <= 0)
             {
-                pendingLoads.Remove(info);
+                if (VERBOSE_LOGGING)
+                    Dev.LogWarning($"{loadedObjectToProcess}: Blocking load until the scene is finished loading (the black boarders have not yet been created).");
+                yield return new WaitUntil(() => GetBlackBorders() != null && GetBlackBorders().Value != null && GetBlackBorders().Value.Count > 0);
+                if (VERBOSE_LOGGING)
+                    Dev.LogWarning($"{loadedObjectToProcess}: Resuming load.");
+            }
+
+            if (loadedObjectToProcess != null && !loadedObjectToProcess.CanProcessObject())
+            {
+                if (VERBOSE_LOGGING)
+                    Dev.LogWarning($"{loadedObjectToProcess}: The object cannot be processed yet...");
+                yield return new WaitUntil(() => loadedObjectToProcess == null || !loadedObjectToProcess.IsValid() || loadedObjectToProcess.CanProcessObject());
+            }
+
+            if (VERBOSE_LOGGING && loadedObjectToProcess != null && !loadedObjectToProcess.IsValid())
+                Dev.LogWarning($"{loadedObjectToProcess}: The object invalid.");
+
+            if (VERBOSE_LOGGING && loadedObjectToProcess != null)
+                Dev.LogWarning($"{loadedObjectToProcess}: The object became null while in queue.");
+
+            if (VERBOSE_LOGGING && loadedObjectToProcess != null && loadedObjectToProcess.IsDisabledBySavedGameState())
+                Dev.LogWarning($"{loadedObjectToProcess}: The object became disabled by game state while in queue.");
+
+            if (VERBOSE_LOGGING && loadedObjectToProcess != null && loadedObjectToProcess.CanProcessObject())
+                Dev.LogWarning($"{loadedObjectToProcess}: The object can now be processed.");
+
+            if (VERBOSE_LOGGING && loadedObjectToProcess != null && !loadedObjectToProcess.IsInAValidScene())
+                Dev.LogWarning($"{loadedObjectToProcess}: The object's scene became invalid or unloaded.");
+
+
+            if (loadedObjectToProcess == null || !loadedObjectToProcess.CanProcessObject())
+            {
+                pendingLoads.Remove(loadedObjectToProcess);
                 yield break;
             }
-            yield return new WaitUntil(() => GetBlackBorders() != null && GetBlackBorders().Value != null && GetBlackBorders().Value.Count > 0);
-            if (info != null)
+
+            if (loadedObjectToProcess != null)
             {
-                OnObjectLoaded(info);
-                pendingLoads.Remove(info);
+                if (VERBOSE_LOGGING)
+                    Dev.LogWarning($"{loadedObjectToProcess}: Object may now be processed");
+                OnObjectLoaded(loadedObjectToProcess);
+                if (VERBOSE_LOGGING)
+                    Dev.LogWarning($"{loadedObjectToProcess}: Object processing complete, removing from pending load");
+                pendingLoads.Remove(loadedObjectToProcess);
             }
         }
 
-        protected bool CanProcessNow(ObjectMetadata original)
+        protected bool CanProcessNow(GameObject objectToProcess)
         {
             if (loadedLogics == null || loadedLogics.Count <= 0)
             {
                 if(VERBOSE_LOGGING)
-                    Dev.LogWarning($"No logics are loaded. Cannot process any objects!");
+                    Dev.LogWarning($"No logics are loaded. Cannot process anything!");
 
                 return false;
             }
@@ -508,24 +633,30 @@ namespace EnemyRandomizerMod
             bool canProcessNow = true;
             try
             {
-                if (!original.CanProcessObject)
+                if (!objectToProcess.CanProcessObject())
+                {
+                    if (VERBOSE_LOGGING)
+                        Dev.LogWarning($"{objectToProcess}: objectToProcess.CanProcessObject == false : This object cannot be processed now.");
                     canProcessNow = false;
+                }
             }
             catch (Exception e)
             {
                 canProcessNow = false;
 
-                if (VERBOSE_LOGGING && !original.IsInvalidObject && original.IsDatabaseObject)
+                if (VERBOSE_LOGGING && !objectToProcess.IsInvalidSceneObject() && objectToProcess.IsDatabaseObject())
                 {
-                    Dev.LogError($"Error trying to check if this object can be processed {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
-                    original.Dump();
+                    Dev.LogError($"Error trying to check if this object can be processed {objectToProcess} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+
+                    Dev.LogError("TODO: here's where we'd dump a bunch of stats but..... this need to be rewritten- put that off until I hit this need");
+                    //objectToProcess.Dump();
                 }
             }
 
             return canProcessNow;
         }
 
-        public List<PrefabObject> GetValidReplacements(ObjectMetadata original, List<PrefabObject> validReplacementObjects)
+        public List<PrefabObject> GetValidReplacements(GameObject original, List<PrefabObject> validReplacementObjects)
         {
             List<PrefabObject> validReplacements = validReplacementObjects;
 
@@ -537,14 +668,14 @@ namespace EnemyRandomizerMod
                 }
                 catch (Exception e)
                 {
-                    Dev.LogError($"Error trying to load valid replacements in logic {logic.Name} using data from {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                    Dev.LogError($"Error trying to load valid replacements in logic {logic.Name} using data from {original.ObjectName()} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
                 }
             }
 
             return validReplacements;
         }
 
-        protected RNG GetRNG(ObjectMetadata original, RNG defaultRNG)
+        protected RNG GetRNG(GameObject original, RNG defaultRNG)
         {
             RNG rng = defaultRNG;
 
@@ -556,15 +687,15 @@ namespace EnemyRandomizerMod
                 }
                 catch (Exception e)
                 {
-                    Dev.LogError($"Error trying to load RNG in logic {logic.Name} using data from {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                    Dev.LogError($"Error trying to load RNG in logic {logic.Name} using data from {original.ObjectName()} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
                 }
             }
             return rng;
         }
 
-        protected bool GetObjectReplacement(ObjectMetadata original, List<PrefabObject> validReplacements, RNG rng, out ObjectMetadata newObject)
+        protected bool GetObjectReplacement(GameObject original, List<PrefabObject> validReplacements, RNG rng, out GameObject newObject)
         {
-            ObjectMetadata currentPotentialReplacement = null;
+            GameObject currentPotentialReplacement = null;
             foreach (var logic in loadedLogics)
             {
                 try
@@ -573,46 +704,57 @@ namespace EnemyRandomizerMod
                 }
                 catch (Exception e)
                 {
-                    Dev.LogError($"Error trying to replace object in logic {logic.Name} using data from {original.ObjectName} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                    Dev.LogError($"[GetObjectReplacement ERROR]: Error trying to replace object in logic [{logic.Name}] using data from {original} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
                 }
             }
             newObject = currentPotentialReplacement;
-            return newObject != original || ((currentPotentialReplacement != null && original != null) && (newObject.Source != original.Source));
+            return newObject != null;
         }
 
-        protected void ModifyObject(ObjectMetadata objectToReplace, ObjectMetadata replacementObject)
+        protected void ModifyObject(GameObject objectToReplace, GameObject objectToModify)
         {
-            ObjectMetadata original = objectToReplace;
             foreach (var logic in loadedLogics)
             {
                 try
                 {
-                    logic.ModifyObject(replacementObject, original);
+                    logic.ModifyObject(objectToModify, objectToReplace);
                 }
                 catch (Exception e)
                 {
-                    Dev.LogError($"Error trying to modify object {replacementObject} in logic {logic.Name} using data from {original} ; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                    Dev.LogError($"[ModifyObject ERROR]: Error trying to modify object {objectToModify} in logic [{logic.Name}] using data from {objectToReplace} \nERROR:{e.Message} STACKTRACE:{e.StackTrace}");
                 }
             }
         }
 
-        protected bool SkipForLogic(ObjectMetadata metaObject)
+        /// <summary>
+        /// Check for a special case for this object to prevent logical softlocks or other unique reasons
+        /// </summary>
+        protected bool SkipForLogic(GameObject potentialReplacementObject)
         {
-            return metaObject.SkipForLogic();
+            bool result = false;
+            try
+            {
+                result = potentialReplacementObject.SkipForLogic();
+            }
+            catch (Exception e)
+            {
+                Dev.LogError($"Error trying to check object for skip logic: {potentialReplacementObject}; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+            }
+            return result;
         }
 
         /// <summary>
         /// Apply special fixes to this enemy to prevent logical softlocks or other critical issues
         /// </summary>
-        protected void FixForLogic(ObjectMetadata metaObject)
+        protected void FixForLogic(GameObject newReplacementObject, GameObject oldOriginalObject)
         {
             try
             {
-                metaObject.FixForLogic();
+                newReplacementObject.FixForLogic(oldOriginalObject);
             }
             catch (Exception e)
             {
-                Dev.LogError($"Error trying to fix object {metaObject} for softlock prevention logic; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                Dev.LogError($"Error trying to fix object {newReplacementObject} which would replace {oldOriginalObject} for softlock prevention logic; ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
             }
         }
 

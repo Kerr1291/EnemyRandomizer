@@ -156,7 +156,7 @@ namespace EnemyRandomizerMod
         {
             get
             {
-                return Instance.maxGUILines;
+                return DevLogger.applicationIsQuitting ? 0 : Instance.maxGUILines;
             }
         }
 
@@ -579,7 +579,11 @@ namespace EnemyRandomizerMod
                     if (type != LogType.Warning && !stackTrace.Contains("InvokeLog ("))
                     {
                         //LogTrace(header + " " + logString);
+#if DEBUG
                         LogGUI(Dev.ToLogString(header, logString));
+#else
+                        LogGUI(header + logString);
+#endif
 #if CUDLR
                     CUDLR.Console.Log(logString);
 #endif

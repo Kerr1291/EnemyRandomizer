@@ -12,17 +12,22 @@ namespace EnemyRandomizerMod
 {
     public class ZoteFlukeControl : FSMAreaControlEnemy
     {
-        public override void Setup(ObjectMetadata other)
+        public Vector2 spawnPos;
+
+        protected virtual void OnEnable()
+        {
+            spawnPos = transform.position;
+        }
+
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
-
-            Geo = 21;
 
             var init = control.GetState("Init");
             init.DisableAction(2);
 
-            this.OverrideState(control, "Pos", () => {
-                transform.position = thisMetadata.ObjectPosition;
+            control.OverrideState("Pos", () => {
+                transform.position = spawnPos;
             });
 
             var climb = control.GetState("Climb");
@@ -63,8 +68,8 @@ namespace EnemyRandomizerMod
             death.DisableAction(6);
             death.AddCustomAction(() => { GameObject.Destroy(gameObject); });
 
-            this.OverrideState(control, "Sleep", () => { GameObject.Destroy(gameObject); });
-            this.OverrideState(control, "Sleeping", () => { GameObject.Destroy(gameObject); });
+            control.OverrideState( "Sleep", () => { GameObject.Destroy(gameObject); });
+            control.OverrideState( "Sleeping", () => { GameObject.Destroy(gameObject); });
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Pos");
             //this.AddResetToStateOnHide(control, "Init");

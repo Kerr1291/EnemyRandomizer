@@ -59,6 +59,9 @@ namespace EnemyRandomizerMod
             Content.Content = data;
             name = data;
 
+            if (DevLogger.applicationIsQuitting)
+                return;
+
             float maxLines = DevLogger.Instance.MaxGUILines;
             float logSize = DevLogger.Instance.LogSize.y;
             logSize = logSize / maxLines;

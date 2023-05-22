@@ -19,7 +19,7 @@ namespace EnemyRandomizerMod
     {
         public float startYPos;
 
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
 
@@ -30,9 +30,9 @@ namespace EnemyRandomizerMod
             RNG geoRNG = new RNG();
             geoRNG.Reset();
 
-            thisMetadata.EnemyHealthManager.hp = other.OriginalPrefabHP;
-            thisMetadata.EnemyHealthManager.SetGeoMedium(geoRNG.Rand(0, 5));
-            thisMetadata.EnemyHealthManager.SetGeoSmall(geoRNG.Rand(1, 10));
+            EnemyHealthManager.hp = other.OriginalPrefabHP();
+            EnemyHealthManager.SetGeoMedium(geoRNG.Rand(0, 5));
+            EnemyHealthManager.SetGeoSmall(geoRNG.Rand(1, 10));
 
             var init = control.GetState("Init");
             init.DisableAction(0);
@@ -71,8 +71,8 @@ namespace EnemyRandomizerMod
             death.DisableAction(3);
             death.AddCustomAction(() => { GameObject.Destroy(gameObject); });
 
-            this.OverrideState(control, "Reset", () => { GameObject.Destroy(gameObject); });
-            this.OverrideState(control, "Respawn Pause", () => { GameObject.Destroy(gameObject); });
+            control.OverrideState( "Reset", () => { GameObject.Destroy(gameObject); });
+            control.OverrideState( "Respawn Pause", () => { GameObject.Destroy(gameObject); });
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Ball");
             //this.AddResetToStateOnHide(control, "Init");

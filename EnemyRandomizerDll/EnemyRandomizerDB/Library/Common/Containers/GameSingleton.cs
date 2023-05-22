@@ -10,7 +10,22 @@ namespace EnemyRandomizerMod
             get;
         }
 		
-        public abstract void OnCreate(); 
+        public abstract void OnCreate();
+
+        public static bool applicationIsQuitting { get; private set; }
+
+        /// <summary>
+        /// When Unity quits, it destroys objects in a random order.
+        /// In principle, a Singleton is only destroyed when application quits.
+        /// If any script calls Instance after it have been destroyed, 
+        ///   it will create a buggy ghost object that will stay on the Editor scene
+        ///   even after stopping playing the Application. Really bad!
+        /// So, this was made to be sure we're not creating that buggy ghost object.
+        /// </summary>
+        public virtual void OnDestroy()
+        {
+            applicationIsQuitting = true;
+        }
     }
 
     ///Implementation taken from: http://wiki.unity3d.com/index.php?title=Singleton
@@ -72,21 +87,6 @@ namespace EnemyRandomizerMod
             }
         }
 
-        private static bool applicationIsQuitting = false;
-
-        /// <summary>
-        /// When Unity quits, it destroys objects in a random order.
-        /// In principle, a Singleton is only destroyed when application quits.
-        /// If any script calls Instance after it have been destroyed, 
-        ///   it will create a buggy ghost object that will stay on the Editor scene
-        ///   even after stopping playing the Application. Really bad!
-        /// So, this was made to be sure we're not creating that buggy ghost object.
-        /// </summary>
-        public virtual void OnDestroy()
-        {
-            applicationIsQuitting = true;
-        }
-
         public override string DefaultName
         {
             get
@@ -108,5 +108,4 @@ namespace EnemyRandomizerMod
             }
         }
     }
-
 }

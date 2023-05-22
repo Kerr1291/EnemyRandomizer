@@ -75,11 +75,9 @@ namespace EnemyRandomizerMod
 
     public class ZoteBossControl : FSMBossAreaControl
     {
-        public override void Setup(ObjectMetadata other)
+        public override void Setup(GameObject other)
         {
             base.Setup(other);
-
-            Geo = 1;
 
             var whiteScreenEffectfsm = gameObject.GetComponentsInChildren<PlayMakerFSM>(true).FirstOrDefault(x => x.gameObject.name == "white_solid");
             if (whiteScreenEffectfsm != null)
@@ -95,7 +93,7 @@ namespace EnemyRandomizerMod
                 Dev.LogError("Could not find white screen child object on Zote Boss!");
             }    
 
-            var corpse = thisMetadata.Corpse;
+            var corpse = gameObject.GetCorpseObject();
             if(corpse != null)
             {
                 var white2 = corpse.GetComponentsInChildren<PlayMakerFSM>(true).FirstOrDefault(x => x.gameObject.name == "white_solid");
@@ -106,11 +104,12 @@ namespace EnemyRandomizerMod
                 if (corpseFSM != null)
                 {
                     var init = corpseFSM.GetState("Init");
-                    DisableActions(init, 0, 1, 7, 8, 9, 10, 11, 15);
+                    init.DisableActions(0, 1, 7, 8, 9, 10, 11, 15);
 
                     var inAir = corpseFSM.GetState("In Air");
-                    DisableActions(inAir, 0);
-                    AddTimeoutAction(inAir, "LAND", 1f);
+                    inAir.DisableActions(0);
+                    corpseFSM.AddTimeoutAction(inAir, "LAND", 1f);
+                    //inAir.AddTimeoutAction("LAND", 1f);
 
                     var burst = corpseFSM.GetState("Burst");
                     burst.DisableAction(5);
@@ -121,10 +120,10 @@ namespace EnemyRandomizerMod
                     notify.AddCustomAction(() => { control.SendEvent("CORPSE END"); });
 
                     var end = corpseFSM.GetState("End");
-                    DisableActions(end, 0, 1, 2, 3);
+                    end.DisableActions(0, 1, 2, 3);
 
                     var land = corpseFSM.GetState("Land");
-                    DisableActions(land, 0, 3, 4, 5, 6, 7, 13);
+                    land.DisableActions(0, 3, 4, 5, 6, 7, 13);
                 }
                 else
                 {
@@ -146,7 +145,7 @@ namespace EnemyRandomizerMod
                 Dev.LogError("No roar antic on zote boss?");
             }
 
-            DisableKillFreeze();
+            gameObject.DisableKillFreeze();
         }
     }
         
