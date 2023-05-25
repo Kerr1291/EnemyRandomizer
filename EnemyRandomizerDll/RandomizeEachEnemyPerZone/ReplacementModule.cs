@@ -187,76 +187,60 @@ namespace EnemyRandomizerMod
             return ReplaceObject(potentialReplacement, originalObject, validReplacements, rng);
         }
 
-        protected virtual PrefabObject GetObject(PrefabObject prefab, List<PrefabObject> validReplacements, RNG rng)
+        protected virtual List<float> GetWeights(List<PrefabObject> validReplacements)
         {
-            //if it's a flamebearer, try one more pick since they appear 3x more than anything else
-            if (prefab.prefabName.Contains("Flame"))
-            {
-                prefab = validReplacements.GetRandomElementFromList(rng);
-            }
-            //if it's a ghost warrior, pick again since there's several ghost bosses
-            else if (prefab.prefabName.Contains("Ghost"))
-            {
-                prefab = validReplacements.GetRandomElementFromList(rng);
-            }
-            else //other enemy types with multiple entries
-            if (prefab.prefabName.Contains("Mage"))
-            {
-                prefab = validReplacements.GetRandomElementFromList(rng);
-            }
-            else //other enemy types with multiple entries
-            if (prefab.prefabName.Contains("Ruins"))
-            {
-                prefab = validReplacements.GetRandomElementFromList(rng);
-            }
-            else //other enemy types with multiple entries
-            if (prefab.prefabName.Contains("Mushroom"))
-            {
-                prefab = validReplacements.GetRandomElementFromList(rng);
-            }
-            else //other enemy types with multiple entries
-            if (prefab.prefabName.Contains("Fluke") || prefab.prefabName.Contains("fluke"))
-            {
-                prefab = validReplacements.GetRandomElementFromList(rng);
-            }
-            else //other enemy types with multiple entries
-            if (prefab.prefabName.Contains("Zote"))
-            {
-                prefab = validReplacements.GetRandomElementFromList(rng);
-            }
-            else //other enemy types with multiple entries
-            if (prefab.prefabName.Contains("Colosseum"))
-            {
-                prefab = validReplacements.GetRandomElementFromList(rng);
-            }
-            return prefab;
+            return validReplacements.Select(x => x.DefaultRNGWeight).ToList();
+        }
+
+        protected virtual PrefabObject GetObject(List<PrefabObject> validReplacements, List<float> weights, RNG rng)
+        {
+            int replacementIndex = rng.WeightedRand(weights);
+            return validReplacements[replacementIndex];
+        }
+
+        protected virtual PrefabObject GetObject(List<PrefabObject> validReplacements, RNG rng)
+        {
+            PrefabObject replacementPrefab = null;
+            replacementPrefab = validReplacements.GetRandomElementFromList(rng);
+            return replacementPrefab;
         }
 
         protected virtual GameObject ReplaceObject(GameObject potentialReplacement, GameObject originalObject, List<PrefabObject> validReplacements, RNG rng)
         {
-            //TODO: weight the list for a more even distro of kinds of enemies
-            var replacementPrefab = validReplacements.GetRandomElementFromList(rng);
+            PrefabObject replacementPrefab = null;
 
-            //lame shuffle -- TODO replace with a weighted table pull
+            if(validReplacements.Count == 1)
             {
-                for (int i = 0; i < 10; ++i)
-                {
-                    if (originalObject.GetObjectPrefab() == replacementPrefab)
-                    {
-                        replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
-                    }
-                }
+                replacementPrefab = validReplacements.FirstOrDefault();
             }
 
             //try and prevent vanilla objects
-            if(validReplacements.Count > 1 && originalObject.GetObjectPrefab() == replacementPrefab)
+            if(validReplacements.Count > 1 && (originalObject.GetObjectPrefab() == replacementPrefab || replacementPrefab == null))
             {
-                int maxTries = 100;
+                List<float> weights = null;
+                var originalPrefab = originalObject.GetObjectPrefab();
+                if (originalPrefab.prefabType == PrefabObject.PrefabType.Enemy)
+                    weights = GetWeights(validReplacements);
+                int maxTries = 10;
                 for (int i = 0; i < maxTries; ++i)
                 {
-                    if(originalObject.GetObjectPrefab() == replacementPrefab)
+                    if(replacementPrefab == null || originalPrefab == replacementPrefab)
                     {
-                        replacementPrefab = GetObject(replacementPrefab, validReplacements, rng);
+                        if(weights != null)
+                        {
+                            replacementPrefab = GetObject(validReplacements, weights, rng);
+                        }
+                        else
+                        {
+                            replacementPrefab = GetObject(validReplacements, rng);
+                        }
+
+                        if (originalPrefab != replacementPrefab)
+                            break;
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
             }
@@ -269,6 +253,35 @@ namespace EnemyRandomizerMod
 
             //do the replace
             return Database.Replace(originalObject, replacementPrefab);
+        }
+
+
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, replace a given type?
+        /// </summary>
+        public override bool WillFilterType(PrefabObject.PrefabType prefabType)
+        {
+            return prefabType == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value ||
+                   prefabType == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value ||
+                   prefabType == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value;
+        }
+
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, replace a given type?
+        /// </summary>
+        public override bool WillReplaceType(PrefabObject.PrefabType prefabType)
+        {
+            return prefabType == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value ||
+                   prefabType == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value ||
+                   prefabType == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value;
+        }
+
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, modify a given type?
+        /// </summary>
+        public override bool WillModifyType(PrefabObject.PrefabType prefabType)
+        {
+            return false;
         }
     }
 }

@@ -1065,6 +1065,274 @@ namespace EnemyRandomizerMod
             {"Worm", false}, //need flipped
             {"Bee Dropper", false} //needs some starting velocity, a collider so it can be hit?, and POOB component
         };
+
+
+        public static Dictionary<string, float> RNGWeights = new Dictionary<string, float>()
+        {
+            {"Health Cocoon", 0.01f},
+            {"Health Scuttler", 0.01f},
+            {"Orange Scuttler", 0.01f},
+            {"Abyss Tendril", 0.01f},
+
+            {"Flamebearer Small", 0.2f},//these work, but they're annoying and don't stay in the arenas
+            {"Flamebearer Med", 0.2f},  //these work, but they're annoying and don't stay in the arenas
+            {"Flamebearer Large", 0.2f},//these work, but they're annoying and don't stay in the arenas
+
+            {"Mosquito", 0.5f},
+            {"Colosseum_Armoured_Mosquito", 0.5f},
+
+            {"Colosseum_Armoured_Roller", 0.5f},
+            {"Roller", 0.5f},
+            {"Roller R", 0.5f},
+
+            {"Super Spitter", 1f},
+            {"Super Spitter Col", 0.5f},//didnt spawn
+            
+            {"Spitter R", 0.5f},
+            {"Spitter", 0.5f},
+
+            {"White Defender", 0.5f},//error on spawn
+            {"Dung Defender", 0.5f},
+
+            {"Giant Buzzer Col", 0.5f},//coun't hurt
+            {"Giant Buzzer", 0.5f},
+            
+            {"Zombie Shield", 0.25f},
+            {"Zombie Leaper", 0.25f},
+            {"Zombie Guard", 0.25f},
+            {"Zombie Runner", 0.25f},
+            {"Zombie Hornhead", 0.25f},
+            {"Zombie Barger", 0.25f},
+
+            {"False Knight Dream", 0.5f},
+            {"False Knight New", 0.5f}, ///???? some errors but killable
+
+            {"Royal Zombie Fat", 0.4f},
+            {"Royal Zombie", 0.4f},
+            {"Royal Zombie Coward", 0.4f},
+
+            {"Gorgeous Husk", 1f},
+            {"Ceiling Dropper", 1f},
+
+            {"Ruins Sentry", 0.25f},
+            {"Ruins Flying Sentry", 0.25f},
+            {"Ruins Flying Sentry Javelin", 0.25f},
+            {"Ruins Sentry Fat", 0.25f},
+
+            {"Great Shield Zombie", 0.5f},
+            {"Great Shield Zombie bottom", 0.5f},//skip, doesn't spawn
+            
+            {"Plant Trap", 1f},
+            {"Pigeon", 0.1f},
+
+            {"Acid Flyer", 0.5f},
+            {"Acid Walker", 0.5f},
+
+            {"Plant Turret", 0.5f},
+            {"Plant Turret Right", 0.5f},
+
+            {"Fungoon Baby", 0.5f},
+            {"Fungus Flyer", 0.5f},
+
+            {"Zombie Fungus A", 0.5f},
+            {"Zombie Fungus B", 0.5f},
+
+            {"Moss Flyer", 1f},
+            {"Moss Knight Fat", 1f},
+            {"Moss Knight", 1f},
+            {"Moss Walker", 1f},
+            {"Mossman_Shaker", 1f},
+            {"Mossman_Runner", 1f},
+
+            {"Moss Charger", 0.5f},
+            {"Mega Moss Charger", 0.5f},
+
+            {"Mantis Heavy", 0.2f},
+            {"Mantis Heavy Flyer", 0.2f},
+            {"Mantis Flyer Child", 0.2f},//spawned in ground
+            {"Mantis", 0.2f},
+            {"Mantis Traitor Lord", 0.2f},
+            {"Mantis Heavy Spawn", 0.2f},
+
+            {"Ghost Warrior Markoth", 0.15f},
+            {"Ghost Warrior Galien", 0.15f},
+            {"Ghost Warrior Xero", 0.15f},//killing caused nullrefs
+            {"Ghost Warrior Marmu", 0.15f},
+            {"Ghost Warrior No Eyes", 0.15f},
+            {"Ghost Warrior Hu", 0.15f},
+            {"Ghost Warrior Slug", 0.15f},//isn't attacking and drifts left -- movement broken like markoth
+            
+            {"Zote Boss", 1f},// TEST FIXES
+
+            {"Zoteling", 0.25f},
+            {"Zoteling Buzzer", 0.25f},
+            {"Zoteling Hopper", 0.25f},
+            {"Ordeal Zoteling", 0.25f},
+
+            {"Zote Balloon Ordeal", 0.5f},//skip
+            {"Zote Balloon", 0.5f},
+
+            {"Zote Turret", 0.25f},
+            {"Zote Salubra", 0.25f},
+            {"Zote Thwomp", 0.25f},
+            {"Zote Fluke", 0.25f},//add poob
+
+            {"Zote Crew Normal", 0.3f},//spawns in floor
+            {"Zote Crew Fat", 0.3f},
+            {"Zote Crew Tall", 0.3f},//spawns in floor
+            
+            {"Jellyfish", 1f},
+            {"Lil Jellyfish", 1f},//bomb, worked
+            {"Jellyfish GG", 0.5f},
+            {"Mega Jellyfish", 0.5f},
+            {"Jellyfish Baby", 1f},
+
+            {"Mega Zombie Beam Miner", 0.5f},//nullrefs on spawn
+            {"Zombie Beam Miner", 1f},
+            {"Zombie Beam Miner Rematch", 0.5f},//nullrefs on spawn
+            
+            {"fluke_baby_02", 0.3f},
+            {"fluke_baby_01", 0.3f},//no blue mask
+            {"fluke_baby_03", 0.3f},//no explode
+            
+            {"Mushroom Turret", 1f},//spawned in floor
+            {"Mushroom Brawler", 1f},
+            {"Mushroom Baby", 1f},
+            {"Mushroom Roller", 1f},
+
+            {"Oro", 0.3f},//didn't delete
+            {"Mato", 0.3f},//didn't activate or die
+            {"Sheo Boss", 0.3f},//didn't die
+
+            {"Hollow Knight Boss", 0.5f},//fell through world
+            {"HK Prime", 0.5f},//didn't spawn
+            
+            {"Radiance", 0.5f},
+            {"Absolute Radiance", 0.5f},//nullref
+            
+            {"Mawlek Turret", 0.5f},
+            {"Mawlek Turret Ceiling", 0.5f},//didn't spawn
+            
+            {"Mage Knight", 1f},
+            {"Mage", 1f},//spawned outside arena
+            {"Electric Mage", 0.5f},//teleported away
+            {"Mage Blob", 1f},
+            {"Mage Balloon", 1f},
+            {"Mage Lord", 0.25f},//error? fix?
+            {"Mage Lord Phase2", 0.25f},//works -- cant find his orb idle spot
+            {"Dream Mage Lord", 0.25f},
+            {"Dream Mage Lord Phase2", 0.25f},
+
+            {"Hornet Boss 1", 0.5f},
+            {"Hornet Boss 2", 0.5f},
+
+            {"Zombie Myla", 0.5f},
+            {"Zombie Miner", 0.5f},
+
+            {"Zombie Hornhead Sp", 0.5f},
+            {"Zombie Runner Sp", 0.5f},
+
+            {"Fluke Fly", 0.5f},
+            {"Flukeman", 0.5f},
+            {"Fluke Mother", 0.5f}, //nullref
+            
+            {"Zombie Hive", 0.5f},
+            {"Bee Hatchling Ambient", 0.5f},
+            {"Bee Stinger", 0.5f},
+            {"Big Bee", 0.5f},
+
+            {"Infected Knight", 0.5f},//didn't spawn
+            {"Lost Kin", 0.5f},
+
+            {"Grimm Boss", 0.5f},//teleports into walls
+            {"Nightmare Grimm Boss", 0.5f},//stuck on spawn -- still steals HUD -- death doesn't delete
+            
+            {"Hopper", 0.5f},
+            {"Giant Hopper", 0.5f},
+
+            {"Colosseum_Miner", 0.7f},
+            {"Colosseum_Shield_Zombie", 0.7f},
+            {"Colosseum_Flying_Sentry", 0.7f},
+
+            {"Mega Fat Bee", 1f}, //???? didn't see it spawn
+            {"Bursting Bouncer", 1f},//corpse didnt explode
+            {"Blobble", 1f},
+            {"Spitting Zombie", 1f},
+            {"Bursting Zombie", 1f},
+            {"Angry Buzzer", 1f},
+            {"Lesser Mawlek", 1f},
+            {"Fly", 1f},
+            {"Buzzer R", 1f},
+            {"Baby Centipede", 0.5f},
+            {"Zombie Spider 2", 0.5f},//nullref
+            {"Tiny Spider", 1f},
+            {"Shade Sibling", 1f},
+            {"Crawler", 1f},
+            {"Buzzer", 1f},
+            {"Lobster", 1f},//was placed inside floor
+            {"Lancer", 1f},//error, spawned stuck and couldn't die as well
+            {"Climber", 1f},
+            {"Mender Bug", 0.25f},
+            {"Giant Fly", 1f}, //spawn error, needs fix
+            {"Mawlek Body", 1f},//spawn errror            
+            {"Black Knight", 1f},//??? still yeets into space
+            {"Jar Collector", 1f},//jars are spawning inactive enemies -- spawned in floor
+            {"Prayer Slug", 1f},
+            {"Blocker", 1f},
+            {"Hatcher", 1f},
+            {"Egg Sac", 1f},//didnt transfer item
+            {"Fat Fly", 1f},
+            {"Grass Hopper", 1f},
+            {"Lazy Flyer Enemy", 0.25f},
+            {"Fung Crawler", 1f},
+            {"Garden Zombie", 1f},
+            {"Grave Zombie", 1f},
+            {"Crystal Crawler", 1f},
+            {"Crystal Flyer", 1f},
+            {"Crystallised Lazer Bug", 1f},
+            {"Mines Crawler", 1f},
+            {"Spider Mini", 1f},
+            {"Centipede Hatcher", 1f},
+            {"Mimic Spider", 1f},//nullref
+            {"Slash Spider", 1f},
+            {"Spider Flyer", 1f},
+            {"Blow Fly", 1f},
+            {"Abyss Crawler", 1f},
+            {"Parasite Balloon", 1f},
+            {"Flip Hopper", 1f},
+            {"Inflater", 1f},
+            {"White Palace Fly", 1f},
+            {"Enemy", 0.5f},
+            {"Royal Gaurd", 1f},//fix boomerang -- elite not spawning
+            {"Hive Knight", 1f},//not spawning
+            {"Grey Prince", 1f},
+            {"Pale Lurker", 1f},
+            {"Fat Fluke", 1f},
+            {"Sly Boss", 0.7f},//didn't die
+            {"Hornet Nosk", 1f},
+            {"Mace Head Bug", 1f},
+            {"Big Centipede Col", 1f},
+            {"Laser Turret Frames", 1f},//nullref
+            {"Jelly Egg Bomb", 1f},//not loaded?
+            {"Worm", 1f}, //need flipped
+
+            {"Hatcher Baby", 0.01f},
+            {"Corpse Garden Zombie", 0.01f},
+            {"Colosseum_Armoured_Roller R", 0.5f},  //dont spawn
+            {"Flukeman Top", 0.01f},//dont spawn
+            {"Flukeman Bot", 0.01f},//don't spawn
+            {"Zombie Spider 1", 0.5f},//didn't spawn
+            {"Colosseum Grass Hopper", 0.5f},//??? didn't spawn
+            {"Mawlek Col", 0.5f},//?? didn't spawn
+            {"Ceiling Dropper Col", 0.5f},//didn't spawn
+            {"Colosseum_Worm", 0.5f},//?? didn't spawn
+            {"Giant Fly Col", 0.5f},//didn't spawn
+            {"Buzzer Col", 0.5f},//didn't spawn
+            {"Colosseum_Armoured_Mosquito R", 1f},//dont spawn
+            {"Super Spitter R", 1f}, //dont spawn
+
+            {"Bee Dropper", 1f} //needs some starting velocity, a collider so it can be hit?, and POOB component
+        };
     }
 }
 

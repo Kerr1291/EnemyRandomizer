@@ -26,12 +26,14 @@ namespace EnemyRandomizerMod
         public bool waitingOnBossKill = false;
         public string waitingEvent = null;
         public bool battleStarted = false;
+        public bool battleEnded = false;
         public int preKilledEnemies = 0;
 
         public virtual void Dispose()
         {
             preKilledEnemies = 0;
             battleStarted = false;
+            battleEnded = false;
             ((IDisposable)disposables).Dispose();
 
             On.HutongGames.PlayMaker.FsmState.OnEnter -= FsmState_OnEnter;
@@ -43,6 +45,7 @@ namespace EnemyRandomizerMod
         {
             preKilledEnemies = 0;
             battleStarted = false;
+            battleEnded = false;
             BattleScene = scene;
             FSM = fsm;
             FSMAREA = fsm.GetComponent<BoxCollider2D>();
@@ -61,6 +64,7 @@ namespace EnemyRandomizerMod
         {
             Dev.Log("BATTLE STARTED");
             battleStarted = true;
+            battleEnded = false;
             BattleManager.Instance.Value.StartCoroutine(ForceProgressWatchdog(12f));
             if (FSMAREA != null)
             {
@@ -181,8 +185,9 @@ namespace EnemyRandomizerMod
             Dev.Log("BATTLE OVER");
             preKilledEnemies = 0;
             battleStarted = false;
+            battleEnded = true;
 
-            if(FSM != null)
+            if (FSM != null)
                 UnlockCameras(GetCameraLocksFromScene(FSM.gameObject));
         }
 
@@ -384,8 +389,15 @@ namespace EnemyRandomizerMod
             if (bmo != null && bmo.gameObject.GetSceneHierarchyPath().Contains("Pre Battle Enemies"))
                 return;
 
-            if(!battleStarted)
+            if(!battleStarted && !battleEnded)
                 preKilledEnemies++;
+
+            if(battleEnded)
+            {
+                if (FSM != null)
+                    UnlockCameras(GetCameraLocksFromScene(FSM.gameObject));
+                //return;
+            }
 
             bool isColo = BattleManager.Instance.Value.gameObject.scene.name.Contains("Room_Colosseum_");
             bool isWhitePalace = BattleManager.Instance.Value.gameObject.scene.name.Contains("White_Palace_");

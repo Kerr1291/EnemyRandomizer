@@ -14,7 +14,7 @@ using Satchel;
 using Satchel.Futils;
 namespace EnemyRandomizerMod
 {
-    public class ZotelingControl : FSMAreaControlEnemy
+    public class ZotelingControl : DefaultSpawnedEnemyControl
     {
         public override string spawnEntityOnDeath => "Item Get Effect R";
 

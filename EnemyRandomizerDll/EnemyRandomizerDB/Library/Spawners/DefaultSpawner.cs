@@ -70,7 +70,9 @@ namespace EnemyRandomizerMod
                 }
 
                 var spawnedControl = gameObject.AddComponent<SpawnedObjectControl>();
+
                 spawnedControl.thisMetadata = new ObjectMetadata(gameObject);
+                spawnedControl.Setup(objectToReplace);
             }
             else
             {
@@ -90,7 +92,7 @@ namespace EnemyRandomizerMod
         /// </summary>
         public virtual DefaultSpawnedEnemyControl AddController(GameObject newlySpawnedObject)
         {
-            Dev.Log("starting setup of default component");
+            Dev.Log($"starting setup of control component of type {typeof(DefaultSpawnedEnemyControl).Name} for {newlySpawnedObject.GetSceneHierarchyPath()}");
             return newlySpawnedObject.GetOrAddComponent<DefaultSpawnedEnemyControl>();
         }
 
@@ -100,19 +102,25 @@ namespace EnemyRandomizerMod
 
             if (corpseRemovedByEffect)
             {
+                //default effect = death explode boss
+                string removeEffect = string.IsNullOrEmpty(corpseRemoveEffectName) ? "Death Explode Boss" : corpseRemoveEffectName;
+
                 GameObject corpse = gameObject.GetCorpseObject();
                 if (corpse != null)
                 {
-                    corpse.AddCorpseRemoverWithEffect(gameObject, corpseRemoveEffectName);
+                    corpse.AddCorpseRemoverWithEffect(gameObject, removeEffect);
                 }
             }
 
             if (spawnEffectOnCorpseRemoved)
             {
+                //default effect = death explode boss
+                string removeEffect = string.IsNullOrEmpty(corpseRemoveEffectName) ? "Death Explode Boss" : corpseRemoveEffectName;
+
                 GameObject corpse = gameObject.GetCorpseObject();
                 if (corpse != null)
                 {
-                    corpse.AddEffectSpawnerOnCorpseRemoved(gameObject, spawnEffectOnCorpseRemovedEffectName);
+                    corpse.AddEffectSpawnerOnCorpseRemoved(gameObject, removeEffect);
                 }
             }
         }
@@ -123,7 +131,7 @@ namespace EnemyRandomizerMod
     {
         public override DefaultSpawnedEnemyControl AddController(GameObject newlySpawnedObject)
         {
-            Dev.Log("starting setup of custom control component");
+            Dev.Log($"starting setup of control component of type {typeof(TControlComponent).Name} for {newlySpawnedObject.GetSceneHierarchyPath()}");
             return newlySpawnedObject.GetOrAddComponent<TControlComponent>();
         }
     }

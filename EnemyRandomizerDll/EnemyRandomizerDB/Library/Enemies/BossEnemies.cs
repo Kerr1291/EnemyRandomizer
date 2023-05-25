@@ -19,13 +19,15 @@ namespace EnemyRandomizerMod
 {
     /////////////////////////////////////////////////////////////////////////////
     ///// 
-    public class MantisTraitorLordControl : FSMBossAreaControl
+    public class MantisTraitorLordControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Mantis";
 
         public GameObject megaMantisTallSlash;
 
         public override float spawnPositionOffset => 1f;
+
+        public override bool preventOutOfBoundsAfterPositioning => true;
 
         public override void Setup(GameObject other)
         {
@@ -113,7 +115,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MimicSpiderControl : FSMBossAreaControl
+    public class MimicSpiderControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Mimic Spider";
         public bool skipToIdle = false;
@@ -214,7 +216,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     ///// 
-    public class LostKinControl : FSMBossAreaControl
+    public class LostKinControl : DefaultSpawnedEnemyControl
     {
         public PlayMakerFSM balloonFSM;
 
@@ -310,7 +312,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     ///// 
-    public class MageLordPhase2Control : FSMBossAreaControl
+    public class MageLordPhase2Control : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Mage Lord 2";
 
@@ -456,7 +458,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     ///// 
-    public class MageLordControl : FSMBossAreaControl
+    public class MageLordControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Mage Lord";
 
@@ -644,9 +646,11 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class WhiteDefenderControl : FSMBossAreaControl
+    public class WhiteDefenderControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Dung Defender";
+        public override bool preventInsideWallsAfterPositioning => false;
+        public override bool preventOutOfBoundsAfterPositioning => false;
 
         public float peakEruptHeight = 12f;
         public float eruptStartOffset = 3f;
@@ -1108,7 +1112,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class HiveKnightControl : FSMBossAreaControl
+    public class HiveKnightControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Control";
 
@@ -1223,7 +1227,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GrimmBossControl : FSMBossAreaControl
+    public class GrimmBossControl : DefaultSpawnedEnemyControl
     {
         public override bool explodeOnDeath => true;
 
@@ -1301,7 +1305,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class NightmareGrimmBossControl : FSMBossAreaControl
+    public class NightmareGrimmBossControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Control";
 
@@ -1380,7 +1384,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class HollowKnightBossControl : FSMBossAreaControl
+    public class HollowKnightBossControl : DefaultSpawnedEnemyControl
     {
         public override void Setup(GameObject other)
         {
@@ -1424,7 +1428,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class HKPrimeControl : FSMBossAreaControl
+    public class HKPrimeControl : DefaultSpawnedEnemyControl
     {
         public override void Setup(GameObject other)
         {
@@ -1534,7 +1538,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class PaleLurkerControl : FSMBossAreaControl
+    public class PaleLurkerControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Lurker Control";
 
@@ -1570,7 +1574,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class OroControl : FSMBossAreaControl
+    public class OroControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "nailmaster";
 
@@ -1611,7 +1615,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MatoControl : FSMBossAreaControl
+    public class MatoControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "nailmaster";
 
@@ -1653,35 +1657,25 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class SheoBossControl : FSMBossAreaControl
+    public class SheoBossControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "nailmaster_sheo";
 
+        public override bool useCustomPositonOnSpawn => false;
+
+        public override float spawnPositionOffset => 0.5f;
 
         public override void Setup(GameObject other)
         {
             base.Setup(other);
-
-            var corpse = gameObject.GetCorpseObject();
-            if (corpse != null)
-            {
-                corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
-            }
-
-            var idle = control.GetState("Idle");
-            idle.InsertCustomAction(() => {
-                if (EnemyHealthManager.hp <= 0)
-                {
-                    EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Death Explode Boss", null, true);
-                    Destroy(gameObject);
-                }
-            }, 0);
-
             this.InsertHiddenState(control, "Set Paint HP", "FINISHED", "Idle");
         }
     }
 
-    public class SheoBossSpawner : DefaultSpawner<SheoBossControl> { }
+    public class SheoBossSpawner : DefaultSpawner<SheoBossControl>
+    {
+        public override bool corpseRemovedByEffect => true;
+    }
 
     public class SheoBossPrefabConfig : DefaultPrefabConfig { }
     /////
@@ -1693,36 +1687,23 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class SlyBossControl : FSMBossAreaControl
+    public class SlyBossControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Control";
 
 
         public override void Setup(GameObject other)
         {
-            base.Setup(other);
-
-            var corpse = gameObject.GetCorpseObject();
-            if (corpse != null)
-            {
-                corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
-            }
-
-            var explode = control.GetState("Explosion");
-            control.OverrideState("Explosion", () => {
-                if (EnemyHealthManager.hp <= 0)
-                {
-                    EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Death Explode Boss", null, true);
-                    Destroy(gameObject);
-                }
-            });
-            
+            base.Setup(other);            
             this.InsertHiddenState(control, "Phase HP", "FINISHED", "Idle");
             control.ChangeTransition("Death Reset", "FINISHED", "Explosion");
         }
     }
 
-    public class SlyBossSpawner : DefaultSpawner<SlyBossControl> { }
+    public class SlyBossSpawner : DefaultSpawner<SlyBossControl> 
+    {
+        public override bool corpseRemovedByEffect => true;
+    }
 
     public class SlyBossPrefabConfig : DefaultPrefabConfig { }
     /////
@@ -1731,21 +1712,15 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class HornetNoskControl : FSMBossAreaControl
+    public class HornetNoskControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Hornet Nosk";
 
+        public override bool preventOutOfBoundsAfterPositioning => true;
 
         public override void Setup(GameObject other)
         {
             base.Setup(other);
-
-            var corpse = gameObject.GetCorpseObject();
-            if (corpse != null)
-            {
-                corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
-            }
-
             var idle = control.GetState("Idle");
             idle.InsertCustomAction(() => {
                 if (EnemyHealthManager.hp <= 0)
@@ -1770,7 +1745,10 @@ namespace EnemyRandomizerMod
         }
     }
 
-    public class HornetNoskSpawner : DefaultSpawner<HornetNoskControl> { }
+    public class HornetNoskSpawner : DefaultSpawner<HornetNoskControl>
+    {
+        public override bool corpseRemovedByEffect => true;
+    }
 
     public class HornetNoskPrefabConfig : DefaultPrefabConfig { }
     /////
@@ -1780,9 +1758,11 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class DungDefenderControl : FSMBossAreaControl
+    public class DungDefenderControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Dung Defender";
+        public override bool preventInsideWallsAfterPositioning => false;
+        public override bool preventOutOfBoundsAfterPositioning => false;
 
         public float peakEruptHeight = 12f;
         public float eruptStartOffset = 3f;
@@ -1805,12 +1785,6 @@ namespace EnemyRandomizerMod
         public override void Setup(GameObject other)
         {
             base.Setup(other);
-
-            var corpse = gameObject.GetCorpseObject();
-            if (corpse != null)
-            {
-                corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
-            }
 
             defaultHP = gameObject.OriginalPrefabHP();
             rageTriggerRatio = defaultHP / defaultRageHP;
@@ -2077,7 +2051,10 @@ namespace EnemyRandomizerMod
         }
     }
 
-    public class DungDefenderSpawner : DefaultSpawner<DungDefenderControl> { }
+    public class DungDefenderSpawner : DefaultSpawner<DungDefenderControl>
+    {
+        public override bool corpseRemovedByEffect => true;
+    }
 
     public class DungDefenderPrefabConfig : DefaultPrefabConfig { }
     /////
@@ -2091,7 +2068,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GhostWarriorGalienControl : FSMBossAreaControl
+    public class GhostWarriorGalienControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Movement";
 
@@ -2179,7 +2156,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GhostWarriorXeroControl : FSMBossAreaControl
+    public class GhostWarriorXeroControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Movement";
 
@@ -2270,7 +2247,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GhostWarriorHuControl : FSMBossAreaControl
+    public class GhostWarriorHuControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Movement";
         public virtual string ATTACKFSM => "Attacking";
@@ -2381,7 +2358,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GhostWarriorSlugControl : FSMBossAreaControl
+    public class GhostWarriorSlugControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Movement";
 
@@ -2453,7 +2430,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GhostWarriorNoEyesControl : FSMBossAreaControl
+    public class GhostWarriorNoEyesControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Movement";
 
@@ -2516,7 +2493,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GhostWarriorMarkothControl : FSMBossAreaControl
+    public class GhostWarriorMarkothControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Movement";
 
@@ -2605,7 +2582,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class JellyfishGGControl : FSMBossAreaControl
+    public class JellyfishGGControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Mega Jellyfish";
 
@@ -2668,7 +2645,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class FlukeMotherControl : FSMBossAreaControl
+    public class FlukeMotherControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Fluke Mother";
 
@@ -2770,7 +2747,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class HornetBoss1Control : FSMBossAreaControl
+    public class HornetBoss1Control : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Control";
 
@@ -3083,7 +3060,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class HornetBoss2Control : FSMBossAreaControl
+    public class HornetBoss2Control : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Control";
 
@@ -3402,7 +3379,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MegaZombieBeamMinerControl : FSMBossAreaControl
+    public class MegaZombieBeamMinerControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Beam Miner";
 
@@ -3467,7 +3444,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class ZombieBeamMinerRematchControl : FSMBossAreaControl
+    public class ZombieBeamMinerRematchControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Beam Miner";
         protected override bool DisableCameraLocks => true;
@@ -3568,11 +3545,14 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MegaMossChargerControl : FSMBossAreaControl
+    public class MegaMossChargerControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Mossy Control";
 
         protected override string FSMHiddenStateName => "MOSS_HIDDEN";
+
+        public override bool preventInsideWallsAfterPositioning => false;
+        public override bool preventOutOfBoundsAfterPositioning => false;
 
         public RaycastHit2D floorSpawn;
         public RaycastHit2D floorLeft;
@@ -3763,7 +3743,7 @@ namespace EnemyRandomizerMod
     /////   
 
 
-    public class MawlekBodyControl : FSMBossAreaControl
+    public class MawlekBodyControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Mawlek Control";
 
@@ -3806,7 +3786,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////   
-    public class GhostWarriorMarmuControl : FSMBossAreaControl
+    public class GhostWarriorMarmuControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Control";
 
@@ -3869,7 +3849,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     ////
-    public class JarCollectorControl : FSMBossAreaControl
+    public class JarCollectorControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Control";
 
@@ -4116,7 +4096,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////   
-    public class InfectedKnightControl : FSMBossAreaControl
+    public class InfectedKnightControl : DefaultSpawnedEnemyControl
     {
         public PlayMakerFSM balloonFSM;
 
@@ -4230,7 +4210,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////   
-    public class GreyPrinceControl : FSMBossAreaControl
+    public class GreyPrinceControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Control";
 
@@ -4279,7 +4259,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////   
-    public class GiantFlyControl : FSMBossAreaControl
+    public class GiantFlyControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Big Fly Control";
 
@@ -4404,7 +4384,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GiantBuzzerControl : FSMBossAreaControl
+    public class GiantBuzzerControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Big Buzzer";
 
@@ -4491,7 +4471,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class GiantBuzzerColControl : FSMBossAreaControl
+    public class GiantBuzzerColControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Big Buzzer";
         public override string spawnEntityOnDeath => "Death Explode Boss";
@@ -4561,7 +4541,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////   
-    public class FalseKnightDreamControl : FSMBossAreaControl
+    public class FalseKnightDreamControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "FalseyControl";
 
@@ -4685,7 +4665,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////   
-    public class FalseKnightNewControl : FSMBossAreaControl
+    public class FalseKnightNewControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "FalseyControl";
 
@@ -4805,7 +4785,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////   
-    public class AbsoluteRadianceControl : FSMBossAreaControl
+    public class AbsoluteRadianceControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Control";
 
@@ -5015,7 +4995,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class LobsterControl : FSMBossAreaControl
+    public class LobsterControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Control";
 
@@ -5060,7 +5040,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class LancerControl : FSMBossAreaControl
+    public class LancerControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Control";
 
@@ -5107,7 +5087,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MageKnightControl : FSMBossAreaControl
+    public class MageKnightControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Mage Knight";
 
@@ -5154,7 +5134,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     ///// (Oblobbles)
-    public class MegaFatBeeControl : FSMBossAreaControl
+    public class MegaFatBeeControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "fat fly bounce";
 
@@ -5205,7 +5185,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class BlackKnightControl : FSMBossAreaControl
+    public class BlackKnightControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Black Knight";
 
@@ -5251,7 +5231,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class RadianceControl : FSMBossAreaControl
+    public class RadianceControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Control";
 

@@ -99,7 +99,7 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
 
         const string defaultDatabaseFilePath = "EnemyRandomizerDatabase.xml";
-        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 8.ohgodpleasedontcrash]";
+        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9]";
         static string currentVersion = currentVersionPrefix;
             //Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + $" CURRENT SEED:[{GlobalSettings.seed}] -- TO CHANGE SEED --> MODS > ENEMY RANDOMIZER > ENEMY RANDOMIZER MODULES";
 
@@ -206,7 +206,7 @@ namespace EnemyRandomizerMod
 
                     if (EnemyRandomizer.Instance.logicTypes == null)
                         EnemyRandomizer.Instance.logicTypes = LogicLoader.LoadLogics();
-
+                    
                     enemyReplacer.ConstructLogics(GlobalSettings.loadedLogics, logicTypes);
 
                 }
@@ -297,13 +297,25 @@ namespace EnemyRandomizerMod
 
         void ModHooks_DrawBlackBordersHook(List<GameObject> obj)
         {
-            Dev.Log("setting black borders");
+            Dev.Log("=======================================================================================");
+            Dev.Log("==                                                                                   ==");
+            Dev.Log("==  NEW SCENE HAS BEEN ENTERED              SCENE IS BEING LOADED                    ==");
+            Dev.Log("==                                                                                   ==");
+            Dev.Log("==                         SCENE BOARDERS LOADED                                     ==");
+            Dev.Log("==                                                                                   ==");
+            Dev.Log("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
             BlackBorders.Value = obj;
         }
 
         void Instance_UnloadingLevel()
         {
-            Dev.Log("unloading level");
+            Dev.Log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            Dev.Log("==                                                                                   ==");
+            Dev.Log("==  OLD SCENE EXITED                        OBJECT LOADING PAUSED                    ==");
+            Dev.Log("==                                          SCENE BOARDERS CLEARED                   ==");
+            Dev.Log("==  SCENE IS BEING UNLOADED                                                          ==");
+            Dev.Log("==                                                                                   ==");
+            Dev.Log("=======================================================================================");
             try
             {
                 if (BlackBorders.Value != null)
@@ -504,6 +516,9 @@ namespace EnemyRandomizerMod
             BattleManager.OnEnemyDeathEvent(enemyDeathEffects.gameObject);
         }
 
+        /// <summary>
+        /// Return false if creating a new object, if true is returned then this is already dead
+        /// </summary>
         bool MODHOOK_OnHealthManagerObjectEnabled(GameObject healthManagerObject, bool isAlreadyDead)
         {
             if (isAlreadyDead)
@@ -512,7 +527,15 @@ namespace EnemyRandomizerMod
             if (DoBypassCheck())
                 return false;
 
-            RandomizeEnemy(healthManagerObject);
+            //if the original object is already dead, don't randomize it
+            if (!isAlreadyDead)
+            {
+                RandomizeEnemy(healthManagerObject);
+                return false;
+            }
+
+            //delete this if it's already dead
+            SpawnerExtensions.DestroyObject(healthManagerObject);
 
             return true;
         }
@@ -645,6 +668,14 @@ namespace EnemyRandomizerMod
         /// </summary>
         public static GameObject CustomSpawn(Vector3 pos, string objectName, string replacement = null, bool setActive = true)
         {
+            var activeScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            if (!activeScene.IsValid() || !activeScene.isLoaded)
+            {
+                //not really an error, but mark it as one for now
+                Dev.LogError("Error: Cannot spawn something without a valid scene");
+                return null;
+            }
+
             try
             {
                 EnemyRandomizer.bypassNextReplacement = true;

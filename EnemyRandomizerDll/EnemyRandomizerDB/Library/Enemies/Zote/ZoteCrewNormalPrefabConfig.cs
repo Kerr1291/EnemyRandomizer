@@ -10,7 +10,7 @@ using System;
 
 namespace EnemyRandomizerMod
 {
-    public class ZoteCrewNormalControl : FSMAreaControlEnemy
+    public class ZoteCrewNormalControl : DefaultSpawnedEnemyControl
     {
         public float startYPos;
 

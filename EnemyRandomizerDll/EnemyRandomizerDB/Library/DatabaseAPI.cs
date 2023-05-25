@@ -356,43 +356,43 @@ namespace EnemyRandomizerMod
             return db != null;
         }
 
-        public static bool IsDatabaseObject(GameObject gameObject)
-        {
-            //if (excludedComponents.Any(x => gameObject.GetComponent(x)))
-            //    return false;
+        //public static bool IsDatabaseObject(GameObject gameObject)
+        //{
+        //    //if (excludedComponents.Any(x => gameObject.GetComponent(x)))
+        //    //    return false;
 
-            //if (!dataBaseObjectComponents.Any(x => gameObject.GetComponent(x)))
-            //    return false;
+        //    //if (!dataBaseObjectComponents.Any(x => gameObject.GetComponent(x)))
+        //    //    return false;
 
-            string key = ToDatabaseKey(gameObject.name);
+        //    string key = ToDatabaseKey(gameObject.name);
 
-            if (string.IsNullOrEmpty(key))
-                return false;
+        //    if (string.IsNullOrEmpty(key))
+        //        return false;
 
-            return true;
-        }
+        //    return true;
+        //}
 
-        public static bool IsDatabaseObject(string gameObjectName, EnemyRandomizerDatabase db = null)
-        {
-            string key = ToDatabaseKey(gameObjectName);
+        //public static bool IsDatabaseObject(string gameObjectName, EnemyRandomizerDatabase db = null)
+        //{
+        //    string key = ToDatabaseKey(gameObjectName);
 
-            if (string.IsNullOrEmpty(key))
-                return false;
+        //    if (string.IsNullOrEmpty(key))
+        //        return false;
 
-            var DB = db == null ? EnemyRandomizerDatabase.GetDatabase() : db;
+        //    var DB = db == null ? EnemyRandomizerDatabase.GetDatabase() : db;
 
-            return (DB.Objects.ContainsKey(key));
-        }
+        //    return (DB.Objects.ContainsKey(key));
+        //}
 
-        public static bool IsDatabaseKey(string databaseKey, EnemyRandomizerDatabase db = null)
-        {
-            if (string.IsNullOrEmpty(databaseKey))
-                return false;
+        //public static bool IsDatabaseKey(string databaseKey, EnemyRandomizerDatabase db = null)
+        //{
+        //    if (string.IsNullOrEmpty(databaseKey))
+        //        return false;
 
-            var DB = db == null ? EnemyRandomizerDatabase.GetDatabase() : db;
+        //    var DB = db == null ? EnemyRandomizerDatabase.GetDatabase() : db;
 
-            return (DB.Objects.ContainsKey(databaseKey));
-        }
+        //    return (DB.Objects.ContainsKey(databaseKey));
+        //}
 
         public static string GetDatabaseKey(GameObject gameObject)
         {
@@ -436,15 +436,29 @@ namespace EnemyRandomizerMod
             return databaseKey;
         }
 
+        /// <summary>
+        /// This allows the spawned object to be processed by the enemy randomizer. This means the returned object might not be what you expect...
+        /// </summary>
         public static GameObject CustomSpawn(Vector3 pos, string objectName, bool setActive = true)
         {
             try
             {
                 var enemy = EnemyRandomizerDatabase.GetDatabase().Spawn(objectName);
+
                 if (enemy != null)
                 {
+                    enemy.transform.position = pos;
                     if (setActive)
+                    {
+                        GameObject spawnedObject = enemy;
+                        var handle = EnemyRandomizerDatabase.OnObjectReplaced.AsObservable().Subscribe(x =>
+                        {
+                            spawnedObject = x.newObject;
+                        });
                         enemy.SetActive(true);
+                        handle.Dispose();
+                        return spawnedObject;
+                    }
                     return enemy;
                 }
             }

@@ -212,54 +212,25 @@ namespace EnemyRandomizerMod
             return rng;
         }
 
-        //public override GameObject ReplaceEnemy(GameObject other)
-        //{
-        //    if (!Settings.GetOption(DefaultRandomizeEnemiesOption).value)
-        //        return base.ReplaceEnemy(other);
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, replace a given type?
+        /// </summary>
+        public override bool WillReplaceType(PrefabObject.PrefabType prefabType)
+        {
+            return false;
+        }
 
-        //    SetupRNGForReplacement(other.name, other.scene.name);
-        //    var prefab = Database.enemyPrefabs.GetRandomElementFromList(rng);
-        //    ObjectMetadata otherData = new ObjectMetadata();
-        //    otherData.Setup(other, Database);
-        //    GameObject newEnemy = Database.Spawn(prefab, otherData);
-        //    newEnemy.SetParentToOthersParent(otherData);
-        //    newEnemy.PositionNewEnemy(otherData);
-        //    return newEnemy;
-        //}
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, modify a given type?
+        /// </summary>
+        public override bool WillModifyType(PrefabObject.PrefabType prefabType)
+        {
+            return false;
+        }
 
-        //List<PrefabObject> allowedEffectReplacements;
-
-        //public override GameObject ReplaceHazardObject(GameObject other)
-        //{
-        //    if (!Settings.GetOption(DefaultRandomizeHazardsOption).value)
-        //        return base.ReplaceHazardObject(other);
-
-        //    if (allowedEffectReplacements == null)
-        //        allowedEffectReplacements = Database.hazardPrefabs.Where(x => !EnemyReplacer.ReplacementEffectsToSkip.Contains(x.prefabName)).ToList();
-
-        //    SetupRNGForReplacement(other.name, other.scene.name);
-        //    var prefab = allowedEffectReplacements.GetRandomElementFromList(rng);
-        //    ObjectMetadata otherData = new ObjectMetadata();
-        //    otherData.Setup(other, Database);
-        //    GameObject newHazard = Database.Spawn(prefab, otherData);
-        //    newHazard.SetParentToOthersParent(otherData);
-        //    newHazard.PositionNewEnemy(otherData);
-        //    return newHazard;
-        //}
-
-        //public override GameObject ReplacePooledObject(GameObject other)
-        //{
-        //    if (!Settings.GetOption(DefaultRandomizeEffectsOption).value)
-        //        return base.ReplacePooledObject(other);
-
-        //    SetupRNGForReplacement(other.name, other.scene.name);
-        //    var prefab = Database.effectPrefabs.GetRandomElementFromList(rng);
-        //    ObjectMetadata otherData = new ObjectMetadata();
-        //    otherData.Setup(other, Database);
-        //    GameObject newEffect = Database.Spawn(prefab, otherData);
-        //    newEffect.SetParentToOthersParent(otherData);
-        //    newEffect.PositionNewEnemy(otherData);
-        //    return newEffect;
-        //}
+        public override bool WillModifyRNG()
+        {
+            return true;
+        }
     }
 }

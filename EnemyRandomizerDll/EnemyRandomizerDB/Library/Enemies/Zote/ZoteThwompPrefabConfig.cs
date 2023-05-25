@@ -10,7 +10,7 @@ using System;
 
 namespace EnemyRandomizerMod
 {
-    public class ZoteThwompControl : FSMAreaControlEnemy
+    public class ZoteThwompControl : DefaultSpawnedEnemyControl
     {
         PlayMakerFSM slamEffect;
         PlayMakerFSM enemyCrusher;

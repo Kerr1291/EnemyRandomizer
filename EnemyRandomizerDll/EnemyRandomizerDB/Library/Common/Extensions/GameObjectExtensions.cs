@@ -789,11 +789,19 @@ namespace EnemyRandomizerMod
 
         public static T GetOrAddComponent<T>( this GameObject source ) where T : UnityEngine.Component
         {
-            T result = source.GetComponent<T>();
-            if( result != null )
+            try
+            {
+                T result = source.GetComponent<T>();
+                if (result != null)
+                    return result;
+                result = source.AddComponent<T>();
                 return result;
-            result = source.AddComponent<T>();
-            return result;
+            }
+            catch (Exception e)
+            {
+                Dev.LogError($"{source}: GetOrAddComponent has caught an uncaught exception with type {typeof(T)} on this game object ERROR{e.Message} STACKTRACE{e.StackTrace}.");
+                return default(T);
+            }
         }
 
 
@@ -802,7 +810,14 @@ namespace EnemyRandomizerMod
             if( go == null )
                 return;
 
-            go.SetActive( state );
+            try
+            {
+                go.SetActive(state);
+            }
+            catch(Exception e)
+            {
+                Dev.LogError($"{go}: SafeSetActive has caught an uncaught exception when attempting to activate a game object ERROR{e.Message} STACKTRACE{e.StackTrace}.");
+            }
         }
 
 

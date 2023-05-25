@@ -10,7 +10,7 @@ using System;
 
 namespace EnemyRandomizerMod
 {
-    public class ZoteCrewTallControl : FSMAreaControlEnemy
+    public class ZoteCrewTallControl : DefaultSpawnedEnemyControl
     {
         public override float spawnPositionOffset => 1f;
 

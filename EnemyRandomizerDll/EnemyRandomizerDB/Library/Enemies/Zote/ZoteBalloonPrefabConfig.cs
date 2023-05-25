@@ -12,7 +12,7 @@ using UniRx;
 namespace EnemyRandomizerMod
 {
 
-    public class ZoteBalloonControl : FSMAreaControlEnemy
+    public class ZoteBalloonControl : DefaultSpawnedEnemyControl
     {
         public override bool explodeOnDeath => true;
 

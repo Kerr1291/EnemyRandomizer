@@ -15,8 +15,10 @@ namespace EnemyRandomizerMod
         public List<PolygonCollider2D> polyColliders;
         public List<EdgeCollider2D> edgeColliders;
         public Dictionary<Color, List<Vector3>> customLineCollections = new Dictionary<Color, List<Vector3>>();
+        public List<List<Vector2>> rayPoints = new List<List<Vector2>>();
 
         public GameObject lineRoot;
+        public static GameObject globalLineRoot;
 
         public float lineWidth = .05f;
         public float zDepth = -2.1f;
@@ -25,21 +27,26 @@ namespace EnemyRandomizerMod
         public Color disabledColor = Color.red;
         public Color customColor = Color.yellow;
         public Color gameObjectDisabledColor = Color.gray;
+        public Color rayColor = Color.red + Color.yellow;
         public bool renderDisabledColliders = true;
-        public bool runDebugInput = true;
+        public static bool runDebugInput = true;
 
         Dictionary<Collider2D, LineRenderer> lines;
         Dictionary<List<Vector3>, LineRenderer> customLines;
+        public Dictionary<List<Vector2>, LineRenderer> rayLines;
 
         Material colliderLineMat;
         Material triggerLineMat;
         Material disabledLineMat;
         Material gameObjectDisabledLineMat;
         Material customColliderLineMat;
+        Material rayLineMat;
 
 
         Dictionary<Collider2D, TextMesh> labels;
         Dictionary<List<Vector3>, TextMesh> customLabels;
+        Dictionary<List<Vector2>, TextMesh> rayLabels;
+        Dictionary<List<Vector2>, List<TextMesh>> rayHitLabels;
 
         List<Vector2> GetPointsFromCollider(BoxCollider2D col)
         {
@@ -64,6 +71,122 @@ namespace EnemyRandomizerMod
             }
 
             return points;
+        }
+
+        //List<Vector2> GetPointsFromRaycastHits(IEnumerable<RaycastHit2D> col)
+        //{
+        //    List<Vector2> points = col.Select(x => x.point).ToList();
+        //    return points;
+        //}
+
+        public LineRenderer CreateRayFromRaycastHits(GameObject owner, Vector2 start, Vector2 end, List<RaycastHit2D> hits)
+        {
+            Vector2 dir = (end - start).normalized;
+            Vector2 pDir = new Vector2(-dir.y, dir.x);
+            List<Vector2> points = new List<Vector2>();
+            points.Add(start);
+
+            if (hits.Count > 0)
+            {
+                float intersectionMarkSize = 1f;
+                for (int i = 0; i < hits.Count; ++i)
+                {
+                    bool isEdgeCollider = hits[i].collider is EdgeCollider2D;
+                    bool isPolyCollider = hits[i].collider is PolygonCollider2D;
+                    bool isBoxCollider = hits[i].collider is BoxCollider2D;
+                    bool isCircleCollider = hits[i].collider is CircleCollider2D;
+
+                    var hit = hits[i];
+                    points.Add(hit.point);
+
+                    var markSize = intersectionMarkSize;
+                    if (isEdgeCollider)
+                        markSize = 1.5f;
+                    if (isPolyCollider)
+                        markSize = 1f;
+                    if (isBoxCollider)
+                        markSize = 0.5f;
+                    if (isCircleCollider)
+                        markSize = 0.25f;
+
+                    points.Add(hit.point - pDir * markSize);
+                    points.Add(hit.point + pDir * markSize);
+
+                    points.Add(hit.point);
+
+                }
+            }
+
+            points.Add(end);
+            rayPoints.Add(points);
+
+            for(int i = 0; i < hits.Count; ++i)
+            {
+                var hit = hits[i];
+                if(!rayHitLabels.TryGetValue(points, out var tmlist))
+                {
+                    tmlist = new List<TextMesh>();
+                }
+
+                bool isEdgeCollider = hits[i].collider is EdgeCollider2D;
+                bool isPolyCollider = hits[i].collider is PolygonCollider2D;
+                bool isBoxCollider = hits[i].collider is BoxCollider2D;
+                bool isCircleCollider = hits[i].collider is CircleCollider2D;
+
+                var markString = "none";
+                if (isEdgeCollider)
+                    markString = "edge";
+                if (isPolyCollider)
+                    markString = "poly";
+                if (isBoxCollider)
+                    markString = "box";
+                if (isCircleCollider)
+                    markString = "circle";
+
+                string point_name = $"<- r[{rayLines.Count}] hit {i+1}/{hits.Count} ";
+
+                GameObject hitLabel = new GameObject(owner.name + " " + point_name + markString);
+                hitLabel.transform.SetParent(globalLineRoot.transform);
+                hitLabel.transform.localScale = Vector3.one * .25f;
+                hitLabel.transform.position = hit.point.ToVector3(-.4f);
+                TextMesh hittm = hitLabel.gameObject.AddComponent<TextMesh>();
+                hittm.text = point_name + markString;
+                hittm.fontSize = 14;
+                hittm.color = Color.white;
+                hittm.alignment = TextAlignment.Center;
+                tmlist.Add(hittm);
+            }
+
+            string collidersHit = hits.Count > 0 ? "with hits on: "+string.Join(", ", hits.Select(x => x.collider == null ? "null" : x.collider.name)) : string.Empty;
+            string name = "[ " + owner.name + ",  " + "RaycastHit2D " + collidersHit + " ]";
+
+            GameObject newLine = new GameObject(name);
+            newLine.transform.SetParent(globalLineRoot.transform);
+            newLine.transform.position = Vector3.zero;
+
+            Color lineColor = hits.Count > 0 ? rayColor : Color.gray;
+
+            LineRenderer line = newLine.AddComponent<LineRenderer>();
+            line.positionCount = points.Count;
+            line.SetPositions(points.Select(x => x.ToVector3(-.3f)).ToArray());
+            line.startWidth = lineWidth;
+            line.endWidth = lineWidth;
+            line.sharedMaterial = GetLineMaterial(points.FirstOrDefault());
+            line.startColor = lineColor;
+            line.endColor = lineColor;
+            rayLines.Add(points, line);
+
+            GameObject lineLabel = new GameObject(name + " LABEL");
+            lineLabel.transform.SetParent(newLine.transform);
+            lineLabel.transform.localScale = Vector3.one * .25f;
+            TextMesh tm = newLine.gameObject.AddComponent<TextMesh>();
+            tm.text = name;
+            tm.fontSize = 14;
+            tm.color = Color.white;
+            tm.alignment = TextAlignment.Center;
+            rayLabels.Add(points, tm);
+
+            return line;
         }
 
         public List<Vector2> GetPointsFromCollider(Bounds bounds, bool relative = true)
@@ -353,6 +476,7 @@ namespace EnemyRandomizerMod
                 //toggle renderers on/off
                 if (UnityEngine.Input.GetKeyDown(KeyCode.Slash))
                 {
+                    Dev.Log("Renderer state toggled with key: /  ");
                     foreach (var v in lines)
                     {
                         v.Value.GetComponent<Renderer>().enabled = !v.Value.GetComponent<Renderer>().enabled;
@@ -369,17 +493,27 @@ namespace EnemyRandomizerMod
                     {
                         v.Value.gameObject.SetActive(!v.Value.gameObject.activeInHierarchy);
                     }
+                    foreach (var v in rayLabels)
+                    {
+                        v.Value.gameObject.SetActive(!v.Value.gameObject.activeInHierarchy);
+                    }
+                    foreach (var v in rayHitLabels)
+                    {
+                        v.Value.ForEach(x => x.gameObject.SetActive(!x.gameObject.activeInHierarchy));
+                    }
                 }
 
                 //toggle the rendering of 
                 if (UnityEngine.Input.GetKeyDown(KeyCode.Backslash))
                 {
+                    Dev.Log(@"All renderers disabled with key: \\  ");
                     renderDisabledColliders = !renderDisabledColliders;
                 }
 
                 //suspend
                 if (!forceSingleEntry && UnityEngine.Input.GetKeyDown(KeyCode.Q))
                 {
+                    Dev.Log("Timescale suspended with key : Q  ");
                     forceSingleEntry = true;
                     Time.timeScale = 0f;
                     suspended = true;
@@ -387,6 +521,7 @@ namespace EnemyRandomizerMod
                 //advance by about one frame
                 if (!forceSingleEntry && UnityEngine.Input.GetKeyDown(KeyCode.W))
                 {
+                    Dev.Log("Timescale moved forward by 1 frame with key : W  ");
                     forceSingleEntry = true;
                     Time.timeScale = 1f;
                     yield return new WaitForEndOfFrame();
@@ -396,6 +531,7 @@ namespace EnemyRandomizerMod
                 //advance by many frames (hold R)
                 if (!forceSingleEntry && UnityEngine.Input.GetKey(KeyCode.R))
                 {
+                    Dev.Log("Timescale moving with key : R  ");
                     forceSingleEntry = true;
                     Time.timeScale = 1f;
                     yield return new WaitForEndOfFrame();
@@ -405,6 +541,7 @@ namespace EnemyRandomizerMod
                 //resume from suspend
                 if (!forceSingleEntry && UnityEngine.Input.GetKeyDown(KeyCode.E))
                 {
+                    Dev.Log("Timescale resumed with key : E  ");
                     forceSingleEntry = true;
                     Time.timeScale = 1f;
                     suspended = false;
@@ -422,21 +559,31 @@ namespace EnemyRandomizerMod
                 if (debugInput == null)
                 {
                     debugInput = DebugInput();
-                    StartCoroutine(debugInput);
+                    GameManager.instance.StartCoroutine(debugInput);
                 }
             }
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
-            if (runDebugInput)
-            {
-                if (debugInput != null)
-                {
-                    StopCoroutine(debugInput);
-                    debugInput = null;
-                }
+            if(globalLineRoot != null)
+            {                
+                rayLines.Values.ToList().ForEach(x => GameObject.Destroy(x.gameObject));
+                rayLines.Clear();
+                rayLabels.Values.ToList().ForEach(x => GameObject.Destroy(x.gameObject));
+                rayLabels.Clear();
+                rayHitLabels.Values.ToList().ForEach(x => x.ForEach(y => GameObject.Destroy(y.gameObject)));
+                rayHitLabels.Clear();
             }
+
+            //if (runDebugInput)
+            //{
+            //    if (debugInput != null)
+            //    {
+            //        StopCoroutine(debugInput);
+            //        debugInput = null;
+            //    }
+            //}
         }
 
         private IEnumerator Start()
@@ -450,18 +597,29 @@ namespace EnemyRandomizerMod
             lineRoot.transform.SetParent(transform);
             lineRoot.transform.position = Vector3.zero;
 
+            if (globalLineRoot == null)
+            {
+                globalLineRoot = new GameObject("Global DebugCollider Lines");
+                globalLineRoot.transform.position = Vector3.zero;
+                GameObject.DontDestroyOnLoad(globalLineRoot);
+            }
+
             lines = new Dictionary<Collider2D, LineRenderer>();
             customLines = new Dictionary<List<Vector3>, LineRenderer>();
+            rayLines = new Dictionary<List<Vector2>, LineRenderer>();
             labels = new Dictionary<Collider2D, TextMesh>();
             customLabels = new Dictionary<List<Vector3>, TextMesh>();
+            rayLabels = new Dictionary<List<Vector2>, TextMesh>();
+            rayHitLabels = new Dictionary<List<Vector2>, List<TextMesh>>();
 
             colliderLineMat = new Material(Shader.Find("Diffuse"));
             triggerLineMat = new Material(Shader.Find("Diffuse"));
             disabledLineMat = new Material(Shader.Find("Diffuse"));
             gameObjectDisabledLineMat = new Material(Shader.Find("Diffuse"));
             customColliderLineMat = new Material(Shader.Find("Diffuse"));
+            rayLineMat = new Material(Shader.Find("Diffuse"));
 
-            yield return new WaitUntil(() => customLineCollections.Count >= 0);
+            //yield return new WaitUntil(() => customLineCollections.Count >= 0);
 
             CreateColliders();
 
@@ -479,7 +637,7 @@ namespace EnemyRandomizerMod
             CreateLinesFromColliders(polyColliders);
             CreateLinesFromColliders(edgeColliders);
 
-            customLineCollections.Select(x => x).ToList().ForEach(x => CreateLinesFromPoints(x.Key, x.Value));
+            //customLineCollections.Select(x => x).ToList().ForEach(x => CreateLinesFromPoints(x.Key, x.Value));
         }
 
         void CreateLinesFromColliders<T>(List<T> colliders) where T : Collider2D
@@ -574,6 +732,11 @@ namespace EnemyRandomizerMod
         Material GetLineMaterial(Vector3 col)
         {
             return customColliderLineMat;
+        }
+
+        Material GetLineMaterial(Vector2 col)
+        {
+            return rayLineMat;
         }
 
         Material GetLineMaterial(Collider2D col)
@@ -689,6 +852,44 @@ namespace EnemyRandomizerMod
                 Vector3[] points = pair.Key.ToArray();
                 line.SetPositions(points);
             }
+
+
+            //foreach (var pair in rayLines)
+            //{
+            //    pair.Value.sharedMaterial = GetLineMaterial(pair.Key.FirstOrDefault());
+
+            //    Color lineColor = rayColor;// raycastHits.FirstOrDefault(x => pair.Key == x.Value).Key;
+            //    pair.Value.startColor = lineColor;
+            //    pair.Value.endColor = lineColor;
+
+            //    if (pair.Value.GetComponent<Renderer>())
+            //        pair.Value.GetComponent<Renderer>().sharedMaterial.color = lineColor;
+
+            //    //custom labels
+            //    //{
+            //    //    rayLabels[pair.Key].color = lineColor;
+            //    //    rayLabels[pair.Key].transform.position = pair.Key.Max();
+
+
+            //    //    foreach (var v in rayLabels)
+            //    //    {
+            //    //        if (Mathf.Abs(v.Value.transform.position.y - rayLabels[pair.Key].transform.position.y) < 0.2f)
+            //    //        {
+            //    //            rayLabels[pair.Key].transform.Translate(new Vector3(0f, additionalLabelOffset, 0f));
+            //    //            additionalLabelOffset -= .2f;
+            //    //            break;
+            //    //        }
+            //    //    }
+
+            //    //    Vector3 labelPos = new Vector3(rayLabels[pair.Key].transform.position.x, rayLabels[pair.Key].transform.position.y, -.1f);
+            //    //    rayLabels[pair.Key].transform.position = labelPos;
+            //    //    rayLabels[pair.Key].transform.localScale = Vector3.one * .2f;
+            //    //}
+
+            //    //LineRenderer line = pair.Value;
+            //    //Vector2[] points = pair.Key.ToArray();
+            //    //line.SetPositions(points);
+            //}
         }
     }
 }

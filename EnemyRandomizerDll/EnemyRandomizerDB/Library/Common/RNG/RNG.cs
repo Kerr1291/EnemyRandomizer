@@ -270,10 +270,17 @@ namespace EnemyRandomizerMod
             return max;
         }
 
-        //uses a given distribution and a range to weight the outcomes
-        //returns the selected random index
+        /// <summary>
+        /// uses a given distribution and a range to weight the outcomes
+        /// returns the selected random index. This version does not allocate extra data.
+        /// </summary>
         public int WeightedRand(List<float> distribution)
         {
+            if (distribution == null || distribution.Count == 0)
+            {
+                throw new ArgumentException("The given distribution list cannot be null or empty.", nameof(distribution));
+            }
+
             //integrate the curve
             float maxWeight = 0f;
             for(int i = 0; i < distribution.Count; ++i)
@@ -292,6 +299,35 @@ namespace EnemyRandomizerMod
                     return i;
             }
             return distribution.Count - 1;
+        }
+
+        /// <summary>
+        /// uses a given distribution and a range to weight the outcomes. Generates a prefixSum array and uses 
+        /// a binary search to quickly provide a selected random index. This allocates an extra sum array so only
+        /// use this version if you need speed on a large data set.
+        /// </summary>
+        public int WeightedRandFast(List<float> distribution)
+        {
+            if (distribution == null || distribution.Count == 0)
+            {
+                throw new ArgumentException("Distribution cannot be null or empty.", nameof(distribution));
+            }
+
+            List<float> prefixSum = new List<float>(distribution.Count);
+            float sum = 0f;
+            for (int i = 0; i < distribution.Count; i++)
+            {
+                sum += distribution[i];
+                prefixSum.Add(sum);
+            }
+
+            float rngValue = Rand(0f, sum);
+
+            int index = prefixSum.BinarySearch(rngValue);
+            if (index < 0)
+                index = ~index;
+
+            return index;
         }
 
         public T RandomElement<T>(List<T> elements)

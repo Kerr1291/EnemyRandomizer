@@ -10,7 +10,7 @@ using System;
 
 namespace EnemyRandomizerMod
 {
-    public class ZoteSalubraControl : FSMAreaControlEnemy
+    public class ZoteSalubraControl : DefaultSpawnedEnemyControl
     {
         public float startYPos;
         public float maxSuck = 5f;

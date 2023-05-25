@@ -20,11 +20,16 @@ namespace EnemyRandomizerMod
 
         public bool loaded { get; protected set; }
 
+        public virtual void MarkLoaded() { loaded = true; }
+
         /// <summary>
         /// override to autmatically set the control fsm used by this enemy in setup
         /// </summary>
-        public virtual string FSMName => null;
+        public virtual string FSMName => "Control";
         protected virtual string FSMHiddenStateName => "_Hidden_";
+        //protected virtual string FSMHiddenStateFrom => null;
+        //protected virtual string FSMHiddenStateFromEvent => null;
+        //protected virtual string FSMHiddenStateTo => null;
 
         PlayMakerFSM _internal_control;
         public virtual PlayMakerFSM control
@@ -34,8 +39,15 @@ namespace EnemyRandomizerMod
                 if (_internal_control != null)
                     return _internal_control;
 
-                if (_internal_control == null && !string.IsNullOrEmpty(FSMName))
-                    _internal_control = gameObject.LocateMyFSM(FSMName);
+                try
+                {
+                    if (_internal_control == null && !string.IsNullOrEmpty(FSMName))
+                        _internal_control = gameObject.LocateMyFSM(FSMName);
+                }
+                catch(Exception)
+                {
+                    _internal_control = null;
+                }
 
                 return _internal_control;
             }
@@ -114,7 +126,8 @@ namespace EnemyRandomizerMod
         public virtual float spawnPositionOffset => 0.53f;
         public virtual bool spawnShouldStickCorpse => false;
         public virtual bool useCustomPositonOnSpawn => false;
-        public virtual bool preventOutOfBoundsAfterPositioning => true;
+        public virtual bool preventOutOfBoundsAfterPositioning => false;
+        public virtual bool preventInsideWallsAfterPositioning => true;
         public virtual bool explodeOnDeath => false;
         public virtual string explodeOnDeathEffect => "Gas Explosion Recycle L";
         public virtual string spawnEntityOnDeath => null;
@@ -252,16 +265,16 @@ namespace EnemyRandomizerMod
             }
         }
 
-        protected virtual void CorrectInsideWallPosition()
-        {
-            if(gameObject.IsInsideWalls())
-            {
-                var cardinal = gameObject.GetCardinalRays(float.MaxValue);
-                var shortest = cardinal.OrderBy(x => x.distance).FirstOrDefault();
-                var direction = -shortest.normal;
-                gameObject.transform.position = shortest.point + Vector2.Dot(direction, gameObject.GetOriginalObjectSize()) * direction;
-            }
-        }
+        //protected virtual void CorrectInsideWallPosition()
+        //{
+        //    if(gameObject.IsInsideWalls())
+        //    {
+        //        var cardinal = gameObject.GetCardinalRays(float.MaxValue);
+        //        var shortest = cardinal.OrderBy(x => x.distance).FirstOrDefault();
+        //        var direction = -shortest.normal;
+        //        gameObject.transform.position = shortest.point + Vector2.Dot(direction, gameObject.GetOriginalObjectSize()) * direction;
+        //    }
+        //}
 
         protected virtual void StickToRoof()
         {
@@ -294,7 +307,7 @@ namespace EnemyRandomizerMod
         public virtual void SetPositionOnSpawn()
         {
             //first, if the enemy is or was inside a wall, fix that
-            CorrectInsideWallPosition();
+            //CorrectInsideWallPosition();
 
             //then, place it "on the ground" or whereever it should be
             if (useCustomPositonOnSpawn)
@@ -302,16 +315,18 @@ namespace EnemyRandomizerMod
             else
                 SetDefaultPosition();
 
-            if (preventOutOfBoundsAfterPositioning)
-                gameObject.AddComponent<PreventOutOfBounds>();
+            //try this resolution before finalizing their placement with "prevent out of bounds"
+            //if (gameObject.IsInsideWalls())
+            //    gameObject.ResolveInsideWalls();
 
-            //if (gameObject.IsInGroundEnemy())
-            //{
-            //    //PlaceInsideGround();
-            //}
-            //else
-            //{
-            //}
+            if (!gameObject.IsInGroundEnemy())
+            {
+                if (preventOutOfBoundsAfterPositioning)
+                    gameObject.AddComponent<PreventOutOfBounds>();
+
+                if (preventInsideWallsAfterPositioning)
+                    gameObject.AddComponent<PreventInsideWalls>();
+            }
         }
 
         /// <summary>
@@ -512,6 +527,10 @@ namespace EnemyRandomizerMod
 
     public class DefaultSpawnedEnemyControl : SpawnedObjectControl
     {
+#if DEBUG
+        public DebugColliders debugColliders;
+#endif
+
         protected Geo geoManager { get; set; }
         public Geo GeoManager
         {
@@ -583,6 +602,9 @@ namespace EnemyRandomizerMod
         protected virtual bool DisableCameraLocks => false;
         protected virtual IEnumerable<CameraLockArea> cameraLocks => DisableCameraLocks ? gameObject.GetCameraLocksFromScene() : null;
 
+#if DEBUG
+        public virtual bool showDebugColliders => true;
+#endif
 
         public override void Setup(GameObject objectThatWillBeReplaced = null)
         {
@@ -651,6 +673,21 @@ namespace EnemyRandomizerMod
 
             if (gameObject.ObjectType() != PrefabObject.PrefabType.Enemy)
                 return;
+
+#if DEBUG
+            if (showDebugColliders && debugColliders == null)
+            {
+                debugColliders = gameObject.GetOrAddComponent<DebugColliders>();
+            }
+            else if(showDebugColliders && !debugColliders.enabled)
+            {
+                debugColliders.enabled = true;
+            }
+            else if (!showDebugColliders && debugColliders.enabled)
+            {
+                debugColliders.enabled = false;
+            }
+#endif
 
             try
             {

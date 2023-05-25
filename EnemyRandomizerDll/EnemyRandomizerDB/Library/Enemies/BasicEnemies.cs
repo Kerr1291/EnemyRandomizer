@@ -157,7 +157,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class BabyCentipedeControl : FSMAreaControlEnemy
+    public class BabyCentipedeControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Centipede";
 
@@ -585,6 +585,8 @@ namespace EnemyRandomizerMod
     /////
     public class MossWalkerControl : DefaultSpawnedEnemyControl
     {
+        public override bool preventInsideWallsAfterPositioning => false;
+        public override bool preventOutOfBoundsAfterPositioning => false;
     }
 
     public class MossWalkerSpawner : DefaultSpawner<MossWalkerControl> { }
@@ -601,7 +603,9 @@ namespace EnemyRandomizerMod
     /////
     public class PlantTrapControl : DefaultSpawnedEnemyControl
     {
-        public override float spawnPositionOffset => 0f;
+        public override float spawnPositionOffset => .3f;
+        public override bool preventInsideWallsAfterPositioning => false;
+        public override bool preventOutOfBoundsAfterPositioning => false;
     }
 
     public class PlantTrapSpawner : DefaultSpawner<PlantTrapControl> { }
@@ -673,8 +677,44 @@ namespace EnemyRandomizerMod
     /////
     public class PlantTurretControl : DefaultSpawnedEnemyControl
     {
+        public override bool preventInsideWallsAfterPositioning => false;
+        public override bool preventOutOfBoundsAfterPositioning => false;
+
+        public override string FSMName => "Plant Turret";
+
         public override float spawnPositionOffset => 0f;
         public override bool spawnShouldStickCorpse => true;
+
+        public float shotSpeed = 12f; //taken from the FSM
+        public float shotOffset = 0.4f;
+
+        public override void Setup(GameObject other)
+        {
+            base.Setup(other);
+
+            //replace the CreateObject action with our own
+            var fire = control.GetState("Fire");
+            fire.DisableAction(3);
+            fire.InsertCustomAction(() =>
+            {
+                var dirToHero = gameObject.DirectionToPlayer();
+
+                var shot = control.FsmVariables.GetFsmGameObject("Shot Instance").Value;
+                if (shot == null)
+                {
+                    var spitterShot = SpawnerExtensions.SpawnEntityAt("Spike Ball", pos2d + dirToHero * shotOffset, true);
+                    if (spitterShot != null)
+                    {
+                        shot = spitterShot;
+                        control.FsmVariables.GetFsmGameObject("Shot Instance").Value = spitterShot;
+                    }
+                }
+
+                var body = shot.GetComponent<Rigidbody2D>();
+                if (body != null)
+                    body.velocity = dirToHero * shotSpeed;
+            }, 3);
+        }
     }
 
     public class PlantTurretSpawner : DefaultSpawner<PlantTurretControl> { }
@@ -689,16 +729,63 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class PlantTurretRightControl : DefaultSpawnedEnemyControl
+    //public class PlantTurretRightControl : DefaultSpawnedEnemyControl
+    //{
+    //    public override string FSMName => "Plant Turret";
+
+    //    public override float spawnPositionOffset => 0f;
+    //    public override bool spawnShouldStickCorpse => true;
+    //    public override bool spawnOrientationIsFlipped => true;
+
+    //    public float shotSpeed = 12f; //taken from the FSM
+    //    public float shotOffset = 0.4f;
+
+    //    public override void Setup(GameObject other)
+    //    {
+    //        base.Setup(other);
+
+    //        //replace the CreateObject action with our own
+    //        var fire = control.GetState("Fire");
+    //        fire.DisableAction(3);
+    //        fire.InsertCustomAction(() =>
+    //        {
+    //            var dirToHero = gameObject.DirectionToPlayer();
+
+    //            var shot = control.FsmVariables.GetFsmGameObject("Shot Instance").Value;
+    //            if (shot == null)
+    //            {
+    //                var spitterShot = SpawnerExtensions.SpawnEntityAt("Spike Ball", pos2d + dirToHero * shotOffset, true);
+    //                if (spitterShot != null)
+    //                {
+    //                    shot = spitterShot;
+    //                    control.FsmVariables.GetFsmGameObject("Shot Instance").Value = spitterShot;
+    //                }
+    //            }
+
+    //            var body = shot.GetComponent<Rigidbody2D>();
+    //            if (body != null)
+    //                body.velocity = dirToHero * shotSpeed;
+    //        }, 3);
+    //    }
+    //}
+
+    //public class PlantTurretRightSpawner : DefaultSpawner<PlantTurretRightControl> { }
+
+    public class PlantTurretRightPrefabConfig : IPrefabConfig
     {
-        public override float spawnPositionOffset => 0f;
-        public override bool spawnShouldStickCorpse => true;
-        public override bool spawnOrientationIsFlipped => true;
+        public virtual void SetupPrefab(PrefabObject p)
+        {
+            //overwrite the upside-down one since the code now works just fine for the upright one in all cases
+            var uprightTurret = p.source.Scene.sceneObjects.FirstOrDefault(x => x.LoadedObject.prefabName == "Plant Turret");
+            p.prefab = uprightTurret.LoadedObject.prefab;
+
+            string keyName = EnemyRandomizerDatabase.ToDatabaseKey(p.prefab.name);
+            p.prefabName = keyName;
+
+            var control = p.prefab.AddComponent<PlantTurretControl>();
+            //control.isFloorTurret = true;
+        }
     }
-
-    public class PlantTurretRightSpawner : DefaultSpawner<PlantTurretRightControl> { }
-
-    public class PlantTurretRightPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -829,7 +916,7 @@ namespace EnemyRandomizerMod
     /////
     public class MushroomTurretControl : DefaultSpawnedEnemyControl
     {
-        public override float spawnPositionOffset => 0f;
+        public override float spawnPositionOffset => 2f;
         public override bool spawnShouldStickCorpse => true;
     }
 
@@ -1334,7 +1421,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     ///// 
-    public class RoyalGuardControl : FSMAreaControlEnemy
+    public class RoyalGuardControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Guard";
 

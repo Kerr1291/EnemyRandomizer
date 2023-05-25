@@ -10,27 +10,27 @@ namespace EnemyRandomizerMod
         public HealthManager EnemyHealthManager { get; protected set; }
 
         public Geo() {
-            Dev.Log($"Default ctor invoked");
+            //Dev.Log($"Default ctor invoked");
         }
 
         public Geo(GameObject source)
         {
-            Dev.Log($"Creating geo manager with source {source}");
-            Dev.Log($"DIY STACKTRACE -- " +
-                $"{Dev.FunctionHeader(3)}\n{Dev.FunctionHeader(2)}\n{Dev.FunctionHeader(1)}\n{Dev.FunctionHeader(0)}" +
-                $"{Dev.FunctionHeader(-1)}\n{Dev.FunctionHeader(-2)}\n{Dev.FunctionHeader(-3)}\n{Dev.FunctionHeader(-4)}");
-            Dev.Log($"End stacktrace");
+            //Dev.Log($"Creating geo manager with source {source}");
+            //Dev.Log($"DIY STACKTRACE -- " +
+            //    $"{Dev.FunctionHeader(3)}\n{Dev.FunctionHeader(2)}\n{Dev.FunctionHeader(1)}\n{Dev.FunctionHeader(0)}" +
+            //    $"{Dev.FunctionHeader(-1)}\n{Dev.FunctionHeader(-2)}\n{Dev.FunctionHeader(-3)}\n{Dev.FunctionHeader(-4)}");
+            //Dev.Log($"End stacktrace");
 
             SetSource(source);
         }
 
         public void SetSource(GameObject source)
         {
-            Dev.Log($"Setting source for geo manager {source}");
+            //Dev.Log($"Setting source for geo manager {source}");
             if (source != null)
             {
                 EnemyHealthManager = source.GetComponent<HealthManager>();
-                Dev.Log($"Got health manager? [{EnemyHealthManager}]");
+                //Dev.Log($"Got health manager? [{EnemyHealthManager}]");
             }
         }
 
@@ -38,7 +38,6 @@ namespace EnemyRandomizerMod
         {
             get
             {
-                Dev.Where();
                 return EnemyHealthManager == null ? 0 : EnemyHealthManager.GetSmallGeo();
             }
             set
@@ -51,7 +50,6 @@ namespace EnemyRandomizerMod
         {
             get
             {
-                Dev.Where();
                 return EnemyHealthManager == null ? 0 : EnemyHealthManager.GetMedGeo();
             }
             set
@@ -64,7 +62,6 @@ namespace EnemyRandomizerMod
         {
             get
             {
-                Dev.Where();
                 return EnemyHealthManager == null ? 0 : EnemyHealthManager.GetLargeGeo();
             }
             set
@@ -79,18 +76,17 @@ namespace EnemyRandomizerMod
             {
                 try
                 {
-                    Dev.Log("getting geo value ");
+                    //Dev.Log("getting geo value ");
                     return SmallGeo + MedGeo * 5 + LargeGeo * 25;
                 }
                 catch(Exception e)
                 {
-                    Dev.Log("Caught error getting geo value");
+                    //Dev.Log("Caught error getting geo value");
                     return 0;
                 }
             }
             set
             {
-                Dev.Where();
                 int lg = 0;
                 int med = 0;
                 int sm = 0;
@@ -111,7 +107,7 @@ namespace EnemyRandomizerMod
                     sm = rem;
                 }
 
-                Dev.Log("setting geo values");
+                //Dev.Log("setting geo values");
                 try
                 {
                     LargeGeo = lg;
@@ -120,22 +116,20 @@ namespace EnemyRandomizerMod
                 }
                 catch (Exception e)
                 {
-                    Dev.Log("Caught error setting geo values");
+                    //Dev.Log("Caught error setting geo values");
                 }
-                Dev.Log("done setting geo values");
+                //Dev.Log("done setting geo values");
             }
         }
 
         public static Geo operator *(Geo a, float b)
         {
-            Dev.Log("scaling geo values");
             a.Value = (int)((float)a.Value * b);
             return a;
         }
 
         public static Geo operator /(Geo a, float b)
         {
-            Dev.Where();
             if (Mathnv.FastApproximately(b, 0f, 0.001f))
                 return a;
 
@@ -145,7 +139,6 @@ namespace EnemyRandomizerMod
 
         public static bool operator <(Geo a, Geo b)
         {
-            Dev.Where();
             if (ReferenceEquals(a, null))
                 return true;
 
@@ -154,7 +147,6 @@ namespace EnemyRandomizerMod
 
         public static bool operator >(Geo a, Geo b)
         {
-            Dev.Where();
             if (ReferenceEquals(a, null))
                 return false;
 
@@ -163,7 +155,6 @@ namespace EnemyRandomizerMod
 
         public static bool operator ==(Geo a, Geo b)
         {
-            Dev.Where();
             // Check if both objects are null or reference the same instance
             if (ReferenceEquals(a, b))
                 return true;
@@ -177,13 +168,11 @@ namespace EnemyRandomizerMod
 
         public static bool operator !=(Geo a, Geo b)
         {
-            Dev.Where();
             return !(a == b);
         }
 
         public static bool operator <=(Geo a, Geo b)
         {
-            Dev.Where();
             if (ReferenceEquals(a, null))
                 return true;
 
@@ -192,7 +181,6 @@ namespace EnemyRandomizerMod
 
         public static bool operator >=(Geo a, Geo b)
         {
-            Dev.Where();
             if (ReferenceEquals(a, null))
                 return false;
 
@@ -201,25 +189,21 @@ namespace EnemyRandomizerMod
 
         public override string ToString()
         {
-            Dev.Where();
             return $"[Geo(L:{LargeGeo} M:{MedGeo} S:{SmallGeo})]";
         }
 
         public override bool Equals(object obj)
         {
-            Dev.Where();
             return Equals(obj as Geo);
         }
 
         public override int GetHashCode()
         {
-            Dev.Where();
             return Value.GetHashCode();
         }
 
         bool IEquatable<Geo>.Equals(Geo other)
         {
-            Dev.Where();
             if (ReferenceEquals(this, other))
                 return true;
 
@@ -231,7 +215,6 @@ namespace EnemyRandomizerMod
 
         public int CompareTo(Geo other)
         {
-            Dev.Where();
             if (ReferenceEquals(other, null))
                 return 1;
 

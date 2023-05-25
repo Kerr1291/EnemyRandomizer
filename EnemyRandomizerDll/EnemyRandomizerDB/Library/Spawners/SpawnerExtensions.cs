@@ -504,6 +504,25 @@ namespace EnemyRandomizerMod
             return remover;
         }
 
+        public static void AddDieOnHPZeroToState(this FsmState state, HealthManager healthManager, string effectToSpawn = null)
+        {
+            if (state == null)
+                return;
+
+            if (healthManager == null)
+                return;
+
+            state.InsertCustomAction(() => {
+                if (healthManager.hp <= 0)
+                {
+                    Dev.Log($"Destroying {healthManager.gameObject} because HP hit zero in state {state.Name}");
+                    if(!string.IsNullOrEmpty(effectToSpawn))
+                        EnemyRandomizerDatabase.CustomSpawnWithLogic(healthManager.transform.position, effectToSpawn, null, true);
+                    GameObject.Destroy(healthManager.gameObject);
+                }
+            }, 0);
+        }
+
         public static void PlayIdleAnimation(this GameObject source)
         {
             var anim = source.GetComponent<tk2dSpriteAnimator>();
@@ -574,7 +593,7 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public static Vector2 GetOriginalObjectSize(string objectName)
+        public static Vector2 GetOriginalObjectSize(string objectName, bool checkSpriteColliderLast = false)
         {
             string DatabaseName = EnemyRandomizerDatabase.ToDatabaseKey(objectName);
             if (string.IsNullOrEmpty(DatabaseName))
@@ -586,11 +605,11 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                return GetSizeFromComponents(objectName);
+                return GetSizeFromComponents(objectName, checkSpriteColliderLast);
             }
         }
 
-        public static Vector2 GetOriginalObjectSize(this GameObject source)
+        public static Vector2 GetOriginalObjectSize(this GameObject source, bool checkSpriteColliderLast = false)
         {
             string DatabaseName = EnemyRandomizerDatabase.GetDatabaseKey(source);
             if (string.IsNullOrEmpty(DatabaseName))
@@ -602,7 +621,7 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                return GetSizeFromComponents(source);
+                return GetSizeFromComponents(source, checkSpriteColliderLast);
             }
         }
 
@@ -795,7 +814,12 @@ namespace EnemyRandomizerMod
 
         public static bool IsDatabaseObject(this GameObject gameObject)
         {
-            return EnemyRandomizerDatabase.IsDatabaseObject(gameObject);
+            var key = EnemyRandomizerDatabase.GetDatabaseKey(gameObject);
+            if (key == null)
+                return false;
+
+            var db = EnemyRandomizerDatabase.GetDatabase();
+            return db.Objects.ContainsKey(key);
         }
 
         public static string GetDatabaseKey(this ObjectMetadata metaObject)
@@ -823,24 +847,35 @@ namespace EnemyRandomizerMod
             return EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, entityName, null, true);
         }
 
-        public static bool CanProcessObject(this GameObject gameObject)
+        public static bool IsPossibleReplacementObject(this GameObject gameObject)
         {
             if (gameObject == null)
                 return false;
 
-            if (!gameObject.IsInAValidScene())
-                return false;
-
-            if (gameObject.IsInvalidSceneObject())
-                return false;
-
             if (!gameObject.IsDatabaseObject())
+                return false;
+
+            if (!gameObject.IsInAValidScene())
                 return false;
 
             if (gameObject.HasReplacedAnObject())
                 return false;
 
             if (gameObject.IsDisabledBySavedGameState())
+                return false;
+
+            return true;
+        }
+
+        public static bool CanProcessObject(this GameObject gameObject)
+        {
+            if (gameObject.IsInvalidSceneObject())
+                return false;
+
+            if (!gameObject.IsPossibleReplacementObject())
+                return false;
+
+            if (gameObject.IsInALoadingScene())
                 return false;
 
             if (!gameObject.IsVisible())
@@ -851,28 +886,18 @@ namespace EnemyRandomizerMod
 
         public static bool IsTemporarilyInactive(this GameObject gameObject)
         {
-            if (gameObject == null)
+            if (!gameObject.IsPossibleReplacementObject())
                 return false;
 
-            if (!gameObject.IsInAValidScene() && !gameObject.IsInALoadingScene())
+            //only enemies can be temporarily inactive
+            if (gameObject.ObjectType() != PrefabObject.PrefabType.Enemy)
                 return false;
 
-            if (!EnemyRandomizerDatabase.IsDatabaseObject(gameObject))
-                return false;
+            //we expect our object to be either in a loading scene or not visible to qualify as temporarily inactive
+            if (gameObject.IsInALoadingScene() || !gameObject.IsVisible())
+                return true;
 
-            if (gameObject.HasReplacedAnObject())
-                return false;
-
-            if (gameObject.ObjectType() == PrefabObject.PrefabType.Enemy && gameObject.GetComponent<HealthManager>() == null)
-                return false;
-
-            if (gameObject.IsDisabledBySavedGameState())
-                return false;
-
-            if (gameObject.IsVisible())
-                return false;
-
-            return true;
+            return false;
         }
 
         public static PrefabObject.PrefabType ObjectType(this GameObject gameObject)
@@ -895,6 +920,9 @@ namespace EnemyRandomizerMod
                 return PrefabObject.PrefabType.None;
 
             var key = EnemyRandomizerDatabase.ToDatabaseKey(objectName);
+            if (key == null)
+                return PrefabObject.PrefabType.None;
+
             if (EnemyRandomizerDatabase.GetDatabase().Objects.TryGetValue(key, out var po))
             {
                 return po.prefabType;
@@ -933,7 +961,7 @@ namespace EnemyRandomizerMod
                 return false;
 
             var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(sceneName);
-            if (scene.IsValid() && scene.isLoaded)
+            if (scene.IsValid())
                 return true;
 
             return false;
@@ -1016,6 +1044,20 @@ namespace EnemyRandomizerMod
             var metaObject = ObjectMetadata.Get(gameObject);
             var originalObject = ObjectMetadata.GetOriginal(gameObject);
             return metaObject != null && originalObject != null;
+        }
+
+        public static bool IsAFreshObject(this GameObject gameObject)
+        {
+            var metaObject = ObjectMetadata.Get(gameObject);
+            var originalObject = ObjectMetadata.GetOriginal(gameObject);
+            return metaObject == null && originalObject == null;
+        }
+
+        public static bool IsASpawnedObject(this GameObject gameObject)
+        {
+            var metaObject = ObjectMetadata.Get(gameObject);
+            var originalObject = ObjectMetadata.GetOriginal(gameObject);
+            return metaObject != null && originalObject == null;
         }
 
         public static bool IsDisabledBySavedGameState(this GameObject gameObject)
@@ -1272,36 +1314,41 @@ namespace EnemyRandomizerMod
             return Vector2.one;
         }
 
-        public static Vector2 GetSizeFromComponents(GameObject sceneObject)
+        public static Vector2 GetSizeFromComponents(GameObject sceneObject, bool checkSpriteColliderLast = false)
         {
             Vector2 result = Vector2.one;
-            if (sceneObject.GetComponent<tk2dSprite>() && sceneObject.GetComponent<tk2dSprite>().boxCollider2D != null)
+            if (!checkSpriteColliderLast && sceneObject.GetComponent<tk2dSprite>() && sceneObject.GetComponent<tk2dSprite>().boxCollider2D != null)
             {
                 result = sceneObject.GetComponent<tk2dSprite>().boxCollider2D.size;
-                Dev.Log($"Size of SPRITE {sceneObject} is {result}");
+                //Dev.Log($"Size of SPRITE {sceneObject} is {result}");
             }
             else if (sceneObject.GetComponent<BoxCollider2D>())
             {
                 result = sceneObject.GetComponent<BoxCollider2D>().size;
-                Dev.Log($"Size of BOX {sceneObject} is {result}");
+                //Dev.Log($"Size of BOX {sceneObject} is {result}");
             }
             else if (sceneObject.GetComponent<CircleCollider2D>())
             {
                 var newCCircle = sceneObject.GetComponent<CircleCollider2D>();
                 result = Vector2.one * newCCircle.radius;
-                Dev.Log($"Size of CIRCLE {sceneObject} is {result}");
+                //Dev.Log($"Size of CIRCLE {sceneObject} is {result}");
             }
             else if (sceneObject.GetComponent<PolygonCollider2D>())
             {
                 var newCPoly = sceneObject.GetComponent<PolygonCollider2D>();
                 result = new Vector2(newCPoly.points.Select(x => x.x).Max() - newCPoly.points.Select(x => x.x).Min(), newCPoly.points.Select(x => x.y).Max() - newCPoly.points.Select(x => x.y).Min());
 
-                Dev.Log($"Size of POLYGON {sceneObject} is {result}");
+                //Dev.Log($"Size of POLYGON {sceneObject} is {result}");
+            }
+            else if (checkSpriteColliderLast && sceneObject.GetComponent<tk2dSprite>() && sceneObject.GetComponent<tk2dSprite>().boxCollider2D != null)
+            {
+                result = sceneObject.GetComponent<tk2dSprite>().boxCollider2D.size;
+                //Dev.Log($"Size of SPRITE {sceneObject} is {result}");
             }
             else
             {
                 result = sceneObject.transform.localScale;
-                Dev.Log($"Size of TRANSFORM SCALE {sceneObject} is {result}");
+                //Dev.Log($"Size of TRANSFORM SCALE {sceneObject} is {result}");
 
                 if (result.x < 0)
                     result = new Vector2(-result.x, result.y);
@@ -1347,7 +1394,7 @@ namespace EnemyRandomizerMod
         }
 
 
-        public static Vector2 GetSizeFromComponents(string objectName)
+        public static Vector2 GetSizeFromComponents(string objectName, bool checkSpriteColliderLast = false)
         {
             string databaseName = EnemyRandomizerDatabase.ToDatabaseKey(objectName);
             if (string.IsNullOrEmpty(databaseName))
@@ -1359,7 +1406,8 @@ namespace EnemyRandomizerMod
             var prefabObject = dbo.prefab;
 
             Vector2 result = Vector2.one;
-            if (prefabObject.GetComponent<tk2dSprite>() && prefabObject.GetComponent<tk2dSprite>().boxCollider2D != null)
+
+            if (!checkSpriteColliderLast && prefabObject.GetComponent<tk2dSprite>() && prefabObject.GetComponent<tk2dSprite>().boxCollider2D != null)
             {
                 result = prefabObject.GetComponent<tk2dSprite>().boxCollider2D.size;
                 Dev.Log($"Size of SPRITE {prefabObject} is {result}");
@@ -1381,6 +1429,11 @@ namespace EnemyRandomizerMod
                 result = new Vector2(newCPoly.points.Select(x => x.x).Max() - newCPoly.points.Select(x => x.x).Min(), newCPoly.points.Select(x => x.y).Max() - newCPoly.points.Select(x => x.y).Min());
 
                 Dev.Log($"Size of POLYGON {prefabObject} is {result}");
+            }
+            else if (checkSpriteColliderLast && prefabObject.GetComponent<tk2dSprite>() && prefabObject.GetComponent<tk2dSprite>().boxCollider2D != null)
+            {
+                result = prefabObject.GetComponent<tk2dSprite>().boxCollider2D.size;
+                Dev.Log($"Size of SPRITE {prefabObject} is {result}");
             }
             else
             {
@@ -1479,7 +1532,7 @@ namespace EnemyRandomizerMod
 
         public static void FixForLogic(this GameObject sceneObject, GameObject other)
         {
-            if (sceneObject == null)
+            if (sceneObject == null || other == null)
                 return;
 
             //for now we only need to do logic if we are an enemy
@@ -1487,14 +1540,7 @@ namespace EnemyRandomizerMod
                 return;
 
             //did we replace an enemy?
-            if (ObjectType(other) != PrefabObject.PrefabType.Enemy)
-                return;
-
-            var metaObject = ObjectMetadata.Get(sceneObject);
-            var originalObject = ObjectMetadata.Get(other);
-
-            //didn't really replace anything
-            if (metaObject == null || originalObject == null)
+            if (other.ObjectType() != PrefabObject.PrefabType.Enemy)
                 return;
 
             //no fix needed
@@ -1504,11 +1550,15 @@ namespace EnemyRandomizerMod
             //did we replace a pogo logic enemy?
             if (CheckIfIsPogoLogicType(other))
             {
+                if (SpawnedObjectControl.VERBOSE_DEBUG)
+                    Dev.Log($"{sceneObject.GetSceneHierarchyPath()}: Trying to fix pogos....");
                 sceneObject.FixForPogos(other.transform.position);
             }
 
             if (other.IsSmasher())
             {
+                if (SpawnedObjectControl.VERBOSE_DEBUG)
+                    Dev.Log($"{sceneObject.GetSceneHierarchyPath()}: Trying to fix smasher....");
                 sceneObject.MakeSmasher(other);
 
                 //TODO: if this was a static replacement we need to give it movement.... or solve some other way
@@ -1915,9 +1965,9 @@ namespace EnemyRandomizerMod
         //    return raycastHit2D;
         //}
 
-        public static Vector3 GetVectorTo(this GameObject entitiy, Vector2 dir, float max)
+        public static Vector3 GetVectorTo(this GameObject entity, Vector2 dir, float max)
         {
-            return Mathnv.GetVectorTo(entitiy.transform.position, dir, max, IsSurfaceOrPlatform);
+            return Mathnv.GetVectorTo(entity.transform.position, dir, max, IsSurfaceOrPlatform);
         }
 
         public static Vector3 GetVectorTo(Vector2 origin, Vector2 dir, float max)
@@ -1925,24 +1975,34 @@ namespace EnemyRandomizerMod
             return Mathnv.GetVectorTo(origin, dir, max, IsSurfaceOrPlatform);
         }
 
-        public static Vector3 GetPointOn(this GameObject entitiy, Vector2 dir, float max)
+        public static Vector3 GetPointOn(this GameObject entity, Vector2 dir, float max)
         {
-            return Mathnv.GetPointOn(entitiy.transform.position, dir, max, IsSurfaceOrPlatform);
+            return Mathnv.GetPointOn(entity.transform.position, dir, max, IsSurfaceOrPlatform);
         }
 
-        public static RaycastHit2D GetRayOn(this GameObject entitiy, Vector2 dir, float max)
+        public static RaycastHit2D GetRayOn(this GameObject entity, Vector2 dir, float max)
         {
-            return Mathnv.GetRayOn(entitiy.transform.position, dir, max, IsSurfaceOrPlatform);
+            return Mathnv.GetRayOn(entity.transform.position, dir, max, IsSurfaceOrPlatform);
         }
 
-        public static int CountIntersections(this GameObject entitiy, Vector2 dir, float max)
+        public static RaycastHit2D GetNearestChunkIntersection(this GameObject entity, Vector2 dir, float max)
         {
-            return Mathnv.CountIntersections(entitiy.transform.position, dir, max, IsSurfaceOrPlatform);
+            return Mathnv.GetNearestChunkIntersection(entity.transform.position, dir, max, IsSurfaceOrPlatform);
         }
 
-        public static int CountIntersections(this Vector2 origin, Vector2 dir, float max)
+        public static RaycastHit2D GetNearestChunkIntersection(this Vector2 origin, Vector2 dir, float max)
         {
-            return Mathnv.CountIntersections(origin, dir, max, IsSurfaceOrPlatform);
+            return Mathnv.GetNearestChunkIntersection(origin, dir, max, IsSurfaceOrPlatform);
+        }
+
+        public static int CountChunkIntersections(this GameObject entity, Vector2 dir, float max)
+        {
+            return Mathnv.CountChunkIntersections(entity.transform.position, dir, max, IsSurfaceOrPlatform);
+        }
+
+        public static int CountChunkIntersections(this Vector2 origin, Vector2 dir, float max)
+        {
+            return Mathnv.CountChunkIntersections(origin, dir, max, IsSurfaceOrPlatform);
         }
 
         public static Vector3 GetPointOn(Vector2 origin, Vector2 dir, float max)
@@ -1955,14 +2015,14 @@ namespace EnemyRandomizerMod
             return Mathnv.GetRayOn(origin, dir, max, IsSurfaceOrPlatform);
         }
 
-        public static Vector3 GetNearestVectorToSurface(this GameObject entitiy, float max)
+        public static Vector3 GetNearestVectorToSurface(this GameObject entity, float max)
         {
-            return Mathnv.GetNearestVectorTo(entitiy.transform.position, max, IsSurfaceOrPlatform);
+            return Mathnv.GetNearestVectorTo(entity.transform.position, max, IsSurfaceOrPlatform);
         }
 
-        public static Vector3 GetNearestPointOnSurface(this GameObject entitiy, float max)
+        public static Vector3 GetNearestPointOnSurface(this GameObject entity, float max)
         {
-            return Mathnv.GetNearestPointOn(entitiy.transform.position, max, IsSurfaceOrPlatform);
+            return Mathnv.GetNearestPointOn(entity.transform.position, max, IsSurfaceOrPlatform);
         }
 
         public static Vector3 GetNearestPointOnSurface(Vector2 origin, float max)
@@ -1970,9 +2030,9 @@ namespace EnemyRandomizerMod
             return Mathnv.GetNearestPointOn(origin, max, IsSurfaceOrPlatform);
         }
 
-        public static RaycastHit2D GetNearestRayOnSurface(this GameObject entitiy, float max)
+        public static RaycastHit2D GetNearestRayOnSurface(this GameObject entity, float max)
         {
-            return Mathnv.GetNearestRayOn(entitiy.transform.position, max, IsSurfaceOrPlatform);
+            return Mathnv.GetNearestRayOn(entity.transform.position, max, IsSurfaceOrPlatform);
         }
 
         public static RaycastHit2D GetNearestRayOnSurface(Vector2 origin, float max)
@@ -1980,14 +2040,14 @@ namespace EnemyRandomizerMod
             return Mathnv.GetNearestRayOn(origin, max, IsSurfaceOrPlatform);
         }
 
-        public static Vector3 GetNearestVectorDown(this GameObject entitiy, float max)
+        public static Vector3 GetNearestVectorDown(this GameObject entity, float max)
         {
-            return Mathnv.GetNearestVectorDown(entitiy.transform.position, max, IsSurfaceOrPlatform);
+            return Mathnv.GetNearestVectorDown(entity.transform.position, max, IsSurfaceOrPlatform);
         }
 
-        public static Vector3 GetNearestPointDown(this GameObject entitiy, float max)
+        public static Vector3 GetNearestPointDown(this GameObject entity, float max)
         {
-            return Mathnv.GetNearestPointDown(entitiy.transform.position, max, IsSurfaceOrPlatform);
+            return Mathnv.GetNearestPointDown(entity.transform.position, max, IsSurfaceOrPlatform);
         }
 
         public static Vector3 GetNearestPointDown(Vector2 origin, float max)
@@ -1995,9 +2055,9 @@ namespace EnemyRandomizerMod
             return Mathnv.GetNearestPointDown(origin, max, IsSurfaceOrPlatform);
         }
 
-        public static RaycastHit2D GetNearestRayDown(this GameObject entitiy, float max)
+        public static RaycastHit2D GetNearestRayDown(this GameObject entity, float max)
         {
-            return Mathnv.GetNearestRayDown(entitiy.transform.position, max, IsSurfaceOrPlatform);
+            return Mathnv.GetNearestRayDown(entity.transform.position, max, IsSurfaceOrPlatform);
         }
 
         public static RaycastHit2D GetNearestRayDown(Vector2 origin, float max)
@@ -2033,36 +2093,77 @@ namespace EnemyRandomizerMod
         }
 
         //TODO: experimental, needs testing
-        public static bool IsInsideWalls(this GameObject gameObject)
+        //public static bool IsInsideWalls(this GameObject gameObject)
+        //{
+        //    List<int> intersections = new List<int>()
+        //    {
+        //        CountChunkIntersections(gameObject, Vector2.down, float.MaxValue),
+        //        CountChunkIntersections(gameObject, Vector2.up, float.MaxValue),
+        //        CountChunkIntersections(gameObject, Vector2.left, float.MaxValue),
+        //        CountChunkIntersections(gameObject, Vector2.right, float.MaxValue),
+        //    };
+
+        //    if (intersections.All(x => x == 0))
+        //        return true;
+
+        //    return intersections.Where(x => x > 0).Any(x => x % 2 == 1);
+        //}
+
+        //public static bool IsInsideWalls(this Vector2 point)
+        //{
+        //    List<int> intersections = new List<int>()
+        //    {
+        //        CountChunkIntersections(point, Vector2.down, float.MaxValue),
+        //        CountChunkIntersections(point, Vector2.up, float.MaxValue),
+        //        CountChunkIntersections(point, Vector2.left, float.MaxValue),
+        //        CountChunkIntersections(point, Vector2.right, float.MaxValue),
+        //    };
+
+        //    if (intersections.All(x => x == 0))
+        //        return true;
+
+        //    return intersections.Where(x => x > 0).Any(x => x % 2 == 1);
+        //}
+
+        public static List<RaycastHit2D> GetWallRays(this GameObject gameObject)
         {
-            List<int> intersections = new List<int>()
+            List<RaycastHit2D> intersections = new List<RaycastHit2D>()
             {
-                CountIntersections(gameObject, Vector2.down, float.MaxValue),
-                CountIntersections(gameObject, Vector2.up, float.MaxValue),
-                CountIntersections(gameObject, Vector2.left, float.MaxValue),
-                CountIntersections(gameObject, Vector2.right, float.MaxValue),
+                GetNearestChunkIntersection(gameObject, Vector2.down, float.MaxValue),
+                GetNearestChunkIntersection(gameObject, Vector2.up, float.MaxValue),
+                GetNearestChunkIntersection(gameObject, Vector2.left, float.MaxValue),
+                GetNearestChunkIntersection(gameObject, Vector2.right, float.MaxValue),
             };
 
-            if (intersections.All(x => x == 0))
-                return true;
-
-            return intersections.Where(x => x > 0).Any(x => x % 2 == 0);
+            return intersections;
         }
 
-        public static bool IsInsideWalls(this Vector2 point)
+        public static RaycastHit2D GetNearstRayOutOfWalls(this GameObject gameObject)
         {
-            List<int> intersections = new List<int>()
+            List<RaycastHit2D> intersections = new List<RaycastHit2D>()
             {
-                CountIntersections(point, Vector2.down, float.MaxValue),
-                CountIntersections(point, Vector2.up, float.MaxValue),
-                CountIntersections(point, Vector2.left, float.MaxValue),
-                CountIntersections(point, Vector2.right, float.MaxValue),
+                GetNearestChunkIntersection(gameObject, Vector2.down, float.MaxValue),
+                GetNearestChunkIntersection(gameObject, Vector2.up, float.MaxValue),
+                GetNearestChunkIntersection(gameObject, Vector2.left, float.MaxValue),
+                GetNearestChunkIntersection(gameObject, Vector2.right, float.MaxValue),
             };
 
-            if (intersections.All(x => x == 0))
-                return true;
+            var closest = intersections.Where(x => x.collider != null).OrderBy(x => x.distance).FirstOrDefault();
+            return closest;
+        }
 
-            return intersections.Where(x => x > 0).Any(x => x % 2 == 0);
+        public static RaycastHit2D GetNearstRayOutOfWalls(this Vector2 point)
+        {
+            List<RaycastHit2D> intersections = new List<RaycastHit2D>()
+            {
+                GetNearestChunkIntersection(point, Vector2.down, float.MaxValue),
+                GetNearestChunkIntersection(point, Vector2.up, float.MaxValue),
+                GetNearestChunkIntersection(point, Vector2.left, float.MaxValue),
+                GetNearestChunkIntersection(point, Vector2.right, float.MaxValue),
+            };
+
+            var closest = intersections.Where(x => x.collider != null).OrderBy(x => x.distance).FirstOrDefault();
+            return closest;
         }
 
         public static List<RaycastHit2D> GetOctagonalRays(this GameObject gameObject, float maxDistanceToCheck)
@@ -2945,9 +3046,6 @@ namespace EnemyRandomizerMod
 
         public static void FinalizeReplacement(this GameObject gameObject, GameObject objectToReplace = null)
         {
-            if (SpawnedObjectControl.VERBOSE_DEBUG)
-                Dev.LogWarning($"{gameObject}: Will be activated and will replace [{objectToReplace}]");
-
             //should not be null..
             var thisMetaData = ObjectMetadata.Get(gameObject);
 
@@ -2959,13 +3057,22 @@ namespace EnemyRandomizerMod
                 throw new InvalidOperationException($"{thisMetaData}: Cannot re-replace an object that's already replaced something!");
             }
 
-            if(thisMetaData != null)
+            if(thisMetaData == null)
             {
                 throw new InvalidOperationException($"{gameObject}: Error! This object hasn't been setup yet! No metadata or enemy randomizer component found!");
             }
 
             //the meta of the object we want to replace, should not be null?
             var otherMetaData = ObjectMetadata.Get(objectToReplace);
+            if(objectToReplace != null && otherMetaData == null)
+            {
+                otherMetaData = new ObjectMetadata(objectToReplace);
+            }
+
+            if (SpawnedObjectControl.VERBOSE_DEBUG && objectToReplace != null)
+                Dev.LogWarning($"{gameObject}: Will be activated and will replace [{objectToReplace}]");
+            else
+                Dev.LogWarning($"{gameObject}: Will be activated and will replace nothing");
 
             //nothing to do here if these objects are the same
             if (objectToReplace != null && gameObject != objectToReplace)
@@ -2994,7 +3101,7 @@ namespace EnemyRandomizerMod
                     string result = GetCustomPlayerDataName(objectToReplace);
 
                     if (SpawnedObjectControl.VERBOSE_DEBUG)
-                        Dev.LogWarning($"{thisMetaData}: The custom player data name {result} will be hooked to this object's health manager - OnDeath event");
+                        Dev.LogWarning($"{thisMetaData}: The custom player data name {result} will set/updated used this object is destroyed");
 
                     if (!string.IsNullOrEmpty(result))
                     {
@@ -3016,7 +3123,7 @@ namespace EnemyRandomizerMod
             var soc = gameObject.GetComponent<SpawnedObjectControl>();
             if(soc != null)
             {
-                soc.originialMetadata = thisMetaData;
+                soc.originialMetadata = otherMetaData;
 
                 //apply the position logic
                 soc.SetPositionOnSpawn();
@@ -3034,11 +3141,53 @@ namespace EnemyRandomizerMod
                 SpawnerExtensions.DestroyObject(objectToReplace);
 
                 if (SpawnedObjectControl.VERBOSE_DEBUG)
-                    Dev.LogWarning($"{thisMetaData}: DestroyObject has completed.");
+                    Dev.LogWarning($"{thisMetaData}: DestroyObject has completed and the object that generated {otherMetaData} is gone.");
             }
 
             if (SpawnedObjectControl.VERBOSE_DEBUG)
-                Dev.LogWarning($"{thisMetaData}: Enemy Randomizer replacement completed.");
+                Dev.LogWarning($"{thisMetaData}: Completed replacing {otherMetaData} with {thisMetaData}.");
+
+            //finally mark the spawned object as officially loaded
+            if(soc != null)
+            {
+                soc.MarkLoaded();
+            }
         }
+
+        //public static bool ResolveInsideWalls(this GameObject gameObject)
+        //{
+        //    if (!gameObject.InBounds())
+        //    {
+        //        var oobPos = gameObject.transform.position;
+        //        var origin = HeroController.instance.transform.position;
+        //        var emergencyCorrectionDir = (oobPos - origin).normalized;
+        //        var ray = Mathnv.GetRayOn(origin, emergencyCorrectionDir, float.MaxValue, SpawnerExtensions.IsSurfaceOrPlatform);
+
+        //        if (SpawnedObjectControl.VERBOSE_DEBUG)
+        //            Dev.LogWarning($"{gameObject}: Was out of bounds at {oobPos} and will be moved to {ray.point} - For reference, the hero is at {origin}.");
+
+        //        gameObject.transform.position = ray.point;
+        //        //previousLocation = transform.position;
+        //        return true;
+        //    }
+
+        //    if (gameObject.IsInsideWalls())
+        //    {
+        //        var oobPos = gameObject.transform.position;
+        //        var rayOutOfWalls = gameObject.GetNearstRayOutOfWalls();
+        //        var direction = -rayOutOfWalls.normal;
+        //        var pointOnWall = rayOutOfWalls.point;
+        //        var vectorOutOfWall = Vector2.Dot(direction, gameObject.GetOriginalObjectSize()) * direction * 0.5f;
+        //        var outOfWall = pointOnWall + vectorOutOfWall;
+
+        //        if (SpawnedObjectControl.VERBOSE_DEBUG)
+        //            Dev.LogWarning($"{gameObject}: Was inside walls at {oobPos} and will be moved to the wall at point {pointOnWall} and then out of the wall by {vectorOutOfWall} to {outOfWall} - For reference, the hero is at {HeroController.instance.transform.position}.");
+
+        //        gameObject.transform.position = outOfWall;
+        //        return true;
+        //        //previousLocation = transform.position;
+        //    }
+        //    return false;
+        //}
     }
 }

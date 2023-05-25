@@ -11,7 +11,7 @@ using System;
 namespace EnemyRandomizerMod
 {
 
-    public class ZoteCrewFatControl : FSMAreaControlEnemy
+    public class ZoteCrewFatControl : DefaultSpawnedEnemyControl
     {
         public override void Setup(GameObject other)
         {

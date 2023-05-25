@@ -15,7 +15,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class OrdealZotelingControl : FSMAreaControlEnemy
+    public class OrdealZotelingControl : DefaultSpawnedEnemyControl
     {
         public float startYPos;
 

@@ -39,5 +39,29 @@ namespace EnemyRandomizerMod
                 CustomOption,
             };
         }
+
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, replace a given type?
+        /// </summary>
+        public override bool WillFilterType(PrefabObject.PrefabType prefabType)
+        {
+            return prefabType == PrefabObject.PrefabType.Enemy;
+        }
+
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, replace a given type?
+        /// </summary>
+        public override bool WillReplaceType(PrefabObject.PrefabType prefabType)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, modify a given type?
+        /// </summary>
+        public override bool WillModifyType(PrefabObject.PrefabType prefabType)
+        {
+            return false;
+        }
     }
 }

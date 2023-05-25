@@ -13,9 +13,12 @@ using Satchel.Futils;
 
 namespace EnemyRandomizerMod
 {
-    public abstract class FlamebearerControl : FSMAreaControlEnemy
+    public abstract class FlamebearerControl : DefaultSpawnedEnemyControl
     {
         public abstract int Level { get; }
+
+        public override bool preventOutOfBoundsAfterPositioning => false;
+        public override bool preventInsideWallsAfterPositioning => false;
 
         public override void Setup(GameObject other)
         {

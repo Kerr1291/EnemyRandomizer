@@ -168,8 +168,10 @@
     <Compile Include="Library\Common\Physics\DebugColliders.cs" />
     <Compile Include="Library\Common\Physics\ExplodeOnContact.cs" />
     <Compile Include="Library\Common\Physics\HomingEffect.cs" />
+    <Compile Include="Library\Common\Physics\LineSegment2D.cs" />
     <Compile Include="Library\Common\Physics\Physics2DHomingEffect.cs" />
     <Compile Include="Library\Common\Physics\PolyMesh2D.cs" />
+    <Compile Include="Library\Common\Physics\PreventInsideWalls.cs" />
     <Compile Include="Library\Common\Physics\PreventOutOfBounds.cs" />
     <Compile Include="Library\Common\Physics\RangeCheck.cs" />
     <Compile Include="Library\Common\Physics\Raycaster.cs" />

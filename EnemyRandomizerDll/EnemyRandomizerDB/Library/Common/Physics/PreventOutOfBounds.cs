@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -27,6 +25,15 @@ namespace EnemyRandomizerMod
         Rigidbody2D body;
         Collider2D bodyCollider;
 
+        int insideWallCounter = 0;
+        bool didResolveThisFrame = false;
+
+        public void ForcePosition(Vector3 pos)
+        {
+            gameObject.transform.position = pos;
+            previousLocation = pos;
+        }
+
         private void OnEnable()
         {
             previousLocation = transform.position;
@@ -36,51 +43,59 @@ namespace EnemyRandomizerMod
 
         private void LateUpdate()
         {
+            ResolveMovement();
+            didResolveThisFrame = false;
+        }
+
+        public void ResolveMovement()
+        {
+            if (didResolveThisFrame)
+                return;
+
+            didResolveThisFrame = true;
+
             Vector3 currentLocation = transform.position;
             Vector3 movementVector = (currentLocation - previousLocation);
             float distance = movementVector.magnitude;
 
-            if( distance <= minCheckDistance )
+            if (distance <= minCheckDistance)
                 return;
-            
+
             //check any custom collisions
 
             RaycastHit2D? otherHit = null;
 
-            if( otherLayer.HasValue && onOtherCollision != null && onOtherCollision.GetInvocationList().Length > 0 )
-                otherHit = Physics2D.Raycast( previousLocation, movementVector.normalized, distance, otherLayer.Value );
+            if (otherLayer.HasValue && onOtherCollision != null && onOtherCollision.GetInvocationList().Length > 0)
+                otherHit = Physics2D.Raycast(previousLocation, movementVector.normalized, distance, otherLayer.Value);
 
-            if( otherHit.HasValue && otherHit.Value.collider != null )
+            if (otherHit.HasValue && otherHit.Value.collider != null)
             {
                 //we passed through something
 
                 Vector3 collisionPoint = otherHit.Value.point;
                 Vector3 collisionNormal = otherHit.Value.normal;
 
-                onOtherCollision.Invoke(otherHit.Value, gameObject, otherHit.Value.collider.gameObject );
+                onOtherCollision.Invoke(otherHit.Value, gameObject, otherHit.Value.collider.gameObject);
             }
-            
-            //resolve any collisions
-            
-            var result = Physics2D.Raycast( previousLocation, movementVector.normalized, distance, boundsLayer );
 
-            if( result.collider != null )
+            //resolve any collisions
+
+            var result = Physics2D.Raycast(previousLocation, movementVector.normalized, distance, boundsLayer);
+
+            if (result.collider != null)
             {
                 //somehow we passed through a wall, fix it
-                //Dev.Log( "Out of bounds prevention triggered!" );
-
                 Vector3 collisionPoint = result.point;
                 Vector3 collisionNormal = result.normal;
 
-                //TODO: update this to properly take different collider types and the object's orientation into account (see DebugColliders.cs for how to do that)
-                Vector3 size = bodyCollider.bounds.size;
+                var offset = Vector2.Dot(collisionNormal, gameObject.GetOriginalObjectSize(true)) * collisionNormal * 0.5f;
 
-                transform.position = collisionPoint + new Vector3( collisionNormal.x * size.x * 0.5f, collisionNormal.y * size.y * 0.5f );
+                transform.position = collisionPoint + offset;
                 previousLocation = transform.position;
 
-                if( onBoundCollision != null )
+                if (onBoundCollision != null)
                 {
-                    onBoundCollision.Invoke( result, gameObject, result.collider.gameObject );
+                    onBoundCollision.Invoke(result, gameObject, result.collider.gameObject);
                 }
             }
             else
@@ -88,5 +103,32 @@ namespace EnemyRandomizerMod
                 previousLocation = currentLocation;
             }
         }
+
+        //void ResolveInsideWalls()
+        //{
+        //    bool result = gameObject.ResolveInsideWalls();
+        //    if(result)
+        //    {
+        //        previousLocation = transform.position;
+        //    }
+
+        //    //if(!gameObject.InBounds())
+        //    //{
+        //    //    var oobPos = transform.position;
+        //    //    var origin = HeroController.instance.transform.position;
+        //    //    var emergencyCorrectionDir = (oobPos - origin).normalized;
+        //    //    var ray = Mathnv.GetRayOn(origin, emergencyCorrectionDir, float.MaxValue, SpawnerExtensions.IsSurfaceOrPlatform);
+        //    //    gameObject.transform.position = ray.point;
+        //    //    previousLocation = transform.position;
+        //    //}
+
+        //    //if(gameObject.IsInsideWalls())
+        //    //{
+        //    //    var rayOutOfWalls = gameObject.GetNearstRayOutOfWalls();
+        //    //    var direction = -rayOutOfWalls.normal;
+        //    //    gameObject.transform.position = rayOutOfWalls.point + Vector2.Dot(direction, gameObject.GetOriginalObjectSize()) * direction * 0.5f;
+        //    //    previousLocation = transform.position;
+        //    //}
+        //}
     }
 }

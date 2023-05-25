@@ -17,7 +17,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MushroomBrawlerControl : FSMAreaControlEnemy
+    public class MushroomBrawlerControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Shroom Brawler";
 
@@ -45,9 +45,11 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MenderBugControl : FSMAreaControlEnemy
+    public class MenderBugControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Mender Bug Ctrl";
+        public override bool preventInsideWallsAfterPositioning => false;
+        public override bool preventOutOfBoundsAfterPositioning => false;
 
         public override void Setup(GameObject other)
         {
@@ -82,7 +84,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class BlockerControl : FSMAreaControlEnemy
+    public class BlockerControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Blocker Control";
 
@@ -151,7 +153,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////  
-    public class ZombieHiveControl : FSMAreaControlEnemy
+    public class ZombieHiveControl : DefaultSpawnedEnemyControl
     {
         public int vanillaMaxBabies = 5;
 
@@ -228,7 +230,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////   
-    public class ZombieSpider1Control : FSMAreaControlEnemy
+    public class ZombieSpider1Control : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Chase";
 
@@ -264,7 +266,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////   
-    public class ZombieSpider2Control : FSMAreaControlEnemy
+    public class ZombieSpider2Control : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Chase";
 
@@ -295,9 +297,11 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MossChargerControl : FSMAreaControlEnemy
+    public class MossChargerControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Mossy Control";
+        public override bool preventInsideWallsAfterPositioning => false;
+        public override bool preventOutOfBoundsAfterPositioning => false;
 
         public RaycastHit2D floorSpawn;
         public RaycastHit2D floorLeft;
@@ -439,6 +443,9 @@ namespace EnemyRandomizerMod
 
     public class MawlekTurretControl : DefaultSpawnedEnemyControl
     {
+        public override bool preventInsideWallsAfterPositioning => false;
+        public override bool preventOutOfBoundsAfterPositioning => false;
+
         Range upL = new Range(95f, 110f);
         Range upR = new Range(70f, 85f);
 

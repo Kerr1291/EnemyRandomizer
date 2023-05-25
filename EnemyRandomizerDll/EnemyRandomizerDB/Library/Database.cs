@@ -25,6 +25,27 @@ namespace EnemyRandomizerMod
         [XmlIgnore]
         public PrefabType prefabType;
 
+        [XmlIgnore]
+        float? defaultRNGWeight;
+
+        [XmlIgnore]
+        public float DefaultRNGWeight
+        {
+            get
+            {
+                if(defaultRNGWeight == null)
+                {
+                    //cache the table lookup
+                    if (MetaDataTypes.RNGWeights.ContainsKey(prefabName))
+                        defaultRNGWeight = MetaDataTypes.RNGWeights[prefabName];
+                    else
+                        defaultRNGWeight = 1f;
+                }
+
+                return defaultRNGWeight.Value;
+            }
+        }
+
         public override string ToString()
         {
             return $"[Type:{prefabType}, PrefabName:{prefabName}, {source}]";

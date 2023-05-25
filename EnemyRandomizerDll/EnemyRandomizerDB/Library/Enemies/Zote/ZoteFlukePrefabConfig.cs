@@ -10,7 +10,7 @@ using System;
 
 namespace EnemyRandomizerMod
 {
-    public class ZoteFlukeControl : FSMAreaControlEnemy
+    public class ZoteFlukeControl : DefaultSpawnedEnemyControl
     {
         public Vector2 spawnPos;
 

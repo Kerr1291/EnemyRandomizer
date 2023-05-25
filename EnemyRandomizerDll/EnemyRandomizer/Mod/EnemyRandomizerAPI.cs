@@ -32,6 +32,7 @@ namespace EnemyRandomizerMod
         /// </summary>
         public static void LoadExternalLogics(IEnumerable<IRandomizerLogic> logicsToLoad)
         {
+            Dev.Where();
             var externalLogics = logicsToLoad.ToDictionary(x => x.Name);
 
             var previouslyLoadedLogics = EnemyRandomizer.GlobalSettings.loadedLogics;

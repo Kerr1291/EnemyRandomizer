@@ -7,7 +7,7 @@ using System;
 namespace EnemyRandomizerMod
 {
 
-    public class ZoteTurretControl : FSMAreaControlEnemy
+    public class ZoteTurretControl : DefaultSpawnedEnemyControl
     {
         public float startYPos;
 

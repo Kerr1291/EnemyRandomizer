@@ -455,18 +455,51 @@ namespace EnemyRandomizerMod
         }
 
 
-        public static int CountIntersections(Vector2 origin, Vector2 dir, float max, Func<GameObject, bool> isRaycastHitObject)
+        public static int CountChunkIntersections(Vector2 origin, Vector2 dir, float max, Func<GameObject, bool> isRaycastHitObject)
         {
             Vector2 direction = dir;
 
-            RaycastHit2D[] toSurface = Physics2D.RaycastAll(origin, direction, max, Physics2D.AllLayers);
+            var intersectionRays = Physics2D.RaycastAll(origin, direction, max, Physics2D.GetLayerCollisionMask(LayerMask.NameToLayer("Terrain"))).Where(x => x.collider != null && x.collider.name.Contains("Chunk"));
 
-            if (toSurface != null)
+            if (intersectionRays != null)
             {
-                return toSurface.Where(x => x.collider != null).Select(x => x.collider).Sum(x => isRaycastHitObject(x.gameObject) ? 1 : 0);
+                return intersectionRays.Count();
+                    //.Where(x => x.collider != null).Select(x => x.collider).Sum(x => isRaycastHitObject(x.gameObject) ? 1 : 0);
             }
 
             return 0;
+        }
+
+
+        public static RaycastHit2D GetNearestChunkIntersection(Vector2 origin, Vector2 dir, float max, Func<GameObject, bool> isRaycastHitObject)
+        {
+            Vector2 direction = dir;
+
+            var intersectionRays = Physics2D.RaycastAll(origin, direction, max, Physics2D.GetLayerCollisionMask(LayerMask.NameToLayer("Terrain"))).Where(x => x.collider != null && x.collider.name.Contains("Chunk"));
+
+            Vector2 lastGoodPoint = direction * max;
+
+            if (intersectionRays != null)
+            {
+                foreach (var v in intersectionRays)
+                {
+                    if (isRaycastHitObject(v.collider.gameObject))
+                    {
+                        return v;
+                    }
+                    else
+                    {
+                        float newDist = (v.point - origin).magnitude;
+                        float oldDist = (lastGoodPoint - origin).magnitude;
+
+                        if (newDist < oldDist)
+                        {
+                            lastGoodPoint = v.point;
+                        }
+                    }
+                }
+            }
+            return new RaycastHit2D() { point = lastGoodPoint, distance = max, normal = -dir };
         }
     }
 }

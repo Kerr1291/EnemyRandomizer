@@ -73,7 +73,7 @@ namespace EnemyRandomizerMod
     }
 
 
-    public class ZoteBossControl : FSMBossAreaControl
+    public class ZoteBossControl : DefaultSpawnedEnemyControl
     {
         public override void Setup(GameObject other)
         {

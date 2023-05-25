@@ -79,6 +79,26 @@ namespace EnemyRandomizerMod
         void Reset();
 
         /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, replace a given type?
+        /// </summary>
+        bool WillFilterType(PrefabObject.PrefabType prefabType);
+
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, replace a given type?
+        /// </summary>
+        bool WillReplaceType(PrefabObject.PrefabType prefabType);
+
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, modify a given type?
+        /// </summary>
+        bool WillModifyType(PrefabObject.PrefabType prefabType);
+
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, modify rng?
+        /// </summary>
+        bool WillModifyRNG();
+
+        /// <summary>
         /// Invoked when a game is started
         /// </summary>
         void OnStartGame(EnemyRandomizerPlayerSettings settings);
@@ -166,6 +186,35 @@ namespace EnemyRandomizerMod
         {
             Enabled = false;
             OnStartGameWasCalled = false;
+        }
+
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, replace a given type?
+        /// </summary>
+        public virtual bool WillFilterType(PrefabObject.PrefabType prefabType)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, replace a given type?
+        /// </summary>
+        public virtual bool WillReplaceType(PrefabObject.PrefabType prefabType)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, modify a given type?
+        /// </summary>
+        public virtual bool WillModifyType(PrefabObject.PrefabType prefabType)
+        {
+            return false;
+        }
+
+        public virtual bool WillModifyRNG()
+        {
+            return false;
         }
 
         public virtual void OnStartGame(EnemyRandomizerPlayerSettings settings)

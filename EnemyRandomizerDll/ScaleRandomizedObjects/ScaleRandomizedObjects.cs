@@ -81,7 +81,6 @@ namespace EnemyRandomizerMod
         public virtual float ApplyRelativeSizeScale(GameObject objectToModify, GameObject originalObject)
         {
             float scale = 1f;
-            //TODO: maybe apply some default scaling to bigger enemies, for now just return them
             if (originalObject != null)
             {
                 scale = objectToModify.GetRelativeScale(originalObject, .2f);
@@ -89,6 +88,24 @@ namespace EnemyRandomizerMod
                 objectToModify.ScaleObject(scale);
             }
             return scale;
+        }
+
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, replace a given type?
+        /// </summary>
+        public override bool WillReplaceType(PrefabObject.PrefabType prefabType)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Used to optimize the randomizer, does this logic, if enabled, modify a given type?
+        /// </summary>
+        public override bool WillModifyType(PrefabObject.PrefabType prefabType)
+        {
+            return prefabType == PrefabObject.PrefabType.Enemy && Settings.GetOption(CustomOptions[0].Name).value ||
+                   prefabType == PrefabObject.PrefabType.Hazard && Settings.GetOption(CustomOptions[1].Name).value ||
+                   prefabType == PrefabObject.PrefabType.Effect && Settings.GetOption(CustomOptions[2].Name).value;
         }
     }
 }

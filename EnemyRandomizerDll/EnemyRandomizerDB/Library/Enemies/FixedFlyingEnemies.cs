@@ -207,7 +207,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MageControl : FSMAreaControlEnemy
+    public class MageControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Mage";
 
@@ -252,7 +252,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class ElectricMageControl : FSMAreaControlEnemy
+    public class ElectricMageControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Electric Mage";
 
