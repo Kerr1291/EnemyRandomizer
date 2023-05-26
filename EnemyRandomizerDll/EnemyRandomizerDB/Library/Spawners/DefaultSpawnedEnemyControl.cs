@@ -13,7 +13,7 @@ namespace EnemyRandomizerMod
 {
     public class SpawnedObjectControl : MonoBehaviour, IExtraDamageable, IHitResponder
     {
-        public static bool VERBOSE_DEBUG = true;
+        public static bool VERBOSE_DEBUG = false;
 
         public ObjectMetadata thisMetadata;
         public ObjectMetadata originialMetadata;
@@ -110,17 +110,19 @@ namespace EnemyRandomizerMod
         public MeshRenderer MRenderer => gameObject.GetComponent<MeshRenderer>();
         public PreInstantiateGameObject PreInstantiatedGameObject => gameObject.GetComponent<PreInstantiateGameObject>();
         public virtual Vector2 pos2d => gameObject.transform.position.ToVec2();
-        public virtual Vector2 pos2dWithOffset => gameObject.transform.position.ToVec2() + new Vector2(0, 1f);
+        public virtual Vector2 pos2dWithOffset => gameObject.transform.position.ToVec2() + new Vector2(0, 0.5f);
         public virtual Vector2 heroPos2d => HeroController.instance.transform.position.ToVec2();
-        public virtual Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 1f);
-        public virtual float floorY => SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.down, float.MaxValue).point.y;
-        public virtual float roofY => SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.up, float.MaxValue).point.y;
-        public virtual float edgeL => SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.left, float.MaxValue).point.x;
-        public virtual float edgeR => SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.right, float.MaxValue).point.x;
+        public virtual Vector2 heroPosWithOffset => heroPos2d + new Vector2(0, 0.5f);
+        public virtual float floorY => SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.down, 200f).point.y;
+        public virtual float roofY => SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.up, 50f).point.y;
+        public virtual float edgeL => SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.left, 50f).point.x;
+        public virtual float edgeR => SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.right, 50f).point.x;
 
         protected virtual void OnHit(int dmg) { }
         protected virtual void OnHeroInAggroRangeTheFirstTime() { }
 
+        //set this to false when spawning an enemy that you want to "fall" in
+        public bool placeGroundSpawnOnGround = true;
         public virtual bool isInvincible => false;
         public virtual bool spawnOrientationIsFlipped => false;
         public virtual float spawnPositionOffset => 0.53f;
@@ -338,6 +340,50 @@ namespace EnemyRandomizerMod
                 gameObject.StickToGroundX(spawnPositionOffset);
         }
 
+        protected virtual GameObject SpawnChildForEnemySpawner(Vector2 pos, bool setActive = false, string originalEnemy = null, string storageVar = null, RNG rng = null)
+        {
+            GameObject enemy = null;
+            string enemyToSpawn = null;
+            try
+            {
+                enemyToSpawn = SpawnerExtensions.GetRandomPrefabNameForSpawnerEnemy(rng);
+                enemy = ChildController.SpawnAndTrackChild(enemyToSpawn, transform.position, setActive, false);
+                if (enemy != null)
+                {
+                    var soc = enemy.GetComponent<SpawnedObjectControl>();
+                    if (soc != null)
+                    {
+                        soc.placeGroundSpawnOnGround = false;
+                    }
+                }
+            }
+            catch (Exception e) { Dev.LogError($"Exception caught in SpawnChildEnemy in {control} when trying to spawn {enemyToSpawn} ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
+
+            try
+            {
+                if (enemy != null && !string.IsNullOrEmpty(originalEnemy) && !string.IsNullOrEmpty(enemyToSpawn))
+                {
+                    float sizeScale = SpawnerExtensions.GetRelativeScale(enemyToSpawn, originalEnemy);
+                    if (!Mathnv.FastApproximately(sizeScale, 1f, 0.01f))
+                    {
+                        enemy.ScaleObject(sizeScale);
+                        enemy.ScaleAudio(sizeScale);//might not need this....
+                    }
+                }
+            }
+            catch (Exception e) { Dev.LogError($"Exception caught in SpawnChildEnemy in {control} when trying to scale {enemyToSpawn} to match {originalEnemy} ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
+
+            try
+            {
+                if (enemy != null && !string.IsNullOrEmpty(storageVar))
+                {
+                    control.FsmVariables.GetFsmGameObject(storageVar).Value = enemy;
+                }
+            }
+            catch (Exception e) { Dev.LogError($"Exception caught in SpawnChildEnemy in {control} when trying to set fsm var storageVar ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
+            return enemy;
+        }
+
         /// <summary>
         /// the default way to determine how to place this enemy
         /// </summary>
@@ -363,7 +409,38 @@ namespace EnemyRandomizerMod
                 }
                 else if(!gameObject.IsFlying() && !gameObject.IsFlyingFromComponents())
                 {
-                    gameObject.StickToGroundX();
+                    if (gameObject.IsInGroundEnemy())
+                    {
+                        var rays = SpawnerExtensions.GetOctagonalRays(gameObject, 100f).Where(x => x.normal.y < 0 && x.collider != null);
+                        if (rays.Count() <= 0)
+                        {
+                            //no valid ground to spawn no, just die
+                            gameObject.KillObjectNow();
+                        }
+                        else
+                        {
+                            //try some rays under us
+                            RNG rng = new RNG();
+                            rng.Reset();
+                            var raylist = rays.ToList();
+                            var random = raylist.GetRandomElementFromList(rng);
+                            transform.position = random.point + Vector2.up * 2f;
+                        }
+
+                        //now place on ground
+                        gameObject.StickToGroundX();
+                    }
+                    else
+                    {
+                        if (placeGroundSpawnOnGround)
+                        {
+                            gameObject.StickToGroundX();
+                        }
+                        else
+                        {
+                            //nothing, just spawn it and let it fall
+                        }
+                    }
                 }
             }
         }
@@ -379,7 +456,7 @@ namespace EnemyRandomizerMod
                     On.Language.Language.Get_string_string -= Language_Get_string_string;
                 }
             }
-            catch (Exception e) { Dev.LogError($"Exception caught on disable callback for {thisMetadata} ERROR:{e.Message}  STACKTRACE: {e.Message}"); }
+            catch (Exception e) { Dev.LogError($"Exception caught on disable callback for {thisMetadata} ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
         }
 
         protected virtual void OnDestroy()
@@ -389,7 +466,7 @@ namespace EnemyRandomizerMod
                 if (gameObject.IsInAValidScene())
                     DoValidSceneDestroyEvents();
             }
-            catch (Exception e) { Dev.LogError($"Exception caught on destroy callback for {thisMetadata} ERROR:{e.Message}  STACKTRACE: {e.Message}"); }
+            catch (Exception e) { Dev.LogError($"Exception caught on destroy callback for {thisMetadata} ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
         }
 
         protected virtual void DoValidSceneDestroyEvents()
@@ -468,7 +545,16 @@ namespace EnemyRandomizerMod
             if (!gameObject.activeInHierarchy || !gameObject.IsInAValidScene())
                 return;
 
-            SpawnerExtensions.SpawnEntityAt(explodeOnDeathEffect, transform.position, true);
+            var spawned = SpawnerExtensions.SpawnEntityAt(explodeOnDeathEffect, transform.position, false);
+            if(spawned != null)
+            {
+                var metaInfo = new ObjectMetadata(spawned);
+                //did this spawn into a different scene?
+                if (metaInfo.SceneName != thisMetadata.SceneName)
+                    GameObject.Destroy(spawned);
+                else
+                    spawned.SafeSetActive(true);
+            }
         }
 
         protected virtual void SpawnEntityOnDeath()
@@ -479,7 +565,16 @@ namespace EnemyRandomizerMod
             if (!gameObject.activeInHierarchy || !gameObject.IsInAValidScene())
                 return;
 
-            SpawnerExtensions.SpawnEntityAt(spawnEntityOnDeath, transform.position, true);
+            var spawned = SpawnerExtensions.SpawnEntityAt(spawnEntityOnDeath, transform.position, false);
+            if (spawned != null)
+            {
+                var metaInfo = new ObjectMetadata(spawned);
+                //did this spawn into a different scene?
+                if (metaInfo.SceneName != thisMetadata.SceneName)
+                    GameObject.Destroy(spawned);
+                else
+                    spawned.SafeSetActive(true);
+            }
         }
 
         public virtual void InsertHiddenState(string preHideStateName, string preHideTransitionEventName,
@@ -608,6 +703,8 @@ namespace EnemyRandomizerMod
 
         public override void Setup(GameObject objectThatWillBeReplaced = null)
         {
+            base.Setup(objectThatWillBeReplaced);
+
             try
             {
                 if (gameObject.ObjectType() == PrefabObject.PrefabType.Enemy)
@@ -624,6 +721,11 @@ namespace EnemyRandomizerMod
 
         protected virtual int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
         {
+            if(objectThatWillBeReplaced == null)
+            {
+                return gameObject.OriginalPrefabHP();
+            }
+
             if (objectThatWillBeReplaced != null && objectThatWillBeReplaced.IsBoss())
             {
                 return ScaleHPToBoss(gameObject.OriginalPrefabHP(), objectThatWillBeReplaced.OriginalPrefabHP());
@@ -645,7 +747,7 @@ namespace EnemyRandomizerMod
                 //if (gameObject.GetAvailableItem() != null)
                 //    SpawnAndFlingItem();
             }
-            catch (Exception e) { Dev.LogError($"Exception caught on OnDestroy callback for {this}:{thisMetadata} ERROR:{e.Message}  STACKTRACE: {e.Message}"); }
+            catch (Exception e) { Dev.LogError($"Exception caught on OnDestroy callback for {this}:{thisMetadata} ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
         }
 
         protected virtual bool HeroInAggroRange()
@@ -838,10 +940,76 @@ namespace EnemyRandomizerMod
             }
         }
     }
+
+
+
+
+
+    public class InGroundEnemyControl : DefaultSpawnedEnemyControl
+    {
+        public override bool preventInsideWallsAfterPositioning => false;
+        public override bool preventOutOfBoundsAfterPositioning => false;
+
+        public override float spawnPositionOffset => 0.3f;
+
+        public override Vector2 pos2dWithOffset => pos2d + Vector2.up * 2f;
+
+        public RaycastHit2D floorSpawn => SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.down, 200f);
+        public RaycastHit2D floorLeft => SpawnerExtensions.GetRayOn(floorSpawn.point - Vector2.one * 0.2f, Vector2.left, 50f);
+        public RaycastHit2D floorRight => SpawnerExtensions.GetRayOn(floorSpawn.point - Vector2.one * 0.2f, Vector2.right, 50f);
+        public RaycastHit2D wallLeft => SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.left, 50f);
+        public RaycastHit2D wallRight => SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.right, 50f);
+        public float floorsize => floorRight.distance + floorLeft.distance;
+        public float floorCenter => floorLeft.point.x + floorsize * .5f;
+
+        public Vector3 emergePoint;
+        public Vector3 emergeVelocity;
+
+        protected override bool HeroInAggroRange()
+        {
+            if (heroPos2d.y < floorSpawn.point.y)
+                return false;
+
+            if (heroPos2d.y > floorSpawn.point.y + 5f)
+                return false;
+
+            if (heroPos2d.x < floorLeft.point.x)
+                return false;
+
+            if (heroPos2d.x > floorRight.point.x)
+                return false;
+
+            hasSeenPlayer = true;
+            return true;
+        }
+
+        public override void Setup(GameObject objectThatWillBeReplaced = null)
+        {
+            base.Setup(objectThatWillBeReplaced);
+
+            var fsm = gameObject.LocateMyFSM("FSM");
+            if (fsm != null)
+                Destroy(fsm);
+
+            FitToFloor();
+        }
+
+        protected virtual void FitToFloor()
+        {
+            if (floorsize < (gameObject.GetOriginalObjectSize().x * SizeScale))
+            {
+                float ratio = (floorsize) / (gameObject.GetOriginalObjectSize().x * SizeScale);
+                gameObject.ScaleObject(ratio * .5f);
+            }
+        }
+
+        protected override void SetDefaultPosition()
+        {
+            base.SetDefaultPosition();
+        }
+    }
+
 }
-
-
-
 
 
 

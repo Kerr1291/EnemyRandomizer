@@ -709,7 +709,7 @@ namespace EnemyRandomizerMod
 
         void ResetIter()
         {
-            iter = MetaDataTypes.CustomReplacementName.Keys.ToList().GetEnumerator();
+            iter = MetaDataTypes.DebugTestEnemies.Keys.ToList().GetEnumerator();
         }
 
         void Awake()

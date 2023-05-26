@@ -211,6 +211,7 @@
     <Compile Include="Library\Spawners\CustomTweener.cs" />
     <Compile Include="Library\Spawners\DefaultSpawnedEnemyControl.cs" />
     <Compile Include="Library\Spawners\DefaultSpawner.cs" />
+    <Compile Include="Library\Spawners\DirectionUtils.cs" />
     <Compile Include="Library\Spawners\EntitySpawner.cs" />
     <Compile Include="Library\Spawners\FSMAreaControlEnemy.cs" />
     <Compile Include="Library\Spawners\ISpawner.cs" />

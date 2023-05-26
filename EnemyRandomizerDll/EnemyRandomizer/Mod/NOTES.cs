@@ -1,13 +1,14 @@
 ﻿
 /* CURRENT TODO
  * 
- * Fix HK prime taking UI    ---- DONE?
- * Fix NKG death removing UI    ---- DONE?
+ * 
+ * MAKE SMASHER REPLACEMENT LIST
+ * 
+ * Fix HK prime taking UI    
+ * Fix NKG death removing UI   
  * Uumuu isn't attacking   --- WILL DO LATER
- * Where are the volt twisters? -- don't activate attacks unless player is nearish -- also reduce amount of attacks based on difficulty of area
  * Fix enemies that replace in-ground/on-ground enemies to  -- SORTA?
  * Fix? zote dying removing UI (and white screen)  -- FIXED?
- * Fix enemy spawners by adding in a hook for replaced enemies  -- PARTIALLY FIXED?
  * Scale projectile size too 
  * Fix white palace guard getting stuck after throwing his weapon  -- FIXED?
  * Fix watcher knights ascending into space  -- FIXED?
@@ -19,40 +20,26 @@
  * Fix THK credits  -- FIXED?
  * Check if HK Prime makes UI go away  -- FIXED?
  * Sheo was put in the floor outside colo, check on that  -- FIXED?
+ * 
  * Fix bird replacements from being put in the floor-- FIXED?
  * Fix infection dropping fly that didn't explode on death-- FIXED?
- * Fix tiny spider not shooting in the tutorial_01 area-- tiny spider doesnt shoot, mini spider does.... was it mini???
- * Add POOB to marmu-- FIXED?
  * Edit marmu's teleport to not per marmu inside walls-- FIXED?
- * Fix plant trap not shooting projectiles
- * Fix the zote vengefly boss room crash--??????
- * Fix arena in fungal1_32--- FIXED?
- * Finish adding enemy pogo replacements--- FIXED?
- * Fix hp scaling on the bosses that spawn as enemies (pale lurker has full hp??)-- FIXED?
+ * Fix plant turret not shooting projectiles
+ * Fix the zote vengefly boss room -- add to logical skip, allow the venge fly summons to get randomized
+ * Finish adding enemy pogo replacements--- TODO: add tween to walking ones
  * Fix pale lurker so it doesn't get stuck on corners--LATER
  * Fix pale lurker so it the attacks are kill-able by the knight--LATER
  * Fix grimm spawn so it doesn't trigger boss music-- FIXED?
  * Get the fart sound from fly corpse death--LATER
  * Fix nuke fart scaling issue from mushroom farting bug--LATER
- * Add a new system for like enemy replacer for enemies that can be randomized-- FIXED?
- * Add a new system for replaced enemies so that things that spawn children can get references to their replacements properly-- FIXED?
  * Add some kind of pre-check in for randomization to see if the enemy has a valid, non-insta-death placement before trying--LATER
  * Add a more sophisticated check for wall/ceiling enemies to search for placements not on slopes (or use the slope normals)--LATER
  * 
  * 
- * Make custom colo logic -- TODO TONIGHT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * Make custom colo logic -- TODO !!!!!!!!!!!!!!!!!!!!!
  * 
- * 
- * Fix GPZ scaling when stuff is killed-- FIXED?
- * 
- * 
- * Fix ghost boss replacements from not triggering their bools
- * 
- * 
- * Scale down ghost HP and several other enemies-- FIXED?
- * STILL BROKEN: KILLING WHITE PALACE ENEMY GUARD DIDN'T TRIGGER GATE OPENING-- FIXED?
- * NEEDS TEST: killing the greenpath moss knight replacement didn't work -- FIXED?
- * NEEDS TEST: Ground enemy spawned in first arena and walked outside, gate closed... try teleporting them back in when battle starts if they're outside-- FIXED?
+ * Fix ghost boss replacements, and in general boss replacements, so they trigger their bools
+ *   
  * add lumaflies, bomb eggs, and more to the randomize hazard list -- SOME MISSING?
  * re-balance the random scale probabilities -- LATER
  * fix traitor lord from jumping into ceilings (test?)-- FIXED?
@@ -79,8 +66,6 @@
  * add poob to gruz mother-- FIXED?
  * make zote balloons spawn an explosion on death-- FIXED?
  * 
- * MAKE SMASHER REPLACEMENT LIST
- * 
  * ********since I'm loading pretty much every song anyway.... add music randomizer module
  *
  * 
@@ -93,13 +78,8 @@
  * BUGS TO FIX:
  * 
  * Fix corpses so their death souths are also scaled
- * Fix larger enemies so the death sounds arn't too slow (mostly on random scaling)-- FIXED?
- * Fix enemies that can escape from being placed in arenas (or kill them on escape)
+ * FIX the "teleport into arena" function
  * Fix toggling the mod off/on -- is broken -- LOL
- * 
- * The lancer dies but does not despawn-- look up some corpses/death effects to use when replacing the lancer's-- FIXED?
- * Replacements in an arena in queen's gardens did not work-- FIXED?
- * Replacements in an arena in crossroads did not work (the one for glowing womb)-- FIXED?
  * 
  * 
  * 
@@ -138,12 +118,6 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
  * 
  * HAZARDS TO ADD
  * 
- * add Jelly Egg Bomb 
- * add Worm (gorm?)
- * Missing hazards to possibly add:
- * ruind_bridge_roof_04_spikes
- * Dung Pillar (1-6)
- * RoofSpikes
  * 
  * 
  * 
@@ -157,15 +131,8 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
  * 
  * LATER TODO:
  * 
- * IF AN ENEMY REPLACES THE SAME TYPE, SKIP REPLACEMENT? (add an option) 
- * 
  * Remove the grimmkin's screen space existance abilities....
  * 
- * 
- * 
- * DESIGN ITERATIONS:
- * 
- * Check on the electric mage's hp, it was nerfed to 1/2- see how it feels.
  * 
  * 
  * 
@@ -175,14 +142,10 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
  * RANDOMIZE DREAMERS
  * RANDOMIZE END BOSS/ENDING
  * 
- * Change the city of tears' statues of dreamers/THK to be statues of the replacements
- * 
  * 
  * WISHLIST MODULES
  * 
  * Custom Scale (slider) in the scaling module -- will allow for everything to be (small/big)
- * 
- * Module/options to randomize only bosses
  * 
  * Enemies must appear once every/logical module
  * 
@@ -234,13 +197,6 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
 
     <string>Health Scuttler</string>
     <string>Mace Head Bug</string>
-
-//don't replace these as enemies, but allow these to spawn in place of certain enemies
-    <string>Big Centipede Col</string>
-    <string>Laser Turret Frames</string>
-    <string>Jelly Egg Bomb</string>
-    <string>Worm</string>
-
  * 
  * 
 
@@ -262,238 +218,226 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Hatcher",null);
     EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Bursting Bouncer",null);
     EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Hornet Boss 1",null);
-    EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Acid Flyer",null);
-    BASIC FLYING ENEMIES
-    <string>Mosquito</string>                              -   
-    <string>Blobble</string>                               -   ""
-    <string>Fly</string>                                   -   ""
-    <string>Bursting Bouncer</string>                      -   ""
-    <string>Angry Buzzer</string>                          -   ""
-    <string>Mantis Heavy Flyer</string>                    -   ""
-    <string>Buzzer</string>                                -   ""
-    <string>Spitter</string>                               -   ""
-    <string>Spitter R</string>                             -   "" ADDED GEO?
-    <string>Ruins Flying Sentry</string>                   -   ""
-    <string>Ruins Flying Sentry Javelin</string>           -   ""
-    <string>Moss Flyer</string>                            -   ""
-    <string>Lazy Flyer Enemy</string>                      -   ""
-    <string>Fungoon Baby</string>                          -   ""
-    <string>Fungus Flyer</string>                          -   ""
-    <string>Jellyfish Baby</string>                        -   ""
-    <string>Spider Flyer</string>                          -   ""
-    <string>Crystal Flyer</string>                         -   ""  TODO: get their projectile
-    <string>Blow Fly</string>                              -   ""
-    <string>Bee Hatchling Ambient</string>                 -   ""   ADD GEO TO THIS (test)
-    <string>Inflater</string>                              -   ""
-    <string>Fluke Fly</string>                             -   ""
-    <string>Bee Stinger</string>                           -   ""
-    <string>Super Spitter</string>                         -   ""
-    
-    BASIC NONFLYING -- DOES NOT STICK TO GROUND
-    <string>Hopper</string>                                -   "" 
-    <string>Giant Hopper</string>                          -   ""
-    <string>Roller</string>                                -   ""
-    
-    BASIC NONFLYING
-    <string>Spitting Zombie</string>                       -   ""
-    <string>Bursting Zombie</string>                       -   "" 
-    <string>Mantis Heavy</string>                          -   "" 
-    <string>Lesser Mawlek</string>                         -   "" 
-    <string>Mossman_Runner</string>                        -   "" 
-    <string>Crawler</string>                               -   "" 
-    <string>Zombie Runner</string>                         -   "" fell through the floor?
-    <string>Zombie Hornhead</string>                       -   "" 
-    <string>Zombie Barger</string>                         -   "" 
-    <string>Prayer Slug</string>                           -   "" (maggot)
-    <string>Zombie Shield</string>                         -   ""
-    <string>Zombie Leaper</string>                         -   ""
-    <string>Zombie Guard</string>                          -   ""
-    <string>Zombie Myla</string>                           -   "" WORKS (had to removed superdash check)
-    <string>Royal Zombie Fat</string>                      -   ""
-    <string>Royal Zombie</string>                          -   ""
-    <string>Royal Zombie Coward</string>                   -   ""
-    <string>Ruins Sentry</string>                          -   ""
-    <string>Ruins Sentry Fat</string>                      -   ""
-    <string>Great Shield Zombie</string>                   -   ""
-    <string>Moss Walker</string>                           -   "" 
-    <string>Mossman_Shaker</string>                        -   ""
-    <string>Grass Hopper</string>                          -   ""                      
-    <string>Zombie Fungus B</string>                       -   ""
-    <string>Fung Crawler</string>                          -   ""
-    <string>Mushroom Brawler</string>                      -   "" NEEDS TO BE UP MORE -- NEEDS FIX SO IT ISN'T RANDOMIZED AND STARTS AWAKE
-    <string>Mushroom Baby</string>                         -   "" NEEDS TO BE UP MORE
-    <string>Mushroom Roller</string>                       -   "" Added some spice
-    <string>Zombie Fungus A</string>                       -   "" NEEDS TO BE UP SOME MORE
-    <string>Mantis</string>                                -   ""
-    <string>Garden Zombie</string>                         -   ""
-    <string>Moss Knight Fat</string>                       -   "" Bouncing useless fat moss guy
-    <string>Zombie Miner</string>                          -   ""
-    <string>Slash Spider</string>                          -   ""
-    <string>Flip Hopper</string>                           -   ""
-    <string>Flukeman</string>                              -   ""
-    <string>Fat Fluke</string>                             -   "" -- tiny ones walk out of arenas -- one spawned in the roof?
-    <string>Crystal Crawler</string>                       -   WORKS - giant crystal crawler is fine
-
-    <string>Mines Crawler</string>                         -   SPAWNS IN GROUND -- TEST, adjusted up slightly
-    <string>Abyss Crawler</string>                         -   FIXED
-    <string>Tiny Spider</string>                           -   FIXED
-    <string>Climber</string>                               -   FIXED
-    <string>Crystallised Lazer Bug</string>                -   POSITION FIXED, NEEDS FLIPPING ON TRANSITION IMPLEMENTED
-                                                               ALSO, TRY NOT TO PICK WALLS WITH SLOPES WHEN THERE ARE ALTERNATIVES
-
-    <string>Hatcher</string>                               -   FIXED -- ADDED DIE CHILDREN METHOD (test it) and changed child count to spawn more consistantly
-    <string>Centipede Hatcher</string>                     -   TEST SPAWNING ENEMIES IN REVERSE -- FIX SO IT SPAWNS A CAPPED AMOUNT OF ENEMIES
-    <string>Zombie Hive</string>                           -   FIXED
-    <string>Blocker</string>                               -   NEEDS TESTING
-    
-
-    <string>Giant Fly</string>                             -   NEEDS TESTING -- NEED FIX FOR WHEN VANILLA BOSS IS USED
-    <string>Mawlek Turret</string>                         -   FIXED
-    <string>Mawlek Turret Ceiling</string>                 -   FIXED
-    <string>White Palace Fly</string>                      -   FIXED
-    <string>Zote Boss</string>                             -   ERROR: AUDIO BUG, reduce the max enemy scale size for zote (and maybe others) -- TODO: remove the white screen flash
- *  
-    <string>Flamebearer Small</string>                     -   ERROR: ADDED MINES 10
-    <string>Flamebearer Med</string>                       -   ERROR: HAS A NULLREF -- TEST NEXT BUILD
-    <string>Flamebearer Large</string>                     -   ERROR: SPAWNS IN A WEIRD SPOT
-
-    <string>Zombie Spider 2</string>                       -   MAYBE FIXED? TEST
-    <string>Zombie Spider 1</string>                       -   MAYBE FIXED? TEST
-    <string>Zoteling</string>                              -   SPAWNS DISABLED? -- CORRECTLY SPAWNS WHEN USED AS REPLACEMENT -- NEEDS SOUND EFFECTS
-    <string>Mawlek Body</string>                           -   NEED TO FIX HIM STARTING IN STEALTH STATE  -- MawlekBodyControl+<Start>  HAS A NULLREF
-    <string>False Knight New</string>                      -   SEEMS TOTALLY BUSTED -- ALSO CAN'T SEEM TO KILL -- ONCE ENGAGED HE FIGHTS OK (BUT HIS BASIC COMBAT BODY IS INVISIBLE)
-    <string>Mage Lord</string>                             -   SPAWNS INCORRECTLY AND IN FLOOR? --- GETS RANDOMIZED WHEN HE TELEPORTS????????
-    <string>Mage Lord Phase2</string>                      -   GETS RANDOMIZED WHEN HE TELEPORTS --- ALMOST WORKS WHEN REPLACING
-    <string>Infected Knight</string>                       -   DOESN'T SPAWN -- SPAWNS WHEN REPLACING, DOESN'T HANDLE MAX HEIGHT ROOFS - YEETS TO SPACE INDOORS
-    <string>False Knight Dream</string>                    -   NULLREF ISSUES
-    <string>Lost Kin</string>                              -   SPAWNS INCORRECTLY WHEN REPLACING
-    <string>Radiance</string>                              -   SPAWNS CORRECTLY - NULLREF WHEN REPLACING
-    <string>Absolute Radiance</string>                     -   HAS MANY ISSUES
+    EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Mage",null);
+            {"Health Cocoon", false},
+            {"Health Scuttler", false},
+            {"Orange Scuttler", false},
+            {"Abyss Tendril", false},
+            {"Flamebearer Small", false},//these work, but they're annoying and don't stay in the arenas
+            {"Flamebearer Med", false},  //these work, but they're annoying and don't stay in the arenas
+            {"Flamebearer Large", false},//these work, but they're annoying and don't stay in the arenas
+            {"Mosquito", true},
+            {"Colosseum_Armoured_Roller", true},
+            {"Colosseum_Miner", true},
+            {"Zote Boss", true},// TEST FIXES
+            {"Bursting Bouncer", true},//corpse didnt explode
+            {"Super Spitter", true},
+            {"Super Spitter Col", false},//didnt spawn
+            {"Giant Fly Col", false},//didn't spawn
+            {"Colosseum_Shield_Zombie", true},
+            {"Buzzer Col", false},//didn't spawn
+            {"Blobble", true},
+            {"Colosseum_Armoured_Mosquito", true},
+            {"Colosseum_Flying_Sentry", true},
+            {"Hopper", true},
+            {"Giant Hopper", true},
+            {"Ceiling Dropper Col", false},//didn't spawn
+            {"Colosseum_Worm", false},//?? didn't spawn
+            {"Spitting Zombie", true},
+            {"Bursting Zombie", true},
+            {"Angry Buzzer", true},
+            {"Mawlek Col", false},//?? didn't spawn
+            {"Mantis Heavy", true},
+            {"Lesser Mawlek", true},
+            {"Mantis Heavy Flyer", true},
+            {"Colosseum Grass Hopper", false},//??? didn't spawn
+            {"Fly", true},
+            {"Roller", true},
+            {"Hatcher Baby", false},
+            {"Roller R", false},
+            {"Spitter R", true},
+            {"Buzzer R", false},
+            {"Mossman_Runner", true},
+            {"Jellyfish", true},
+            {"Lil Jellyfish", false},//bomb, worked
+            {"Mantis Flyer Child", false},//spawned in ground
+            {"Ghost Warrior Slug", false},//isn't attacking and drifts left -- movement broken like markoth
+            {"Corpse Garden Zombie", false},
+            {"Baby Centipede", true},
+            {"Zombie Spider 2", false},//nullref
+            {"Zombie Spider 1", false},//didn't spawn
+            {"Tiny Spider", true},
+            {"Shade Sibling", true},
+            {"Flukeman Top", false},//dont spawn
+            {"Flukeman Bot", false},//don't spawn
+            {"White Defender", false},//error on spawn
 
 
-    <string>Zote Turret</string>                           -   SPAWNS INCORRECTLY - REPLACES CORRECTLY BUT POSITION IS WRONG
-    <string>Zote Balloon Ordeal</string>                   -   SPAWNS INCORRECTLY
-    <string>Zote Salubra</string>                          -   NEEDS TESTING -- DOESN'T DRAIN
-    <string>Zote Thwomp</string>                           -   NEEDS TESTING -- STILL BROKEN
-    <string>Zote Fluke</string>                            -   NEEDS TESTING -- DOESN'T WORK?
-    <string>Zote Crew Normal</string>                      -   NEEDS TESTING -- ?????
-    <string>Zote Crew Fat</string>                         -   NEEDS TESTING -- SEEMS TO ALMOST WORK???
-    <string>Zote Crew Tall</string>                        -   NEEDS TESTING -- ?????
-    <string>Zote Balloon</string>                          -   NEEDS TESTING -- FIX EXPLOSION NOT HAPPENING && RESPAWN STILL HAPPENING
-    <string>Ordeal Zoteling</string>                       -   BROKEN - NEEDS ZOTELING FIX???
-
-
-    <string>Baby Centipede</string>                        -   GET LOTS OF NULLREFS -- SPAWNS UNDER SCENE
-
-    <string>Grey Prince</string>                           -   STILL BROKEN -- MOSTLY WORKING -- THE SLAME EFFECTS ARE USING THE WRONG HEIGHT -- FIX THE CEILING DROP POSITIONING
-    <string>Shade Sibling</string>                         -   (ADD AN OPTION TO) REMOVE THE CHARM FRIENDLY EFFECT / GIVE IT TO THE REPLACED ENEMIES
-    <string>Lancer</string>                                -   +++++++++++++++++NEEDS TESTING
-    <string>Mage Blob</string>                             -   DONT SPAWN HIDDEN IN ARENAS
-    <string>Mage</string>                                  -   DOES NOT SPAWN CORRECTLY
-    <string>Electric Mage</string>                         -   DOES NOT SPAWN CORRECTLY
-    <string>Mender Bug</string>                            -   +++++++++++++++++NEEDS TESTING
-    <string>Egg Sac</string>                               -   NEEDS ITEM TRANSFER/SPAWN SCRIPT
-    <string>Gorgeous Husk</string>                         -   Made more exciting
-    <string>Ceiling Dropper</string>                       -   NEEDS TESTING -- FACING THE WRONG WAY
-    <string>Mage Balloon</string>                          -   DONT SPAWN HIDDEN IN ARENAS
-    <string>Plant Trap</string>                            -   NEEDS TESTING -- wasnnt placed on a surface (was floating high up)
-    <string>Plant Turret</string>                          -   NEEDS TESTING -- spawning in ground, wrong direction
-    <string>Plant Turret Right</string>                    -   NEEDS TESTING -- spawning in ground, wrong direction
-    <string>Mushroom Turret</string>                       -   NEEDS TESTING -- spawning in ground/floating, wrong direction
-    <string>Moss Knight</string>                           -   NEEDS TESTING
-    <string>Moss Charger</string>                          -   SCRIPT HAS NULLREF ERRORS
-    <string>Zombie Beam Miner</string>                     -   NEEDS LASER RANGE EXTENDED
-    <string>Spider Mini</string>                           -   FIXED
-    <string>Mantis Heavy Spawn</string>                    -   NEEDS TESTING/REMOVAL
-    <string>Zombie Hornhead Sp</string>                    -   NEEDS TESTING
-    <string>Zombie Runner Sp</string>                      -   NEEDS TESTING
-    <string>Fat Fly</string>                               -   WORKS
-    <string>Parasite Balloon</string>                      -   SEEMS OK
-    <string>Royal Gaurd</string>                           -   MAYBE NERF TO 1 DMG WHEN REPLACING A WEAK ENEMY -- NEEDS A FIX TO WORK RANDOMIZED EFFECTS
-    <string>Grave Zombie</string>                          -   MAYBE NERF TO 1 DMG WHEN REPLACING A WEAK ENEMY
-    <string>Mantis Flyer Child</string>                    -   SPAWNS ON WALLS/FLOOR BACKWARDS/INSIDE
-    <string>Lil Jellyfish</string>                         -   THIS IS THE JELLYFISH PROJECTILE -- DON'T RANDOMLY REPLACE AN ENEMY WITH THIS
-
-    <string>Jellyfish</string>                             -   NEEDS SCRIPT FOR SPAWNING BABY CORRECTLY
-    <string>Acid Flyer</string>                            -   IF SOMETHING REPLACES THIS IT SHOULD HAVE TINKER ADDED!!
-    <string>Acid Walker</string>                           -   IF SOMETHING REPLACES THIS IT SHOULD HAVE TINKER ADDED!!
-    <string>Big Bee</string>                               -   WHEN SOMETHING REPLACES THIS IT SHOULD HAVE A SMASHER
-
-    <string>Pigeon</string>                                -   COULD USE SOMETHING TO MAKE THEM MORE INTERESTING
-    <string>fluke_baby_02</string>                         -   COULD USE SOMETHING TO MAKE THEM MORE INTERESTING
-    <string>fluke_baby_01</string>                         -   COULD USE SOMETHING TO MAKE THEM MORE INTERESTING
-    <string>fluke_baby_03</string>                         -   COULD USE SOMETHING TO MAKE THEM MORE INTERESTING
-    <string>Enemy</string>                                 -   "" 
-
-
-    <string>Colosseum_Armoured_Roller</string>             -   CHECK COLO SCRIPT?
-    <string>Colosseum_Miner</string>                       -   CHECK COLO SCRIPT?
-    <string>Colosseum_Shield_Zombie</string>               -   CHECK COLO SCRIPT?
-    <string>Colosseum_Armoured_Mosquito</string>           -   CHECK COLO SCRIPT?
-    <string>Colosseum_Flying_Sentry</string>               -   CHECK COLO SCRIPT?
-    <string>Colosseum_Worm</string>                        -   CHECK COLO SCRIPT?
-
-    <string>Mega Fat Bee</string>                          -   DID NOT SPAWN IN THE CORRECT LOCATION
-    <string>Lobster</string>                               -   SPAWNED IN THE GROUND
-    <string>Mage Knight</string>                           -   WORKS WHEN REPLACING?
-    <string>Black Knight</string>                          -   NEEDS TESTING - YEETING WAS A RESULT OF DISABLED FSM WHEN OUT OF RANGED
-    <string>Jar Collector</string>                         -   DOESN'T PROPERLY THROW JARS
-    <string>Hornet Boss 1</string>                         -   WORKS
-    <string>Giant Buzzer</string>                          -   NEEDS TESTING (seems to work)
-    <string>Giant Buzzer Col</string>                      -   NEEDS TESTING (seems to work)
-    <string>Mega Moss Charger</string>                     -   NULLREF
-    <string>Mega Zombie Beam Miner</string>                -   TEST IF CAMERA FIGHTING IS FIXED
-    <string>Zombie Beam Miner Rematch</string>             -   LASER ISN'T WORKING
-    <string>Hornet Boss 2</string>                         -   WORKS
-    <string>Mimic Spider</string>                          -   SPAWNS TOO FAR TO THE RIGHT
-    <string>Mantis Traitor Lord</string>                   -   SEEMS TO ALMOST WORK?
-    <string>Dung Defender</string>                         -   SAME ISSUES AS WHITE DEFENDER + HIS POO BALLS BREAK QUICKLY/THROW INCORRECTLY (check their fsms?)
-    <string>Fluke Mother</string>                          -   NEEDS TESTING
-    <string>Hive Knight</string>                           -   NEEDS TESTING
-    <string>Grimm Boss</string>                            -   NEEDS TESTING
-    <string>Nightmare Grimm Boss</string>                  -   NEEDS TESTING
-    <string>Dream Mage Lord</string>                       -   NEEDS TESTING
-    <string>Dream Mage Lord Phase2</string>                -   NEEDS TESTING
-    <string>Hollow Knight Boss</string>                    -   NEEDS BOSS SCRIPT -- WOULDN'T ACTIVATE AND COULDN'T DIE
-    <string>HK Prime</string>                              -   NEEDS TESTING
-    <string>Pale Lurker</string>                           -   WOULD NOT ACTIVATE
-    <string>Oro</string>                                   -   NEEDS BOSS SCRIPT
-    <string>Mato</string>                                  -   NEEDS BOSS SCRIPT
-    <string>Sheo Boss</string>                             -   NEEDS BOSS SCRIPT
-    <string>Sly Boss</string>                              -   NEEDS BOSS SCRIPT
-    <string>Hornet Nosk</string>                           -   NEEDS TESTING
-    <string>White Defender</string>                        -   DIRT PILE NOT ON GROUND - CAN MOVE OFF OFF SCREEN WHILE BURROWED - DIVE AND LAND DOESN'T SEEM TO REGISTER COLLISIONS?
-    <string>Jellyfish GG</string>                          -   NEEDS BOSS SCRIPT
-    <string>Mega Jellyfish</string>                        -   NEEDS BOSS SCRIPT
-    <string>Ghost Warrior Marmu</string>                   -   NEEDS MORE TESTING -- SEEMS FIXED?
-    <string>Ghost Warrior Galien</string>                  -   NEEDS BOSS SCRIPT
-    <string>Ghost Warrior Xero</string>                    -   NEEDS BOSS SCRIPT
-    <string>Ghost Warrior Slug</string>                    -   NEEDS BOSS SCRIPT
-    <string>Ghost Warrior Markoth</string>                 -   NEEDS BOSS SCRIPT -- NEEDS HIS GHOST WEAPON 
-    <string>Ghost Warrior No Eyes</string>                 -   NEEDS BOSS SCRIPT
-    <string>Ghost Warrior Hu</string>                      -   NEEDS BOSS SCRIPT
+            {"Jellyfish GG", false},
+            {"Colosseum_Armoured_Roller R", false},  //dont spawn
+            {"Colosseum_Armoured_Mosquito R", false},//dont spawn
+            {"Super Spitter R", false}, //dont spawn
+            {"Crawler", true},
+            {"Buzzer", true},
+            {"Giant Buzzer Col", true},//coun't hurt
+            {"Mega Fat Bee", true}, //???? didn't see it spawn
+            {"Lobster", true},//was placed inside floor
+            {"Mage Knight", true},
+            {"Mage", false},//spawned outside arena
+            {"Electric Mage", false},//teleported away
+            {"Mage Blob", true},
+            {"Lancer", false},//error, spawned stuck and couldn't die as well
+            {"Climber", true},
+            {"Zombie Runner", true},
+            {"Mender Bug", false},
+            {"Spitter", true},
+            {"Zombie Hornhead", true},
+            {"Giant Fly", false}, //spawn error, needs fix
+            {"Zombie Barger", true},
+            {"Mawlek Body", false},//spawn errror
+            {"False Knight New", true}, ///???? some errors but killable
+            {"Prayer Slug", true},
+            {"Blocker", true},
+            {"Zombie Shield", true},
+            {"Hatcher", true},
+            {"Zombie Leaper", true},
+            {"Zombie Guard", true},
+            {"Zombie Myla", true},
+            {"Egg Sac", false},//didnt transfer item
+            {"Royal Zombie Fat", true},
+            {"Royal Zombie", true},
+            {"Royal Zombie Coward", true},
+            {"Gorgeous Husk", true},
+            {"Ceiling Dropper", true},
+            {"Ruins Sentry", true},
+            {"Ruins Flying Sentry", true},
+            {"Ruins Flying Sentry Javelin", true},
+            {"Ruins Sentry Fat", true},
+            {"Mage Balloon", true},
+            {"Mage Lord", false},//error? fix?
+            {"Mage Lord Phase2", true},//works -- cant find his orb idle spot
+            {"Great Shield Zombie", true},
+            {"Great Shield Zombie bottom", false},//skip, doesn't spawn
+            {"Black Knight", false},//??? still yeets into space
+            {"Jar Collector", false},//jars are spawning inactive enemies -- spawned in floor
+            {"Moss Walker", true},
+            {"Plant Trap", true},
+            {"Mossman_Shaker", true},
+            {"Pigeon", false},
+            {"Hornet Boss 1", true},
+            {"Acid Flyer", false},
+            {"Moss Charger", false},
+            {"Acid Walker", false},
+            {"Plant Turret", false},
+            {"Plant Turret Right", false},
+            {"Fat Fly", true},
+            {"Giant Buzzer", false},
+            {"Moss Knight", true},
+            {"Grass Hopper", true},
+            {"Lazy Flyer Enemy", false},
+            {"Mega Moss Charger", false},
 
 
 
-
-
-
-    <string>Mawlek Col</string>                            -   ""   NOT A VALID ENEMY STRING (fix this?)
-    <string>Colosseum Grass Hopper</string>                -   ""   NO LONGER A VALID ENEMY STRING
-    <string>Flukeman Top</string>                          -   "" NO LONGER A VALID ENEMY STRING
-    <string>Flukeman Bot</string>                          -   "" NO LONGER A VALID ENEMY STRING
-    <string>Super Spitter Col</string>                     -  NO LONGER A VALID ENEMY STRING
-    <string>Giant Fly Col</string>                         -  NO LONGER A VALID ENEMY STRING
-    <string>Buzzer Col</string>                            -  NO LONGER A VALID ENEMY STRING
-    <string>Ceiling Dropper Col</string>                   -  NO LONGER A VALID ENEMY STRING
-    <string>Colosseum_Armoured_Roller R</string>           -  NO LONGER A VALID ENEMY STRING
-    <string>Colosseum_Armoured_Mosquito R</string>         -  NO LONGER A VALID ENEMY STRING
-    <string>Super Spitter R</string>                       -  NO LONGER A VALID ENEMY STRING
-    <string>Hatcher Baby</string>                          -  NO LONGER A VALID ENEMY STRING
-    <string>Roller R</string>                              -  NO LONGER A VALID ENEMY STRING
-    <string>Spitter R</string>                             -  VALID - CONVERTS TO NON-R TYPE (fails to drop geo)
-    <string>Buzzer R</string>                              -  NO LONGER A VALID ENEMY STRING
-    <string>Great Shield Zombie bottom</string>            -  NO LONGER A VALID ENEMY STRING
-    <string>Flamebearer Spawn</string>                     -  NO LONGER A VALID ENEMY STRING - used to extract the grimmkin types on load
-    <string>Corpse Garden Zombie</string>                  -  ADDED TO BAN LIST
+            {"Ghost Warrior No Eyes", false},
+            {"Fungoon Baby", true},
+            {"Mushroom Turret", false},//spawned in floor
+            {"Fungus Flyer", true},
+            {"Zombie Fungus B", true},
+            {"Fung Crawler", true},
+            {"Mushroom Brawler", true},
+            {"Mushroom Baby", true},
+            {"Mushroom Roller", true},
+            {"Zombie Fungus A", true},
+            {"Mantis", true},
+            {"Ghost Warrior Hu", false},
+            {"Jellyfish Baby", false},
+            {"Moss Flyer", true},
+            {"Garden Zombie", true},
+            {"Mantis Traitor Lord", true},
+            {"Moss Knight Fat", true},
+            {"Mantis Heavy Spawn", true},
+            {"Ghost Warrior Marmu", true},
+            {"Mega Jellyfish", false},
+            {"Ghost Warrior Xero", false},//killing caused nullrefs
+            {"Grave Zombie", true},
+            {"Crystal Crawler", true},
+            {"Zombie Miner", true},
+            {"Crystal Flyer", true},
+            {"Crystallised Lazer Bug", false},
+            {"Mines Crawler", true},
+            {"Mega Zombie Beam Miner", true},//nullrefs on spawn
+            {"Zombie Beam Miner", true},
+            {"Zombie Beam Miner Rematch", true},//nullrefs on spawn
+            {"Spider Mini", true},
+            {"Zombie Hornhead Sp", true},
+            {"Zombie Runner Sp", true},
+            {"Centipede Hatcher", true},
+            {"Mimic Spider", true},//nullref
+            {"Slash Spider", true},
+            {"Spider Flyer", true},
+            {"Ghost Warrior Galien", false},
+            {"Blow Fly", true},
+            {"Bee Hatchling Ambient", true},
+            {"Ghost Warrior Markoth", false},
+            {"Hornet Boss 2", true},
+            {"Abyss Crawler", true},
+            {"Infected Knight", true},//didn't spawn
+            {"Parasite Balloon", true},
+            {"Mawlek Turret", true},
+            {"Mawlek Turret Ceiling", false},//didn't spawn
+            {"Flip Hopper", true},
+            {"Inflater", true},
+            {"Fluke Fly", true},
+            {"Flukeman", true},
+            {"Dung Defender", false},
+            {"fluke_baby_02", false},
+            {"fluke_baby_01", false},//no blue mask
+            {"fluke_baby_03", false},//no explode
+            {"Fluke Mother", false}, //nullref
+            {"White Palace Fly", true},
+            {"Enemy", true},
+            {"Royal Gaurd", true},//fix boomerang -- elite not spawning
+            {"Zombie Hive", true},
+            {"Bee Stinger", true},
+            {"Big Bee", true},
+            {"Hive Knight", false},//not spawning
+            {"Grimm Boss", false},//teleports into walls
+            {"Nightmare Grimm Boss", false},//stuck on spawn -- still steals HUD -- death doesn't delete
+            {"False Knight Dream", true},
+            {"Dream Mage Lord", false},
+            {"Dream Mage Lord Phase2", false},
+            {"Lost Kin", true},
+            {"Zoteling", true},
+            {"Zoteling Buzzer", true},
+            {"Zoteling Hopper", true},
+            {"Zote Balloon", false},
+            {"Grey Prince", true},
+            {"Radiance", false},
+            {"Hollow Knight Boss", false},//fell through world
+            {"HK Prime", false},//didn't spawn
+            {"Pale Lurker", true},
+            {"Oro", false},//didn't delete
+            {"Mato", false},//didn't activate or die
+            {"Sheo Boss", false},//didn't die
+            {"Fat Fluke", true},
+            {"Absolute Radiance", false},//nullref
+            {"Sly Boss", false},//didn't die
+            {"Zote Turret", true},
+            {"Zote Balloon Ordeal", false},//skip
+            {"Ordeal Zoteling", false},
+            {"Zote Salubra", false},
+            {"Zote Thwomp", true},
+            {"Zote Fluke", false},//add poob
+            {"Zote Crew Normal", false},//spawns in floor
+            {"Zote Crew Fat", true},
+            {"Zote Crew Tall", false},//spawns in floor
+            {"Hornet Nosk", true},
+            {"Mace Head Bug", false},
+            {"Big Centipede Col", false},
+            {"Laser Turret Frames", false},//nullref
+            {"Jelly Egg Bomb", false},//not loaded?
+            {"Worm", false}, //need flipped
+            {"Bee Dropper", false} //needs some starting velocity, a collider so it can be hit?, and POOB component
+        };
  */

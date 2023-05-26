@@ -603,7 +603,7 @@ namespace EnemyRandomizerMod
     /////
     public class PlantTrapControl : DefaultSpawnedEnemyControl
     {
-        public override float spawnPositionOffset => .3f;
+        public override float spawnPositionOffset => .2f;
         public override bool preventInsideWallsAfterPositioning => false;
         public override bool preventOutOfBoundsAfterPositioning => false;
     }
@@ -682,7 +682,7 @@ namespace EnemyRandomizerMod
 
         public override string FSMName => "Plant Turret";
 
-        public override float spawnPositionOffset => 0f;
+        public override float spawnPositionOffset => -.2f;
         public override bool spawnShouldStickCorpse => true;
 
         public float shotSpeed = 12f; //taken from the FSM
@@ -916,8 +916,10 @@ namespace EnemyRandomizerMod
     /////
     public class MushroomTurretControl : DefaultSpawnedEnemyControl
     {
-        public override float spawnPositionOffset => 2f;
+        public override float spawnPositionOffset => 1.5f;
         public override bool spawnShouldStickCorpse => true;
+        public override bool preventOutOfBoundsAfterPositioning => false;
+        public override bool preventInsideWallsAfterPositioning => false;
     }
 
     public class MushroomTurretSpawner : DefaultSpawner<MushroomTurretControl> { }
@@ -1552,6 +1554,8 @@ namespace EnemyRandomizerMod
     /////
     public class MantisFlyerChildControl : DefaultSpawnedEnemyControl
     {
+        public override bool preventOutOfBoundsAfterPositioning => true;
+        public override float spawnPositionOffset => .5f;
     }
 
     public class MantisFlyerChildSpawner : DefaultSpawner<MantisFlyerChildControl> { }
@@ -1690,6 +1694,72 @@ namespace EnemyRandomizerMod
 
             Dev.Log("HealthCocoon New prefab name = " + keyName);
         }
+    }
+
+
+    public class OrangeScuttlerControl : DefaultSpawnedEnemyControl
+    {
+        public bool isBomb = false;
+        public int isBombChance = 2;
+
+        public override bool explodeOnDeath => base.explodeOnDeath;
+
+        public override void Setup(GameObject objectThatWillBeReplaced = null)
+        {
+            base.Setup(objectThatWillBeReplaced);
+
+            isBomb = SpawnerExtensions.RollProbability(out _, isBombChance, 100);
+
+            {
+                var comp = gameObject.GetComponent<DestroyOutOfBounds>();
+                if(comp != null)
+                    GameObject.Destroy(comp);
+            }
+
+            if(isBomb)
+            {
+                gameObject.AddParticleEffect_TorchFire();
+            }
+        }
+
+        protected virtual void OnEnable()
+        {
+            if (isBomb)
+            {
+                var sc = gameObject.GetComponent<ScuttlerControl>();
+                if (sc != null)
+                {
+                    typeof(ScuttlerControl).GetField("reverseRun").SetValue(sc, true);
+                }
+            }
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+            if (isBomb)
+            {
+                if (gameObject.DistanceToPlayer() < 0.5f)
+                {
+                    gameObject.KillObjectNow();
+                }
+            }
+
+            if(transform.position.y < 0 && !gameObject.InBounds())
+            {
+                gameObject.KillObjectNow();
+            }
+        }
+    }
+
+    public class OrangeScuttlerSpawner : DefaultSpawner<OrangeScuttlerControl>
+    {
+        public override bool corpseRemovedByEffect => true;
+        public override string corpseRemoveEffectName => SpawnEffect.NONE;
+    }
+
+    public class OrangeScuttlerPrefabConfig : DefaultPrefabConfig
+    {
     }
 
     /////

@@ -51,37 +51,33 @@ namespace EnemyRandomizerMod
 
         public virtual GameObject SpawnAndTrackChild(string objectName, Vector3 spawnPoint, bool setActive = true, bool allowRandomization = false)
         {
-            GameObject spawnedObject = null;
-            var handle = EnemyRandomizerDatabase.OnObjectReplaced.AsObservable().Subscribe(x =>
-            {
-                if (Children == null)
-                    return;
-
-                if (Children.Contains(x.oldObject))
-                    Children.Remove(x.oldObject);
-                if (!Children.Contains(x.newObject))
-                    Children.Add(x.newObject);
-
-                spawnedObject = x.newObject;
-            });
-
             GameObject child = null;
+            //var handle = EnemyRandomizerDatabase.OnObjectReplaced.AsObservable().Subscribe(x =>
+            //{
+            //    if (Children == null)
+            //        return;
+
+            //    if (Children.Contains(x.oldObject))
+            //        Children.Remove(x.oldObject);
+            //    if (!Children.Contains(x.newObject))
+            //        Children.Add(x.newObject);
+
+            //    spawnedObject = x.newObject;
+            //});
+
             if(allowRandomization)
             {
-                child = EnemyRandomizerDatabase.GetDatabase().Spawn(objectName);
-                child.transform.position = spawnPoint;
+                child = EnemyRandomizerDatabase.CustomSpawn(spawnPoint, objectName, setActive);
             }
             else
             {
                 child = SpawnerExtensions.SpawnEntityAt(objectName, spawnPoint, setActive);
             }
+
             Children.Add(child);
-            if (setActive)
-            {
-                child.SafeSetActive(true);
-            }
-            handle.Dispose();
-            return spawnedObject;
+
+            //handle.Dispose();
+            return child;
         }
 
         protected virtual void OnDestroy()

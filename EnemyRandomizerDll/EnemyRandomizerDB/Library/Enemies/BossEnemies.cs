@@ -152,16 +152,16 @@ namespace EnemyRandomizerMod
             }, 0);
 
             var trans2 = control.GetState("Trans 2");
-            trans1.GetAction<Wait>(2).time = 0.1f;
+            trans2.GetAction<Wait>(2).time = 0.1f;
 
             var trans3 = control.GetState("Trans 3");
-            trans1.GetAction<Wait>(2).time = 0.1f;
+            trans3.GetAction<Wait>(2).time = 0.1f;
 
             var trans4 = control.GetState("Trans 4");
-            trans1.GetAction<Wait>(1).time = 0.1f;
+            trans4.GetAction<Wait>(1).time = 0.1f;
 
             var trans5 = control.GetState("Trans 5");
-            trans1.GetAction<Wait>(1).time = 0.1f;
+            trans5.GetAction<Wait>(1).time = 0.1f;
 
             var roarEnd = control.GetState("Roar End");
             roarEnd.DisableAction(0);
@@ -318,6 +318,11 @@ namespace EnemyRandomizerMod
 
         protected override bool DisableCameraLocks => true;
 
+        public override bool preventOutOfBoundsAfterPositioning => true;
+
+        public float teleAboveHeroHeight = 12f;
+        public float minTeleAboveHeroHeight = 8f;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
@@ -336,11 +341,21 @@ namespace EnemyRandomizerMod
             teleQuake.DisableAction(3);
             teleQuake.DisableAction(4);
             teleQuake.DisableAction(5);
+            teleQuake.InsertCustomAction(() => {
 
-            var shiftq = control.GetState("Shift?");
-            shiftq.DisableAction(1);
-            shiftq.DisableAction(2);
-            shiftq.DisableAction(3);
+                var aboveHero = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.up, teleAboveHeroHeight);
+                var telePoint = heroPosWithOffset;
+                if (aboveHero.collider != null && aboveHero.distance < minTeleAboveHeroHeight)
+                {
+                    control.SendEvent("CANCEL");
+                }
+
+            }, 3);
+
+            //var shiftq = control.GetState("Shift?");
+            //shiftq.DisableAction(1);
+            //shiftq.DisableAction(2);
+            //shiftq.DisableAction(3);
 
             var teleportQ = control.GetState("TeleportQ");
             teleportQ.DisableAction(0);
@@ -349,15 +364,13 @@ namespace EnemyRandomizerMod
             teleportQ.DisableAction(3);
             teleportQ.DisableAction(7);
             teleportQ.InsertCustomAction(() => {
-                var aboveHero = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.up, 20f);
-                var telePoint = heroPosWithOffset;
-                if (aboveHero.collider != null && aboveHero.distance > 2f)
-                {
-                    float distFromHero = (aboveHero.distance - 2f);
-                    if (distFromHero < 6f)
-                        distFromHero = 6;
+                control.FsmVariables.GetFsmGameObject("Tele Out Anim").Value.transform.position = transform.position;
 
-                    telePoint = telePoint + Vector2.up * distFromHero;
+                var aboveHero = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.up, teleAboveHeroHeight);
+                var telePoint = heroPosWithOffset;
+                if (aboveHero.collider != null && aboveHero.distance >= minTeleAboveHeroHeight)
+                {
+                    telePoint = telePoint + Vector2.up * aboveHero.distance;
                 }
                 control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
                 transform.position = telePoint;
@@ -369,7 +382,7 @@ namespace EnemyRandomizerMod
             quakeLand.DisableAction(9);
             quakeLand.InsertCustomAction(() =>
             {
-                gameObject.StickToGround();
+                gameObject.StickToGroundX();
             }, 0);
 
             var teleAway = control.GetState("Tele Away");
@@ -392,18 +405,7 @@ namespace EnemyRandomizerMod
             teleport.DisableAction(4);
             teleport.InsertCustomAction(() => {
 
-                var randomDir = UnityEngine.Random.insideUnitCircle;
-                var spawnRay = SpawnerExtensions.GetRayOn(gameObject, randomDir, 12f);
-                Vector2 telePoint;
-
-                if (spawnRay.distance > 2f)
-                {
-                    telePoint = spawnRay.point - spawnRay.normal * 2f;
-                }
-                else
-                {
-                    telePoint = spawnRay.point;
-                }
+                var telePoint = gameObject.GetRandomPositionInLOSofSelf(2f, 20f, 2f, 4f);
 
                 control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
                 transform.position = telePoint;
@@ -416,20 +418,8 @@ namespace EnemyRandomizerMod
             orbSummon.DisableAction(0);
             orbSummon.InsertCustomAction(() => {
 
-                var randomDir = UnityEngine.Random.insideUnitCircle;
-                var spawnRay = SpawnerExtensions.GetRayOn(gameObject, randomDir, 6f);
-                Vector2 orbSpawnPoint;
-
-                if (spawnRay.distance > 2f)
-                {
-                    orbSpawnPoint = spawnRay.point - spawnRay.normal;
-                }
-                else
-                {
-                    orbSpawnPoint = spawnRay.point;
-                }
-
-                control.FsmVariables.GetFsmVector3("Fireball Pos").Value = orbSpawnPoint;
+                var telePoint = gameObject.GetRandomPositionInLOSofSelf(1f, 8f, 0f, 2f);
+                control.FsmVariables.GetFsmVector3("Fireball Pos").Value = telePoint;
             }, 0);
 
             var spawnFireball = control.GetState("Spawn Fireball");
@@ -437,9 +427,6 @@ namespace EnemyRandomizerMod
 
             var teleOut = control.GetState("Tele Out");
             teleOut.DisableAction(3);
-        }
-        protected override void SetCustomPositionOnSpawn()
-        {
         }
     }
 
@@ -463,6 +450,9 @@ namespace EnemyRandomizerMod
         public override string FSMName => "Mage Lord";
 
         protected override bool DisableCameraLocks => true;
+        public override bool preventOutOfBoundsAfterPositioning => true;
+
+        public float teleAboveHeroHeight = 12f;
 
         public override void Setup(GameObject other)
         {
@@ -498,22 +488,12 @@ namespace EnemyRandomizerMod
             teleportIn.DisableAction(7);
             teleportIn.InsertCustomAction(() => {
 
-                var randomDir = UnityEngine.Random.insideUnitCircle;
-                var spawnRay = SpawnerExtensions.GetRayOn(gameObject, randomDir, 12f);
-                Vector2 telePoint;
-
-                if (spawnRay.distance > 2f)
-                {
-                    telePoint = spawnRay.point - spawnRay.normal * 2f;
-                }
-                else
-                {
-                    telePoint = spawnRay.point;
-                }
+                var telePoint = gameObject.GetRandomPositionInLOSofSelf(2f, 20f, 2f, 4f);
 
                 control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
                 transform.position = telePoint;
                 control.FsmVariables.GetFsmVector3("Teleport Point").Value = telePoint;
+
             }, 0);
             teleportIn.ChangeTransition("FINISHED", "Set Idle Timer");
             }
@@ -541,18 +521,7 @@ namespace EnemyRandomizerMod
             teleport.DisableAction(11);
             teleport.InsertCustomAction(() => {
 
-                var randomDir = UnityEngine.Random.insideUnitCircle;
-                var spawnRay = SpawnerExtensions.GetRayOn(gameObject, randomDir, 12f);
-                Vector2 telePoint;
-
-                if (spawnRay.distance > 2f)
-                {
-                    telePoint = spawnRay.point - spawnRay.normal * 2f;
-                }
-                else
-                {
-                    telePoint = spawnRay.point;
-                }
+                var telePoint = gameObject.GetRandomPositionInLOSofSelf(2f, 20f, 2f, 4f);
 
                 control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
                 transform.position = telePoint;
@@ -569,8 +538,18 @@ namespace EnemyRandomizerMod
             teleQuake.DisableAction(2);
             teleQuake.DisableAction(3);
             teleQuake.DisableAction(4);
+                teleQuake.InsertCustomAction(() => {
 
-            var teleportQ = control.GetState("TeleportQ");
+                    var aboveHero = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.up, teleAboveHeroHeight);
+                    var telePoint = heroPosWithOffset;
+                    if (aboveHero.collider != null && aboveHero.distance < teleAboveHeroHeight)
+                    {
+                        control.SendEvent("CANCEL");
+                    }
+
+                }, 2);
+
+                var teleportQ = control.GetState("TeleportQ");
             teleportQ.DisableAction(0);
             teleportQ.DisableAction(3);
             teleportQ.DisableAction(4);
@@ -605,11 +584,25 @@ namespace EnemyRandomizerMod
             catch (Exception e) { Dev.LogError($"ERROR CONFIGURING QUAKE Q DOWN LAND -- {e.Message} {e.StackTrace}"); }
         }
 
+
+
         IEnumerator SendFinishedOnGroundOrDelay()
         {
+            bool poobGround = false;
+            void HitSurface(RaycastHit2D r, GameObject a, GameObject b)
+            {
+                poobGround = true;
+            }
+
+            var poob = gameObject.GetComponent<PreventOutOfBounds>();
+            if(poob != null)
+            {
+                poob.onBoundCollision += HitSurface;
+            }
+
             float timeout = 2f;
             float toGround = 1f;
-            var rayToGround = SpawnerExtensions.GetGroundRay(gameObject);
+            var rayToGround = SpawnerExtensions.GetGroundX(gameObject);
             if (rayToGround.distance >= 1f)
             {
                 for (; ; )
@@ -617,8 +610,8 @@ namespace EnemyRandomizerMod
                     if (timeout <= 0)
                         break;
 
-                    rayToGround = SpawnerExtensions.GetGroundRay(gameObject);
-                    if (rayToGround.distance < toGround)
+                    rayToGround = SpawnerExtensions.GetGroundX(gameObject);
+                    if (rayToGround.distance < toGround || poobGround)
                         break;
 
                     timeout -= Time.deltaTime;
@@ -629,14 +622,19 @@ namespace EnemyRandomizerMod
             if (control.ActiveStateName == "Quake Down")
                 control.SendEvent("FINISHED");
 
+            if (poob != null)
+            {
+                poob.onBoundCollision -= HitSurface;
+            }
+
             yield break;
-        }
-        protected override void SetCustomPositionOnSpawn()
-        {
         }
     }
 
-    public class MageLordSpawner : DefaultSpawner<MageLordControl> { }
+    public class MageLordSpawner : DefaultSpawner<MageLordControl>
+    {
+        public override bool corpseRemovedByEffect => true;
+    }
 
     public class MageLordPrefabConfig : DefaultPrefabConfig { }
     /////
@@ -1011,23 +1009,6 @@ namespace EnemyRandomizerMod
             yield break;
         }
 
-        //protected virtual IEnumerator TimeoutState(string currentState, string endEvent, float timeout)
-        //{
-        //    while (control.ActiveStateName == currentState)
-        //    {
-        //        timeout -= Time.deltaTime;
-
-        //        if(timeout <= 0f)
-        //        {
-        //            control.SendEvent(endEvent);
-        //            break;
-        //        }
-        //        yield return new WaitForEndOfFrame();
-        //    }
-
-        //    yield break;
-        //}
-
         protected virtual IEnumerator StartAndCheckTunnelingState(string currentState, bool isMovingLeft)
         {
             while (control.ActiveStateName == currentState)
@@ -1237,22 +1218,12 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            var corpse = gameObject.GetCorpseObject();
-            if(corpse != null)
-            {
-                corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
-            }
-
-            if (CurrentHP <= 0)
-                CurrentHP = 800;
-
             var cx = gameObject.LocateMyFSM("constrain_x");
             if (cx != null)
                 Destroy(cx);
-            var cy = gameObject.LocateMyFSM("Constrain_Y");
+            var cy = gameObject.LocateMyFSM("Constrain Y");
             if (cy != null)
                 Destroy(cy);
-
 
             //control.ChangeTransition("Init", "FINISHED", "GG Bow");
             control.ChangeTransition("Stun", "FINISHED", "Reformed");
@@ -1292,7 +1263,10 @@ namespace EnemyRandomizerMod
         }
     }
 
-    public class GrimmBossSpawner : DefaultSpawner<GrimmBossControl> { }
+    public class GrimmBossSpawner : DefaultSpawner<GrimmBossControl>
+    {
+        public override bool corpseRemovedByEffect => true;
+    }
 
     public class GrimmBossPrefabConfig : DefaultPrefabConfig { }
     /////
@@ -1309,39 +1283,40 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Control";
 
-        public override void Setup(GameObject other)
+        public override bool preventOutOfBoundsAfterPositioning => true;
+
+        protected virtual void SetupJunk()
         {
-            base.Setup(other);
-
-
-            var corpse = gameObject.GetCorpseObject();
-            if (corpse != null)
-            {
-                corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
-            }
-
-            if (CurrentHP <= 0)
-                CurrentHP = 800;
-
             var cx = gameObject.LocateMyFSM("constrain_x");
             if (cx != null)
                 Destroy(cx);
-            var cy = gameObject.LocateMyFSM("Constrain_Y");
+            var cy = gameObject.LocateMyFSM("Constrain Y");
             if (cy != null)
                 Destroy(cy);
+        }
 
+        protected virtual void ChangeTransitions()
+        {
             //control.ChangeTransition("Set Balloon HP", "FINISHED", "Tele Out");
+            InsertHiddenState(control, "Set Balloon HP", "FINISHED", "Tele Out");
             control.ChangeTransition("Stun", "FINISHED", "Reformed");
             control.ChangeTransition("Death Start", "FINISHED", "Death Explode");
+            control.AddCustomAction("Dormant", () => { control.SendEvent("WAKE"); });
+        }
 
+        protected virtual void FixDeath()
+        {
             var deathStart = control.GetState("Death Start");
             deathStart.DisableActions(6, 7, 20);
 
             var deathExplode = control.GetState("Death Start");
             deathExplode.DisableActions(2, 4);
 
-            control.OverrideState("Send NPC Event", () =>{ Destroy(gameObject); });
+            control.OverrideState("Send NPC Event", () => { Destroy(gameObject); });
+        }
 
+        protected virtual void FixMoves()
+        {
             var balloonPos = control.GetState("Balloon Pos");
             balloonPos.DisableAction(0);
             balloonPos.InsertCustomAction(() =>
@@ -1352,8 +1327,9 @@ namespace EnemyRandomizerMod
 
 
             var moveChoice = control.GetState("Move Choice");
-            moveChoice.InsertCustomAction(() => {
-                control.FsmVariables.GetFsmFloat("Ground Y").Value = SpawnerExtensions.GetGroundRay(HeroController.instance.gameObject).point.y;
+            moveChoice.InsertCustomAction(() =>
+            {
+                control.FsmVariables.GetFsmFloat("Ground Y").Value = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.down, 20f).point.y;
                 control.FsmVariables.GetFsmFloat("AD Min X").Value = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.left, 20f).point.x;
                 control.FsmVariables.GetFsmFloat("AD Max X").Value = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.right, 20f).point.x;
                 control.FsmVariables.GetFsmFloat("AD Mid X").Value = heroPosWithOffset.x;
@@ -1366,13 +1342,34 @@ namespace EnemyRandomizerMod
             control.AddTimeoutAction(adFire, "LAND", 1f);
 
             var adEdge = control.GetState("AD Edge");
-            control.AddTimeoutAction(adFire, "LAND", 1f);
+            control.AddTimeoutAction(adEdge, "LAND", 1f);
+        }
 
-            this.InsertHiddenState(control, "Init", "FINISHED", "Tele Out");
+        public override void Setup(GameObject other)
+        {
+            base.Setup(other);
+
+            try
+            {
+                SetupJunk();
+
+                ChangeTransitions();
+
+                FixDeath();
+
+                FixMoves();
+            }
+            catch(Exception e)
+            {
+                Dev.LogError($"Error setting up NKG's FSM: MESSAGE:{e.Message} STACKTRACE:{ e.StackTrace}");
+            }
         }
     }
 
-    public class NightmareGrimmBossSpawner : DefaultSpawner<NightmareGrimmBossControl> { }
+    public class NightmareGrimmBossSpawner : DefaultSpawner<NightmareGrimmBossControl>
+    {
+        public override bool corpseRemovedByEffect => true;
+    }
 
     public class NightmareGrimmBossPrefabConfig : DefaultPrefabConfig { }
     /////
@@ -1386,6 +1383,8 @@ namespace EnemyRandomizerMod
     /////
     public class HollowKnightBossControl : DefaultSpawnedEnemyControl
     {
+        public override bool preventOutOfBoundsAfterPositioning => true;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
@@ -1399,6 +1398,8 @@ namespace EnemyRandomizerMod
             {
                 corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
             }
+
+            EnemyHealthManager.hasSpecialDeath = false;
 
             //TEMP
             control.OverrideState( "Long Roar End", () => Destroy(gameObject));
@@ -1487,7 +1488,7 @@ namespace EnemyRandomizerMod
 
                     var groundNearTele = SpawnerExtensions.GetRayOn(teleXRayRight.point, Vector2.down, 50f);
 
-                    telePos = new Vector2(teleXRayRight.point.x, groundNearTele.point.y);
+                    telePos = new Vector2(teleXRayRight.point.x - 1f, groundNearTele.point.y) + Vector2.up;
                 }
                 else
                 {
@@ -1496,7 +1497,7 @@ namespace EnemyRandomizerMod
 
                     var groundNearTele = SpawnerExtensions.GetRayOn(teleXRayLeft.point, Vector2.down, 50f);
 
-                    telePos = new Vector2(teleXRayLeft.point.x, groundNearTele.point.y);
+                    telePos = new Vector2(teleXRayLeft.point.x + 1f, groundNearTele.point.y) + Vector2.up;
                 }
 
                 transform.position = telePos;
@@ -1738,10 +1739,36 @@ namespace EnemyRandomizerMod
                 }
             }, 0);
 
+
+            var swoopRise = control.GetState("Swoop Rise");
+            control.AddTimeoutAction(swoopRise, "FINISHED", 0.5f);
+
+            var chooseAttack2 = control.GetState("Choose Attack 2");
+            chooseAttack2.ChangeTransition("ROOF", "Shift Down?");
+
+            var shiftDownq = control.GetState("Shift Down?");
+            shiftDownq.DisableAction(1);
+            shiftDownq.DisableAction(2);
+            shiftDownq.AddCustomAction(() => {
+                float toRoof = Mathf.Abs(roofY - pos2d.y);
+                if (toRoof <= 2f)
+                {
+                    control.SendEvent("FINISHED");
+                }
+                else
+                {
+                    PhysicsBody.velocity = new Vector2(0, -20f);
+                    control.SendEvent("FINISHED");
+                }                
+            });
+
+            var hp = control.GetState("HP");
+            control.OverrideState("HP", () => {
+                control.FsmVariables.GetFsmInt("HP").Value = MaxHP;
+                control.FsmVariables.GetFsmInt("Half HP").Value = (MaxHP / 2) > 0 ? (MaxHP / 2) : 1;
+            });
+
             this.InsertHiddenState(control, "HP", "FINISHED", "Idle");
-        }
-        protected override void SetCustomPositionOnSpawn()
-        {
         }
     }
 
@@ -2227,6 +2254,9 @@ namespace EnemyRandomizerMod
                 });
 
                 attacking.ChangeTransition("Wait", "FINISHED", "Antic");
+
+                var a_init = attacking.GetState("Init");
+                a_init.AddCustomAction(() => { attacking.SendEvent("READY"); });
             }
 
             //this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
@@ -2283,11 +2313,11 @@ namespace EnemyRandomizerMod
                 fc.float2 = downRay.point.y + .3f;
 
                 var land = fsm.GetState("Land");
-                var spos = down.GetFirstActionOfType<SetPosition>();
+                var spos = land.GetFirstActionOfType<SetPosition>();
                 spos.y = downRay.point.y;
 
                 var reset = fsm.GetState("Reset");
-                var spos2 = down.GetFirstActionOfType<SetPosition>();
+                var spos2 = reset.GetFirstActionOfType<SetPosition>();
                 spos2.y = ringRootPos.y;
             }
         }
@@ -2338,6 +2368,9 @@ namespace EnemyRandomizerMod
                 });
 
                 attacking.ChangeTransition("Choice 2", "MEGA", "Choice");
+
+                var a_init = attacking.GetState("Init");
+                a_init.AddCustomAction(() => { attacking.SendEvent("READY"); });
             }
 
             //this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
@@ -2411,6 +2444,9 @@ namespace EnemyRandomizerMod
 
                 var attacking = gameObject.LocateMyFSM("Attacking");
                 attacking.ChangeTransition("Wait", "FINISHED", "Antic");
+                var a_init = attacking.GetState("Init");
+                a_init.AddCustomAction(() => { attacking.SendEvent("READY"); });
+
             }
 
             //this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
@@ -2560,6 +2596,9 @@ namespace EnemyRandomizerMod
                     nailObject.ScaleObject(SizeScale);
                     nailObject.SetActive(true);
                 });
+
+                var a_init = attacking.GetState("Init");
+                a_init.AddCustomAction(() => { attacking.SendEvent("READY"); });
             }
 
             //this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
@@ -3545,41 +3584,11 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MegaMossChargerControl : DefaultSpawnedEnemyControl
+    public class MegaMossChargerControl : InGroundEnemyControl
     {
         public override string FSMName => "Mossy Control";
 
         protected override string FSMHiddenStateName => "MOSS_HIDDEN";
-
-        public override bool preventInsideWallsAfterPositioning => false;
-        public override bool preventOutOfBoundsAfterPositioning => false;
-
-        public RaycastHit2D floorSpawn;
-        public RaycastHit2D floorLeft;
-        public RaycastHit2D floorRight;
-        public RaycastHit2D wallLeft;
-        public RaycastHit2D wallRight;
-        public float floorsize;
-        public float floorCenter => floorLeft.point.x + floorsize * .5f;
-        public Vector3 emergePoint;
-        public Vector3 emergeVelocity;
-
-        protected override bool HeroInAggroRange()
-        {
-            if (heroPos2d.y < floorSpawn.point.y)
-                return false;
-
-            if (heroPos2d.y > floorSpawn.point.y + 5f)
-                return false;
-
-            if (heroPos2d.x < floorLeft.point.x)
-                return false;
-
-            if (heroPos2d.x > floorRight.point.x)
-                return false;
-
-            return true;
-        }
 
         public override void Setup(GameObject other)
         {
@@ -3587,33 +3596,6 @@ namespace EnemyRandomizerMod
 
             var initState = control.GetState("Init");
             initState.DisableAction(28);
-
-            var fsm = gameObject.LocateMyFSM("FSM");
-            if (fsm != null)
-                Destroy(fsm);
-
-            floorSpawn = SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.down, 200f);
-
-            //can't spawn here, just explode
-            if (floorSpawn.collider == null)
-            {
-                EnemyHealthManager.Die(null, AttackTypes.Generic, true);
-                return;
-            }
-
-            floorLeft = SpawnerExtensions.GetRayOn(floorSpawn.point - Vector2.one * 0.2f, Vector2.left, 50f);
-            floorRight = SpawnerExtensions.GetRayOn(floorSpawn.point - Vector2.one * 0.2f, Vector2.right, 50f);
-
-            floorsize = floorRight.distance + floorLeft.distance;
-
-            wallLeft = SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.left, 50f);
-            wallRight = SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.right, 50f);
-
-            if (floorsize < (gameObject.GetOriginalObjectSize().x * this.SizeScale))
-            {
-                float ratio = (floorsize) / (gameObject.GetOriginalObjectSize().x * this.SizeScale);
-                gameObject.ScaleObject(ratio * .5f);
-            }
 
             initState.RemoveTransition("GG BOSS");
             initState.RemoveTransition("SUBMERGE");
@@ -3721,11 +3703,6 @@ namespace EnemyRandomizerMod
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Hidden");
         }
-
-        protected override void SetCustomPositionOnSpawn()
-        {
-            base.SetCustomPositionOnSpawn();
-        }
     }
 
 
@@ -3747,11 +3724,11 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Mawlek Control";
 
+        public override bool preventOutOfBoundsAfterPositioning => true;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
-
-
 
             PhysicsBody.gravityScale = 3f;
 
@@ -3760,14 +3737,17 @@ namespace EnemyRandomizerMod
             init.DisableAction(14);
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Start");
+
+            control.AddTimeoutAction(control.GetState("Wake In Air"), "LANDED", 1f);
+            control.AddTimeoutAction(control.GetState("In Air"), "LANDED", 1f);
+            control.AddTimeoutAction(control.GetState("In Air 2"), "LANDED", 1f);
         }
 
-        protected override void SetCustomPositionOnSpawn()
+        protected override void SetDefaultPosition()
         {
-            base.SetCustomPositionOnSpawn();
+            base.SetDefaultPosition();
             control.FsmVariables.GetFsmFloat("Start X").Value = transform.position.x;
             control.FsmVariables.GetFsmFloat("Start Y").Value = transform.position.y;
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
         }
     }
 
@@ -3872,6 +3852,9 @@ namespace EnemyRandomizerMod
         public RNG rng;
 
         public List<(PrefabObject, int)> possibleSpawns;
+
+        public override bool preventInsideWallsAfterPositioning => true;
+        public override bool preventOutOfBoundsAfterPositioning => true;
 
         public int CurrentEnemies { get; set; }
         public int MaxEnemies { get; set; }
@@ -4549,6 +4532,9 @@ namespace EnemyRandomizerMod
 
         public bool hasSetupYet = false;
 
+        public override bool preventOutOfBoundsAfterPositioning => true;
+        public override bool preventInsideWallsAfterPositioning => false;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
@@ -4671,6 +4657,9 @@ namespace EnemyRandomizerMod
 
         public Vector3 originalScale;
         public bool hasSetupYet = false;
+
+        public override bool preventOutOfBoundsAfterPositioning => true;
+        public override bool preventInsideWallsAfterPositioning => false;
 
         public override void Setup(GameObject other)
         {
@@ -5001,6 +4990,8 @@ namespace EnemyRandomizerMod
 
         protected override bool DisableCameraLocks => false;
 
+        public override float spawnPositionOffset => 1f;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
@@ -5009,21 +5000,10 @@ namespace EnemyRandomizerMod
 
             //add a random timeout to force the lobster out of an infinite roll
             var rcCharging = control.GetState("RC Charging");
-            rcCharging.AddCustomAction(() => {
-                StartCoroutine(FireAfterTime("RC Charging", "WALL", 2f));
-            });
+            control.AddTimeoutAction(rcCharging, "WALL", 2f);
 
             var rcAir = control.GetState("RC Air");
-            rcAir.AddCustomAction(() => {
-                StartCoroutine(FireAfterTime("RC Air", "LAND", 2f));
-            });
-        }
-
-        protected virtual IEnumerator FireAfterTime(string state, string eventName, float t)
-        {
-            yield return new WaitForSeconds(t);
-            if (control.ActiveStateName == state)
-                control.SendEvent(eventName);
+            control.AddTimeoutAction(rcAir, "LAND", 2f);
         }
     }
 
@@ -5048,32 +5028,28 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            var corpse = gameObject.GetCorpseObject();
-            if (corpse != null)
-            {
-                corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
-            }
-
             var init = control.GetState("Init");
             init.DisableAction(6);
 
-            this.InsertHiddenState(control, "Init", "FINISHED", "First Aim");
-
             control.OverrideState( "Defeat", () =>
             {
-                this.EnemyHealthManager.hasSpecialDeath = false;
-                this.EnemyHealthManager.SetSendKilledToObject(null);
-                this.EnemyHealthManager.Die(null, AttackTypes.Generic, true);
                 if (EnemyHealthManager.hp <= 0)
                 {
+                    gameObject.KillObjectNow();
                     EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Death Explode Boss", null, true);
                     Destroy(gameObject);
                 }
             });
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "First Aim");
         }
     }
 
-    public class LancerSpawner : DefaultSpawner<LancerControl> { }
+    public class LancerSpawner : DefaultSpawner<LancerControl>
+    {
+        public override bool corpseRemovedByEffect => true;
+        public override string corpseRemoveEffectName => "Death Explode Boss";
+    }
 
     public class LancerPrefabConfig : DefaultPrefabConfig { }
     /////
@@ -5091,28 +5067,155 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Mage Knight";
 
+        public float spawnOffset = 1f;
+        public override float spawnPositionOffset => spawnOffset;
+
         protected override bool DisableCameraLocks => false;
 
-        protected virtual Dictionary<string, Func<SpawnedObjectControl, float>> FloatRefs =>
-            new Dictionary<string, Func<SpawnedObjectControl, float>>()
-            {
-                    { "Floor Y",    x => { return heroPos2d.y; } },
-                    { "Tele X Max", x => { return edgeR; } },
-                    { "Tele X Min", x => { return edgeL; } },
-            };
+        float minUpTeleDist = 4f;// * sizeScale;
+        float maxUpTeleDist = 14;// * sizeScale;
+
+        RaycastHit2D lastUpTeleRay;
+
+        public bool canFakeout = false;
+        public bool willFakeout = false;
+        public bool didFakeout = false;
+
+        float sideTeleRange = 8f;
+
+        public override bool preventOutOfBoundsAfterPositioning => true;
 
         public override void Setup(GameObject other)
         {
             base.Setup(other);
 
+            canFakeout = SpawnerExtensions.RollProbability(out _, 2, 12);
+
+            control.OverrideState("Up Tele Aim", () => {
+
+                var rayAboveHero = SpawnerExtensions.GetRayOn(heroPos2d, Vector2.up, maxUpTeleDist);
+                if(rayAboveHero.distance < minUpTeleDist)
+                {
+                    control.SendEvent("CANCEL");
+                }
+                else
+                {
+                    control.FsmVariables.GetFsmFloat("Target X").Value = heroPos2d.x;
+                    lastUpTeleRay = rayAboveHero;
+                    control.FsmVariables.GetFsmFloat("Target Y").Value = heroPos2d.y + 10f;
+                    control.SendEvent("FINISHED");
+                }
+            });
+
+
+            var upTele = control.GetState("Up Tele");
+            upTele.DisableActions(1, 2, 4);
+            upTele.InsertCustomAction(() => {
+                control.FsmVariables.GetFsmVector3("Tele Out").Value = transform.position;
+
+                //float upDist = (lastUpTeleRay.point.y - heroPos2d.y);
+
+                transform.position = new Vector2( heroPos2d.x, heroPos2d.y + 10f);
+            }, 0);
+
+            var stompAir = control.GetState("Stomp Air");
+            if (canFakeout)
+            {
+                stompAir.AddTransition("FAKEOUT", "Tele Antic");
+            }
+
+            stompAir.InsertCustomAction(() => {
+                willFakeout = false;
+                float timeout = 0.7f;
+                if (canFakeout && !didFakeout)
+                {
+                    willFakeout = SpawnerExtensions.RollProbability(out _, 1, 4);
+                    timeout = 0.25f;
+                    didFakeout = true;
+                    control.StartTimeoutState("Stomp Air", "FAKEOUT", timeout);
+                }
+                else
+                {
+                    didFakeout = false;
+                    control.StartTimeoutState("Stomp Air", "LANDED", timeout);
+                }
+                }, 2);
+
+            var teleChoice = control.GetState("Tele Choice");
+            teleChoice.InsertCustomAction(() => {
+                if (willFakeout)
+                {
+                    willFakeout = false;
+                    control.SendEvent("STOMP");
+                }
+            },0);
+
+
+            //var sideTeleAim = control.GetState("Side Tele Aim");
+            //sideTeleAim.InsertCustomAction(() => {
+
+            //    var teleXRayRight = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.right, sideTeleRange);
+            //    if (teleXRayRight.distance < 10f)
+            //    {
+            //        var teleXRayLeft = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.left, sideTeleRange);
+            //        if(teleXRayLeft.distance < 10f)
+            //        {
+            //            control.SendEvent("CANCEL");
+            //        }
+            //        else
+            //        {
+            //            control.FsmVariables.GetFsmFloat("Target X").Value = -sideTeleRange;
+            //            control.SendEvent("L");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        control.FsmVariables.GetFsmFloat("Target X").Value = sideTeleRange;
+            //        control.SendEvent("R");
+            //    }
+            //}, 0);
+            //sideTeleAim.ChangeTransition("L", "Side Tele");
+            //sideTeleAim.ChangeTransition("R", "Side Tele");
+
+
+            var stompRecover = control.GetState("Stomp Recover");
+            stompRecover.InsertCustomAction(() => {
+                PhysicsBody.gravityScale = 1f;
+            }, 0);
+
+            var cancelFrame = control.GetState("Cancel Frame");
+            cancelFrame.InsertCustomAction(() => {
+                PhysicsBody.gravityScale = 1f;
+            }, 0);
+
+            var sideTele = control.GetState("Side Tele");
+            sideTele.DisableAction(6);
+            sideTele.InsertCustomAction(() => {
+                float teleX = control.FsmVariables.GetFsmFloat("Target X").Value;
+                bool isPositive = teleX > 0f;
+                control.FsmVariables.GetFsmFloat("Target X").Value = heroPos2d.x;
+                Vector2 telePos;
+
+                if (isPositive)
+                {
+                    //go right
+                    var teleXRayRight = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.right, sideTeleRange);
+
+                    telePos = heroPosWithOffset + Vector2.right * sideTeleRange;
+                }
+                else
+                {
+                    //go left
+                    var teleXRayLeft = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.left, sideTeleRange);
+
+                    telePos = heroPosWithOffset + Vector2.left * sideTeleRange;
+                }
+
+                transform.position = telePos;
+                //SetDefaultPosition();
+            }, 6);
+
             this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
-        }
-
-        protected override void Update()
-        {
-            base.Update();
-
-            SpawnerExtensions.UpdateRefs(this, control, FloatRefs);
         }
     }
 
@@ -5146,7 +5249,15 @@ namespace EnemyRandomizerMod
         public override void Setup(GameObject other)
         {
             base.Setup(other);
-            spawnPos = other.transform.position;
+
+            if (other != null)
+            {
+                spawnPos = other.transform.position;
+            }
+            else
+            {
+                gameObject.transform.position = spawnPos;
+            }
 
             FSMattack = gameObject.LocateMyFSM("Fatty Fly Attack");
 
@@ -5461,6 +5572,117 @@ namespace EnemyRandomizerMod
 
 
 
+
+    public class ZoteBossControl : DefaultSpawnedEnemyControl
+    {
+        public override void Setup(GameObject other)
+        {
+            base.Setup(other);
+
+
+
+            //var whiteScreenEffectfsm = gameObject.GetComponentsInChildren<PlayMakerFSM>(true).FirstOrDefault(x => x.gameObject.name == "white_solid");
+            //if (whiteScreenEffectfsm != null)
+            //{
+            //    var whiteScreenEffect = whiteScreenEffectfsm.gameObject;
+            //    if (whiteScreenEffect != null)
+            //    {
+            //        Destroy(whiteScreenEffect);
+            //    }
+            //}
+            //else
+            //{
+            //    Dev.LogError("Could not find white screen child object on Zote Boss!");
+            //}
+
+            //var corpse = gameObject.GetCorpseObject();
+            //if (corpse != null)
+            //{
+            //    var white2 = corpse.GetComponentsInChildren<PlayMakerFSM>(true).FirstOrDefault(x => x.gameObject.name == "white_solid");
+            //    if (white2 != null && white2.gameObject != null)
+            //        Destroy(white2.gameObject);
+
+            //    var corpseFSM = corpse.LocateMyFSM("Control");
+            //    if (corpseFSM != null)
+            //    {
+            //        var init = corpseFSM.GetState("Init");
+            //        init.DisableActions(0, 1, 7, 8, 9, 10, 11, 15);
+
+            //        var inAir = corpseFSM.GetState("In Air");
+            //        inAir.DisableActions(0);
+            //        corpseFSM.AddTimeoutAction(inAir, "LAND", 1f);
+            //        //inAir.AddTimeoutAction("LAND", 1f);
+
+            //        var burst = corpseFSM.GetState("Burst");
+            //        burst.DisableAction(5);
+            //        burst.ChangeTransition("FINISHED", "End");
+
+            //        var notify = corpseFSM.GetState("Notify");
+            //        notify.DisableAction(0);
+            //        notify.AddCustomAction(() => { control.SendEvent("CORPSE END"); });
+
+            //        var end = corpseFSM.GetState("End");
+            //        end.DisableActions(0, 1, 2, 3);
+
+            //        var land = corpseFSM.GetState("Land");
+            //        land.DisableActions(0, 3, 4, 5, 6, 7, 13);
+            //    }
+            //    else
+            //    {
+            //        Dev.LogError("corpseFSM not found in Zote Boss");
+            //    }
+            //}
+            //else
+            //{
+            //    Debug.LogError("Failed to find corpse on Zote boss!");
+            //}
+
+            var roara = control.GetState("Roar Antic");
+            if (roara != null)
+            {
+                roara.ChangeTransition("FINISHED", "Roar End");
+            }
+            else
+            {
+                Dev.LogError("No roar antic on zote boss?");
+            }
+
+            gameObject.DisableKillFreeze();
+        }
+    }
+
+    public class ZoteBossSpawner : DefaultSpawner<ZoteBossControl>
+    {
+        public override bool corpseRemovedByEffect => true;
+
+        public override string corpseRemoveEffectName => "Death Puff Med";
+    }
+
+    public class ZoteBossPrefabConfig : DefaultPrefabConfig
+    {
+        //public override void SetupPrefab(PrefabObject p)
+        //{
+        //    base.SetupPrefab(p);
+
+        //    var Prefab = p.prefab;
+
+        //    Dev.Log("getting death effects");
+        //    var deathEffects = Prefab.GetComponentInChildren<EnemyDeathEffectsUninfected>(true);
+        //    //var baseDeathEffects = deathEffects as EnemyDeathEffects;
+
+        //    deathEffects.doKillFreeze = false;
+
+
+        //    var corpsePrefab = (GameObject)deathEffects.GetType().BaseType.GetField("corpsePrefab", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(deathEffects);
+
+        //    if (corpsePrefab == null)
+        //        Dev.LogError("Failed to find corpse prefab zote boss");
+        //    else
+        //    {
+        //        corpsePrefab.AddComponent<GGZoteCorpseFixer>();
+        //    }
+        //}
+    }
 
 
     /////

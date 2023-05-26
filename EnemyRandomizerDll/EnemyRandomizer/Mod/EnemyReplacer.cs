@@ -18,8 +18,8 @@ namespace EnemyRandomizerMod
 {
     public class EnemyReplacer
     {
-        public static bool VVERBOSE_LOGGING = true;
-        public static bool VERBOSE_LOGGING = true;
+        public static bool VVERBOSE_LOGGING = false;
+        public static bool VERBOSE_LOGGING = false;
 
         public EnemyRandomizerDatabase database;
         public HashSet<IRandomizerLogic> loadedLogics = new HashSet<IRandomizerLogic>();
@@ -287,27 +287,50 @@ namespace EnemyRandomizerMod
         {
             if (EnemyRandomizer.DoReplacementBypassCheck())
             {
+                if (VERBOSE_LOGGING)
+                    Dev.Log($"[{loadedObjectToProcess.ObjectType()}, {loadedObjectToProcess.GetSceneHierarchyPath()}]: Replacement bypass is enabled.");
+
                 //should not be null..
                 var thisMetaData = ObjectMetadata.Get(loadedObjectToProcess);
                 var originalMetaData = ObjectMetadata.GetOriginal(loadedObjectToProcess);
+
+                if (VERBOSE_LOGGING)
+                    Dev.Log($"[THIS:{thisMetaData}, ORIGINAL:{originalMetaData}]: Bypass checking metas...");
+
                 var soc = loadedObjectToProcess.GetComponent<SpawnedObjectControl>();
+                bool willSetup = false;
                 if (soc == null)
                 {
+                    if (VERBOSE_LOGGING)
+                        Dev.Log($"[{loadedObjectToProcess.ObjectType()}, {loadedObjectToProcess.GetSceneHierarchyPath()}]: No spawned object control on the object");
                     soc = loadedObjectToProcess.AddComponent<SpawnedObjectControl>();
-                    soc.Setup(null);
+                    willSetup = true;
                 }
+                else
+                {
+                    if (soc.thisMetadata == null)
+                        willSetup = true;
+                }
+
+                if(willSetup)
+                    soc.Setup(null);
 
                 if (!EnemyRandomizer.HasCustomBypassReplacement())
                 {
+                    if (soc != null)
+                    {
+                        loadedObjectToProcess.FinalizeReplacement(null);
+                    }
+
                     //if (soc != null)
                     //{
                     //    soc.thisMetadata = thisMetaData == null ? new ObjectMetadata(loadedObjectToProcess) : thisMetaData;
                     //    soc.originialMetadata = originalMetaData == null ? new ObjectMetadata(loadedObjectToProcess) : originalMetaData;
 
-                    //    //apply the position logic
-                    //    soc.SetPositionOnSpawn();
-                    //    soc.MarkLoaded();
-                    //}
+                        //    //apply the position logic
+                        //    soc.SetPositionOnSpawn();
+                        //    soc.MarkLoaded();
+                        //}
                 }
                 else
                 {

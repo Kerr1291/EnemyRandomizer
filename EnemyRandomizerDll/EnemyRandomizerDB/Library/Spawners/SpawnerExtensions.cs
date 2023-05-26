@@ -837,13 +837,19 @@ namespace EnemyRandomizerMod
             return SpawnEntityAt("Gas Explosion Recycle M", pos, true);
         }
 
-        public static GameObject SpawnEntityAt(string entityName, Vector3 pos, bool setActive = false)
+        public static GameObject SpawnEntityAt(string entityName, Vector3 pos, bool setActive = false, bool allowRandomization = false)
         {
+            if (allowRandomization)
+                return EnemyRandomizerDatabase.CustomSpawn(pos, entityName, setActive);
+
             return EnemyRandomizerDatabase.CustomSpawnWithLogic(pos, entityName, null, true);
         }
 
-        public static GameObject SpawnEntity(this GameObject gameObject, string entityName, bool setActive = false)
+        public static GameObject SpawnEntity(this GameObject gameObject, string entityName, bool setActive = false, bool allowRandomization = false)
         {
+            if (allowRandomization)
+                return EnemyRandomizerDatabase.CustomSpawn(gameObject.transform.position, entityName, setActive);
+
             return EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, entityName, null, true);
         }
 
@@ -1519,13 +1525,9 @@ namespace EnemyRandomizerMod
             if (sceneObject.ObjectType() != PrefabObject.PrefabType.Enemy)
                 return false;
 
-            var metaObject = ObjectMetadata.Get(sceneObject);
-            //var originalObject = ObjectMetadata.GetOriginal(sceneObject);
-
-            if (metaObject == null)// || originalObject == null)
-                return false;
-
             var dbKey = EnemyRandomizerDatabase.ToDatabaseKey(sceneObject.ObjectName());
+            if (dbKey == null)
+                return false;
 
             return MetaDataTypes.SkipReplacementOfEnemyForLogicReasons.Contains(dbKey);
         }
@@ -1552,7 +1554,7 @@ namespace EnemyRandomizerMod
             {
                 if (SpawnedObjectControl.VERBOSE_DEBUG)
                     Dev.Log($"{sceneObject.GetSceneHierarchyPath()}: Trying to fix pogos....");
-                sceneObject.FixForPogos(other.transform.position);
+                sceneObject.FixForPogos(other);
             }
 
             if (other.IsSmasher())
@@ -1565,22 +1567,18 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public static void FixForPogos(this GameObject gameObject, Vector2 sourcePosition)
+        public static void FixForPogos(this GameObject gameObject, GameObject other)
         {
             float tweenDirection = 1f;
             float tweenRate = 3f;
 
-            var original = ObjectMetadata.GetOriginal(gameObject);
-            if (original == null)
-                return;
-
-            var dbName = EnemyRandomizerDatabase.ToDatabaseKey(original.ObjectName);
+            var dbName = EnemyRandomizerDatabase.ToDatabaseKey(other.ObjectName());
 
             if (dbName.Contains("Acid"))
             {
                 if (IsFlying(dbName) && IsMobile(dbName))
                 {
-                    var po = GetObjectPrefab(original.ObjectName);
+                    var po = GetObjectPrefab(other.ObjectName());
 
                     var tweener = po.prefab.GetComponentsInChildren<PlayMakerFSM>(true).FirstOrDefault(x => x.FsmName == "Tween");
                     tweenDirection = tweener.FsmVariables.GetFsmVector3("Move Vector").Value.y;
@@ -1601,8 +1599,8 @@ namespace EnemyRandomizerMod
             //this will be the white palace fly
             if (!gameObject.IsMobile())
             {
-                gameObject.transform.position = sourcePosition;
-                gameObject.LockIntoPosition(sourcePosition);
+                gameObject.transform.position = other.transform.position;
+                gameObject.LockIntoPosition(other.transform.position);
             }
             //this will be acid flyer or acid walker
             else if (IsTinker(dbName))
@@ -1615,7 +1613,7 @@ namespace EnemyRandomizerMod
                     //tween travel time
                     var tween = gameObject.GetOrAddComponent<CustomTweener>();
                     tween.lerpFunc = tween.easeInOutSine;
-                    tween.from = sourcePosition;
+                    tween.from = other.transform.position;
                     tween.to = tween.from + Vector3.up * 1f * tweenDirection;
                     tween.travelTime = Mathf.Abs((tweenRate / tweenDirection) * 4f);
                 }
@@ -1655,7 +1653,7 @@ namespace EnemyRandomizerMod
             GameObject.Destroy(source);
         }
 
-        public static float GetRelativeScale(string sourceName, string otherName, float min = .1f, float max = 2.5f)
+        public static float GetRelativeScale(string sourceName, string otherName, float min = .2f, float max = 2.5f)
         {
             var oldSize = GetOriginalObjectSize(otherName);
             var newSize = GetOriginalObjectSize(sourceName);
@@ -2231,85 +2229,90 @@ namespace EnemyRandomizerMod
 
         public static IEnumerator DistanceFlyChase(this GameObject self, GameObject target, float distance, float acceleration, float speedMax, float? followHeightOffset = null)
         {
-            var rb2d = self.GetComponent<Rigidbody2D>();
-            if (rb2d == null)
+            while (self.activeInHierarchy)
             {
-                yield break;
-            }
-            var distanceAway = Mathf.Sqrt(Mathf.Pow(self.transform.position.x - target.transform.position.x, 2f) + Mathf.Pow(self.transform.position.y - target.transform.position.y, 2f));
-            Vector2 velocity = rb2d.velocity;
-            if (distanceAway > distance)
-            {
-                if (self.transform.position.x < target.transform.position.x)
+                var rb2d = self.GetComponent<Rigidbody2D>();
+                if (rb2d == null)
                 {
-                    velocity.x += acceleration;
+                    yield break;
+                }
+                float distanceAway = (self.transform.position.ToVec2() - target.transform.position.ToVec2()).magnitude;
+                //var distanceAway = Mathf.Sqrt(Mathf.Pow(self.transform.position.x - target.transform.position.x, 2f) + Mathf.Pow(self.transform.position.y - target.transform.position.y, 2f));
+                Vector2 velocity = rb2d.velocity;
+                if (distanceAway > distance)
+                {
+                    if (self.transform.position.x < target.transform.position.x)
+                    {
+                        velocity.x += acceleration;
+                    }
+                    else
+                    {
+                        velocity.x -= acceleration;
+                    }
+                    if (followHeightOffset == null)
+                    {
+                        if (self.transform.position.y < target.transform.position.y)
+                        {
+                            velocity.y += acceleration;
+                        }
+                        else
+                        {
+                            velocity.y -= acceleration;
+                        }
+                    }
                 }
                 else
                 {
-                    velocity.x -= acceleration;
+                    if (self.transform.position.x < target.transform.position.x)
+                    {
+                        velocity.x -= acceleration;
+                    }
+                    else
+                    {
+                        velocity.x += acceleration;
+                    }
+                    if (followHeightOffset == null)
+                    {
+                        if (self.transform.position.y < target.transform.position.y)
+                        {
+                            velocity.y -= acceleration;
+                        }
+                        else
+                        {
+                            velocity.y += acceleration;
+                        }
+                    }
                 }
-                if (followHeightOffset == null)
+                if (followHeightOffset != null)
                 {
-                    if (self.transform.position.y < target.transform.position.y)
+                    if (self.transform.position.y < target.transform.position.y + followHeightOffset.Value)
                     {
                         velocity.y += acceleration;
                     }
-                    else
+                    if (self.transform.position.y > target.transform.position.y + followHeightOffset.Value)
                     {
                         velocity.y -= acceleration;
                     }
                 }
-            }
-            else
-            {
-                if (self.transform.position.x < target.transform.position.x)
+                if (velocity.x > speedMax)
                 {
-                    velocity.x -= acceleration;
+                    velocity.x = speedMax;
                 }
-                else
+                if (velocity.x < -speedMax)
                 {
-                    velocity.x += acceleration;
+                    velocity.x = -speedMax;
                 }
-                if (followHeightOffset == null)
+                if (velocity.y > speedMax)
                 {
-                    if (self.transform.position.y < target.transform.position.y)
-                    {
-                        velocity.y -= acceleration;
-                    }
-                    else
-                    {
-                        velocity.y += acceleration;
-                    }
+                    velocity.y = speedMax;
                 }
-            }
-            if (followHeightOffset != null)
-            {
-                if (self.transform.position.y < target.transform.position.y + followHeightOffset.Value)
+                if (velocity.y < -speedMax)
                 {
-                    velocity.y += acceleration;
+                    velocity.y = -speedMax;
                 }
-                if (self.transform.position.y > target.transform.position.y + followHeightOffset.Value)
-                {
-                    velocity.y -= acceleration;
-                }
+                rb2d.velocity = velocity;
+                yield return new WaitForFixedUpdate();
             }
-            if (velocity.x > speedMax)
-            {
-                velocity.x = speedMax;
-            }
-            if (velocity.x < -speedMax)
-            {
-                velocity.x = -speedMax;
-            }
-            if (velocity.y > speedMax)
-            {
-                velocity.y = speedMax;
-            }
-            if (velocity.y < -speedMax)
-            {
-                velocity.y = -speedMax;
-            }
-            rb2d.velocity = velocity;
         }
 
 
@@ -2381,6 +2384,42 @@ namespace EnemyRandomizerMod
             var hm = gameObject.GetComponent<HealthManager>();
             if (hm)
                 hm.Die(null, AttackTypes.Generic, true);
+
+            if(hm == null)
+            {
+                var scut = gameObject.GetComponent<ScuttlerControl>();
+                if (scut != null)
+                {
+                    //generic hits on scuttlers just 
+                    scut.Hit(new HitInstance() { AttackType = AttackTypes.Generic });
+                }
+            }
+        }
+
+        public static void SpawnBlood(this Vector2 pos, short minCount, short maxCount, float minSpeed, float maxSpeed, float angleMin = 0f, float angleMax = 360f, Color? bloodColor = null)
+        {
+            GlobalPrefabDefaults.Instance.SpawnBlood(pos, minCount, maxCount, minSpeed, maxSpeed, angleMin, angleMax, bloodColor);
+        }
+
+        public static void SpawnBlood(this GameObject gameObject, short minCount, short maxCount, float minSpeed, float maxSpeed, float angleMin = 0f, float angleMax = 360f, Color? bloodColor = null)
+        {
+            GlobalPrefabDefaults.Instance.SpawnBlood(gameObject.transform.position, minCount, maxCount, minSpeed, maxSpeed, angleMin, angleMax, bloodColor);
+        }
+
+        public static float GetActualDirection(this GameObject gameObject, GameObject target)
+        {
+            if (gameObject != null && target != null)
+            {
+                Vector2 vector = target.transform.position - gameObject.transform.position;
+                return Mathf.Atan2(vector.y, vector.x) * 57.29578f;
+            }
+            return 0f;
+        }
+
+        public static float GetActualDirection(this Vector2 from, Vector2 to)
+        {
+            Vector2 vector = to - from;
+            return Mathf.Atan2(vector.y, vector.x) * 57.29578f;
         }
 
         public static void RecordCustomJournalOnDeath(this GameObject gameObject)
@@ -2504,7 +2543,7 @@ namespace EnemyRandomizerMod
             int tries = 10;
             int i = 0;
 
-            Vector2 bestInvalidTry = posToUse;
+            Vector2 bestInvalidTry = gameObject.transform.position;
             Vector2 telePoint = posToUse;
 
             for (i = 0; i < tries; ++i)
@@ -2515,11 +2554,6 @@ namespace EnemyRandomizerMod
                 float sdist = spawnRay.distance;
 
 
-                if (spawnRay.distance > 2f)
-                {
-                    bestInvalidTry = spawnRay.point;
-                }
-
                 if (spawnRay.distance < minDistanceFromPlayer)
                     continue;
 
@@ -2528,7 +2562,7 @@ namespace EnemyRandomizerMod
 
                 if (spawnRay.distance < teleDist)
                 {
-                    telePoint = spawnRay.point - spawnRay.normal * bufferDistanceFromWall;
+                    telePoint = spawnRay.point + spawnRay.normal * bufferDistanceFromWall;
                 }
                 else
                 {
@@ -2596,14 +2630,9 @@ namespace EnemyRandomizerMod
             return movementDir;
         }
 
-        public static Vector3 GetRandomPositionInLOSofSelf(this GameObject gameObject, float minTeleportDistance, float maxTeleportDistance, float bufferDistanceFromWall = 0f, float minDistanceFromPlayer = 0f)
+        public static Vector3 GetRandomPositionInLOSofSelf(this GameObject gameObject, float minTeleportDistance, float maxTeleportDistance, float bufferDistanceFromWall = 0f, float minDistanceFromPlayer = 0f, bool tryToSeePlayer = false)
         {
-            var posToUse = gameObject.transform.position.ToVec2() + Vector2.up;
-            var spawnedObjectControl = gameObject.GetComponent<SpawnedObjectControl>();
-            if (spawnedObjectControl != null)
-            {
-                posToUse = spawnedObjectControl.pos2dWithOffset;
-            }
+            var posToUse = gameObject.transform.position.ToVec2() + Vector2.up * 0.1f;
 
             RNG rng = new RNG();
             rng.Reset();
@@ -2622,7 +2651,7 @@ namespace EnemyRandomizerMod
                 float sdist = spawnRay.distance;
 
 
-                if (spawnRay.distance > 2f)
+                if (spawnRay.collider == null)
                 {
                     bestInvalidTry = spawnRay.point;
                 }
@@ -2630,12 +2659,18 @@ namespace EnemyRandomizerMod
                 if (IsNearPlayer(spawnRay.point, minDistanceFromPlayer))
                     continue;
 
-                if (spawnRay.distance - bufferDistanceFromWall < minTeleportDistance)
+                if (tryToSeePlayer && !CanSeePlayer(spawnRay.point))
                     continue;
 
-                if (spawnRay.distance < teleDist)
+                if (spawnRay.collider != null)
                 {
-                    telePoint = spawnRay.point - spawnRay.normal * bufferDistanceFromWall;
+                    if (spawnRay.distance - bufferDistanceFromWall <= 0)
+                        continue;
+
+                    if (spawnRay.distance - bufferDistanceFromWall < minTeleportDistance)
+                        continue;
+
+                    telePoint = spawnRay.point + spawnRay.normal * bufferDistanceFromWall;
                 }
                 else
                 {
@@ -2781,6 +2816,21 @@ namespace EnemyRandomizerMod
             }
 
             return up;
+        }
+
+        public static string GetRandomPrefabNameForSpawnerEnemy(RNG rng)
+        {
+            if(rng == null)
+            {
+                rng = new RNG();
+                rng.Reset();
+            }
+
+            var list = MetaDataTypes.PossibleEnemiesFromSpawner.ToList();
+            var weights = list.Select(x => x.Value).ToList();
+
+            int replacementIndex = rng.WeightedRand(weights);
+            return list[replacementIndex].Key;
         }
 
         public static void AddTimeoutAction(this PlayMakerFSM control, FsmState state, string eventName, float timeout)
@@ -3123,6 +3173,11 @@ namespace EnemyRandomizerMod
             var soc = gameObject.GetComponent<SpawnedObjectControl>();
             if(soc != null)
             {
+                if (objectToReplace == null)
+                {
+                    //link to itself -- this object was finalized with no replacement, so prevent it from ever being replaced
+                    otherMetaData = thisMetaData;
+                }
                 soc.originialMetadata = otherMetaData;
 
                 //apply the position logic

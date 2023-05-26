@@ -49,7 +49,9 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Mender Bug Ctrl";
         public override bool preventInsideWallsAfterPositioning => false;
-        public override bool preventOutOfBoundsAfterPositioning => false;
+        public override bool preventOutOfBoundsAfterPositioning => true;
+
+        public override bool explodeOnDeath => true;//mender bug's revenge
 
         public override void Setup(GameObject other)
         {
@@ -66,6 +68,32 @@ namespace EnemyRandomizerMod
             fly.ChangeTransition("DESTROY", "Init");
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
+        }
+
+        protected virtual void OnEnable()
+        {
+            var poob = GetComponent<PreventOutOfBounds>();
+            if (poob != null)
+            {
+                poob.onBoundCollision -= Explode;
+                poob.onBoundCollision += Explode;
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            var poob = GetComponent<PreventOutOfBounds>();
+            if (poob != null)
+            {
+                poob.onBoundCollision -= Explode;
+            }
+        }
+
+        void Explode(RaycastHit2D r, GameObject a, GameObject b)
+        {
+            gameObject.KillObjectNow();
         }
     }
 
@@ -90,52 +118,98 @@ namespace EnemyRandomizerMod
 
         public override float spawnPositionOffset => 1f;
 
+        public override bool isInvincible => GameManager.instance.GetPlayerDataInt("fireballLevel") > 0;
+
+        public RNG rng = new RNG();
+        public GameObject lastSpawnedObject;
+        public float closeRange = 2f;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
 
+            rng.Reset();
             ChildController.maxChildren = 2;
 
-            var fsm = control;
+            var body = gameObject.AddComponent<Rigidbody2D>();
+            body.freezeRotation = true;
+            body.mass = 1000f;
+            body.drag = 1f;
 
             //allow players without spells to kill blockers
             int level = GameManager.instance.GetPlayerDataInt("fireballLevel");
             if (level <= 0)
             {
                 EnemyHealthManager.InvincibleFromDirection = -1;
-
+                
                 //disable the invincible state
-                var init = fsm.GetState("Init");
+                var init = control.GetState("Init");
                 init.DisableAction(6);
 
                 //disable the invincible state
-                var close = fsm.GetState("Close");
+                var close = control.GetState("Close");
                 close.DisableAction(0);
+
+                var open = control.GetState("Open");
+                open.DisableAction(1);
+
+                var sleep1 = control.GetState("Sleep 1");
+                sleep1.DisableAction(0);
             }
 
             //ignore the checks, allow it to spawn rollers all the time
-            fsm.OverrideState("Can Roller?", () =>
+            control.OverrideState("Can Roller?", () =>
             {
-                //TODO: actual logic for spawning rollers, for now, some rng
-                RNG rng = new RNG();
-                rng.Reset();
-
-                bool result = rng.Randf() > .5f;
-                if (result)
-                    fsm.SendEvent("FINISHED");
+                if (ChildController.AtMaxChildren)
+                {
+                    control.SendEvent("GOOP");
+                }
                 else
-                    fsm.SendEvent("GOOP");
+                {
+                    bool result = rng.CoinToss();
+                    if (result)
+                        control.SendEvent("FINISHED");
+                    else
+                        control.SendEvent("GOOP");
+                }
             });
 
             //link the shot to a roller prefab
-            var roller = fsm.GetState("Roller");
-            var setgoa = roller.GetFirstActionOfType<SetGameObject>();
+            var roller = control.GetState("Roller");
+            control.OverrideState("Roller", () => {
+                control.FsmVariables.GetFsmBool("Rollering").Value = true;
+                control.FsmVariables.GetFsmFloat("Spawned Time").Value = 0f;
+                lastSpawnedObject = SpawnChildForEnemySpawner(transform.position, false, "Roller", "Projectile");
+            });
 
-            //TODO: fix up their FSMs to work correctly with the activate and track method
-            setgoa.gameObject = ChildController.SpawnAndTrackChild("Roller", transform.position, false);
+            var fire = control.GetState("Fire");
+            fire.InsertCustomAction(() => {
+                lastSpawnedObject = ChildController.ActivateAndTrackSpawnedObject(lastSpawnedObject);
+                control.FsmVariables.GetFsmGameObject("Shot Instance").Value = lastSpawnedObject;
+            }, 3);
 
             //have it skip the roller assign state
-            fsm.ChangeTransition("Fire", "FINISHED", "Shot Anim End");
+            control.ChangeTransition("Fire", "FINISHED", "Shot Anim End");
+
+            var shotAnimEnd = control.GetState("Shot Anim End");
+            shotAnimEnd.DisableActions(1, 2);
+            control.AddCustomAction("Shot Anim End", () =>
+            {
+                if (isInvincible && gameObject.CanSeePlayer() && gameObject.DistanceToPlayer() < closeRange)
+                    control.SendEvent("CLOSE");
+                else
+                    control.SendEvent("FINISHED");
+            });
+
+            var closed = control.GetState("Closed");
+            closed.DisableActions(0,1);
+            control.AddCustomAction("Closed", () =>
+            {
+                if (gameObject.CanSeePlayer() && gameObject.DistanceToPlayer() >= closeRange)
+                    control.SendEvent("FAR");
+                else
+                    control.SendEvent("FINISHED");
+            });
         }
     }
 
@@ -162,60 +236,53 @@ namespace EnemyRandomizerMod
 
         public override string FSMName => "Hive Zombie";
 
+        public GameObject leftSpawnedObject;
+        public GameObject rightSpawnedObject;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
 
-            if (other == null)
-            {
-                isVanilla = true;
-            }
-            else
-            {
-                isVanilla = gameObject == other;
-            }
+            isVanilla = gameObject == other;
 
-            ChildController.maxChildren = isVanilla ? vanillaMaxBabies : 3;
+            ChildController.maxChildren = isVanilla ? vanillaMaxBabies : 2;
 
-
-            var FSM = control;
-
-            var init = FSM.GetState("Init");
+            var init = control.GetState("Init");
             init.DisableAction(1);
 
-            var hatchedAmount = FSM.GetState("Hatched Amount");
+            var hatchedAmount = control.GetState("Hatched Amount");
             hatchedAmount.DisableAction(0);
             hatchedAmount.AddCustomAction(() => {
                 if (ChildController.AtMaxChildren)
-                    FSM.SendEvent("CANCEL");
+                    control.SendEvent("CANCEL");
                 else 
-                    FSM.SendEvent("FINISHED");
+                    control.SendEvent("FINISHED");
             });
 
-            var spot1 = FSM.GetState("Spot 1");
+            var spot1 = control.GetState("Spot 1");
             spot1.DisableAction(1);
             spot1.DisableAction(3);
             spot1.DisableAction(4);
             spot1.DisableAction(8);
             spot1.InsertCustomAction(() => {
-                var child = ChildController.SpawnAndTrackChild("Bee Hatchling Ambient", transform.position, false);
-                FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = child;
+                leftSpawnedObject = SpawnChildForEnemySpawner(transform.position, false, "Bee Hatchling Ambient", "Hatchling");
             },0); ;
             spot1.InsertCustomAction(() => {
-                FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = ChildController.ActivateAndTrackSpawnedObject(FSM.FsmVariables.GetFsmGameObject("Hatchling").Value);
+                leftSpawnedObject = ChildController.ActivateAndTrackSpawnedObject(leftSpawnedObject);
+                control.FsmVariables.GetFsmGameObject("Hatchling").Value = leftSpawnedObject;
             }, 4);
 
-            var spot2 = FSM.GetState("Spot 2");
+            var spot2 = control.GetState("Spot 2");
             spot2.DisableAction(1);
             spot2.DisableAction(3);
             spot2.DisableAction(4);
             spot2.DisableAction(8);
             spot2.InsertCustomAction(() => {
-                var child = ChildController.SpawnAndTrackChild("Bee Hatchling Ambient", transform.position, false);
-                FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = child;
+                rightSpawnedObject = SpawnChildForEnemySpawner(transform.position, false, "Bee Hatchling Ambient", "Hatchling");
             }, 0); ;
             spot2.InsertCustomAction(() => {
-                FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = ChildController.ActivateAndTrackSpawnedObject(FSM.FsmVariables.GetFsmGameObject("Hatchling").Value);
+                rightSpawnedObject = ChildController.ActivateAndTrackSpawnedObject(rightSpawnedObject);
+                control.FsmVariables.GetFsmGameObject("Hatchling").Value = rightSpawnedObject;
             }, 4);
         }
     }
@@ -236,6 +303,8 @@ namespace EnemyRandomizerMod
 
         public override float spawnPositionOffset => 1f;
 
+        public override bool preventOutOfBoundsAfterPositioning => true;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
@@ -243,9 +312,19 @@ namespace EnemyRandomizerMod
             var inert = control.GetState("Inert");
             inert.AddCustomAction(() => { control.SetState("Init"); });
 
-            //change the start transition to just begin the spawn antics
-            control.ChangeTransition("Check Battle", "BATTLE", "Wait 2");
-            control.RemoveTransition("Battle Inert", "BATTLE START");
+            control.GetState("Check Battle").RemoveTransition("BATTLE");
+
+            control.OverrideState("Check Battle", () => {
+                Animator.Play("Death Land");
+                PhysicsBody.velocity = Vector2.zero;
+                control.SendEvent("FINISHED");
+            });
+
+            control.OverrideState("Check", () => {
+                control.SendEvent("SPIDER");
+            });
+
+            control.AddTimeoutAction(control.GetState("Hit Ground"), "FINISHED", 1f);
         }
     }
 
@@ -272,6 +351,8 @@ namespace EnemyRandomizerMod
 
         public override float spawnPositionOffset => 1f;
 
+        public override bool preventOutOfBoundsAfterPositioning => true;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
@@ -279,9 +360,19 @@ namespace EnemyRandomizerMod
             var inert = control.GetState("Inert");
             inert.AddCustomAction(() => { control.SetState("Init"); });
 
-            //change the start transition to just begin the spawn antics
-            control.ChangeTransition("Check Battle", "BATTLE", "Wait 2");
-            control.RemoveTransition("Battle Inert", "BATTLE START");
+            control.GetState("Check Battle").RemoveTransition("BATTLE");
+
+            control.OverrideState("Check Battle", () => {
+                Animator.Play("Death Land");
+                PhysicsBody.velocity = Vector2.zero;
+                control.SendEvent("FINISHED");
+            });
+
+            control.OverrideState("Check", () => {
+                control.SendEvent("SPIDER");
+            });
+
+            control.AddTimeoutAction(control.GetState("Hit Ground"), "FINISHED", 1f);
         }
     }
 
@@ -297,69 +388,13 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class MossChargerControl : DefaultSpawnedEnemyControl
+    public class MossChargerControl : InGroundEnemyControl
     {
         public override string FSMName => "Mossy Control";
-        public override bool preventInsideWallsAfterPositioning => false;
-        public override bool preventOutOfBoundsAfterPositioning => false;
-
-        public RaycastHit2D floorSpawn;
-        public RaycastHit2D floorLeft;
-        public RaycastHit2D floorRight;
-        public RaycastHit2D wallLeft;
-        public RaycastHit2D wallRight;
-        public float floorsize;
-        public float floorCenter => floorLeft.point.x + floorsize * .5f;
-        public Vector3 emergePoint;
-        public Vector3 emergeVelocity;
-
-        protected override bool HeroInAggroRange()
-        {
-            if (heroPos2d.y < floorSpawn.point.y)
-                return false;
-
-            if (heroPos2d.y > floorSpawn.point.y + 5f)
-                return false;
-
-            if (heroPos2d.x < floorLeft.point.x)
-                return false;
-
-            if (heroPos2d.x > floorRight.point.x)
-                return false;
-
-            return true;
-        }
 
         public override void Setup(GameObject other)
         {
             base.Setup(other);
-
-            var fsm = gameObject.LocateMyFSM("FSM");
-            if (fsm != null)
-                Destroy(fsm);
-
-            floorSpawn = SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.down, 200f);
-
-            //can't spawn here, just explode
-            if(floorSpawn.collider == null)
-            {
-                gameObject.KillObjectNow();
-                return;
-            }
-
-            floorLeft = SpawnerExtensions.GetRayOn(floorSpawn.point - Vector2.one * 0.2f, Vector2.left, 50f);
-            floorRight = SpawnerExtensions.GetRayOn(floorSpawn.point - Vector2.one * 0.2f, Vector2.right, 50f);
-
-            floorsize = floorRight.distance + floorLeft.distance;
-
-            wallLeft = SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.left, 50f);
-            wallRight = SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.right, 50f);
-
-            if (floorsize < (gameObject.GetOriginalObjectSize().x * SizeScale))
-            {
-                float ratio = (floorsize) / (gameObject.GetOriginalObjectSize().x * SizeScale);
-                gameObject.ScaleObject(ratio * .5f);
-            }
 
             //just skip this state
             var hs = control.GetState("Hidden");

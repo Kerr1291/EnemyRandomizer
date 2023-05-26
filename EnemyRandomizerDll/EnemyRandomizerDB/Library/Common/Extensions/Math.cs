@@ -427,7 +427,7 @@ namespace EnemyRandomizerMod
         {
             Vector2 direction = dir;
 
-            RaycastHit2D[] toSurface = Physics2D.RaycastAll(origin, direction, max, Physics2D.AllLayers);
+            var toSurface = Physics2D.RaycastAll(origin, direction, max, Physics2D.AllLayers).OrderBy(x => x.distance);
 
             Vector2 lastGoodPoint = direction * max;
 
@@ -435,6 +435,9 @@ namespace EnemyRandomizerMod
             {
                 foreach (var v in toSurface)
                 {
+                    if (v.collider == null)
+                        continue;
+
                     if (isRaycastHitObject(v.collider.gameObject))
                     {
                         return v;
@@ -451,7 +454,7 @@ namespace EnemyRandomizerMod
                     }
                 }
             }
-            return new RaycastHit2D() { point = lastGoodPoint, distance = max, normal = -dir };
+            return new RaycastHit2D() { point = lastGoodPoint, distance = (lastGoodPoint - origin).magnitude, normal = -dir };
         }
 
 

@@ -100,17 +100,21 @@ namespace EnemyRandomizerMod
                 var right = GameObject.Find("_0092_fountain");
                 var left = GameObject.Find("_0092_fountain (1)");
 
+                //TODO: update core position and rotation a bit
                 var core = EnemyRandomizerDatabase.CustomSpawnWithLogic(center.transform.position.ToVec2() + Vector2.up * 5f, "gg_blue_core", null, true);
-                var newCenter = EnemyRandomizerDatabase.CustomSpawnWithLogic(center.transform.position, "GG_Statue_Gorb", null, true);
-                var newBack = EnemyRandomizerDatabase.CustomSpawnWithLogic(back.transform.position, "Knight_v01", null, true);
+                //var newCenter = EnemyRandomizerDatabase.CustomSpawnWithLogic(center.transform.position, "GG_Statue_Gorb", null, true);
+                //var newBack = EnemyRandomizerDatabase.CustomSpawnWithLogic(back.transform.position, "Knight_v01", null, true);
                 var newRight = EnemyRandomizerDatabase.CustomSpawnWithLogic(right.transform.position, "GG_Statue_Zote", null, true);
-                var newLeft = EnemyRandomizerDatabase.CustomSpawnWithLogic(left.transform.position, "GG_Statue_GreyPrince", null, true);
-                var floor_effect = EnemyRandomizerDatabase.CustomSpawnWithLogic(SpawnerExtensions.GetRayOn(center.transform.position, Vector2.down, 50f).point, "dream_beam_animation", null, true);
+                var newLeft = EnemyRandomizerDatabase.CustomSpawnWithLogic(left.transform.position, "GG_Statue_GreyPrince", null, true);//TODO: remove the trophy/phase markers on the statue
+                var floor_effect = EnemyRandomizerDatabase.CustomSpawnWithLogic(SpawnerExtensions.GetRayOn(center.transform.position, Vector2.down, 50f).point + Vector2.down, "dream_beam_animation", null, true);
 
                 GameObject.Destroy(center);
                 GameObject.Destroy(back);
                 GameObject.Destroy(right);
                 GameObject.Destroy(left);
+                
+                //TODO: change fountain text
+                //TODO: add challenge prompt to enter a unqiue enemy rando boss / make it warp you somewhere?
             }
 
             BattleManager.DidSceneCheck = true;

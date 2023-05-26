@@ -13,7 +13,12 @@ namespace EnemyRandomizerMod
     public class ZoteSalubraControl : DefaultSpawnedEnemyControl
     {
         public float startYPos;
-        public float maxSuck = 5f;
+        public float maxSuck = 10f;
+
+        public GameObject ptSuck;
+        public GameObject ptSend;
+
+        IEnumerator chasing;
 
         public override void Setup(GameObject other)
         {
@@ -21,6 +26,9 @@ namespace EnemyRandomizerMod
 
             RNG geoRNG = new RNG();
             geoRNG.Reset();
+
+            ptSuck = gameObject.FindGameObjectInDirectChildren("Pt Suck");
+            ptSend = gameObject.FindGameObjectInDirectChildren("Pt Send");
 
             var init = control.GetState("Init");
             init.DisableAction(4);
@@ -47,37 +55,47 @@ namespace EnemyRandomizerMod
                 gameObject.transform.position = new Vector3(xpos, ypos, 0f);
                 gameObject.GetComponent<Collider2D>().enabled = true;
                 gameObject.GetComponent<MeshRenderer>().enabled = true;
+
+                if (chasing != null)
+                {
+                    StopCoroutine(chasing);
+                }
+
+                chasing = SpawnerExtensions.DistanceFlyChase(gameObject, HeroController.instance.gameObject, 8f, 0.5f, 6f, 2f);
+                StartCoroutine(chasing);
             });
 
             appear.InsertAction(appearSound, 0);
             appear.InsertAction(appearAnim, 0);
 
             var idle = control.GetState("Idle");
+            idle.GetFirstActionOfType<GhostMovement>().Enabled = false;
 
-            idle.InsertCustomAction(() => {
+            //idle.InsertCustomAction(() => {
 
-                var gm = idle.GetFirstActionOfType<GhostMovement>();
-                gm.xPosMin = edgeL;
-                gm.xPosMax = edgeR;
-                gm.yPosMin = floorY;
-                gm.yPosMax = roofY;
+            //    var gm = idle.GetFirstActionOfType<GhostMovement>();
+            //    gm.xPosMin = edgeL;
+            //    gm.xPosMax = edgeR;
+            //    gm.yPosMin = floorY;
+            //    gm.yPosMax = roofY;
 
-            }, 0);
+            //}, 0);
 
 
             var sucking = control.GetState("Sucking");
+            sucking.GetFirstActionOfType<GhostMovement>().Enabled = false;
 
-            sucking.InsertCustomAction(() => {
+            //sucking.InsertCustomAction(() => {
 
-                control.FsmVariables.GetFsmVector2("Hero Pos").Value = heroPos2d;
+            //    control.FsmVariables.GetFsmVector2("Hero Pos").Value = heroPos2d;
 
-                var gm = idle.GetFirstActionOfType<GhostMovement>();
-                gm.xPosMin = edgeL;
-                gm.xPosMax = edgeR;
-                gm.yPosMin = floorY;
-                gm.yPosMax = roofY;
+            //    var gm = idle.GetFirstActionOfType<GhostMovement>();
+            //    gm.xPosMin = edgeL;
+            //    gm.xPosMax = edgeR;
+            //    gm.yPosMin = floorY;
+            //    gm.yPosMax = roofY;
 
-            }, 0);
+            //}, 0);
 
             var suck = control.GetState("Suck");
 
@@ -85,7 +103,14 @@ namespace EnemyRandomizerMod
 
                 if(gameObject.DistanceToPlayer() > maxSuck)
                 {
+                    ptSuck.SetActive(false);
+                    ptSend.SetActive(false);
                     control.SendEvent("FINISHED");
+                }
+                else
+                {
+                    ptSuck.SetActive(true);
+                    ptSend.SetActive(true);
                 }
 
             }, 0);

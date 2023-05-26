@@ -110,6 +110,10 @@ namespace EnemyRandomizerMod
                 {
                     corpse.AddCorpseRemoverWithEffect(gameObject, removeEffect);
                 }
+                else
+                {
+                    Dev.LogWarning($"{gameObject} has no corpse to apply an effect to!");
+                }
             }
 
             if (spawnEffectOnCorpseRemoved)
@@ -121,6 +125,10 @@ namespace EnemyRandomizerMod
                 if (corpse != null)
                 {
                     corpse.AddEffectSpawnerOnCorpseRemoved(gameObject, removeEffect);
+                }
+                else
+                {
+                    Dev.LogWarning($"{gameObject} has no corpse to apply an effect to!");
                 }
             }
         }
@@ -138,22 +146,39 @@ namespace EnemyRandomizerMod
 
     public abstract class SpawnEffect : MonoBehaviour
     {
+        public const string NONE = "NONE";
+
         public string effectToSpawn = "Gas Explosion Recycle L";
         public virtual bool destroyGameObject => false;
         public virtual bool allowRandomizationOfSpawn => false;
 
         protected virtual void Spawn()
         {
+#if DEBUG
+            if(SpawnedObjectControl.VERBOSE_DEBUG)
+            {
+                var metaInfo = ObjectMetadata.Get(gameObject);
+                //var soc = gameObject.GetComponent<SpawnedObjectControl>();
+                if (metaInfo == null)
+                    metaInfo = new ObjectMetadata(gameObject);
+
+                Dev.Log($"A SpawnEffect attached to {metaInfo} is being invoked via OnEnable");
+            }
+#endif
+
             if (!gameObject.IsInAValidScene())
                 return;
 
-            if (allowRandomizationOfSpawn)
+            if (effectToSpawn != NONE && !string.IsNullOrEmpty(effectToSpawn))
             {
-                EnemyRandomizerDatabase.CustomSpawn(transform.position, effectToSpawn, true);
-            }
-            else
-            {
-                EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, effectToSpawn, null, true);
+                if (allowRandomizationOfSpawn)
+                {
+                    EnemyRandomizerDatabase.CustomSpawn(transform.position, effectToSpawn, true);
+                }
+                else
+                {
+                    EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, effectToSpawn, null, true);
+                }
             }
 
             if(destroyGameObject)
@@ -170,7 +195,30 @@ namespace EnemyRandomizerMod
 
     public class SpawnEffectOnDestroy : SpawnEffect
     {
+        public bool forceDestroyIfRendererBecomesDisabled = true;
+        MeshRenderer mRenderer;
+        bool wasEnabled = false;
+
+        protected virtual void OnEnable()
+        {
+            mRenderer = GetComponent<MeshRenderer>();
+        }
+
         protected virtual void OnDestroy() { Spawn(); }
+
+        protected virtual void Update()
+        {
+            if (mRenderer == null)
+                return;
+
+            if(!wasEnabled)
+                wasEnabled = mRenderer.enabled;
+
+            if (wasEnabled && mRenderer.enabled == false)
+            {
+                GameObject.Destroy(gameObject);
+            }
+        }
     }
 
     public class CorpseOrientationFixer : MonoBehaviour

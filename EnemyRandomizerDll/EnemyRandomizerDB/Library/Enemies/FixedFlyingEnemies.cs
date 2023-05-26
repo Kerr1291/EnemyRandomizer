@@ -31,7 +31,7 @@ namespace EnemyRandomizerMod
 
             if(isZapFly)
             {
-                Sprite.color = Color.cyan * .4f;
+                SpawnerExtensions.AddParticleEffect_WhiteSoulEmissions(gameObject, Color.cyan);
             }
 
             CurrentHP = 1;
@@ -69,23 +69,17 @@ namespace EnemyRandomizerMod
         //if true, will set the max babies to 5
         public bool isVanilla;
 
-
         public override string FSMName => "Hatcher";
+
+        public GameObject lastSpawnedObject;
 
         public override void Setup(GameObject other)
         {
             base.Setup(other);
 
-            if (other == null)
-            {
-                isVanilla = true;
-            }
-            else
-            {
-                isVanilla = gameObject == other;
-            }
+            isVanilla = gameObject == other;
 
-            ChildController.maxChildren = isVanilla ? vanillaMaxBabies : 3;
+            ChildController.maxChildren = isVanilla ? vanillaMaxBabies : 2;
 
             var init = control.GetState("Initiate");
             init.DisableAction(2);
@@ -101,11 +95,10 @@ namespace EnemyRandomizerMod
             fire.DisableAction(6);
             fire.DisableAction(11);
             fire.InsertCustomAction(() => {
-                ChildController.ActivateAndTrackSpawnedObject(control.FsmVariables.GetFsmGameObject("Shot").Value);
+                lastSpawnedObject = ChildController.ActivateAndTrackSpawnedObject(lastSpawnedObject);
             }, 6);
             fire.InsertCustomAction(() => {
-                var child = ChildController.SpawnAndTrackChild("Fly", transform.position, false);
-                control.FsmVariables.GetFsmGameObject("Shot").Value = child;
+                lastSpawnedObject = SpawnChildForEnemySpawner(transform.position, false, "Fly", "Shot");
             }, 0);
             fire.AddCustomAction(() => { control.SendEvent("WAIT"); });
         }
@@ -132,65 +125,72 @@ namespace EnemyRandomizerMod
         //if true, will set the max babies to 5
         public bool isVanilla;
 
-        public override string FSMName => "Hatcher";
+        public override string FSMName => "Centipede Hatcher";
 
         public PlayMakerFSM FSM { get; set; }
+
+        public GameObject lastSpawnedObject;
 
         public override void Setup(GameObject other)
         {
             base.Setup(other);
 
-            if (other == null)
-            {
-                isVanilla = true;
-            }
-            else
-            {
-                isVanilla = gameObject == other;
-            }
+            isVanilla = gameObject == other;
 
             ChildController.maxChildren = isVanilla ? vanillaMaxBabies : 3;
 
-            FSM = gameObject.LocateMyFSM("Centipede Hatcher");
-
-            var init = FSM.GetState("Init");
+            var init = control.GetState("Init");
             init.DisableAction(1);
             //init.DisableAction(3);
 
-            var getCentipede = FSM.GetState("Get Centipede");
+            var checkRange = control.GetState("Check Range");
+            control.OverrideState("Check Range", () => { 
+            
+                if(gameObject.CanSeePlayer())
+                {
+                    control.FsmVariables.GetFsmBool("In Attack Range").Value = true;
+                    control.SendEvent("HATCH");
+                }
+                else
+                {
+                    control.FsmVariables.GetFsmBool("In Attack Range").Value = false;
+                }            
+            });
+            checkRange.AddAction(new WaitRandom() { timeMin = 0.2f, timeMax = 1f });
+
+            var getCentipede = control.GetState("Get Centipede");
             getCentipede.DisableAction(0);
             getCentipede.DisableAction(1);
             getCentipede.DisableAction(2);
             getCentipede.DisableAction(3);
-            getCentipede.AddCustomAction(() => { 
-                if(ChildController.AtMaxChildren)
-                    FSM.SendEvent("EXHAUSTED"); 
-            });
             getCentipede.AddCustomAction(() => {
-                var child = ChildController.SpawnAndTrackChild("Baby Centipede",transform.position,false);
-                FSM.FsmVariables.GetFsmGameObject("Hatchling").Value = child;
-            });
-            getCentipede.AddCustomAction(() => {
-                FSM.FsmVariables.GetFsmGameObject("Hatchling").Value.transform.SetParent(transform);
-            });
-            getCentipede.AddCustomAction(() => {
-                    FSM.SendEvent("FINISHED");
+
+                if (ChildController.AtMaxChildren)
+                    control.SendEvent("EXHAUSTED");
+                else
+                {
+                    lastSpawnedObject = SpawnChildForEnemySpawner(transform.position, false, "Fly", "Hatchling");
+                    control.SendEvent("FINISHED");
+                }
             });
 
-            var birth = FSM.GetState("Birth");
+            var birth = control.GetState("Birth");
             birth.DisableAction(1);
             birth.DisableAction(7);
             birth.DisableAction(15);//disable the reversing the scale
             birth.InsertCustomAction(() => {
-                ChildController.ActivateAndTrackSpawnedObject(FSM.FsmVariables.GetFsmGameObject("Hatchling").Value);
-                //FSM.FsmVariables.GetFsmGameObject("Hatchling").Value.SafeSetActive(true);
+                if (lastSpawnedObject != null)
+                {
+                    lastSpawnedObject = ChildController.ActivateAndTrackSpawnedObject(lastSpawnedObject);
+                    control.FsmVariables.GetFsmGameObject("Hatchling").Value = lastSpawnedObject;
+                }
             }, 6);
 
-            var checkBirths = FSM.GetState("Check Births");
-            birth.DisableAction(0);
+            var checkBirths = control.GetState("Check Births");
+            checkBirths.DisableAction(0);
             checkBirths.InsertCustomAction(() => {
                 if (ChildController.AtMaxChildren)
-                    FSM.SendEvent("HATCHED MAX");
+                    control.SendEvent("HATCHED MAX");
             }, 0);
         }
     }
@@ -213,6 +213,9 @@ namespace EnemyRandomizerMod
 
         protected override bool DisableCameraLocks => false;
 
+        public override bool preventOutOfBoundsAfterPositioning => true;
+        public override bool preventInsideWallsAfterPositioning => false;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
@@ -220,7 +223,7 @@ namespace EnemyRandomizerMod
             var wake = control.GetState("Wake");
             wake.DisableActions(1, 2, 3);
             wake.InsertCustomAction(() => {
-                var pos = gameObject.GetRandomPositionInLOSofSelf(5f, 30f, 1f, 1f);
+                var pos = gameObject.GetRandomPositionInLOSofPlayer(5f, 30f, 2f, 5f);
                 transform.position = pos;
             }, 0);
 
@@ -228,7 +231,7 @@ namespace EnemyRandomizerMod
             //disable the teleplane actions
             control.OverrideState("Select Target", () =>
             {
-                var pos = gameObject.GetRandomPositionInLOSofSelf(5f, 20f, 1f, 4f);
+                var pos = gameObject.GetRandomPositionInLOSofPlayer(5f, 30f, 2f, 5f);
                 control.FsmVariables.GetFsmVector3("Teleport Point").Value = new Vector3(pos.x, pos.y, 0.006f);
                 control.SendEvent("TELEPORT");
             });
@@ -236,7 +239,6 @@ namespace EnemyRandomizerMod
             control.ChangeTransition("Tele Away", "FINISHED", "Init");
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
-            //this.AddResetToStateOnHide(control, "Init");
         }
     }
 
@@ -256,10 +258,12 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Electric Mage";
 
-        public float hpRatioTriggerNerf = 2f;
         public override float aggroRange => 20f;
 
         protected override bool DisableCameraLocks => false;
+
+        public override bool preventOutOfBoundsAfterPositioning => true;
+        public override bool preventInsideWallsAfterPositioning => false;
 
         public override void Setup(GameObject other)
         {
@@ -268,7 +272,7 @@ namespace EnemyRandomizerMod
             var wake = control.GetState("Wake");
             wake.DisableActions(0, 1, 2);
             wake.InsertCustomAction(() => {
-                var pos = gameObject.GetRandomPositionInLOSofSelf(5f, 30f, 1f, 1f);
+                var pos = gameObject.GetRandomPositionInLOSofPlayer(5f, 30f, 2f, 5f);
                 transform.position = pos;
             }, 0);
 
@@ -276,7 +280,7 @@ namespace EnemyRandomizerMod
             //disable the teleplane actions
             control.OverrideState("Select Target", () =>
             {
-                var pos = gameObject.GetRandomPositionInLOSofSelf(5f, 20f, 1f, 4f);
+                var pos = gameObject.GetRandomPositionInLOSofPlayer(5f, 30f, 2f, 5f);
                 control.FsmVariables.GetFsmVector3("Teleport Point").Value = new Vector3(pos.x, pos.y, 0.006f);
                 control.SendEvent("TELEPORT");
             });
@@ -289,13 +293,13 @@ namespace EnemyRandomizerMod
             }, 0);
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
-            //this.AddResetToStateOnHide(control, "Init");
         }
 
         protected override int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
         {
             var result = base.GetStartingMaxHP(objectThatWillBeReplaced);
 
+            //nerf their hp more
             result = result / 2;
             if (result <= 0)
                 result = 1;
