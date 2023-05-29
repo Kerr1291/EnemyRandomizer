@@ -21,7 +21,7 @@ namespace EnemyRandomizerMod
         public static GameObject globalLineRoot;
 
         public float lineWidth = .05f;
-        public float zDepth = -2.1f;
+        public float zDepth = -0.6f;
         public Color colliderColor = Color.green;
         public Color triggerColor = Color.blue;
         public Color disabledColor = Color.red;
@@ -168,7 +168,7 @@ namespace EnemyRandomizerMod
 
             LineRenderer line = newLine.AddComponent<LineRenderer>();
             line.positionCount = points.Count;
-            line.SetPositions(points.Select(x => x.ToVector3(-.3f)).ToArray());
+            line.SetPositions(points.Select(x => x.ToVector3(-.5f)).ToArray());
             line.startWidth = lineWidth;
             line.endWidth = lineWidth;
             line.sharedMaterial = GetLineMaterial(points.FirstOrDefault());
@@ -562,6 +562,16 @@ namespace EnemyRandomizerMod
                     GameManager.instance.StartCoroutine(debugInput);
                 }
             }
+        }
+
+        public void ClearRays()
+        {
+            rayLines.Values.ToList().ForEach(x => GameObject.Destroy(x.gameObject));
+            rayLines.Clear();
+            rayLabels.Values.ToList().ForEach(x => GameObject.Destroy(x.gameObject));
+            rayLabels.Clear();
+            rayHitLabels.Values.ToList().ForEach(x => x.ForEach(y => GameObject.Destroy(y.gameObject)));
+            rayHitLabels.Clear();
         }
 
         private void OnDestroy()

@@ -97,6 +97,23 @@ namespace EnemyRandomizerMod
 
         public virtual void ScaleObject(GameObject objectToModify, GameObject originalObject)
         {
+            //always scale smashers the same
+            if (originalObject.IsSmasher())
+            {
+                objectToModify.ScaleObject(2f);
+                objectToModify.SetAudioToMatchScale(2f);
+                return;
+            }
+
+            //always scale pogos the same
+            if (originalObject.CheckIfIsPogoLogicType())
+            {
+                objectToModify.ScaleObject(1.5f);
+                objectToModify.SetAudioToMatchScale(1.5f);
+                return;
+            }
+
+
             float scale = 1f;
             if (Settings.GetOption(ScalingTypes[0].Name).value)
             {

@@ -186,6 +186,8 @@
         <SceneObject path="_Props/Stalactite Hazard 5/Dust Stalactite"/>
         <SceneObject path="_Props/Stalactite Hazard 5/Dust Fall"/>
         <SceneObject path="_Props/Stalactite Hazard 5/Dust Trail"/>
+        <SceneObject path="_Props/Health Cocoon"/>
+        <SceneObject path="Health Scuttler"/>
         <SceneObject path="_Scenery/Lift_dust"/>
         <SceneObject path="_Scenery/Cocoon Plant 1/health plant 01 break/Particle_health_plant_pieces (2)"/>
         <SceneObject path="_Scenery/Cocoon Plant 2/health plant 02 break/Particle_health_plant_pieces_many (1)"/>

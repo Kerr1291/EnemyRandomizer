@@ -23,14 +23,16 @@ namespace EnemyRandomizerMod
 
         protected virtual void Update()
         {
-            if (flipped)
-            {
-                gameObject.transform.position = Vector3.Lerp(to, from, tweenPos);
-            }
-            else
-            {
-                gameObject.transform.position = Vector3.Lerp(from, to, tweenPos);
-            }
+            gameObject.transform.position = Vector3.Lerp(from, to, tweenPos);
+
+            //if (flipped)
+            //{
+            //    gameObject.transform.position = Vector3.Lerp(to, from, tweenPos);
+            //}
+            //else
+            //{
+            //    gameObject.transform.position = Vector3.Lerp(from, to, tweenPos);
+            //}
 
             t += Time.deltaTime;
             if (t >= travelTime)

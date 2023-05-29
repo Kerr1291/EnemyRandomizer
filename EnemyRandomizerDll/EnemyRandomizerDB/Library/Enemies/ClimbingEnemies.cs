@@ -172,6 +172,7 @@ namespace EnemyRandomizerMod
     /////
     public class CrystallisedLazerBugControl : DefaultClimberControl
     {
+        public override bool isInvincible => false;
     }
 
     public class CrystallisedLazerBugSpawner : DefaultSpawner<CrystallisedLazerBugControl> { }

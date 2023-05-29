@@ -457,6 +457,11 @@ namespace EnemyRandomizerMod
             return new RaycastHit2D() { point = lastGoodPoint, distance = (lastGoodPoint - origin).magnitude, normal = -dir };
         }
 
+        public static List<RaycastHit2D> GetRaysOn(Vector2 origin, Vector2 dir, float max, Func<GameObject, bool> isRaycastHitObject)
+        {
+            return Physics2D.RaycastAll(origin, dir, max, Physics2D.AllLayers).OrderBy(x => x.distance).Where(x => x.collider != null && isRaycastHitObject(x.collider.gameObject)).ToList();
+        }
+
 
         public static int CountChunkIntersections(Vector2 origin, Vector2 dir, float max, Func<GameObject, bool> isRaycastHitObject)
         {

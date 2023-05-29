@@ -120,6 +120,13 @@ namespace EnemyRandomizerMod
         public override string FSMName => "Mimic Spider";
         public bool skipToIdle = false;
 
+        public override bool preventInsideWallsAfterPositioning => false;
+
+        public override bool preventOutOfBoundsAfterPositioning => true;
+
+        public float customTransformMinAliveTime = 1f;
+        public float customTransformAggroRange = 6f;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
@@ -193,6 +200,20 @@ namespace EnemyRandomizerMod
 
             var roofJump = control.GetState("Roof Jump?");
             roofJump.ChangeTransition("ROOF SPIT", "Idle");
+        }
+
+        protected override void CheckControlInCustomHiddenState()
+        {
+            if (customTransformMinAliveTime > 0)
+            {
+                customTransformMinAliveTime -= Time.deltaTime;
+                return;
+            }
+
+            if (gameObject.CanSeePlayer() && gameObject.DistanceToPlayer() < customTransformAggroRange)
+            {
+                base.CheckControlInCustomHiddenState();
+            }
         }
     }
 
@@ -2200,7 +2221,7 @@ namespace EnemyRandomizerMod
             {
                 StopCoroutine(chasing);
             }
-            chasing = gameObject.DistanceFlyChase(HeroController.instance.gameObject, 5f, 10f, 9f, 2f);
+            chasing = gameObject.DistanceFlyChase(HeroController.instance.gameObject, 5f, .25f, 4f);
             StartCoroutine(chasing);
         }
 
@@ -2260,9 +2281,6 @@ namespace EnemyRandomizerMod
             }
 
             //this.InsertHiddenState(control, "Init", "FINISHED", "Warp In");
-        }
-        protected override void SetCustomPositionOnSpawn()
-        {
         }
     }
 

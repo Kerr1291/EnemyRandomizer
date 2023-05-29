@@ -8,7 +8,13 @@ namespace EnemyRandomizerMod
 {
     public partial class PreventInsideWalls : MonoBehaviour
     {
+#if DEBUG
         public static bool VERBOSE_DEBUGGING = true;
+#else
+        public static bool VERBOSE_DEBUGGING = false;
+#endif
+
+
 
         static List<string> groundOrPlatformName = new List<string>()
             {

@@ -18,8 +18,13 @@ namespace EnemyRandomizerMod
 {
     public class EnemyReplacer
     {
+#if DEBUG
+        public static bool VVERBOSE_LOGGING = true;
+        public static bool VERBOSE_LOGGING = true;
+#else
         public static bool VVERBOSE_LOGGING = false;
         public static bool VERBOSE_LOGGING = false;
+#endif
 
         public EnemyRandomizerDatabase database;
         public HashSet<IRandomizerLogic> loadedLogics = new HashSet<IRandomizerLogic>();

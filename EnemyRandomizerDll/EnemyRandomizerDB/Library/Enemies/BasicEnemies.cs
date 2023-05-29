@@ -1423,7 +1423,7 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     ///// 
-    public class RoyalGuardControl : DefaultSpawnedEnemyControl
+    public class RoyalGaurdControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Guard";
 
@@ -1541,9 +1541,9 @@ namespace EnemyRandomizerMod
         }
     }
 
-    public class RoyalGuardSpawner : DefaultSpawner<RoyalGuardControl> { }
+    public class RoyalGaurdSpawner : DefaultSpawner<RoyalGaurdControl> { }
 
-    public class RoyalGuardPrefabConfig : DefaultPrefabConfig { }
+    public class RoyalGaurdPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 

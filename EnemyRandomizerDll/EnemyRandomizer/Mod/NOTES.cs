@@ -218,7 +218,10 @@ ADD "Mace Head Bug" -- fsm "Mace Control" (need to add a health manager to it) a
     EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Hatcher",null);
     EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Bursting Bouncer",null);
     EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Hornet Boss 1",null);
-    EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Mage",null);
+    EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy("Mimic Spider",null);
+
+    EnemyRandomizerMod.EnemyRandomizer.MakeHeroRay(
+
             {"Health Cocoon", false},
             {"Health Scuttler", false},
             {"Orange Scuttler", false},

@@ -585,6 +585,16 @@ namespace EnemyRandomizerMod
                 p.ToList().ForEach(x => GameObject.Destroy(x));
             }
 
+            {
+                var p = source.GetComponents<PreventOutOfBounds>();
+                p.ToList().ForEach(x => GameObject.Destroy(x));
+            }
+
+            {
+                var p = source.GetComponents<PreventInsideWalls>();
+                p.ToList().ForEach(x => GameObject.Destroy(x));
+            }
+
             if (makeStatic)
             {
                 var body = source.GetOrAddComponent<Rigidbody2D>();
@@ -1578,9 +1588,10 @@ namespace EnemyRandomizerMod
             {
                 if (IsFlying(dbName) && IsMobile(dbName))
                 {
-                    var po = GetObjectPrefab(other.ObjectName());
+                    var po = other;
+                        //GetObjectPrefab(other.ObjectName());
 
-                    var tweener = po.prefab.GetComponentsInChildren<PlayMakerFSM>(true).FirstOrDefault(x => x.FsmName == "Tween");
+                    var tweener = other.GetComponentsInChildren<PlayMakerFSM>(true).FirstOrDefault(x => x.FsmName == "Tween");
                     tweenDirection = tweener.FsmVariables.GetFsmVector3("Move Vector").Value.y;
                     tweenRate = tweener.FsmVariables.GetFsmFloat("Speed").Value;
                 }
@@ -1615,19 +1626,30 @@ namespace EnemyRandomizerMod
                     tween.lerpFunc = tween.easeInOutSine;
                     tween.from = other.transform.position;
                     tween.to = tween.from + Vector3.up * 1f * tweenDirection;
-                    tween.travelTime = Mathf.Abs((tweenRate / tweenDirection) * 4f);
+                    float distance = (tween.to - tween.from).magnitude;
+                    tween.travelTime = Mathf.Abs(distance / tweenRate);
                 }
                 //walker
                 else
                 {
                     //if (!IsWalker(dbName))
                     {
-                        var walker = gameObject.GetOrAddComponent<Walker>();
-                        walker.walkSpeedL = 2f;
-                        walker.walkSpeedR = 2f;
-                        walker.startInactive = false;
-                        walker.ignoreHoles = false;
-                        walker.StartMoving();
+                        var leftRay = SpawnerExtensions.GetRayOn(other.transform.position, Vector2.left, float.MaxValue);
+                        var rightRay = SpawnerExtensions.GetRayOn(other.transform.position, Vector2.right, float.MaxValue);
+
+                        var tween = gameObject.GetOrAddComponent<CustomTweener>();
+                        tween.lerpFunc = tween.linear;
+                        tween.from = leftRay.point;
+                        tween.to = rightRay.point;
+                        tween.travelTime = (leftRay.distance + rightRay.distance) / 2f;
+
+
+                        //var walker = gameObject.GetOrAddComponent<Walker>();
+                        //walker.walkSpeedL = 2f;
+                        //walker.walkSpeedR = 2f;
+                        //walker.startInactive = false;
+                        //walker.ignoreHoles = false;
+                        //walker.StartMoving();
                     }
                 }
             }
@@ -2013,6 +2035,11 @@ namespace EnemyRandomizerMod
             return Mathnv.GetRayOn(origin, dir, max, IsSurfaceOrPlatform);
         }
 
+        public static List<RaycastHit2D> GetRaysOn(Vector2 origin, Vector2 dir, float max)
+        {
+            return Mathnv.GetRaysOn(origin, dir, max, IsSurfaceOrPlatform);
+        }
+
         public static Vector3 GetNearestVectorToSurface(this GameObject entity, float max)
         {
             return Mathnv.GetNearestVectorTo(entity.transform.position, max, IsSurfaceOrPlatform);
@@ -2227,8 +2254,9 @@ namespace EnemyRandomizerMod
             return sactions;
         }
 
-        public static IEnumerator DistanceFlyChase(this GameObject self, GameObject target, float distance, float acceleration, float speedMax, float? followHeightOffset = null)
+        public static IEnumerator DistanceFlyChase(this GameObject self, GameObject target, float distance, float acceleration, float speedMax, float? followHeightOffset = null, IEnumerator innerAttack = null, float? innerAttackDelay = null)
         {
+            float attackTimeout = 0f;
             while (self.activeInHierarchy)
             {
                 var rb2d = self.GetComponent<Rigidbody2D>();
@@ -2236,6 +2264,17 @@ namespace EnemyRandomizerMod
                 {
                     yield break;
                 }
+
+                if(innerAttackDelay != null && innerAttack != null)
+                {
+                    attackTimeout += Time.deltaTime;
+                    if(attackTimeout >= innerAttackDelay.Value)
+                    {
+                        yield return innerAttack;
+                        attackTimeout = 0f;
+                    }
+                }
+
                 float distanceAway = (self.transform.position.ToVec2() - target.transform.position.ToVec2()).magnitude;
                 //var distanceAway = Mathf.Sqrt(Mathf.Pow(self.transform.position.x - target.transform.position.x, 2f) + Mathf.Pow(self.transform.position.y - target.transform.position.y, 2f));
                 Vector2 velocity = rb2d.velocity;
@@ -2313,6 +2352,180 @@ namespace EnemyRandomizerMod
                 rb2d.velocity = velocity;
                 yield return new WaitForFixedUpdate();
             }
+        }
+
+        public static IEnumerator GetBigBeeChargeAttack(this GameObject owner, GameObject target, Action<GameObject, RaycastHit2D> onHit, Action<GameObject> onComplete)
+        {
+            return GetBigBeeChargeAttack(owner, target.transform.position, onHit, onComplete);
+        }
+
+        public static IEnumerator GetBigBeeChargeAttack(this GameObject owner, Vector2 target, Action<GameObject, RaycastHit2D> onHit, Action<GameObject> onComplete)
+        {
+            var bigBeePrefab = SpawnerExtensions.GetObjectPrefab("Big Bee");
+            var po = bigBeePrefab.prefab;
+            var fsm = po.LocateMyFSM("Big Bee");
+
+            var audio_bigBeePrepare = fsm.GetState("Charge Antic").GetAction<AudioPlaySimple>(2).oneShotClip.Value as AudioClip;
+            var anim_bigBeePrepare = fsm.GetState("Charge Antic").GetAction<Tk2dPlayAnimationV2>(7).clipName.Value;
+
+            var audio_bigBeeChargeStart = fsm.GetState("Charge Start").GetAction<SetAudioClip>(0).audioClip.Value as AudioClip;
+            var anim_bigBeeChargeStart = fsm.GetState("Charge Start").GetAction<Tk2dPlayAnimationV2>(3).clipName.Value;
+
+            var audio_bigBeeBounce = fsm.GetState("Check Dir").GetAction<AudioPlaySimple>(0).oneShotClip.Value as AudioClip;
+
+            var slamEffect = fsm.GetState("Hit Up").GetAction<SpawnObjectFromGlobalPool>(0).gameObject.Value;
+            var slamEffectSplat = fsm.GetState("Spatter Honey").GetAction<FlingObjectsFromGlobalPool>(1).gameObject.Value;
+
+            Func<GameObject, bool> isSurfaceOrPlatform = SpawnerExtensions.IsSurfaceOrPlatform;
+
+            Action<GameObject> onStart = (x) =>
+            {
+                var audio = owner.GetComponent<AudioSource>();
+                var anim = owner.GetComponent<tk2dSpriteAnimator>();
+
+                audio.PlayOneShot(audio_bigBeePrepare);
+                anim.Play(anim_bigBeePrepare);
+            };
+
+            Action<GameObject> onCharge = (x) =>
+            {
+                var audio = owner.GetComponent<AudioSource>();
+                var anim = owner.GetComponent<tk2dSpriteAnimator>();
+
+                audio.PlayOneShot(audio_bigBeeChargeStart);
+                anim.Play(anim_bigBeeChargeStart);
+            };
+
+            Action<GameObject, RaycastHit2D> onBounce = (x,y) =>
+            {
+                var audio = owner.GetComponent<AudioSource>();
+                var anim = owner.GetComponent<tk2dSpriteAnimator>();
+
+                audio.PlayOneShot(audio_bigBeeBounce);
+                //anim.Play(anim_bigBeeChargeStart);
+            };
+
+            var chargeRoutine = DoBouncingCharge(owner, (target - owner.transform.position.ToVec2()), 
+                onStart: onStart, 
+                onCharge: onCharge, 
+                onHit: onHit, 
+                onBounce: onBounce, 
+                onComplete: onComplete, 
+                isSurfaceOrPlatform: isSurfaceOrPlatform);
+
+            return chargeRoutine;
+        }
+
+        public static IEnumerator DoBouncingCharge(this GameObject owner, Vector2 startingDirection, float chargeVelocity = 30f,
+        int maxBounces = 3, float maxChargeTime = 10f, Action<GameObject> onStart = null, Action<GameObject> onCharge = null, Action <GameObject, RaycastHit2D> onHit = null, Action<GameObject, RaycastHit2D> onBounce = null, Action<GameObject> onComplete = null, Func<GameObject, bool> isSurfaceOrPlatform = null)
+        {
+            if (isSurfaceOrPlatform == null)
+                isSurfaceOrPlatform = SpawnerExtensions.IsSurfaceOrPlatform;
+
+            Rigidbody2D rb = owner.GetComponent<Rigidbody2D>();
+            Collider2D collider = owner.GetComponent<Collider2D>();
+
+            float timeElapsed = 0f;
+            int bounces = 0;
+            float accelerationTime = 0.2f;
+            float decelerationTime = 0.2f;
+            float acceleration = chargeVelocity / accelerationTime;
+            float totalDecelerationTime = 0f;
+            float currentVelocity = 0f;
+
+            var startingVelocity = rb.velocity;
+            var finalDirection = startingDirection;
+            Vector2 movingDirection = startingDirection;
+
+            onStart?.Invoke(owner);
+            bool doneAccelerating = false;
+
+            while (owner != null && owner.activeInHierarchy)
+            {
+                if(timeElapsed > 0f && currentVelocity <= 0f)
+                    break;
+
+                float fdt = Time.fixedDeltaTime;
+                if (timeElapsed < accelerationTime)
+                {
+                    currentVelocity = Mathf.Lerp(0f, chargeVelocity, timeElapsed / accelerationTime);
+                }
+                else if (timeElapsed >= accelerationTime && (bounces >= maxBounces || timeElapsed >= maxChargeTime))
+                {
+                    totalDecelerationTime += fdt;
+                    currentVelocity = Mathf.Lerp(chargeVelocity, 0f, totalDecelerationTime / decelerationTime);
+                }
+
+                if(!doneAccelerating && timeElapsed >= accelerationTime)
+                {
+                    doneAccelerating = true;
+                    onCharge?.Invoke(owner);
+                }
+
+                if (currentVelocity <= 0f)
+                {
+                    currentVelocity = 0f;
+                    break;
+                }
+
+                float distance = currentVelocity * fdt;
+                Vector2 movement = movingDirection.normalized * distance;
+
+                var hits = Physics2D.BoxCastAll(collider.bounds.center, collider.bounds.size, 0f, movement.normalized,
+                    movement.magnitude, Physics2D.AllLayers);
+
+                var nearstWallHit = hits.Where(x => x.collider != null && isSurfaceOrPlatform(x.collider.gameObject)).OrderBy(x => x.distance).FirstOrDefault();
+                var thingsHit = hits.Where(x => x.collider != null && !isSurfaceOrPlatform(x.collider.gameObject)).OrderBy(x => x.distance);
+
+                if (nearstWallHit.collider != null)
+                {
+                    movingDirection = Vector2.Reflect(movement.normalized, nearstWallHit.normal);
+                    Vector2 remainingMovement = movement - nearstWallHit.distance * movingDirection;
+                    
+                    rb.position = nearstWallHit.point + nearstWallHit.normal * collider.bounds.extents.x;
+
+                    rb.MovePosition(rb.position + remainingMovement);
+                    rb.velocity = Vector2.zero; //TODO: derive velocity? apply it?
+
+                    bounces++;
+
+                    onBounce?.Invoke(owner, nearstWallHit);
+                }
+                else
+                {
+                    rb.MovePosition(rb.position + movement);
+                }
+
+                if (thingsHit.Any())
+                {
+                    foreach (var hit in thingsHit)
+                    {
+                        var ed = owner.GetEnemyDamage();
+                        var hd = owner.GetHeroDamage();
+
+                        if(ed != null && hit.collider != null && hit.collider.GetComponent<HealthManager>() != null)
+                        {
+                            hit.collider.GetComponent<HealthManager>().Hit(new HitInstance() { AttackType = AttackTypes.Generic, DamageDealt = ed.damageDealt, Direction = GetActualDirection(owner, hit.collider.gameObject) });
+                        }
+
+                        if(hd != null && hit.collider != null && hit.collider.GetComponent<HealthManager>() != null)
+                        {
+                            hit.collider.GetComponent<HealthManager>().Hit(new HitInstance() { AttackType = AttackTypes.Generic, DamageDealt = hd.damageDealt, Direction = GetActualDirection(owner, hit.collider.gameObject) });
+                        }
+
+                        onHit?.Invoke(owner, hit);
+                    }
+                }
+
+                rb.velocity = Vector2.zero;
+                timeElapsed += Time.fixedDeltaTime;
+                yield return new WaitForFixedUpdate();
+            }
+
+            rb.velocity = Vector2.zero;
+            rb.velocity = movingDirection * startingVelocity.magnitude;
+
+            onComplete?.Invoke(owner);
         }
 
 

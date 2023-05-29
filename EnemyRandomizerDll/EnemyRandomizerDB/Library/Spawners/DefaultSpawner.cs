@@ -243,11 +243,12 @@ namespace EnemyRandomizerMod
 
     public class PositionLocker : MonoBehaviour
     {
-        public Vector2 positionLock;
+        public Vector2? positionLock;
 
         protected virtual void Update()
         {
-            transform.position = positionLock;
+            if(positionLock != null)
+                transform.position = positionLock.Value;
         }
     }
 }

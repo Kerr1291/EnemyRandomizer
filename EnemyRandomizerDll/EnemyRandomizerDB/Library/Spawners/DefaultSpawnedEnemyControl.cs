@@ -13,7 +13,11 @@ namespace EnemyRandomizerMod
 {
     public class SpawnedObjectControl : MonoBehaviour, IExtraDamageable, IHitResponder
     {
+#if DEBUG
+        public static bool VERBOSE_DEBUG = true;
+#else
         public static bool VERBOSE_DEBUG = false;
+#endif
 
         public ObjectMetadata thisMetadata;
         public ObjectMetadata originialMetadata;
@@ -308,20 +312,38 @@ namespace EnemyRandomizerMod
 
         public virtual void SetPositionOnSpawn()
         {
-            //first, if the enemy is or was inside a wall, fix that
-            //CorrectInsideWallPosition();
+            PreSetSpawnPosition();
 
+            DoSetSpawnPosition();
+
+            AddPositionLogicFixers();
+
+            OnSetSpawnPosition();
+        }
+
+        protected virtual void PreSetSpawnPosition()
+        {
+            //first, if the enemy is or was inside a wall, fix that
+            //CorrectInsideWallPosition(); 
+        }
+
+
+        protected virtual void DoSetSpawnPosition()
+        {
             //then, place it "on the ground" or whereever it should be
             if (useCustomPositonOnSpawn)
                 SetCustomPositionOnSpawn();
             else
                 SetDefaultPosition();
+        }
 
+        protected virtual void AddPositionLogicFixers()
+        {
             //try this resolution before finalizing their placement with "prevent out of bounds"
             //if (gameObject.IsInsideWalls())
             //    gameObject.ResolveInsideWalls();
 
-            if (!gameObject.IsInGroundEnemy())
+            if (!gameObject.IsInGroundEnemy() && !gameObject.CheckIfIsPogoLogicType())
             {
                 if (preventOutOfBoundsAfterPositioning)
                     gameObject.AddComponent<PreventOutOfBounds>();
@@ -329,6 +351,11 @@ namespace EnemyRandomizerMod
                 if (preventInsideWallsAfterPositioning)
                     gameObject.AddComponent<PreventInsideWalls>();
             }
+        }
+
+        protected virtual void OnSetSpawnPosition()
+        {
+
         }
 
         /// <summary>
@@ -389,60 +416,128 @@ namespace EnemyRandomizerMod
         /// </summary>
         protected virtual void SetDefaultPosition()
         {
-            if(name.Contains("Ceiling Dropper"))
+            if(IsRoofEnemy())
             {
-                StickToRoof();
+                PositionRoofEnemy();
             }
-            else if(name.Contains("Mantis Flyer Child"))
+            else if(IsSpecialWallClingEnemy())
             {
-                StickToSurface();
+                PositionSpecialWallClingEnemy();
+            }
+            else if (IsClimbingEnemy())
+            {
+                PositionClimbingEnemy();
+            }
+            else if (IsStaticEnemy())
+            {
+                PositionStaticEnemy();
+            }
+            else if (IsGroundEnemy())
+            {
+                PositionGroundEnemy();
             }
             else
             {
-                if (gameObject.IsClimbing() || gameObject.IsClimbingFromComponents())
-                {
-                    gameObject.StickToClosestSurface(float.MaxValue, extraOffsetScale: spawnPositionOffset, alsoStickCorpse: spawnShouldStickCorpse, flipped: spawnOrientationIsFlipped);
-                }
-                else if(!gameObject.IsMobile())//static enemies
-                {
-                    gameObject.StickToClosestSurface(float.MaxValue, extraOffsetScale: spawnPositionOffset, alsoStickCorpse: spawnShouldStickCorpse, flipped: spawnOrientationIsFlipped);
-                }
-                else if(!gameObject.IsFlying() && !gameObject.IsFlyingFromComponents())
-                {
-                    if (gameObject.IsInGroundEnemy())
-                    {
-                        var rays = SpawnerExtensions.GetOctagonalRays(gameObject, 100f).Where(x => x.normal.y < 0 && x.collider != null);
-                        if (rays.Count() <= 0)
-                        {
-                            //no valid ground to spawn no, just die
-                            gameObject.KillObjectNow();
-                        }
-                        else
-                        {
-                            //try some rays under us
-                            RNG rng = new RNG();
-                            rng.Reset();
-                            var raylist = rays.ToList();
-                            var random = raylist.GetRandomElementFromList(rng);
-                            transform.position = random.point + Vector2.up * 2f;
-                        }
-
-                        //now place on ground
-                        gameObject.StickToGroundX();
-                    }
-                    else
-                    {
-                        if (placeGroundSpawnOnGround)
-                        {
-                            gameObject.StickToGroundX();
-                        }
-                        else
-                        {
-                            //nothing, just spawn it and let it fall
-                        }
-                    }
-                }
+                PositionFlyingEnemy();
             }
+        }
+
+        protected virtual bool IsRoofEnemy()
+        {
+            return name.Contains("Ceiling Dropper");
+        }
+
+        protected virtual bool IsSpecialWallClingEnemy()
+        {
+            //TODO: add the ruin javlin sentry that clings to walls
+            return name.Contains("Mantis Flyer Child");
+        }
+
+        protected virtual void PositionRoofEnemy()
+        {
+            StickToRoof();
+        }
+
+        protected virtual void PositionSpecialWallClingEnemy()
+        {
+            StickToSurface();
+        }
+
+        protected virtual bool IsClimbingEnemy()
+        {
+            return gameObject.IsClimbing() || gameObject.IsClimbingFromComponents();
+        }
+
+        protected virtual bool IsStaticEnemy()
+        {
+            return !gameObject.IsMobile();
+        }
+
+        protected virtual bool IsGroundEnemy()
+        {
+            return !gameObject.IsFlying() && !gameObject.IsFlyingFromComponents();
+        }
+
+        protected virtual void PositionClimbingEnemy()
+        {
+            gameObject.StickToClosestSurface(float.MaxValue, extraOffsetScale: spawnPositionOffset, alsoStickCorpse: spawnShouldStickCorpse, flipped: spawnOrientationIsFlipped);
+        }
+
+        protected virtual void PositionStaticEnemy()
+        {
+            gameObject.StickToClosestSurface(float.MaxValue, extraOffsetScale: spawnPositionOffset, alsoStickCorpse: spawnShouldStickCorpse, flipped: spawnOrientationIsFlipped);
+        }
+
+        protected virtual void PositionGroundEnemy()
+        {
+            if (gameObject.IsInGroundEnemy())
+            {
+                PositionInGroundEnemy();
+            }
+            else
+            {
+                PositionOnGroundEnemy();
+            }
+        }
+
+        protected virtual void PositionInGroundEnemy()
+        {
+            var rays = SpawnerExtensions.GetOctagonalRays(gameObject, 100f).Where(x => x.normal.y > 0 && x.collider != null);
+            if (rays.Count() <= 0)
+            {
+                //no valid ground to spawn no, just die
+                gameObject.KillObjectNow();
+            }
+            else
+            {
+                //try some rays under us
+                RNG rng = new RNG();
+                rng.Reset();
+                var raylist = rays.ToList();
+                var random = raylist.GetRandomElementFromList(rng);
+                transform.position = random.point + Vector2.up * 2f;
+            }
+
+            //now place on ground
+            gameObject.StickToGroundX(spawnPositionOffset);
+        }
+
+        protected virtual void PositionOnGroundEnemy()
+        {
+            //should this ground enemy be allowed to fall from where it spawns or attempt to be stuck to some ground under it
+            if (placeGroundSpawnOnGround)
+            {
+                gameObject.StickToGroundX(spawnPositionOffset);
+            }
+            else
+            {
+                //nothing, just spawn it and let it fall
+            }
+        }
+
+        protected virtual void PositionFlyingEnemy()
+        {
+            //nothing they just end up where they are
         }
 
 
@@ -595,12 +690,56 @@ namespace EnemyRandomizerMod
         {
             int dmgAmount = ExtraDamageable.GetDamageOfType(extraDamageType);
             OnHit(dmgAmount);
+
+            if (gameObject.CheckIfIsPogoLogicType())
+            {
+                if (EnemyHealthManager != null)
+                {
+                    HitTaker.Hit(gameObject, new HitInstance()
+                    {
+                        Source = gameObject,
+                        AttackType = AttackTypes.Generic,
+                        DamageDealt = dmgAmount <= 0 ? 1 : dmgAmount,
+                        IgnoreInvulnerable = true,
+                        MagnitudeMultiplier = 1,
+                        MoveAngle = 0f,
+                        MoveDirection = false,
+                        Multiplier = 1f,
+                        SpecialType = SpecialTypes.None,
+                        IsExtraDamage = false,
+                    });
+                }
+                else
+                {
+                    gameObject.KillObjectNow();
+                }
+            }
         }
 
         public virtual void Hit(HitInstance damageInstance)
         {
             int dmgAmount = damageInstance.DamageDealt;
             OnHit(dmgAmount);
+
+            if (gameObject.CheckIfIsPogoLogicType())
+            {
+                if (damageInstance.AttackType == AttackTypes.Spell)
+                {
+                    if (EnemyHealthManager != null)
+                    {
+                        if (damageInstance.IgnoreInvulnerable == false)
+                            damageInstance.MoveAngle = 3;
+                        else
+                            damageInstance.MoveAngle = damageInstance.MoveAngle - 1;
+                        damageInstance.IgnoreInvulnerable = true;
+                        HitTaker.Hit(gameObject, damageInstance, (int)damageInstance.MoveAngle);
+                    }
+                    else
+                    {
+                        gameObject.KillObjectNow();
+                    }
+                }
+            }
         }
     }
 
@@ -709,7 +848,26 @@ namespace EnemyRandomizerMod
             {
                 if (gameObject.ObjectType() == PrefabObject.PrefabType.Enemy)
                 {
-                    defaultScaledMaxHP = CurrentHP = GetStartingMaxHP(objectThatWillBeReplaced);
+                    defaultScaledMaxHP = GetStartingMaxHP(objectThatWillBeReplaced);
+                    CurrentHP = defaultScaledMaxHP;  
+
+                    if(gameObject.CheckIfIsPogoLogicType())
+                    {
+                        defaultScaledMaxHP = 69;
+                        CurrentHP = 69;
+                    }
+                    else if(gameObject.IsSmasher())
+                    {
+                        defaultScaledMaxHP = 1000;
+                        CurrentHP = 1000;
+                        gameObject.AddParticleEffect_WhiteSoulEmissions(Color.yellow);
+
+                        if(gameObject.IsFlying() && MetaDataTypes.SmasherNeedsCustomSmashBehaviour.Contains(gameObject.GetDatabaseKey()))
+                        {
+                            AddCustomSmashBehaviour();
+                        }
+                    }
+
                     SetupEnemyGeo();
                 }
             }
@@ -717,6 +875,12 @@ namespace EnemyRandomizerMod
             {
                 Dev.Log($"{this}:{this.thisMetadata}: Caught exception in ConfigureRelativeToReplacement ERROR:{e.Message} STACKTRACE{e.StackTrace}");
             }
+        }
+
+        protected virtual void AddCustomSmashBehaviour()
+        {
+            var charge = gameObject.GetBigBeeChargeAttack(HeroController.instance.gameObject, null, null);
+            gameObject.DistanceFlyChase(HeroController.instance.gameObject, 7f, 0.08f, 5f, 7f, charge, 8f);
         }
 
         protected virtual int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
@@ -1001,11 +1165,6 @@ namespace EnemyRandomizerMod
                 float ratio = (floorsize) / (gameObject.GetOriginalObjectSize().x * SizeScale);
                 gameObject.ScaleObject(ratio * .5f);
             }
-        }
-
-        protected override void SetDefaultPosition()
-        {
-            base.SetDefaultPosition();
         }
     }
 

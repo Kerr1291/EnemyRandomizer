@@ -434,6 +434,54 @@ namespace EnemyRandomizerMod
             "Acid Flyer",
         };
 
+        public static List<string> SmasherNeedsCustomSmashBehaviour = new List<string>()
+        {
+            "Inflater",
+            "Buzzer",
+            "Angry Buzzer",
+            "Bursting Bouncer",
+            "Colosseum_Flying_Sentry",
+            "Fly",
+            "Blobble",
+            "Bee Hatchling Ambient",
+            "Moss Flyer",
+            "Spitter",
+        };
+
+        public static Dictionary<string,float> GoodSmasherReplacement = new Dictionary<string, float>()
+        {
+            {"Mosquito", 0.5f},
+            {"Colosseum_Armoured_Mosquito", 0.5f},
+            {"Spitter", 0.5f},
+            {"Moss Flyer", 1f},
+            {"Zoteling Buzzer", 0.25f},
+            {"Hornet Boss 1", 0.5f},
+            {"Fluke Fly", 0.5f},
+            {"Bee Hatchling Ambient", 0.5f},
+            {"Bee Stinger", 0.5f},
+            {"Big Bee", 0.5f},           
+            {"Colosseum_Flying_Sentry", 0.7f},
+            {"Mega Fat Bee", 1f},
+            {"Bursting Bouncer", 1f},
+            {"Blobble", 1f},
+            {"Angry Buzzer", 1f},
+            {"Fly", 1f},
+            {"Buzzer", 1f},
+            {"Giant Fly", 1f}, //spawn error, needs fix
+            {"Inflater", 1f},
+
+            {"Grass Hopper", 1f},
+            {"Zoteling", 0.25f},
+
+
+            //{"Hopper", 0.5f},
+            //{"Giant Hopper", 0.5f},
+            {"Zote Boss", 0.3f},//spawns in floor
+            {"Zote Crew Normal", 0.3f},//spawns in floor
+
+            //{"Bee Dropper", 1f} //needs some starting velocity, a collider so it can be hit?, and POOB component
+        };
+
         public static List<string> BadPogoReplacement = new List<string>()
         {
             "Mantis Traitor Lord",
@@ -1528,9 +1576,6 @@ namespace EnemyRandomizerMod
             {"Zombie Spider 2", "ZombieSpider2"},
             {"Zombie Spider 1", "ZombieSpider1"},
 
-            //{"White Defender", "WhiteDefender"},//fix first
-            //{"Jellyfish GG", "JellyfishGG"},//needs implementing
-
             {"Mage Knight", "MageKnight"},
 
             {"Mage", "Mage"},
@@ -1558,7 +1603,6 @@ namespace EnemyRandomizerMod
             {"Ghost Warrior Hu", "GhostHu"},
             {"Mantis Traitor Lord", "MantisTraitorLord"},
             {"Ghost Warrior Marmu", "GhostMarmu"},
-            //{"Mega Jellyfish", "MegaJellyfish"},//needs implementing
             {"Ghost Warrior Xero", "GhostXero"},
             {"Crystallised Lazer Bug", "LaserBug"},
             {"Mega Zombie Beam Miner", "MegaBeamMiner"},
@@ -1624,6 +1668,10 @@ namespace EnemyRandomizerMod
             {"Abyss Tendril", "AbyssTendril"},
             {"Health Scuttler", "HealthScuttler"},
             {"Orange Scuttler", "OrangeScuttler"},
+
+            //{"White Defender", "WhiteDefender"},//fix first
+            //{"Jellyfish GG", "JellyfishGG"},//needs implementing
+            //{"Mega Jellyfish", "MegaJellyfish"},//needs implementing
         };
 
     }

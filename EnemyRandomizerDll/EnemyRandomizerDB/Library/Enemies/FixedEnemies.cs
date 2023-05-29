@@ -324,7 +324,28 @@ namespace EnemyRandomizerMod
                 control.SendEvent("SPIDER");
             });
 
+            control.GetState("Active").AddCustomAction(() => UnFreeze());
+
             control.AddTimeoutAction(control.GetState("Hit Ground"), "FINISHED", 1f);
+        }
+
+        protected override void OnSetSpawnPosition()
+        {
+            base.OnSetSpawnPosition();
+            GetComponent<PreventOutOfBounds>().onBoundCollision -= Freeze;
+            GetComponent<PreventOutOfBounds>().onBoundCollision += Freeze;
+        }
+
+        protected virtual void Freeze(RaycastHit2D r, GameObject a, GameObject b)
+        {
+            var pl = gameObject.GetOrAddComponent<PositionLocker>();
+            pl.positionLock = transform.position;
+        }
+
+        protected virtual void UnFreeze()
+        {
+            GameObject.Destroy(gameObject.GetComponent<PositionLocker>());
+            GetComponent<PreventOutOfBounds>().onBoundCollision -= Freeze;
         }
     }
 
@@ -372,7 +393,28 @@ namespace EnemyRandomizerMod
                 control.SendEvent("SPIDER");
             });
 
+            control.GetState("Active").AddCustomAction(() => UnFreeze());
+
             control.AddTimeoutAction(control.GetState("Hit Ground"), "FINISHED", 1f);
+        }
+
+        protected override void OnSetSpawnPosition()
+        {
+            base.OnSetSpawnPosition();
+            GetComponent<PreventOutOfBounds>().onBoundCollision -= Freeze;
+            GetComponent<PreventOutOfBounds>().onBoundCollision += Freeze;
+        }
+
+        protected virtual void Freeze(RaycastHit2D r, GameObject a, GameObject b)
+        {
+            var pl = gameObject.GetOrAddComponent<PositionLocker>();
+            pl.positionLock = transform.position;
+        }
+
+        protected virtual void UnFreeze()
+        {
+            GameObject.Destroy(gameObject.GetComponent<PositionLocker>());
+            GetComponent<PreventOutOfBounds>().onBoundCollision -= Freeze;
         }
     }
 

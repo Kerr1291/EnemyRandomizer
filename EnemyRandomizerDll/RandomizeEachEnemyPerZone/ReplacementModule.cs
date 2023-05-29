@@ -105,60 +105,69 @@ namespace EnemyRandomizerMod
                     possible = possible.Where(x => !MetaDataTypes.Static.Contains(x.prefabName));
                 }
             }
-
-            if (!originalObject.CheckIfIsPogoLogicType() && MatchReplacements)
+            else if (originalObject.IsSmasher())
             {
-                possible = possible.Where(x => !MetaDataTypes.ReplacementEnemiesToSkip.Contains(x.prefabName));
+                possible = possible.Where(x => MetaDataTypes.GoodSmasherReplacement.Keys.Contains(x.prefabName));
+            }
 
-
-                if(isBoss)
+            //if it's not a pogo or smasher, can do normal replacement stuff
+            if ((!originalObject.CheckIfIsPogoLogicType() && !originalObject.IsSmasher()))
+            {
+                if (MatchReplacements)
                 {
-                    possible = possible.Where(x => SpawnerExtensions.IsBoss(x.prefabName));
-                }
-                else
-                {
-                    possible = possible.Where(x => !SpawnerExtensions.IsBoss(x.prefabName));
+                    possible = possible.Where(x => !MetaDataTypes.ReplacementEnemiesToSkip.Contains(x.prefabName));
 
-                    if (isFlyer)
+
+                    if (isBoss)
                     {
-                        possible = possible.Where(x => SpawnerExtensions.IsFlying(x.prefabName));
+                        possible = possible.Where(x => SpawnerExtensions.IsBoss(x.prefabName));
                     }
                     else
                     {
-                        possible = possible.Where(x => !SpawnerExtensions.IsFlying(x.prefabName));
+                        possible = possible.Where(x => !SpawnerExtensions.IsBoss(x.prefabName));
 
-                        if (isWalker)
+                        if (isFlyer)
                         {
-                            possible = possible.Where(x => SpawnerExtensions.IsMobile(x.prefabName));
+                            possible = possible.Where(x => SpawnerExtensions.IsFlying(x.prefabName));
+                        }
+                        else
+                        {
+                            possible = possible.Where(x => !SpawnerExtensions.IsFlying(x.prefabName));
+
+                            if (isWalker)
+                            {
+                                possible = possible.Where(x => SpawnerExtensions.IsMobile(x.prefabName));
+                            }
+
+                            if (isClimbing)
+                            {
+                                possible = possible.Where(x => SpawnerExtensions.IsClimbing(x.prefabName));
+                            }
                         }
 
-                        if (isClimbing)
+                        if (isStatic)
                         {
-                            possible = possible.Where(x => SpawnerExtensions.IsClimbing(x.prefabName));
+                            possible = possible.Where(x => !SpawnerExtensions.IsMobile(x.prefabName));
                         }
                     }
 
-                    if (isStatic)
-                    {
-                        possible = possible.Where(x => !SpawnerExtensions.IsMobile(x.prefabName));
-                    }
+                    //possible = pMetas.Select(x => x.ObjectPrefab);
                 }
 
-                //possible = pMetas.Select(x => x.ObjectPrefab);
-            }
-
-            if(!originalObject.CheckIfIsPogoLogicType() && isBattleArena)
-            {
-                possible = possible.Where(x =>
+                if (isBattleArena)
                 {
-                    if(MetaDataTypes.SafeForArenas.TryGetValue(x.prefabName, out var isok))
+                    possible = possible.Where(x =>
                     {
-                        return isok;
-                    }
-                    return false;
-                }).ToList();
+                        if (MetaDataTypes.SafeForArenas.TryGetValue(x.prefabName, out var isok))
+                        {
+                            return isok;
+                        }
+                        return false;
+                    }).ToList();
+                }
             }
 
+            //always filter through this final filter
             return possible.Where(x => !MetaDataTypes.ReplacementEnemiesToSkip.Contains(x.prefabName)).ToList();
         }
 
