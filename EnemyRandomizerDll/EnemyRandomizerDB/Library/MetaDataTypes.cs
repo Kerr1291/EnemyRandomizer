@@ -497,6 +497,7 @@ namespace EnemyRandomizerMod
             "Fluke Mother",
             "Mawlek Body",
             "Mage Lord",
+            "Zote Turret",
             "Mage Lord Phase2",
             "Dung Defender",
             "White Defender",
@@ -523,6 +524,8 @@ namespace EnemyRandomizerMod
             "White Defender",
             "Plant Trap",
             "Moss Charger",
+            "Zote Turret",
+            "Laser Turret Frames",
             "Mega Moss Charger"
         };
 
@@ -560,16 +563,18 @@ namespace EnemyRandomizerMod
             "Plant Turret Right"                   ,
             "Colosseum_Worm"                       ,
             "Colosseum Grass Hopper"               ,
+            "Zombie Beam Miner Rematch",
             "White Defender"               , //until he's fixed
             //"Mage Lord"               , //until he's fixed
             //"Mage Lord Phase2"               , //until he's fixed
-            "Black Knight",
-            "Ghost Warrior No Eyes",
             "Ghost Warrior Markoth",
             "Infected Knight",
-            "Fluke Mother",
             "Nightmare Grimm Boss",
+            "Ghost Warrior Xero",
+            "Hive Knight",
             "Mato",
+            "False Knight Dream",
+            "Bee Dropper",
         };
 
         public static List<string> ReplacementHazardsToSkip = new List<string>()
@@ -1516,9 +1521,8 @@ namespace EnemyRandomizerMod
             {"Lesser Mawlek", 1f},
             {"Fly", 1f},
             {"Buzzer R", 1f},
-            {"Baby Centipede", 10.0f},
+            {"Baby Centipede", 1.0f},
             {"Zombie Spider 2", 0.5f},//nullref
-            {"Tiny Spider", 1f},
             {"Shade Sibling", 1f},
             {"Buzzer", 1f},
             {"Giant Fly", 1f}, //spawn error, needs fix
@@ -1573,70 +1577,42 @@ namespace EnemyRandomizerMod
 
         public static Dictionary<string, string> DebugTestEnemies = new Dictionary<string, string>()
         {
-            {"Zombie Spider 2", "ZombieSpider2"},
-            {"Zombie Spider 1", "ZombieSpider1"},
-
-            {"Mage Knight", "MageKnight"},
-
-            {"Mage", "Mage"},
-            {"Electric Mage", "ElectricMage"},
-
-            //{"Giant Fly", "GiantFly"},//test the boss
-            {"Mawlek Body", "Mawlek"}, //test -- should be ok now
-            {"False Knight New", "FalseKnightNew"},
-            {"Blocker", "Blocker"},
-            {"Mage Lord", "MageLord"},
-            {"Mage Lord Phase2", "MageLordPhase2"},
-            {"Black Knight", "BlackKnight"},
-            {"Jar Collector", "JarCollector"},
-            {"Plant Trap", "SnapperTrap"},
-            {"Moss Charger", "MossCharger"},
-            {"Plant Turret", "PlantShooter"},
-            {"Giant Buzzer", "BigBuzzer"},
-            {"Mega Moss Charger", "MegaMossCharger"},
 
 
+            //{"Moss Charger", "MossCharger"},
+            //{"Mega Moss Charger", "MegaMossCharger"},
+            //{"Ghost Warrior Markoth", "GhostMarkoth"},
+            //{"Ghost Warrior Xero", "GhostXero"},
 
-            {"Ghost Warrior No Eyes", "GhostNoEyes"},
-            {"Mushroom Turret", "MushroomTurret"},
-            {"Mushroom Roller", "MushroomRoller"},
+
+            //{"Giant Buzzer", "BigBuzzer"},
+            
+            //{"Grey Prince", "GreyPrince"},
+            //{"Mantis Traitor Lord", "MantisTraitorLord"},
             {"Ghost Warrior Hu", "GhostHu"},
-            {"Mantis Traitor Lord", "MantisTraitorLord"},
-            {"Ghost Warrior Marmu", "GhostMarmu"},
-            {"Ghost Warrior Xero", "GhostXero"},
-            {"Crystallised Lazer Bug", "LaserBug"},
-            {"Mega Zombie Beam Miner", "MegaBeamMiner"},
-            {"Zombie Beam Miner Rematch", "MegaBeamMiner"},
-            {"Zombie Hornhead Sp", "SpiderCorpse"},
-            {"Zombie Runner Sp", "SpiderCorpse"},
-            {"Centipede Hatcher", "CentipedeHatcher"},
-            {"Mimic Spider", "MimicSpider"},
-            {"Ghost Warrior Galien", "GhostGalien"},
-            {"Ghost Warrior Markoth", "GhostMarkoth"},
-            {"Infected Knight", "InfectedKnight"},
-            {"Mawlek Turret", "MawlekTurret"},
+
+            //{"Zombie Beam Miner Rematch", "MegaBeamMiner"},//busted?
+
             {"Dung Defender", "DungDefender"},
             {"fluke_baby_02", "JellyCrawler"},
             {"fluke_baby_01", "BlobFlyer"},
             {"fluke_baby_03", "MenderBug"},
             {"Fluke Mother", "FlukeMother"},
-            {"White Palace Fly", "PalaceFly"},
             {"Enemy", "WhiteRoyal"},
             {"Royal Gaurd", "RoyalGaurd"},
             {"Zombie Hive", "ZombieHive"},
-            {"Hive Knight", "HiveKnight"},
+            //{"Hive Knight", "HiveKnight"},
             {"Grimm Boss", "Grimm"},
-            {"Nightmare Grimm Boss", "NightmareGrimm"},
-            {"False Knight Dream", "FalseKnightDream"},
+            //{"Nightmare Grimm Boss", "NightmareGrimm"},
+            //{"False Knight Dream", "FalseKnightDream"},
             {"Dream Mage Lord", "DreamMageLord"},
-            {"Dream Mage Lord Phase2", "DreamMageLordPhase2"},
+            //{"Dream Mage Lord Phase2", "DreamMageLordPhase2"},
             {"Lost Kin", "LostKin"},
             {"Zoteling", "Zoteling"},
             {"Zoteling Buzzer", "ZotelingBuzzer"},
             {"Zoteling Hopper", "ZotelingHopper"},
             {"Zote Balloon", "ZoteBalloon"},
-            {"Grey Prince", "GreyPrince"},
-            {"Radiance", "FinalBoss"},
+            //{"Radiance", "FinalBoss"},
             {"Hollow Knight Boss", "HollowKnight"},
             {"HK Prime", "HollowKnightPrime"},
             {"Pale Lurker", "PaleLurker"},
@@ -1646,7 +1622,6 @@ namespace EnemyRandomizerMod
             {"Fat Fluke", "FatFluke"},
             {"Absolute Radiance", "AbsoluteRadiance"},
             {"Sly Boss", "Nailsage"},
-            {"Zote Turret", "ZoteTurret"},
             {"Zote Balloon Ordeal", "ZotelingBalloon"},
             {"Ordeal Zoteling", "OrdealZoteling"},
             {"Zote Salubra", "EggSac"},
@@ -1658,7 +1633,6 @@ namespace EnemyRandomizerMod
             {"Hornet Nosk", "HornetNosk"},
             {"Mace Head Bug", "MaceHeadBug"},
             {"Big Centipede Col", "BigCentipede"},
-            {"Laser Turret Frames", "LaserBug"},
             {"Jelly Egg Bomb", "JellyEggBomb"},
             {"Worm", "ColWorm"},
             {"Bee Dropper", "Pigeon"},
@@ -1669,9 +1643,23 @@ namespace EnemyRandomizerMod
             {"Health Scuttler", "HealthScuttler"},
             {"Orange Scuttler", "OrangeScuttler"},
 
+
+            {"Laser Turret Frames", "LaserBug"},
+            
+            //{"Plant Turret", "PlantShooter"}, minor issues, fix later
+            //{"Mage Lord", "MageLord"},             //good for now, some placements aren't great but overall doesn't get stuck as much or at all
+            //{"Mage Lord Phase2", "MageLordPhase2"},//good for now, some placements aren't great but overall doesn't get stuck as much or at all
+
+            //{"False Knight New", "FalseKnightNew"},//mostly good- shockwave could use a tune up
+            //{"Giant Fly", "GiantFly"},//test the boss
+
+            //{"Infected Knight", "InfectedKnight"},//nullrefs -- fix before trying again
             //{"White Defender", "WhiteDefender"},//fix first
             //{"Jellyfish GG", "JellyfishGG"},//needs implementing
             //{"Mega Jellyfish", "MegaJellyfish"},//needs implementing
+            
+            //{"Mimic Spider", "MimicSpider"}, //needs a timeout on charge -- basically fine
+            //{"Jar Collector", "JarCollector"},//final hp test for spawns, but works great
         };
 
     }

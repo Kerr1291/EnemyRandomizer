@@ -51,32 +51,10 @@ namespace EnemyRandomizerMod
 
         public virtual GameObject SpawnAndTrackChild(string objectName, Vector3 spawnPoint, bool setActive = true, bool allowRandomization = false)
         {
-            GameObject child = null;
-            //var handle = EnemyRandomizerDatabase.OnObjectReplaced.AsObservable().Subscribe(x =>
-            //{
-            //    if (Children == null)
-            //        return;
-
-            //    if (Children.Contains(x.oldObject))
-            //        Children.Remove(x.oldObject);
-            //    if (!Children.Contains(x.newObject))
-            //        Children.Add(x.newObject);
-
-            //    spawnedObject = x.newObject;
-            //});
-
-            if(allowRandomization)
-            {
-                child = EnemyRandomizerDatabase.CustomSpawn(spawnPoint, objectName, setActive);
-            }
-            else
-            {
-                child = SpawnerExtensions.SpawnEntityAt(objectName, spawnPoint, setActive);
-            }
+            GameObject child = SpawnerExtensions.SpawnEntityAt(objectName, spawnPoint, setActive, allowRandomization);
 
             Children.Add(child);
 
-            //handle.Dispose();
             return child;
         }
 
@@ -275,3 +253,27 @@ namespace EnemyRandomizerMod
 //        }
 //    }
 //}
+
+
+
+
+
+
+
+
+
+//var handle = EnemyRandomizerDatabase.OnObjectReplaced.AsObservable().Subscribe(x =>
+//{
+//    if (Children == null)
+//        return;
+
+//    if (Children.Contains(x.oldObject))
+//        Children.Remove(x.oldObject);
+//    if (!Children.Contains(x.newObject))
+//        Children.Add(x.newObject);
+
+//    spawnedObject = x.newObject;
+//});
+
+
+//handle.Dispose();

@@ -20,10 +20,8 @@ namespace EnemyRandomizerMod
             control.OverrideState( "Pos", () =>
             {
                 control.FsmVariables.GetFsmFloat("X Pos").Value = pos2d.x;
-                float ypos = roofY;
-                control.FsmVariables.GetFsmFloat("Y Pos").Value = ypos;
-                startYPos = ypos;
-                gameObject.transform.position = new Vector3(pos2d.x, ypos, 0f);
+                control.FsmVariables.GetFsmFloat("Y Pos").Value = pos2d.y;
+                startYPos = pos2d.y;
                 gameObject.GetComponent<Collider2D>().enabled = true;
                 gameObject.GetComponent<MeshRenderer>().enabled = true;
             });

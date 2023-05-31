@@ -50,7 +50,7 @@ namespace EnemyRandomizerMod
 
             control.OverrideState( "Set Pos", () =>
             {
-                var telepos = gameObject.GetRandomPositionInLOSofSelf(5, 50, 5f, 5f);
+                var telepos = gameObject.GetRandomPositionInLOSofSelf(2f, 50f, 5f);
 
                 control.FsmVariables.GetFsmFloat("X Pos").Value = telepos.x;
                 //float ypos = roofY - this.thisMetadata.ObjectSize.y * this.thisMetadata.SizeScale;
@@ -69,7 +69,7 @@ namespace EnemyRandomizerMod
 
             control.OverrideState( "Out", () =>
             {
-                var telepos = gameObject.GetRandomPositionInLOSofSelf(5, 50, 5f, 5f);
+                var telepos = gameObject.GetRandomPositionInLOSofSelf(5, 50, 5f);
                 control.FsmVariables.GetFsmFloat("X Pos").Value = telepos.x;
                 //float ypos = roofY - this.thisMetadata.ObjectSize.y * this.thisMetadata.SizeScale;
                 control.FsmVariables.GetFsmFloat("Y Pos").Value = telepos.y;

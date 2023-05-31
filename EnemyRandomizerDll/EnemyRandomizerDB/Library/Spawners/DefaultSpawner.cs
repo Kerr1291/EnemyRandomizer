@@ -151,6 +151,10 @@ namespace EnemyRandomizerMod
         public string effectToSpawn = "Gas Explosion Recycle L";
         public virtual bool destroyGameObject => false;
         public virtual bool allowRandomizationOfSpawn => false;
+        public bool isSpawnerEnemy = false;
+        public bool activateOnSpawn = true;
+
+        public Action<SpawnEffect, GameObject> onSpawn;
 
         protected virtual void Spawn()
         {
@@ -169,16 +173,19 @@ namespace EnemyRandomizerMod
             if (!gameObject.IsInAValidScene())
                 return;
 
-            if (effectToSpawn != NONE && !string.IsNullOrEmpty(effectToSpawn))
+            if ((effectToSpawn != NONE && !string.IsNullOrEmpty(effectToSpawn)) || (isSpawnerEnemy && allowRandomizationOfSpawn))
             {
-                if (allowRandomizationOfSpawn)
+                GameObject spawned = null;
+                if (isSpawnerEnemy && allowRandomizationOfSpawn)
                 {
-                    EnemyRandomizerDatabase.CustomSpawn(transform.position, effectToSpawn, true);
+                    spawned = SpawnerExtensions.SpawnEnemyForEnemySpawner(transform.position, activateOnSpawn, effectToSpawn, null);
                 }
                 else
                 {
-                    EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, effectToSpawn, null, true);
+                    spawned = SpawnerExtensions.SpawnEntityAt(effectToSpawn, transform.position, activateOnSpawn, allowRandomizationOfSpawn);
                 }
+
+                onSpawn?.Invoke(this, spawned);
             }
 
             if(destroyGameObject)
@@ -195,6 +202,9 @@ namespace EnemyRandomizerMod
 
     public class SpawnEffectOnDestroy : SpawnEffect
     {
+        public override bool allowRandomizationOfSpawn => allowRandomization;
+
+        public bool allowRandomization = false;
         public bool forceDestroyIfRendererBecomesDisabled = true;
         MeshRenderer mRenderer;
         bool wasEnabled = false;

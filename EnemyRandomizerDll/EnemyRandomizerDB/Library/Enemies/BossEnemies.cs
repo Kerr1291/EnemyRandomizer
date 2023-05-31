@@ -150,7 +150,7 @@ namespace EnemyRandomizerMod
             trans1.DisableAction(8);
             trans1.DisableAction(9);
             trans1.DisableAction(10);
-            trans1.DisableAction(11);
+            //trans1.DisableAction(11);
             trans1.GetAction<Wait>(12).time = 0.1f;
             trans1.DisableAction(14);
             trans1.InsertCustomAction(() => {
@@ -341,8 +341,8 @@ namespace EnemyRandomizerMod
 
         public override bool preventOutOfBoundsAfterPositioning => true;
 
-        public float teleAboveHeroHeight = 12f;
-        public float minTeleAboveHeroHeight = 8f;
+        public float teleAboveHeroHeight = 10f;
+        public Vector2 teleQuakePoint;
 
         public override void Setup(GameObject other)
         {
@@ -364,9 +364,10 @@ namespace EnemyRandomizerMod
             teleQuake.DisableAction(5);
             teleQuake.InsertCustomAction(() => {
 
-                var aboveHero = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.up, teleAboveHeroHeight);
-                var telePoint = heroPosWithOffset;
-                if (aboveHero.collider != null && aboveHero.distance < minTeleAboveHeroHeight)
+                var aboveHero = gameObject.GetTeleportPositionAbovePlayer(teleAboveHeroHeight - 1f, teleAboveHeroHeight + 1f);
+                teleQuakePoint = aboveHero + Vector2.down * 2f;
+                var dist = (aboveHero - heroPos2d).magnitude;
+                if (dist < teleAboveHeroHeight * 0.5f)
                 {
                     control.SendEvent("CANCEL");
                 }
@@ -385,17 +386,11 @@ namespace EnemyRandomizerMod
             teleportQ.DisableAction(3);
             teleportQ.DisableAction(7);
             teleportQ.InsertCustomAction(() => {
-                control.FsmVariables.GetFsmGameObject("Tele Out Anim").Value.transform.position = transform.position;
 
-                var aboveHero = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.up, teleAboveHeroHeight);
-                var telePoint = heroPosWithOffset;
-                if (aboveHero.collider != null && aboveHero.distance >= minTeleAboveHeroHeight)
-                {
-                    telePoint = telePoint + Vector2.up * aboveHero.distance;
-                }
+                control.FsmVariables.GetFsmGameObject("Tele Out Anim").Value.transform.position = transform.position;
                 control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
-                transform.position = telePoint;
-                control.FsmVariables.GetFsmVector3("Teleport Point").Value = transform.position;
+                transform.position = teleQuakePoint;
+                control.FsmVariables.GetFsmVector3("Teleport Point").Value = teleQuakePoint;
             },0);
 
             var quakeLand = control.GetState("Quake Land");
@@ -426,7 +421,7 @@ namespace EnemyRandomizerMod
             teleport.DisableAction(4);
             teleport.InsertCustomAction(() => {
 
-                var telePoint = gameObject.GetRandomPositionInLOSofSelf(2f, 20f, 2f, 4f);
+                Vector3 telePoint = gameObject.GetRandomPositionInLOSofPlayer(3f, 20f, 2f);
 
                 control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
                 transform.position = telePoint;
@@ -439,7 +434,7 @@ namespace EnemyRandomizerMod
             orbSummon.DisableAction(0);
             orbSummon.InsertCustomAction(() => {
 
-                var telePoint = gameObject.GetRandomPositionInLOSofSelf(1f, 8f, 0f, 2f);
+                var telePoint = gameObject.GetRandomPositionInLOSofSelf(1f, 4f, 0f);
                 control.FsmVariables.GetFsmVector3("Fireball Pos").Value = telePoint;
             }, 0);
 
@@ -448,6 +443,29 @@ namespace EnemyRandomizerMod
 
             var teleOut = control.GetState("Tele Out");
             teleOut.DisableAction(3);
+        }
+
+        protected override void OnSetSpawnPosition()
+        {
+            base.OnSetSpawnPosition();
+
+            GetComponent<PreventOutOfBounds>().onBoundCollision -= ForceDownward;
+            GetComponent<PreventOutOfBounds>().onBoundCollision += ForceDownward;
+        }
+
+        protected virtual void ForceDownward(RaycastHit2D r, GameObject a, GameObject b)
+        {
+            if (control.ActiveStateName == "Quake Down")
+            {
+                if (pos2d.y > heroPos2d.y)
+                {
+                    var poob = gameObject.GetComponent<PreventOutOfBounds>();
+                    if (poob != null)
+                    {
+                        poob.ForcePosition(pos2d + Vector2.down * 2f);
+                    }
+                }
+            }
         }
     }
 
@@ -474,13 +492,22 @@ namespace EnemyRandomizerMod
         public override bool preventOutOfBoundsAfterPositioning => true;
 
         public float teleAboveHeroHeight = 12f;
+        public float chargeHeight => gameObject.GetOriginalObjectSize().y * this.SizeScale + 0.2f;
+        public float spinnerHeight => gameObject.GetOriginalObjectSize().y * this.SizeScale + 0.2f + 2f;
+
+        public bool isTeleCharge = false;
+        public Vector2 teleQuakePoint;
+        public Vector2 teleChargePoint;
+        public Vector2 teleChargePoint2;
+
+        public float highSpinnerSpeed = 9.5f;
 
         public override void Setup(GameObject other)
         {
             base.Setup(other);
-              
+
             var destroyIfDefeated = gameObject.LocateMyFSM("Destroy If Defeated");
-            if(destroyIfDefeated != null)
+            if (destroyIfDefeated != null)
                 GameObject.Destroy(destroyIfDefeated);
 
             try
@@ -490,121 +517,298 @@ namespace EnemyRandomizerMod
                 init.DisableAction(4);
                 init.DisableAction(5);
                 init.AddCustomAction(() => { control.SendEvent("FINISHED"); });
-            } catch (Exception e) { Dev.LogError($"ERROR CONFIGURING INIT -- {e.Message} {e.StackTrace}"); }
+            }
+            catch (Exception e) { Dev.LogError($"ERROR CONFIGURING INIT -- {e.Message} {e.StackTrace}"); }
 
             try
-            { 
-            var sleep = control.GetState("Sleep");
-            sleep.DisableAction(0);
-            //sleep.AddCustomAction(() => { control.SendEvent("WAKE"); });
-            //sleep.ChangeTransition("FINISHED", "Teleport In");
+            {
+                var sleep = control.GetState("Sleep");
+                sleep.DisableAction(0);
 
-            this.InsertHiddenState(control, "Init", "FINISHED", "Teleport In");
+                this.InsertHiddenState(control, "Init", "FINISHED", "Teleport In");
 
-            var teleportIn = control.GetState("Teleport In");
-            teleportIn.DisableAction(3);
-            teleportIn.DisableAction(4);
-            teleportIn.DisableAction(5);
-            teleportIn.DisableAction(6);
-            teleportIn.DisableAction(7);
-            teleportIn.InsertCustomAction(() => {
+                var teleportIn = control.GetState("Teleport In");
+                teleportIn.DisableAction(3);
+                teleportIn.DisableAction(4);
+                teleportIn.DisableAction(5);
+                teleportIn.DisableAction(6);
+                teleportIn.DisableAction(7);
+                teleportIn.InsertCustomAction(() =>
+                {
+                    var telePoint = gameObject.GetRandomPositionInLOSofSelf(2f, 20f, 10f);
 
-                var telePoint = gameObject.GetRandomPositionInLOSofSelf(2f, 20f, 2f, 4f);
+                    control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
+                    transform.position = telePoint;
+                    control.FsmVariables.GetFsmVector3("Teleport Point").Value = telePoint;
 
-                control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
-                transform.position = telePoint;
-                control.FsmVariables.GetFsmVector3("Teleport Point").Value = telePoint;
-
-            }, 0);
-            teleportIn.ChangeTransition("FINISHED", "Set Idle Timer");
+                }, 0);
+                teleportIn.ChangeTransition("FINISHED", "Set Idle Timer");
             }
             catch (Exception e) { Dev.LogError($"ERROR CONFIGURING SLEEP TELE IN -- {e.Message} {e.StackTrace}"); }
 
-            try { 
-            var teleAway = control.GetState("Tele Away");
-            teleAway.DisableAction(1);
-            teleAway.DisableAction(2);
+            try
+            {
+                var teleShoot = control.GetState("Tele Shoot");
+                teleShoot.DisableAction(1);
+                teleShoot.DisableAction(2);
 
-            var awayValidq = control.GetState("Away Valid?");
-            awayValidq.DisableAction(0);
-            awayValidq.DisableAction(1);
-            awayValidq.DisableAction(3);
-            awayValidq.DisableAction(4);
-            awayValidq.DisableAction(5);
-            awayValidq.DisableAction(6);
-            awayValidq.AddCustomAction(() => { control.SendEvent("FINISHED"); });
+                var shootValidq = control.GetState("Shoot Valid?");
+                shootValidq.DisableAction(0);
+                shootValidq.DisableAction(1);
+                shootValidq.DisableAction(3);
+                shootValidq.DisableAction(4);
+                shootValidq.DisableAction(5);
+                shootValidq.DisableAction(6);
+                shootValidq.AddCustomAction(() => { control.SendEvent("FINISHED"); });
 
-            var teleport = control.GetState("Teleport");
-            teleport.DisableAction(4);
-            teleport.DisableAction(5);
-            teleport.DisableAction(6);
-            teleport.DisableAction(7);
-            teleport.DisableAction(11);
-            teleport.InsertCustomAction(() => {
 
-                var telePoint = gameObject.GetRandomPositionInLOSofSelf(2f, 20f, 2f, 4f);
+                var teleAway = control.GetState("Tele Away");
+                teleAway.DisableAction(1);
+                teleAway.DisableAction(2);
 
-                control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
-                transform.position = telePoint;
-                control.FsmVariables.GetFsmVector3("Teleport Point").Value = telePoint;
-            }, 0);
+                var awayValidq = control.GetState("Away Valid?");
+                awayValidq.DisableAction(0);
+                awayValidq.DisableAction(1);
+                awayValidq.DisableAction(3);
+                awayValidq.DisableAction(4);
+                awayValidq.DisableAction(5);
+                awayValidq.DisableAction(6);
+                awayValidq.AddCustomAction(() => { control.SendEvent("FINISHED"); });
+
+                var teleport = control.GetState("Teleport");
+                teleport.DisableAction(4);
+                teleport.DisableAction(5);
+                teleport.DisableAction(6);
+                teleport.DisableAction(7);
+                //teleport.DisableAction(11);
+                teleport.InsertCustomAction(() =>
+                {
+                    Vector3 telePoint;
+                    if (isTeleCharge)
+                    {
+                        telePoint = teleChargePoint;
+                        isTeleCharge = false;
+                    }
+                    else
+                    {
+                        telePoint = gameObject.GetRandomPositionInLOSofSelf(2f, 20f, 2f);
+                    }
+
+                    control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
+                    transform.position = telePoint;
+                    control.FsmVariables.GetFsmVector3("Teleport Point").Value = telePoint;
+                }, 0);
+
+
+
+                var teleCharge = control.GetState("Tele Charge");
+                teleCharge.DisableActions(1,2,3,4,5,6,7,8);
+                teleCharge.AddCustomAction(() =>
+                {
+                    isTeleCharge = true;
+                    var left = gameObject.GetHorizontalTeleportPositionFromPlayer(false, chargeHeight);
+                    var right = gameObject.GetHorizontalTeleportPositionFromPlayer(true, chargeHeight);
+
+                    float leftd = (left - heroPos2d).magnitude;
+                    float rightd = (right - heroPos2d).magnitude;
+
+                    if(leftd > rightd)
+                    {
+                        teleChargePoint = left;
+                        teleChargePoint2 = right;
+                        control.FsmVariables.GetFsmBool("High Spinner Right").Value = true;
+                        gameObject.SetSpriteDirection(false);
+                    }
+                    else
+                    {
+                        control.FsmVariables.GetFsmBool("High Spinner Left").Value = true;
+                        teleChargePoint = right;
+                        teleChargePoint2 = left;
+                        gameObject.SetSpriteDirection(true);
+                    }
+                });
+
+                var teleBotY = control.GetState("Tele Bot Y");
+                teleBotY.DisableAction(0);
+
+                var teleTopY = control.GetState("Tele Top Y");
+                teleBotY.DisableAction(0);
+
+
+
+                var teleSpinnerX = control.GetState("Tele Spinner X");
+                teleSpinnerX.DisableActions(1, 3, 4, 5, 6, 7, 8, 10);
+                teleSpinnerX.AddCustomAction(() =>
+                {
+                    isTeleCharge = true;
+                    var left = gameObject.GetHorizontalTeleportPositionFromPlayer(false, spinnerHeight);
+                    var right = gameObject.GetHorizontalTeleportPositionFromPlayer(true, spinnerHeight);
+
+                    float leftd = (left - heroPos2d).magnitude;
+                    float rightd = (right - heroPos2d).magnitude;
+
+                    if (leftd > rightd)
+                    {
+                        teleChargePoint = left;
+                        teleChargePoint2 = right;
+                        control.FsmVariables.GetFsmBool("High Spinner Right").Value = true;
+                        gameObject.SetSpriteDirection(false);
+                    }
+                    else
+                    {
+                        control.FsmVariables.GetFsmBool("High Spinner Left").Value = true;
+                        teleChargePoint = right;
+                        teleChargePoint2 = left;
+                        gameObject.SetSpriteDirection(true);
+                    }
+                });
+
+
+                var hsRight = control.GetState("HS Right");
+                hsRight.DisableActions(0,1,2);
+                hsRight.AddCustomAction(() =>
+                {
+                    PhysicsBody.velocity = new Vector2(highSpinnerSpeed, 0f);
+                    StartCoroutine(SendFinishedOnXPositionOrDelay(teleChargePoint2.x));
+                });
+
+
+                var hsLeft = control.GetState("HS Left");
+                hsLeft.DisableActions(0, 1, 2, 3, 4);
+                hsLeft.AddCustomAction(() =>
+                {
+                    PhysicsBody.velocity = new Vector2(-highSpinnerSpeed, 0f);
+                    StartCoroutine(SendFinishedOnXPositionOrDelay(teleChargePoint2.x));
+                });
+
+                var rePos = control.GetState("Re Pos");
+                rePos.DisableActions(0);
+                rePos.AddCustomAction(() =>
+                {
+                    transform.position = gameObject.GetTeleportPositionAbovePlayer(5f, 35f, 2f) + Vector2.down * 2f;
+                });
             }
             catch (Exception e) { Dev.LogError($"ERROR CONFIGURING TELE AWAY VALID TELE -- {e.Message} {e.StackTrace}"); }
-            var shot = control.GetState("Shot");
-            shot.DisableAction(2);
 
             try
-            { 
-            var teleQuake = control.GetState("Tele Quake");
-            teleQuake.DisableAction(2);
-            teleQuake.DisableAction(3);
-            teleQuake.DisableAction(4);
-                teleQuake.InsertCustomAction(() => {
+            {
+                var shot = control.GetState("Shot");
+                shot.DisableAction(2);
 
-                    var aboveHero = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.up, teleAboveHeroHeight);
-                    var telePoint = heroPosWithOffset;
-                    if (aboveHero.collider != null && aboveHero.distance < teleAboveHeroHeight)
+                var teleQuake = control.GetState("Tele Quake");
+                teleQuake.DisableAction(2);
+                teleQuake.DisableAction(3);
+                teleQuake.DisableAction(4);
+                teleQuake.InsertCustomAction(() =>
+                {
+                    var aboveHero = gameObject.GetTeleportPositionAbovePlayer(teleAboveHeroHeight - 1f, teleAboveHeroHeight + 1f);
+                    //teleQuakePoint = aboveHero;
+                    teleQuakePoint = aboveHero + Vector2.down * 2f;
+                    var dist = (aboveHero - heroPos2d).magnitude;
+                    if (dist < teleAboveHeroHeight * 0.5f)
                     {
                         control.SendEvent("CANCEL");
                     }
-
                 }, 2);
 
                 var teleportQ = control.GetState("TeleportQ");
-            teleportQ.DisableAction(0);
-            teleportQ.DisableAction(3);
-            teleportQ.DisableAction(4);
-            teleportQ.DisableAction(5);
-            teleportQ.DisableAction(9);
-            teleportQ.InsertCustomAction(() => {
-                var telePoint = heroPos2d + SpawnerExtensions.GetRayOn(heroPos2d, Vector2.up, 10f).point;
-                control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
-                transform.position = telePoint;
-                control.FsmVariables.GetFsmVector3("Teleport Point").Value = transform.position;
-            }, 0);
+                teleportQ.DisableAction(0);
+                teleportQ.DisableAction(3);
+                teleportQ.DisableAction(4);
+                teleportQ.DisableAction(5);
+                teleportQ.DisableAction(9);
+                teleportQ.InsertCustomAction(() =>
+                {
+                    control.FsmVariables.GetFsmVector3("Self Pos").Value = transform.position;
+                    transform.position = teleQuakePoint;
+                    control.FsmVariables.GetFsmVector3("Teleport Point").Value = teleQuakePoint;
+                }, 0);
 
-            var quakeDown = control.GetState("Quake Down");
-            quakeDown.DisableAction(6);
-            quakeDown.DisableAction(7);
-            quakeDown.AddCustomAction(() =>
-            {
-                StartCoroutine(SendFinishedOnGroundOrDelay());
-            });
+                //var quakeDown = control.GetState("Quake Down");
+                //quakeDown.DisableAction(6);
+                //quakeDown.DisableAction(7);
+                //quakeDown.AddCustomAction(() =>
+                //{
+                //    StartCoroutine(SendFinishedOnGroundOrDelay());
+                //});
 
-            var quakeLand = control.GetState("Quake Land");
-            quakeLand.DisableAction(3);
-            quakeLand.DisableAction(13);
-            quakeLand.InsertCustomAction(() =>
-            {
-                gameObject.StickToGround();
-            }, 0);
+                var quakeLand = control.GetState("Quake Land");
+                quakeLand.DisableAction(3);
+                quakeLand.DisableAction(13);
+                quakeLand.InsertCustomAction(() =>
+                {
+                    gameObject.StickToGroundX();
+                }, 0);
 
-            var teleOut = control.GetState("HS Tele Out");
-            teleOut.DisableAction(2);
+                var teleOut = control.GetState("HS Tele Out");
+                teleOut.DisableAction(2);
             }
             catch (Exception e) { Dev.LogError($"ERROR CONFIGURING QUAKE Q DOWN LAND -- {e.Message} {e.StackTrace}"); }
+
+
+
+            control.AddTimeoutAction(control.GetState("Charge Left"), "FINISHED", 1f);
+            control.AddTimeoutAction(control.GetState("Charge Right"), "FINISHED", 1f);
+            control.AddTimeoutAction(control.GetState("HS Ret Left"), "FINISHED", 0.5f);
+            control.AddTimeoutAction(control.GetState("Hs Ret Right"), "FINISHED", 0.5f);
         }
 
+        protected override void OnSetSpawnPosition()
+        {
+            base.OnSetSpawnPosition();
+            GetComponent<PreventOutOfBounds>().onBoundCollision -= OnCollision;
+            GetComponent<PreventOutOfBounds>().onBoundCollision += OnCollision;
+        }
+
+        protected virtual void OnCollision(RaycastHit2D r, GameObject a, GameObject b)
+        {
+            if (control.ActiveStateName == "Quake Down")
+            {
+                if (pos2d.y > heroPos2d.y)
+                {
+                    var poob = gameObject.GetComponent<PreventOutOfBounds>();
+                    if (poob != null)
+                    {
+                        poob.ForcePosition(pos2d + Vector2.down * 2f);
+                    }
+                }
+            }
+
+            if( control.ActiveStateName == "Charge Left"   ||
+                control.ActiveStateName == "Charge Right"   ||
+                control.ActiveStateName == "HS Left" ||
+                control.ActiveStateName == "HS Ret Left" ||
+                control.ActiveStateName == "Hs Ret Right" ||
+                control.ActiveStateName == "HS Right"   )
+            {
+                control.SendEvent("FINISHED");
+            }
+        }
+
+        IEnumerator SendFinishedOnXPositionOrDelay(float endPosX, float timeout = 3f)
+        {
+            for (; ; )
+            {
+                if (timeout <= 0)
+                    break;
+
+                float vel = PhysicsBody.velocity.x;
+
+                if (vel < 0 && pos2d.x < endPosX)
+                    break;
+
+                if (vel > 0 && pos2d.x > endPosX)
+                    break;
+
+                timeout -= Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
+
+            if (control.ActiveStateName == "HS Right" || control.ActiveStateName == "HS Left")
+                control.SendEvent("FINISHED");
+
+            yield break;
+        }
 
 
         IEnumerator SendFinishedOnGroundOrDelay()
@@ -1254,7 +1458,7 @@ namespace EnemyRandomizerMod
             balloonPos.DisableAction(0);
             balloonPos.InsertCustomAction(() =>
             {
-                var pos = gameObject.GetRandomPositionInLOSofPlayer(1f, 30f, 2f, 6f);
+                var pos = gameObject.GetRandomPositionInLOSofPlayer(1f, 30f, 2f);
                 transform.position = pos;
             }, 0);
 
@@ -1342,7 +1546,7 @@ namespace EnemyRandomizerMod
             balloonPos.DisableAction(0);
             balloonPos.InsertCustomAction(() =>
             {
-                var pos = gameObject.GetRandomPositionInLOSofPlayer(1f, 30f, 2f, 6f);
+                var pos = gameObject.GetRandomPositionInLOSofPlayer(1f, 30f, 2f);
                 transform.position = pos;
             }, 0);
 
@@ -2380,6 +2584,11 @@ namespace EnemyRandomizerMod
                     attacking.FsmVariables.GetFsmGameObject("Ring Holder").Value = ringHolder;
                 });
 
+                var wait = attacking.GetState("Wait");
+                wait.DisableActions(0, 1);
+                wait.AddAction(new Wait() { time = 1.5f });
+                wait.AddCustomAction(() => { attacking.SendEvent("FINISHED"); });
+
                 var placeRings = attacking.GetState("Place Rings");
                 placeRings.AddCustomAction(() => {
                     SetRingPositions(heroPos2d);
@@ -2709,32 +2918,47 @@ namespace EnemyRandomizerMod
         public AudioPlayerOneShotSingle squirtA;
         public AudioPlayerOneShotSingle squirtB;
 
-        public override void Setup(GameObject other)
-        {
-            base.Setup(other);
+        public AudioSource audio;
 
+        public override bool useCustomPositonOnSpawn => true;
+
+        public GameObject lastSpawnedObject;
+        public GameObject lastSpawnedObject2;
+
+        protected virtual void SetupChildrenStuff()
+        {
             ChildController.maxChildren = 8;
 
             var spawn2 = control.GetState("Spawn 2");
 
             squirtA = spawn2.GetAction<AudioPlayerOneShotSingle>(9);
             squirtB = spawn2.GetAction<AudioPlayerOneShotSingle>(10);
+            audio = GetComponent<AudioSource>();
+        }
 
+        protected virtual void SetupInitStates()
+        {
             var init = control.GetState("Init");
             init.DisableAction(2);
             init.DisableAction(3);
             init.DisableAction(5);
+            init.DisableAction(6);
             init.DisableAction(7);
             init.DisableAction(8);
 
-            init.RemoveTransition("GG BOSS");
+            var gg = control.GetState("GG?");
+            gg.RemoveTransition("GG BOSS");
+            gg.AddCustomAction(() => { control.SendEvent("FINISHED"); });
 
             var idle = control.GetState("Idle");
-            var playIdle = control.GetState("Play Idle");
-
             idle.DisableAction(4);
-            idle.DisableAction(3);
 
+            var playIdle = control.GetState("Play Idle");
+            playIdle.DisableAction(3);
+        }
+
+        protected virtual void SetupRoar()
+        {
             var roarStart = control.GetState("Roar Start");
             roarStart.DisableAction(2);
             roarStart.DisableAction(4);
@@ -2747,44 +2971,77 @@ namespace EnemyRandomizerMod
             var roarEnd = control.GetState("Roar End");
             roarEnd.DisableAction(0);
             roarEnd.DisableAction(1);
+        }
 
-
+        protected virtual void SetupRage()
+        {
             var rage = control.GetState("Rage");
-            var stateAfterRage = rage.GetTransition("SPAWN").ToState;
+            rage.DisableAction(0);
 
-            var customSpawn = control.AddState("Custom Spawn");
+            rage.AddAction(new Wait() { time = 3f });
 
-            customSpawn.AddCustomAction(() =>
+            rage.AddCustomAction(() =>
             {
-                if(ChildController.AtMaxChildren)
+                if (ChildController.AtMaxChildren)
                 {
-                    control.SendEvent("FINISHED");
+                    control.SendEvent("SPAWN");
+                }
+                else
+                {
+                    audio.PlayOneShot(squirtA.audioClip.Value as AudioClip);
+                    audio.PlayOneShot(squirtB.audioClip.Value as AudioClip);
+
+                    var spawn = gameObject.GetRandomPositionInLOSofSelf(0f, 3f, 1f, false, false);
+                    var spawn2 = gameObject.GetRandomPositionInLOSofSelf(0f, 3f, 1f, false, false);
+
+                    lastSpawnedObject = SpawnChildForEnemySpawner(spawn, false, "Fluke Fly");
+                    lastSpawnedObject2 = SpawnChildForEnemySpawner(spawn2, false, "Fluke Fly");
+
+                    control.SendEvent("SPAWN");
                 }
             });
+        }
 
-            customSpawn.AddAction(squirtA);
-            customSpawn.AddAction(squirtB);
+        protected virtual void SetupSpawn()
+        {
+            var selectPoint = control.GetState("Select Point");
+            selectPoint.DisableActions(0, 1, 2);
 
-            customSpawn.AddCustomAction(() =>
-            {
-                var spawn = gameObject.GetRandomPositionInLOSofSelf(0f, 2f, 0f, 0f);
+            var selectPoint2 = control.GetState("Select Point 2");
+            selectPoint2.DisableActions(0, 1, 2);
 
-                var fly = EnemyRandomizerDatabase.CustomSpawn(spawn, "Fluke Fly", false);
+            var spawn = control.GetState("Spawn");
+            control.OverrideState("Spawn", () => {
 
-                ChildController.ActivateAndTrackSpawnedObject(fly);
-
+                if (!ChildController.AtMaxChildren)
+                {
+                    lastSpawnedObject = ChildController.ActivateAndTrackSpawnedObject(lastSpawnedObject);
+                    lastSpawnedObject2 = ChildController.ActivateAndTrackSpawnedObject(lastSpawnedObject2);
+                }
                 control.SendEvent("FINISHED");
             });
+            spawn.ChangeTransition("FINISHED", "Rage");
+        }
 
+        public override void Setup(GameObject other)
+        {
+            base.Setup(other);
 
-            rage.ChangeTransition("SPAWN", "Custom Spawn");
-            customSpawn.AddTransition("FINISHED", stateAfterRage);
+            SetupChildrenStuff();
+
+            SetupInitStates();
+
+            SetupRoar();
+
+            SetupRage();
+
+            SetupSpawn();
         }
 
 
         protected override void SetCustomPositionOnSpawn()
         {
-            gameObject.StickToRoof();
+            gameObject.StickToRoof(rotateToPlaceOnRoof: false);
         }
     }
 
@@ -3608,6 +3865,8 @@ namespace EnemyRandomizerMod
 
         protected override string FSMHiddenStateName => "MOSS_HIDDEN";
 
+        public override float spawnPositionOffset => 1f;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
@@ -3700,7 +3959,7 @@ namespace EnemyRandomizerMod
             var emerge = control.GetState("Emerge");
             emerge.DisableActions(0, 6);
             emerge.InsertCustomAction(() => {
-                transform.position = emergePoint;
+                transform.position = emergePoint.ToVec2() + Vector2.up * 1f;
             }, 0);
 
             var submergeCD = control.GetState("Submerge CD");
@@ -3748,17 +4007,22 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            PhysicsBody.gravityScale = 3f;
-
             var init = control.GetState("Init");
             init.DisableAction(1);
             init.DisableAction(14);
 
-            this.InsertHiddenState(control, "Init", "FINISHED", "Start");
+            init.ChangeTransition("FINISHED", "Start");
+
+            this.InsertHiddenState(control, "Start", "FINISHED", "Idle");
 
             control.AddTimeoutAction(control.GetState("Wake In Air"), "LANDED", 1f);
             control.AddTimeoutAction(control.GetState("In Air"), "LANDED", 1f);
             control.AddTimeoutAction(control.GetState("In Air 2"), "LANDED", 1f);
+
+            control.GetState("Start").InsertCustomAction(() =>
+            {
+                PhysicsBody.gravityScale = 3f;
+            }, 0);
         }
 
         protected override void SetDefaultPosition()
@@ -3808,7 +4072,7 @@ namespace EnemyRandomizerMod
             setPos.DisableAction(6);
             setPos.InsertCustomAction(() => {
 
-                var telepos =gameObject.GetRandomPositionInLOSofSelf(1f, 40f, 2f, 5f);
+                var telepos =gameObject.GetRandomPositionInLOSofSelf(1f, 40f, 2f);
                 control.FsmVariables.GetFsmFloat("Tele X").Value = telepos.x;
                 control.FsmVariables.GetFsmFloat("Tele Y").Value = telepos.y;
 
@@ -3822,7 +4086,7 @@ namespace EnemyRandomizerMod
             setPos.DisableAction(6);
             setPos.InsertCustomAction(() => {
 
-                var telepos =gameObject.GetRandomPositionInLOSofSelf(1f, 40f, 2f, 5f);
+                var telepos =gameObject.GetRandomPositionInLOSofSelf(1f, 40f, 2f);
                 control.FsmVariables.GetFsmFloat("Tele X").Value = telepos.x;
                 control.FsmVariables.GetFsmFloat("Tele Y").Value = telepos.y;
 
@@ -3851,76 +4115,85 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Control";
 
-        public GameObject spawnerPlaceholder;
-        public GameObject buzzers;
-        public GameObject spitters;
-        public GameObject rollers;
+        //public GameObject spawnerPlaceholder;
+        //public GameObject buzzers;
+        //public GameObject spitters;
+        //public GameObject rollers;
 
         public GameObject jarPrefab;
-        public SpawnObjectFromGlobalPool spawnAction;
+        //public SpawnObjectFromGlobalPool spawnAction;
 
-        public PrefabObject buzzer;
-        public PrefabObject spitter;
-        public PrefabObject roller;
+        //public PrefabObject buzzer;
+        //public PrefabObject spitter;
+        //public PrefabObject roller;
 
-        public int buzzerHP = 15;
-        public int spitterHP = 10;
-        public int rollerHP = 5;
+        //public int buzzerHP = 15;
+        //public int spitterHP = 10;
+        //public int rollerHP = 5;
 
-        public RNG rng;
+        //public RNG rng;
 
-        public List<(PrefabObject, int)> possibleSpawns;
+        //public List<(PrefabObject, int)> possibleSpawns;
 
-        public override bool preventInsideWallsAfterPositioning => true;
+        public override bool preventInsideWallsAfterPositioning => false;
         public override bool preventOutOfBoundsAfterPositioning => true;
 
-        public int CurrentEnemies { get; set; }
-        public int MaxEnemies { get; set; }
+        public override float spawnPositionOffset => 1f;
 
-        protected virtual void SetupSpawnerPlaceholders()
-        {
-            if (spawnerPlaceholder == null)
-            {
-                //generate the placeholder for the init state
-                spawnerPlaceholder = new GameObject("Spawner Placeholder");
-                spawnerPlaceholder.transform.SetParent(transform);
-                spawnerPlaceholder.SetActive(false);
+        public Vector2 throwOffset;
 
-                buzzers = new GameObject("Buzzers");
-                spitters = new GameObject("Spitters");
-                rollers = new GameObject("Rollers");
+        //protected virtual void SetupSpawnerPlaceholders()
+        //{
+        //    if (spawnerPlaceholder == null)
+        //    {
+        //        //generate the placeholder for the init state
+        //        spawnerPlaceholder = new GameObject("Spawner Placeholder");
+        //        spawnerPlaceholder.transform.SetParent(transform);
+        //        spawnerPlaceholder.SetActive(false);
 
-                buzzers.transform.SetParent(spawnerPlaceholder.transform);
-                spitters.transform.SetParent(spawnerPlaceholder.transform);
-                rollers.transform.SetParent(spawnerPlaceholder.transform);
+        //        buzzers = new GameObject("Buzzers");
+        //        spitters = new GameObject("Spitters");
+        //        rollers = new GameObject("Rollers");
 
-                control.FsmVariables.GetFsmGameObject("Top Pool").Value = spawnerPlaceholder;
-                control.FsmVariables.GetFsmGameObject("Buzzers").Value = buzzers;
-                control.FsmVariables.GetFsmGameObject("Spitters").Value = spitters;
-                control.FsmVariables.GetFsmGameObject("Rollers").Value = rollers;
+        //        buzzers.transform.SetParent(spawnerPlaceholder.transform);
+        //        spitters.transform.SetParent(spawnerPlaceholder.transform);
+        //        rollers.transform.SetParent(spawnerPlaceholder.transform);
 
-                var db = EnemyRandomizerDatabase.GetDatabase();
-                buzzer = db.Enemies["Buzzer"];
-                spitter = db.Enemies["Spitter"];
-                roller = db.Enemies["Roller"];
+        //        control.FsmVariables.GetFsmGameObject("Top Pool").Value = spawnerPlaceholder;
+        //        control.FsmVariables.GetFsmGameObject("Buzzers").Value = buzzers;
+        //        control.FsmVariables.GetFsmGameObject("Spitters").Value = spitters;
+        //        control.FsmVariables.GetFsmGameObject("Rollers").Value = rollers;
 
-                possibleSpawns = new List<(PrefabObject, int)>()
-                {
-                    (buzzer, buzzerHP),
-                    (spitter, spitterHP),
-                    (roller, rollerHP)
-                };
+        //        var db = EnemyRandomizerDatabase.GetDatabase();
+        //        buzzer = db.Enemies["Buzzer"];
+        //        spitter = db.Enemies["Spitter"];
+        //        roller = db.Enemies["Roller"];
 
-                rng = new RNG();
-                rng.Reset();
-            }
-        }
+        //        possibleSpawns = new List<(PrefabObject, int)>()
+        //        {
+        //            (buzzer, buzzerHP),
+        //            (spitter, spitterHP),
+        //            (roller, rollerHP)
+        //        };
+
+        //        rng = new RNG();
+        //        rng.Reset();
+        //    }
+        //}
+
+        public GameObject lastSpawned;
 
         protected virtual void SetMaxEnemies(int max)
         {
-            MaxEnemies = max;
+            ChildController.maxChildren = max;
             control.FsmVariables.GetFsmInt("Enemies Max").Value = max;
         }
+
+        //protected virtual void OnSpawned(SpawnEffect self, GameObject spawned)
+        //{
+        //    lastSpawned = ChildController.ActivateAndTrackSpawnedObject(spawned);
+        //    self.onSpawn -= OnSpawned;
+        //}
 
         public override void Setup(GameObject other)
         {
@@ -3937,11 +4210,7 @@ namespace EnemyRandomizerMod
                 corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
             }
 
-
-            SetupSpawnerPlaceholders();
-
             SetMaxEnemies(4);
-            CurrentEnemies = 0;
 
             var init = control.GetState("Init");
             init.DisableAction(10);
@@ -3968,8 +4237,7 @@ namespace EnemyRandomizerMod
             ec.DisableAction(0);
             ec.InsertCustomAction(() =>
             {
-                var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
-                control.FsmVariables.GetFsmInt("Current Enemies").Value = CurrentEnemies;
+                control.FsmVariables.GetFsmInt("Current Enemies").Value = ChildController.Children.Count;
             }, 0);
 
             //remove fly away anim
@@ -3979,7 +4247,7 @@ namespace EnemyRandomizerMod
             summon.DisableAction(0);
             ec.InsertCustomAction(() =>
             {
-                control.FsmVariables.GetFsmInt("Boss Tag Count").Value = CurrentEnemies;
+                control.FsmVariables.GetFsmInt("Boss Tag Count").Value = ChildController.Children.Count;
             }, 0);
 
             //remove fly return anim
@@ -4000,28 +4268,38 @@ namespace EnemyRandomizerMod
             spawn.DisableAction(7);
             spawn.RemoveTransition("REPOS");
 
-            spawnAction = new SpawnObjectFromGlobalPool();
-            spawnAction.storeObject = new FsmGameObject();
+            //spawnAction = new SpawnObjectFromGlobalPool();
+            //spawnAction.storeObject = new FsmGameObject();
 
-            spawnAction.gameObject = new FsmGameObject();
-            spawnAction.gameObject.Value = jarPrefab;
+            //spawnAction.gameObject = new FsmGameObject();
+            //spawnAction.gameObject.Value = jarPrefab;
 
-            spawnAction.spawnPoint = new FsmGameObject();
-            spawnAction.spawnPoint.Value = gameObject;
+            //spawnAction.spawnPoint = new FsmGameObject();
+            //spawnAction.spawnPoint.Value = gameObject;
 
-            spawnAction.position = new FsmVector3();
-            spawnAction.position.Value = Vector3.zero; //offset from boss (might update later)
+            //spawnAction.position = new FsmVector3();
+            //spawnAction.position.Value = Vector3.zero; //offset from boss (might update later)
 
-            spawn.AddAction(spawnAction);
+            //spawn.AddAction(spawnAction);
             spawn.AddCustomAction(() =>
             {
-                var go = GameObject.Instantiate(spawnAction.storeObject.Value);
+                //var go = GameObject.Instantiate(spawnAction.storeObject.Value);
+                var go = GameObject.Instantiate(jarPrefab);
 
-                if(go != null)
+                if (go != null)
                 {
                     float dist = 1.5f;
-                    var throwDir = gameObject.GetRandomDirectionVectorFromSelf(true);
-                    var throwPoint = throwDir * dist + pos2dWithOffset;
+                    var throwDir = gameObject.GetRandomDirectionFromSelf(true);
+
+                    bool rightThrow = transform.localScale.x > 0;
+
+                    //make sure the throw is "forwards"
+                    if (throwDir.x < 0 && transform.localScale.x > 0)
+                        throwDir.x = -throwDir.x;
+                    else if (throwDir.x > 0 && transform.localScale.x < 0)
+                        throwDir.x = -throwDir.x;
+
+                    var throwPoint = throwDir * dist + pos2d + throwOffset;
                     go.transform.position = throwPoint;
 
                     var jar = go.GetComponent<SpawnJarControl>();
@@ -4030,24 +4308,40 @@ namespace EnemyRandomizerMod
 
                     try
                     {
-                        var selectedSpawn = possibleSpawns.GetRandomElementFromList(rng);
-                        var thingToSpawn = EnemyRandomizerDatabase.GetDatabase().Spawn(selectedSpawn.Item1);
-                        jar.SetEnemySpawn(selectedSpawn.Item1.prefab, selectedSpawn.Item2);
+                        //don't use the component
+                        jar.enabled = false;
 
-                        var spawner = jar.gameObject.GetOrAddComponent<SpawnEffectOnDestroy>();
-                        spawner.effectToSpawn = selectedSpawn.Item1.prefab.name;
-                        //spawner.setHealthOnSpawn = selectedSpawn.Item2;
+                        ParticleSystem ps = jar.gameObject.AddParticleEffect_TorchShadeEmissions().GetComponent<ParticleSystem>();
+                        ps.emissionRate = ps.emissionRate * 4f;
+
 
                         var body = jar.GetComponent<Rigidbody2D>();
                         if (body != null)
                         {
-                            body.velocity = throwDir * 15f;
-                            body.angularVelocity = 15f;
+                            body.velocity = throwDir * 60f;
+                            body.drag = 0f;
+                            body.gravityScale = 2f;
+                            body.angularVelocity = rightThrow ? -400f : 400f;
+                            body.freezeRotation = false;
+                            body.angularDrag = 0f;
                         }
+
+                        var col = jar.GetComponent<CircleCollider2D>();
+                        if(col != null)
+                            col.enabled = true;
 
                         go.SetActive(true);
                         jar.GetComponent<SpriteRenderer>().enabled = true;
                         jar.transform.localScale = jar.transform.localScale * 0.5f;
+
+                        var dustTrail = jar.dustTrail;
+
+                        dustTrail.Play();
+
+                        var jpoob = jar.gameObject.GetOrAddComponent<PreventOutOfBounds>();
+                        jpoob.onBoundCollision += BreakJar;
+
+                        transform.SetPositionZ(0.01f);
                     }
                     catch (Exception e)
                     {
@@ -4078,9 +4372,50 @@ namespace EnemyRandomizerMod
             }
         }
 
+        protected virtual void BreakJar(RaycastHit2D r, GameObject a, GameObject b)
+        {
+            var jar = a.GetComponent<SpawnJarControl>();
+            if(jar == null)
+                jar = a.GetComponent<SpawnJarControl>();
+
+            var dustTrail = jar.dustTrail;
+            var ptBreakS = jar.ptBreakS;
+            var ptBreakL = jar.ptBreakL;
+            var strikeNailR = jar.strikeNailR;
+
+            dustTrail.Stop();
+
+            ptBreakS.Play();
+            ptBreakL.Play();
+            strikeNailR.Spawn(jar.transform.position);
+
+            var jpoob = jar.gameObject.GetOrAddComponent<PreventOutOfBounds>();
+            jpoob.onBoundCollision -= BreakJar;
+
+            lastSpawned = SpawnChildForEnemySpawner(jar.transform.position, false, "Spitter");
+            lastSpawned = ChildController.ActivateAndTrackSpawnedObject(lastSpawned);
+
+            var soc = lastSpawned.GetComponent<DefaultSpawnedEnemyControl>();
+            if (soc != null)
+            {
+                soc.defaultScaledMaxHP = SpawnerExtensions.GetObjectPrefab("Roller").prefab.GetEnemyHealthManager().hp;
+                soc.CurrentHP = soc.defaultScaledMaxHP;
+            }
+
+            SpawnerExtensions.SpawnEntityAt("Pt Break", jar.transform.position, true);
+
+            jar.GetComponent<SpriteRenderer>().enabled = false;
+            jar.GetComponent<CircleCollider2D>().enabled = false;
+            jar.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            jar.GetComponent<Rigidbody2D>().angularVelocity = 0f;
+
+            jar.breakSound.SpawnAndPlayOneShot(jar.audioSourcePrefab, jar.transform.position);
+
+            GameObject.Destroy(jar.gameObject, 2f);
+        }
+
         protected override void SetCustomPositionOnSpawn()
         {
-            gameObject.StickToGroundX(1f);
         }
     }
 
@@ -4240,7 +4575,7 @@ namespace EnemyRandomizerMod
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Level Check");
 
-            var idle = control.GetState("Idle");
+            var idle = control.GetState("Idle Start");
             idle.InsertCustomAction(() => {
                 control.FsmVariables.GetFsmFloat("Right X").Value = edgeR;
                 control.FsmVariables.GetFsmFloat("Left X").Value = edgeL;
@@ -4265,6 +4600,8 @@ namespace EnemyRandomizerMod
         public override string FSMName => "Big Fly Control";
 
         public static int babiesToSpawn = 6;
+
+        public override bool preventOutOfBoundsAfterPositioning => true;
 
         static string MODHOOK_BeforeSceneLoad(string sceneName)
         {
@@ -4310,7 +4647,6 @@ namespace EnemyRandomizerMod
 
         protected override void SetCustomPositionOnSpawn()
         {
-            var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
         }
 
         public void SelfSpawnBabies()
@@ -4679,29 +5015,36 @@ namespace EnemyRandomizerMod
         public override bool preventOutOfBoundsAfterPositioning => true;
         public override bool preventInsideWallsAfterPositioning => false;
 
+        public override float spawnPositionOffset => 1.23f;
+
+        public override bool useCustomPositonOnSpawn => true;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
 
-           control.AddTimeoutAction(control.GetState("Rise"), "FALL", 2f);
-           control.AddTimeoutAction(control.GetState("Fall"), "FALL", 1f);
+            control.AddTimeoutAction(control.GetState("JA Hit"), "LAND", 1f);
+            control.AddTimeoutAction(control.GetState("JA Hit 2"), "LAND", 1f);
 
-           control.AddTimeoutAction(control.GetState("Rise 2"), "FALL", 2f);
-           control.AddTimeoutAction(control.GetState("Fall 2"), "FALL", 1f);
+            control.AddTimeoutAction(control.GetState("Rise"), "FALL", 2f);
+            control.AddTimeoutAction(control.GetState("Fall"), "FALL", 1f);
 
-           control.AddTimeoutAction(control.GetState("S Rise"), "FALL", 2f);
-           control.AddTimeoutAction(control.GetState("S Fall"), "FALL", 1f);
+            control.AddTimeoutAction(control.GetState("Rise 2"), "FALL", 2f);
+            control.AddTimeoutAction(control.GetState("Fall 2"), "FALL", 1f);
 
-           control.AddTimeoutAction(control.GetState("JA Rise"), "FALL", 2f);
-           control.AddTimeoutAction(control.GetState("JA Fall"), "FALL", 1f);
+            control.AddTimeoutAction(control.GetState("S Rise"), "FALL", 2f);
+            control.AddTimeoutAction(control.GetState("S Fall"), "FALL", 1f);
 
-           control.AddTimeoutAction(control.GetState("JA Rise 2"), "FALL", 2f);
-           control.AddTimeoutAction(control.GetState("JA Fall 2"), "FALL", 1f);
+            control.AddTimeoutAction(control.GetState("JA Rise"), "FALL", 2f);
+            control.AddTimeoutAction(control.GetState("JA Fall"), "FALL", 1f);
 
-           control.AddTimeoutAction(control.GetState("Start Fall"), "FALL", 1f);
+            control.AddTimeoutAction(control.GetState("JA Rise 2"), "FALL", 2f);
+            control.AddTimeoutAction(control.GetState("JA Fall 2"), "FALL", 1f);
 
-           control.AddTimeoutAction(control.GetState("Esc Rise"), "FALL", 2f);
-           control.AddTimeoutAction(control.GetState("Esc Fall"), "FALL", 1f);
+            control.AddTimeoutAction(control.GetState("Start Fall"), "FALL", 1f);
+
+            control.AddTimeoutAction(control.GetState("Esc Rise"), "FALL", 2f);
+            control.AddTimeoutAction(control.GetState("Esc Fall"), "FALL", 1f);
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Start Fall");
 
@@ -4724,8 +5067,24 @@ namespace EnemyRandomizerMod
             startFall.DisableAction(11);
             startFall.DisableAction(12);
             startFall.DisableAction(13);
+            startFall.InsertCustomAction(() => {
+
+                var startPoint = gameObject.GetTeleportPositionAboveSelf(3f);
+                var poob = gameObject.GetComponent<PreventOutOfBounds>();
+                if(poob != null)
+                {
+                    poob.ForcePosition(startPoint);
+                }
+            },0);
 
             startFall.ChangeTransition("FALL", "State 1");
+
+            var sAttackRecover = control.GetState("S Attack Recover");
+            sAttackRecover.DisableActions(3);
+            sAttackRecover.InsertCustomAction(() => {
+                float x = control.FsmVariables.GetFsmFloat("Shockwave X Origin").Value;
+                control.FsmVariables.GetFsmVector3("Shockwave Origin").Value = new Vector3(x, floorY, -.1f);
+            }, 3);
 
             var state1 = control.GetState("State 1");
             state1.DisableAction(1);
@@ -4747,7 +5106,6 @@ namespace EnemyRandomizerMod
             var turnr = control.GetState("Turn R");
             turnr.DisableAction(5);
             turnr.InsertCustomAction(() => {
-                var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
                 transform.localScale = new Vector3(originalScale.x * -1.3f * SizeScale, originalScale.y * SizeScale, originalScale.z * SizeScale);
                 hasSetupYet = true;
             }, 5);
@@ -4755,7 +5113,6 @@ namespace EnemyRandomizerMod
             var turnl = control.GetState("Turn L");
             turnl.DisableAction(5);
             turnl.InsertCustomAction(() => {
-                var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
                 transform.localScale = new Vector3(originalScale.x * 1.3f * SizeScale, originalScale.y * SizeScale, originalScale.z * SizeScale);
                 hasSetupYet = true;
             }, 5);
@@ -4774,8 +5131,81 @@ namespace EnemyRandomizerMod
                 Destroy(gameObject);
             });
         }
+
+        protected override void OnSetSpawnPosition()
+        {
+            base.OnSetSpawnPosition();
+            gameObject.FindGameObjectInDirectChildren("Head").SafeSetActive(false);
+
+
+            GetComponent<PreventOutOfBounds>().onBoundCollision -= LandNow;
+            GetComponent<PreventOutOfBounds>().onBoundCollision += LandNow;
+        }
+
         protected override void SetCustomPositionOnSpawn()
         {
+            gameObject.transform.position = gameObject.transform.position.ToVec2() + Vector2.up * gameObject.GetOriginalObjectSize().y * this.SizeScale * .5f;
+        }
+
+
+        protected virtual void LandNow(RaycastHit2D r, GameObject a, GameObject b)
+        {
+            if (control.ActiveStateName == "Rise" ||
+                control.ActiveStateName == "Rise 2" ||
+                control.ActiveStateName == "S Rise" ||
+                control.ActiveStateName == "JA Rise" ||
+                control.ActiveStateName == "JA Rise 2" ||
+                control.ActiveStateName == "Esc Rise")
+            {
+
+                //var isUp = gameObject.GetRoofRay().distance < 5f;
+                //if (isUp)
+                {
+                    PhysicsBody.velocity = Vector2.down * 2f;
+                    var poob = gameObject.GetComponent<PreventOutOfBounds>();
+                    if (poob != null)
+                    {
+                        poob.ForcePosition(pos2d + Vector2.down * 2f);
+                    }
+
+                    //var fallPoint = gameObject.GetTeleportPositionAboveSelf(0f);
+                    //if (poob != null)
+                    //{
+                    //    poob.ForcePosition(fallPoint);
+                    //}
+                }
+
+                control.SendEvent("FALL");
+            }
+
+
+            if (control.ActiveStateName == "Fall" ||
+                control.ActiveStateName == "Fall 2" ||
+                control.ActiveStateName == "S Fall" ||
+                control.ActiveStateName == "JA Fall" ||
+                control.ActiveStateName == "JA Fall 2" ||
+                control.ActiveStateName == "Esc Fall")
+            {
+
+                //var isUp = gameObject.GetRoofRay().distance < 5f;
+                //if (isUp)
+                {
+                    PhysicsBody.velocity = Vector2.down * 20f;
+                    var poob = gameObject.GetComponent<PreventOutOfBounds>();
+                    if (poob != null)
+                    {
+                        poob.ForcePosition(pos2d + Vector2.down * 2f);
+                    }
+
+                    var fallPoint = gameObject.GetTeleportPositionAboveSelf(0f);
+                    if (poob != null)
+                    {
+                        poob.ForcePosition(fallPoint);
+                    }
+                }
+
+                control.SendEvent("FALL");
+            }
         }
     }
 
@@ -5085,21 +5515,25 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Mage Knight";
 
+        public override bool useCustomPositonOnSpawn => true;
+
         public float spawnOffset = 1f;
         public override float spawnPositionOffset => spawnOffset;
 
         protected override bool DisableCameraLocks => false;
 
-        float minUpTeleDist = 4f;// * sizeScale;
-        float maxUpTeleDist = 14;// * sizeScale;
-
-        RaycastHit2D lastUpTeleRay;
-
         public bool canFakeout = false;
         public bool willFakeout = false;
         public bool didFakeout = false;
 
+        public float chargeHeight => gameObject.GetOriginalObjectSize().y * this.SizeScale + 1f;
+
+        public Vector2 teleQuakePoint;
+        public Vector2 teleChargePoint;
+        public Vector2 teleChargePoint2;
+
         float sideTeleRange = 8f;
+        float teleAboveHeroHeight = 8f;
 
         public override bool preventOutOfBoundsAfterPositioning => true;
 
@@ -5111,30 +5545,28 @@ namespace EnemyRandomizerMod
 
             control.OverrideState("Up Tele Aim", () => {
 
-                var rayAboveHero = SpawnerExtensions.GetRayOn(heroPos2d, Vector2.up, maxUpTeleDist);
-                if(rayAboveHero.distance < minUpTeleDist)
+                var aboveHero = gameObject.GetTeleportPositionAbovePlayer(teleAboveHeroHeight - 1f, teleAboveHeroHeight + 1f);
+                teleQuakePoint = aboveHero;
+
+                var dist = (aboveHero - heroPos2d).magnitude;
+                if (dist < teleAboveHeroHeight * 0.5f)
                 {
                     control.SendEvent("CANCEL");
                 }
-                else
-                {
-                    control.FsmVariables.GetFsmFloat("Target X").Value = heroPos2d.x;
-                    lastUpTeleRay = rayAboveHero;
-                    control.FsmVariables.GetFsmFloat("Target Y").Value = heroPos2d.y + 10f;
-                    control.SendEvent("FINISHED");
-                }
             });
 
-
             var upTele = control.GetState("Up Tele");
-            upTele.DisableActions(1, 2, 4);
+            upTele.DisableActions(4);
             upTele.InsertCustomAction(() => {
                 control.FsmVariables.GetFsmVector3("Tele Out").Value = transform.position;
+                transform.position = teleQuakePoint;
 
-                //float upDist = (lastUpTeleRay.point.y - heroPos2d.y);
-
-                transform.position = new Vector2( heroPos2d.x, heroPos2d.y + 10f);
-            }, 0);
+                var poob = gameObject.GetComponent<PreventOutOfBounds>();
+                if (poob != null)
+                {
+                    poob.ForcePosition(teleQuakePoint);
+                }
+            }, 4);
 
             var stompAir = control.GetState("Stomp Air");
             if (canFakeout)
@@ -5148,7 +5580,7 @@ namespace EnemyRandomizerMod
                 if (canFakeout && !didFakeout)
                 {
                     willFakeout = SpawnerExtensions.RollProbability(out _, 1, 4);
-                    timeout = 0.25f;
+                    timeout = 0.15f;
                     didFakeout = true;
                     control.StartTimeoutState("Stomp Air", "FAKEOUT", timeout);
                 }
@@ -5169,31 +5601,37 @@ namespace EnemyRandomizerMod
             },0);
 
 
-            //var sideTeleAim = control.GetState("Side Tele Aim");
-            //sideTeleAim.InsertCustomAction(() => {
+            var sideTeleAim = control.GetState("Side Tele Aim");
+            sideTeleAim.InsertCustomAction(() =>
+            {
+                var left = gameObject.GetHorizontalTeleportPositionFromPlayer(false, chargeHeight, sideTeleRange - 1f, sideTeleRange + 1f);
+                var right = gameObject.GetHorizontalTeleportPositionFromPlayer(true, chargeHeight, sideTeleRange - 1f, sideTeleRange + 1f);
 
-            //    var teleXRayRight = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.right, sideTeleRange);
-            //    if (teleXRayRight.distance < 10f)
-            //    {
-            //        var teleXRayLeft = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.left, sideTeleRange);
-            //        if(teleXRayLeft.distance < 10f)
-            //        {
-            //            control.SendEvent("CANCEL");
-            //        }
-            //        else
-            //        {
-            //            control.FsmVariables.GetFsmFloat("Target X").Value = -sideTeleRange;
-            //            control.SendEvent("L");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        control.FsmVariables.GetFsmFloat("Target X").Value = sideTeleRange;
-            //        control.SendEvent("R");
-            //    }
-            //}, 0);
-            //sideTeleAim.ChangeTransition("L", "Side Tele");
-            //sideTeleAim.ChangeTransition("R", "Side Tele");
+                float leftd = (left - heroPos2d).magnitude;
+                float rightd = (right - heroPos2d).magnitude;
+
+                if (leftd < 3f && rightd < 3f)
+                {
+                    control.SendEvent("CANCEL");
+                }
+                else
+                {
+                    if (leftd > rightd)
+                    {
+                        teleChargePoint = left;
+                        teleChargePoint2 = right;
+                        control.SendEvent("R");
+                    }
+                    else
+                    {
+                        control.SendEvent("L");
+                        teleChargePoint = right;
+                        teleChargePoint2 = left;
+                    }
+                }
+            }, 0);
+            sideTeleAim.ChangeTransition("L", "Side Tele");
+            sideTeleAim.ChangeTransition("R", "Side Tele");
 
 
             var stompRecover = control.GetState("Stomp Recover");
@@ -5209,31 +5647,17 @@ namespace EnemyRandomizerMod
             var sideTele = control.GetState("Side Tele");
             sideTele.DisableAction(6);
             sideTele.InsertCustomAction(() => {
-                float teleX = control.FsmVariables.GetFsmFloat("Target X").Value;
-                bool isPositive = teleX > 0f;
-                control.FsmVariables.GetFsmFloat("Target X").Value = heroPos2d.x;
-                Vector2 telePos;
 
-                if (isPositive)
-                {
-                    //go right
-                    var teleXRayRight = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.right, sideTeleRange);
+                Vector3 telePoint = teleChargePoint;
+                transform.position = telePoint;
 
-                    telePos = heroPosWithOffset + Vector2.right * sideTeleRange;
-                }
-                else
-                {
-                    //go left
-                    var teleXRayLeft = SpawnerExtensions.GetRayOn(heroPosWithOffset, Vector2.left, sideTeleRange);
-
-                    telePos = heroPosWithOffset + Vector2.left * sideTeleRange;
-                }
-
-                transform.position = telePos;
-                //SetDefaultPosition();
             }, 6);
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
+        }
+
+        protected override void SetCustomPositionOnSpawn()
+        {
         }
     }
 
@@ -5318,25 +5742,64 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Black Knight";
 
+        public override bool preventOutOfBoundsAfterPositioning => true;
+
+        public override float spawnPositionOffset => 0.65f;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
 
-            control.GetState("Antic Air").AddCustomAction(() => {
-                gameObject.GetOrAddComponent<PreventOutOfBounds>();
-            });
-
-           control.AddTimeoutAction(control.GetState("Antic Air"), "LAND", 1f);
-           control.AddTimeoutAction(control.GetState("Jump Air"), "LAND", 1f);
-           control.AddTimeoutAction(control.GetState("Bounce Air"), "LAND", 1f);
-           control.AddTimeoutAction(control.GetState("Charge"), "LAND", 1f);
-
             this.InsertHiddenState(control, "Init Facing", "FINISHED", "Bugs In");
+            control.ChangeTransition("Bugs In End", "FINISHED", "Roar End");
+
+            control.GetState("Roar End").InsertCustomAction(() =>
+            {
+                UnFreeze();
+            }, 0);
 
             control.GetState("Cloud Stop").DisableAction(3);
             control.GetState("Cloud Stop").DisableAction(4);
 
-            control.ChangeTransition("Bugs In End", "FINISHED", "Roar End");
+            control.AddTimeoutAction(control.GetState("Antic Air"), "LAND", 1f);
+            control.AddTimeoutAction(control.GetState("Jump Air"), "LAND", 1f);
+            control.AddTimeoutAction(control.GetState("Bounce Air"), "LAND", 1f);
+            control.AddTimeoutAction(control.GetState("Charge"), "LAND", 1f);
+        }
+
+        protected virtual void LandNow(RaycastHit2D r, GameObject a, GameObject b)
+        {
+            if(control.ActiveStateName == "Antic Air" ||
+                control.ActiveStateName == "Jump Air" ||
+                control.ActiveStateName == "Bounce Air")
+            {
+                control.SendEvent("LAND");
+            }
+        }
+
+        protected override void OnSetSpawnPosition()
+        {
+            base.OnSetSpawnPosition();
+
+            PhysicsBody.isKinematic = false;
+
+            GetComponent<PreventOutOfBounds>().onBoundCollision -= Freeze;
+            GetComponent<PreventOutOfBounds>().onBoundCollision += Freeze;
+
+            GetComponent<PreventOutOfBounds>().onBoundCollision -= LandNow;
+            GetComponent<PreventOutOfBounds>().onBoundCollision += LandNow;
+        }
+
+        protected virtual void Freeze(RaycastHit2D r, GameObject a, GameObject b)
+        {
+            var pl = gameObject.GetOrAddComponent<PositionLocker>();
+            pl.positionLock = transform.position;
+        }
+
+        protected virtual void UnFreeze()
+        {
+            GameObject.Destroy(gameObject.GetComponent<PositionLocker>());
+            GetComponent<PreventOutOfBounds>().onBoundCollision -= Freeze;
         }
     }
 
@@ -5760,3 +6223,22 @@ namespace EnemyRandomizerMod
 //            });
 //#endif
 //        }
+
+
+
+
+//var selectedSpawn = possibleSpawns.GetRandomElementFromList(rng);
+//var thingToSpawn = EnemyRandomizerDatabase.GetDatabase().Spawn(selectedSpawn.Item1);
+//jar.SetEnemySpawn(selectedSpawn.Item1.prefab, selectedSpawn.Item2);
+//var spawner = jar.gameObject.GetOrAddComponent<SpawnEffectOnDestroy>();
+//spawner.allowRandomization = true;
+//spawner.isSpawnerEnemy = true;
+//spawner.effectToSpawn = null;
+//spawner.activateOnSpawn = false;
+//spawner.onSpawn = OnSpawned;
+
+//var smashEffect = jar.gameObject.AddComponent<SpawnEffectOnDestroy>();
+//smashEffect.effectToSpawn = "Pt Break";
+
+//spawner.effectToSpawn = selectedSpawn.Item1.prefab.name;
+//spawner.setHealthOnSpawn = selectedSpawn.Item2;

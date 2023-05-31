@@ -682,15 +682,21 @@ namespace EnemyRandomizerMod
 
         public override string FSMName => "Plant Turret";
 
-        public override float spawnPositionOffset => -.2f;
+        public override float spawnPositionOffset => .1f;
         public override bool spawnShouldStickCorpse => true;
 
         public float shotSpeed = 12f; //taken from the FSM
         public float shotOffset = 0.4f;
 
+        public GameObject cover;
+        public GameObject under;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
+
+            cover = gameObject.FindGameObjectInDirectChildren("Cover");
+            under = gameObject.FindGameObjectInDirectChildren("Under");
 
             //replace the CreateObject action with our own
             var fire = control.GetState("Fire");
@@ -700,7 +706,7 @@ namespace EnemyRandomizerMod
                 var dirToHero = gameObject.DirectionToPlayer();
 
                 var shot = control.FsmVariables.GetFsmGameObject("Shot Instance").Value;
-                if (shot == null)
+                //if (shot == null)
                 {
                     var spitterShot = SpawnerExtensions.SpawnEntityAt("Spike Ball", pos2d + dirToHero * shotOffset, true);
                     if (spitterShot != null)
@@ -714,6 +720,26 @@ namespace EnemyRandomizerMod
                 if (body != null)
                     body.velocity = dirToHero * shotSpeed;
             }, 3);
+        }
+
+        protected override void OnSetSpawnPosition()
+        {
+            base.OnSetSpawnPosition();
+
+            cover.transform.position = transform.position;
+            under.transform.position = transform.position;
+
+            cover.SetRotation(gameObject.transform.localEulerAngles.z);
+            under.SetRotation(gameObject.transform.localEulerAngles.z);
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(cover != null)
+                GameObject.Destroy(cover);
+            if(under != null)
+                GameObject.Destroy(under);
         }
     }
 
@@ -916,7 +942,7 @@ namespace EnemyRandomizerMod
     /////
     public class MushroomTurretControl : DefaultSpawnedEnemyControl
     {
-        public override float spawnPositionOffset => 1.5f;
+        public override float spawnPositionOffset => 0.7f;
         public override bool spawnShouldStickCorpse => true;
         public override bool preventOutOfBoundsAfterPositioning => false;
         public override bool preventInsideWallsAfterPositioning => false;
@@ -1351,7 +1377,7 @@ namespace EnemyRandomizerMod
     {
         public override bool doBlueHealHeroOnDeath => true;
         public override string spawnEntityOnDeath => spawnOnDeath;
-        public string spawnOnDeath = "Health Scuttler";
+        public string spawnOnDeath = "Orange Scuttler";
 
         public override void Setup(GameObject other)
         {
@@ -1441,12 +1467,20 @@ namespace EnemyRandomizerMod
 
             isElite = SpawnerExtensions.RollProbability(out _, eliteChance, 10);
 
-            if(isElite)
+            if (isElite)
             {
-                Geo = SpawnerExtensions.GetRandomValueBetween(200, 420);
+                try
+                {
+                    Geo = SpawnerExtensions.GetRandomValueBetween(200, 420);
 
-                Sprite.color = Color.red;
-                gameObject.AddParticleEffect_TorchFire();
+                    Sprite.color = Color.red;
+                    gameObject.AddParticleEffect_TorchFire();
+                }
+                catch (Exception e)
+                {
+
+                    Dev.LogError($"Error starting to make guard elite ! ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                }
             }
 
             var throwState = control.GetState("Throw");
@@ -1468,34 +1502,41 @@ namespace EnemyRandomizerMod
             //replace default boomerang with our custom one
             throwState.DisableAction(0);
             throwState.InsertCustomAction(() => {
-                lastBoomerang = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position + new Vector3(0f, 1.5f, 0f),
+                lastBoomerang = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position + new Vector3(0f, 0.5f, 0f),
                     ShotKingsGuard, null, true);
                 control.FsmVariables.GetFsmGameObject("Boomerang").Value = lastBoomerang;
 
                 //give them homing boomerangs!
                 if(isElite)
                 {
-                    lastBoomerang.SetActive(false);
-                    var homing = lastBoomerang.GetOrAddComponent<Physics2DHomingEffect>();
-                    homing.events = new HomingEffect.Events();
-                    homing.target = HeroController.instance.transform;
-                    homing.startupTime = 3f;
-                    homing.startupRate = new AnimationCurve();
-                    homing.accelerationOverDistance = new AnimationCurve();
-                    homing.maxVelocity = 30f;
-                    homing.initialVelocity = gameObject.DirectionToPlayer() * 5f;
-                    homing.startupRate.AddKey(0f, 0f);
-                    homing.startupRate.AddKey(0.5f, 0.5f);
-                    homing.startupRate.AddKey(1f, 1f);
-                    homing.accelerationOverDistance.AddKey(0f, 50f);
-                    homing.accelerationOverDistance.AddKey(.4f, 10f);
-                    homing.accelerationOverDistance.AddKey(1f, 25f);
-                    homing.forceMoveToDistance = 0f;
-                    homing.arriveBehaviour = HomingEffect.ArriveBehaviour.Destroy;
-                    homing.StartCoroutine(DestroyBoomerangAfterTime(5f));
+                    try
+                    {
+                        lastBoomerang.SetActive(false);
+                        var homing = lastBoomerang.GetOrAddComponent<Physics2DHomingEffect>();
+                        homing.events = new HomingEffect.Events();
+                        homing.target = HeroController.instance.transform;
+                        homing.startupTime = 3f;
+                        homing.startupRate = new AnimationCurve();
+                        homing.accelerationOverDistance = new AnimationCurve();
+                        homing.maxVelocity = 30f;
+                        homing.initialVelocity = gameObject.DirectionToPlayer() * 5f;
+                        homing.startupRate.AddKey(0f, 0f);
+                        homing.startupRate.AddKey(0.5f, 0.5f);
+                        homing.startupRate.AddKey(1f, 1f);
+                        homing.accelerationOverDistance.AddKey(0f, 50f);
+                        homing.accelerationOverDistance.AddKey(.4f, 10f);
+                        homing.accelerationOverDistance.AddKey(1f, 25f);
+                        homing.forceMoveToDistance = 0f;
+                        homing.arriveBehaviour = HomingEffect.ArriveBehaviour.Destroy;
+                        homing.StartCoroutine(DestroyBoomerangAfterTime(5f));
 
-                    lastBoomerang.SetActive(true);
-                    gameObject.AddParticleEffect_TorchFire(2, lastBoomerang.transform);
+                        lastBoomerang.SetActive(true);
+                        lastBoomerang.AddParticleEffect_TorchFire(2);
+                    }
+                    catch (Exception e) {
+
+                        Dev.LogError($"Error making guard elite ! ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                    }
                 }
             }, 0);
             //TODO: add a check to see if anything was thrown
@@ -1515,17 +1556,25 @@ namespace EnemyRandomizerMod
 
             }, 0);
 
-            if (isElite)
+            try
             {
-                var wait = control.GetState("Wait");
-                wait.GetAction<WaitRandom>(2).timeMin = 0f;
-                wait.GetAction<WaitRandom>(2).timeMax = .1f;
+                if (isElite)
+                {
+                    var wait = control.GetState("Wait");
+                    wait.GetAction<WaitRandom>(2).timeMin = 0f;
+                    wait.GetAction<WaitRandom>(2).timeMax = .1f;
 
-                var idle = control.GetState("Idle");
-                wait.GetAction<Wait>(2).time = .1f;
+                    var idle = control.GetState("Idle");
+                    idle.GetAction<Wait>(2).time = .1f;
 
-                control.FsmVariables.GetFsmFloat("Run Speed").Value = -15;
-                control.FsmVariables.GetFsmFloat("SlashStepSpeed").Value = 30;
+                    control.FsmVariables.GetFsmFloat("Run Speed").Value = -15;
+                    control.FsmVariables.GetFsmFloat("SlashStepSpeed").Value = 30;
+                }
+            }
+            catch (Exception e)
+            {
+
+                Dev.LogError($"Error making guard elite ! ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
             }
         }
 

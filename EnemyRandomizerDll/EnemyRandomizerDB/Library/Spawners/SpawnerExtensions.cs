@@ -461,8 +461,22 @@ namespace EnemyRandomizerMod
             if (CheckIfIsPogoLogicType(gameObject))
                 return false;
 
+            bool isPlantTrap = false;
             if (gameObject.GetComponent<Collider2D>() == null)
-                return false;
+            {
+                isPlantTrap = gameObject.GetDatabaseKey() == "Plant Trap";
+
+                if(!isPlantTrap)
+                    return false;
+            }
+
+            if(isPlantTrap)
+            {
+                var plantPos = GetRayOn(gameObject.transform.position.ToVec2() + Vector2.up, Vector2.down, float.MaxValue);
+                gameObject.transform.position = plantPos.point;
+                SetRotationToRayCollisionNormal(gameObject, plantPos, false);
+                return true;
+            }
 
             RaycastHit2D closest = GetRayOn(gameObject.transform.position.ToVec2() + Vector2.up, Vector2.down, float.MaxValue);
             SetPositionToRayCollisionPoint(gameObject, closest, extraOffsetScale);
@@ -471,7 +485,23 @@ namespace EnemyRandomizerMod
             return true;
         }
 
-        public static bool StickToRoof(this GameObject gameObject, float extraOffsetScale = 0.33f, bool flipped = false)
+        //public static bool StickToRoof(this GameObject gameObject, float extraOffsetScale = 0.33f, bool flipped = false)
+        //{
+        //    if (CheckIfIsPogoLogicType(gameObject))
+        //        return false;
+
+        //    if (gameObject.GetComponent<Collider2D>() == null)
+        //        return false;
+
+        //    RaycastHit2D closest = GetRoofX(gameObject);
+        //    SetPositionToRayCollisionPoint(gameObject, closest, extraOffsetScale);
+        //    float newAngle = SetRotationToRayCollisionNormal(gameObject, closest, flipped);
+
+        //    return true;
+        //}
+
+
+        public static bool StickToRoof(this GameObject gameObject, float extraOffsetScale = 0.33f, bool flipped = false, bool rotateToPlaceOnRoof = true)
         {
             if (CheckIfIsPogoLogicType(gameObject))
                 return false;
@@ -481,7 +511,11 @@ namespace EnemyRandomizerMod
 
             RaycastHit2D closest = GetRoofX(gameObject);
             SetPositionToRayCollisionPoint(gameObject, closest, extraOffsetScale);
-            float newAngle = SetRotationToRayCollisionNormal(gameObject, closest, flipped);
+
+            if (rotateToPlaceOnRoof)
+            {
+                float newAngle = SetRotationToRayCollisionNormal(gameObject, closest, flipped);
+            }
 
             return true;
         }
@@ -1525,6 +1559,43 @@ namespace EnemyRandomizerMod
             return 0f;
         }
 
+        public static float SetRotationToDirection(this GameObject gameObject, Vector2 direction, bool flipped = false)
+        {
+            var normal = direction.normalized;
+            {
+                var angles = gameObject.transform.localEulerAngles;
+
+                if (normal.y > 0)
+                {
+                    angles.z = 0f;
+                }
+                else if (normal.y < 0)
+                {
+                    angles.z = 180f;
+                }
+                else if (normal.x < 0)
+                {
+                    angles.z = 90f;
+                }
+                else if (normal.x > 0)
+                {
+                    angles.z = 270f;
+                }
+
+                if (flipped)
+                {
+                    float angle = angles.z % 360f;
+                    angle = (angle + 180f) % 360f;
+                    angles.z = angle;
+                }
+
+                gameObject.transform.localEulerAngles = angles;
+                return angles.z;
+            }
+
+            return 0f;
+        }
+
 
         public static bool SkipForLogic(this GameObject sceneObject)
         {
@@ -1898,12 +1969,41 @@ namespace EnemyRandomizerMod
                 }
             }
 
-            if (collider != null && closest.collider != null)
+            float colliderSize = 0f;
+
+            if (collider == null)
             {
-                gameObject.transform.position = closest.point + closest.normal * collider.size.y * offsetScale * gameObject.transform.localScale.y;
+                var collider2 = gameObject.GetComponent<CircleCollider2D>();
+                if (collider2 != null)
+                {
+                    colliderSize = collider2.radius * 2f;
+                }
+                else
+                {
+                    var collider3 = gameObject.GetComponent<PolygonCollider2D>();
+                    if(collider3 != null)
+                    {
+                        colliderSize = Mathf.Abs(Vector2.Dot(collider3.bounds.size, closest.normal));
+                    }
+                    else
+                    {
+                        colliderSize = 1f;
+                    }
+                }
+            }
+            else
+            {
+                colliderSize = Mathf.Abs(Vector2.Dot(collider.size, closest.normal));
             }
 
-            return gameObject.transform.position;
+            Vector2 offset = closest.normal * colliderSize * offsetScale;
+            offset.x = offset.x * gameObject.transform.localScale.x;
+            offset.y = offset.y * gameObject.transform.localScale.y;
+
+            var newPos = closest.point + offset;
+            gameObject.transform.position = newPos;
+
+            return newPos;
         }
 
         //public static RaycastHit2D GetNearestSurface(GameObject gameObject, float maxDistanceToCheck)
@@ -2015,15 +2115,15 @@ namespace EnemyRandomizerMod
             return Mathnv.GetNearestChunkIntersection(origin, dir, max, IsSurfaceOrPlatform);
         }
 
-        public static int CountChunkIntersections(this GameObject entity, Vector2 dir, float max)
-        {
-            return Mathnv.CountChunkIntersections(entity.transform.position, dir, max, IsSurfaceOrPlatform);
-        }
+        //public static int CountChunkIntersections(this GameObject entity, Vector2 dir, float max)
+        //{
+        //    return Mathnv.CountChunkIntersections(entity.transform.position, dir, max, IsSurfaceOrPlatform);
+        //}
 
-        public static int CountChunkIntersections(this Vector2 origin, Vector2 dir, float max)
-        {
-            return Mathnv.CountChunkIntersections(origin, dir, max, IsSurfaceOrPlatform);
-        }
+        //public static int CountChunkIntersections(this Vector2 origin, Vector2 dir, float max)
+        //{
+        //    return Mathnv.CountChunkIntersections(origin, dir, max, IsSurfaceOrPlatform);
+        //}
 
         public static Vector3 GetPointOn(Vector2 origin, Vector2 dir, float max)
         {
@@ -2740,160 +2840,392 @@ namespace EnemyRandomizerMod
             return result;
         }
 
-
-        public static Vector3 GetRandomPositionInLOSofPlayer(this GameObject gameObject, float minTeleportDistance, float maxTeleportDistance, float bufferDistanceFromWall = 0f, float minDistanceFromPlayer = 0f)
+        public static Vector3 GetRandomPositionInLOSofPlayer(this GameObject gameObject, float minTeleportDistance = 5f, float maxTeleportDistance = 35f, float minDistanceFromPlayer = 2f, int maxTries = 10)
         {
-            var posToUse = HeroController.instance.transform.position.ToVec2() + Vector2.up;
-            var spawnedObjectControl = gameObject.GetComponent<SpawnedObjectControl>();
-            if(spawnedObjectControl != null)
-            {
-                posToUse = spawnedObjectControl.heroPosWithOffset;
-            }
-
             RNG rng = new RNG();
             rng.Reset();
 
-            int tries = 10;
+            int tries = maxTries;
             int i = 0;
 
-            Vector2 bestInvalidTry = gameObject.transform.position;
-            Vector2 telePoint = posToUse;
+            Vector2 startPosition = gameObject.transform.position.ToVec2() + Vector2.up * 0.1f; 
+            Vector2 telePoint = HeroController.instance.transform.position;
+            Vector2 origin = HeroController.instance.transform.position.ToVec2();
+
+            //calculate object's size to resolve wall penetration and stuff
+            Vector2 objectSize = Vector2.one;
+            var soc = gameObject.GetComponent<SpawnedObjectControl>();
+            if (soc != null)
+            {
+                float scale = soc.SizeScale;
+                objectSize = gameObject.GetOriginalObjectSize(true) * scale;
+
+                minTeleportDistance = minTeleportDistance * scale;
+                maxTeleportDistance = maxTeleportDistance * scale;
+                minDistanceFromPlayer = minDistanceFromPlayer * scale;
+            }
+
+            if (minDistanceFromPlayer < 2f)
+                minDistanceFromPlayer = 2f;
 
             for (i = 0; i < tries; ++i)
             {
                 float teleDist = rng.Rand(minTeleportDistance, maxTeleportDistance);
-                var randomDir = UnityEngine.Random.insideUnitCircle;
-                var spawnRay = SpawnerExtensions.GetRayOn(posToUse, randomDir, teleDist);
-                float sdist = spawnRay.distance;
+                var teleDir = UnityEngine.Random.insideUnitCircle;
 
+                //check to see if we hit a wall
+                var spawnRay = SpawnerExtensions.GetRayOn(HeroController.instance.transform.position, teleDir, teleDist);
 
-                if (spawnRay.distance < minDistanceFromPlayer)
+                if (spawnRay.collider != null)
+                {
+                    float offsetThroughWall = Mathf.Abs(Vector2.Dot(spawnRay.normal, objectSize));
+                    teleDist = spawnRay.distance - offsetThroughWall;
+
+                    //if we hit a wall, need to check above and below for space
+
+                    Vector2 normalDir1 = new Vector2(-spawnRay.normal.y, spawnRay.normal.x).normalized;
+                    Vector2 normalDir2 = -normalDir1;
+
+                    Vector2 possiblePoint = origin + teleDir * teleDist;
+
+                    var nRay1 = SpawnerExtensions.GetRayOn(possiblePoint, normalDir1, offsetThroughWall);
+                    var nRay2 = SpawnerExtensions.GetRayOn(possiblePoint, normalDir2, offsetThroughWall);
+
+                    //no good, it probably won't fit here
+                    if (nRay1.collider != null || nRay2.collider != null)
+                        continue;
+                }
+
+                telePoint = origin + teleDir * teleDist;
+
+                if (teleDist <= 0)
                     continue;
 
-                if (spawnRay.distance - bufferDistanceFromWall < minDistanceFromPlayer)
+                if (IsNearPlayer(telePoint, minDistanceFromPlayer))
                     continue;
 
-                if (spawnRay.distance < teleDist)
-                {
-                    telePoint = spawnRay.point + spawnRay.normal * bufferDistanceFromWall;
-                }
-                else
-                {
-                    telePoint = spawnRay.point;
-                }
                 break;
             }
 
             if (i == tries)
-                telePoint = bestInvalidTry;
+                telePoint = startPosition;
 
             return telePoint;
         }
 
 
-        public static Vector2 GetRandomDirectionVectorFromSelf(this GameObject gameObject, bool upwardOnly = false)
+        public static Vector2 GetTeleportPositionAbovePlayer(this GameObject gameObject, float minTeleportDistance = 5f, float maxTeleportDistance = 35f, float minDistanceFromPlayer = 2f, int maxTries = 10)
+        {
+            RNG rng = new RNG();
+            rng.Reset();
+
+            int tries = maxTries;
+            int i = 0;
+
+            Vector2 startPosition = gameObject.transform.position.ToVec2() + Vector2.up * 0.1f;
+            Vector2 telePoint = HeroController.instance.transform.position;
+            Vector2 origin = HeroController.instance.transform.position.ToVec2();
+
+            //calculate object's size to resolve wall penetration and stuff
+            Vector2 objectSize = Vector2.one;
+            var soc = gameObject.GetComponent<SpawnedObjectControl>();
+            if (soc != null)
+            {
+                float scale = soc.SizeScale;
+                objectSize = gameObject.GetOriginalObjectSize(true) * scale;
+
+                minTeleportDistance = minTeleportDistance * scale;
+                maxTeleportDistance = maxTeleportDistance * scale;
+                minDistanceFromPlayer = minDistanceFromPlayer * scale;
+            }
+
+            if (minDistanceFromPlayer < 2f)
+                minDistanceFromPlayer = 2f;
+
+            var teleDir = Vector2.up;
+
+            for (i = 0; i < tries; ++i)
+            {
+                float teleDist = rng.Rand(minTeleportDistance, maxTeleportDistance);
+
+                //check to see if we hit a wall
+                var spawnRay = SpawnerExtensions.GetRayOn(origin, teleDir, teleDist);
+
+                if (spawnRay.collider != null)
+                {
+                    float offsetThroughWall = Mathf.Abs(Vector2.Dot(spawnRay.normal, objectSize));
+                    teleDist = spawnRay.distance - offsetThroughWall;
+
+                    //if we hit a wall, need to check above and below for space
+
+                    Vector2 normalDir1 = new Vector2(-spawnRay.normal.y, spawnRay.normal.x).normalized;
+                    Vector2 normalDir2 = -normalDir1;
+
+                    Vector2 possiblePoint = origin + teleDir * teleDist;
+
+                    var nRay1 = SpawnerExtensions.GetRayOn(possiblePoint, normalDir1, offsetThroughWall);
+                    var nRay2 = SpawnerExtensions.GetRayOn(possiblePoint, normalDir2, offsetThroughWall);
+
+                    //no good, it probably won't fit here
+                    if (nRay1.collider != null || nRay2.collider != null)
+                        continue;
+                }
+
+                telePoint = origin + teleDir * teleDist;
+
+                if (teleDist <= 0)
+                    continue;
+
+                if (IsNearPlayer(telePoint, minDistanceFromPlayer))
+                    continue;
+
+                break;
+            }
+
+            if (i == tries)
+                telePoint = startPosition;
+
+            return telePoint;
+        }
+
+
+
+        public static Vector2 GetTeleportPositionAboveSelf(this GameObject gameObject, float minTeleportDistance = 5f, float maxTeleportDistance = 35f, int maxTries = 10)
+        {
+            RNG rng = new RNG();
+            rng.Reset();
+
+            int tries = maxTries;
+            int i = 0;
+
+            Vector2 startPosition = gameObject.transform.position.ToVec2() + Vector2.up * 0.1f;
+            Vector2 telePoint = startPosition;
+            Vector2 origin = startPosition;
+
+            //calculate object's size to resolve wall penetration and stuff
+            Vector2 objectSize = Vector2.one;
+            var soc = gameObject.GetComponent<SpawnedObjectControl>();
+            if (soc != null)
+            {
+                float scale = soc.SizeScale;
+                objectSize = gameObject.GetOriginalObjectSize(true) * scale;
+
+                minTeleportDistance = minTeleportDistance * scale;
+                maxTeleportDistance = maxTeleportDistance * scale;
+            }
+
+            var teleDir = Vector2.up;
+
+            for (i = 0; i < tries; ++i)
+            {
+                float teleDist = rng.Rand(minTeleportDistance, maxTeleportDistance);
+
+                //check to see if we hit a wall
+                var spawnRay = SpawnerExtensions.GetRayOn(origin, teleDir, teleDist);
+
+                if (spawnRay.collider != null)
+                {
+                    float offsetThroughWall = Mathf.Abs(Vector2.Dot(spawnRay.normal, objectSize));
+                    teleDist = spawnRay.distance - offsetThroughWall;
+
+                    //if we hit a wall, need to check above and below for space
+
+                    Vector2 normalDir1 = new Vector2(-spawnRay.normal.y, spawnRay.normal.x).normalized;
+                    Vector2 normalDir2 = -normalDir1;
+
+                    Vector2 possiblePoint = origin + teleDir * teleDist;
+
+                    var nRay1 = SpawnerExtensions.GetRayOn(possiblePoint, normalDir1, offsetThroughWall);
+                    var nRay2 = SpawnerExtensions.GetRayOn(possiblePoint, normalDir2, offsetThroughWall);
+
+                    //no good, it probably won't fit here
+                    if (nRay1.collider != null || nRay2.collider != null)
+                        continue;
+                }
+
+                telePoint = origin + teleDir * teleDist;
+
+                if (teleDist <= 0)
+                    continue;
+
+                break;
+            }
+
+            if (i == tries)
+                telePoint = startPosition;
+
+            return telePoint;
+        }
+
+
+        public static Vector2 GetHorizontalTeleportPositionFromPlayer(this GameObject gameObject, bool right, float heightOffset = 0f, float minTeleportDistance = 5f, float maxTeleportDistance = 35f, float minDistanceFromPlayer = 2f, int maxTries = 10)
+        {
+            RNG rng = new RNG();
+            rng.Reset();
+
+            int tries = maxTries;
+            int i = 0;
+
+            Vector2 startPosition = gameObject.transform.position.ToVec2() + Vector2.up * 0.1f;
+            Vector2 telePoint = HeroController.instance.transform.position;
+            Vector2 origin = HeroController.instance.transform.position.ToVec2() + Vector2.up * heightOffset;
+
+            //calculate object's size to resolve wall penetration and stuff
+            Vector2 objectSize = Vector2.one;
+            var soc = gameObject.GetComponent<SpawnedObjectControl>();
+            if (soc != null)
+            {
+                float scale = soc.SizeScale;
+                objectSize = gameObject.GetOriginalObjectSize(true) * scale;
+
+                minTeleportDistance = minTeleportDistance * scale;
+                maxTeleportDistance = maxTeleportDistance * scale;
+                minDistanceFromPlayer = minDistanceFromPlayer * scale;
+            }
+
+            if (minDistanceFromPlayer < 2f)
+                minDistanceFromPlayer = 2f;
+
+            var teleDir = Vector2.left;
+            if (right)
+                teleDir = Vector2.right;
+
+            for (i = 0; i < tries; ++i)
+            {
+                float teleDist = rng.Rand(minTeleportDistance, maxTeleportDistance);                
+
+                //check to see if we hit a wall
+                var spawnRay = SpawnerExtensions.GetRayOn(origin, teleDir, teleDist);
+
+                if (spawnRay.collider != null)
+                {
+                    float offsetThroughWall = Mathf.Abs(Vector2.Dot(spawnRay.normal, objectSize));
+                    teleDist = spawnRay.distance - offsetThroughWall;
+
+                    //if we hit a wall, need to check above and below for space
+
+                    Vector2 normalDir1 = new Vector2(-spawnRay.normal.y, spawnRay.normal.x).normalized;
+                    Vector2 normalDir2 = -normalDir1;
+
+                    Vector2 possiblePoint = origin + teleDir * teleDist;
+
+                    var nRay1 = SpawnerExtensions.GetRayOn(possiblePoint, normalDir1, offsetThroughWall);
+                    var nRay2 = SpawnerExtensions.GetRayOn(possiblePoint, normalDir2, offsetThroughWall);
+
+                    //no good, it probably won't fit here
+                    if (nRay1.collider != null || nRay2.collider != null)
+                        continue;
+                }
+
+                telePoint = origin + teleDir * teleDist;
+
+                if (teleDist <= 0)
+                    continue;
+
+                if (IsNearPlayer(telePoint, minDistanceFromPlayer))
+                    continue;
+
+                break;
+            }
+
+            if (i == tries)
+                telePoint = startPosition;
+
+            return telePoint;
+        }
+
+        public static Vector2 GetRandomDirectionFromSelf(this GameObject gameObject, bool upwardOnly = false)
         {
             Vector2 movementDir = UnityEngine.Random.insideUnitCircle;
+
             if (upwardOnly && movementDir.y < 0)
                 movementDir.y = -movementDir.y;
 
             return movementDir;
         }
 
-
-        public static Vector3 GetRandomDirectionFromSelf(this GameObject gameObject, float mindDist = 2f, bool upwardOnly = false)
-        {
-            var posToUse = gameObject.transform.position.ToVec2() + Vector2.up;
-            var spawnedObjectControl = gameObject.GetComponent<SpawnedObjectControl>();
-            if (spawnedObjectControl != null)
-            {
-                posToUse = spawnedObjectControl.pos2dWithOffset;
-            }
-
-            int tries = 10;
-            int i = 0;
-
-            Vector2 bestInvalidTry = UnityEngine.Random.insideUnitCircle;
-            Vector2 movementDir = bestInvalidTry;
-
-            for (i = 0; i < tries; ++i)
-            {
-                movementDir = UnityEngine.Random.insideUnitCircle;
-                var spawnRay = SpawnerExtensions.GetRayOn(posToUse, movementDir, mindDist);
-                float sdist = spawnRay.distance;
-
-
-                if (spawnRay.distance >= 2f)
-                {
-                    bestInvalidTry = movementDir;
-                }
-
-                if (spawnRay.distance < mindDist)
-                    continue;
-
-                if (spawnRay.distance - 1f < mindDist)
-                    continue;
-
-                break;
-            }
-
-            if (i == tries)
-                movementDir = bestInvalidTry;
-
-            return movementDir;
-        }
-
-        public static Vector3 GetRandomPositionInLOSofSelf(this GameObject gameObject, float minTeleportDistance, float maxTeleportDistance, float bufferDistanceFromWall = 0f, float minDistanceFromPlayer = 0f, bool tryToSeePlayer = false)
+        public static Vector3 GetRandomPositionInLOSofSelf(this GameObject gameObject, float minTeleportDistance = 0f, float maxTeleportDistance = 25f, float minDistanceFromPlayer = 2f, bool mustEndInLOSOfPlayer = false, bool moveTowardsPlayer = true, int maxTries = 10)
         {
             var posToUse = gameObject.transform.position.ToVec2() + Vector2.up * 0.1f;
 
             RNG rng = new RNG();
             rng.Reset();
 
-            int tries = 10;
+            int tries = maxTries;
             int i = 0;
 
-            Vector2 bestInvalidTry = posToUse;
+            Vector2 startPosition = posToUse;
             Vector2 telePoint = posToUse;
+            var toPlayer = gameObject.DirectionToPlayer();
+
+            //calculate object's size to resolve wall penetration and stuff
+            Vector2 objectSize = Vector2.one;
+            var soc = gameObject.GetComponent<SpawnedObjectControl>();
+            if (soc != null)
+            {
+                float scale = soc.SizeScale;
+                objectSize = gameObject.GetOriginalObjectSize(true) * scale;
+
+                minTeleportDistance = minTeleportDistance * scale;
+                maxTeleportDistance = maxTeleportDistance * scale;
+                minDistanceFromPlayer = minDistanceFromPlayer * scale;
+            }
+
+            if (minDistanceFromPlayer < 2f)
+                minDistanceFromPlayer = 2f;
 
             for (i = 0; i < tries; ++i)
             {
                 float teleDist = rng.Rand(minTeleportDistance, maxTeleportDistance);
-                var randomDir = UnityEngine.Random.insideUnitCircle;
-                var spawnRay = SpawnerExtensions.GetRayOn(posToUse, randomDir, teleDist);
-                float sdist = spawnRay.distance;
+                var teleDir = UnityEngine.Random.insideUnitCircle;
 
-
-                if (spawnRay.collider == null)
+                //if the generated direction is away from our player, flip it
+                if (moveTowardsPlayer)
                 {
-                    bestInvalidTry = spawnRay.point;
+                    float dotProduct = Vector2.Dot(toPlayer, teleDir);
+                    if (dotProduct < 0f)
+                        teleDir = -teleDir;
                 }
 
-                if (IsNearPlayer(spawnRay.point, minDistanceFromPlayer))
-                    continue;
-
-                if (tryToSeePlayer && !CanSeePlayer(spawnRay.point))
-                    continue;
+                //check to see if we hit a wall
+                var spawnRay = SpawnerExtensions.GetRayOn(posToUse, teleDir, teleDist);
 
                 if (spawnRay.collider != null)
                 {
-                    if (spawnRay.distance - bufferDistanceFromWall <= 0)
-                        continue;
+                    float offsetThroughWall = Mathf.Abs(Vector2.Dot(spawnRay.normal, objectSize));
+                    teleDist = spawnRay.distance - offsetThroughWall;
 
-                    if (spawnRay.distance - bufferDistanceFromWall < minTeleportDistance)
-                        continue;
+                    //if we hit a wall, need to check above and below for space
 
-                    telePoint = spawnRay.point + spawnRay.normal * bufferDistanceFromWall;
+                    Vector2 normalDir1 = new Vector2(-spawnRay.normal.y, spawnRay.normal.x).normalized;
+                    Vector2 normalDir2 = -normalDir1;
+
+                    Vector2 possiblePoint = startPosition + teleDir * teleDist;
+
+                    var nRay1 = SpawnerExtensions.GetRayOn(possiblePoint, normalDir1, offsetThroughWall);
+                    var nRay2 = SpawnerExtensions.GetRayOn(possiblePoint, normalDir2, offsetThroughWall);
+
+                    //no good, it probably won't fit here
+                    if (nRay1.collider != null || nRay2.collider != null)
+                        continue;
                 }
-                else
-                {
-                    telePoint = spawnRay.point;
-                }
+
+                telePoint = startPosition + teleDir * teleDist;
+
+                if (teleDist <= 0)
+                    continue;
+
+                if (IsNearPlayer(telePoint, minDistanceFromPlayer))
+                    continue;
+
+                if (mustEndInLOSOfPlayer && !CanSeePlayer(telePoint))
+                    continue;
+
                 break;
             }
 
             if (i == tries)
-                telePoint = bestInvalidTry;
+                telePoint = startPosition;
 
             return telePoint;
         }
@@ -3307,6 +3639,44 @@ namespace EnemyRandomizerMod
         }
 
 
+        public static void SetSpriteDirection(this GameObject gameObject, bool left, bool baseIsFlipped = false)
+        {
+            Vector3 localScale = gameObject.transform.localScale;
+            float xScale = gameObject.transform.localScale.x;
+
+            if(baseIsFlipped)
+            {
+                if (!left)
+                {
+                    if (xScale > 0)
+                        xScale = -xScale;
+                }
+                else
+                {
+                    if (xScale < 0)
+                        xScale = -xScale;
+                }
+            }
+            else
+            {
+                if (left)
+                {
+                    if (xScale > 0)
+                        xScale = -xScale;
+                }
+                else
+                {
+                    if (xScale < 0)
+                        xScale = -xScale;
+                }
+            }
+
+            localScale.x = xScale;
+
+            gameObject.transform.localScale = localScale;
+        }
+
+
         public static void FinalizeReplacement(this GameObject gameObject, GameObject objectToReplace = null)
         {
             //should not be null..
@@ -3420,6 +3790,45 @@ namespace EnemyRandomizerMod
             {
                 soc.MarkLoaded();
             }
+        }
+
+        public static GameObject SpawnEnemyForEnemySpawner(Vector2 pos, bool setActive = false, string originalEnemy = null, RNG rng = null)
+        {
+            GameObject enemy = null;
+            string enemyToSpawn = null;
+            try
+            {
+                enemyToSpawn = SpawnerExtensions.GetRandomPrefabNameForSpawnerEnemy(rng);
+                enemy = SpawnerExtensions.SpawnEntityAt(enemyToSpawn, pos, false, false);
+                if (enemy != null)
+                {
+                    var soc = enemy.GetComponent<SpawnedObjectControl>();
+                    if (soc != null)
+                    {
+                        soc.placeGroundSpawnOnGround = false;
+                    }
+                }
+            }
+            catch (Exception e) { Dev.LogError($"Exception caught in SpawnEnemyForEnemySpawner when trying to spawn {enemyToSpawn} ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
+
+            try
+            {
+                if (enemy != null && !string.IsNullOrEmpty(originalEnemy) && !string.IsNullOrEmpty(enemyToSpawn))
+                {
+                    float sizeScale = SpawnerExtensions.GetRelativeScale(enemyToSpawn, originalEnemy);
+                    if (!Mathnv.FastApproximately(sizeScale, 1f, 0.01f))
+                    {
+                        enemy.ScaleObject(sizeScale);
+                        enemy.ScaleAudio(sizeScale);//might not need this....
+                    }
+                }
+            }
+            catch (Exception e) { Dev.LogError($"Exception caught in SpawnEnemyForEnemySpawner when trying to scale {enemyToSpawn} to match {originalEnemy} ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
+
+            if (setActive)
+                enemy.SafeSetActive(true);
+            
+            return enemy;
         }
 
         //public static bool ResolveInsideWalls(this GameObject gameObject)

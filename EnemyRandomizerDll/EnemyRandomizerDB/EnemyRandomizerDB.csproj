@@ -214,7 +214,9 @@
     <Compile Include="Library\Spawners\DirectionUtils.cs" />
     <Compile Include="Library\Spawners\EntitySpawner.cs" />
     <Compile Include="Library\Spawners\FSMAreaControlEnemy.cs" />
+    <Compile Include="Library\Spawners\InGroundEnemyControl.cs" />
     <Compile Include="Library\Spawners\ISpawner.cs" />
+    <Compile Include="Library\Spawners\SpawnedObjectControl.cs" />
     <Compile Include="Library\Spawners\SpawnerExtensions.cs" />
     <Compile Include="Library\UniRx\Asynchronous\WebRequestExtensions.cs" />
     <Compile Include="Library\UniRx\Disposables\BooleanDisposable.cs" />

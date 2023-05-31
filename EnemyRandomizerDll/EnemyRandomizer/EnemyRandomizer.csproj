@@ -125,6 +125,7 @@
     <Compile Include="Mod\EnemyRandomizerAPI.cs" />
     <Compile Include="Mod\EnemyRandomizerDebug.cs" />
     <Compile Include="Mod\EnemyReplacer.cs" />
+    <Compile Include="Mod\edc.cs" />
     <Compile Include="Mod\IRandomizerLogic.cs" />
     <Compile Include="Mod\LogicLoader.cs" />
     <Compile Include="Mod\EnemyRandomizerMenu.cs" />

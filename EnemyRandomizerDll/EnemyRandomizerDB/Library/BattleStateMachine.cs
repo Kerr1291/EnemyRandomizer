@@ -85,8 +85,13 @@ namespace EnemyRandomizerMod
                     var dsec = x.GetComponent<DefaultSpawnedEnemyControl>();
                     if(dsec != null)
                     {
-                        var losPos = dsec.gameObject.GetRandomPositionInLOSofPlayer(3f, 20f, 2f, 2f);
+                        var losPos = dsec.gameObject.GetRandomPositionInLOSofPlayer(3f, 20f, 2f);
                         x.transform.position = losPos;
+                        var poob = dsec.GetComponent<PreventOutOfBounds>();
+                        if(poob != null)
+                        {
+                            poob.ForcePosition(losPos);
+                        }
                     }
                     else
                     {

@@ -99,7 +99,7 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
 
         const string defaultDatabaseFilePath = "EnemyRandomizerDatabase.xml";
-        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9]";
+        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9b]";
         static string currentVersion = currentVersionPrefix;
             //Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + $" CURRENT SEED:[{GlobalSettings.seed}] -- TO CHANGE SEED --> MODS > ENEMY RANDOMIZER > ENEMY RANDOMIZER MODULES";
 
@@ -543,7 +543,7 @@ namespace EnemyRandomizerMod
         string MODHOOK_BeforeSceneLoad(string sceneName)
         {
 #if DEBUG
-            DebugTestEnemies.Instance.loaded = true;
+            edc.Instance.loaded = true;
 #endif
             ResetBattleSceneCheck();
             return sceneName;
@@ -640,28 +640,6 @@ namespace EnemyRandomizerMod
             ((IDisposable)disposables).Dispose();
         }
 
-        public static GameObject DebugSpawnEnemy(string enemyName, string replacement = null)
-        {
-            try
-            {
-                EnemyRandomizer.bypassNextReplacement = true;
-                EnemyRandomizer.debugCustomReplacement = replacement;
-
-                var pos = HeroController.instance.transform.position + Vector3.right * 5f;
-                var enemy = EnemyRandomizerDatabase.CustomSpawn(pos, enemyName, true);
-                if (enemy != null)
-                {
-                    return enemy;
-                }
-            }
-            catch (Exception e)
-            {
-                Dev.LogError($"Debug spawn error: {e.Message} stacktrace: {e.StackTrace}");
-            }
-
-            return null;
-        }
-
         /// <summary>
         /// Spawn exactly what you want!
         /// Also allows to test the replacement functionality by providing an optional replacement which will be immediately processed.
@@ -685,166 +663,10 @@ namespace EnemyRandomizerMod
             }
             catch (Exception e)
             {
-                Dev.LogError("Custom Spawn Error: " + e.Message);
+                Dev.LogError($"Custom spawn error: {e.Message} stacktrace: {e.StackTrace}");
             }
 
             return null;
-        }
-
-        public static void MakeRay(float fx, float fy, float tx, float ty)
-        {
-            DebugTestEnemies.MakeRay(new Vector2(fx, fy), new Vector2(tx, ty));
-        }
-
-        public static void MakeRays(float fx, float fy, float tx, float ty)
-        {
-            DebugTestEnemies.MakeRays(new Vector2(fx, fy), new Vector2(tx, ty));
-        }
-
-        public static void MakeHeroRay(float x, float y, bool toHero = false)
-        {
-            var h = HeroController.instance.transform.position;
-            if(toHero)
-            {
-                DebugTestEnemies.MakeRay(new Vector2(x, y), new Vector2(h.x, h.y));
-            }
-            else
-            {
-                DebugTestEnemies.MakeRay(new Vector2(h.x, h.y), new Vector2(x, y));
-            }
-        }
-
-        public static void MakeHeroRays(float x, float y, bool toHero = false)
-        {
-            var h = HeroController.instance.transform.position;
-            if (toHero)
-            {
-                DebugTestEnemies.MakeRays(new Vector2(x, y), new Vector2(h.x, h.y));
-            }
-            else
-            {
-                DebugTestEnemies.MakeRays(new Vector2(h.x, h.y), new Vector2(x, y));
-            }
-        }
-
-        public static void MakeHeroRayLeft(float dist, bool toHero = false)
-        {
-            var h = HeroController.instance.transform.position;
-            if (toHero)
-            {
-                DebugTestEnemies.MakeRay(new Vector2(h.x - dist, h.y), new Vector2(h.x, h.y));
-            }
-            else
-            {
-                DebugTestEnemies.MakeRay(new Vector2(h.x, h.y), new Vector2(h.x - dist, h.y));
-            }
-        }
-
-        public static void MakeHeroRayRight(float dist, bool toHero = false)
-        {
-            var h = HeroController.instance.transform.position;
-            if (toHero)
-            {
-                DebugTestEnemies.MakeRay(new Vector2(h.x + dist, h.y), new Vector2(h.x, h.y));
-            }
-            else
-            {
-                DebugTestEnemies.MakeRay(new Vector2(h.x, h.y), new Vector2(h.x + dist, h.y));
-            }
-        }
-
-
-        public static void MakeHeroRayUp(float dist, bool toHero = false)
-        {
-            var h = HeroController.instance.transform.position;
-            if (toHero)
-            {
-                DebugTestEnemies.MakeRay(new Vector2(h.x , h.y + dist), new Vector2(h.x, h.y));
-            }
-            else
-            {
-                DebugTestEnemies.MakeRay(new Vector2(h.x, h.y), new Vector2(h.x , h.y + dist));
-            }
-        }
-
-        public static void MakeHeroRayDown(float dist, bool toHero = false)
-        {
-            var h = HeroController.instance.transform.position;
-            if (toHero)
-            {
-                DebugTestEnemies.MakeRay(new Vector2(h.x, h.y - dist), new Vector2(h.x, h.y));
-            }
-            else
-            {
-                DebugTestEnemies.MakeRay(new Vector2(h.x, h.y), new Vector2(h.x, h.y - dist));
-            }
-        }
-
-
-
-
-
-
-
-
-        public static void MakeHeroRaysLeft(float dist, bool toHero = false)
-        {
-            var h = HeroController.instance.transform.position;
-            if (toHero)
-            {
-                DebugTestEnemies.MakeRays(new Vector2(h.x - dist, h.y), new Vector2(h.x, h.y));
-            }
-            else
-            {
-                DebugTestEnemies.MakeRays(new Vector2(h.x, h.y), new Vector2(h.x - dist, h.y));
-            }
-        }
-
-        public static void MakeHeroRaysRight(float dist, bool toHero = false)
-        {
-            var h = HeroController.instance.transform.position;
-            if (toHero)
-            {
-                DebugTestEnemies.MakeRays(new Vector2(h.x + dist, h.y), new Vector2(h.x, h.y));
-            }
-            else
-            {
-                DebugTestEnemies.MakeRays(new Vector2(h.x, h.y), new Vector2(h.x + dist, h.y));
-            }
-        }
-
-
-        public static void MakeHeroRaysUp(float dist, bool toHero = false)
-        {
-            var h = HeroController.instance.transform.position;
-            if (toHero)
-            {
-                DebugTestEnemies.MakeRays(new Vector2(h.x, h.y + dist), new Vector2(h.x, h.y));
-            }
-            else
-            {
-                DebugTestEnemies.MakeRays(new Vector2(h.x, h.y), new Vector2(h.x, h.y + dist));
-            }
-        }
-
-        public static void MakeHeroRaysDown(float dist, bool toHero = false)
-        {
-            var h = HeroController.instance.transform.position;
-            if (toHero)
-            {
-                DebugTestEnemies.MakeRays(new Vector2(h.x, h.y - dist), new Vector2(h.x, h.y));
-            }
-            else
-            {
-                DebugTestEnemies.MakeRays(new Vector2(h.x, h.y), new Vector2(h.x, h.y - dist));
-            }
-        }
-
-
-
-        public static void ClearRays()
-        {
-            DebugTestEnemies.Instance.debugColliders.ClearRays();
         }
     }
 
@@ -855,128 +677,6 @@ namespace EnemyRandomizerMod
             ObjectPool.Recycle(gameObject);
         }
     }
-
-#if DEBUG
-    public class DebugTestEnemies : GameSingleton<DebugTestEnemies>
-    {
-        public static void MakeRays(Vector2 from, Vector2 to)
-        {
-            List<RaycastHit2D> hits = SpawnerExtensions.GetRaysOn(from, (to - from).normalized, (to - from).magnitude);
-
-            DebugTestEnemies.Instance.debugColliders.CreateRayFromRaycastHits(DebugTestEnemies.Instance.gameObject,
-                from, to, hits);
-        }
-
-        public static void MakeRay(Vector2 from, Vector2 to)
-        {
-            List<RaycastHit2D> hits = new List<RaycastHit2D>() { SpawnerExtensions.GetRayOn(from, (to - from).normalized, (to - from).magnitude) };
-            
-            DebugTestEnemies.Instance.debugColliders.CreateRayFromRaycastHits(DebugTestEnemies.Instance.gameObject,
-                from, to, hits);
-        }
-
-        public DebugColliders debugColliders;
-
-        IEnumerator<string> iter;
-
-        public bool loaded = false;
-
-        void ResetIter()
-        {
-            iter = MetaDataTypes.DebugTestEnemies.Keys.ToList().GetEnumerator();
-        }
-
-        void Awake()
-        {
-            debugColliders = gameObject.GetOrAddComponent<DebugColliders>();
-            ResetIter();
-        }
-        public bool flipRay = false;
-        public virtual void Update()
-        {
-            if(Input.GetKeyDown(KeyCode.Semicolon))
-            {
-                Dev.Log("TRYING TO SPAWN");
-                if (iter.MoveNext())
-                {
-                    Dev.Log("SPAWNING ?");
-                    var spawnName = iter.Current;
-                    Dev.Log("DO SPAWNING " + spawnName);
-                    EnemyRandomizerMod.EnemyRandomizer.DebugSpawnEnemy(spawnName, null);
-                    Dev.Log("DONE SPAWNING " + spawnName);
-                }
-                else
-                {
-                    Dev.Log("HIT END -- RESETTING");
-                    ResetIter();
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha0))
-            {
-                flipRay = !flipRay;
-
-                Dev.Log("Raysprojecting to hero? "+flipRay);
-                Dev.Log("Raysprojecting to hero? "+flipRay);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha9))
-            {
-                EnemyRandomizer.ClearRays();
-                Dev.Log("CLEARING RAYS");
-                Dev.Log("CLEARING RAYS");
-
-            }
-
-            if (Input.GetKeyDown(KeyCode.Quote))
-            {
-                Dev.Log("MANUAL RESET");
-                Dev.Log("MANUAL RESET");
-                ResetIter();
-            }
-
-            if (Input.GetKeyDown(KeyCode.U))
-            {
-                Dev.Log("RAY UP");
-                Dev.Log("RAY UP");
-                if (Input.GetKey(KeyCode.LeftShift))
-                    EnemyRandomizer.MakeHeroRaysUp(50f, flipRay);
-                else
-                    EnemyRandomizer.MakeHeroRayUp(50f, flipRay);
-            }
-
-            if (Input.GetKeyDown(KeyCode.J))
-            {
-                Dev.Log("RAY DN");
-                Dev.Log("RAY DN");
-                if (Input.GetKey(KeyCode.LeftShift))
-                    EnemyRandomizer.MakeHeroRaysDown(50f, flipRay);
-                else
-                    EnemyRandomizer.MakeHeroRayDown(50f, flipRay);
-            }
-
-            if (Input.GetKeyDown(KeyCode.H))
-            {
-                Dev.Log("RAY LE");
-                Dev.Log("RAY LE");
-                if (Input.GetKey(KeyCode.LeftShift))
-                    EnemyRandomizer.MakeHeroRaysLeft(50f, flipRay);
-                else
-                    EnemyRandomizer.MakeHeroRayLeft(50f, flipRay);
-            }
-
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                Dev.Log("RAY RI");
-                Dev.Log("RAY RI");
-                if (Input.GetKey(KeyCode.LeftShift))
-                    EnemyRandomizer.MakeHeroRaysRight(50f, flipRay);
-                else
-                    EnemyRandomizer.MakeHeroRayRight(50f, flipRay);
-            }
-        }
-    }
-#endif
 }
 
 

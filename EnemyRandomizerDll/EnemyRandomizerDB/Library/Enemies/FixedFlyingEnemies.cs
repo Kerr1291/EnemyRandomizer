@@ -223,7 +223,7 @@ namespace EnemyRandomizerMod
             var wake = control.GetState("Wake");
             wake.DisableActions(1, 2, 3);
             wake.InsertCustomAction(() => {
-                var pos = gameObject.GetRandomPositionInLOSofPlayer(5f, 30f, 2f, 5f);
+                var pos = gameObject.GetRandomPositionInLOSofSelf(0f, 30f, 2f);
                 transform.position = pos;
             }, 0);
 
@@ -231,7 +231,7 @@ namespace EnemyRandomizerMod
             //disable the teleplane actions
             control.OverrideState("Select Target", () =>
             {
-                var pos = gameObject.GetRandomPositionInLOSofPlayer(5f, 30f, 2f, 5f);
+                var pos = gameObject.GetRandomPositionInLOSofSelf(0f, 30f, 2f);
                 control.FsmVariables.GetFsmVector3("Teleport Point").Value = new Vector3(pos.x, pos.y, 0.006f);
                 control.SendEvent("TELEPORT");
             });
@@ -272,7 +272,7 @@ namespace EnemyRandomizerMod
             var wake = control.GetState("Wake");
             wake.DisableActions(0, 1, 2);
             wake.InsertCustomAction(() => {
-                var pos = gameObject.GetRandomPositionInLOSofPlayer(5f, 30f, 2f, 5f);
+                var pos = gameObject.GetRandomPositionInLOSofSelf(0f, 30f, 2f);
                 transform.position = pos;
             }, 0);
 
@@ -280,7 +280,7 @@ namespace EnemyRandomizerMod
             //disable the teleplane actions
             control.OverrideState("Select Target", () =>
             {
-                var pos = gameObject.GetRandomPositionInLOSofPlayer(5f, 30f, 2f, 5f);
+                var pos = gameObject.GetRandomPositionInLOSofSelf(0f, 30f, 2f);
                 control.FsmVariables.GetFsmVector3("Teleport Point").Value = new Vector3(pos.x, pos.y, 0.006f);
                 control.SendEvent("TELEPORT");
             });

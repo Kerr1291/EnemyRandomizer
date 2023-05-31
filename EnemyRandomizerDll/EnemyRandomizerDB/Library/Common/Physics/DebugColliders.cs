@@ -28,8 +28,8 @@ namespace EnemyRandomizerMod
         public Color customColor = Color.yellow;
         public Color gameObjectDisabledColor = Color.gray;
         public Color rayColor = Color.red + Color.yellow;
-        public bool renderDisabledColliders = true;
-        public static bool runDebugInput = true;
+        public static bool renderDisabledColliders = true;
+        //public static bool runDebugInput = true;
 
         Dictionary<Collider2D, LineRenderer> lines;
         Dictionary<List<Vector3>, LineRenderer> customLines;
@@ -462,107 +462,111 @@ namespace EnemyRandomizerMod
             return new List<Vector2>();
         }
 
-        //use this static bool to keep the input only running on one component 
-        static bool forceSingleEntry = false;
-        static IEnumerator debugInput = null;
-        IEnumerator DebugInput()
+        public void ToggleRenderers()
         {
-            bool suspended = false;
-            for (; ; )
+            Dev.Log("Renderer state toggled with key: /  ");
+            foreach (var v in lines)
             {
-                if (suspended)
-                    Time.timeScale = 0f;
-
-                //toggle renderers on/off
-                if (UnityEngine.Input.GetKeyDown(KeyCode.Slash))
-                {
-                    Dev.Log("Renderer state toggled with key: /  ");
-                    foreach (var v in lines)
-                    {
-                        v.Value.GetComponent<Renderer>().enabled = !v.Value.GetComponent<Renderer>().enabled;
-                    }
-                    foreach (var v in customLines)
-                    {
-                        v.Value.GetComponent<Renderer>().enabled = !v.Value.GetComponent<Renderer>().enabled;
-                    }
-                    foreach (var v in labels)
-                    {
-                        v.Value.gameObject.SetActive(!v.Value.gameObject.activeInHierarchy);
-                    }
-                    foreach (var v in customLabels)
-                    {
-                        v.Value.gameObject.SetActive(!v.Value.gameObject.activeInHierarchy);
-                    }
-                    foreach (var v in rayLabels)
-                    {
-                        v.Value.gameObject.SetActive(!v.Value.gameObject.activeInHierarchy);
-                    }
-                    foreach (var v in rayHitLabels)
-                    {
-                        v.Value.ForEach(x => x.gameObject.SetActive(!x.gameObject.activeInHierarchy));
-                    }
-                }
-
-                //toggle the rendering of 
-                if (UnityEngine.Input.GetKeyDown(KeyCode.Backslash))
-                {
-                    Dev.Log(@"All renderers disabled with key: \\  ");
-                    renderDisabledColliders = !renderDisabledColliders;
-                }
-
-                //suspend
-                if (!forceSingleEntry && UnityEngine.Input.GetKeyDown(KeyCode.Q))
-                {
-                    Dev.Log("Timescale suspended with key : Q  ");
-                    forceSingleEntry = true;
-                    Time.timeScale = 0f;
-                    suspended = true;
-                }
-                //advance by about one frame
-                if (!forceSingleEntry && UnityEngine.Input.GetKeyDown(KeyCode.W))
-                {
-                    Dev.Log("Timescale moved forward by 1 frame with key : W  ");
-                    forceSingleEntry = true;
-                    Time.timeScale = 1f;
-                    yield return new WaitForEndOfFrame();
-                    yield return new WaitForEndOfFrame();
-                    Time.timeScale = 0f;
-                }
-                //advance by many frames (hold R)
-                if (!forceSingleEntry && UnityEngine.Input.GetKey(KeyCode.R))
-                {
-                    Dev.Log("Timescale moving with key : R  ");
-                    forceSingleEntry = true;
-                    Time.timeScale = 1f;
-                    yield return new WaitForEndOfFrame();
-                    yield return new WaitForEndOfFrame();
-                    Time.timeScale = 0f;
-                }
-                //resume from suspend
-                if (!forceSingleEntry && UnityEngine.Input.GetKeyDown(KeyCode.E))
-                {
-                    Dev.Log("Timescale resumed with key : E  ");
-                    forceSingleEntry = true;
-                    Time.timeScale = 1f;
-                    suspended = false;
-                }
-                yield return new WaitForEndOfFrame();
-                forceSingleEntry = false;
+                v.Value.GetComponent<Renderer>().enabled = !v.Value.GetComponent<Renderer>().enabled;
             }
-            //yield break;
-        }
-
-        private void OnEnable()
-        {
-            if (runDebugInput)
+            foreach (var v in customLines)
             {
-                if (debugInput == null)
-                {
-                    debugInput = DebugInput();
-                    GameManager.instance.StartCoroutine(debugInput);
-                }
+                v.Value.GetComponent<Renderer>().enabled = !v.Value.GetComponent<Renderer>().enabled;
+            }
+            foreach (var v in labels)
+            {
+                v.Value.gameObject.SetActive(!v.Value.gameObject.activeInHierarchy);
+            }
+            foreach (var v in customLabels)
+            {
+                v.Value.gameObject.SetActive(!v.Value.gameObject.activeInHierarchy);
+            }
+            foreach (var v in rayLabels)
+            {
+                v.Value.gameObject.SetActive(!v.Value.gameObject.activeInHierarchy);
+            }
+            foreach (var v in rayHitLabels)
+            {
+                v.Value.ForEach(x => x.gameObject.SetActive(!x.gameObject.activeInHierarchy));
             }
         }
+
+        //static bool forceSingleEntry = false;
+        //static IEnumerator debugInput = null;
+        //IEnumerator DebugInput()
+        //{
+        //    bool suspended = false;
+        //    for (; ; )
+        //    {
+        //        if (suspended)
+        //            Time.timeScale = 0f;
+
+        //        //toggle renderers on/off
+        //        if (UnityEngine.Input.GetKeyDown(KeyCode.Slash))
+        //        {
+        //            ToggleRenderers();
+        //        }
+
+        //        //toggle the rendering of 
+        //        if (UnityEngine.Input.GetKeyDown(KeyCode.Backslash))
+        //        {
+        //            Dev.Log(@"All renderers disabled with key: \\  ");
+        //            renderDisabledColliders = !renderDisabledColliders;
+        //        }
+
+        //        //suspend
+        //        if (!forceSingleEntry && UnityEngine.Input.GetKeyDown(KeyCode.Q))
+        //        {
+        //            Dev.Log("Timescale suspended with key : Q  ");
+        //            forceSingleEntry = true;
+        //            Time.timeScale = 0f;
+        //            suspended = true;
+        //        }
+        //        //advance by about one frame
+        //        if (!forceSingleEntry && UnityEngine.Input.GetKeyDown(KeyCode.W))
+        //        {
+        //            Dev.Log("Timescale moved forward by 1 frame with key : W  ");
+        //            forceSingleEntry = true;
+        //            Time.timeScale = 1f;
+        //            yield return new WaitForEndOfFrame();
+        //            yield return new WaitForEndOfFrame();
+        //            Time.timeScale = 0f;
+        //        }
+        //        //advance by many frames (hold R)
+        //        if (!forceSingleEntry && UnityEngine.Input.GetKey(KeyCode.R))
+        //        {
+        //            Dev.Log("Timescale moving with key : R  ");
+        //            forceSingleEntry = true;
+        //            Time.timeScale = 1f;
+        //            yield return new WaitForEndOfFrame();
+        //            yield return new WaitForEndOfFrame();
+        //            Time.timeScale = 0f;
+        //        }
+        //        //resume from suspend
+        //        if (!forceSingleEntry && UnityEngine.Input.GetKeyDown(KeyCode.E))
+        //        {
+        //            Dev.Log("Timescale resumed with key : E  ");
+        //            forceSingleEntry = true;
+        //            Time.timeScale = 1f;
+        //            suspended = false;
+        //        }
+        //        yield return new WaitForEndOfFrame();
+        //        forceSingleEntry = false;
+        //    }
+        //    //yield break;
+        //}
+
+        //private void OnEnable()
+        //{
+        //    if (runDebugInput)
+        //    {
+        //        if (debugInput == null)
+        //        {
+        //            debugInput = DebugInput();
+        //            GameManager.instance.StartCoroutine(debugInput);
+        //        }
+        //    }
+        //}
 
         public void ClearRays()
         {

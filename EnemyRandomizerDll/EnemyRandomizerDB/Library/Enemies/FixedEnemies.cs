@@ -116,7 +116,7 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Blocker Control";
 
-        public override float spawnPositionOffset => 1f;
+        public override float spawnPositionOffset => 0.66f;
 
         public override bool isInvincible => GameManager.instance.GetPlayerDataInt("fireballLevel") > 0;
 
@@ -131,17 +131,16 @@ namespace EnemyRandomizerMod
             rng.Reset();
             ChildController.maxChildren = 2;
 
-            var body = gameObject.AddComponent<Rigidbody2D>();
-            body.freezeRotation = true;
-            body.mass = 1000f;
-            body.drag = 1f;
-
             //allow players without spells to kill blockers
             int level = GameManager.instance.GetPlayerDataInt("fireballLevel");
             if (level <= 0)
             {
                 EnemyHealthManager.InvincibleFromDirection = -1;
-                
+
+                var idle = control.GetState("Idle");
+                idle.DisableAction(2);
+                idle.ChangeTransition("CLOSE", "Attack Choose"); //just make idle go to the attack state
+
                 //disable the invincible state
                 var init = control.GetState("Init");
                 init.DisableAction(6);
@@ -149,12 +148,26 @@ namespace EnemyRandomizerMod
                 //disable the invincible state
                 var close = control.GetState("Close");
                 close.DisableAction(0);
+                close.DisableAction(1);
 
                 var open = control.GetState("Open");
                 open.DisableAction(1);
 
                 var sleep1 = control.GetState("Sleep 1");
                 sleep1.DisableAction(0);
+                sleep1.DisableAction(1);
+            }
+            else
+            {
+                var idle = control.GetState("Idle");
+                idle.DisableAction(2);
+
+                //disable the invincible state
+                var close = control.GetState("Close");
+                close.DisableAction(1);
+
+                var sleep1 = control.GetState("Sleep 1");
+                sleep1.DisableAction(1);
             }
 
             //ignore the checks, allow it to spawn rollers all the time
@@ -434,6 +447,8 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Mossy Control";
 
+        public override float spawnPositionOffset => 1f;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
@@ -489,7 +504,7 @@ namespace EnemyRandomizerMod
             var emerge = control.GetState("Emerge");
             emerge.DisableActions(1, 2, 3, 4, 5);
             emerge.InsertCustomAction(() => {
-                transform.position = emergePoint;
+                transform.position = emergePoint.ToVec2() + Vector2.up * 1f;
             }, 0);
 
             var submergeCD = control.GetState("Submerge CD");

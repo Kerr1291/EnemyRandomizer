@@ -463,20 +463,20 @@ namespace EnemyRandomizerMod
         }
 
 
-        public static int CountChunkIntersections(Vector2 origin, Vector2 dir, float max, Func<GameObject, bool> isRaycastHitObject)
-        {
-            Vector2 direction = dir;
+        //public static int CountChunkIntersections(Vector2 origin, Vector2 dir, float max, Func<GameObject, bool> isRaycastHitObject)
+        //{
+        //    Vector2 direction = dir;
 
-            var intersectionRays = Physics2D.RaycastAll(origin, direction, max, Physics2D.GetLayerCollisionMask(LayerMask.NameToLayer("Terrain"))).Where(x => x.collider != null && x.collider.name.Contains("Chunk"));
+        //    var intersectionRays = Physics2D.RaycastAll(origin, direction, max, Physics2D.GetLayerCollisionMask(LayerMask.NameToLayer("Terrain"))).Where(x => x.collider != null && x.collider.name.Contains("Chunk"));
 
-            if (intersectionRays != null)
-            {
-                return intersectionRays.Count();
-                    //.Where(x => x.collider != null).Select(x => x.collider).Sum(x => isRaycastHitObject(x.gameObject) ? 1 : 0);
-            }
+        //    if (intersectionRays != null)
+        //    {
+        //        return intersectionRays.Count();
+        //            //.Where(x => x.collider != null).Select(x => x.collider).Sum(x => isRaycastHitObject(x.gameObject) ? 1 : 0);
+        //    }
 
-            return 0;
-        }
+        //    return 0;
+        //}
 
 
         public static RaycastHit2D GetNearestChunkIntersection(Vector2 origin, Vector2 dir, float max, Func<GameObject, bool> isRaycastHitObject)

@@ -56,7 +56,7 @@ namespace EnemyRandomizerMod
         public Color ParamColor           { get { return paramColor; } set { paramColor = value; } }
 
         [SerializeField, Tooltip("Ignore any log messages that contain these strings")]
-        protected List<string> ignoreFilters;
+        protected List<string> ignoreFilters = new List<string>();
 
         public List<string> IgnoreFilters
         {
@@ -167,6 +167,7 @@ namespace EnemyRandomizerMod
                 if(logRoot == null)
                 {
                     logRoot = new GameObject("Debug Log Root");
+                    logRoot.transform.position = new Vector3(0f, 0f, -1f);
                     Canvas canvas = logRoot.AddComponent<Canvas>();
                     canvas.renderMode = RenderMode.ScreenSpaceOverlay;
                     //canvas.sortingOrder = 100;
@@ -204,10 +205,10 @@ namespace EnemyRandomizerMod
 
             GameObject.DontDestroyOnLoad(target);
 
-            if(target == HistorySlider.gameObject)
-            {
-                HideSlider();
-            }
+            //if(target == HistorySlider.gameObject)
+            //{
+            //    HideSlider();
+            //}
         }
 
         public GameObject LogWindow
@@ -232,7 +233,7 @@ namespace EnemyRandomizerMod
                     canvas.gameObject.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;// new Vector2(0f,-.8f);
                     //canvas.gameObject.GetComponent<RectTransform>().pivot = Vector2.zero;
 
-                    canvas.transform.Translate(new Vector3(0f, 850f, 0f));
+                    canvas.transform.Translate(new Vector3(0f, 850f, -3f));
 
                     //add background image
                     Image bg = logWindow.AddComponent<Image>();
@@ -347,7 +348,7 @@ namespace EnemyRandomizerMod
                         }
 
                         //create slide handle
-                        float handleSize = 20f;
+                        float handleSize = 10f;
                         {
                             var handle = new GameObject("Handle");
                             handle.transform.SetParent(slideArea.transform);
@@ -373,7 +374,7 @@ namespace EnemyRandomizerMod
                     if(IsPlaying)
                     {
                         GameObject.DontDestroyOnLoad(slider);
-                        HideSlider();
+                        //HideSlider();
                     }
                     else
                         historySlider.StartCoroutine(SetDontDestroyASAP(slider));
@@ -641,8 +642,12 @@ namespace EnemyRandomizerMod
             float max_size = guiRenderAreaSize;
             while(total_size > max_size)
             {
+                //TODO: test to see if this allows showing of the hidden line
+                float objectSize = Content.Peek().Size;
+                if (total_size - objectSize <= max_size)
+                    break;
+
                 PoolableLogString lString = Content.Dequeue();
-                float objectSize = lString.Size;
                 DebugLogTextPool.EnPool(PoolableLogString.ObjectPoolKey, lString);
                 total_size -= objectSize;
             }
