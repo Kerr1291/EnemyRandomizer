@@ -1614,6 +1614,12 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
+            if(GameManager.instance.GetCurrentMapZone() == "FINAL_BOSS")
+            {
+                //do nothing
+                return;
+            }
+
             var phaseControl = gameObject.LocateMyFSM("Phase Control");
             if (phaseControl != null)
                 Destroy(phaseControl);
@@ -3047,7 +3053,27 @@ namespace EnemyRandomizerMod
 
     public class FlukeMotherSpawner : DefaultSpawner<FlukeMotherControl> { }
 
-    public class FlukeMotherPrefabConfig : DefaultPrefabConfig { }
+    public class FlukeMotherPrefabConfig : DefaultPrefabConfig
+    {
+        public static AudioClip squirtA;
+        public static AudioClip squirtB;
+
+        public override void SetupPrefab(PrefabObject p)
+        {
+            base.SetupPrefab(p);
+
+            var control = p.prefab.LocateMyFSM("Fluke Mother");
+
+            var spawn2 = control.GetState("Spawn 2");
+
+            if (squirtA == null || squirtB == null)
+            {
+                squirtA = spawn2.GetAction<AudioPlayerOneShotSingle>(9).audioClip.Value as AudioClip;
+                squirtB = spawn2.GetAction<AudioPlayerOneShotSingle>(10).audioClip.Value as AudioClip;
+            }
+        }
+    }
+
     /////
     //////////////////////////////////////////////////////////////////////////////
 
@@ -4550,6 +4576,9 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Control";
 
+        public float customTransformMinAliveTime = 1f;
+        public float customTransformAggroRange = 10f;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
@@ -4558,6 +4587,11 @@ namespace EnemyRandomizerMod
             e1.AddCustomAction(() => { control.FsmVariables.GetFsmInt("Level").Value = 1; });//force level to be 1 so this doesn't get out of hand...
 
             GameObject.Destroy(gameObject.LocateMyFSM("Constrain X"));
+
+            control.GetState("Level 1").DisableActions(0);
+            control.GetState("Level 2").DisableActions(0);
+            control.GetState("Level 3").DisableActions(0);
+            control.GetState("4+").DisableActions(0);
 
             var fsm = control;
             //remove the transitions related to chain spawning zotes for the event
@@ -4581,6 +4615,20 @@ namespace EnemyRandomizerMod
                 control.FsmVariables.GetFsmFloat("Left X").Value = edgeL;
             },0);
         }
+
+        protected override void CheckControlInCustomHiddenState()
+        {
+            if (customTransformMinAliveTime > 0)
+            {
+                customTransformMinAliveTime -= Time.deltaTime;
+                return;
+            }
+
+            if (gameObject.CanSeePlayer() && gameObject.DistanceToPlayer() < customTransformAggroRange)
+            {
+                base.CheckControlInCustomHiddenState();
+            }
+        }
     }
 
     public class GreyPrinceSpawner : DefaultSpawner<GreyPrinceControl> { }
@@ -4602,13 +4650,6 @@ namespace EnemyRandomizerMod
         public static int babiesToSpawn = 6;
 
         public override bool preventOutOfBoundsAfterPositioning => true;
-
-        static string MODHOOK_BeforeSceneLoad(string sceneName)
-        {
-            ModHooks.BeforeSceneLoadHook -= MODHOOK_BeforeSceneLoad;
-            On.HutongGames.PlayMaker.FsmState.OnEnter -= FsmState_OnEnter;
-            return sceneName;
-        }
 
         public override void Setup(GameObject other)
         {
@@ -4637,79 +4678,99 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public virtual void OnEnable()
-        {
-            ModHooks.BeforeSceneLoadHook -= MODHOOK_BeforeSceneLoad;
-            ModHooks.BeforeSceneLoadHook += MODHOOK_BeforeSceneLoad;
-            On.HutongGames.PlayMaker.FsmState.OnEnter -= FsmState_OnEnter;
-            On.HutongGames.PlayMaker.FsmState.OnEnter += FsmState_OnEnter;
-        }
-
         protected override void SetCustomPositionOnSpawn()
         {
         }
 
-        public void SelfSpawnBabies()
-        {
-            SpawnBabies(gameObject);
-        }
+        //public void SelfSpawnBabies()
+        //{
+        //    SpawnBabies(gameObject);
+        //}
 
-        static void SpawnBabies(GameObject owner)
-        {
-            //bool areBattleBabies = false;
-            //if (BattleManager.Instance.Value != null && BattleManager.FSM != null)
-            //{
-            //    areBattleBabies = true;
-            //}
+        //static void SpawnBabies(GameObject owner)
+        //{
+        //    try
+        //    {
+        //        if (EnemyRandomizerDatabase.GetDatabase != null)
+        //        {
+        //            for (int i = 0; i < babiesToSpawn; ++i)
+        //            {
+        //                GameObject result = null;
+        //                if (EnemyRandomizerDatabase.GetDatabase().Enemies.TryGetValue("Fly", out var src))
+        //                {
+        //                    Dev.Log("trying to spawn via prefab " + src.prefabName);
+        //                    result = EnemyRandomizerDatabase.GetDatabase().Spawn(src);
+        //                }
+        //                else
+        //                {
+        //                    Dev.Log("trying to spawn via string");
+        //                    result = EnemyRandomizerDatabase.GetDatabase().Spawn("Fly");
+        //                }
 
-            try
-            {
-                //if(EnemyRandomizerDatabase.GetDatabase != null)
-                //    Dev.Log("has database ref: " + EnemyRandomizerDatabase.GetDatabase.GetInvocationList().Length);
-                if (EnemyRandomizerDatabase.GetDatabase != null)
-                {
-                    for (int i = 0; i < babiesToSpawn; ++i)
-                    {
-                        GameObject result = null;
-                        if (EnemyRandomizerDatabase.GetDatabase().Enemies.TryGetValue("Fly", out var src))
-                        {
-                            Dev.Log("trying to spawn via prefab " + src.prefabName);
-                            result = EnemyRandomizerDatabase.GetDatabase().Spawn(src);
-                        }
-                        else
-                        {
-                            Dev.Log("trying to spawn via string");
-                            result = EnemyRandomizerDatabase.GetDatabase().Spawn("Fly");
-                        }
+        //                Dev.Log("result = " + result);
+        //                Dev.Log("self.Owner = " + owner);
+        //                if (result != null && owner != null)
+        //                {
+        //                    result.transform.position = owner.transform.position;
+        //                    result.SafeSetActive(true);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Dev.LogError($"Caught exception trying to spawn a custom fly! {e.Message} STACKTRACE:{e.StackTrace}");
+        //    }
+        //}
 
-                        Dev.Log("result = " + result);
-                        Dev.Log("self.Owner = " + owner);
-                        if (result != null && owner != null)
-                        {
-                            result.transform.position = owner.transform.position;
-                            result.SafeSetActive(true);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Dev.LogError($"Caught exception trying to spawn a custom fly! {e.Message} STACKTRACE:{e.StackTrace}");
-            }
-        }
+        //static string MODHOOK_BeforeSceneLoad(string sceneName)
+        //{
+        //    ModHooks.BeforeSceneLoadHook -= MODHOOK_BeforeSceneLoad;
+        //    On.HutongGames.PlayMaker.FsmState.OnEnter -= FsmState_OnEnter;
+        //    return sceneName;
+        //}
+        //public virtual void OnEnable()
+        //{
+        //    ModHooks.BeforeSceneLoadHook -= MODHOOK_BeforeSceneLoad;
+        //    ModHooks.BeforeSceneLoadHook += MODHOOK_BeforeSceneLoad;
+        //    On.HutongGames.PlayMaker.FsmState.OnEnter -= FsmState_OnEnter;
+        //    On.HutongGames.PlayMaker.FsmState.OnEnter += FsmState_OnEnter;
+        //}
+        //static void FsmState_OnEnter(On.HutongGames.PlayMaker.FsmState.orig_OnEnter orig, HutongGames.PlayMaker.FsmState self)
+        //{
+        //    orig(self);
 
-        static void FsmState_OnEnter(On.HutongGames.PlayMaker.FsmState.orig_OnEnter orig, HutongGames.PlayMaker.FsmState self)
-        {
-            orig(self);
-
-            if (string.Equals(self.Name, "Spawn Flies 2"))
-            {
-                SpawnBabies(self.Fsm.Owner.gameObject);
-            }
-        }
+        //    if (string.Equals(self.Name, "Spawn Flies 2"))
+        //    {
+        //        SpawnBabies(self.Fsm.Owner.gameObject);
+        //    }
+        //}
     }
 
-    public class GiantFlySpawner : DefaultSpawner<GiantFlyControl> { }
+    public class GiantFlySpawner : DefaultSpawner<GiantFlyControl>
+    {
+        public override GameObject Spawn(PrefabObject prefabToSpawn, GameObject objectToReplace)
+        {
+            var gameObject = base.Spawn(prefabToSpawn, objectToReplace);
+
+            var corpse = gameObject.GetCorpseObject();
+            if (corpse != null)
+            {
+                var fsm = corpse.LocateMyFSM("burster");
+                var spawn = fsm.GetState("Spawn Flies 2");
+                spawn.AddCustomAction(() => {
+                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpse.transform.position, true, "Fly");
+                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpse.transform.position, true, "Fly");
+                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpse.transform.position, true, "Fly");
+                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpse.transform.position, true, "Fly");
+                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpse.transform.position, true, "Fly");
+                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpse.transform.position, true, "Fly");
+                });
+            }
+
+            return gameObject;
+        }
+    }
 
     public class GiantFlyPrefabConfig : DefaultPrefabConfig { }
     /////
@@ -5232,6 +5293,12 @@ namespace EnemyRandomizerMod
         public override void Setup(GameObject other)
         {
             base.Setup(other);
+
+            if (GameManager.instance.GetCurrentMapZone() == "FINAL_BOSS")
+            {
+                //do nothing
+                return;
+            }
 
             GameObject comb = attackCommands.GetFirstActionOfType<SpawnObjectFromGlobalPool>("Comb Top").gameObject.Value;
             comb.transform.position = new Vector3(transform.position.x, transform.position.y, 0.006f);
@@ -6046,128 +6113,6 @@ namespace EnemyRandomizerMod
     ///
 
 
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    /////   
-
-
-
-
-    public class ZoteBossControl : DefaultSpawnedEnemyControl
-    {
-        public override void Setup(GameObject other)
-        {
-            base.Setup(other);
-
-
-
-            //var whiteScreenEffectfsm = gameObject.GetComponentsInChildren<PlayMakerFSM>(true).FirstOrDefault(x => x.gameObject.name == "white_solid");
-            //if (whiteScreenEffectfsm != null)
-            //{
-            //    var whiteScreenEffect = whiteScreenEffectfsm.gameObject;
-            //    if (whiteScreenEffect != null)
-            //    {
-            //        Destroy(whiteScreenEffect);
-            //    }
-            //}
-            //else
-            //{
-            //    Dev.LogError("Could not find white screen child object on Zote Boss!");
-            //}
-
-            //var corpse = gameObject.GetCorpseObject();
-            //if (corpse != null)
-            //{
-            //    var white2 = corpse.GetComponentsInChildren<PlayMakerFSM>(true).FirstOrDefault(x => x.gameObject.name == "white_solid");
-            //    if (white2 != null && white2.gameObject != null)
-            //        Destroy(white2.gameObject);
-
-            //    var corpseFSM = corpse.LocateMyFSM("Control");
-            //    if (corpseFSM != null)
-            //    {
-            //        var init = corpseFSM.GetState("Init");
-            //        init.DisableActions(0, 1, 7, 8, 9, 10, 11, 15);
-
-            //        var inAir = corpseFSM.GetState("In Air");
-            //        inAir.DisableActions(0);
-            //        corpseFSM.AddTimeoutAction(inAir, "LAND", 1f);
-            //        //inAir.AddTimeoutAction("LAND", 1f);
-
-            //        var burst = corpseFSM.GetState("Burst");
-            //        burst.DisableAction(5);
-            //        burst.ChangeTransition("FINISHED", "End");
-
-            //        var notify = corpseFSM.GetState("Notify");
-            //        notify.DisableAction(0);
-            //        notify.AddCustomAction(() => { control.SendEvent("CORPSE END"); });
-
-            //        var end = corpseFSM.GetState("End");
-            //        end.DisableActions(0, 1, 2, 3);
-
-            //        var land = corpseFSM.GetState("Land");
-            //        land.DisableActions(0, 3, 4, 5, 6, 7, 13);
-            //    }
-            //    else
-            //    {
-            //        Dev.LogError("corpseFSM not found in Zote Boss");
-            //    }
-            //}
-            //else
-            //{
-            //    Debug.LogError("Failed to find corpse on Zote boss!");
-            //}
-
-            var roara = control.GetState("Roar Antic");
-            if (roara != null)
-            {
-                roara.ChangeTransition("FINISHED", "Roar End");
-            }
-            else
-            {
-                Dev.LogError("No roar antic on zote boss?");
-            }
-
-            gameObject.DisableKillFreeze();
-        }
-    }
-
-    public class ZoteBossSpawner : DefaultSpawner<ZoteBossControl>
-    {
-        public override bool corpseRemovedByEffect => true;
-
-        public override string corpseRemoveEffectName => "Death Puff Med";
-    }
-
-    public class ZoteBossPrefabConfig : DefaultPrefabConfig
-    {
-        //public override void SetupPrefab(PrefabObject p)
-        //{
-        //    base.SetupPrefab(p);
-
-        //    var Prefab = p.prefab;
-
-        //    Dev.Log("getting death effects");
-        //    var deathEffects = Prefab.GetComponentInChildren<EnemyDeathEffectsUninfected>(true);
-        //    //var baseDeathEffects = deathEffects as EnemyDeathEffects;
-
-        //    deathEffects.doKillFreeze = false;
-
-
-        //    var corpsePrefab = (GameObject)deathEffects.GetType().BaseType.GetField("corpsePrefab", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(deathEffects);
-
-        //    if (corpsePrefab == null)
-        //        Dev.LogError("Failed to find corpse prefab zote boss");
-        //    else
-        //    {
-        //        corpsePrefab.AddComponent<GGZoteCorpseFixer>();
-        //    }
-        //}
-    }
-
-
-    /////
-    //////////////////////////////////////////////////////////////////////////////
 }
 
 
@@ -6242,3 +6187,90 @@ namespace EnemyRandomizerMod
 
 //spawner.effectToSpawn = selectedSpawn.Item1.prefab.name;
 //spawner.setHealthOnSpawn = selectedSpawn.Item2;
+
+
+
+
+
+
+
+//var whiteScreenEffectfsm = gameObject.GetComponentsInChildren<PlayMakerFSM>(true).FirstOrDefault(x => x.gameObject.name == "white_solid");
+//if (whiteScreenEffectfsm != null)
+//{
+//    var whiteScreenEffect = whiteScreenEffectfsm.gameObject;
+//    if (whiteScreenEffect != null)
+//    {
+//        Destroy(whiteScreenEffect);
+//    }
+//}
+//else
+//{
+//    Dev.LogError("Could not find white screen child object on Zote Boss!");
+//}
+
+//var corpse = gameObject.GetCorpseObject();
+//if (corpse != null)
+//{
+//    var white2 = corpse.GetComponentsInChildren<PlayMakerFSM>(true).FirstOrDefault(x => x.gameObject.name == "white_solid");
+//    if (white2 != null && white2.gameObject != null)
+//        Destroy(white2.gameObject);
+
+//    var corpseFSM = corpse.LocateMyFSM("Control");
+//    if (corpseFSM != null)
+//    {
+//        var init = corpseFSM.GetState("Init");
+//        init.DisableActions(0, 1, 7, 8, 9, 10, 11, 15);
+
+//        var inAir = corpseFSM.GetState("In Air");
+//        inAir.DisableActions(0);
+//        corpseFSM.AddTimeoutAction(inAir, "LAND", 1f);
+//        //inAir.AddTimeoutAction("LAND", 1f);
+
+//        var burst = corpseFSM.GetState("Burst");
+//        burst.DisableAction(5);
+//        burst.ChangeTransition("FINISHED", "End");
+
+//        var notify = corpseFSM.GetState("Notify");
+//        notify.DisableAction(0);
+//        notify.AddCustomAction(() => { control.SendEvent("CORPSE END"); });
+
+//        var end = corpseFSM.GetState("End");
+//        end.DisableActions(0, 1, 2, 3);
+
+//        var land = corpseFSM.GetState("Land");
+//        land.DisableActions(0, 3, 4, 5, 6, 7, 13);
+//    }
+//    else
+//    {
+//        Dev.LogError("corpseFSM not found in Zote Boss");
+//    }
+//}
+//else
+//{
+//    Debug.LogError("Failed to find corpse on Zote boss!");
+//}
+
+
+
+//public override void SetupPrefab(PrefabObject p)
+//{
+//    base.SetupPrefab(p);
+
+//    var Prefab = p.prefab;
+
+//    Dev.Log("getting death effects");
+//    var deathEffects = Prefab.GetComponentInChildren<EnemyDeathEffectsUninfected>(true);
+//    //var baseDeathEffects = deathEffects as EnemyDeathEffects;
+
+//    deathEffects.doKillFreeze = false;
+
+
+//    var corpsePrefab = (GameObject)deathEffects.GetType().BaseType.GetField("corpsePrefab", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(deathEffects);
+
+//    if (corpsePrefab == null)
+//        Dev.LogError("Failed to find corpse prefab zote boss");
+//    else
+//    {
+//        corpsePrefab.AddComponent<GGZoteCorpseFixer>();
+//    }
+//}

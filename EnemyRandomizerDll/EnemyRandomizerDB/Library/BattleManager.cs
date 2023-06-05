@@ -186,7 +186,25 @@ namespace EnemyRandomizerMod
             if (Instance.Value != this)
                 Instance.Value = this;
 
-            StateMachine.Value = new BattleStateMachine(scene, fsm);
+            if(scene.name == "Room_Colosseum_Bronze")
+            {
+                StateMachine.Value = new ColoBronze();
+            }
+            else if (scene.name == "Room_Colosseum_Silver")
+            {
+                StateMachine.Value = new ColoSilver();
+            }
+            else if (scene.name == "Room_Colosseum_Gold")
+            {
+                StateMachine.Value = new ColoGold();
+            }
+            else
+            {
+                StateMachine.Value = new BattleStateMachine();
+            }
+
+            StateMachine.Value.Setup(scene, fsm);
+
             //BattleStateMachine.Create(scene, fsm, item);
             //StateMachine.Value.Build(fsm);
         }

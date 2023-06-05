@@ -81,6 +81,14 @@
         <SceneObject path="Shot Mawlek NoDrip"/>
         <SceneObject path="Vomit Glob NoiseFix"/>
         <SceneObject path="Shot Mantis"/>
+        
+        
+
+        <SceneObject path="Mage Orb"/>
+        <SceneObject path="Shot GladiatorSickle"/>
+
+
+
         <SceneObject path="Electro Zap"/>
         <SceneObject path="Corpse Mage/Cloak Ash"/>
         <SceneObject path="Vomit Glob/Air Steam"/>
@@ -106,9 +114,8 @@
         <SceneObject path="Roller R"/>
         <SceneObject path="Spitter R"/>
         <SceneObject path="Buzzer R"/>
-        <SceneObject path="Corpse_Mossman_Shaker/Green Grass B"></SceneObject>
-        <SceneObject path="Corpse_Mossman_Shaker/Green Grass A"/>
         <SceneObject path="Corpse_Mossman_Shaker/Green Grass B"/>
+        <SceneObject path="Corpse_Mossman_Shaker/Green Grass A"/>
         <SceneObject path="Shot Orange LG 0.7"/>
         <SceneObject path="Corpse Break Puff"/>
         <SceneObject path="Spike Ball"/>
@@ -244,27 +251,36 @@
       <sceneObjects>
         <SceneObject path="Colosseum Manager/Waves/Wave 15/Giant Buzzer Col"/>
         <SceneObject path="Colosseum Manager/Waves/Wave 1/Colosseum Cage Large"/>
+        <SceneObject path="Colosseum Manager/Waves/Wave 6/Colosseum Cage Large (1)"/><!--used to harvest the cage itself-->        
+        <SceneObject path="Colosseum Manager/Waves/Wave 7/Colosseum Cage Small (1)"/><!--used to harvest the cage itself-->
+        <SceneObject path="Colosseum Manager/Waves/Wave 29/Colosseum Cage Zote"/>
+        <!--used to harvest the cage itself-->
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_Colosseum_Silver">
       <sceneObjects>
         <SceneObject path="Colosseum Manager/Waves/Wave 30 Obble/Mega Fat Bee"/>
-        <SceneObject path="Colosseum Manager/Waves/Wave 26 Obble/Colosseum Cage Small (1)"/>
+        <SceneObject path="Colosseum Manager/Waves/Wave 26 Obble/Colosseum Cage Small (1)"/><!--blobble-->
         <SceneObject path="Colosseum_Miner"/>
+        <SceneObject path="Colosseum_Worm"/>
+        <SceneObject path="Grub Mimic"/>
+        <SceneObject path="Giant Fly Col"/>
+        <SceneObject path="Grub Mimic Bottle"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Room_Colosseum_Gold">
       <sceneObjects>
-        <SceneObject path="Colosseum Manager/Waves/Garpedes 3/Big Centipede Col (6)"/>
-        <SceneObject path="Colosseum Manager/Waves/Wave 27/Electric Mage New (1)"/>
-        <SceneObject path="Colosseum Manager/Waves/Lobster Lancer/Entry Object/Lancer"/>
+        <SceneObject path="Colosseum Manager/Waves/Garpedes 3/Big Centipede Col (6)"/>   
+        <SceneObject path="Colosseum Manager/Waves/Wave 27/Electric Mage New (1)"/>      
+        <SceneObject path="Colosseum Manager/Waves/Lobster Lancer/Entry Object/Lancer"/> 
         <SceneObject path="Colosseum Manager/Waves/Lobster Lancer/Entry Object/Lobster"/>
-        <SceneObject path="Colosseum Manager/Waves/Wave 4/Colosseum Cage Small"/>
-        <SceneObject path="Colosseum Manager/Waves/Wave 50/Colosseum Cage Large"/>
-        <SceneObject path="Colosseum Manager/Waves/Wave 12/Colosseum Cage Small (4)"/>
-        <SceneObject path="Colosseum Manager/Waves/Wave 6/Colosseum Cage Large"/>
-        <SceneObject path="Colosseum Manager/Waves/Wave 45/Colosseum Cage Small 1"/>
-        <SceneObject path="Colosseum Manager/Waves/Wave 17/Colosseum Cage Small (2)"/>
+        <SceneObject path="Colosseum Manager/Waves/Wave 4/Colosseum Cage Small"/>        <!-- armored roller -->
+        <SceneObject path="Colosseum Manager/Waves/Wave 50/Colosseum Cage Large"/>       <!-- ??? -->
+        <SceneObject path="Colosseum Manager/Waves/Wave 10/Colosseum Cage Small (4)"/> <!--col grass hopper-->
+        <SceneObject path="Colosseum Manager/Waves/Wave 12/Colosseum Cage Small (4)"/> <!--mosquito-->
+        <SceneObject path="Colosseum Manager/Waves/Wave 6/Colosseum Cage Large"/><!-- ??? -->
+        <SceneObject path="Colosseum Manager/Waves/Wave 45/Colosseum Cage Small 1"/><!--mantis heavy flyer-->
+        <SceneObject path="Colosseum Manager/Waves/Wave 17/Colosseum Cage Small (2)"/><!--super spitter col-->
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_01">
@@ -1123,10 +1139,12 @@
         <SceneObject path="Battle Control/Zotelings/Ordeal Zoteling"/>
         <SceneObject path="Battle Control/Tall Zotes/Zote Crew Tall"/>
         <SceneObject path="Battle Control/Dormant Warriors/Zote Crew Normal (1)"/>
+        <SceneObject path="Battle Control/Music"/>        
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Brooding_Mawlek_V">
       <sceneObjects>
+        <SceneObject path="Battle Scene/Tiso Boss"/>
         <SceneObject path="Battle Scene/Tiso Boss/Corpse"/>
       </sceneObjects>
     </SceneData>
@@ -1200,6 +1218,9 @@
     <string>Giant Hopper</string>
     <string>Ceiling Dropper Col</string>
     <string>Colosseum_Worm</string>
+    <string>Grub Mimic</string>
+    <string>Grub Mimic Bottle</string>
+    <string>Blobble</string>
     <string>Spitting Zombie</string>
     <string>Bursting Zombie</string>
     <string>Angry Buzzer</string>
@@ -1391,6 +1412,8 @@
     <string>Bee Dropper</string>
   </enemyNames>
   <hazardNames>
+    <string>Shot GladiatorSickle</string>
+    <string>Mage Orb</string>
     <string>Barb Region</string>
     <string>Hornet Barb</string>
     <string>Laser Turret Frames</string>
@@ -1678,5 +1701,10 @@
     <string>Fountain Back</string><!--scene: Ruins1_27 - fountain (back dreamer)-->
     <string>Fountain Right</string><!--scene: Ruins1_27 - fountain (right dreamer)-->
     <string>Fountain Left</string><!--scene: Ruins1_27 - fountain (1) (left dreamer)-->
+    <string>Arena Cage Small</string>
+    <string>Arena Cage Large</string>
+    <string>Arena Cage Zote</string>
+    <string>Zote Music</string>
+    <string>Tiso Boss</string>
   </otherNames>
 </EnemyRandomizerDatabase>

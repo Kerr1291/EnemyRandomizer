@@ -159,7 +159,8 @@ namespace EnemyRandomizerMod
                 "Chunk",
                 "Platform",
                 "plat_",
-                "Roof"
+                "Roof",
+                "Colosseum Wall"
             };
 
             return groundOrPlatformName.Any(x => gameObject.name.Contains(x));
@@ -1515,6 +1516,14 @@ namespace EnemyRandomizerMod
             }
 
             return IsPogoLogicType(sceneObject.name);
+        }
+
+        public static bool CheckIfIsCustomArenaCageType(this GameObject sceneObject)
+        {
+            if (sceneObject == null)
+                return false;
+
+            return sceneObject.name.Contains("Arena Cage");
         }
 
         public static bool CheckIfIsBadObject(string scenePath)
@@ -3378,6 +3387,30 @@ namespace EnemyRandomizerMod
             return list[replacementIndex].Key;
         }
 
+        public static string GetRandomPrefabNameForArenaEnemy(RNG rng)
+        {
+            if (rng == null)
+            {
+                rng = new RNG();
+                rng.Reset();
+            }
+
+            bool isArenaOK(string name)
+            {
+                if (MetaDataTypes.SafeForArenas.TryGetValue(name, out var isok))
+                {
+                    return isok;
+                }
+                return false;
+            }
+
+            var list = MetaDataTypes.RNGWeights.Where(x => isArenaOK(x.Key)).ToList();
+            var weights = list.Select(x => x.Value).ToList();
+
+            int replacementIndex = rng.WeightedRand(weights);
+            return list[replacementIndex].Key;
+        }
+
         public static void AddTimeoutAction(this PlayMakerFSM control, FsmState state, string eventName, float timeout)
         {
             state.AddCustomAction(() => { control.StartTimeoutState(state.Name, eventName, timeout); });
@@ -3820,6 +3853,17 @@ namespace EnemyRandomizerMod
                     {
                         enemy.ScaleObject(sizeScale);
                         enemy.ScaleAudio(sizeScale);//might not need this....
+
+                        var soc2 = enemy.GetComponent<DefaultSpawnedEnemyControl>();
+                        if (soc2 != null)
+                        {
+                            var nmax = SpawnerExtensions.OriginalPrefabHP(originalEnemy);
+                            if (nmax > 1)
+                            {
+                                soc2.MaxHP = nmax;
+                                soc2.CurrentHP = soc2.MaxHP;
+                            }
+                        }
                     }
                 }
             }

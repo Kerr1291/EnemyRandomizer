@@ -180,6 +180,7 @@
     <Compile Include="Library\Common\Physics\Triangulator.cs" />
     <Compile Include="Library\Common\RNG\mt19937.cs" />
     <Compile Include="Library\Common\RNG\RNG.cs" />
+    <Compile Include="Library\CustomArena.cs" />
     <Compile Include="Library\Database.cs" />
     <Compile Include="Library\DatabaseAPI.cs" />
     <Compile Include="Library\DatabaseInternal.cs" />

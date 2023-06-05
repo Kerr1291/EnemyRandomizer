@@ -74,6 +74,18 @@ namespace EnemyRandomizerMod
                 spawnedControl.thisMetadata = new ObjectMetadata(gameObject);
                 spawnedControl.Setup(objectToReplace);
             }
+            else if(gameObject.CheckIfIsCustomArenaCageType())
+            {
+                if (gameObject.GetComponent<SpawnedObjectControl>() != null)
+                {
+                    throw new InvalidOperationException("This object was already setup (somehow)");
+                }
+
+                var spawnedControl = gameObject.AddComponent<SpawnedObjectControl>();
+                
+                spawnedControl.thisMetadata = new ObjectMetadata(gameObject);
+                spawnedControl.Setup(objectToReplace);
+            }
             else
             {
                 var controller = AddController(gameObject);

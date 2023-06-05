@@ -129,6 +129,12 @@ namespace EnemyRandomizerMod
                     Children.RemoveAt(i);
                     continue;
                 }
+                else if(IsOutsideColo(Children[i]))
+                {
+                    Children[i].KillObjectNow();
+                    Children.RemoveAt(i);
+                    continue;
+                }
                 else
                 {
                     var hm = Children[i].GetComponent<HealthManager>();
@@ -141,6 +147,86 @@ namespace EnemyRandomizerMod
 
                 ++i;
             }
+        }
+
+        protected virtual bool IsOutsideColo(GameObject g)
+        {
+            if (GameManager.instance.GetCurrentMapZone() != "COLOSSEUM")
+                return false;
+
+            bool isOutside = false;
+            var pos = g.transform.position.ToVec2();
+            if(pos.y < 3.5f || pos.y > 30f)
+            {
+                isOutside = true;
+            }
+            if (pos.x < 83f || pos.x > 122f)
+            {
+                isOutside = true;
+            }
+
+            return isOutside;
+        }
+
+        /// <summary>
+        /// Warning: only use with custom arenas! This will not randomize any enemies that it spawns
+        /// and activate them immediately
+        /// </summary>
+        public virtual GameObject SpawnCustomArenaEnemy(Vector2 pos, string specificEnemy = null, string originalEnemy = null, RNG rng = null)
+        {
+            GameObject enemy = null;
+            string enemyToSpawn = null;
+            try
+            {
+                if(!string.IsNullOrEmpty(specificEnemy))
+                {
+                    enemyToSpawn = specificEnemy;
+                    enemy = SpawnerExtensions.SpawnEntityAt(specificEnemy, pos, false, false);
+                }
+                else
+                {
+                    enemyToSpawn = SpawnerExtensions.GetRandomPrefabNameForArenaEnemy(rng);
+                    enemy = SpawnAndTrackChild(enemyToSpawn, pos, false, false);
+                }
+
+                if (enemy != null)
+                {
+                    var soc = enemy.GetComponent<SpawnedObjectControl>();
+                    if (soc != null)
+                    {
+                        soc.placeGroundSpawnOnGround = false;
+                    }
+                }
+            }
+            catch (Exception e) { Dev.LogError($"Exception caught in SpawnCustomArenaEnemy when trying to spawn {enemyToSpawn} ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
+
+            try
+            {
+                if (enemy != null && !string.IsNullOrEmpty(originalEnemy) && !string.IsNullOrEmpty(enemyToSpawn))
+                {
+                    float sizeScale = SpawnerExtensions.GetRelativeScale(enemyToSpawn, originalEnemy);
+                    if (!Mathnv.FastApproximately(sizeScale, 1f, 0.01f))
+                    {
+                        enemy.ScaleObject(sizeScale);
+                        enemy.ScaleAudio(sizeScale);//might not need this....
+                    }
+                }
+            }
+            catch (Exception e) { Dev.LogError($"Exception caught in SpawnCustomArenaEnemy when trying to scale {enemyToSpawn} to match {originalEnemy} ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
+
+            enemy = ActivateAndTrackSpawnedObject(enemy);
+
+            if (enemy != null && !string.IsNullOrEmpty(originalEnemy))
+            {
+                var soc2 = enemy.GetComponent<DefaultSpawnedEnemyControl>();
+                if (soc2 != null)
+                {
+                    soc2.defaultScaledMaxHP = SpawnerExtensions.GetObjectPrefab(originalEnemy).prefab.GetEnemyHealthManager().hp;
+                    soc2.CurrentHP = soc2.defaultScaledMaxHP;
+                }
+            }
+
+            return enemy;
         }
     }
 }

@@ -1152,7 +1152,23 @@ namespace EnemyRandomizerMod
     public class ZombieFungusAPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
+    ///
 
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class GrubMimicControl : DefaultSpawnedEnemyControl
+    {
+    }
+
+    public class GrubMimicSpawner : DefaultSpawner<GrubMimicControl> { }
+
+    public class GrubMimicPrefabConfig : DefaultPrefabConfig { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
 
 
 

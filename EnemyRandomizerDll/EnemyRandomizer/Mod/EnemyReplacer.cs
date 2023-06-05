@@ -41,7 +41,15 @@ namespace EnemyRandomizerMod
             EnemyRandomizerDatabase.GetDatabase -= GetCurrentDatabase;
             EnemyRandomizerDatabase.GetDatabase += GetCurrentDatabase;
 
+            EnemyRandomizerDatabase.GetPlayerSeed -= GetCurrentSeed;
+            EnemyRandomizerDatabase.GetPlayerSeed += GetCurrentSeed;
+
             return database.GetPreloadNames();
+        }
+
+        protected int GetCurrentSeed()
+        {
+            return EnemyRandomizer.PlayerSettings.enemyRandomizerSeed;
         }
 
         public void Setup(Dictionary<string, Dictionary<string, GameObject>> preloadedObjects)
@@ -139,6 +147,9 @@ namespace EnemyRandomizerMod
             EnemyRandomizerDatabase.GetBlackBorders -= GetBlackBorders;
             EnemyRandomizerDatabase.GetBlackBorders += GetBlackBorders;
 
+            EnemyRandomizerDatabase.GetPlayerSeed -= GetCurrentSeed;
+            EnemyRandomizerDatabase.GetPlayerSeed += GetCurrentSeed;
+
             SpawnerExtensions.SetupBoundsReactives();
 
             EnemyRandomizerDatabase.CustomSpawnWithLogic -= EnemyRandomizer.CustomSpawn;
@@ -161,6 +172,7 @@ namespace EnemyRandomizerMod
 
             EnemyRandomizerDatabase.GetDatabase -= GetCurrentDatabase;
             EnemyRandomizerDatabase.GetBlackBorders -= GetBlackBorders;
+            EnemyRandomizerDatabase.GetPlayerSeed -= GetCurrentSeed;
             EnemyRandomizerDatabase.CustomSpawnWithLogic -= EnemyRandomizer.CustomSpawn;
         }
 

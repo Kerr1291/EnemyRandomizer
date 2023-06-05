@@ -305,7 +305,96 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class SuperSpitterControl : DefaultSpawnedEnemyControl { }
+    public class SuperSpitterControl : DefaultSpawnedEnemyControl
+    {
+        public AudioSource audio;
+
+        public int chanceToSpawnSuperBossOutOf100 = 1; // -> ( 20 / 100 )
+        bool isSuperBoss;
+
+        public override string customDreamnailText => isSuperBoss ? "Destroy." : base.customDreamnailText;
+
+        public override bool explodeOnDeath => isSuperBoss ? true : false;
+
+        int currentStage = 0;
+
+        int[] stageHP = new int[4];
+
+        public float spawnCooldown = 4f;
+        public float spawnTime = 0f;
+
+        protected override void Update()
+        {
+            base.Update();
+
+            if (isSuperBoss)
+            {
+                if (!Mathnv.FastApproximately(SizeScale, 2f, 0.01f))
+                {
+                    SizeScale = 2f;
+                    gameObject.ScaleObject(2f);
+                    gameObject.ScaleAudio(1f);
+                }
+
+                if (CurrentHP < stageHP[currentStage])
+                {
+                    currentStage++;
+                    ChildController.maxChildren = currentStage;
+                }
+
+                spawnTime += Time.deltaTime;
+                if(spawnTime >= spawnCooldown)
+                {
+                    spawnTime = 0f;
+                    var spawn = ChildController.SpawnCustomArenaEnemy(transform.position, "Super Spitter", null, null);
+                    var soc = spawn.GetComponent<SuperSpitterControl>();
+                    if(soc.isSuperBoss)
+                    {
+                        soc.isSuperBoss = false;
+                        soc.gameObject.ScaleObject(1f);
+                        soc.gameObject.ScaleAudio(1f);
+                        soc.Sprite.color = Color.white;
+                        soc.MaxHP = soc.gameObject.OriginalPrefabHP();
+                        soc.CurrentHP = soc.MaxHP;
+                    }
+                }
+            }
+        }
+
+        public override void Setup(GameObject objectThatWillBeReplaced = null)
+        {
+            base.Setup(objectThatWillBeReplaced);
+            isSuperBoss = SpawnerExtensions.RollProbability(out int _, chanceToSpawnSuperBossOutOf100, 100);
+
+            audio = GetComponent<AudioSource>();
+            if (isSuperBoss)
+            {
+                Sprite.color = Color.red;
+
+                gameObject.AddParticleEffect_TorchShadeEmissions();
+            }
+        }
+
+        protected override int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
+        {
+            float min = 200f;
+            float max = 1600f;
+            float range = max - min;
+            float progress = MetaDataTypes.ProgressionZoneScale[GameManager.instance.GetCurrentMapZone()];
+            float t = progress / 50f;
+            int superMax = Mathf.FloorToInt(min + (range * t));
+
+            if (isSuperBoss)
+            {
+                stageHP[0] = superMax;
+                stageHP[1] = superMax - superMax / 8;
+                stageHP[2] = superMax / 2;
+                stageHP[3] = superMax / 3;
+            }
+
+            return isSuperBoss ? superMax : base.GetStartingMaxHP(objectThatWillBeReplaced);
+        }
+    }
 
     public class SuperSpitterSpawner : DefaultSpawner<SuperSpitterControl> { }
 
@@ -549,24 +638,32 @@ namespace EnemyRandomizerMod
     public class JellyfishControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Jellyfish";
+        public int chanceToSpawnSuperJellyOutOf100 = 20; // -> ( 20 / 100 )
+
+        public override string spawnEntityOnDeath => "Lil Jellyfish";
+
+        Func<GameObject> spawnerFunc;
 
         public override void Setup(GameObject other)
         {
             base.Setup(other);
 
-            var spawnerFunc = gameObject.GetRandomAttackSpawnerFunc();
+            bool isSuperJelly = SpawnerExtensions.RollProbability(out int _, chanceToSpawnSuperJellyOutOf100, 100);
 
-            var detach = control.GetState("Detach");
-            detach.AddCustomAction(() => {
-                var go = spawnerFunc?.Invoke();
-                go.transform.parent = null;
-                go.transform.position = transform.position;
-                go.SafeSetActive(true);
-            });
+            if (isSuperJelly)
+            {
+                spawnerFunc = gameObject.GetRandomAttackSpawnerFunc();
+                var detach = control.GetState("Detach");
+                detach.AddCustomAction(() => {
+                    SpawnerExtensions.StartTrailEffectSpawns(this, 4, 0.2f, spawnerFunc);
+                });
+            }
         }
     }
 
-    public class JellyfishSpawner : DefaultSpawner<JellyfishControl> { }
+    public class JellyfishSpawner : DefaultSpawner<JellyfishControl>
+    {
+    }
 
     public class JellyfishPrefabConfig : DefaultPrefabConfig { }
     /////

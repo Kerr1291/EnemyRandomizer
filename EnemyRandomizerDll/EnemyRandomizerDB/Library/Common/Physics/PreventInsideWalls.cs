@@ -22,6 +22,7 @@ namespace EnemyRandomizerMod
                 "Roof",
                 "Platform",
                 "plat_",
+                "Colosseum Wall"
             };
 
         Vector2 currentLocation => transform.position.ToVec2();

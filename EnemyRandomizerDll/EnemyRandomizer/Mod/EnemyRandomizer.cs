@@ -99,7 +99,7 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
 
         const string defaultDatabaseFilePath = "EnemyRandomizerDatabase.xml";
-        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9b]";
+        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9c - now with Colosseum 1 working! (not 2 or 3 yet)]";
         static string currentVersion = currentVersionPrefix;
             //Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + $" CURRENT SEED:[{GlobalSettings.seed}] -- TO CHANGE SEED --> MODS > ENEMY RANDOMIZER > ENEMY RANDOMIZER MODULES";
 
@@ -608,6 +608,13 @@ namespace EnemyRandomizerMod
 
         public static bool DoReplacementBypassCheck(bool peek = false)
         {
+            //don't randomize in colo
+            if (GameManager.instance.GetCurrentMapZone() == "COLOSSEUM" ||
+                GameManager.instance.GetCurrentMapZone() == "FINAL_BOSS")
+            {
+                EnemyRandomizer.bypassNextReplacement = true;
+            }
+
             if (EnemyRandomizer.bypassNextReplacement)
             {
                 if (!peek)

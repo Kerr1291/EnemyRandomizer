@@ -514,6 +514,7 @@ namespace EnemyRandomizerMod
             "Ghost Warrior Xero",
             "Ghost Warrior Markoth",
             "Moss Charger",
+            "Mimic Spider",
             "Mega Moss Charger"
         };
 
@@ -542,12 +543,12 @@ namespace EnemyRandomizerMod
             "Mage Lord Phase2",
             "Mega Jellyfish",
             "Mega Jellyfish GG",
-            "Radiance",
+            //"Radiance",
             "Giant Buzzer",//temporarily broken
             "Giant Buzzer Col",//temporarily broken
             "Corpse Garden Zombie", //don't spawn this, it's just a corpse
             "Super Spitter Col"                    ,
-            "Giant Fly Col"                        ,
+            //"Giant Fly Col"                        ,
             "Buzzer Col"                           ,
             "Ceiling Dropper Col"                  ,
             "Roller R"                             ,
@@ -561,8 +562,8 @@ namespace EnemyRandomizerMod
             "Super Spitter R"                      ,
             "Giant Buzzer Col"                     ,
             "Plant Turret Right"                   ,
-            "Colosseum_Worm"                       ,
-            "Colosseum Grass Hopper"               ,
+            //"Colosseum_Worm"                       ,
+            //"Colosseum Grass Hopper"               ,
             "Zombie Beam Miner Rematch",
             "White Defender"               , //until he's fixed
             //"Mage Lord"               , //until he's fixed
@@ -695,6 +696,66 @@ namespace EnemyRandomizerMod
                 { "BEASTS_DEN", 2 },
                 { "GODS_GLORY", 5 },
                 { "GODSEEKER_WASTE", 11 }
+            };
+
+
+
+        //main game zones go 0 - 49
+        public static Dictionary<string, int> ProgressionZoneScale = new Dictionary<string, int>()
+            {
+                { "GODS_GLORY",         -5 },
+                { "BONE_FOREST",        -3 },
+                { "NONE",               -2 },
+                { "TEST_AREA",          -1 },
+
+                { "TOWN",               0 },
+                { "DREAM_WORLD",        1 },
+                { "KINGS_PASS",         2 },
+                { "CROSSROADS",         3 },
+                { "SHAMAN_TEMPLE",      4 },
+                { "GREEN_PATH",         5 },
+                { "GLADE",              6 },
+                { "WASTES",             7 },
+                { "MANTIS_VILLAGE",     8 },
+                { "CLIFFS",             9 },
+                { "JONI_GRAVE",        10 },
+                { "OVERGROWN_MOUND",   11 },
+                { "MINES",             12 },
+                { "RESTING_GROUNDS",   13 },
+                { "NOEYES_TEMPLE",     14 },
+                { "BLUE_LAKE",         15 },
+                { "CITY",              16 },
+                { "QUEENS_STATION",    17 },
+                { "MAGE_TOWER",        18 },
+                { "SOUL_SOCIETY",      19 },
+                { "ROYAL_QUARTER",     20 },
+                { "KINGS_STATION",     21 },
+                { "WATERWAYS",         22 },
+                { "ISMAS_GROVE",       23 },
+                { "ACID_LAKE",         24 },
+                { "DEEPNEST",          25 },
+                { "RUINED_TRAMWAY",    26 },
+                { "DISTANT_VILLAGE",   27 },
+                { "BEASTS_DEN",        28 },
+                { "TRAM_UPPER",        29 },
+                { "HIVE",              31 },
+                { "TRAM_LOWER",        32 },
+                { "OUTSKIRTS",         33 },
+                { "WYRMSKIN",          34 },
+                { "COLOSSEUM",         35 },
+                { "CRYSTAL_MOUND",     36 },
+                { "PEAK",              37 },
+                { "FOG_CANYON",        38 },
+                { "MONOMON_ARCHIVE",   39 },
+                { "ROYAL_GARDENS",     41 },
+                { "LOVE_TOWER",        42 },
+                { "LURIENS_TOWER",     43 },
+                { "ABYSS",             44 },
+                { "PALACE_GROUNDS",    45 },
+                { "WHITE_PALACE",      46 },
+                { "GODSEEKER_WASTE",   47 },
+                { "ABYSS_DEEP",        48 },
+                { "FINAL_BOSS",        49 },
             };
 
         public static Dictionary<string, string> CustomReplacementName = new Dictionary<string, string>()
@@ -923,86 +984,53 @@ namespace EnemyRandomizerMod
 
 
 
-        //make markoth shield start rotating
         public static Dictionary<string, bool> SafeForArenas = new Dictionary<string, bool>()
         {
-            {"Health Cocoon", false},
-            {"Health Scuttler", false},
-            {"Orange Scuttler", false},
-            {"Abyss Tendril", false},
-            {"Flamebearer Small", false},//these work, but they're annoying and don't stay in the arenas
-            {"Flamebearer Med", false},  //these work, but they're annoying and don't stay in the arenas
-            {"Flamebearer Large", false},//these work, but they're annoying and don't stay in the arenas
             {"Mosquito", true},
             {"Colosseum_Armoured_Roller", true},
             {"Colosseum_Miner", true},
-            {"Zote Boss", true},// TEST FIXES
-            {"Bursting Bouncer", true},//corpse didnt explode
+            {"Zote Boss", true},
+            {"Bursting Bouncer", true},
             {"Super Spitter", true},
-            {"Super Spitter Col", false},//didnt spawn
-            {"Giant Fly Col", false},//didn't spawn
             {"Colosseum_Shield_Zombie", true},
-            {"Buzzer Col", false},//didn't spawn
             {"Blobble", true},
             {"Colosseum_Armoured_Mosquito", true},
             {"Colosseum_Flying_Sentry", true},
             {"Hopper", true},
             {"Giant Hopper", true},
-            {"Ceiling Dropper Col", false},//didn't spawn
-            {"Colosseum_Worm", false},//?? didn't spawn
             {"Spitting Zombie", true},
             {"Bursting Zombie", true},
             {"Angry Buzzer", true},
-            {"Mawlek Col", false},//?? didn't spawn
             {"Mantis Heavy", true},
             {"Lesser Mawlek", true},
             {"Mantis Heavy Flyer", true},
-            {"Colosseum Grass Hopper", false},//??? didn't spawn
             {"Fly", true},
             {"Roller", true},
-            {"Hatcher Baby", false},
-            {"Roller R", false},
-            {"Spitter R", true},
-            {"Buzzer R", false},
             {"Mossman_Runner", true},
             {"Jellyfish", true},
-            {"Lil Jellyfish", false},//bomb, worked
-            {"Mantis Flyer Child", false},//spawned in ground
-            {"Ghost Warrior Slug", false},//isn't attacking and drifts left -- movement broken like markoth
-            {"Corpse Garden Zombie", false},
+            {"Ghost Warrior Slug", true},
             {"Baby Centipede", true},
-            {"Zombie Spider 2", false},//nullref
-            {"Zombie Spider 1", false},//didn't spawn
+            {"Zombie Spider 2", true},
+            {"Zombie Spider 1", true},
             {"Tiny Spider", true},
             {"Shade Sibling", true},
-            {"Flukeman Top", false},//dont spawn
-            {"Flukeman Bot", false},//don't spawn
-            {"White Defender", false},//error on spawn
-
-
-            {"Jellyfish GG", false},
-            {"Colosseum_Armoured_Roller R", false},  //dont spawn
-            {"Colosseum_Armoured_Mosquito R", false},//dont spawn
-            {"Super Spitter R", false}, //dont spawn
             {"Crawler", true},
             {"Buzzer", true},
-            {"Giant Buzzer Col", true},//coun't hurt
-            {"Mega Fat Bee", true}, //???? didn't see it spawn
-            {"Lobster", true},//was placed inside floor
+            {"Mega Fat Bee", true},
+            {"Lobster", true},
             {"Mage Knight", true},
-            {"Mage", false},//spawned outside arena
-            {"Electric Mage", false},//teleported away
+            {"Mage", true},
+            {"Electric Mage", true},
             {"Mage Blob", true},
-            {"Lancer", false},//error, spawned stuck and couldn't die as well
+            {"Lancer", true},
             {"Climber", true},
             {"Zombie Runner", true},
-            {"Mender Bug", false},
             {"Spitter", true},
             {"Zombie Hornhead", true},
-            {"Giant Fly", false}, //spawn error, needs fix
+            {"Giant Fly", true}, 
             {"Zombie Barger", true},
-            {"Mawlek Body", false},//spawn errror
-            {"False Knight New", true}, ///???? some errors but killable
+            {"Mawlek Body", true},
+            {"False Knight New", true}, 
             {"Prayer Slug", true},
             {"Blocker", true},
             {"Zombie Shield", true},
@@ -1010,7 +1038,6 @@ namespace EnemyRandomizerMod
             {"Zombie Leaper", true},
             {"Zombie Guard", true},
             {"Zombie Myla", true},
-            {"Egg Sac", false},//didnt transfer item
             {"Royal Zombie Fat", true},
             {"Royal Zombie", true},
             {"Royal Zombie Coward", true},
@@ -1021,34 +1048,22 @@ namespace EnemyRandomizerMod
             {"Ruins Flying Sentry Javelin", true},
             {"Ruins Sentry Fat", true},
             {"Mage Balloon", true},
-            {"Mage Lord", false},//error? fix?
-            {"Mage Lord Phase2", true},//works -- cant find his orb idle spot
+            {"Mage Lord", true},
+            {"Mage Lord Phase2", true},
             {"Great Shield Zombie", true},
-            {"Great Shield Zombie bottom", false},//skip, doesn't spawn
-            {"Black Knight", false},//??? still yeets into space
-            {"Jar Collector", false},//jars are spawning inactive enemies -- spawned in floor
+            {"Black Knight", true},
+            {"Jar Collector", true},
             {"Moss Walker", true},
             {"Plant Trap", true},
             {"Mossman_Shaker", true},
-            {"Pigeon", false},
             {"Hornet Boss 1", true},
-            {"Acid Flyer", false},
-            {"Moss Charger", false},
-            {"Acid Walker", false},
-            {"Plant Turret", false},
-            {"Plant Turret Right", false},
             {"Fat Fly", true},
-            {"Giant Buzzer", false},
+            {"Giant Buzzer", true},
             {"Moss Knight", true},
             {"Grass Hopper", true},
-            {"Lazy Flyer Enemy", false},
-            {"Mega Moss Charger", false},
-
-
-
-            {"Ghost Warrior No Eyes", false},
+            {"Ghost Warrior No Eyes", true},
             {"Fungoon Baby", true},
-            {"Mushroom Turret", false},//spawned in floor
+            {"Mushroom Turret", true},
             {"Fungus Flyer", true},
             {"Zombie Fungus B", true},
             {"Fung Crawler", true},
@@ -1057,109 +1072,733 @@ namespace EnemyRandomizerMod
             {"Mushroom Roller", true},
             {"Zombie Fungus A", true},
             {"Mantis", true},
-            {"Ghost Warrior Hu", false},
-            {"Jellyfish Baby", false},
             {"Moss Flyer", true},
             {"Garden Zombie", true},
             {"Mantis Traitor Lord", true},
             {"Moss Knight Fat", true},
             {"Mantis Heavy Spawn", true},
             {"Ghost Warrior Marmu", true},
-            {"Mega Jellyfish", false},
-            {"Ghost Warrior Xero", false},//killing caused nullrefs
             {"Grave Zombie", true},
             {"Crystal Crawler", true},
             {"Zombie Miner", true},
             {"Crystal Flyer", true},
-            {"Crystallised Lazer Bug", false},
             {"Mines Crawler", true},
-            {"Mega Zombie Beam Miner", true},//nullrefs on spawn
+            {"Mega Zombie Beam Miner", true},
             {"Zombie Beam Miner", true},
-            {"Zombie Beam Miner Rematch", true},//nullrefs on spawn
             {"Spider Mini", true},
             {"Zombie Hornhead Sp", true},
             {"Zombie Runner Sp", true},
             {"Centipede Hatcher", true},
-            {"Mimic Spider", true},//nullref
+            {"Mimic Spider", true},
             {"Slash Spider", true},
             {"Spider Flyer", true},
-            {"Ghost Warrior Galien", false},
+            {"Ghost Warrior Galien", true},
             {"Blow Fly", true},
             {"Bee Hatchling Ambient", true},
-            {"Ghost Warrior Markoth", false},
             {"Hornet Boss 2", true},
             {"Abyss Crawler", true},
-            {"Infected Knight", true},//didn't spawn
             {"Parasite Balloon", true},
             {"Mawlek Turret", true},
-            {"Mawlek Turret Ceiling", false},//didn't spawn
             {"Flip Hopper", true},
             {"Inflater", true},
             {"Fluke Fly", true},
             {"Flukeman", true},
-            {"Dung Defender", false},
-            {"fluke_baby_02", false},
-            {"fluke_baby_01", false},//no blue mask
-            {"fluke_baby_03", false},//no explode
-            {"Fluke Mother", false}, //nullref
+            {"Fluke Mother", true}, 
             {"White Palace Fly", true},
             {"Enemy", true},
-            {"Royal Gaurd", true},//fix boomerang -- elite not spawning
+            {"Royal Gaurd", true},
             {"Zombie Hive", true},
             {"Bee Stinger", true},
             {"Big Bee", true},
-            {"Hive Knight", false},//not spawning
-            {"Grimm Boss", false},//teleports into walls
-            {"Nightmare Grimm Boss", false},//stuck on spawn -- still steals HUD -- death doesn't delete
             {"False Knight Dream", true},
-            {"Dream Mage Lord", false},
-            {"Dream Mage Lord Phase2", false},
             {"Lost Kin", true},
             {"Zoteling", true},
             {"Zoteling Buzzer", true},
             {"Zoteling Hopper", true},
-            {"Zote Balloon", false},
             {"Grey Prince", true},
+            {"Pale Lurker", true},
+            {"Fat Fluke", true},
+            {"Zote Turret", true},
+            {"Zote Salubra", true},
+            {"Zote Thwomp", true},
+            {"Zote Crew Normal", true},
+            {"Zote Crew Fat", true},
+            {"Zote Crew Tall", true},
+            {"Hornet Nosk", true},
+            {"Jellyfish Baby", true},
+            {"Acid Walker", true},
+            {"Colosseum_Worm", true},
+            {"Colosseum Grass Hopper", true},
+            //{"Grub Mimic", true},
+
+
+            //these could go into the arena pool after they're fixed
+            {"Hive Knight", false},//not spawning
+            {"Grimm Boss", false},//teleports into walls
+            {"Nightmare Grimm Boss", false},//stuck on spawn -- still steals HUD -- death doesn't delete
+            {"Dream Mage Lord", false},
+            {"Dream Mage Lord Phase2", false},
             {"Radiance", false},
             {"Hollow Knight Boss", false},//fell through world
             {"HK Prime", false},//didn't spawn
-            {"Pale Lurker", true},
             {"Oro", false},//didn't delete
             {"Mato", false},//didn't activate or die
             {"Sheo Boss", false},//didn't die
-            {"Fat Fluke", true},
             {"Absolute Radiance", false},//nullref
             {"Sly Boss", false},//didn't die
-            {"Zote Turret", true},
-            {"Zote Balloon Ordeal", false},//skip
-            {"Ordeal Zoteling", false},
-            {"Zote Salubra", false},
-            {"Zote Thwomp", true},
             {"Zote Fluke", false},//add poob
-            {"Zote Crew Normal", false},//spawns in floor
-            {"Zote Crew Fat", true},
-            {"Zote Crew Tall", false},//spawns in floor
-            {"Hornet Nosk", true},
+            {"Ordeal Zoteling", false},
+            {"Bee Dropper", false}, //needs some starting velocity, a collider so it can be hit?, and POOB component
+            {"Ghost Warrior Hu", false},
+            {"Mega Jellyfish", false},
+            {"Ghost Warrior Xero", false},//killing caused nullrefs
+            {"Zombie Beam Miner Rematch", false},
+            {"Ghost Warrior Markoth", false},
+            {"Infected Knight", false},//didn't spawn
+            {"Dung Defender", false},
+            {"Jellyfish GG", false},
+            {"White Defender", false},//error on spawn
+
+            //these are just not fit for an arena, ever
+            {"Acid Flyer", false},
+            {"Lazy Flyer Enemy", false},
+            {"Moss Charger", false},
+            {"Mega Moss Charger", false},
+            {"Plant Turret", false},
+            {"Flamebearer Small", false},//these work, but they're annoying and don't stay in the arenas
+            {"Flamebearer Med", false},  //these work, but they're annoying and don't stay in the arenas
+            {"Flamebearer Large", false},//these work, but they're annoying and don't stay in the arenas
             {"Mace Head Bug", false},
+            {"Crystallised Lazer Bug", false},
+            {"fluke_baby_02", false},
+            {"fluke_baby_01", false},
+            {"fluke_baby_03", false},
             {"Big Centipede Col", false},
-            {"Laser Turret Frames", false},//nullref
             {"Jelly Egg Bomb", false},//not loaded?
             {"Worm", false}, //need flipped
-            {"Bee Dropper", false} //needs some starting velocity, a collider so it can be hit?, and POOB component
+            {"Laser Turret Frames", false},//nullref
+            {"Health Scuttler", false},
+            {"Orange Scuttler", false},
+            {"Lil Jellyfish", false},//bomb, worked
+            {"Abyss Tendril", false},
+            {"Mender Bug", false},
+            {"Egg Sac", false},//didnt transfer item
+            {"Pigeon", false},
+            {"Zote Balloon", false},
+            {"Mantis Flyer Child", false},//spawned in ground
+            
+            //{"Grub Mimic Bottle", false},
+            {"Mage Orb", false },
+            
+            //these are junk enemies, duplicates, or not enemies; never spawn these
+            {"Hatcher Baby", false},
+            {"Mawlek Turret Ceiling", false},//didn't spawn
+            {"Colosseum_Armoured_Roller R", false},  //dont spawn
+            {"Colosseum_Armoured_Mosquito R", false},//dont spawn
+            {"Super Spitter R", false}, //dont spawn
+            {"Giant Buzzer Col", false},
+            {"Great Shield Zombie bottom", false},//skip, doesn't spawn
+            {"Mawlek Col", false},//?? didn't spawn
+            {"Plant Turret Right", false},
+            {"Health Cocoon", false},
+            {"Super Spitter Col", false},//didnt spawn
+            {"Ceiling Dropper Col", false},//didn't spawn
+            {"Giant Fly Col", false},//didn't spawn
+            {"Buzzer Col", false},//didn't spawn
+            {"Roller R", false},
+            {"Spitter R", false},
+            {"Buzzer R", false},
+            {"Flukeman Top", false},//dont spawn
+            {"Flukeman Bot", false},//don't spawn
+            {"Zote Balloon Ordeal", false},//skip
+            {"Corpse Garden Zombie", false},//literally just a corpse
         };
 
 
 
         public static Dictionary<string, float> RNGWeights = new Dictionary<string, float>()
         {
-            {"Health Cocoon", 0.01f},
-            {"Health Scuttler", 0.01f},
+            {"Health Cocoon", 0.0001f},
+            {"Health Scuttler", 0.0001f},
+            {"Abyss Tendril", 0.00001f},
             {"Orange Scuttler", 0.01f},
-            {"Abyss Tendril", 0.01f},
 
-            {"Flamebearer Small", 0.1f},//these work, but they're annoying and don't stay in the arenas
-            {"Flamebearer Med", 0.1f},  //these work, but they're annoying and don't stay in the arenas
-            {"Flamebearer Large", 0.1f},//these work, but they're annoying and don't stay in the arenas
+            {"Flamebearer Small", 0.05f},//these work, but they're annoying and don't stay in the arenas
+            {"Flamebearer Med", 0.05f},  //these work, but they're annoying and don't stay in the arenas
+            {"Flamebearer Large", 0.05f},//these work, but they're annoying and don't stay in the arenas
+
+            {"Mosquito", 0.6f},
+            {"Colosseum_Armoured_Mosquito", 0.4f},
+
+            {"Colosseum_Armoured_Roller", 0.5f},
+            {"Roller", 0.6f},
+            {"Roller R", 0.001f},
+
+            {"Super Spitter", 1f},
+            {"Super Spitter Col", 0.0001f},//didnt spawn
+            
+            {"Spitter R", 0.001f},
+            {"Spitter", 1f},
+
+            {"White Defender", 0.05f},//error on spawn
+            {"Dung Defender", 0.1f},
+
+            {"Giant Buzzer Col", 0.001f},//coun't hurt
+            {"Giant Buzzer", 0.2f},
+            
+            {"Zombie Shield", 0.25f},
+            {"Zombie Leaper", 0.25f},
+            {"Zombie Guard", 0.25f},
+            {"Zombie Runner", 0.25f},
+            {"Zombie Hornhead", 0.25f},
+            {"Zombie Barger", 0.25f},
+
+            {"False Knight Dream", 0.0001f},
+            {"False Knight New", 0.4f}, 
+
+            {"Royal Zombie Fat", 0.4f},
+            {"Royal Zombie", 0.4f},
+            {"Royal Zombie Coward", 0.4f},
+
+            {"Gorgeous Husk", 0.5f},
+            {"Ceiling Dropper", 1f},
+
+            {"Ruins Sentry", 0.2f},
+            {"Ruins Flying Sentry", 0.2f},
+            {"Ruins Flying Sentry Javelin", 0.05f},
+            {"Ruins Sentry Fat", 0.3f},
+
+            {"Great Shield Zombie", 0.25f},
+            {"Great Shield Zombie bottom", 0.0001f},//skip, doesn't spawn
+            
+            {"Plant Trap", 1f},
+            {"Pigeon", 0.0001f},
+
+            {"Acid Flyer", 0.05f},
+            {"Acid Walker", 0.25f},
+
+            {"Plant Turret", 0.4f},
+            {"Plant Turret Right", 0.0001f},
+
+            {"Fungoon Baby", 0.3f},
+            {"Fungus Flyer", 0.4f},
+
+            {"Zombie Fungus A", 0.5f},
+            {"Zombie Fungus B", 0.5f},
+
+            {"Moss Flyer", 0.7f},
+            {"Moss Knight Fat", 0.5f},
+            {"Moss Knight", 0.6f},
+            {"Moss Walker", 0.5f},
+            {"Mossman_Shaker", 0.7f},
+            {"Mossman_Runner", 0.7f},
+
+            {"Moss Charger", 0.3f},
+            {"Mega Moss Charger", 0.1f},
+
+            {"Mantis Heavy", 0.2f},
+            {"Mantis Heavy Flyer", 0.2f},
+            {"Mantis Flyer Child", 0.05f},
+            {"Mantis", 0.2f},
+            {"Mantis Traitor Lord", 0.05f},
+            {"Mantis Heavy Spawn", 0.1f},
+
+            {"Ghost Warrior Markoth", 0.05f},
+            {"Ghost Warrior Galien", 0.05f},
+            {"Ghost Warrior Xero", 0.05f},
+            {"Ghost Warrior Marmu", 0.05f},
+            {"Ghost Warrior No Eyes", 0.05f},
+            {"Ghost Warrior Hu", 0.05f},
+            {"Ghost Warrior Slug", 0.05f},
+            
+            {"Zote Boss", 0.4f},
+
+            {"Zoteling", 0.25f},
+            {"Zoteling Buzzer", 0.15f},
+            {"Zoteling Hopper", 0.15f},
+            {"Ordeal Zoteling", 0.1f},
+
+            {"Zote Balloon Ordeal", 0.0001f},//skip
+            {"Zote Balloon", 0.1f},
+
+            {"Zote Turret", 0.35f},
+            {"Zote Salubra", 0.15f},
+            {"Zote Thwomp", 0.15f},
+            {"Zote Fluke", 0.15f},
+
+            {"Zote Crew Normal", 0.3f},
+            {"Zote Crew Fat", 0.3f},
+            {"Zote Crew Tall", 0.3f},
+            
+            {"Jellyfish", 1f},
+            {"Lil Jellyfish", 0.02f},//will just plow into player and explode, not fair but the surprise results in a lot of twitch clips when it's rare
+            {"Jellyfish GG", 0.1f},
+            {"Mega Jellyfish", 0.1f},
+            {"Jellyfish Baby", 1f},
+
+            {"Mega Zombie Beam Miner", 0.2f},
+            {"Zombie Beam Miner", 0.7f},
+            {"Zombie Beam Miner Rematch", 0.1f},//nullrefs on spawn
+            
+            {"fluke_baby_02", 0.3f},
+            {"fluke_baby_01", 0.3f},//no blue mask
+            {"fluke_baby_03", 0.3f},//no explode
+            
+            {"Mushroom Turret", 1f},//spawned in floor
+            {"Mushroom Brawler", 1f},
+            {"Mushroom Baby", 1f},
+            {"Mushroom Roller", 1f},
+
+            {"Oro", 0.1f},//didn't delete
+            {"Mato", 0.1f},//didn't activate or die
+            {"Sheo Boss", 0.1f},//didn't die
+
+            {"Hollow Knight Boss", 0.05f},//fell through world
+            {"HK Prime", 0.01f},//didn't spawn
+            
+            {"Radiance", 0.0001f},
+            {"Absolute Radiance", 0.0001f},//nullref
+            
+            {"Mawlek Turret", 0.4f},
+            {"Mawlek Turret Ceiling", 0.001f},//didn't spawn
+            
+            //{"Grub Mimic", 0.05f},
+            //{"Grub Mimic Bottle", 0.02f},
+
+            {"Mage Knight", 0.5f},
+            {"Mage", 0.5f},//spawned outside arena
+            {"Electric Mage", 0.2f},//teleported away
+            {"Mage Blob", 0.7f},
+            {"Mage Balloon", 0.7f},
+            {"Mage Lord", 0.15f},//error? fix?
+            {"Mage Lord Phase2", 0.1f},//works -- cant find his orb idle spot
+            {"Dream Mage Lord", 0.15f},
+            {"Dream Mage Lord Phase2", 0.1f},
+
+            {"Hornet Boss 1", 0.7f},
+            {"Hornet Boss 2", 0.3f},
+
+            {"Zombie Myla", 0.5f},
+            {"Zombie Miner", 0.5f},
+
+            {"Zombie Hornhead Sp", 0.5f},
+            {"Zombie Runner Sp", 0.5f},
+
+            {"Fluke Fly", 0.4f},
+            {"Flukeman", 0.3f},
+            {"Fluke Mother", 0.1f}, //nullref
+            
+            {"Zombie Hive", 0.3f},
+            {"Bee Hatchling Ambient", 0.5f},
+            {"Bee Stinger", 0.4f},
+            {"Big Bee", 0.3f},
+
+            {"Infected Knight", 0.01f},//didn't spawn
+            {"Lost Kin", 0.5f},
+
+            {"Grimm Boss", 0.1f},//teleports into walls
+            {"Nightmare Grimm Boss", 0.05f},//stuck on spawn -- still steals HUD -- death doesn't delete
+            
+            {"Hopper", 0.4f},
+            {"Giant Hopper", 0.2f},
+
+            {"Colosseum_Miner", 0.7f},
+            {"Colosseum_Shield_Zombie", 0.7f},
+            {"Colosseum_Flying_Sentry", 0.7f},
+
+            {"Mega Fat Bee", 0.5f}, //???? didn't see it spawn
+            {"Bursting Bouncer", 0.9f},//corpse didnt explode
+            {"Blobble", 0.8f},
+            {"Spitting Zombie", 0.7f},
+            {"Bursting Zombie", 0.7f},
+            {"Angry Buzzer", 1f},
+            {"Lesser Mawlek", 1f},
+            {"Fly", 1f},
+            {"Buzzer R", 0.0001f},
+            {"Baby Centipede", 0.3f},
+            {"Zombie Spider 2", 0.5f},//nullref
+            {"Tiny Spider", 0.8f},
+            {"Shade Sibling", 0.5f},
+            {"Crawler", 0.7f},
+            {"Buzzer", 0.7f},
+            {"Lobster", 0.5f},//was placed inside floor
+            {"Lancer", 0.5f},//error, spawned stuck and couldn't die as well
+            {"Climber", 0.7f},
+            {"Mender Bug", 0.2f},
+            {"Giant Fly", 0.7f},
+            {"Mawlek Body", 1f},          
+            {"Black Knight", 1f},
+            {"Jar Collector", 0.4f},//jars are spawning inactive enemies -- spawned in floor
+            {"Prayer Slug", 1f},
+            {"Blocker", 0.2f},
+            {"Hatcher", 0.7f},
+            {"Egg Sac", 0.001f},//didnt transfer item
+            {"Fat Fly", 0.7f},
+            {"Grass Hopper", 0.5f},
+            {"Colosseum Grass Hopper", 0.5f},
+            {"Lazy Flyer Enemy", 0.25f},
+            {"Fung Crawler", 1f},
+            {"Garden Zombie", 1f},
+            {"Grave Zombie", 1f},
+            {"Crystal Crawler", 1f},
+            {"Crystal Flyer", 1f},
+            {"Crystallised Lazer Bug", 1f},
+            {"Mines Crawler", 1f},
+            {"Spider Mini", 1f},
+            {"Centipede Hatcher", 1f},
+            {"Mimic Spider", 0.5f},//nullref
+            {"Slash Spider", 1f},
+            {"Spider Flyer", 1f},
+            {"Blow Fly", 1f},
+            {"Abyss Crawler", 1f},
+            {"Parasite Balloon", 0.7f},
+            {"Flip Hopper", 1f},
+            {"Inflater", 1f},
+            {"White Palace Fly", 1f},
+            {"Enemy", 0.5f},
+            {"Royal Gaurd", 0.5f},//fix boomerang -- elite not spawning
+            {"Hive Knight", 0.5f},//not spawning
+            {"Grey Prince", 0.1f},
+            {"Pale Lurker", 0.2f},
+            {"Fat Fluke", 1f},
+            {"Sly Boss", 0.7f},//didn't die
+            {"Hornet Nosk", 0.1f},
+            {"Mace Head Bug", 1f},
+            {"Big Centipede Col", 1f},
+            {"Laser Turret Frames", 1f},//nullref
+            {"Jelly Egg Bomb", 0.5f},//not loaded?
+            {"Worm", 1f}, //need flipped
+            {"Zombie Spider 1", 0.5f},//didn't spawn
+            {"Colosseum_Worm", 0.4f},
+
+            {"Hatcher Baby", 0.0001f},
+            {"Corpse Garden Zombie", 0.0001f},
+            {"Colosseum_Armoured_Roller R", 0.0001f},  //dont spawn
+            {"Flukeman Top", 0.0001f},//dont spawn
+            {"Flukeman Bot", 0.0001f},//don't spawn
+            {"Mawlek Col", 0.0001f},//?? didn't spawn
+            {"Ceiling Dropper Col", 0.0001f},//didn't spawn
+            {"Giant Fly Col", 0.0001f},//didn't spawn
+            {"Buzzer Col", 0.0001f},//didn't spawn
+            {"Colosseum_Armoured_Mosquito R", 0.0001f},//dont spawn
+            {"Super Spitter R", 0.0001f}, //dont spawn
+
+            {"Bee Dropper", 0.0001f} //needs some starting velocity, a collider so it can be hit?, and POOB component
+        };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public static Dictionary<string, float> PossibleEnemiesFromSpawner = new Dictionary<string, float>()
+        {
+            {"Orange Scuttler", 0.1f},
+            {"Mosquito", 0.5f},
+            {"Colosseum_Armoured_Mosquito", 0.5f},
+
+            {"Colosseum_Armoured_Roller", 0.5f},
+            {"Roller", 0.5f},
+            {"Roller R", 0.5f},
+
+            {"Super Spitter", 1f},
+            {"Super Spitter Col", 0.5f},//didnt spawn
+            
+            {"Spitter R", 0.5f},
+            {"Spitter", 0.5f},
+
+            {"Royal Zombie Fat", 0.4f},
+            {"Royal Zombie", 0.4f},
+            {"Royal Zombie Coward", 0.4f},
+
+            {"Gorgeous Husk", 1f},
+
+            {"Ruins Sentry Fat", 0.25f},
+
+            {"Plant Turret", 0.5f},
+            {"Plant Turret Right", 0.01f},
+
+            {"Fungoon Baby", 0.5f},
+            {"Fungus Flyer", 0.5f},
+
+            {"Zombie Fungus A", 0.5f},
+            {"Zombie Fungus B", 0.5f},
+
+            {"Moss Flyer", 1f},
+            {"Moss Knight Fat", 1f},
+            {"Moss Knight", 0.5f},
+            {"Mossman_Shaker", 1f},
+            {"Mossman_Runner", 1f},
+                        
+            {"Zote Boss", 0.5f},// still has white screen issue?
+
+            {"Zoteling", 0.25f},
+            {"Zoteling Buzzer", 0.25f},
+            {"Zoteling Hopper", 0.25f},
+            {"Ordeal Zoteling", 0.25f},
+
+            {"Zote Crew Normal", 0.3f},//spawns in floor
+            {"Zote Crew Fat", 0.3f},
+            
+            {"Lil Jellyfish", 0.05f},//bomb, worked            
+            {"Jellyfish Baby", 1f},
+
+            {"Zombie Beam Miner", 0.7f},
+                        
+            {"Mushroom Turret", 0.5f},
+            {"Mushroom Baby", 0.7f},
+            {"Mushroom Roller", 1f},
+            
+            {"Mage Balloon", 0.8f},
+            
+            {"Hornet Boss 1", 0.5f},
+
+            {"Zombie Myla", 0.5f},
+            {"Zombie Miner", 0.5f},
+
+            {"Zombie Hornhead Sp", 0.25f},
+            {"Zombie Runner Sp", 0.25f},
+
+            {"Fluke Fly", 0.5f},
+            
+            {"Bee Hatchling Ambient", 0.4f},
+            {"Bee Stinger", 0.35f},
+            {"Big Bee", 0.25f},
+
+            {"Lost Kin", 0.05f},//didn't spawn
+            {"Mage Orb", 0.01f},
+            {"Colosseum Grass Hopper", 0.1f },
+                        
+            {"Hopper", 0.5f},
+
+            {"Colosseum_Miner", 0.5f},
+            {"Colosseum_Shield_Zombie", 0.6f},
+            {"Colosseum_Flying_Sentry", 0.4f},
+
+            {"Mega Fat Bee", 0.7f}, 
+            {"Bursting Bouncer", 1f},
+            {"Blobble", 1f},
+            {"Spitting Zombie", 1f},
+            {"Bursting Zombie", 1f},
+            {"Angry Buzzer", 0.8f},
+            {"Lesser Mawlek", 0.7f},
+            {"Fly", 0.9f},
+            {"Baby Centipede", 0.7f},
+            {"Zombie Spider 2", 0.5f},
+            {"Shade Sibling", 0.5f},
+            {"Buzzer", 1f},
+            {"Giant Fly", 1f},
+            {"Prayer Slug", 1f},
+            {"Hatcher", 0.1f},
+            {"Fat Fly", 1f},
+            {"Grass Hopper", 1f},
+            {"Lazy Flyer Enemy", 0.25f},
+            {"Garden Zombie", 1f},
+            {"Grave Zombie", 0.8f},
+            {"Crystal Flyer", 1f},
+            {"Spider Mini", 1f},
+            {"Centipede Hatcher", 0.1f},
+            {"Blow Fly", 0.7f},
+            {"Flip Hopper", 1f},
+            {"Inflater", 1f},
+            {"White Palace Fly", 1f},
+            {"Fat Fluke", 0.1f},
+            {"Sly Boss", 0.01f},//didn't die
+            {"Colosseum_Worm", 0.01f},
+
+            {"Buzzer R", 0.001f},
+            {"Bee Dropper", 1f} //needs some starting velocity, a collider so it can be hit?, and POOB component
+        };
+
+
+
+
+
+        /*
+         add these to the perma skip list
+            {"Super Spitter Col", "SuperSpitterCol"},
+            {"Giant Fly Col", "GiantFlyCol"},
+            {"Buzzer Col", "BuzzerCol"},
+            {"Ceiling Dropper Col", "CeilingDropperCol"},
+            {"Roller R", "RollerR"},
+            {"Spitter R", "SpitterR"},
+            {"Lil Jellyfish", "LilJellyfish"},//bomb
+            {"Buzzer R", "Buzzer"},
+            {"Flukeman Top", "FlukemanTop"},
+            {"Flukeman Bot", "FlukemanBot"},
+            {"Colosseum_Armoured_Roller R", "ColosseumArmouredRollerR"},
+            {"Colosseum_Armoured_Mosquito R", "ColosseumArmouredMosquitoR"},
+            {"Super Spitter R", "SuperSpitterR"},
+            {"Giant Buzzer Col", "GiantBuzzerCol"},
+            {"Plant Turret Right", "PlantShooter"},
+            {"Mawlek Turret Ceiling", "MawlekTurret"},
+            {"Colosseum_Worm", "ColWorm"},          //look into where these two went?
+            {"Colosseum Grass Hopper", "ColHopper"},//look into where these two went?
+         */
+
+
+
+        //TODO
+        public static Dictionary<string, string> DebugTestEnemies = new Dictionary<string, string>()
+        {
+
+
+            //{"Moss Charger", "MossCharger"},
+            //{"Mega Moss Charger", "MegaMossCharger"},
+            //{"Ghost Warrior Markoth", "GhostMarkoth"},
+            //{"Ghost Warrior Xero", "GhostXero"},
+
+
+            //{"Giant Buzzer", "BigBuzzer"},
+            
+            //{"Grey Prince", "GreyPrince"},
+            //{"Mantis Traitor Lord", "MantisTraitorLord"},
+            //{"Grub Mimic", "---"},
+            //{"Grub Mimic Bottle", "---"},
+            {"Colosseum_Worm", "---"},
+            {"Colosseum Grass Hopper", "---"},
+            {"Blobble", "---"},
+            {"Ghost Warrior Hu", "GhostHu"},
+
+            //{"Zombie Beam Miner Rematch", "MegaBeamMiner"},//busted?
+
+            {"Dung Defender", "DungDefender"},
+            {"fluke_baby_02", "JellyCrawler"},
+            {"fluke_baby_01", "BlobFlyer"},
+            {"fluke_baby_03", "MenderBug"},
+            {"Fluke Mother", "FlukeMother"},
+            {"Enemy", "WhiteRoyal"},
+            {"Royal Gaurd", "RoyalGaurd"},
+            {"Zombie Hive", "ZombieHive"},
+            //{"Hive Knight", "HiveKnight"},
+            {"Grimm Boss", "Grimm"},
+            //{"Nightmare Grimm Boss", "NightmareGrimm"},
+            //{"False Knight Dream", "FalseKnightDream"},
+            {"Dream Mage Lord", "DreamMageLord"},
+            //{"Dream Mage Lord Phase2", "DreamMageLordPhase2"},
+            {"Lost Kin", "LostKin"},
+            {"Zoteling", "Zoteling"},
+            {"Zoteling Buzzer", "ZotelingBuzzer"},
+            {"Zoteling Hopper", "ZotelingHopper"},
+            {"Zote Balloon", "ZoteBalloon"},
+            //{"Radiance", "FinalBoss"},
+            {"Hollow Knight Boss", "HollowKnight"},
+            {"HK Prime", "HollowKnightPrime"},
+            {"Pale Lurker", "PaleLurker"},
+            {"Oro", "NailBros"},
+            {"Mato", "NailBros"},
+            {"Sheo Boss", "Paintmaster"},
+            {"Fat Fluke", "FatFluke"},
+            {"Absolute Radiance", "AbsoluteRadiance"},
+            {"Sly Boss", "Nailsage"},
+            {"Zote Balloon Ordeal", "ZotelingBalloon"},
+            {"Ordeal Zoteling", "OrdealZoteling"},
+            {"Zote Salubra", "EggSac"},
+            {"Zote Thwomp", "ZoteThwomp"},
+            {"Zote Fluke", "Mummy"},
+            {"Zote Crew Normal", "ZoteCrewNormal"},
+            {"Zote Crew Fat", "ZoteCrewFat"},
+            {"Zote Crew Tall", "ZoteCrewTall"},
+            {"Hornet Nosk", "HornetNosk"},
+            {"Mace Head Bug", "MaceHeadBug"},
+            {"Big Centipede Col", "BigCentipede"},
+            {"Jelly Egg Bomb", "JellyEggBomb"},
+            {"Worm", "ColWorm"},
+            {"Bee Dropper", "Pigeon"},
+
+
+            {"Health Cocoon", "HealthScuttler"},
+            {"Abyss Tendril", "AbyssTendril"},
+            {"Health Scuttler", "HealthScuttler"},
+            {"Orange Scuttler", "OrangeScuttler"},
+
+
+            {"Laser Turret Frames", "LaserBug"},
+            
+            //{"Plant Turret", "PlantShooter"}, minor issues, fix later
+            //{"Mage Lord", "MageLord"},             //good for now, some placements aren't great but overall doesn't get stuck as much or at all
+            //{"Mage Lord Phase2", "MageLordPhase2"},//good for now, some placements aren't great but overall doesn't get stuck as much or at all
+
+            //{"False Knight New", "FalseKnightNew"},//mostly good- shockwave could use a tune up
+            //{"Giant Fly", "GiantFly"},//test the boss
+
+            //{"Infected Knight", "InfectedKnight"},//nullrefs -- fix before trying again
+            //{"White Defender", "WhiteDefender"},//fix first
+            //{"Jellyfish GG", "JellyfishGG"},//needs implementing
+            //{"Mega Jellyfish", "MegaJellyfish"},//needs implementing
+            
+            //{"Mimic Spider", "MimicSpider"}, //needs a timeout on charge -- basically fine
+            //{"Jar Collector", "JarCollector"},//final hp test for spawns, but works great
+        };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public static Dictionary<string, float> DifficultyWeights = new Dictionary<string, float>()
+        {
+            {"Health Cocoon", 0.0f},
+            {"Health Scuttler", 0.0f},
+            {"Orange Scuttler", 0.0f},
+            {"Abyss Tendril", 0.0f},
+
 
             {"Mosquito", 0.5f},
             {"Colosseum_Armoured_Mosquito", 0.5f},
@@ -1179,7 +1818,7 @@ namespace EnemyRandomizerMod
 
             {"Giant Buzzer Col", 0.5f},//coun't hurt
             {"Giant Buzzer", 0.5f},
-            
+
             {"Zombie Shield", 0.25f},
             {"Zombie Leaper", 0.25f},
             {"Zombie Guard", 0.25f},
@@ -1398,268 +2037,28 @@ namespace EnemyRandomizerMod
             {"Laser Turret Frames", 1f},//nullref
             {"Jelly Egg Bomb", 1f},//not loaded?
             {"Worm", 1f}, //need flipped
+            {"Colosseum_Worm", 1f},
+            {"Zombie Spider 1", 0.5f},
 
             {"Hatcher Baby", 0.01f},
             {"Corpse Garden Zombie", 0.01f},
             {"Colosseum_Armoured_Roller R", 0.5f},  //dont spawn
             {"Flukeman Top", 0.01f},//dont spawn
             {"Flukeman Bot", 0.01f},//don't spawn
-            {"Zombie Spider 1", 0.5f},//didn't spawn
             {"Colosseum Grass Hopper", 0.5f},//??? didn't spawn
             {"Mawlek Col", 0.5f},//?? didn't spawn
             {"Ceiling Dropper Col", 0.5f},//didn't spawn
-            {"Colosseum_Worm", 0.5f},//?? didn't spawn
             {"Giant Fly Col", 0.5f},//didn't spawn
             {"Buzzer Col", 0.5f},//didn't spawn
             {"Colosseum_Armoured_Mosquito R", 1f},//dont spawn
             {"Super Spitter R", 1f}, //dont spawn
 
-            {"Bee Dropper", 1f} //needs some starting velocity, a collider so it can be hit?, and POOB component
-        };
+            {"Bee Dropper", 1f}, //needs some starting velocity, a collider so it can be hit?, and POOB component
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-        public static Dictionary<string, float> PossibleEnemiesFromSpawner = new Dictionary<string, float>()
-        {
-            {"Orange Scuttler", 0.5f},
-            {"Mosquito", 0.5f},
-            {"Colosseum_Armoured_Mosquito", 0.5f},
-
-            {"Colosseum_Armoured_Roller", 0.5f},
-            {"Roller", 0.5f},
-            {"Roller R", 0.5f},
-
-            {"Super Spitter", 1f},
-            {"Super Spitter Col", 0.5f},//didnt spawn
-            
-            {"Spitter R", 0.5f},
-            {"Spitter", 0.5f},
-
-            {"Royal Zombie Fat", 0.4f},
-            {"Royal Zombie", 0.4f},
-            {"Royal Zombie Coward", 0.4f},
-
-            {"Gorgeous Husk", 1f},
-
-            {"Ruins Sentry Fat", 0.25f},
-
-            {"Plant Turret", 0.5f},
-            {"Plant Turret Right", 0.01f},
-
-            {"Fungoon Baby", 0.5f},
-            {"Fungus Flyer", 0.5f},
-
-            {"Zombie Fungus A", 0.5f},
-            {"Zombie Fungus B", 0.5f},
-
-            {"Moss Flyer", 1f},
-            {"Moss Knight Fat", 1f},
-            {"Moss Knight", 1f},
-            {"Mossman_Shaker", 1f},
-            {"Mossman_Runner", 1f},
-                        
-            {"Zote Boss", 0.5f},// still has white screen issue?
-
-            {"Zoteling", 0.25f},
-            {"Zoteling Buzzer", 0.25f},
-            {"Zoteling Hopper", 0.25f},
-            {"Ordeal Zoteling", 0.25f},
-
-            {"Zote Crew Normal", 0.3f},//spawns in floor
-            {"Zote Crew Fat", 0.3f},
-            
-            {"Lil Jellyfish", 1f},//bomb, worked            
-            {"Jellyfish Baby", 1f},
-
-            {"Zombie Beam Miner", 0.7f},
-                        
-            {"Mushroom Turret", 1f},
-            {"Mushroom Baby", 1f},
-            {"Mushroom Roller", 1f},
-            
-            {"Mage Balloon", 1f},
-            
-            {"Hornet Boss 1", 0.5f},
-
-            {"Zombie Myla", 0.5f},
-            {"Zombie Miner", 0.5f},
-
-            {"Zombie Hornhead Sp", 0.5f},
-            {"Zombie Runner Sp", 0.5f},
-
-            {"Fluke Fly", 0.5f},
-            
-            {"Bee Hatchling Ambient", 0.5f},
-            {"Bee Stinger", 0.5f},
-            {"Big Bee", 0.5f},
-
-            {"Infected Knight", 0.5f},//didn't spawn
-                        
-            {"Hopper", 0.5f},
-
-            {"Colosseum_Miner", 0.7f},
-            {"Colosseum_Shield_Zombie", 0.7f},
-            {"Colosseum_Flying_Sentry", 0.7f},
-
-            {"Mega Fat Bee", 1f}, 
-            {"Bursting Bouncer", 1f},
-            {"Blobble", 1f},
-            {"Spitting Zombie", 1f},
-            {"Bursting Zombie", 1f},
-            {"Angry Buzzer", 1f},
-            {"Lesser Mawlek", 1f},
-            {"Fly", 1f},
-            {"Buzzer R", 1f},
-            {"Baby Centipede", 1.0f},
-            {"Zombie Spider 2", 0.5f},//nullref
-            {"Shade Sibling", 1f},
-            {"Buzzer", 1f},
-            {"Giant Fly", 1f}, //spawn error, needs fix
-            {"Prayer Slug", 1f},
-            {"Hatcher", 0.1f},
-            {"Fat Fly", 1f},
-            {"Grass Hopper", 1f},
-            {"Lazy Flyer Enemy", 0.25f},
-            {"Garden Zombie", 1f},
-            {"Grave Zombie", 1f},
-            {"Crystal Flyer", 1f},
-            {"Spider Mini", 1f},
-            {"Centipede Hatcher", 0.1f},
-            {"Blow Fly", 1f},
-            {"Flip Hopper", 1f},
-            {"Inflater", 1f},
-            {"White Palace Fly", 1f},
-            {"Fat Fluke", 0.1f},
-            {"Sly Boss", 0.01f},//didn't die
-
-            {"Bee Dropper", 1f} //needs some starting velocity, a collider so it can be hit?, and POOB component
-        };
-
-
-
-
-
-        /*
-         add these to the perma skip list
-            {"Super Spitter Col", "SuperSpitterCol"},
-            {"Giant Fly Col", "GiantFlyCol"},
-            {"Buzzer Col", "BuzzerCol"},
-            {"Ceiling Dropper Col", "CeilingDropperCol"},
-            {"Roller R", "RollerR"},
-            {"Spitter R", "SpitterR"},
-            {"Lil Jellyfish", "LilJellyfish"},//bomb
-            {"Buzzer R", "Buzzer"},
-            {"Flukeman Top", "FlukemanTop"},
-            {"Flukeman Bot", "FlukemanBot"},
-            {"Colosseum_Armoured_Roller R", "ColosseumArmouredRollerR"},
-            {"Colosseum_Armoured_Mosquito R", "ColosseumArmouredMosquitoR"},
-            {"Super Spitter R", "SuperSpitterR"},
-            {"Giant Buzzer Col", "GiantBuzzerCol"},
-            {"Plant Turret Right", "PlantShooter"},
-            {"Mawlek Turret Ceiling", "MawlekTurret"},
-            {"Colosseum_Worm", "ColWorm"},          //look into where these two went?
-            {"Colosseum Grass Hopper", "ColHopper"},//look into where these two went?
-         */
-
-
-
-
-        public static Dictionary<string, string> DebugTestEnemies = new Dictionary<string, string>()
-        {
-
-
-            //{"Moss Charger", "MossCharger"},
-            //{"Mega Moss Charger", "MegaMossCharger"},
-            //{"Ghost Warrior Markoth", "GhostMarkoth"},
-            //{"Ghost Warrior Xero", "GhostXero"},
-
-
-            //{"Giant Buzzer", "BigBuzzer"},
-            
-            //{"Grey Prince", "GreyPrince"},
-            //{"Mantis Traitor Lord", "MantisTraitorLord"},
-            {"Ghost Warrior Hu", "GhostHu"},
-
-            //{"Zombie Beam Miner Rematch", "MegaBeamMiner"},//busted?
-
-            {"Dung Defender", "DungDefender"},
-            {"fluke_baby_02", "JellyCrawler"},
-            {"fluke_baby_01", "BlobFlyer"},
-            {"fluke_baby_03", "MenderBug"},
-            {"Fluke Mother", "FlukeMother"},
-            {"Enemy", "WhiteRoyal"},
-            {"Royal Gaurd", "RoyalGaurd"},
-            {"Zombie Hive", "ZombieHive"},
-            //{"Hive Knight", "HiveKnight"},
-            {"Grimm Boss", "Grimm"},
-            //{"Nightmare Grimm Boss", "NightmareGrimm"},
-            //{"False Knight Dream", "FalseKnightDream"},
-            {"Dream Mage Lord", "DreamMageLord"},
-            //{"Dream Mage Lord Phase2", "DreamMageLordPhase2"},
-            {"Lost Kin", "LostKin"},
-            {"Zoteling", "Zoteling"},
-            {"Zoteling Buzzer", "ZotelingBuzzer"},
-            {"Zoteling Hopper", "ZotelingHopper"},
-            {"Zote Balloon", "ZoteBalloon"},
-            //{"Radiance", "FinalBoss"},
-            {"Hollow Knight Boss", "HollowKnight"},
-            {"HK Prime", "HollowKnightPrime"},
-            {"Pale Lurker", "PaleLurker"},
-            {"Oro", "NailBros"},
-            {"Mato", "NailBros"},
-            {"Sheo Boss", "Paintmaster"},
-            {"Fat Fluke", "FatFluke"},
-            {"Absolute Radiance", "AbsoluteRadiance"},
-            {"Sly Boss", "Nailsage"},
-            {"Zote Balloon Ordeal", "ZotelingBalloon"},
-            {"Ordeal Zoteling", "OrdealZoteling"},
-            {"Zote Salubra", "EggSac"},
-            {"Zote Thwomp", "ZoteThwomp"},
-            {"Zote Fluke", "Mummy"},
-            {"Zote Crew Normal", "ZoteCrewNormal"},
-            {"Zote Crew Fat", "ZoteCrewFat"},
-            {"Zote Crew Tall", "ZoteCrewTall"},
-            {"Hornet Nosk", "HornetNosk"},
-            {"Mace Head Bug", "MaceHeadBug"},
-            {"Big Centipede Col", "BigCentipede"},
-            {"Jelly Egg Bomb", "JellyEggBomb"},
-            {"Worm", "ColWorm"},
-            {"Bee Dropper", "Pigeon"},
-
-
-            {"Health Cocoon", "HealthScuttler"},
-            {"Abyss Tendril", "AbyssTendril"},
-            {"Health Scuttler", "HealthScuttler"},
-            {"Orange Scuttler", "OrangeScuttler"},
-
-
-            {"Laser Turret Frames", "LaserBug"},
-            
-            //{"Plant Turret", "PlantShooter"}, minor issues, fix later
-            //{"Mage Lord", "MageLord"},             //good for now, some placements aren't great but overall doesn't get stuck as much or at all
-            //{"Mage Lord Phase2", "MageLordPhase2"},//good for now, some placements aren't great but overall doesn't get stuck as much or at all
-
-            //{"False Knight New", "FalseKnightNew"},//mostly good- shockwave could use a tune up
-            //{"Giant Fly", "GiantFly"},//test the boss
-
-            //{"Infected Knight", "InfectedKnight"},//nullrefs -- fix before trying again
-            //{"White Defender", "WhiteDefender"},//fix first
-            //{"Jellyfish GG", "JellyfishGG"},//needs implementing
-            //{"Mega Jellyfish", "MegaJellyfish"},//needs implementing
-            
-            //{"Mimic Spider", "MimicSpider"}, //needs a timeout on charge -- basically fine
-            //{"Jar Collector", "JarCollector"},//final hp test for spawns, but works great
+            {"Flamebearer Small", 0.1f},
+            {"Flamebearer Med", 0.1f},
+            {"Flamebearer Large", 0.1f},
         };
 
     }

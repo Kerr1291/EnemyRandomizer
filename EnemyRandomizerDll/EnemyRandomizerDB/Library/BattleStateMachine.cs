@@ -15,6 +15,8 @@ namespace EnemyRandomizerMod
 {
     public class BattleStateMachine : IDisposable
     {
+        public virtual string name => SceneName + " Battle Controller";
+
         public Scene BattleScene { get; protected set; }
         public string SceneName { get { return BattleScene.name; } }
         public PlayMakerFSM FSM { get; protected set; }
@@ -29,6 +31,8 @@ namespace EnemyRandomizerMod
         public bool battleEnded = false;
         public int preKilledEnemies = 0;
 
+        public bool isCustomArena = false;
+
         public virtual void Dispose()
         {
             preKilledEnemies = 0;
@@ -41,7 +45,7 @@ namespace EnemyRandomizerMod
             On.HutongGames.PlayMaker.Fsm.Event_FsmEventTarget_string -= Fsm_Event_FsmEventTarget_string;
         }
 
-        public BattleStateMachine(Scene scene, PlayMakerFSM fsm)
+        public virtual void Setup(Scene scene, PlayMakerFSM fsm)
         {
             preKilledEnemies = 0;
             battleStarted = false;
@@ -60,7 +64,7 @@ namespace EnemyRandomizerMod
             On.HutongGames.PlayMaker.FsmState.OnEnter += FsmState_OnEnter;
         }
 
-        protected void OnBattleStarted()
+        protected virtual void OnBattleStarted()
         {
             Dev.Log("BATTLE STARTED");
             battleStarted = true;
@@ -83,12 +87,12 @@ namespace EnemyRandomizerMod
                 outsideArea.ToList().ForEach(x =>
                 {
                     var dsec = x.GetComponent<DefaultSpawnedEnemyControl>();
-                    if(dsec != null)
+                    if (dsec != null)
                     {
                         var losPos = dsec.gameObject.GetRandomPositionInLOSofPlayer(3f, 20f, 2f);
                         x.transform.position = losPos;
                         var poob = dsec.GetComponent<PreventOutOfBounds>();
-                        if(poob != null)
+                        if (poob != null)
                         {
                             poob.ForcePosition(losPos);
                         }
@@ -111,10 +115,10 @@ namespace EnemyRandomizerMod
                 var bmos = SpawnedObjectControl.GetAllBattle.ToList();
                 bmos.ForEach(x =>
                 {
-                    if( x.gameObject.activeInHierarchy
+                    if (x.gameObject.activeInHierarchy
                     && !x.gameObject.IsDisabledBySavedGameState()
-                    &&  x.gameObject.HasReplacedAnObject()
-                    &&  x.gameObject.IsVisible())
+                    && x.gameObject.HasReplacedAnObject()
+                    && x.gameObject.IsVisible())
                     {
                         Dev.Log("Force killing pre-battle enemies for now until I implement a solution to check if they start inside the arena");
                         x.gameObject.KillObjectNow();
@@ -128,15 +132,21 @@ namespace EnemyRandomizerMod
             Dev.Log("WATCHDOG STARTED");
             float updateRate = 0f;
             float t = 0f;
-            for(; ; )
+            for (; ; )
             {
+                if(battleEnded)
+                {
+                    Dev.Log("WATCHDOG ENDED -- BATTLE COMPLETE");
+                    yield break;
+                }
+
                 if (!battleStarted)
                 {
                     Dev.Log("WATCHDOG CANCELED");
                     yield break;
                 }
 
-                if(battleStarted && preKilledEnemies > 0)
+                if (battleStarted && preKilledEnemies > 0)
                 {
                     DecrementBattleEnemies();
                     preKilledEnemies--;
@@ -144,19 +154,19 @@ namespace EnemyRandomizerMod
                     continue;
                 }
 
-                if(updateRate > 1f)
+                if (updateRate > 1f)
                 {
                     int count = SpawnedObjectControl.GetAllBattle.Count();
-                        //.Select(x => x.GetComponent<DefaultSpawnedEnemyControl>())
-                        //.Count(x =>
-                        //{
-                        //    if (x.control != null)
-                        //        return x.control.enabled == true;
-                        //    else
-                        //        return x.gameObject.activeInHierarchy == true;
-                        //});
+                    //.Select(x => x.GetComponent<DefaultSpawnedEnemyControl>())
+                    //.Count(x =>
+                    //{
+                    //    if (x.control != null)
+                    //        return x.control.enabled == true;
+                    //    else
+                    //        return x.gameObject.activeInHierarchy == true;
+                    //});
 
-                    if(count > 0)
+                    if (count > 0)
                     {
                         t = 0f;
                     }
@@ -170,7 +180,7 @@ namespace EnemyRandomizerMod
                         }
                     }
 
-                    if(t > timer)
+                    if (t > timer)
                     {
                         Dev.Log("TIMEOUT -- ENDING BATTLE");
                         OpenGates();
@@ -189,7 +199,7 @@ namespace EnemyRandomizerMod
         {
             Dev.Log("BATTLE OVER");
             preKilledEnemies = 0;
-            battleStarted = false;
+            battleStarted = true;
             battleEnded = true;
 
             if (FSM != null)
@@ -203,7 +213,7 @@ namespace EnemyRandomizerMod
             if (self == null || self.Fsm != FSM.Fsm)
                 return;
 
-            if(self.Actions.OfType<SendEventByName>().Any(x => x.sendEvent != null && x.sendEvent.Value == "BG CLOSE"))
+            if (self.Actions.OfType<SendEventByName>().Any(x => x.sendEvent != null && x.sendEvent.Value == "BG CLOSE"))
             {
                 OnBattleStarted();
             }
@@ -357,7 +367,7 @@ namespace EnemyRandomizerMod
             if (self == null || fsmEvent == null || self != FSM.Fsm)
                 return;
 
-            if(fsmEvent == null)
+            if (fsmEvent == null)
             {
                 //this can happen in a number of cases....
             }
@@ -367,7 +377,7 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public void DecrementBattleEnemies()
+        public virtual void DecrementBattleEnemies()
         {
             if (FSM.FsmVariables.Contains("Battle Enemies"))
             {
@@ -384,7 +394,7 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public void RegisterEnemyDeath(SpawnedObjectControl bmo)
+        public virtual void RegisterEnemyDeath(SpawnedObjectControl bmo)
         {
             bool updatedSomething = false;
             bool forceOpenGates = false;
@@ -394,10 +404,10 @@ namespace EnemyRandomizerMod
             if (bmo != null && bmo.gameObject.GetSceneHierarchyPath().Contains("Pre Battle Enemies"))
                 return;
 
-            if(!battleStarted && !battleEnded)
+            if (!battleStarted && !battleEnded)
                 preKilledEnemies++;
 
-            if(battleEnded)
+            if (battleEnded)
             {
                 if (FSM != null)
                     UnlockCameras(GetCameraLocksFromScene(FSM.gameObject));
@@ -444,14 +454,14 @@ namespace EnemyRandomizerMod
                 FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
             }
 
-            if(isWhitePalace && (bmo != null && bmo.name.Contains("Royal Guard")))
+            if (isWhitePalace && (bmo != null && bmo.name.Contains("Royal Guard")))
             {
                 triggerNextWave = false;
                 forceOpenGates = true;
                 FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
             }
 
-            if(isFungus1_32 && GameObject.FindObjectsOfType<SpawnedObjectControl>().Where(x => x != bmo).Count() <= 0)
+            if (isFungus1_32 && GameObject.FindObjectsOfType<SpawnedObjectControl>().Where(x => x != bmo).Count() <= 0)
             {
                 forceOpenGates = true;
             }
@@ -507,13 +517,13 @@ namespace EnemyRandomizerMod
         public static void OpenGates(bool isWhitePalace = false)
         {
             PlayMakerFSM.BroadcastEvent("BG OPEN");
-            if(isWhitePalace)
+            if (isWhitePalace)
             {
                 var door2 = GameObject.Find("Palace Gate");
-                if(door2 != null)
+                if (door2 != null)
                 {
                     var fsm = door2.LocateMyFSM("control");
-                    if(fsm != null)
+                    if (fsm != null)
                     {
                         PlayerData.instance.duskKnightDefeated = true;
                         fsm.SetState("Open Pause");
@@ -561,4 +571,6 @@ namespace EnemyRandomizerMod
             }
         }
     }
+
+
 }
