@@ -22,6 +22,7 @@ namespace EnemyRandomizerMod
             "oatmille1",
             "Dwarfwoot",
             "Sethadocious",
+            "Manno Stone",
             "...and you; thanks for playing!"
         };
 

@@ -322,6 +322,10 @@ namespace EnemyRandomizerMod
             int geoScale = 1;
             if (MetaDataTypes.GeoZoneScale.TryGetValue(zone, out geoScale))
             {
+                //TODO: balance a better geo fix...
+                float t = (float)geoScale / 50f;
+                geoScale = Mathf.FloorToInt(t * 5f);
+
                 if (originalGeo <= 0)
                 {
                     Geo = SpawnerExtensions.GetRandomValueBetween(geoScale, geoScale * 5);

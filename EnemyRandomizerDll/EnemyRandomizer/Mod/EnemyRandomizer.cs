@@ -99,7 +99,7 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
 
         const string defaultDatabaseFilePath = "EnemyRandomizerDatabase.xml";
-        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9c - now with Colosseum 1 working! (not 2 or 3 yet)]";
+        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9d - For the glory of being a Fool]";
         static string currentVersion = currentVersionPrefix;
             //Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + $" CURRENT SEED:[{GlobalSettings.seed}] -- TO CHANGE SEED --> MODS > ENEMY RANDOMIZER > ENEMY RANDOMIZER MODULES";
 

@@ -10,6 +10,8 @@ using System.Collections;
 using System;
 using Satchel;
 using Satchel.Futils;
+using HutongGames.PlayMaker.Actions;
+using System.Reflection;
 
 namespace EnemyRandomizerMod
 {
@@ -40,22 +42,25 @@ namespace EnemyRandomizerMod
         public int myPrecept;
         public string zoteText = "I am Zote.";
         public override string customDreamnailText => zoteText;
-            
 
+        public static int maxRoars = 5;
+        public static int numInRoar = 0;
+
+        public static int titleShowing = 0;
 
         public override void Setup(GameObject other)
         {
             base.Setup(other);
 
             bool isColoBronze = BattleManager.StateMachine.Value is ColoBronze;
-            bool cancelRoar = false;
+            bool skipRoar = false;
             if (isColoBronze)
             {
                 var bronze = BattleManager.StateMachine.Value as ColoBronze;
-                cancelRoar = !bronze.isZoteWave;
+                skipRoar = !bronze.isZoteWave && !bronze.IsPreloading;
             }
 
-            if (cancelRoar)
+            if (skipRoar)
             {
                 var roara = control.GetState("Roar Antic");
                 if (roara != null)
@@ -66,6 +71,53 @@ namespace EnemyRandomizerMod
                 {
                     Dev.LogError("No roar antic on zote boss?");
                 }
+            }
+            else
+            {
+                var roar = control.GetState("Roar");
+                var zoteRoar = roar.GetAction<AudioPlayerOneShotSingle>(1);
+                roar.DisableActions(0,1);
+                roar.InsertCustomAction(() => {
+                    if (titleShowing < 1)
+                    {
+                        PlayMakerFSM.BroadcastEvent("CROWD LAUGH");
+                        titleShowing++;
+                    }
+                    else
+                    {
+                        control.SendEvent("FINISHED");
+                    }
+                }, 7);
+                roar.InsertCustomAction(() => {
+                    if (numInRoar <= maxRoars)
+                    {
+                        var playClip = zoteRoar.GetType().GetMethod("DoPlayRandomClip", BindingFlags.NonPublic | BindingFlags.Instance);
+                        playClip.Invoke(zoteRoar, null);
+                    }
+                    else
+                    { }
+                }, 1);
+                roar.InsertCustomAction(() => {
+                    if (numInRoar < maxRoars)
+                    {
+                        numInRoar++;
+                    }
+                    else
+                    { }
+                }, 0);
+
+
+                var roarEnd = control.GetState("Roar End");
+                roarEnd.AddCustomAction(() =>
+                {
+                    if (numInRoar > 0)
+                    {
+                        numInRoar--;
+                    }
+                    RNG rng = new RNG();
+                    rng.Reset();
+                    PhysicsBody.gravityScale = rng.Rand(0.2f, 1.7f);
+                });
             }
 
             gameObject.DisableKillFreeze();

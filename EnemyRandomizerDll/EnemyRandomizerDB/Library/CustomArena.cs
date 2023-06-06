@@ -12,21 +12,36 @@ namespace EnemyRandomizerMod
 {
     public class CustomArena : BattleStateMachine
     {
+        public bool IsPreloading { get; protected set; }
         public PlayMakerFSM manager;
 
         public RNG rng;
         public int seedOffset = 0;//change this to mix up the arena rng
+
         public EntitySpawner spawner;
+        public EntitySpawner Spawner
+        {
+            get
+            {
+                if(spawner == null)
+                {
+                    spawner = FSM.gameObject.GetOrAddComponent<EntitySpawner>();
+                    spawner.maxChildren = 100;
+                }
+                return spawner;
+            }
+        }
 
         public GameObject audioPlayer;
         public AudioClip colCageAppear;
         public AudioClip colCageOpen;
         public AudioClip colCageDown;
 
+        public Dictionary<string, Queue<GameObject>> preloads = new Dictionary<string, Queue<GameObject>>();
         protected HashSet<ArenaCageControl> queue = new HashSet<ArenaCageControl>();
 
 
-
+        public int StateIndex => stateIndex;
         protected int stateIndex = 0;
         protected HutongGames.PlayMaker.FsmState currentState => states == null || states.Count <= 0 ? null : states[stateIndex];
         protected List<HutongGames.PlayMaker.FsmState> states = new List<HutongGames.PlayMaker.FsmState>();
@@ -46,6 +61,23 @@ namespace EnemyRandomizerMod
             PlayerData.instance.IntAdd("killsDummy", 1);
             manager.SendEvent("WAVES COMPLETED");
             OpenGates();
+        }
+
+        public void RetractAllPlats()
+        {
+            manager.GetComponentsInChildren<PlayMakerFSM>(true).Where(x => x.name.Contains("Colosseum Platform")).ToList().ForEach(x => x.SendEvent("PLAT RETRACT"));
+        }
+
+        public void Bronze_ResetWallC()
+        {
+            if(this is ColoBronze)
+            {
+                string wallName = "Colosseum Wall C";
+
+                var wall = manager.gameObject.FindGameObjectInChildrenWithName(wallName);
+                var wallfsm = wall.GetComponent<PlayMakerFSM>();
+                wallfsm.SendEvent("RESET");
+            }
         }
 
         protected virtual void BuildWaves(PlayMakerFSM fsm)
@@ -74,7 +106,6 @@ namespace EnemyRandomizerMod
             isCustomArena = true;
 
             SetupManager();
-            SetupAudio();
 
             try
             {
@@ -100,78 +131,141 @@ namespace EnemyRandomizerMod
                 }
             }
             catch (Exception e) { Dev.LogError($"{e.Message} {e.StackTrace}"); }
-        }
 
-        protected virtual void SetupAudio()
-        {
-            try
+            if(manager != null)
             {
-                SetupAudioCageUp();
-                SetupAudioCageOpen();
-                SetupAudioCageDown();
-            }
-            catch(Exception e) { Dev.LogError($"{e.Message} {e.StackTrace}"); }
-        }
-
-        protected virtual void SetupAudioCageUp()
-        {
-            var audioCageUp = FSM.gameObject.LocateMyFSM("Audio Cage Up");
-            {
-                var state2 = audioCageUp.GetState("State 2");
-                audioPlayer = state2.GetAction<AudioPlayerOneShotSingle>(0).audioPlayer.Value;
-                colCageAppear = state2.GetAction<AudioPlayerOneShotSingle>(0).audioClip.Value as AudioClip;
-                //audioCageUp.enabled = false;
-            }
-        }
-
-        protected virtual void SetupAudioCageOpen()
-        {
-            var audioCageOpen = FSM.gameObject.LocateMyFSM("Audio Cage Open");
-            {
-                var state2 = audioCageOpen.GetState("State 2");
-                colCageOpen = state2.GetAction<AudioPlayerOneShotSingle>(0).audioClip.Value as AudioClip;
-                //audioCageOpen.enabled = false;
-            }
-        }
-
-        protected virtual void SetupAudioCageDown()
-        {
-            var audioCageDown = FSM.gameObject.LocateMyFSM("Audio Cage Open");
-            {
-                var state3 = audioCageDown.GetState("State 3");
-                colCageDown = state3.GetAction<AudioPlayerOneShotSingle>(1).audioClip.Value as AudioClip;
-                //audioCageDown.enabled = false;
+                try
+                {
+                    if (name == "Bronze Arena")
+                    {
+                        var goName = "Wave 29";
+                        List<GameObject> cages = GetCages(goName);
+                        PreloadZoteWave(cages.First());
+                    }
+                }
+                catch (Exception e) { Dev.LogError($"{e.Message} {e.StackTrace}"); }
+                
             }
         }
 
         public void PlayCageUp()
         {
             PlayMakerFSM.BroadcastEvent("AUDIO CAGE UP");
-            //PlaySound(colCageAppear);
         }
 
         public void PlayCageOpen()
         {
             PlayMakerFSM.BroadcastEvent("AUDIO CAGE OPEN");
-            //PlaySound(colCageOpen);
         }
 
-        public void PlayCageDown()
+        public void PreloadCageEntity(Vector2 pos, string cage, string cageThing, int numCages = 1, int numThings = 1)
         {
-            //PlayMakerFSM.BroadcastEvent("AUDIO CAGE OPEN");
-            //PlaySound(colCageDown);
+            manager.StartCoroutine(DoPreloadCageEntity(pos, cage, cageThing, numCages, numThings, 5));
         }
 
-        public void PlaySound(AudioClip clip)
+        protected virtual IEnumerator DoPreloadCageEntity(Vector2 pos, string cage, string cageThing, int numCages, int numThings, int batchsize = 5)
         {
-            audioPlayer.Spawn(HeroController.instance.transform.position, Quaternion.Euler(Vector3.up));
-            var audio = audioPlayer.GetComponent<AudioSource>();
-            audio.PlayOneShot(clip);
+            //needs "IsPreloading" to be true when spawning enemies that have special colo logic
+            IsPreloading = true;
+            if (!preloads.TryGetValue(cage, out var preloadedCages))
+            {
+                preloadedCages = new Queue<GameObject>();
+                preloads.Add(cage, preloadedCages);
+            }
+
+            for (int i = 0; i < numCages; i += batchsize)
+            {
+                for (int j = 0; j < batchsize; ++j)
+                {
+                    if ((i + j) >= numCages)
+                        break;
+
+                    var c = SpawnerExtensions.SpawnEntityAt(cage, pos, true, false);
+                    c.GetComponent<PlayMakerFSM>().enabled = false;
+                    preloadedCages.Enqueue(c);
+                    var cc = c.GetComponent<ArenaCageControl>();
+                    if (cc != null)
+                    {
+                        cc.owner = this;
+                        yield return cc.DoPreload(cageThing, numThings);
+                    }
+                    c.SetActive(false);
+                    c.GetComponent<PlayMakerFSM>().enabled = true;
+                    yield return new WaitForEndOfFrame();
+                }
+            }
+            IsPreloading = false;
         }
 
-        public GameObject Spawn(Vector2 pos, string enemy = null, string originalEnemy = null)
+        public GameObject SpawnCageEntity(Vector2 pos, string cage, string cageThing, int thingsToSpawn = 1, float waveDelay = 1f, bool fling = false)
         {
-            return spawner.SpawnCustomArenaEnemy(pos, enemy, originalEnemy, rng);            
+            if (preloads.TryGetValue(cage, out var preloadedCages))
+            {
+                GameObject c = null;
+                if (preloadedCages.Count > 0)
+                {
+                    c = preloadedCages.Dequeue();
+                    c.gameObject.SafeSetActive(true);
+                }
+                else
+                {
+                    c = SpawnerExtensions.SpawnEntityAt(cage, pos, true, false);
+                }
+
+                if (preloadedCages.Count <= 0)
+                    preloads.Remove(cage);
+
+                var cc = c.GetComponent<ArenaCageControl>();
+                if (cc != null)
+                {
+                    if (cageThing == "Zote Boss")
+                    {
+                        cc.GetComponent<ArenaCageControl>().onSpawn += OnZoteSpawn;
+                    }
+                    cc.owner = this;
+                    cc.flingRandomly = fling;
+                    cc.SpawnBatch(cageThing, waveDelay, thingsToSpawn);
+                }
+
+                return c;
+            }
+            else
+            {
+                var c = SpawnerExtensions.SpawnEntityAt(cage, pos, true, false);
+                var cc = c.GetComponent<ArenaCageControl>();
+                if (cc != null)
+                {
+                    if (cageThing == "Zote Boss")
+                    {
+                        cc.GetComponent<ArenaCageControl>().onSpawn += OnZoteSpawn;
+                    }
+                    cc.owner = this;
+                    cc.flingRandomly = fling;
+
+                    if (thingsToSpawn == 1)
+                        cc.Spawn(cageThing, waveDelay);
+                    else
+                        cc.SpawnBatch(cageThing, waveDelay, thingsToSpawn);
+                }
+                return c;
+            }
+        }
+
+        public GameObject Spawn(Vector2 pos, string enemy = null, string originalEnemy = null, bool preload = false)
+        {
+            var spawnedObject = Spawner.SpawnCustomArenaEnemy(pos, enemy, originalEnemy, rng);            
+            if(preload)
+            {
+                Spawner.UntrackObject(spawnedObject);
+                spawnedObject.SafeSetActive(false); //disable object for now
+            }
+            return spawnedObject;
+        }
+
+        public void AddExternalObjectToArena(GameObject enemy)
+        {
+            Spawner.TrackObject(enemy);
+            enemy.SafeSetActive(true);
         }
 
         protected virtual void StartBattle()
@@ -180,9 +274,6 @@ namespace EnemyRandomizerMod
             {
                 Dev.LogError($"currentState is null and this should never happen! statesCount:{states.Count} currentIndex:{stateIndex}");
             }
-
-            spawner = FSM.gameObject.GetOrAddComponent<EntitySpawner>();
-            spawner.maxChildren = 100;
 
             CloseGates();
             BattleManager.Instance.Value.StartCoroutine(DoBattle());
@@ -246,7 +337,7 @@ namespace EnemyRandomizerMod
             {
                 if (currentState.Name.Contains("Wave ") || currentState.Name.Contains("Wave 29 Zote"))
                 {
-                    if (spawner.Children.Count <= 0 && queue.Count <= 0)
+                    if (Spawner.Children.Count <= 0 && queue.Count <= 0)
                     {
                         SetFSMToNextState();
                     }
@@ -261,7 +352,19 @@ namespace EnemyRandomizerMod
                         SetFSMToNextState();
                     }
                 }
+                else if (currentState.Name.Contains("Cheer"))
+                {
+                    {
+                        SetFSMToNextState();
+                    }
+                }
                 else if (currentState.Name.Contains("Arena "))
+                {
+                    {
+                        SetFSMToNextState();
+                    }
+                }
+                else if (currentState.Name.Contains("Hopper Arena"))
                 {
                     {
                         SetFSMToNextState();
@@ -285,9 +388,40 @@ namespace EnemyRandomizerMod
                         SetFSMToNextState();
                     }
                 }
+                else if (currentState.Name.Contains("Ceiling"))
+                {
+                    {
+                        SetFSMToNextState();
+                    }
+                }
+                else if (currentState.Name.Contains("GC"))
+                {
+                    {
+                        SetFSMToNextState();
+                    }
+                }
+                else if (currentState.Name.Contains("Walls"))
+                {
+                    {
+                        SetFSMToNextState();
+                    }
+                }
+                else if (currentState.Name.Contains("Shake"))
+                {
+                    {
+                        SetFSMToNextState();
+                    }
+                }
+                else if (currentState.Name.Contains("Spikes"))
+                {
+                    {
+                        SetFSMToNextState();
+                    }
+                }
                 else if (currentState.Name.Contains("Gruz Arena"))
                 {
                     {
+                        RetractAllPlats();
                         SetFSMToNextState();
                     }
                 }
@@ -345,6 +479,29 @@ namespace EnemyRandomizerMod
             return isZoteWave;
         }
 
+        protected virtual int IsObbleWave()
+        {
+            if (SceneName == "Room_Colosseum_Silver")
+            {
+                if (currentState.Name.Contains("Wave 26 Obble"))
+                    return 26;
+
+                if (currentState.Name.Contains("Wave 27 Obble"))
+                    return 27;
+
+                if (currentState.Name.Contains("Wave 28 Obble"))
+                    return 28;
+
+                if (currentState.Name.Contains("Wave 29 Obble"))
+                    return 29;
+
+                if (currentState.Name.Contains("Wave 30 Obble"))
+                    return 30;
+            }
+
+            return -1;
+        }
+
         protected virtual int GetWaveIndex()
         {
             int index = 0;
@@ -352,7 +509,20 @@ namespace EnemyRandomizerMod
 
             if (!IsZoteWave())
             {
-                index = int.Parse(nameToParse);
+                int obbleIndex = IsObbleWave();
+
+                if(obbleIndex > 0)
+                {
+                    index = obbleIndex;
+                }
+                else
+                {
+                    if (currentState.Name.Contains("Wave 24 Loop"))
+                        return 24;
+
+
+                    index = int.Parse(nameToParse);
+                }
             }
             else
             {
@@ -371,17 +541,14 @@ namespace EnemyRandomizerMod
             return currentState.GetActions<SendEventByName>().Where(x => x.sendEvent.Value == "SPAWN").FirstOrDefault().delay.Value;
         }
 
+        protected virtual void PreloadZoteWave(GameObject zoteCage)
+        {
+            PreloadCageEntity(zoteCage.transform.position, "Arena Cage Zote", "Zote Boss", 1, 57);
+        }
+
         protected virtual void SpawnZoteWave(GameObject zoteCage, float waveDelay)
         {
-            var c = SpawnerExtensions.SpawnEntityAt("Arena Cage Zote", zoteCage.transform.position, true, false);
-            var cc = c.GetComponent<ArenaCageControl>();
-            if (cc != null)
-            {
-                cc.GetComponent<ArenaCageControl>().onSpawn += OnZoteSpawn;
-                cc.owner = this;
-                cc.flingRandomly = true;
-                cc.Spawn("Zote Boss", waveDelay);
-            }
+            SpawnCageEntity(zoteCage.transform.position, "Arena Cage Zote", "Zote Boss", 57, waveDelay, true);
         }
 
         protected virtual void SpawnWave()
@@ -390,6 +557,11 @@ namespace EnemyRandomizerMod
             {
                 int index = GetWaveIndex();
                 string goName = "Wave " + index;
+
+                if (currentState.Name.Contains("Wave 24 Loop"))
+                {
+                    goName = "Wave 24a";
+                }
 
                 List<GameObject> cages = GetCages(goName);
                 float waveDelay = GetWaveDelay();
@@ -448,6 +620,28 @@ namespace EnemyRandomizerMod
                         }
                     }
                 }
+                else if (currentState.Name.Contains("Cheer"))
+                {
+                    //TODO: wait
+                    {
+                        var wait = currentState.GetFirstActionOfType<Wait>();
+                        if (wait != null)
+                        {
+                            waitTime = wait.time.Value;
+                        }
+                    }
+                }
+                else if (currentState.Name.Contains("Hopper Arena"))
+                {
+                    //TODO: wait
+                    {
+                        var wait = currentState.GetFirstActionOfType<Wait>();
+                        if (wait != null)
+                        {
+                            waitTime = wait.time.Value;
+                        }
+                    }
+                }
                 else if (currentState.Name.Contains("Respawn"))
                 {
                     //TODO: wait
@@ -481,6 +675,61 @@ namespace EnemyRandomizerMod
                         }
                     }
                 }
+                else if (currentState.Name.Contains("Ceiling"))
+                {
+                    //TODO: wait
+                    {
+                        var wait = currentState.GetFirstActionOfType<Wait>();
+                        if (wait != null)
+                        {
+                            waitTime = wait.time.Value;
+                        }
+                    }
+                }
+                else if (currentState.Name.Contains("GC"))
+                {
+                    //TODO: wait
+                    {
+                        var wait = currentState.GetFirstActionOfType<Wait>();
+                        if (wait != null)
+                        {
+                            waitTime = wait.time.Value;
+                        }
+                    }
+                }
+                else if (currentState.Name.Contains("Walls"))
+                {
+                    //TODO: wait
+                    {
+                        var wait = currentState.GetFirstActionOfType<Wait>();
+                        if (wait != null)
+                        {
+                            waitTime = wait.time.Value;
+                        }
+                    }
+                }
+                else if (currentState.Name.Contains("Shake"))
+                {
+                    //TODO: wait
+                    {
+                        var wait = currentState.GetFirstActionOfType<Wait>();
+                        if (wait != null)
+                        {
+                            waitTime = wait.time.Value;
+                        }
+                    }
+                }
+                else if (currentState.Name.Contains("Spikes"))
+                {
+                    //TODO: wait
+                    {
+                        var wait = currentState.GetFirstActionOfType<Wait>();
+                        if (wait != null)
+                        {
+                            waitTime = wait.time.Value;
+                        }
+                    }
+                }
                 else if (currentState.Name.Contains("Gruz Arena"))
                 {
                     //TODO: wait?
@@ -500,7 +749,7 @@ namespace EnemyRandomizerMod
 
         protected virtual void SetFSMToCurrentState()
         {
-            spawner.RemoveDeadChildren();
+            Spawner.RemoveDeadChildren();
             FSM.SetState(currentState.Name);
         }
 
@@ -509,7 +758,7 @@ namespace EnemyRandomizerMod
             SetFSMToCurrentState();
             while (stateIndex < states.Count)
             {
-                //if(stateIndex == 2)
+                //if (stateIndex == 2)
                 //{
                 //    var gruz = states.FirstOrDefault(x => x.Name.Contains("Gruz"));
                 //    stateIndex = states.IndexOf(gruz) - 1;
@@ -580,10 +829,79 @@ namespace EnemyRandomizerMod
     public class ColoSilver : CustomArena
     {
         public override string name => "Silver Arena";
+
+        protected override void BuildWaves(PlayMakerFSM fsm)
+        {
+            HutongGames.PlayMaker.FsmState current = fsm.GetState("Init");
+            while (current.Name != "End")
+            {
+                HutongGames.PlayMaker.FsmState prev = current;
+                current = fsm.GetState(current.Transitions[0].ToState);
+
+                if (prev.Name.Contains("Wave ") ||
+                    prev.Name.Contains("Init") ||
+                    prev.Name.Contains("Cheer") ||
+                    prev.Name.Contains("Arena ") ||
+                    prev.Name.Contains("Hopper Arena") ||
+                    prev.Name.Contains("Reset") ||
+                    prev.Name.Contains("Respawn") ||
+                    prev.Name.Contains("Pause") ||
+                    prev.Name.Contains("Spikes"))
+                {
+                    prev.GetActions<SendEventByName>().Where(x => x.sendEvent.Value == "SPAWN").ToList().ForEach(x => x.Enabled = false);
+                    prev.GetActions<SetIntValue>().ToList().ForEach(x => x.Enabled = false);
+                    prev.GetActions<IntCompare>().ToList().ForEach(x => x.Enabled = false);
+                    states.Add(prev);
+                    prev.Transitions = new HutongGames.PlayMaker.FsmTransition[0];
+                }
+            }
+        }
     }
 
     public class ColoGold : CustomArena
     {
         public override string name => "Gold Arena";
+
+        protected override void BuildWaves(PlayMakerFSM fsm)
+        {
+            HutongGames.PlayMaker.FsmState current = fsm.GetState("Init");
+            while (current.Name != "End")
+            {
+                HutongGames.PlayMaker.FsmState prev = current;
+                current = fsm.GetState(current.Transitions[0].ToState);
+
+                if (prev.Name.Contains("Wave ") ||
+                    prev.Name.Contains("Init") ||
+                    prev.Name.Contains("Cheer") ||
+                    prev.Name.Contains("Arena ") ||
+                    prev.Name.Contains("Reset") ||
+                    prev.Name.Contains("Respawn") ||
+                    prev.Name.Contains("Pause") ||
+
+                    prev.Name.Contains("Ceiling") ||
+                    prev.Name.Contains("GC") ||
+                    prev.Name.Contains("Walls") ||
+                    prev.Name.Contains("Shake") ||
+
+                    prev.Name.Contains("Spikes"))
+                {
+                    prev.GetActions<SendEventByName>().Where(x => x.sendEvent.Value == "SPAWN").ToList().ForEach(x => x.Enabled = false);
+                    prev.GetActions<SetIntValue>().ToList().ForEach(x => x.Enabled = false);
+                    prev.GetActions<IntCompare>().ToList().ForEach(x => x.Enabled = false);
+                    states.Add(prev);
+                    prev.Transitions = new HutongGames.PlayMaker.FsmTransition[0];
+
+                    if (prev.Name.Contains("Lancer Shake 1"))
+                    {
+                        prev.AddCustomAction(() => {
+                            var right = HeroController.instance.gameObject.GetRightX();
+                            Spawn(right.point + Vector2.left * 3f + Vector2.up * 2, null, "Lancer");
+                            Spawn(right.point + Vector2.left * 5f + Vector2.up * 2, null, "Lobster");
+                        });
+                    }
+                }
+            }
+        }
     }
 }
+

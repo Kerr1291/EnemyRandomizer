@@ -564,16 +564,17 @@ namespace EnemyRandomizerMod
             "Plant Turret Right"                   ,
             //"Colosseum_Worm"                       ,
             //"Colosseum Grass Hopper"               ,
-            "Zombie Beam Miner Rematch",
-            "White Defender"               , //until he's fixed
             //"Mage Lord"               , //until he's fixed
             //"Mage Lord Phase2"               , //until he's fixed
+            "Zombie Beam Miner Rematch",
+            "White Defender"               , //until he's fixed
             "Ghost Warrior Markoth",
             "Infected Knight",
             "Nightmare Grimm Boss",
             "Ghost Warrior Xero",
             "Hive Knight",
             "Mato",
+            "Sly Boss",
             "False Knight Dream",
             "Bee Dropper",
         };
@@ -1010,8 +1011,6 @@ namespace EnemyRandomizerMod
             {"Jellyfish", true},
             {"Ghost Warrior Slug", true},
             {"Baby Centipede", true},
-            {"Zombie Spider 2", true},
-            {"Zombie Spider 1", true},
             {"Tiny Spider", true},
             {"Shade Sibling", true},
             {"Crawler", true},
@@ -1054,7 +1053,6 @@ namespace EnemyRandomizerMod
             {"Black Knight", true},
             {"Jar Collector", true},
             {"Moss Walker", true},
-            {"Plant Trap", true},
             {"Mossman_Shaker", true},
             {"Hornet Boss 1", true},
             {"Fat Fly", true},
@@ -1091,13 +1089,11 @@ namespace EnemyRandomizerMod
             {"Centipede Hatcher", true},
             {"Mimic Spider", true},
             {"Slash Spider", true},
-            {"Spider Flyer", true},
             {"Ghost Warrior Galien", true},
             {"Blow Fly", true},
             {"Bee Hatchling Ambient", true},
             {"Hornet Boss 2", true},
             {"Abyss Crawler", true},
-            {"Parasite Balloon", true},
             {"Mawlek Turret", true},
             {"Flip Hopper", true},
             {"Inflater", true},
@@ -1130,7 +1126,13 @@ namespace EnemyRandomizerMod
             {"Colosseum_Worm", true},
             {"Colosseum Grass Hopper", true},
             //{"Grub Mimic", true},
-
+            
+            //disabled after testing
+            {"Spider Flyer", false},//same problem as parasite balloon
+            {"Parasite Balloon", false},//doesn't feel good, takes too long to show up and feels like the arena broke
+            {"Zombie Spider 2", false},//sometimes spawns inside spikes or floors where it won't wake up
+            {"Zombie Spider 1", false},//sometimes spawns inside spikes or floors where it won't wake up
+            {"Plant Trap", false}, //spawns floating too much, can be hard to find
 
             //these could go into the arena pool after they're fixed
             {"Hive Knight", false},//not spawning
@@ -1461,7 +1463,7 @@ namespace EnemyRandomizerMod
             {"Grey Prince", 0.1f},
             {"Pale Lurker", 0.2f},
             {"Fat Fluke", 1f},
-            {"Sly Boss", 0.7f},//didn't die
+            {"Sly Boss", 0.05f},//didn't die
             {"Hornet Nosk", 0.1f},
             {"Mace Head Bug", 1f},
             {"Big Centipede Col", 1f},
@@ -1559,7 +1561,8 @@ namespace EnemyRandomizerMod
             
             {"Mage Balloon", 0.8f},
             
-            {"Hornet Boss 1", 0.5f},
+            {"Hornet Boss 1", 0.25f},
+            {"Hornet Boss 2", 0.25f},
 
             {"Zombie Myla", 0.5f},
             {"Zombie Miner", 0.5f},
@@ -1592,10 +1595,10 @@ namespace EnemyRandomizerMod
             {"Lesser Mawlek", 0.7f},
             {"Fly", 0.9f},
             {"Baby Centipede", 0.7f},
-            {"Zombie Spider 2", 0.5f},
+            //{"Zombie Spider 2", 0.5f},
             {"Shade Sibling", 0.5f},
             {"Buzzer", 1f},
-            {"Giant Fly", 1f},
+            //{"Giant Fly", 1f},
             {"Prayer Slug", 1f},
             {"Hatcher", 0.1f},
             {"Fat Fly", 1f},
@@ -1611,11 +1614,11 @@ namespace EnemyRandomizerMod
             {"Inflater", 1f},
             {"White Palace Fly", 1f},
             {"Fat Fluke", 0.1f},
-            {"Sly Boss", 0.01f},//didn't die
+            //{"Sly Boss", 0.001f},//didn't die
             {"Colosseum_Worm", 0.01f},
 
             {"Buzzer R", 0.001f},
-            {"Bee Dropper", 1f} //needs some starting velocity, a collider so it can be hit?, and POOB component
+            //{"Bee Dropper", 1f} //needs some starting velocity, a collider so it can be hit?, and POOB component
         };
 
 

@@ -3387,7 +3387,7 @@ namespace EnemyRandomizerMod
             return list[replacementIndex].Key;
         }
 
-        public static string GetRandomPrefabNameForArenaEnemy(RNG rng)
+        public static string GetRandomPrefabNameForArenaEnemy(RNG rng, string originalEnemy = null)
         {
             if (rng == null)
             {
@@ -3404,11 +3404,24 @@ namespace EnemyRandomizerMod
                 return false;
             }
 
-            var list = MetaDataTypes.RNGWeights.Where(x => isArenaOK(x.Key)).ToList();
-            var weights = list.Select(x => x.Value).ToList();
+            if (originalEnemy == null)
+            {
+                var list = MetaDataTypes.RNGWeights.Where(x => isArenaOK(x.Key)).ToList();
+                var weights = list.Select(x => x.Value).ToList();
 
-            int replacementIndex = rng.WeightedRand(weights);
-            return list[replacementIndex].Key;
+                int replacementIndex = rng.WeightedRand(weights);
+                return list[replacementIndex].Key;
+            }
+            else
+            {
+                var list = MetaDataTypes.RNGWeights.Where(x => isArenaOK(x.Key)).ToList();
+                bool isFlying = SpawnerExtensions.IsFlying(EnemyRandomizerDatabase.ToDatabaseKey(originalEnemy));
+                var typeMatch = list.Where(x => SpawnerExtensions.IsFlying(x.Key) == isFlying);
+                var weights = typeMatch.Select(x => x.Value).ToList();
+
+                int replacementIndex = rng.WeightedRand(weights);
+                return list[replacementIndex].Key;
+            }
         }
 
         public static void AddTimeoutAction(this PlayMakerFSM control, FsmState state, string eventName, float timeout)
@@ -3718,9 +3731,13 @@ namespace EnemyRandomizerMod
             //must be null!
             var originalMetaData = ObjectMetadata.GetOriginal(gameObject);
 
+            //this case can happen if, for example, some enemies are pre-loaded, then disabled and re-enabled later
             if(thisMetaData != null && originalMetaData != null)
             {
-                throw new InvalidOperationException($"{thisMetaData}: Cannot re-replace an object that's already replaced something!");
+                //since preloading is a valid case, let's just warn that this is happening in case it's expected behaviour
+                Dev.LogWarning($"{thisMetaData}: Cannot re-replace an object that's already replaced something!");
+                return;
+                //throw new InvalidOperationException($"{thisMetaData}: Cannot re-replace an object that's already replaced something!");
             }
 
             if(thisMetaData == null)

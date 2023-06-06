@@ -1632,6 +1632,8 @@ namespace EnemyRandomizerMod
 
             EnemyHealthManager.hasSpecialDeath = false;
 
+            control.AddTimeoutAction(control.GetState("Dstab Air"), "LAND", 1f);
+
             //TEMP
             control.OverrideState( "Long Roar End", () => Destroy(gameObject));
 

@@ -266,6 +266,11 @@ namespace EnemyRandomizerMod
             }
         }
 
+        public bool ContainsKey(string name)
+        {
+            return Objects.ContainsKey(name);
+        }
+
         /// <summary>
         /// Spawn an object from the database. All objects may be checked via the Objects property in the database.
         /// </summary>
@@ -462,10 +467,19 @@ namespace EnemyRandomizerMod
                     }
                     return enemy;
                 }
+                else
+                {
+                    if (!EnemyRandomizerDatabase.GetDatabase().ContainsKey(objectName))
+                        throw new KeyNotFoundException($"{objectName} was not found in the object database");
+                }
+            }
+            catch (KeyNotFoundException e)
+            {
+                Dev.LogError("Error: Invalid or missing object key: " + e.Message + e.StackTrace);
             }
             catch (Exception e)
             {
-                Dev.LogError("Custom Spawn Error: " + e.Message + e.StackTrace);
+                Dev.LogError($"CustomSpawn: Error Spawning object, {objectName} at {pos} : " + e.Message + e.StackTrace);
             }
 
             return null;

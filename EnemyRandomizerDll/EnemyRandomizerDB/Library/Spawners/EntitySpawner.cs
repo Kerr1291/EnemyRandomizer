@@ -49,6 +49,24 @@ namespace EnemyRandomizerMod
             return spawnedObject;
         }
 
+        public void UntrackObject(GameObject child)
+        {
+            if (Children == null)
+                return;
+
+            if (Children.Contains(child))
+                Children.Remove(child);
+        }
+
+        public void TrackObject(GameObject child)
+        {
+            if (Children == null)
+                return;
+
+            if (!Children.Contains(child))
+                Children.Add(child);
+        }
+
         public virtual GameObject SpawnAndTrackChild(string objectName, Vector3 spawnPoint, bool setActive = true, bool allowRandomization = false)
         {
             GameObject child = SpawnerExtensions.SpawnEntityAt(objectName, spawnPoint, setActive, allowRandomization);
@@ -165,6 +183,41 @@ namespace EnemyRandomizerMod
                 isOutside = true;
             }
 
+            bool isColoBronze = BattleManager.StateMachine.Value is ColoBronze;
+            if (isColoBronze)
+            {
+                var bronze = BattleManager.StateMachine.Value as ColoBronze;
+                if(bronze.StateIndex >= 32 && bronze.StateIndex < 42)
+                {
+                    if(pos.y > 15.5f)
+                    {
+                        isOutside = true;
+                    }
+                }
+            }
+
+
+            bool isColoSilver = BattleManager.StateMachine.Value is ColoSilver;
+            if (isColoSilver)
+            {
+                var silver = BattleManager.StateMachine.Value as ColoSilver;
+                if (silver.StateIndex >= 60 && silver.StateIndex < 63)
+                {
+                    if (pos.y > 15.1f)
+                    {
+                        isOutside = true;
+                    }
+                }
+                if (silver.StateIndex >= 64)
+                {
+                    if (pos.y > 18.1f)
+                    {
+                        isOutside = true;
+                    }
+                }
+            }
+
+
             return isOutside;
         }
 
@@ -185,7 +238,7 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    enemyToSpawn = SpawnerExtensions.GetRandomPrefabNameForArenaEnemy(rng);
+                    enemyToSpawn = SpawnerExtensions.GetRandomPrefabNameForArenaEnemy(rng, originalEnemy);
                     enemy = SpawnAndTrackChild(enemyToSpawn, pos, false, false);
                 }
 
@@ -221,8 +274,34 @@ namespace EnemyRandomizerMod
                 var soc2 = enemy.GetComponent<DefaultSpawnedEnemyControl>();
                 if (soc2 != null)
                 {
-                    soc2.defaultScaledMaxHP = SpawnerExtensions.GetObjectPrefab(originalEnemy).prefab.GetEnemyHealthManager().hp;
-                    soc2.CurrentHP = soc2.defaultScaledMaxHP;
+                    float orginalHP = SpawnerExtensions.GetObjectPrefab(originalEnemy).prefab.GetEnemyHealthManager().hp;
+
+                    bool isColoSilver = BattleManager.StateMachine.Value is ColoSilver;
+                    if (isColoSilver)
+                    {
+                        orginalHP = orginalHP * 1.5f;
+
+                        soc2.defaultScaledMaxHP = Mathf.FloorToInt(orginalHP);
+                        soc2.CurrentHP = soc2.defaultScaledMaxHP;
+                    }
+                    else
+                    {
+                        bool isColoGold = BattleManager.StateMachine.Value is ColoGold;
+                        if (isColoGold)
+                        {
+                            //only adjust their HP in gold if they spawned with like 1hp for some reason
+                            if(soc2.defaultScaledMaxHP < 10f)
+                            {
+                                soc2.defaultScaledMaxHP = Mathf.FloorToInt(orginalHP);
+                                soc2.CurrentHP = soc2.defaultScaledMaxHP;
+                            }
+                        }
+                        else
+                        {
+                            soc2.defaultScaledMaxHP = Mathf.FloorToInt(orginalHP);
+                            soc2.CurrentHP = soc2.defaultScaledMaxHP;
+                        }
+                    }
                 }
             }
 
