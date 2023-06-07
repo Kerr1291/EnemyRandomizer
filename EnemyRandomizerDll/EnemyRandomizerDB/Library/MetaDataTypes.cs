@@ -983,6 +983,46 @@ namespace EnemyRandomizerMod
             {"Bee Dropper", "Pigeon"}
         };
 
+        public static Dictionary<string, bool> GoodForArenaBoss = new Dictionary<string, bool>()
+        {
+            {"Zote Boss", true},
+            {"Super Spitter", true},
+            {"Giant Hopper", true},
+            {"Mantis Heavy", true},
+            {"Lesser Mawlek", true},
+            {"Mantis Heavy Flyer", true},
+            {"Ghost Warrior Slug", true},
+            {"Mega Fat Bee", true},
+            {"Lobster", true},
+            {"Mage Knight", true},
+            {"Lancer", true},
+            {"Giant Fly", true},
+            {"Mawlek Body", true},
+            {"False Knight New", true},
+            {"Gorgeous Husk", true},
+            {"Mage Lord", true},
+            {"Mage Lord Phase2", true},
+            {"Great Shield Zombie", true},
+            {"Black Knight", true},
+            {"Jar Collector", true},
+            {"Hornet Boss 1", true},
+            {"Hornet Boss 2", true},
+            {"Moss Knight", true},
+            {"Ghost Warrior No Eyes", true},
+            {"Mantis Traitor Lord", true},
+            {"Moss Knight Fat", true},
+            {"Ghost Warrior Marmu", true},
+            {"Mega Zombie Beam Miner", true},
+            {"Mimic Spider", true},
+            {"Ghost Warrior Galien", true},
+            {"Fluke Mother", true},
+            {"Royal Gaurd", true},
+            {"False Knight Dream", true},
+            {"Lost Kin", true},
+            {"Grey Prince", true},
+            {"Zote Crew Fat", true},
+            {"Hornet Nosk", true},
+        };
 
 
         public static Dictionary<string, bool> SafeForArenas = new Dictionary<string, bool>()
@@ -1110,7 +1150,6 @@ namespace EnemyRandomizerMod
             {"Lost Kin", true},
             {"Zoteling", true},
             {"Zoteling Buzzer", true},
-            {"Zoteling Hopper", true},
             {"Grey Prince", true},
             {"Pale Lurker", true},
             {"Fat Fluke", true},
@@ -1128,6 +1167,7 @@ namespace EnemyRandomizerMod
             //{"Grub Mimic", true},
             
             //disabled after testing
+            {"Zoteling Hopper", false},
             {"Spider Flyer", false},//same problem as parasite balloon
             {"Parasite Balloon", false},//doesn't feel good, takes too long to show up and feels like the arena broke
             {"Zombie Spider 2", false},//sometimes spawns inside spikes or floors where it won't wake up
@@ -1767,9 +1807,52 @@ namespace EnemyRandomizerMod
 
 
 
+        public static Dictionary<string, float> GoodForArenaBossWeights = new Dictionary<string, float>()
+        {
+            {"Zote Boss", 1.0f},
+            {"Super Spitter", 1.0f},
+            {"Giant Hopper", 1.0f},
+            {"Mantis Heavy", 1.0f},
+            {"Lesser Mawlek", 1.0f},
+            {"Mantis Heavy Flyer", 1.0f},
+            {"Ghost Warrior Slug", 1.0f},
+            {"Mega Fat Bee", 1.0f},
+            {"Lobster", 1.0f},
+            {"Mage Knight", 1.0f},
+            {"Lancer", 1.0f},
+            {"Giant Fly", 1.0f},
+            {"Mawlek Body", 1.0f},
+            {"False Knight New", 1.0f},
+            {"Gorgeous Husk", 1.0f},
+            {"Mage Lord", 1.0f},
+            {"Mage Lord Phase2", 1.0f},
+            {"Great Shield Zombie", 1.0f},
+            {"Black Knight", 1.0f},
+            {"Jar Collector", 1.0f},
+            {"Hornet Boss 1", 1.0f},
+            {"Hornet Boss 2", 1.0f},
+            {"Moss Knight", 1.0f},
+            {"Ghost Warrior No Eyes", 1.0f},
+            {"Mantis Traitor Lord", 1.0f},
+            {"Moss Knight Fat", 1.0f},
+            {"Ghost Warrior Marmu", 1.0f},
+            {"Mega Zombie Beam Miner", 1.0f},
+            {"Mimic Spider", 1.0f},
+            {"Ghost Warrior Galien", 1.0f},
+            {"Fluke Mother", 1.0f},
+            {"Royal Gaurd", 1.0f},
+            {"False Knight Dream", 1.0f},
+            {"Lost Kin", 1.0f},
+            {"Grey Prince", 1.0f},
+            {"Zote Crew Fat", 1.0f},
+            {"Hornet Nosk", 1.0f},
+            {"Dung Defender", 1.0f},
+            {"Hollow Knight Boss", 1.0f},
+            {"HK Prime", 1.0f},
+            {"Grimm Boss", 1.0f},
+        };
 
-
-
+        
 
 
 

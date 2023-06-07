@@ -71,6 +71,9 @@ namespace EnemyRandomizerMod
         public List<string> loadedLogics = new List<string>();
         public bool UseCustomSeed = false;
         public List<LogicSettings> logicSettings = new List<LogicSettings>();
+
+        public int customColoSeed = -1;
+        public bool UseCustomColoSeed = false;
     }
 
     /// <summary>

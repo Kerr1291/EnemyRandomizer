@@ -49,6 +49,21 @@ namespace EnemyRandomizerMod
                 catch (Exception e) { Dev.LogError($"{e.Message} {e.StackTrace}"); }
             }
         }
+
+        public static string GetEnemyPrefabNameInsideCage(GameObject largeCage)
+        {
+            try
+            {
+                var prefab = largeCage.LocateMyFSM("Spawn").Fsm.GetFsmGameObject("Corpse to Instantiate").Value;
+
+                string keyName = EnemyRandomizerDatabase.ToDatabaseKey(prefab.name);
+
+                //get actual enemy prefab from the fsm
+                return keyName;
+            }
+            catch (Exception e) { Dev.LogError($"{e.Message} {e.StackTrace}"); }
+            return string.Empty;
+        }
     }
 
     //this converts the colo cages into prefabs of the enemies that exist inside them
@@ -97,6 +112,32 @@ namespace EnemyRandomizerMod
                 p.prefabName = keyName;
                 p.prefab = prefab;
             }
+        }
+
+        public static string GetEnemyPrefabNameInsideCage(GameObject smallCage)
+        {
+            GameObject prefab = null;
+            try
+            {
+                prefab = smallCage.LocateMyFSM("Spawn").Fsm.GetFsmGameObject("Enemy Type").Value;
+            }
+            catch (Exception e) { Dev.LogError($"{e.Message} {e.StackTrace}"); }
+
+            try
+            {
+                if (prefab == null)
+                    prefab = smallCage.LocateMyFSM("Spawn").Fsm.GetFsmGameObject("z Corpse to Instantiate").Value;
+            }
+            catch (Exception e) { Dev.LogError($"{e.Message} {e.StackTrace}"); }
+
+            if (prefab != null)
+            {
+                string keyName = EnemyRandomizerDatabase.ToDatabaseKey(prefab.name);
+
+                //get actual enemy prefab from the fsm
+                return keyName;
+            }
+            return string.Empty;
         }
     }
 
@@ -202,20 +243,20 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public void SpawnBatch(string thing = null, float delay = 0f, int batchSize = 1)
+        public void SpawnBatch(string thing = null, string originalEnemy = null, float delay = 0f, int batchSize = 1)
         {
             spawnBatchSize = batchSize;
-            Spawn(thing, delay);
+            Spawn(thing, originalEnemy, delay);
         }
 
-        public void Spawn(string thing = null, float delay = 0f)
+        public void Spawn(string thing = null, string originalEnemy = null, float delay = 0f)
         {
             owner.AddToQueue(this);
             spawnDelay = delay;
-            StartCoroutine(DoSpawn(thing));
+            StartCoroutine(DoSpawn(thing, originalEnemy));
         }
 
-        protected virtual IEnumerator DoSpawn(string thing)
+        protected virtual IEnumerator DoSpawn(string thing, string originalEnemy)
         {
             if(spawnDelay > 0f)
             {
@@ -230,11 +271,11 @@ namespace EnemyRandomizerMod
             if (spawnBatchSize > 1)
             {
                 for(int i = 0; i < spawnBatchSize; ++i)
-                    SafeSpawn(thing);
+                    SafeSpawn(thing, originalEnemy);
             }
             else
             {
-                SafeSpawn(thing);
+                SafeSpawn(thing, originalEnemy);
             }
             yield return new WaitForSeconds(1.0f);
             //cage goes back down
@@ -245,67 +286,42 @@ namespace EnemyRandomizerMod
             }
         }
 
+        protected virtual GameObject GetEnemyForSafeSpawn(string thing, string originalEnemy = null, bool preload = false)
+        {
+            if (!preload && !string.IsNullOrEmpty(thing) && preloads.ContainsKey(thing) && preloads[thing].Count > 0)
+            {
+                spawnedEnemy = preloads[thing].Dequeue();
+                owner.AddExternalObjectToArena(spawnedEnemy);
+            }
+            else
+            {
+                spawnedEnemy = owner.Spawn(transform.position, thing, originalEnemy, preload);
+                spawnedEnemy.SafeSetActive(true);
+            }
+            return spawnedEnemy;
+        }
+
         protected virtual bool SafeSpawn(string thing, string originalEnemy = null, bool preload = false)
         {
             bool error = false;
             try
             {
-                if (!preload && !string.IsNullOrEmpty(thing) && preloads.ContainsKey(thing) && preloads[thing].Count > 0)
+                spawnedEnemy = GetEnemyForSafeSpawn(thing, originalEnemy, preload);
+
+                if (preload && !string.IsNullOrEmpty(thing))
                 {
-                    spawnedEnemy = preloads[thing].Dequeue();
-                    owner.AddExternalObjectToArena(spawnedEnemy);
+                    PreloadThing(thing);
                 }
                 else
                 {
-                    spawnedEnemy = owner.Spawn(transform.position, thing, originalEnemy, preload);
-                    Dev.Log("Preloaded " + spawnedEnemy);
-                }
-
-                if (preload)
-                {
-                    if(!preloads.TryGetValue(thing, out var thingQueue))
-                    {
-                        thingQueue = new Queue<GameObject>();
-                        preloads.Add(thing, thingQueue);
-                    }
-                    Dev.Log("Preload queued");
-                    thingQueue.Enqueue(spawnedEnemy);
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(thing) && preloads.ContainsKey(thing) && preloads[thing].Count <= 0)
-                        preloads.Remove(thing);
-
-                    var soc = spawnedEnemy.GetComponent<SpawnedObjectControl>();
-                    if (flingRandomly)
-                    {
-                        if (soc != null)
-                        {
-                            float vel = owner.rng.Rand(45f, 120f);
-                            var dir = spawnedEnemy.GetRandomDirectionFromSelf(true);
-                            soc.PhysicsBody.velocity = dir * vel;
-                        }
-                    }
-
-                    if (soc != null)
-                    {
-                        if (gameObject.GetDatabaseKey() == "Ceiling Dropper")
-                        {
-                            var alertRange = gameObject.FindGameObjectInDirectChildren("Alert Range");
-                            var aBox = alertRange.GetComponent<BoxCollider2D>();
-                            aBox.size = new Vector2(aBox.size.x, 50f);
-                        }
-                    }
-
-                    cageOpenEffect.gameObject.SetActive(true);
-                    owner.PlayCageOpen();
-                    if (!string.IsNullOrEmpty(playCustomEffectOnSpawn))
-                        SpawnerExtensions.SpawnEntityAt(playCustomEffectOnSpawn, transform.position, true, false);
+                    CheckRemoveFromPreloads(thing);
+                    SpawnThing();
+                    PlayCageOpenEffects();
                 }
             }
             catch (Exception e) {
                 error = true;
-                Dev.LogError($"Caught exception while trying to spawn a {thing} from a cage \n{e.Message}\n{e.StackTrace}"); 
+                Dev.LogError($"Caught exception while trying to spawn a {thing} from a cage that used to hold {originalEnemy} \n{e.Message}\n{e.StackTrace}"); 
             }
 
             if (!preload)
@@ -320,6 +336,75 @@ namespace EnemyRandomizerMod
                 }
             }
             return !error;
+        }
+
+        private void CheckRemoveFromPreloads(string thing)
+        {
+            if (!string.IsNullOrEmpty(thing) && preloads.ContainsKey(thing) && preloads[thing].Count <= 0)
+                preloads.Remove(thing);
+        }
+
+        private void PlayCageOpenEffects()
+        {
+            cageOpenEffect.gameObject.SetActive(true);
+            owner.PlayCageOpen();
+            if (!string.IsNullOrEmpty(playCustomEffectOnSpawn))
+                SpawnerExtensions.SpawnEntityAt(playCustomEffectOnSpawn, transform.position, true, false);
+        }
+
+        private void SpawnThing()
+        {            
+            if (flingRandomly)
+            {
+                FlingLastSpawnedThing();
+            }
+
+            FixLastSpawnedThing();
+        }
+
+        private void FixLastSpawnedThing()
+        {
+            if (spawnedEnemy == null)
+                return;
+
+            var soc = spawnedEnemy.GetComponent<SpawnedObjectControl>();
+            if (soc != null)
+            {
+                if (soc.gameObject.GetDatabaseKey() == "Ceiling Dropper")
+                {
+                    var alertRange = gameObject.FindGameObjectInDirectChildren("Alert Range");
+                    var aBox = alertRange.GetComponent<BoxCollider2D>();
+                    aBox.size = new Vector2(aBox.size.x, 50f);
+                }
+                if (soc.gameObject.GetDatabaseKey() == "Fluke Mother")
+                {
+                    soc.gameObject.ScaleObject(2f);
+                    soc.gameObject.ScaleAudio(1.5f);
+                    soc.SizeScale = 2f;
+                }
+            }
+        }
+
+        private void FlingLastSpawnedThing()
+        {
+            var soc = spawnedEnemy.GetComponent<SpawnedObjectControl>();
+            if (soc != null)
+            {
+                float vel = owner.rng.Rand(45f, 120f);
+                var dir = spawnedEnemy.GetRandomDirectionFromSelf(true);
+                soc.PhysicsBody.velocity = dir * vel;
+            }
+        }
+
+        private void PreloadThing(string thing)
+        {
+            if (!preloads.TryGetValue(thing, out var thingQueue))
+            {
+                thingQueue = new Queue<GameObject>();
+                preloads.Add(thing, thingQueue);
+            }
+            Dev.Log("Preload queued");
+            thingQueue.Enqueue(spawnedEnemy);
         }
     }
 
@@ -476,7 +561,7 @@ namespace EnemyRandomizerMod
             }
         }
 
-        protected override IEnumerator DoSpawn(string thing)
+        protected override IEnumerator DoSpawn(string thing, string originalEnemy)
         {
             yield return new WaitForSeconds(spawnDelay);
 
@@ -485,11 +570,11 @@ namespace EnemyRandomizerMod
             if (spawnBatchSize > 1)
             {
                 for (int i = 0; i < spawnBatchSize; ++i)
-                    SafeSpawn(thing);
+                    SafeSpawn(thing, originalEnemy);
             }
             else
             {
-                SafeSpawn(thing);
+                SafeSpawn(thing, originalEnemy);
             }
 
             if (!string.IsNullOrEmpty(playCustomEffectOnSpawn))
@@ -550,7 +635,7 @@ namespace EnemyRandomizerMod
             catch (Exception e)
             {
                 error = true;
-                Dev.LogError($"Caught exception while trying to spawn a {thing} from a cage \n{e.Message}\n{e.StackTrace}");
+                Dev.LogError($"Caught exception while trying to spawn a {thing} from a cage that used to hold {originalEnemy} \n{e.Message}\n{e.StackTrace}");
             }
 
             return !error;

@@ -456,6 +456,35 @@ namespace EnemyRandomizerMod
         public override string spawnEntityOnDeath => entityToSpawnOnDeath;
         protected string entityToSpawnOnDeath;
 
+        public void MakeSuperHusk()
+        {
+            if (isSuperHusk)
+                return;
+            isSuperHusk = true;
+
+            {
+                {
+                    entityToSpawnOnDeath = "Galien Mini Hammer";
+                }
+
+                Geo = SpawnerExtensions.GetRandomValueBetween(420, 1420);
+
+                CurrentHPf = CurrentHPf * 0.5f;
+                gameObject.ScaleObject(SizeScale + 0.2f);
+
+                gameObject.AddParticleEffect_TorchFire();
+            }
+
+            {
+                Geo = Geo * 2;
+
+                CurrentHPf = CurrentHPf * 0.5f;
+                gameObject.ScaleObject(SizeScale + 0.4f);
+
+                gameObject.AddParticleEffect_TorchShadeEmissions();
+            }
+        }
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
@@ -1209,6 +1238,14 @@ namespace EnemyRandomizerMod
     /////
     public class MossKnightFatControl : DefaultSpawnedEnemyControl
     {
+        public override void Setup(GameObject objectThatWillBeReplaced = null)
+        {
+            base.Setup(objectThatWillBeReplaced);
+
+            GameObject.Destroy(gameObject.LocateMyFSM("FSM"));
+
+            GameObject.Destroy(gameObject.GetComponent<PersistentBoolItem>());
+        }
     }
 
     public class MossKnightFatSpawner : DefaultSpawner<MossKnightFatControl> { }
@@ -1476,6 +1513,45 @@ namespace EnemyRandomizerMod
 
         public int eliteChance = 2;
         public bool isElite;
+        float throwTimeout => isElite ? .7f : 2f;
+
+        public void MakeElite()
+        {
+            if (isElite)
+                return;
+
+            isElite = true;
+            try
+            {
+                Geo = SpawnerExtensions.GetRandomValueBetween(200, 420);
+
+                Sprite.color = Color.red;
+                gameObject.AddParticleEffect_TorchFire();
+            }
+            catch (Exception e)
+            {
+                Dev.LogError($"Error starting to make guard elite ! ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+            }
+
+            try
+            {
+                var wait = control.GetState("Wait");
+                wait.GetAction<WaitRandom>(2).timeMin = 0f;
+                wait.GetAction<WaitRandom>(2).timeMax = .1f;
+
+                var idle = control.GetState("Idle");
+                idle.GetAction<Wait>(2).time = .1f;
+
+                control.FsmVariables.GetFsmFloat("Run Speed").Value = -15;
+                control.FsmVariables.GetFsmFloat("SlashStepSpeed").Value = 30;
+            }
+            catch (Exception e)
+            {
+
+                Dev.LogError($"Error making guard elite ! ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+            }
+
+        }
 
         public override void Setup(GameObject other)
         {
@@ -1556,7 +1632,7 @@ namespace EnemyRandomizerMod
                 }
             }, 0);
             //TODO: add a check to see if anything was thrown
-            control.AddTimeoutAction(throwState, "CAUGHT", isElite ? .7f : 2f);
+            control.AddDynamicTimeoutAction(throwState, "CAUGHT", () => throwTimeout);
 
             var throwCatch = control.GetState("Throw Catch");
             throwCatch.InsertCustomAction(() => {

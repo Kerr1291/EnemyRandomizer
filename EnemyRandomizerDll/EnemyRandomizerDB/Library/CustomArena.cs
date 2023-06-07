@@ -16,7 +16,9 @@ namespace EnemyRandomizerMod
         public PlayMakerFSM manager;
 
         public RNG rng;
-        public int seedOffset = 0;//change this to mix up the arena rng
+        protected virtual int typeSeedOffset => 0;
+        public int seedOffset = 0;
+        public int SeedOffset => seedOffset + typeSeedOffset;//change this to mix up the arena rng
 
         public EntitySpawner spawner;
         public EntitySpawner Spawner
@@ -97,8 +99,19 @@ namespace EnemyRandomizerMod
         {
             FSM = fsm.gameObject.LocateMyFSM("Battle Control");
             fsm = FSM;
-            seedOffset += PlayerData.instance.GetInt("killsDummy");
-            rng = new RNG(EnemyRandomizerDatabase.GetPlayerSeed() + seedOffset);
+            seedOffset = PlayerData.instance.GetInt("killsDummy");
+
+            int seedToUse = 0;
+            if (EnemyRandomizerDatabase.GetCustomColoSeed() > -1)
+            {
+                seedToUse = EnemyRandomizerDatabase.GetCustomColoSeed();
+            }
+            else
+            {
+                seedToUse = EnemyRandomizerDatabase.GetPlayerSeed();
+            }
+
+            rng = new RNG(seedToUse + SeedOffset);
             preKilledEnemies = 0;
             battleStarted = false;
             battleEnded = false;
@@ -224,7 +237,7 @@ namespace EnemyRandomizerMod
                     }
                     cc.owner = this;
                     cc.flingRandomly = fling;
-                    cc.SpawnBatch(cageThing, waveDelay, thingsToSpawn);
+                    cc.SpawnBatch(cageThing, null, waveDelay, thingsToSpawn);
                 }
 
                 return c;
@@ -243,9 +256,9 @@ namespace EnemyRandomizerMod
                     cc.flingRandomly = fling;
 
                     if (thingsToSpawn == 1)
-                        cc.Spawn(cageThing, waveDelay);
+                        cc.Spawn(cageThing, null, waveDelay);
                     else
-                        cc.SpawnBatch(cageThing, waveDelay, thingsToSpawn);
+                        cc.SpawnBatch(cageThing, null, waveDelay, thingsToSpawn);
                 }
                 return c;
             }
@@ -258,6 +271,10 @@ namespace EnemyRandomizerMod
             {
                 Spawner.UntrackObject(spawnedObject);
                 spawnedObject.SafeSetActive(false); //disable object for now
+            }
+            else
+            {
+
             }
             return spawnedObject;
         }
@@ -332,10 +349,15 @@ namespace EnemyRandomizerMod
             if (waitingOnZote)
                 return false;
 
+            if (waitingOnLancer)
+                return false;
+
             bool stateChanged = true;
             try
             {
-                if (currentState.Name.Contains("Wave ") || currentState.Name.Contains("Wave 29 Zote"))
+                if (currentState.Name.Contains("Wave ") 
+                    || currentState.Name.Contains("Wave 29 Zote")
+                    || currentState.Name.Contains("Lancer Shake 1"))
                 {
                     if (Spawner.Children.Count <= 0 && queue.Count <= 0)
                     {
@@ -388,7 +410,19 @@ namespace EnemyRandomizerMod
                         SetFSMToNextState();
                     }
                 }
+                else if (currentState.Name.Contains("Spike Pit"))
+                {
+                    {
+                        SetFSMToNextState();
+                    }
+                }
                 else if (currentState.Name.Contains("Ceiling"))
+                {
+                    {
+                        SetFSMToNextState();
+                    }
+                }
+                else if (currentState.Name.Contains("Garpedes"))
                 {
                     {
                         SetFSMToNextState();
@@ -502,33 +536,42 @@ namespace EnemyRandomizerMod
             return -1;
         }
 
+        protected virtual bool IsLancerWave()
+        {
+            if(SceneName == "Room_Colosseum_Gold")
+            {
+                if (currentState.Name.Contains("Lancer Shake 1"))
+                    return true;
+            }
+            return false;
+        }
+
+
         protected virtual int GetWaveIndex()
         {
-            int index = 0;
             string nameToParse = currentState.Name.Split(' ').Last();
 
-            if (!IsZoteWave())
+            if (IsZoteWave())
+                return 29;
+
+            if (Spawner.Children.Count <= 0)
             {
-                int obbleIndex = IsObbleWave();
-
-                if(obbleIndex > 0)
-                {
-                    index = obbleIndex;
-                }
-                else
-                {
-                    if (currentState.Name.Contains("Wave 24 Loop"))
-                        return 24;
-
-
-                    index = int.Parse(nameToParse);
-                }
+                waitingOnLancer = IsLancerWave();
+                if (waitingOnLancer)
+                    return 51;
             }
-            else
+
+            if (currentState.Name.Contains("Wave 24 Loop"))
+                return 24;
+
+            int obbleIndex = IsObbleWave();
+            if (obbleIndex > 0)
             {
-                index = 29;
+                return obbleIndex;
             }
-            return index;
+
+            int waveIndex = int.Parse(nameToParse);
+            return waveIndex;
         }
 
         protected virtual List<GameObject> GetCages(string goName)
@@ -538,6 +581,18 @@ namespace EnemyRandomizerMod
 
         protected virtual float GetWaveDelay()
         {
+            //check the wake events for the mage waves
+            if (SceneName == "Room_Colosseum_Gold")
+            {
+                if(currentState.Name.Contains("Wave 25")
+                    || currentState.Name.Contains("Wave 26")
+                    || currentState.Name.Contains("Wave 27")
+                    || currentState.Name.Contains("Wave 28"))
+                {
+                    return currentState.GetActions<SendEventByName>().Where(x => x.sendEvent.Value == "WAKE").FirstOrDefault().delay.Value;
+                }
+            }
+
             return currentState.GetActions<SendEventByName>().Where(x => x.sendEvent.Value == "SPAWN").FirstOrDefault().delay.Value;
         }
 
@@ -551,6 +606,8 @@ namespace EnemyRandomizerMod
             SpawnCageEntity(zoteCage.transform.position, "Arena Cage Zote", "Zote Boss", 57, waveDelay, true);
         }
 
+        List<GameObject> empty = new List<GameObject>();
+
         protected virtual void SpawnWave()
         {
             try
@@ -563,13 +620,28 @@ namespace EnemyRandomizerMod
                     goName = "Wave 24a";
                 }
 
-                List<GameObject> cages = GetCages(goName);
-                float waveDelay = GetWaveDelay();
+                if(waitingOnLancer)
+                {
+                    goName = "Lobster Lancer";
+                }
+
+                List<GameObject> cages = empty;
+                float waveDelay = 0f;
+
+                if (!waitingOnLancer)
+                {
+                    cages = GetCages(goName);
+                    waveDelay = GetWaveDelay();
+                }
 
                 if (isZoteWave)
                 {
                     waitingOnZote = true;
                     SpawnZoteWave(cages.First(), waveDelay);
+                }
+                else if(waitingOnLancer)
+                {
+                    //spawn is taken by the FSM of the state
                 }
                 else
                 {
@@ -578,23 +650,27 @@ namespace EnemyRandomizerMod
 
                     foreach (var cage in smCages)
                     {
+                        string enemyInside = ColosseumCageSmallPrefabConfig.GetEnemyPrefabNameInsideCage(cage);
+
                         var c = SpawnerExtensions.SpawnEntityAt("Arena Cage Small", cage.transform.position, true, false);
                         var cc = c.GetComponent<ArenaCageControl>();
                         if (cc != null)
                         {
                             cc.owner = this;
-                            cc.Spawn(null, waveDelay);
+                            cc.Spawn(null, enemyInside, waveDelay);
                         }
                     }
 
                     foreach (var cage in lgCages)
                     {
+                        string enemyInside = ColosseumCageLargePrefabConfig.GetEnemyPrefabNameInsideCage(cage);
+
                         var c = SpawnerExtensions.SpawnEntityAt("Arena Cage Large", cage.transform.position, true, false);
                         var cc = c.GetComponent<ArenaCageControl>();
                         if (cc != null)
                         {
                             cc.owner = this;
-                            cc.Spawn(null, waveDelay);
+                            cc.Spawn(null, enemyInside, waveDelay);
                         }
                     }
                 }
@@ -603,6 +679,7 @@ namespace EnemyRandomizerMod
         }
 
         public bool waitingOnZote = false;
+        public bool waitingOnLancer = false;
 
         protected float CheckWaitStates()
         {
@@ -665,6 +742,28 @@ namespace EnemyRandomizerMod
                     }
                 }
                 else if (currentState.Name.Contains("Pause"))
+                {
+                    //TODO: wait
+                    {
+                        var wait = currentState.GetFirstActionOfType<Wait>();
+                        if (wait != null)
+                        {
+                            waitTime = wait.time.Value;
+                        }
+                    }
+                }
+                else if (currentState.Name.Contains("Garpedes"))
+                {
+                    //TODO: wait
+                    {
+                        var wait = currentState.GetFirstActionOfType<Wait>();
+                        if (wait != null)
+                        {
+                            waitTime = wait.time.Value;
+                        }
+                    }
+                }
+                else if (currentState.Name.Contains("Spike Pit"))
                 {
                     //TODO: wait
                     {
@@ -800,6 +899,8 @@ namespace EnemyRandomizerMod
     {
         public override string name => "Bronze Arena";
 
+        protected override int typeSeedOffset => 0;
+
         protected override void BuildWaves(PlayMakerFSM fsm)
         {
             HutongGames.PlayMaker.FsmState current = fsm.GetState("Init");
@@ -830,6 +931,8 @@ namespace EnemyRandomizerMod
     {
         public override string name => "Silver Arena";
 
+        protected override int typeSeedOffset => 10000;
+
         protected override void BuildWaves(PlayMakerFSM fsm)
         {
             HutongGames.PlayMaker.FsmState current = fsm.GetState("Init");
@@ -848,6 +951,7 @@ namespace EnemyRandomizerMod
                     prev.Name.Contains("Pause") ||
                     prev.Name.Contains("Spikes"))
                 {
+                    prev.GetActions<SendEventByName>().Where(x => x.sendEvent.Value == "WAKE").ToList().ForEach(x => x.Enabled = false);
                     prev.GetActions<SendEventByName>().Where(x => x.sendEvent.Value == "SPAWN").ToList().ForEach(x => x.Enabled = false);
                     prev.GetActions<SetIntValue>().ToList().ForEach(x => x.Enabled = false);
                     prev.GetActions<IntCompare>().ToList().ForEach(x => x.Enabled = false);
@@ -861,6 +965,8 @@ namespace EnemyRandomizerMod
     public class ColoGold : CustomArena
     {
         public override string name => "Gold Arena";
+
+        protected override int typeSeedOffset => 100000;
 
         protected override void BuildWaves(PlayMakerFSM fsm)
         {
@@ -878,6 +984,8 @@ namespace EnemyRandomizerMod
                     prev.Name.Contains("Respawn") ||
                     prev.Name.Contains("Pause") ||
 
+                    prev.Name.Contains("Garpedes") ||
+                    prev.Name.Contains("Spike Pit") ||
                     prev.Name.Contains("Ceiling") ||
                     prev.Name.Contains("GC") ||
                     prev.Name.Contains("Walls") ||
@@ -885,6 +993,7 @@ namespace EnemyRandomizerMod
 
                     prev.Name.Contains("Spikes"))
                 {
+                    prev.GetActions<SendEventByName>().Where(x => x.sendEvent.Value == "WAKE").ToList().ForEach(x => x.Enabled = false);
                     prev.GetActions<SendEventByName>().Where(x => x.sendEvent.Value == "SPAWN").ToList().ForEach(x => x.Enabled = false);
                     prev.GetActions<SetIntValue>().ToList().ForEach(x => x.Enabled = false);
                     prev.GetActions<IntCompare>().ToList().ForEach(x => x.Enabled = false);
@@ -894,11 +1003,139 @@ namespace EnemyRandomizerMod
                     if (prev.Name.Contains("Lancer Shake 1"))
                     {
                         prev.AddCustomAction(() => {
-                            var right = HeroController.instance.gameObject.GetRightX();
-                            Spawn(right.point + Vector2.left * 3f + Vector2.up * 2, null, "Lancer");
-                            Spawn(right.point + Vector2.left * 5f + Vector2.up * 2, null, "Lobster");
+                            var originLancer = new Vector2(113f, 7.5f);
+                            var originLobster = new Vector2(116f, 7.5f);
+
+                            var boss1 = SpawnerExtensions.GetRandomPrefabNameForArenaBoss(rng);
+                            var boss2 = SpawnerExtensions.GetRandomPrefabNameForArenaBoss(rng);
+
+                            SpawnerExtensions.SpawnEntityAt("Death Explode Boss", originLancer, true, false);
+                            SpawnerExtensions.SpawnEntityAt("Death Explode Boss", originLobster, true, false);
+
+                            var lancer = Spawn(originLancer, boss1, "Lancer");
+                            var lobster = Spawn(originLobster, boss2, "Lobster");
+
+                            TuneBoss(lancer);
+                            TuneBoss(lobster);
+
+                            lancer.SafeSetActive(true);
+                            lobster.SafeSetActive(true);
+
+                            waitingOnLancer = false;
                         });
                     }
+                }
+            }
+        }
+
+        protected virtual void TuneBoss(GameObject boss)
+        {
+            //make sure they have boss hp
+            var soc = boss.GetComponent<DefaultSpawnedEnemyControl>();
+            if(soc != null)
+            {
+                int minBossHP = 500;
+                if (soc.defaultScaledMaxHP < minBossHP)
+                {
+                    soc.defaultScaledMaxHP = minBossHP;
+                    soc.CurrentHP = minBossHP;
+                }
+            }
+
+            {
+                var bossType = boss.GetComponent<ZoteBossControl>();
+                if (bossType != null)
+                {
+                    boss.ScaleObject(2.0f);
+                    boss.ScaleAudio(0.7f);
+                    soc.PhysicsBody.gravityScale = 0.5f;
+                }
+            }
+
+            {
+                var bossType = boss.GetComponent<SuperSpitterControl>();
+                if (bossType != null)
+                {
+                    bossType.MakeSuperBoss();
+                    boss.ScaleObject(2.2f);
+                }
+            }
+
+            {
+                var bossType = boss.GetComponent<GiantHopperControl>();
+                if (bossType != null)
+                {
+                    //TODO
+                    boss.ScaleObject(1.25f);
+                }
+            }
+
+            {
+                var bossType = boss.GetComponent<MantisHeavyControl>();
+                if (bossType != null)
+                {
+                    //TODO
+                    boss.ScaleObject(1.5f);
+                }
+            }
+
+            {
+                var bossType = boss.GetComponent<LesserMawlekControl>();
+                if (bossType != null)
+                {
+                    //TODO
+                    boss.ScaleObject(1.5f);
+                }
+            }
+
+            {
+                var bossType = boss.GetComponent<MageKnightControl>();
+                if (bossType != null)
+                {
+                    bossType.canFakeout = true;
+                    boss.ScaleObject(1.5f);
+                }
+            }
+
+            {
+                var bossType = boss.GetComponent<GorgeousHuskControl>();
+                if (bossType != null)
+                {
+                    bossType.MakeSuperHusk();
+                }
+            }
+
+            {
+                var bossType = boss.GetComponent<GreatShieldZombieControl>();
+                if (bossType != null)
+                {
+                    boss.ScaleObject(2.0f);
+                    boss.ScaleAudio(0.7f);
+                    //TODO:
+                }
+            }
+
+            {
+                var bossType = boss.GetComponent<MossKnightControl>();
+                if (bossType != null)
+                {
+                    boss.ScaleObject(2.0f);
+                }
+            }
+
+            {
+                var bossType = boss.GetComponent<MossKnightFatControl>();
+                if (bossType != null)
+                {
+                    boss.ScaleObject(2.5f);
+                }
+            }
+
+            {
+                var bossType = boss.GetComponent<RoyalGaurdControl>();
+                if (bossType != null)
+                {
+                    bossType.MakeElite();
                 }
             }
         }

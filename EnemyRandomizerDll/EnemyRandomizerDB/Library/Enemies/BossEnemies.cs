@@ -3727,6 +3727,9 @@ namespace EnemyRandomizerMod
 
         protected override bool DisableCameraLocks => true;
 
+        public override bool preventOutOfBoundsAfterPositioning => true;
+
+
         protected Tk2dPlayAnimation sleepAnim;
 
         public override void Setup(GameObject other)
@@ -3758,12 +3761,12 @@ namespace EnemyRandomizerMod
 
             var idle = control.GetState("Idle");
             idle.InsertCustomAction(() => {
-                var poob = gameObject.GetOrAddComponent<PreventOutOfBounds>();
                 EnemyHealthManager.IsInvincible = false;
             },0);
 
             var roarStart = control.GetState("Roar Start");
             roarStart.DisableAction(2);//disable roar sound
+
             var roar = control.GetState("Roar");//make the roar emit no waves and be silent
             roar.DisableAction(1);
             roar.DisableAction(2);

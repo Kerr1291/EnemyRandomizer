@@ -43,7 +43,10 @@ namespace EnemyRandomizerMod
 
         protected virtual List<Element> GetGeneralEntries()
         {
-            var elements = new List<Element> 
+
+            var testers = playtesters.Select(x => new TextPanel(x));
+
+            var elements = new List<Element>
         {
             Blueprints.IntInputField(
                 name: "Randomizer Seed",
@@ -52,6 +55,15 @@ namespace EnemyRandomizerMod
                 _placeholder: "Click to type a custom seed",
                 _characterLimit: 11,
                 Id: "SeedInput"
+            ),
+
+            Blueprints.IntInputField(
+                name: "Custom Colosseum Seed",
+                _storeValue: i => GlobalSettings.customColoSeed = i,
+                _loadValue: () => GlobalSettings.customColoSeed,
+                _placeholder: "Click to set a custom seed for colosseum",
+                _characterLimit: 11,
+                Id: "SeedInput2"
             ),
 
             // i didnt feel it was necessary to add space but if you want it do
@@ -69,12 +81,19 @@ namespace EnemyRandomizerMod
                 },
                 loadSetting: () => GlobalSettings.UseCustomSeed
             ),
-            //Blueprints.HorizontalBoolOption(
-            //    name: "Allow Boss Replacement",
-            //    description: "If disabled, bosses will never be touched by the mod",
-            //    applySetting: b => GlobalSettings.RandomizeBosses = b,
-            //    loadSetting: () => GlobalSettings.RandomizeBosses
-            //),
+
+            Blueprints.HorizontalBoolOption(
+                name: "Use custom seed for colosseum",
+                description: "Will use this seed instead of your player settings seed for colosseum",
+                applySetting: b =>
+                {
+                    GlobalSettings.UseCustomColoSeed = b;
+                    GeneralOptionsMenu.Find("SeedInput2").isVisible = b;
+                    GeneralOptionsMenu.Reflow();
+                    UpdateModVersionLabel();
+                },
+                loadSetting: () => GlobalSettings.UseCustomColoSeed
+            ),
 
             //Blueprints.HorizontalBoolOption(
             //    name: "Enable MSLP Journal Mode",
@@ -84,10 +103,10 @@ namespace EnemyRandomizerMod
             //),
             new TextPanel("------------------------"),
             new TextPanel("Credits"),
-            new TextPanel("Satchel & Tons of UI help: Mulhima"),
-            new TextPanel("Inspiring my return to modding: TheDanielMat"),
+            new TextPanel("Satchel/UI: Mulhima"),
+            new TextPanel("Special Thanks: TheDanielMat"),
             new TextPanel("Enemy Randomizer Author: Kerr1291"),
-            new TextPanel("Playtesters: "+string.Join(", ",playtesters)),
+            new TextPanel("_Playtesters_"),// "+string.Join(", ",playtesters)),
             //Blueprints.GenericHorizontalOption<System.FormattableString>(
             //    name: "Credits",
             //    description: "(Click to see more)",
@@ -100,7 +119,9 @@ namespace EnemyRandomizerMod
             //    loadSetting: () => { return $""; }
             //)
         };
-            return elements;
+
+
+            return elements.Concat(testers).ToList();
         }
 
         public static List<Element> GetLogicMenuOptions(Dictionary<string, IRandomizerLogic> logicTypes)

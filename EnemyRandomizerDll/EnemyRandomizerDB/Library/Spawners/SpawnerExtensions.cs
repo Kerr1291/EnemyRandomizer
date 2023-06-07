@@ -3424,9 +3424,39 @@ namespace EnemyRandomizerMod
             }
         }
 
+        public static string GetRandomPrefabNameForArenaBoss(RNG rng)
+        {
+            if (rng == null)
+            {
+                rng = new RNG();
+                rng.Reset();
+            }
+
+            bool isArenaOK(string name)
+            {
+                if (MetaDataTypes.GoodForArenaBoss.TryGetValue(name, out var isok))
+                {
+                    return isok;
+                }
+                return false;
+            }
+
+            var list = MetaDataTypes.GoodForArenaBossWeights.Where(x => isArenaOK(x.Key)).ToList();
+            var weights = list.Select(x => x.Value).ToList();
+
+            int replacementIndex = rng.WeightedRand(weights);
+            return list[replacementIndex].Key;
+
+        }
+
         public static void AddTimeoutAction(this PlayMakerFSM control, FsmState state, string eventName, float timeout)
         {
             state.AddCustomAction(() => { control.StartTimeoutState(state.Name, eventName, timeout); });
+        }
+
+        public static void AddDynamicTimeoutAction(this PlayMakerFSM control, FsmState state, string eventName, Func<float> timeout)
+        {
+            state.AddCustomAction(() => { control.StartTimeoutState(state.Name, eventName, timeout != null ? timeout.Invoke() : 0f); });
         }
 
         public static void DisableKillFreeze(this GameObject gameObject)
@@ -3731,12 +3761,16 @@ namespace EnemyRandomizerMod
             //must be null!
             var originalMetaData = ObjectMetadata.GetOriginal(gameObject);
 
+            bool hasBeenFinalizedBefore = false;
+
             //this case can happen if, for example, some enemies are pre-loaded, then disabled and re-enabled later
             if(thisMetaData != null && originalMetaData != null)
             {
                 //since preloading is a valid case, let's just warn that this is happening in case it's expected behaviour
-                Dev.LogWarning($"{thisMetaData}: Cannot re-replace an object that's already replaced something!");
-                return;
+                if(SpawnedObjectControl.VERBOSE_DEBUG)
+                    Dev.LogWarning($"{thisMetaData}: Cannot re-replace an object that's already replaced something!");
+
+                hasBeenFinalizedBefore = true;
                 //throw new InvalidOperationException($"{thisMetaData}: Cannot re-replace an object that's already replaced something!");
             }
 
@@ -3746,19 +3780,34 @@ namespace EnemyRandomizerMod
             }
 
             //the meta of the object we want to replace, should not be null?
-            var otherMetaData = ObjectMetadata.Get(objectToReplace);
-            if(objectToReplace != null && otherMetaData == null)
+            ObjectMetadata otherMetaData = null;
+
+            if (!hasBeenFinalizedBefore)
             {
-                otherMetaData = new ObjectMetadata(objectToReplace);
+                otherMetaData = ObjectMetadata.Get(objectToReplace);
+                if (objectToReplace != null && otherMetaData == null)
+                {
+                    otherMetaData = new ObjectMetadata(objectToReplace);
+                }
+            }
+            else
+            {
+                otherMetaData = originalMetaData;
             }
 
-            if (SpawnedObjectControl.VERBOSE_DEBUG && objectToReplace != null)
-                Dev.LogWarning($"{gameObject}: Will be activated and will replace [{objectToReplace}]");
-            else
-                Dev.LogWarning($"{gameObject}: Will be activated and will replace nothing");
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
+            {
+                if(!hasBeenFinalizedBefore)
+                {
+                    if (objectToReplace != null)
+                        Dev.LogWarning($"{gameObject}: Will be activated and will replace [{objectToReplace}]");
+                    else
+                        Dev.LogWarning($"{gameObject}: Will be activated and will replace nothing");
+                }
+            }
 
             //nothing to do here if these objects are the same
-            if (objectToReplace != null && gameObject != objectToReplace)
+            if (!hasBeenFinalizedBefore && objectToReplace != null && gameObject != objectToReplace)
             {
                 if (SpawnedObjectControl.VERBOSE_DEBUG)
                     Dev.LogWarning($"{thisMetaData}: The replacement object {otherMetaData} is both not null and unique, so a replacement will be performed");
@@ -3800,18 +3849,31 @@ namespace EnemyRandomizerMod
             }
 
             if (SpawnedObjectControl.VERBOSE_DEBUG)
-                Dev.LogWarning($"{thisMetaData}: Enabling the new game object");
+            {
+                if (hasBeenFinalizedBefore)
+                {
+                    Dev.LogWarning($"{thisMetaData}: Re-Enabling the game object");
+                }
+                else
+                {
+                    Dev.LogWarning($"{thisMetaData}: Enabling the new game object");
+                }
+            }
 
             //finally link the metadatas
             var soc = gameObject.GetComponent<SpawnedObjectControl>();
             if(soc != null)
             {
-                if (objectToReplace == null)
+                //don't re-link
+                if (!hasBeenFinalizedBefore)
                 {
-                    //link to itself -- this object was finalized with no replacement, so prevent it from ever being replaced
-                    otherMetaData = thisMetaData;
+                    if (objectToReplace == null)
+                    {
+                        //link to itself -- this object was finalized with no replacement, so prevent it from ever being replaced
+                        otherMetaData = thisMetaData;
+                    }
+                    soc.originialMetadata = otherMetaData;
                 }
-                soc.originialMetadata = otherMetaData;
 
                 //apply the position logic
                 soc.SetPositionOnSpawn();
@@ -3821,7 +3883,7 @@ namespace EnemyRandomizerMod
             gameObject.SafeSetActive(true);
 
             //nothing to do here if these objects are the same
-            if (objectToReplace != null && gameObject != objectToReplace)
+            if (!hasBeenFinalizedBefore && objectToReplace != null && gameObject != objectToReplace)
             {
                 Dev.Log($"{thisMetaData} is replacing {otherMetaData} and so {objectToReplace} will now be destroyed...");
 
@@ -3833,10 +3895,19 @@ namespace EnemyRandomizerMod
             }
 
             if (SpawnedObjectControl.VERBOSE_DEBUG)
-                Dev.LogWarning($"{thisMetaData}: Completed replacing {otherMetaData} with {thisMetaData}.");
+            {
+                if (hasBeenFinalizedBefore)
+                {
+                    Dev.LogWarning($"{thisMetaData}: Completed re-enabling {thisMetaData}.");
+                }
+                else
+                {
+                    Dev.LogWarning($"{thisMetaData}: Completed replacing {otherMetaData} with {thisMetaData}.");
+                }
+            }
 
             //finally mark the spawned object as officially loaded
-            if(soc != null)
+            if(!hasBeenFinalizedBefore && soc != null)
             {
                 soc.MarkLoaded();
             }

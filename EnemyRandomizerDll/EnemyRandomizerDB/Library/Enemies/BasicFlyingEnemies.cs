@@ -323,6 +323,18 @@ namespace EnemyRandomizerMod
         public float spawnCooldown = 4f;
         public float spawnTime = 0f;
 
+        public void MakeSuperBoss()
+        {
+            if (isSuperBoss)
+                return;
+
+            isSuperBoss = true;
+            Sprite.color = Color.red;
+            gameObject.AddParticleEffect_TorchShadeEmissions();
+            defaultScaledMaxHP = GetStartingMaxHP(null);
+            CurrentHP = defaultScaledMaxHP;
+        }
+
         protected override void Update()
         {
             base.Update();

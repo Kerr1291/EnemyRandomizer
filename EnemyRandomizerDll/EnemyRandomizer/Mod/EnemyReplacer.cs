@@ -44,12 +44,25 @@ namespace EnemyRandomizerMod
             EnemyRandomizerDatabase.GetPlayerSeed -= GetCurrentSeed;
             EnemyRandomizerDatabase.GetPlayerSeed += GetCurrentSeed;
 
+            EnemyRandomizerDatabase.GetCustomColoSeed -= GetCustomColoSeed;
+            EnemyRandomizerDatabase.GetCustomColoSeed += GetCustomColoSeed;
+
             return database.GetPreloadNames();
         }
 
         protected int GetCurrentSeed()
         {
             return EnemyRandomizer.PlayerSettings.enemyRandomizerSeed;
+        }
+
+        protected int GetCustomColoSeed()
+        {
+            if(EnemyRandomizer.GlobalSettings.UseCustomColoSeed)
+            {
+                return EnemyRandomizer.GlobalSettings.customColoSeed;
+            }
+
+            return -1;
         }
 
         public void Setup(Dictionary<string, Dictionary<string, GameObject>> preloadedObjects)
@@ -150,6 +163,9 @@ namespace EnemyRandomizerMod
             EnemyRandomizerDatabase.GetPlayerSeed -= GetCurrentSeed;
             EnemyRandomizerDatabase.GetPlayerSeed += GetCurrentSeed;
 
+            EnemyRandomizerDatabase.GetCustomColoSeed -= GetCustomColoSeed;
+            EnemyRandomizerDatabase.GetCustomColoSeed += GetCustomColoSeed;
+
             SpawnerExtensions.SetupBoundsReactives();
 
             EnemyRandomizerDatabase.CustomSpawnWithLogic -= EnemyRandomizer.CustomSpawn;
@@ -173,6 +189,7 @@ namespace EnemyRandomizerMod
             EnemyRandomizerDatabase.GetDatabase -= GetCurrentDatabase;
             EnemyRandomizerDatabase.GetBlackBorders -= GetBlackBorders;
             EnemyRandomizerDatabase.GetPlayerSeed -= GetCurrentSeed;
+            EnemyRandomizerDatabase.GetCustomColoSeed -= GetCustomColoSeed;
             EnemyRandomizerDatabase.CustomSpawnWithLogic -= EnemyRandomizer.CustomSpawn;
         }
 
@@ -332,22 +349,9 @@ namespace EnemyRandomizerMod
                 if(willSetup)
                     soc.Setup(null);
 
-                if (!EnemyRandomizer.HasCustomBypassReplacement())
+                if (!EnemyRandomizer.HasCustomBypassReplacement() && soc != null)
                 {
-                    if (soc != null)
-                    {
-                        loadedObjectToProcess.FinalizeReplacement(null);
-                    }
-
-                    //if (soc != null)
-                    //{
-                    //    soc.thisMetadata = thisMetaData == null ? new ObjectMetadata(loadedObjectToProcess) : thisMetaData;
-                    //    soc.originialMetadata = originalMetaData == null ? new ObjectMetadata(loadedObjectToProcess) : originalMetaData;
-
-                        //    //apply the position logic
-                        //    soc.SetPositionOnSpawn();
-                        //    soc.MarkLoaded();
-                        //}
+                    loadedObjectToProcess.FinalizeReplacement(null);
                 }
                 else
                 {

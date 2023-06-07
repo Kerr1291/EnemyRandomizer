@@ -241,9 +241,9 @@ namespace EnemyRandomizerMod
             if (!didDisableCameraLocks && DisableCameraLocks)
             {
                 var cams = cameraLocks;
-                if (cams.Count() > 0)
+                if (cams != null && cams.Count() > 0)
                 {
-                    cameraLocks.UnlockCameras();
+                    cams.UnlockCameras();
                     didDisableCameraLocks = true;
                 }
             }

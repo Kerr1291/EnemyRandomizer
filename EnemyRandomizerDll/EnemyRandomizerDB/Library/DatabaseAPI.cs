@@ -24,6 +24,7 @@ namespace EnemyRandomizerMod
         static string RESOURCES = "RESOURCES";
 
         public static Func<int> GetPlayerSeed;
+        public static Func<int> GetCustomColoSeed;
         public static Func<EnemyRandomizerDatabase> GetDatabase;
         public static Func<ReactiveProperty<List<GameObject>>> GetBlackBorders;
 

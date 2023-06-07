@@ -12,8 +12,8 @@ namespace EnemyRandomizerMod
         public bool removeChildrenOnDeath = true;
         public string spawnEntityOnChildDeath;
 
-        protected List<GameObject> children = new List<GameObject>();
-        public List<GameObject> Children => children;
+        protected HashSet<GameObject> children = new HashSet<GameObject>();
+        public HashSet<GameObject> Children => children;
 
         public IEnumerable<T> GetChildrenControllers<T>()
             where T : SpawnedObjectControl
@@ -102,10 +102,10 @@ namespace EnemyRandomizerMod
         {
             if (Children != null)
             {
-                Children.ForEach(x =>
+                foreach(var x in Children)
                 {
                     if (x == null)
-                        return;
+                        continue;
 
                     if (x.IsInAValidScene())
                     {
@@ -126,7 +126,7 @@ namespace EnemyRandomizerMod
                     {
                         GameObject.Destroy(x);
                     }
-                });
+                }
 
                 Children.Clear();
             }
@@ -137,34 +137,12 @@ namespace EnemyRandomizerMod
             if (Children == null)
                 return;
 
-            for (int i = 0; i < Children.Count;)
-            {
-                if (i >= Children.Count)
-                    break;
-
-                if (Children[i] == null)
-                {
-                    Children.RemoveAt(i);
-                    continue;
-                }
-                else if(IsOutsideColo(Children[i]))
-                {
-                    Children[i].KillObjectNow();
-                    Children.RemoveAt(i);
-                    continue;
-                }
-                else
-                {
-                    var hm = Children[i].GetComponent<HealthManager>();
-                    if (hm == null || hm.hp <= 0 || hm.isDead)
-                    {
-                        Children.RemoveAt(i);
-                        continue;
-                    }
-                }
-
-                ++i;
-            }
+            children.Where(x => x != null && IsOutsideColo(x)).ToList().ForEach(x => x.KillObjectNow());
+            children = Children.Where(x => x != null).ToHashSet();
+            children = Children.Where(x =>
+            x.GetComponent<HealthManager>() != null &&
+            x.GetComponent<HealthManager>().hp > 0 &&
+            x.GetComponent<HealthManager>().isDead == false).ToHashSet();
         }
 
         protected virtual bool IsOutsideColo(GameObject g)
@@ -267,43 +245,71 @@ namespace EnemyRandomizerMod
             }
             catch (Exception e) { Dev.LogError($"Exception caught in SpawnCustomArenaEnemy when trying to scale {enemyToSpawn} to match {originalEnemy} ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
 
-            enemy = ActivateAndTrackSpawnedObject(enemy);
-
-            if (enemy != null && !string.IsNullOrEmpty(originalEnemy))
+            try
             {
-                var soc2 = enemy.GetComponent<DefaultSpawnedEnemyControl>();
-                if (soc2 != null)
+                enemy = ActivateAndTrackSpawnedObject(enemy);
+
+                if (enemy != null && !string.IsNullOrEmpty(originalEnemy))
                 {
-                    float orginalHP = SpawnerExtensions.GetObjectPrefab(originalEnemy).prefab.GetEnemyHealthManager().hp;
-
-                    bool isColoSilver = BattleManager.StateMachine.Value is ColoSilver;
-                    if (isColoSilver)
+                    var soc2 = enemy.GetComponent<DefaultSpawnedEnemyControl>();
+                    if (soc2 != null)
                     {
-                        orginalHP = orginalHP * 1.5f;
-
-                        soc2.defaultScaledMaxHP = Mathf.FloorToInt(orginalHP);
-                        soc2.CurrentHP = soc2.defaultScaledMaxHP;
-                    }
-                    else
-                    {
-                        bool isColoGold = BattleManager.StateMachine.Value is ColoGold;
-                        if (isColoGold)
+                        float orginalHP = 0f;
+                        try
                         {
-                            //only adjust their HP in gold if they spawned with like 1hp for some reason
-                            if(soc2.defaultScaledMaxHP < 10f)
+                            orginalHP = SpawnerExtensions.GetObjectPrefab(originalEnemy).prefab.GetEnemyHealthManager().hp;
+                        }
+                        catch (Exception e) { Dev.LogError($"Exception caught in SpawnCustomArenaEnemy when trying to get orginalHP from GetObjectPrefab from {originalEnemy} to apply to {soc2.gameObject}  ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
+
+                        try
+                        {
+                            if (orginalHP <= 1f)
                             {
+                                orginalHP = SpawnerExtensions.GetObjectPrefab(enemy.name).prefab.GetEnemyHealthManager().hp;
+                            }
+                        }
+                        catch (Exception e) { Dev.LogError($"Exception caught in SpawnCustomArenaEnemy when trying to get orginalHP from GetObjectPrefab from {originalEnemy} to apply to {soc2.gameObject}  ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
+
+                        if(orginalHP <= 1f)
+                        {
+                            orginalHP = 100f;
+                        }
+
+                        try
+                        {
+                            bool isColoSilver = BattleManager.StateMachine.Value is ColoSilver;
+                            if (isColoSilver)
+                            {
+                                orginalHP = orginalHP * 1.5f;
+
                                 soc2.defaultScaledMaxHP = Mathf.FloorToInt(orginalHP);
                                 soc2.CurrentHP = soc2.defaultScaledMaxHP;
                             }
+                            else
+                            {
+                                bool isColoGold = BattleManager.StateMachine.Value is ColoGold;
+                                if (isColoGold)
+                                {
+                                    //only adjust their HP in gold if they spawned with like 1hp for some reason
+                                    if (soc2.defaultScaledMaxHP < 10f)
+                                    {
+                                        soc2.defaultScaledMaxHP = Mathf.FloorToInt(orginalHP);
+                                        soc2.CurrentHP = soc2.defaultScaledMaxHP;
+                                    }
+                                }
+                                else
+                                {
+                                    soc2.defaultScaledMaxHP = Mathf.FloorToInt(orginalHP);
+                                    soc2.CurrentHP = soc2.defaultScaledMaxHP;
+                                }
+                            }
                         }
-                        else
-                        {
-                            soc2.defaultScaledMaxHP = Mathf.FloorToInt(orginalHP);
-                            soc2.CurrentHP = soc2.defaultScaledMaxHP;
-                        }
+                        catch (Exception e) { Dev.LogError($"Exception caught in SpawnCustomArenaEnemy when trying to apply hp to {soc2.gameObject}  ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
+
                     }
                 }
             }
+            catch (Exception e) { Dev.LogError($"Exception caught in SpawnCustomArenaEnemy in last part of arena enemy modification  ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
 
             return enemy;
         }
