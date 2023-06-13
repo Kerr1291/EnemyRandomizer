@@ -193,7 +193,7 @@ namespace EnemyRandomizerMod
                     if ((i + j) >= numCages)
                         break;
 
-                    var c = SpawnerExtensions.SpawnEntityAt(cage, pos, true, false);
+                    var c = SpawnerExtensions.SpawnEntityAt(cage, pos, null, true, false);
                     c.GetComponent<PlayMakerFSM>().enabled = false;
                     preloadedCages.Enqueue(c);
                     var cc = c.GetComponent<ArenaCageControl>();
@@ -222,7 +222,7 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    c = SpawnerExtensions.SpawnEntityAt(cage, pos, true, false);
+                    c = SpawnerExtensions.SpawnEntityAt(cage, pos, null, true, false);
                 }
 
                 if (preloadedCages.Count <= 0)
@@ -244,7 +244,7 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                var c = SpawnerExtensions.SpawnEntityAt(cage, pos, true, false);
+                var c = SpawnerExtensions.SpawnEntityAt(cage, pos, null, true, false);
                 var cc = c.GetComponent<ArenaCageControl>();
                 if (cc != null)
                 {
@@ -651,8 +651,8 @@ namespace EnemyRandomizerMod
                     foreach (var cage in smCages)
                     {
                         string enemyInside = ColosseumCageSmallPrefabConfig.GetEnemyPrefabNameInsideCage(cage);
-
-                        var c = SpawnerExtensions.SpawnEntityAt("Arena Cage Small", cage.transform.position, true, false);
+                        Dev.Log($"COLO:{this.GetType().Name} -- Spawning Random [Small Cage] Arena Enemy: Wave {goName} Cage {cage} Original Enemy: {enemyInside}");
+                        var c = SpawnerExtensions.SpawnEntityAt("Arena Cage Small", cage.transform.position, null, true, false);
                         var cc = c.GetComponent<ArenaCageControl>();
                         if (cc != null)
                         {
@@ -664,8 +664,8 @@ namespace EnemyRandomizerMod
                     foreach (var cage in lgCages)
                     {
                         string enemyInside = ColosseumCageLargePrefabConfig.GetEnemyPrefabNameInsideCage(cage);
-
-                        var c = SpawnerExtensions.SpawnEntityAt("Arena Cage Large", cage.transform.position, true, false);
+                        Dev.Log($"COLO:{this.GetType().Name} --Spawning Random [Large Cage] Arena Enemy: Wave {goName} Cage {cage} Original Enemy: {enemyInside}");
+                        var c = SpawnerExtensions.SpawnEntityAt("Arena Cage Large", cage.transform.position, null, true, false);
                         var cc = c.GetComponent<ArenaCageControl>();
                         if (cc != null)
                         {
@@ -1009,8 +1009,8 @@ namespace EnemyRandomizerMod
                             var boss1 = SpawnerExtensions.GetRandomPrefabNameForArenaBoss(rng);
                             var boss2 = SpawnerExtensions.GetRandomPrefabNameForArenaBoss(rng);
 
-                            SpawnerExtensions.SpawnEntityAt("Death Explode Boss", originLancer, true, false);
-                            SpawnerExtensions.SpawnEntityAt("Death Explode Boss", originLobster, true, false);
+                            SpawnerExtensions.SpawnEntityAt("Death Explode Boss", originLancer, null, true, false);
+                            SpawnerExtensions.SpawnEntityAt("Death Explode Boss", originLobster, null, true, false);
 
                             var lancer = Spawn(originLancer, boss1, "Lancer");
                             var lobster = Spawn(originLobster, boss2, "Lobster");

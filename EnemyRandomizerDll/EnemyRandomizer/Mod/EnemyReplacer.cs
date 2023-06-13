@@ -321,6 +321,25 @@ namespace EnemyRandomizerMod
         {
             if (EnemyRandomizer.DoReplacementBypassCheck())
             {
+                bool isColo = GameManager.instance.GetCurrentMapZone() == "COLOSSEUM";
+                if (isColo)
+                {
+                    if (loadedObjectToProcess.ObjectType() != PrefabObject.PrefabType.Enemy)
+                        return true;
+                }
+                else
+                {
+                    if (!loadedObjectToProcess.IsDatabaseObject())
+                        return true;
+                }
+
+                var soc = loadedObjectToProcess.GetComponent<SpawnedObjectControl>();
+                if(isColo && soc == null)
+                {
+                    SpawnerExtensions.DestroyObject(loadedObjectToProcess); 
+                    return true;
+                }
+
                 if (VERBOSE_LOGGING)
                     Dev.Log($"[{loadedObjectToProcess.ObjectType()}, {loadedObjectToProcess.GetSceneHierarchyPath()}]: Replacement bypass is enabled.");
 
@@ -330,8 +349,6 @@ namespace EnemyRandomizerMod
 
                 if (VERBOSE_LOGGING)
                     Dev.Log($"[THIS:{thisMetaData}, ORIGINAL:{originalMetaData}]: Bypass checking metas...");
-
-                var soc = loadedObjectToProcess.GetComponent<SpawnedObjectControl>();
                 bool willSetup = false;
                 if (soc == null)
                 {
@@ -394,6 +411,13 @@ namespace EnemyRandomizerMod
                 }
                 RemovePendingLoad(loadedObjectToProcess);
                 return loadedObjectToProcess;
+            }
+
+            var soc = loadedObjectToProcess.GetComponent<SpawnedObjectControl>();
+            if(soc != null)
+            {
+                if (!soc.needsFinalize)
+                    return loadedObjectToProcess;
             }
 
             if (OnObjectLoadedBypassed(loadedObjectToProcess))

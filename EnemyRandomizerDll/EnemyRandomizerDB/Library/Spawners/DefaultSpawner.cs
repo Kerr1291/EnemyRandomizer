@@ -190,11 +190,11 @@ namespace EnemyRandomizerMod
                 GameObject spawned = null;
                 if (isSpawnerEnemy && allowRandomizationOfSpawn)
                 {
-                    spawned = SpawnerExtensions.SpawnEnemyForEnemySpawner(transform.position, activateOnSpawn, effectToSpawn, null);
+                    spawned = SpawnerExtensions.SpawnEnemyForEnemySpawner(transform.position, activateOnSpawn, null);
                 }
                 else
                 {
-                    spawned = SpawnerExtensions.SpawnEntityAt(effectToSpawn, transform.position, activateOnSpawn, allowRandomizationOfSpawn);
+                    spawned = SpawnerExtensions.SpawnEntityAt(effectToSpawn, transform.position, null, activateOnSpawn, allowRandomizationOfSpawn);
                 }
 
                 onSpawn?.Invoke(this, spawned);

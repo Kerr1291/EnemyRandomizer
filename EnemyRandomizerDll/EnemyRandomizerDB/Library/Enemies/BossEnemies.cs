@@ -2149,7 +2149,7 @@ namespace EnemyRandomizerMod
             throw1.DisableActions(1);
             throw1.AddCustomAction(() => {
                 pooThrowOffset = 1.5f * Vector2.right * (transform.localScale.x < 0 ? -1f : 1f);
-                var dungBall = SpawnerExtensions.SpawnEntityAt("Dung Ball Large", pooThrowOffset, false);
+                var dungBall = SpawnerExtensions.SpawnEntityAt("Dung Ball Large", pooThrowOffset, null, false);
                 control.FsmVariables.GetFsmGameObject("Dung Ball").Value = dungBall;
                 dungBall.SafeSetActive(true);
             });
@@ -4433,7 +4433,7 @@ namespace EnemyRandomizerMod
                 soc.CurrentHP = soc.defaultScaledMaxHP;
             }
 
-            SpawnerExtensions.SpawnEntityAt("Pt Break", jar.transform.position, true);
+            SpawnerExtensions.SpawnEntityAt("Pt Break", jar.transform.position, null, true);
 
             jar.GetComponent<SpriteRenderer>().enabled = false;
             jar.GetComponent<CircleCollider2D>().enabled = false;
@@ -5870,8 +5870,15 @@ namespace EnemyRandomizerMod
 
         protected virtual void UnFreeze()
         {
-            GameObject.Destroy(gameObject.GetComponent<PositionLocker>());
-            GetComponent<PreventOutOfBounds>().onBoundCollision -= Freeze;
+            var locker = gameObject.GetComponent<PositionLocker>();
+            if (locker != null)
+            {
+                GameObject.Destroy(locker);
+            }
+            if (GetComponent<PreventOutOfBounds>() != null)
+            {
+                GetComponent<PreventOutOfBounds>().onBoundCollision -= Freeze;
+            }
         }
     }
 

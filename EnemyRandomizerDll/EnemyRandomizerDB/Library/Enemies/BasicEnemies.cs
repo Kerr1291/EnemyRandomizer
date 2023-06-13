@@ -737,7 +737,7 @@ namespace EnemyRandomizerMod
                 var shot = control.FsmVariables.GetFsmGameObject("Shot Instance").Value;
                 //if (shot == null)
                 {
-                    var spitterShot = SpawnerExtensions.SpawnEntityAt("Spike Ball", pos2d + dirToHero * shotOffset, true);
+                    var spitterShot = SpawnerExtensions.SpawnEntityAt("Spike Ball", pos2d + dirToHero * shotOffset, null, true);
                     if (spitterShot != null)
                     {
                         shot = spitterShot;

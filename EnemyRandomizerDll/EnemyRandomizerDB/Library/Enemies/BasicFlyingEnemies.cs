@@ -331,7 +331,7 @@ namespace EnemyRandomizerMod
             isSuperBoss = true;
             Sprite.color = Color.red;
             gameObject.AddParticleEffect_TorchShadeEmissions();
-            defaultScaledMaxHP = GetStartingMaxHP(null);
+            defaultScaledMaxHP = GetStartingMaxHP("Super Spitter");
             CurrentHP = defaultScaledMaxHP;
         }
 

@@ -879,13 +879,18 @@ namespace EnemyRandomizerMod
 
         public static GameObject SpawnExplosionAt(this Vector3 pos)
         {
-            return SpawnEntityAt("Gas Explosion Recycle M", pos, true);
+            return SpawnEntityAt("Gas Explosion Recycle M", pos, null, true);
         }
 
-        public static GameObject SpawnEntityAt(string entityName, Vector3 pos, bool setActive = false, bool allowRandomization = false)
+        public static GameObject SpawnEntityAt(string entityName, Vector3 pos, string originalEntity = null, bool setActive = false, bool allowRandomization = false)
         {
             if (allowRandomization)
-                return EnemyRandomizerDatabase.CustomSpawn(pos, entityName, setActive);
+                return EnemyRandomizerDatabase.CustomSpawn(pos, entityName, originalEntity, setActive);
+
+            if(!string.IsNullOrEmpty(originalEntity))
+            {
+                return EnemyRandomizerDatabase.CustomSpawnWithLogic(pos, entityName, originalEntity, true);
+            }
 
             return EnemyRandomizerDatabase.CustomSpawnWithLogic(pos, entityName, null, true);
         }
@@ -893,7 +898,7 @@ namespace EnemyRandomizerMod
         public static GameObject SpawnEntity(this GameObject gameObject, string entityName, bool setActive = false, bool allowRandomization = false)
         {
             if (allowRandomization)
-                return EnemyRandomizerDatabase.CustomSpawn(gameObject.transform.position, entityName, setActive);
+                return EnemyRandomizerDatabase.CustomSpawn(gameObject.transform.position, entityName, null, setActive);
 
             return EnemyRandomizerDatabase.CustomSpawnWithLogic(gameObject.transform.position, entityName, null, true);
         }
@@ -2789,7 +2794,7 @@ namespace EnemyRandomizerMod
                 if (flag3)
                 {
                     //in lieu of the proper journal unlock effect, just blow up in a very noticable way
-                    SpawnEntityAt("Item Get Effect R", gameObject.transform.position, true);
+                    SpawnEntityAt("Item Get Effect R", gameObject.transform.position, null, true);
                 }
             }
         }
@@ -3416,11 +3421,12 @@ namespace EnemyRandomizerMod
             {
                 var list = MetaDataTypes.RNGWeights.Where(x => isArenaOK(x.Key)).ToList();
                 bool isFlying = SpawnerExtensions.IsFlying(EnemyRandomizerDatabase.ToDatabaseKey(originalEnemy));
-                var typeMatch = list.Where(x => SpawnerExtensions.IsFlying(x.Key) == isFlying);
+
+                var typeMatch = list.Where(x => SpawnerExtensions.IsFlying(x.Key) == isFlying).ToList();
                 var weights = typeMatch.Select(x => x.Value).ToList();
 
                 int replacementIndex = rng.WeightedRand(weights);
-                return list[replacementIndex].Key;
+                return typeMatch[replacementIndex].Key;
             }
         }
 
@@ -3633,7 +3639,7 @@ namespace EnemyRandomizerMod
 
         public static GameObject AddParticleEffect_TorchFire(this GameObject gameObject, int fireSize = 5, Transform customParent = null)
         {
-            GameObject effect = SpawnerExtensions.SpawnEntityAt("Fire Particles", gameObject.transform.position, false);
+            GameObject effect = SpawnerExtensions.SpawnEntityAt("Fire Particles", gameObject.transform.position, null, false);
             if (customParent == null)
                 effect.transform.parent = gameObject.transform;
             else
@@ -3761,16 +3767,21 @@ namespace EnemyRandomizerMod
             //must be null!
             var originalMetaData = ObjectMetadata.GetOriginal(gameObject);
 
-            bool hasBeenFinalizedBefore = false;
+            //get this early to see if we need to finalize
+            var soc = gameObject.GetComponent<SpawnedObjectControl>();
+
+            bool hasMetaDataAlready = false;
 
             //this case can happen if, for example, some enemies are pre-loaded, then disabled and re-enabled later
             if(thisMetaData != null && originalMetaData != null)
             {
-                //since preloading is a valid case, let's just warn that this is happening in case it's expected behaviour
-                if(SpawnedObjectControl.VERBOSE_DEBUG)
-                    Dev.LogWarning($"{thisMetaData}: Cannot re-replace an object that's already replaced something!");
-
-                hasBeenFinalizedBefore = true;
+                if (!soc.needsFinalize)
+                {
+                    //since preloading is a valid case, let's just warn that this is happening in case it's expected behaviour
+                    if (SpawnedObjectControl.VERBOSE_DEBUG)
+                        Dev.LogWarning($"{thisMetaData}: Cannot re-replace an object that's already replaced something!");
+                }
+                hasMetaDataAlready = true;
                 //throw new InvalidOperationException($"{thisMetaData}: Cannot re-replace an object that's already replaced something!");
             }
 
@@ -3782,7 +3793,7 @@ namespace EnemyRandomizerMod
             //the meta of the object we want to replace, should not be null?
             ObjectMetadata otherMetaData = null;
 
-            if (!hasBeenFinalizedBefore)
+            if (!hasMetaDataAlready)
             {
                 otherMetaData = ObjectMetadata.Get(objectToReplace);
                 if (objectToReplace != null && otherMetaData == null)
@@ -3797,17 +3808,18 @@ namespace EnemyRandomizerMod
 
             if (SpawnedObjectControl.VERBOSE_DEBUG)
             {
-                if(!hasBeenFinalizedBefore)
-                {
-                    if (objectToReplace != null)
-                        Dev.LogWarning($"{gameObject}: Will be activated and will replace [{objectToReplace}]");
-                    else
-                        Dev.LogWarning($"{gameObject}: Will be activated and will replace nothing");
-                }
+                if (objectToReplace != null)
+                    Dev.LogWarning($"{gameObject}: Will be activated and will replace [{objectToReplace}]");
+                else if (hasMetaDataAlready)
+                    Dev.LogWarning($"{gameObject}: Will be activated and will replace [{otherMetaData}]");
+                else
+                    Dev.LogWarning($"{gameObject}: Will be activated and will replace nothing");
             }
 
+            bool isPrefabSpawn = soc.needsFinalize && originalMetaData != null;
+
             //nothing to do here if these objects are the same
-            if (!hasBeenFinalizedBefore && objectToReplace != null && gameObject != objectToReplace)
+            if (!hasMetaDataAlready && objectToReplace != null && gameObject != objectToReplace)
             {
                 if (SpawnedObjectControl.VERBOSE_DEBUG)
                     Dev.LogWarning($"{thisMetaData}: The replacement object {otherMetaData} is both not null and unique, so a replacement will be performed");
@@ -3848,9 +3860,63 @@ namespace EnemyRandomizerMod
                 EnemyRandomizerDatabase.OnObjectReplaced?.Invoke((gameObject, objectToReplace));
             }
 
+            else if (isPrefabSpawn)
+            {
+                var source = SpawnerExtensions.GetObjectPrefab(originalMetaData.ObjectName);
+                var sourceGameObject = source.prefab;
+
+                if (SpawnedObjectControl.VERBOSE_DEBUG)
+                    Dev.LogWarning($"{thisMetaData}: The source object {source} will be used to configure this.");
+
+
+                var oedf = sourceGameObject.GetDeathEffects();
+                var nedf = gameObject.GetDeathEffects();
+                if (oedf != null && nedf != null)
+                {
+                    string oplayerDataName = oedf.GetPlayerDataNameFromDeathEffects();
+
+                    thisMetaData.playerDataName = oplayerDataName;
+
+                    if (thisMetaData.playerDataName != null)
+                    {
+                        if (SpawnedObjectControl.VERBOSE_DEBUG)
+                            Dev.LogWarning($"{thisMetaData}: The replacement object player data name {oplayerDataName} from the death effects will be applied to this object");
+                    }
+
+                    nedf.SetPlayerDataNameFromDeathEffects(oplayerDataName);
+                }
+
+                if (thisMetaData.playerDataName == null && gameObject.ObjectType() == PrefabObject.PrefabType.Enemy)
+                {
+                    thisMetaData.playerDataName = string.Empty;
+
+                    string result = GetCustomPlayerDataName(sourceGameObject);
+
+                    if (SpawnedObjectControl.VERBOSE_DEBUG)
+                        Dev.LogWarning($"{thisMetaData}: The custom player data name {result} will set/updated used this object is destroyed");
+
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        //this sets custom to true
+                        thisMetaData.PlayerDataName = result;
+                    }
+                }
+
+                if (SpawnedObjectControl.VERBOSE_DEBUG)
+                    Dev.LogWarning($"{thisMetaData}: Notifying any global observers of object replacement");
+
+                EnemyRandomizerDatabase.OnObjectReplaced?.Invoke((gameObject, sourceGameObject));
+            }
+
+
+
             if (SpawnedObjectControl.VERBOSE_DEBUG)
             {
-                if (hasBeenFinalizedBefore)
+                if(isPrefabSpawn)
+                {
+                    Dev.LogWarning($"{thisMetaData}: Enabling the new game object spawned using a prefab source");
+                }
+                else if (hasMetaDataAlready)
                 {
                     Dev.LogWarning($"{thisMetaData}: Re-Enabling the game object");
                 }
@@ -3861,11 +3927,10 @@ namespace EnemyRandomizerMod
             }
 
             //finally link the metadatas
-            var soc = gameObject.GetComponent<SpawnedObjectControl>();
             if(soc != null)
             {
                 //don't re-link
-                if (!hasBeenFinalizedBefore)
+                if (!hasMetaDataAlready)
                 {
                     if (objectToReplace == null)
                     {
@@ -3875,6 +3940,8 @@ namespace EnemyRandomizerMod
                     soc.originialMetadata = otherMetaData;
                 }
 
+                soc.needsFinalize = false;
+
                 //apply the position logic
                 soc.SetPositionOnSpawn();
             }
@@ -3883,7 +3950,7 @@ namespace EnemyRandomizerMod
             gameObject.SafeSetActive(true);
 
             //nothing to do here if these objects are the same
-            if (!hasBeenFinalizedBefore && objectToReplace != null && gameObject != objectToReplace)
+            if (!hasMetaDataAlready && objectToReplace != null && gameObject != objectToReplace)
             {
                 Dev.Log($"{thisMetaData} is replacing {otherMetaData} and so {objectToReplace} will now be destroyed...");
 
@@ -3896,7 +3963,11 @@ namespace EnemyRandomizerMod
 
             if (SpawnedObjectControl.VERBOSE_DEBUG)
             {
-                if (hasBeenFinalizedBefore)
+                if(isPrefabSpawn)
+                {
+                    Dev.LogWarning($"{thisMetaData}: Completed spawning {thisMetaData} and configuring with {originalMetaData}.");
+                }
+                else if (hasMetaDataAlready)
                 {
                     Dev.LogWarning($"{thisMetaData}: Completed re-enabling {thisMetaData}.");
                 }
@@ -3907,7 +3978,7 @@ namespace EnemyRandomizerMod
             }
 
             //finally mark the spawned object as officially loaded
-            if(!hasBeenFinalizedBefore && soc != null)
+            if(isPrefabSpawn || (!hasMetaDataAlready && soc != null))
             {
                 soc.MarkLoaded();
             }
@@ -3920,7 +3991,7 @@ namespace EnemyRandomizerMod
             try
             {
                 enemyToSpawn = SpawnerExtensions.GetRandomPrefabNameForSpawnerEnemy(rng);
-                enemy = SpawnerExtensions.SpawnEntityAt(enemyToSpawn, pos, false, false);
+                enemy = SpawnerExtensions.SpawnEntityAt(enemyToSpawn, pos, originalEnemy, false, false);
                 if (enemy != null)
                 {
                     var soc = enemy.GetComponent<SpawnedObjectControl>();
@@ -3932,30 +4003,42 @@ namespace EnemyRandomizerMod
             }
             catch (Exception e) { Dev.LogError($"Exception caught in SpawnEnemyForEnemySpawner when trying to spawn {enemyToSpawn} ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
 
-            try
-            {
-                if (enemy != null && !string.IsNullOrEmpty(originalEnemy) && !string.IsNullOrEmpty(enemyToSpawn))
-                {
-                    float sizeScale = SpawnerExtensions.GetRelativeScale(enemyToSpawn, originalEnemy);
-                    if (!Mathnv.FastApproximately(sizeScale, 1f, 0.01f))
-                    {
-                        enemy.ScaleObject(sizeScale);
-                        enemy.ScaleAudio(sizeScale);//might not need this....
+            ////TODO: see if disabling the custom scaling here is OK now that i'm passing in the original enemy prefab to the spawner
+            //try
+            //{
+            //    if (enemy != null && !string.IsNullOrEmpty(originalEnemy) && !string.IsNullOrEmpty(enemyToSpawn))
+            //    {
+            //        var soc2 = enemy.GetComponent<DefaultSpawnedEnemyControl>();
+            //        if (soc2 != null)
+            //        {
+            //            var nmax = SpawnerExtensions.OriginalPrefabHP(originalEnemy);
+            //            if (nmax > 1)
+            //            {
+            //                soc2.MaxHP = nmax;
+            //                soc2.CurrentHP = soc2.MaxHP;
+            //            }
+            //        }
 
-                        var soc2 = enemy.GetComponent<DefaultSpawnedEnemyControl>();
-                        if (soc2 != null)
-                        {
-                            var nmax = SpawnerExtensions.OriginalPrefabHP(originalEnemy);
-                            if (nmax > 1)
-                            {
-                                soc2.MaxHP = nmax;
-                                soc2.CurrentHP = soc2.MaxHP;
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception e) { Dev.LogError($"Exception caught in SpawnEnemyForEnemySpawner when trying to scale {enemyToSpawn} to match {originalEnemy} ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
+            //        //float sizeScale = SpawnerExtensions.GetRelativeScale(enemyToSpawn, originalEnemy);
+            //        //if (!Mathnv.FastApproximately(sizeScale, 1f, 0.01f))
+            //        //{
+            //        //    enemy.ScaleObject(sizeScale);
+            //        //    enemy.ScaleAudio(sizeScale);//might not need this....
+
+            //        //    var soc2 = enemy.GetComponent<DefaultSpawnedEnemyControl>();
+            //        //    if (soc2 != null)
+            //        //    {
+            //        //        var nmax = SpawnerExtensions.OriginalPrefabHP(originalEnemy);
+            //        //        if (nmax > 1)
+            //        //        {
+            //        //            soc2.MaxHP = nmax;
+            //        //            soc2.CurrentHP = soc2.MaxHP;
+            //        //        }
+            //        //    }
+            //        //}
+            //    }
+            //}
+            //catch (Exception e) { Dev.LogError($"Exception caught in SpawnEnemyForEnemySpawner when trying to scale {enemyToSpawn} to match {originalEnemy} ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
 
             if (setActive)
                 enemy.SafeSetActive(true);

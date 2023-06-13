@@ -120,7 +120,7 @@ namespace EnemyRandomizerMod
         protected virtual void OnHit(int dmg) { }
         protected virtual void OnHeroInAggroRangeTheFirstTime() { }
 
-
+        public bool needsFinalize = true;
         //set this to false when spawning an enemy that you want to "fall" in
         public bool placeGroundSpawnOnGround = true;
         public virtual bool isInvincible => false;
@@ -176,7 +176,7 @@ namespace EnemyRandomizerMod
                         originalObjectMeta = new ObjectMetadata(objectThatWillBeReplaced);                    
                     
                     //hold off on doing this assignment until the end of the enemy replacer
-                    //originialMetadata = originalObjectMeta;
+                    originialMetadata = originalObjectMeta;
 
                     Dev.Log($"Attempting Setup for {thisMetadata} with {originalObjectMeta}");
                 }
@@ -385,7 +385,7 @@ namespace EnemyRandomizerMod
             try
             {
                 enemyToSpawn = SpawnerExtensions.GetRandomPrefabNameForSpawnerEnemy(rng);
-                enemy = ChildController.SpawnAndTrackChild(enemyToSpawn, transform.position, setActive, false);
+                enemy = ChildController.SpawnAndTrackChild(enemyToSpawn, transform.position, originalEnemy, setActive, false);
                 if (enemy != null)
                 {
                     var soc = enemy.GetComponent<SpawnedObjectControl>();
@@ -651,7 +651,7 @@ namespace EnemyRandomizerMod
             if (!gameObject.activeInHierarchy || !gameObject.IsInAValidScene())
                 return;
 
-            var spawned = SpawnerExtensions.SpawnEntityAt(explodeOnDeathEffect, transform.position, false);
+            var spawned = SpawnerExtensions.SpawnEntityAt(explodeOnDeathEffect, transform.position, null, false);
             if(spawned != null)
             {
                 var metaInfo = new ObjectMetadata(spawned);
@@ -671,7 +671,7 @@ namespace EnemyRandomizerMod
             if (!gameObject.IsInAValidScene())
                 return;
 
-            var spawned = SpawnerExtensions.SpawnEntityAt(spawnEntityOnDeath, transform.position, false);
+            var spawned = SpawnerExtensions.SpawnEntityAt(spawnEntityOnDeath, transform.position, null, false);
             if (spawned != null)
             {
                 var metaInfo = new ObjectMetadata(spawned);

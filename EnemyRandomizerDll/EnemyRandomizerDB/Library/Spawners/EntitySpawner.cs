@@ -67,9 +67,9 @@ namespace EnemyRandomizerMod
                 Children.Add(child);
         }
 
-        public virtual GameObject SpawnAndTrackChild(string objectName, Vector3 spawnPoint, bool setActive = true, bool allowRandomization = false)
+        public virtual GameObject SpawnAndTrackChild(string objectName, Vector3 spawnPoint, string originalEnemy = null, bool setActive = true, bool allowRandomization = false)
         {
-            GameObject child = SpawnerExtensions.SpawnEntityAt(objectName, spawnPoint, setActive, allowRandomization);
+            GameObject child = SpawnerExtensions.SpawnEntityAt(objectName, spawnPoint, originalEnemy, setActive, allowRandomization);
 
             Children.Add(child);
 
@@ -132,22 +132,82 @@ namespace EnemyRandomizerMod
             }
         }
 
+        IEnumerable<GameObject> GetChildrenOutsideColo()
+        {
+            try
+            {
+                var outside = children.Where(x => x != null).Where(x => IsOutsideColo(x));
+            }
+            catch (Exception e) { Dev.LogError($"Exception caught in GetChildrenOutsideColo when trying to get the children outside colo ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
+
+            return null;
+        }
+
         public virtual void RemoveDeadChildren()
         {
-            if (Children == null)
+            if (children == null)
                 return;
 
-            children.Where(x => x != null && IsOutsideColo(x)).ToList().ForEach(x => x.KillObjectNow());
-            children = Children.Where(x => x != null).ToHashSet();
-            children = Children.Where(x =>
-            x.GetComponent<HealthManager>() != null &&
-            x.GetComponent<HealthManager>().hp > 0 &&
-            x.GetComponent<HealthManager>().isDead == false).ToHashSet();
+            var outside = GetChildrenOutsideColo();
+
+            try
+            {
+                var newKids = new HashSet<GameObject>();
+                foreach(var c in children.Where(x => !IsOutsideColo(x)).Where(x => IsAlive(x)))
+                {
+                    newKids.Add(c);
+                }
+                children = newKids;
+            }
+            catch (Exception e) { Dev.LogError($"Exception caught in RemoveDeadChildren when trying to cull outside or dead game objects ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
+
+            if (outside != null)
+            {
+                DestroyAllChildren(outside);
+            }
+        }
+
+        protected virtual void DestroyAllChildren(IEnumerable<GameObject> childrenToDestroy)
+        {
+            foreach (var c in Children.Where(x => x != null))
+            {
+                try
+                {
+                    c.KillObjectNow();
+                }
+                catch (Exception e) { Dev.LogError($"Exception caught in DestroyAllChildren when trying to kill {c} ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
+            }
+        }
+
+        protected virtual bool IsAlive(GameObject x)
+        {
+            if (x == null)
+                return false;
+
+            var hm = x.GetComponent<HealthManager>();
+
+            return 
+            (
+               hm != null &&
+               hm.hp > 0 &&
+               hm.isDead == false
+            )
+            ||
+            (
+               hm == null &&
+               x.activeInHierarchy != false
+            );
         }
 
         protected virtual bool IsOutsideColo(GameObject g)
         {
+            if (g == null)
+                return true;
+
             if (GameManager.instance.GetCurrentMapZone() != "COLOSSEUM")
+                return false;
+
+            if (!g.activeInHierarchy)
                 return false;
 
             bool isOutside = false;
@@ -161,40 +221,44 @@ namespace EnemyRandomizerMod
                 isOutside = true;
             }
 
-            bool isColoBronze = BattleManager.StateMachine.Value is ColoBronze;
-            if (isColoBronze)
+            if (!isOutside)
             {
-                var bronze = BattleManager.StateMachine.Value as ColoBronze;
-                if(bronze.StateIndex >= 32 && bronze.StateIndex < 42)
+                bool isColoBronze = BattleManager.StateMachine.Value is ColoBronze;
+                if (isColoBronze)
                 {
-                    if(pos.y > 15.5f)
+                    var bronze = BattleManager.StateMachine.Value as ColoBronze;
+                    if (bronze.StateIndex >= 32 && bronze.StateIndex < 42)
                     {
-                        isOutside = true;
+                        if (pos.y > 15.5f)
+                        {
+                            isOutside = true;
+                        }
                     }
                 }
             }
 
-
-            bool isColoSilver = BattleManager.StateMachine.Value is ColoSilver;
-            if (isColoSilver)
+            if (!isOutside)
             {
-                var silver = BattleManager.StateMachine.Value as ColoSilver;
-                if (silver.StateIndex >= 60 && silver.StateIndex < 63)
+                bool isColoSilver = BattleManager.StateMachine.Value is ColoSilver;
+                if (isColoSilver)
                 {
-                    if (pos.y > 15.1f)
+                    var silver = BattleManager.StateMachine.Value as ColoSilver;
+                    if (silver.StateIndex >= 60 && silver.StateIndex < 63)
                     {
-                        isOutside = true;
+                        if (pos.y > 15.1f)
+                        {
+                            isOutside = true;
+                        }
                     }
-                }
-                if (silver.StateIndex >= 64)
-                {
-                    if (pos.y > 18.1f)
+                    if (silver.StateIndex >= 64)
                     {
-                        isOutside = true;
+                        if (pos.y > 18.1f)
+                        {
+                            isOutside = true;
+                        }
                     }
                 }
             }
-
 
             return isOutside;
         }
@@ -212,12 +276,12 @@ namespace EnemyRandomizerMod
                 if(!string.IsNullOrEmpty(specificEnemy))
                 {
                     enemyToSpawn = specificEnemy;
-                    enemy = SpawnerExtensions.SpawnEntityAt(specificEnemy, pos, false, false);
+                    enemy = SpawnerExtensions.SpawnEntityAt(specificEnemy, pos, originalEnemy, false, false);
                 }
                 else
                 {
                     enemyToSpawn = SpawnerExtensions.GetRandomPrefabNameForArenaEnemy(rng, originalEnemy);
-                    enemy = SpawnAndTrackChild(enemyToSpawn, pos, false, false);
+                    enemy = SpawnAndTrackChild(enemyToSpawn, pos, originalEnemy, false, false);
                 }
 
                 if (enemy != null)
@@ -258,6 +322,7 @@ namespace EnemyRandomizerMod
                         try
                         {
                             orginalHP = SpawnerExtensions.GetObjectPrefab(originalEnemy).prefab.GetEnemyHealthManager().hp;
+                            Dev.Log($"Got original HP {orginalHP} from {originalEnemy}");
                         }
                         catch (Exception e) { Dev.LogError($"Exception caught in SpawnCustomArenaEnemy when trying to get orginalHP from GetObjectPrefab from {originalEnemy} to apply to {soc2.gameObject}  ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
 
@@ -266,6 +331,7 @@ namespace EnemyRandomizerMod
                             if (orginalHP <= 1f)
                             {
                                 orginalHP = SpawnerExtensions.GetObjectPrefab(enemy.name).prefab.GetEnemyHealthManager().hp;
+                                Dev.Log($"Got HP {orginalHP} from {enemy} because the original was too low");
                             }
                         }
                         catch (Exception e) { Dev.LogError($"Exception caught in SpawnCustomArenaEnemy when trying to get orginalHP from GetObjectPrefab from {originalEnemy} to apply to {soc2.gameObject}  ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
@@ -273,6 +339,7 @@ namespace EnemyRandomizerMod
                         if(orginalHP <= 1f)
                         {
                             orginalHP = 100f;
+                            Dev.Log($"Setting HP to {orginalHP} because it's still zero or negative");
                         }
 
                         try
@@ -281,6 +348,7 @@ namespace EnemyRandomizerMod
                             if (isColoSilver)
                             {
                                 orginalHP = orginalHP * 1.5f;
+                                Dev.Log($"Scaling HP to {orginalHP} because it's silver colo");
 
                                 soc2.defaultScaledMaxHP = Mathf.FloorToInt(orginalHP);
                                 soc2.CurrentHP = soc2.defaultScaledMaxHP;
@@ -295,12 +363,18 @@ namespace EnemyRandomizerMod
                                     {
                                         soc2.defaultScaledMaxHP = Mathf.FloorToInt(orginalHP);
                                         soc2.CurrentHP = soc2.defaultScaledMaxHP;
+                                        Dev.Log($"Scaling HP to {soc2.CurrentHP} because it's gold colo");
+                                    }
+                                    else
+                                    {
+                                        Dev.Log($"Leaving their HP at {orginalHP} because it's gold colo and their hp is too low");
                                     }
                                 }
                                 else
                                 {
                                     soc2.defaultScaledMaxHP = Mathf.FloorToInt(orginalHP);
                                     soc2.CurrentHP = soc2.defaultScaledMaxHP;
+                                    Dev.Log($"Scaling HP to {orginalHP} because it's bronze colo");
                                 }
                             }
                         }

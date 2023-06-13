@@ -349,7 +349,7 @@ namespace EnemyRandomizerMod
             cageOpenEffect.gameObject.SetActive(true);
             owner.PlayCageOpen();
             if (!string.IsNullOrEmpty(playCustomEffectOnSpawn))
-                SpawnerExtensions.SpawnEntityAt(playCustomEffectOnSpawn, transform.position, true, false);
+                SpawnerExtensions.SpawnEntityAt(playCustomEffectOnSpawn, transform.position, null, true, false);
         }
 
         private void SpawnThing()
@@ -525,7 +525,7 @@ namespace EnemyRandomizerMod
             {
                 if(owner != null)
                     owner.CrowdLaugh();
-                GameObject music = SpawnerExtensions.SpawnEntityAt("Zote Music", HeroController.instance.transform.position, true, false);
+                GameObject music = SpawnerExtensions.SpawnEntityAt("Zote Music", HeroController.instance.transform.position, null, true, false);
                 zmusic = music.GetComponent<ZoteMusicControl>();
 
             }
@@ -578,7 +578,7 @@ namespace EnemyRandomizerMod
             }
 
             if (!string.IsNullOrEmpty(playCustomEffectOnSpawn))
-                SpawnerExtensions.SpawnEntityAt(playCustomEffectOnSpawn, transform.position, true, false);
+                SpawnerExtensions.SpawnEntityAt(playCustomEffectOnSpawn, transform.position, null, true, false);
         }
 
         protected override bool SafeSpawn(string thing, string originalEnemy = null, bool preload = false)

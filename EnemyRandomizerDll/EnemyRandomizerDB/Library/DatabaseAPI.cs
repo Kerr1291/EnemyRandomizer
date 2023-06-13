@@ -286,6 +286,22 @@ namespace EnemyRandomizerMod
             return Spawn(p);
         }
 
+        /// <summary>
+        /// Spawn an object from the database using the 2nd given name as the entity to use as the template to base the spawned one's stats off of. All objects may be checked via the Objects property in the database.
+        /// </summary>
+        /// <param name="p">The name of the database object to spawn</param>
+        /// <returns>The object that was spawned. Returns null on failure.</returns>
+        public GameObject Spawn(string name, string original)
+        {
+            if (!Objects.TryGetValue(name, out PrefabObject p))
+                return null;
+
+            if (!Objects.TryGetValue(original, out PrefabObject o))
+                return null;
+
+            Dev.Log("trying to spawn " + name);
+            return Spawn(p,o);
+        }
 
         /// <summary>
         /// Spawn an object from the database. All objects may be checked via the Objects property in the database.
@@ -305,6 +321,26 @@ namespace EnemyRandomizerMod
 
             Dev.Log("finally trying to spawn "+p.prefabName);
             return spawner.Spawn(p, null);
+        }
+
+        /// <summary>
+        /// Spawn an object from the database using the 2nd given name as the entity to use as the template to base the spawned one's stats off of. All objects may be checked via the Objects property in the database.
+        /// </summary>
+        /// <param name="p">The name of the database object to spawn</param>
+        /// <param name="defaultType">The fallback spawner to use if the object doesn't have one known to the database</param>
+        /// <returns>The object that was spawned. Returns null on failure.</returns>
+        public GameObject Spawn(PrefabObject p, PrefabObject o, Type defaultType = null)
+        {
+            if (defaultType == null)
+                defaultType = typeof(DefaultSpawner);
+
+            bool isDefault = GetSpawner(p, defaultType, out var spawner);
+            Dev.Log("Spawner is " + spawner);
+            if (spawner == null)
+                return null;
+
+            Dev.Log($"finally trying to spawn {p.prefabName} using {o.prefabName} to configure it.");
+            return spawner.Spawn(p, o.prefab);
         }
 
         /// <summary>
@@ -446,11 +482,20 @@ namespace EnemyRandomizerMod
         /// <summary>
         /// This allows the spawned object to be processed by the enemy randomizer. This means the returned object might not be what you expect...
         /// </summary>
-        public static GameObject CustomSpawn(Vector3 pos, string objectName, bool setActive = true)
+        public static GameObject CustomSpawn(Vector3 pos, string objectName, string originalEntity = null, bool setActive = true)
         {
             try
             {
-                var enemy = EnemyRandomizerDatabase.GetDatabase().Spawn(objectName);
+                GameObject enemy = null;
+
+                if (originalEntity != null)
+                {
+                    enemy = EnemyRandomizerDatabase.GetDatabase().Spawn(objectName, originalEntity);
+                }
+                else
+                {
+                    enemy = EnemyRandomizerDatabase.GetDatabase().Spawn(objectName);
+                }
 
                 if (enemy != null)
                 {

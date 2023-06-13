@@ -87,7 +87,12 @@ namespace EnemyRandomizerMod
         {
             if (otherCollider.gameObject.name != debugRecentHit)
             {
-                Dev.Log("Hero at " + HeroController.instance.transform.position + " HIT: " + otherCollider.gameObject.name + " at (" + otherCollider.gameObject.transform.position + ")");
+                string hp = string.Empty;
+                if(otherCollider.gameObject.GetComponent<HealthManager>() != null)
+                {
+                    hp = " HP: " + otherCollider.gameObject.GetComponent<HealthManager>().hp;
+                }
+                Dev.Log("Hero at " + HeroController.instance.transform.position + " HIT: " + otherCollider.gameObject.name + " at (" + otherCollider.gameObject.transform.position + hp + " )");
                 debugRecentHit = otherCollider.gameObject.name;
             }
         }

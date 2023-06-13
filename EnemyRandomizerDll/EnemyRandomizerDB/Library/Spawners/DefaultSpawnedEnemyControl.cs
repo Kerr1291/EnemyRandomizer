@@ -41,11 +41,24 @@ namespace EnemyRandomizerMod
             set
             {
                 if (EnemyHealthManager != null)
+                {
+                    Dev.Log(gameObject + " HP WAS " + EnemyHealthManager.hp);
+                    Dev.Log(Dev.FunctionHeader(0));
+                    Dev.Log(Dev.FunctionHeader(-1));
+                    Dev.Log(Dev.FunctionHeader(-2));
+                    Dev.Log(Dev.FunctionHeader(-3));
                     EnemyHealthManager.hp = value;
+                    Dev.Log(gameObject + " HP IS " + EnemyHealthManager.hp);
+                    lastSetHP = CurrentHP;
+                }
                 else
                 { }
             }
         }
+
+        public int counter = 5;
+        public bool didSetHP = false;
+        public int lastSetHP = -1;
 
         public float CurrentHPf
         {
@@ -94,34 +107,54 @@ namespace EnemyRandomizerMod
         {
             base.Setup(objectThatWillBeReplaced);
 
+            bool isColo = GameManager.instance.GetCurrentMapZone() == "COLOSSEUM";
             try
             {
                 if (gameObject.ObjectType() == PrefabObject.PrefabType.Enemy)
                 {
-                    defaultScaledMaxHP = GetStartingMaxHP(objectThatWillBeReplaced);
-                    CurrentHP = defaultScaledMaxHP;
-
-                    if (objectThatWillBeReplaced != gameObject && objectThatWillBeReplaced != null)
+                    Dev.Log($"{this} hp was {CurrentHP}");
+                    if (objectThatWillBeReplaced == null)
                     {
-                        if (gameObject.CheckIfIsPogoLogicType())
+                        if(originialMetadata != null)
                         {
-                            defaultScaledMaxHP = 69;
-                            CurrentHP = 69;
-                        }
-                        else if (gameObject.IsSmasher())
-                        {
-                            defaultScaledMaxHP = 100;
-                            CurrentHP = 100;
-                            gameObject.AddParticleEffect_WhiteSoulEmissions(Color.yellow);
-
-                            if (gameObject.IsFlying() && MetaDataTypes.SmasherNeedsCustomSmashBehaviour.Contains(gameObject.GetDatabaseKey()))
+                            if (!isColo)
                             {
-                                AddCustomSmashBehaviour();
+                                defaultScaledMaxHP = GetStartingMaxHP(originialMetadata.GetDatabaseKey());
+                                CurrentHP = defaultScaledMaxHP;
                             }
+                            SetupEnemyGeo();
                         }
                     }
+                    else
+                    {
+                        if (!isColo)
+                        {
+                            defaultScaledMaxHP = GetStartingMaxHP(objectThatWillBeReplaced);
+                            CurrentHP = defaultScaledMaxHP;
 
-                    SetupEnemyGeo();
+                            if (objectThatWillBeReplaced != gameObject && objectThatWillBeReplaced != null)
+                            {
+                                if (gameObject.CheckIfIsPogoLogicType())
+                                {
+                                    defaultScaledMaxHP = 69;
+                                    CurrentHP = 69;
+                                }
+                                else if (gameObject.IsSmasher())
+                                {
+                                    defaultScaledMaxHP = 100;
+                                    CurrentHP = 100;
+                                    gameObject.AddParticleEffect_WhiteSoulEmissions(Color.yellow);
+
+                                    if (gameObject.IsFlying() && MetaDataTypes.SmasherNeedsCustomSmashBehaviour.Contains(gameObject.GetDatabaseKey()))
+                                    {
+                                        AddCustomSmashBehaviour();
+                                    }
+                                }
+                            }
+                        }
+                        SetupEnemyGeo();
+                    }
+                    Dev.Log($"Setting {this} hp to {CurrentHP}");
                 }
             }
             catch (Exception e)
@@ -150,6 +183,23 @@ namespace EnemyRandomizerMod
             else
             {
                 return ScaleHPToNormal(gameObject.OriginalPrefabHP(), objectThatWillBeReplaced.OriginalPrefabHP());
+            }
+        }
+
+        protected virtual int GetStartingMaxHP(string prefabName)
+        {
+            if (prefabName == null)
+            {
+                return gameObject.OriginalPrefabHP();
+            }
+
+            if (!string.IsNullOrEmpty(prefabName) && SpawnerExtensions.IsBoss(prefabName))
+            {
+                return ScaleHPToBoss(gameObject.OriginalPrefabHP(), SpawnerExtensions.OriginalPrefabHP(prefabName));
+            }
+            else
+            {
+                return ScaleHPToNormal(gameObject.OriginalPrefabHP(), SpawnerExtensions.OriginalPrefabHP(prefabName));
             }
         }
 
@@ -192,6 +242,13 @@ namespace EnemyRandomizerMod
 
             if (gameObject.ObjectType() != PrefabObject.PrefabType.Enemy)
                 return;
+
+            if(counter > 0)
+            {
+                counter--;
+                if (counter <= 0 && lastSetHP > 0)
+                    MaxHP = lastSetHP;
+            }
 
 #if DEBUG
             if (showDebugColliders && debugColliders == null)
@@ -324,7 +381,7 @@ namespace EnemyRandomizerMod
             {
                 //TODO: balance a better geo fix...
                 float t = (float)geoScale / 50f;
-                geoScale = Mathf.FloorToInt(t * 5f);
+                geoScale = Mathf.FloorToInt(t * 2f);
 
                 if (originalGeo <= 0)
                 {
