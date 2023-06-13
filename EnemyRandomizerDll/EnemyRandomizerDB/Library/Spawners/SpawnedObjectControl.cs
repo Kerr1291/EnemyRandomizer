@@ -60,6 +60,10 @@ namespace EnemyRandomizerMod
         public static IEnumerable<SpawnedObjectControl> GetAllBattle => GetAll.Where(x => SpawnerExtensions.IsBattleEnemy(x.gameObject));
         public static IEnumerable<SpawnedObjectControl> GetAllEnemies => GetAll.Where(x => SpawnerExtensions.ObjectType(x.gameObject) == PrefabObject.PrefabType.Enemy);
 
+        public bool IsInColo()
+        {
+            return GameManager.instance.GetCurrentMapZone() == "COLOSSEUM";
+        }
 
         public float sizeScale = 1f;
         public float SizeScale
@@ -173,19 +177,20 @@ namespace EnemyRandomizerMod
                     //get the meta object from the given potential replacement, if it doesn't have one, generate one
                     var originalObjectMeta = ObjectMetadata.Get(objectThatWillBeReplaced);
                     if (originalObjectMeta == null)
-                        originalObjectMeta = new ObjectMetadata(objectThatWillBeReplaced);                    
-                    
+                        originalObjectMeta = new ObjectMetadata(objectThatWillBeReplaced);
+
                     //hold off on doing this assignment until the end of the enemy replacer
-                    originialMetadata = originalObjectMeta;
+                    //unless we're in colo, which does things differently...
+                    if (IsInColo())
+                    {
+                        originialMetadata = originalObjectMeta;
+                    }
 
                     Dev.Log($"Attempting Setup for {thisMetadata} with {originalObjectMeta}");
                 }
                 else
                 {
-                    //hold off on doing this assignment until the end of the enemy replacer
                     //there is no "replacement"
-                    //originialMetadata = thisMetadata;
-
                     Dev.Log($"Attempting Setup for {thisMetadata} with no replacement given");
                 }
             }
@@ -252,6 +257,8 @@ namespace EnemyRandomizerMod
             {
                 Dev.Log($"{this}:{this.thisMetadata}: Caught exception in SetPositionOnSpawn ERROR:{e.Message} STACKTRACE{e.StackTrace}");
             }
+
+            DisableCollidersForBackgroundThings();
         }
 
         protected virtual void InitPositionOnSetupPreSpawn(GameObject objectThatWillBeReplaced)
@@ -267,6 +274,23 @@ namespace EnemyRandomizerMod
             if (EnemyHealthManager != null)
             {
                 EnemyHealthManager.IsInvincible = isInvincible;
+            }
+        }
+
+        protected virtual void DisableCollidersForBackgroundThings()
+        {
+            string zone = GameManager.instance.GetCurrentMapZone();
+            int zoneScale = MetaDataTypes.ProgressionZoneScale[zone];
+
+            if(zoneScale == MetaDataTypes.ProgressionZoneScale["FOG_CANYON"] 
+                || zoneScale == MetaDataTypes.ProgressionZoneScale["MONOMON_ARCHIVE"]
+                || zoneScale == MetaDataTypes.ProgressionZoneScale["ROYAL_GARDENS"])
+            {
+                if(transform.position.z > 0.1f)
+                {
+                    GetComponents<Collider2D>().ToList().ForEach(x => x.enabled = false);
+                    GetComponents<DamageHero>().ToList().ForEach(x => GameObject.Destroy(x));
+                }
             }
         }
 

@@ -44,9 +44,9 @@ namespace EnemyRandomizerMod
                 {
                     Dev.Log(gameObject + " HP WAS " + EnemyHealthManager.hp);
                     Dev.Log(Dev.FunctionHeader(0));
-                    Dev.Log(Dev.FunctionHeader(-1));
-                    Dev.Log(Dev.FunctionHeader(-2));
-                    Dev.Log(Dev.FunctionHeader(-3));
+                    Dev.Log(Dev.FunctionHeader(1));
+                    Dev.Log(Dev.FunctionHeader(2));
+                    Dev.Log(Dev.FunctionHeader(3));
                     EnemyHealthManager.hp = value;
                     Dev.Log(gameObject + " HP IS " + EnemyHealthManager.hp);
                     lastSetHP = CurrentHP;
@@ -106,60 +106,73 @@ namespace EnemyRandomizerMod
         public override void Setup(GameObject objectThatWillBeReplaced = null)
         {
             base.Setup(objectThatWillBeReplaced);
+            
+            if (gameObject.ObjectType() != PrefabObject.PrefabType.Enemy)
+                return;
 
-            bool isColo = GameManager.instance.GetCurrentMapZone() == "COLOSSEUM";
+            //just no -- don't let the game set the hp ever
+            var hpscaler = gameObject.LocateMyFSM("hp_scaler");
+            if (hpscaler != null)
+                Destroy(hpscaler);
+
             try
             {
-                if (gameObject.ObjectType() == PrefabObject.PrefabType.Enemy)
-                {
-                    Dev.Log($"{this} hp was {CurrentHP}");
-                    if (objectThatWillBeReplaced == null)
-                    {
-                        if(originialMetadata != null)
-                        {
-                            if (!isColo)
-                            {
-                                defaultScaledMaxHP = GetStartingMaxHP(originialMetadata.GetDatabaseKey());
-                                CurrentHP = defaultScaledMaxHP;
-                            }
-                            SetupEnemyGeo();
-                        }
-                    }
-                    else
-                    {
-                        if (!isColo)
-                        {
-                            defaultScaledMaxHP = GetStartingMaxHP(objectThatWillBeReplaced);
-                            CurrentHP = defaultScaledMaxHP;
-
-                            if (objectThatWillBeReplaced != gameObject && objectThatWillBeReplaced != null)
-                            {
-                                if (gameObject.CheckIfIsPogoLogicType())
-                                {
-                                    defaultScaledMaxHP = 69;
-                                    CurrentHP = 69;
-                                }
-                                else if (gameObject.IsSmasher())
-                                {
-                                    defaultScaledMaxHP = 100;
-                                    CurrentHP = 100;
-                                    gameObject.AddParticleEffect_WhiteSoulEmissions(Color.yellow);
-
-                                    if (gameObject.IsFlying() && MetaDataTypes.SmasherNeedsCustomSmashBehaviour.Contains(gameObject.GetDatabaseKey()))
-                                    {
-                                        AddCustomSmashBehaviour();
-                                    }
-                                }
-                            }
-                        }
-                        SetupEnemyGeo();
-                    }
-                    Dev.Log($"Setting {this} hp to {CurrentHP}");
-                }
+                SetupEnemyHP(objectThatWillBeReplaced);
             }
             catch (Exception e)
             {
-                Dev.Log($"{this}:{this.thisMetadata}: Caught exception in ConfigureRelativeToReplacement ERROR:{e.Message} STACKTRACE{e.StackTrace}");
+                Dev.Log($"{this}:{this.thisMetadata}: Caught exception in SetupEnemyHP ERROR:{e.Message} STACKTRACE{e.StackTrace}");
+            }
+
+            try
+            {
+                SetupEnemyGeo();
+            }
+            catch (Exception e)
+            {
+                Dev.Log($"{this}:{this.thisMetadata}: Caught exception in SetupEnemyGeo ERROR:{e.Message} STACKTRACE{e.StackTrace}");
+            }
+
+            try
+            {
+                SetupForSpecialGameLogic(objectThatWillBeReplaced);
+            }
+            catch (Exception e)
+            {
+                Dev.Log($"{this}:{this.thisMetadata}: Caught exception in SetupForSpecialGameLogic ERROR:{e.Message} STACKTRACE{e.StackTrace}");
+            }
+
+        }
+
+        protected virtual void SetupForSpecialGameLogic(GameObject objectThatWillBeReplaced)
+        {
+            if (objectThatWillBeReplaced != gameObject && objectThatWillBeReplaced != null)
+            {
+                if (objectThatWillBeReplaced.CheckIfIsPogoLogicType())
+                {
+                    defaultScaledMaxHP = 69;
+                    CurrentHP = 69;
+                }
+                else if (objectThatWillBeReplaced.IsSmasher())
+                {
+                    defaultScaledMaxHP = 100;
+                    CurrentHP = 100;
+                    gameObject.AddParticleEffect_WhiteSoulEmissions(Color.yellow);
+
+                    //TODO: needs testing
+                    if (gameObject.IsFlying() && MetaDataTypes.SmasherNeedsCustomSmashBehaviour.Contains(gameObject.GetDatabaseKey()))
+                    {
+                        AddCustomSmashBehaviour();
+                    }
+                }
+                else
+                {
+                    if (EnemyHealthManager != null)
+                    {
+                        var ignoreAcid = EnemyHealthManager.GetType().GetField("ignoreAcid", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        ignoreAcid.SetValue(EnemyHealthManager, false);
+                    }
+                }
             }
         }
 
@@ -188,7 +201,7 @@ namespace EnemyRandomizerMod
 
         protected virtual int GetStartingMaxHP(string prefabName)
         {
-            if (prefabName == null)
+            if (string.IsNullOrEmpty(prefabName))
             {
                 return gameObject.OriginalPrefabHP();
             }
@@ -243,7 +256,9 @@ namespace EnemyRandomizerMod
             if (gameObject.ObjectType() != PrefabObject.PrefabType.Enemy)
                 return;
 
-            if(counter > 0)
+            CheckHackySceneFixes();
+
+            if (counter > 0)
             {
                 counter--;
                 if (counter <= 0 && lastSetHP > 0)
@@ -332,64 +347,148 @@ namespace EnemyRandomizerMod
 
         protected virtual int ScaleHPToNormal(int defaultNewEnemyHP, int originalEnemyHP)
         {
-            if (originalEnemyHP * 2 < defaultNewEnemyHP)
-                return Mathf.FloorToInt(originalEnemyHP * 2f);
-            else if (originalEnemyHP < defaultNewEnemyHP)
+            float origClamped = Mathf.Max(originalEnemyHP, 1f);
+            float ratio = (float)defaultNewEnemyHP / (float)origClamped;
+            string zone = GameManager.instance.GetCurrentMapZone();
+            int zoneScale = MetaDataTypes.ProgressionZoneScale[zone];
+            bool infectionIsActive = GameManager.instance.playerData.crossroadsInfected;
+
+            if (ratio > 2f)
+            {
+                //example provided below using PV's HP of 1600 and an enemy that might have 1 hp (worst case scenario)
+                //ratio at 1600, goes to about 8.5
+                //ratio at 800,  goes to about 8
+                //ratio at 400,  goes to about 6 or 7
+                //ratio at 160,  goes to about 6
+                //ratio at 80,  goes to about 5.9
+                //ratio at 20,  goes to about 4.5
+                //ratio at 10,  goes to about 3.75
+                //ratio at 4,  goes to about 2.9
+                //ratio at 2 goes to about 2
+                float logRatio = Mathf.Log(ratio) + 1.45f;
+
+                //for the early areas, if infection is not active, scale it down more
+                if (!infectionIsActive)
+                {
+                    if (zoneScale > 0 && zoneScale <= 4)
+                    {
+                        logRatio = logRatio * 0.25f;
+                    }
+                    else if (zoneScale > 4 && zoneScale <= 10)
+                    {
+                        logRatio = logRatio * 0.5f;
+                    }
+                    else if (zoneScale > 10 && zoneScale <= 20)
+                    {
+                        logRatio = logRatio * 0.7f;
+                    }
+                }
+
+                //but keep it from going lower than 2
+                if (logRatio < 2f)
+                    logRatio = 2f;
+
+                //then lets floor the value into a multiplier, so that 8.5 above goes to 8, for example
+                int multiplier = Mathf.FloorToInt(logRatio);
+
+                //and send it back
+                return originalEnemyHP * multiplier;
+
+            }
+            else if(ratio < 0.5f)
+            {
                 return originalEnemyHP;
+            }
             else
+            {
                 return defaultNewEnemyHP;
+            }
         }
 
         protected virtual int ScaleHPToBoss(int defaultNewEnemyHP, int originalEnemyHP)
         {
-            int minBarBossHP = 225;
-            if(originalEnemyHP < minBarBossHP)
-            {
-                int newBossHP = originalEnemyHP * 2;
-                minBarBossHP = minBarBossHP + 100;
-                for (int i = 0; i < 16; ++i)
-                {
-                    if (newBossHP > minBarBossHP)
-                    {
-                        return newBossHP;
-                    }
-                    newBossHP = originalEnemyHP * 2;
-                    minBarBossHP = minBarBossHP + 100;
-                }
+            string zone = GameManager.instance.GetCurrentMapZone();
+            int zoneScale = MetaDataTypes.ProgressionZoneScale[zone];
 
+            //don't scale the hp in godhome
+            if (zoneScale < 0)
+                return originalEnemyHP;
+
+            //use their own hp in town
+            if (zoneScale == 0)
                 return defaultNewEnemyHP;
+
+            //in dream world (dream boss, so let's use that hp)
+            if(zoneScale == MetaDataTypes.ProgressionZoneScale["DREAM_WORLD"] || 
+               zoneScale == MetaDataTypes.ProgressionZoneScale["FINAL_BOSS"] )
+            {
+                return originalEnemyHP;
             }
             else
             {
-                if (defaultNewEnemyHP * 2 < defaultNewEnemyHP)
-                    return Mathf.FloorToInt(originalEnemyHP * 2f);
+                //just try using the original hp for now, just to see how it feels
                 return originalEnemyHP;
             }
         }
 
+        protected virtual void SetupEnemyHP(GameObject objectThatWillBeReplaced)
+        {
+            bool isColo = IsInColo();
+
+            //don't setup HP if we're in colo, let the event do that 
+            if (isColo)
+                return;
+
+            if(SpawnedObjectControl.VERBOSE_DEBUG)
+                Dev.Log($"{this} hp was {CurrentHP}");
+
+            if (objectThatWillBeReplaced == null && originialMetadata != null)
+            {
+                defaultScaledMaxHP = GetStartingMaxHP(originialMetadata.GetDatabaseKey());
+                CurrentHP = defaultScaledMaxHP;
+            }
+            else if(objectThatWillBeReplaced != null)
+            {
+                defaultScaledMaxHP = GetStartingMaxHP(objectThatWillBeReplaced);
+                CurrentHP = defaultScaledMaxHP;
+            }
+            else
+            {
+                //use default hp
+            }
+
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                Dev.Log($"Setting {this} hp to {CurrentHP}");
+        }
+
         protected virtual void SetupEnemyGeo()
         {
+            bool isBoss = false;
             int originalGeo = SpawnerExtensions.GetOriginalGeo(thisMetadata.ObjectName);
             if (originialMetadata != null && thisMetadata != originialMetadata)
             {
                 originalGeo = SpawnerExtensions.GetOriginalGeo(originialMetadata.ObjectName);
+                isBoss = SpawnerExtensions.IsBoss(originialMetadata.GetDatabaseKey());
             }
 
             var zone = GameManager.instance.GetCurrentMapZone();
             int geoScale = 1;
             if (MetaDataTypes.GeoZoneScale.TryGetValue(zone, out geoScale))
             {
-                //TODO: balance a better geo fix...
-                float t = (float)geoScale / 50f;
-                geoScale = Mathf.FloorToInt(t * 2f);
-
                 if (originalGeo <= 0)
                 {
                     Geo = SpawnerExtensions.GetRandomValueBetween(geoScale, geoScale * 5);
                 }
                 else
                 {
-                    Geo = SpawnerExtensions.GetRandomValueBetween(originalGeo, originalGeo * geoScale);
+                    if(isBoss)
+                    {
+                        Geo = SpawnerExtensions.GetRandomValueBetween(geoScale * 50, geoScale * 100);
+                    }
+                    else
+                    {
+                        Geo = SpawnerExtensions.GetRandomValueBetween(1, originalGeo * geoScale);
+                    }
                 }
             }
             else
@@ -415,6 +514,102 @@ namespace EnemyRandomizerMod
             {
                 int dmgAmount = damageInstance.DamageDealt;
                 EnemyHealthManager.ApplyExtraDamage(dmgAmount);
+            }
+        }
+
+        protected virtual void CheckHackySceneFixes()
+        {
+            string currentScene = SpawnerExtensions.SceneName(gameObject);
+
+            var poob = gameObject.GetComponent<PreventOutOfBounds>();
+            bool needUnstuck = false;
+            Vector2 fixedPos = Vector2.zero;
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Crossroads_01")
+            {
+                Vector2 putHere = new Vector2(52.5f, 18f);
+
+                if(transform.position.y > 20)
+                {
+                    needUnstuck = true;
+                }
+
+                if(transform.position.x < 37f)
+                {
+                    if (transform.position.x > 35f)
+                    {
+                        if (transform.position.y < 4.7f)
+                        {
+                            needUnstuck = true;
+                        }
+                    }
+                    else if (transform.position.x > 17f)
+                    {
+                        if (transform.position.y < 8.5f)
+                        {
+                            needUnstuck = true;
+                        }
+                    }
+
+                    if (transform.position.y < 2.5f)
+                    {
+                        needUnstuck = true;
+                    }
+
+                }
+                else
+                {
+                    if (transform.position.y < 0f)
+                    {
+                        needUnstuck = true;
+                    }
+
+
+                    if (transform.position.x > 48f)
+                    {
+                        if (transform.position.y < 3.5f)
+                        {
+                            needUnstuck = true;
+                        }
+                    }
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Crossroads_08")
+            {
+                Vector2 putHere = new Vector2(31f, 15.5f);
+
+                if (transform.position.y < 4f || transform.position.y > 29.5f)
+                {
+                    needUnstuck = true;
+                }
+
+                if (transform.position.x < 18.5f || transform.position.x > 43f)
+                {
+                    needUnstuck = true;
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+            if (needUnstuck)
+            {
+                if(poob != null)
+                {
+                    poob.ForcePosition(fixedPos);
+                    transform.position = fixedPos;
+                }
             }
         }
     }

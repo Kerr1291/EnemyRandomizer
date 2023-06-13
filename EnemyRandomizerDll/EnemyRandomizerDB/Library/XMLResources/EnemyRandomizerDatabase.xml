@@ -142,6 +142,7 @@
         <SceneObject path="Zombie Spider 2"/>
         <SceneObject path="Zombie Spider 1"/>
         <SceneObject path="Vomit Glob Nosk"/>
+        <SceneObject path="Galien Hammer"/>
         <SceneObject path="Galien Mini Hammer"/>
         <SceneObject path="Markoth Shield/Shield"/>
         <SceneObject path="Shot Markoth Nail"/>
@@ -855,6 +856,7 @@
     </SceneData>
     <SceneData name="Deepnest_40">
       <sceneObjects>
+        <SceneObject path="Warrior/Galien Hammer"/>
         <SceneObject path="Warrior/Ghost Warrior Galien"/>
       </sceneObjects>
     </SceneData>
@@ -1444,6 +1446,7 @@
     <string>Shot Traitor Lord</string>
     <string>Mega Jelly Zap</string>
     <string>Vomit Glob Nosk</string>
+    <string>Galien Hammer</string>
     <string>Galien Mini Hammer</string>
     <string>Shield</string>
     <string>Shot Markoth Nail</string>

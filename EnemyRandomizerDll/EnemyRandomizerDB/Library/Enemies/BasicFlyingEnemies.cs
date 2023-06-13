@@ -685,7 +685,42 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
-    public class LilJellyfishControl : DefaultSpawnedEnemyControl { }
+    public class LilJellyfishControl : DefaultSpawnedEnemyControl
+    {
+        public override void Setup(GameObject objectThatWillBeReplaced = null)
+        {
+            base.Setup(objectThatWillBeReplaced);
+        }
+
+        protected virtual void OnEnable()
+        {
+            Freeze();
+            StartCoroutine(UnfreezeAfter(5f));
+        }
+
+        IEnumerator UnfreezeAfter(float time)
+        {
+            yield return new WaitForSeconds(time);
+            UnFreeze();
+        }
+
+
+        protected virtual void Freeze()
+        {
+            var pl = gameObject.GetOrAddComponent<PositionLocker>();
+            pl.positionLock = transform.position;
+        }
+
+        protected virtual void UnFreeze()
+        {
+            var locker = gameObject.GetComponent<PositionLocker>();
+            if (locker != null)
+            {
+                GameObject.Destroy(locker);
+                PhysicsBody.velocity = Vector2.zero;//reset the velocity
+            }
+        }
+    }
 
     public class LilJellyfishSpawner : DefaultSpawner<LilJellyfishControl> { }
 

@@ -1003,8 +1003,8 @@ namespace EnemyRandomizerMod
                     if (prev.Name.Contains("Lancer Shake 1"))
                     {
                         prev.AddCustomAction(() => {
-                            var originLancer = new Vector2(113f, 7.5f);
-                            var originLobster = new Vector2(116f, 7.5f);
+                            var originLancer = new Vector2(113f, 9.5f);
+                            var originLobster = new Vector2(116f, 9.5f);
 
                             var boss1 = SpawnerExtensions.GetRandomPrefabNameForArenaBoss(rng);
                             var boss2 = SpawnerExtensions.GetRandomPrefabNameForArenaBoss(rng);

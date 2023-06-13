@@ -74,6 +74,39 @@ namespace EnemyRandomizerMod
 
 
 
+    public class GalienHammerControl : DefaultSpawnedEnemyControl
+    {
+        public override string FSMName => "Control";
+
+        public override void Setup(GameObject other)
+        {
+            base.Setup(other);
+
+            var init = control.GetState("Init");
+            init.AddCustomAction(() => { control.SendEvent("READY"); });
+
+            gameObject.GetOrAddComponent<CircleCollider2D>();
+            PhysicsBody.velocity = SpawnerExtensions.GetRandomDirectionFromSelf(gameObject) * (float)SpawnerExtensions.GetRandomValueBetween(5, 25);
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+
+            if (PhysicsBody.velocity.magnitude <= 1f)
+            {
+                PhysicsBody.velocity = SpawnerExtensions.GetRandomDirectionFromSelf(gameObject) * (float)SpawnerExtensions.GetRandomValueBetween(5, 25);
+            }
+        }
+    }
+
+    public class GalienHammerSpawner : DefaultSpawner<GalienHammerControl>
+    {
+    }
+
+    public class GalienHammerPrefabConfig : DefaultPrefabConfig
+    {
+    }
 
 
 

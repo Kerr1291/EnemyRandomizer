@@ -49,6 +49,9 @@ namespace EnemyRandomizerMod
 
         protected override int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
         {
+            if (objectThatWillBeReplaced == null)
+                return base.GetStartingMaxHP(objectThatWillBeReplaced);
+
             var result = base.GetStartingMaxHP(objectThatWillBeReplaced);
             float hpScale = GameObject.FindObjectsOfType<FlamebearerControl>().Length;
 

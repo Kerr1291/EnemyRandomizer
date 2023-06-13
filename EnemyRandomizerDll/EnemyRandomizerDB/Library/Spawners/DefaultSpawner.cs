@@ -209,7 +209,36 @@ namespace EnemyRandomizerMod
     {
         public override bool destroyGameObject => true;
 
-        protected virtual void OnEnable() { Spawn(); }
+        public bool didSpawn = false;
+
+        protected virtual void OnEnable() { CheckRemoveAndSpawn(); }
+
+        protected virtual void Update()
+        {
+            CheckRemoveAndSpawn();
+        }
+
+        protected virtual void CheckRemoveAndSpawn()
+        {
+            if (didSpawn)
+                return;
+
+            var parent = transform.parent;
+            if(parent == null)
+                Spawn();
+            else
+            {
+                var parentName = parent.name;
+                var thisName = gameObject.name;
+
+                parentName = EnemyRandomizerDatabase.ToDatabaseKey(parentName);
+                thisName = thisName.Remove("Corpse");
+                thisName = EnemyRandomizerDatabase.ToDatabaseKey(thisName);
+
+                if (!parentName.Contains(thisName))
+                    Spawn();
+            }
+        }
     }
 
     public class SpawnEffectOnDestroy : SpawnEffect

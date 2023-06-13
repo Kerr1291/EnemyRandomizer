@@ -2031,7 +2031,7 @@ namespace EnemyRandomizerMod
         public float rageTriggerRatio;
         public float tooFarToSlamDist = 7f;
         public float tooCloseToWallDist = 5f;
-        public float buriedYOffset = 3f;
+        public float buriedYOffset = 2.5f;
         public float tunnelTooCloseToWall = 2f;
         public float tunnelTurnTowardPlayerDist = 10f;
         public float airDiveHeight = 15.4f;
@@ -2066,8 +2066,8 @@ namespace EnemyRandomizerMod
             wake.DisableActions(6);
             wake.InsertCustomAction(() => {
                 PositionBoss(.3f);
-                burrowEffect.gameObject.StickToGroundX(-.5f);
-                burrowEffect.transform.position -= new Vector3(0f, 1f * SizeScale, 0f);
+                burrowEffect.gameObject.StickToGroundX(0f);
+                //burrowEffect.transform.position -= new Vector3(0f, 1f * SizeScale, 0f);
             }, 2);
 
             var quakedOut = control.GetState("Quaked Out");
@@ -2148,8 +2148,10 @@ namespace EnemyRandomizerMod
             var throw1 = control.GetState("Throw 1");
             throw1.DisableActions(1);
             throw1.AddCustomAction(() => {
-                pooThrowOffset = 1.5f * Vector2.right * (transform.localScale.x < 0 ? -1f : 1f);
+                pooThrowOffset = pos2d + 1.5f * Vector2.right * (transform.localScale.x < 0 ? -1f : 1f);
                 var dungBall = SpawnerExtensions.SpawnEntityAt("Dung Ball Large", pooThrowOffset, null, false);
+                dungBall.ScaleObject(SizeScale);
+                dungBall.ScaleAudio(SizeScale);
                 control.FsmVariables.GetFsmGameObject("Dung Ball").Value = dungBall;
                 dungBall.SafeSetActive(true);
             });
@@ -2309,6 +2311,23 @@ namespace EnemyRandomizerMod
             Vector2 buriedPos = groundPos - new Vector2(0f, buriedYOffset * transform.localScale.y * extraOffsetScale);
             burrowEffect.FsmVariables.GetFsmFloat("Ground Y").Value = buriedPos.y;
         }
+
+        public float customTransformMinAliveTime = 1f;
+        public float customTransformAggroRange = 20f;
+
+        protected override void CheckControlInCustomHiddenState()
+        {
+            if (customTransformMinAliveTime > 0)
+            {
+                customTransformMinAliveTime -= Time.deltaTime;
+                return;
+            }
+
+            if (gameObject.CanSeePlayer() && gameObject.DistanceToPlayer() < customTransformAggroRange)
+            {
+                base.CheckControlInCustomHiddenState();
+            }
+        }
     }
 
     public class DungDefenderSpawner : DefaultSpawner<DungDefenderControl>
@@ -2336,11 +2355,19 @@ namespace EnemyRandomizerMod
 
         public virtual void OnEnable()
         {
-            EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Galien Mini Hammer", null, true);
+            var hammer = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Galien Hammer", null, true);
             if (chasing != null)
             {
                 StopCoroutine(chasing);
             }
+
+            if(hammer != null)
+            {
+                hammer.ScaleObject(SizeScale);
+                hammer.ScaleAudio(SizeScale);
+            }
+
+            hammer.SafeSetActive(true);
 
             chasing = SpawnerExtensions.DistanceFlyChase(gameObject, HeroController.instance.gameObject, 5f, 0.3f, 7f, 2f);
             StartCoroutine(chasing);
@@ -2349,6 +2376,26 @@ namespace EnemyRandomizerMod
         public override void Setup(GameObject other)
         {
             base.Setup(other);
+
+            {
+                var corpse = gameObject.GetCorpseObject();
+                if(corpse != null)
+                {
+                    var fsm = corpse.LocateMyFSM("Control");
+                    if (fsm != null)
+                    {
+                        var music = fsm.GetState("Music");
+                        if(music != null)
+                        {
+                            try
+                            {
+                                music.DisableActions(0, 1, 2);
+                            }
+                            catch (Exception) { }//don't care
+                        }
+                    }
+                }
+            }
 
             {
                 var fsm = gameObject.LocateMyFSM("FSM");
@@ -2387,13 +2434,23 @@ namespace EnemyRandomizerMod
             var summon = gameObject.LocateMyFSM("Summon Minis");
             var summona1 = summon.GetState("Summon Antic");
             summona1.InsertCustomAction(() => {
-                EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Galien Mini Hammer", null, true);
+                var hammer = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Galien Mini Hammer", null, true);
+                if (hammer != null)
+                {
+                    hammer.ScaleObject(SizeScale);
+                    hammer.ScaleAudio(SizeScale);
+                }
             },0);
             summon.AddTimeoutAction(summona1, "SUMMON", 1f);
 
             var summona2 = summon.GetState("Summon Antic 2");
             summona2.InsertCustomAction(() => {
-                EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Galien Mini Hammer", null, true);
+                var hammer = EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Galien Mini Hammer", null, true);
+                if (hammer != null)
+                {
+                    hammer.ScaleObject(SizeScale);
+                    hammer.ScaleAudio(SizeScale);
+                }
             }, 0);
             summon.AddTimeoutAction(summona2, "SUMMON", 1f);
         }
@@ -3157,6 +3214,12 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
+            var corpse = gameObject.GetCorpseObject();
+            if (corpse != null)
+            {
+                corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
+            }
+
             var deactive = gameObject.GetComponent<DeactivateIfPlayerdataTrue>();
             if(deactive != null)
             {
@@ -3416,6 +3479,12 @@ namespace EnemyRandomizerMod
             base.Setup(other);
 
             ChildController.spawnEntityOnChildDeath = "Gas Explosion Recycle L";
+
+            var corpse = gameObject.GetCorpseObject();
+            if (corpse != null)
+            {
+                corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
+            }
 
             var deactive = gameObject.GetComponent<DeactivateIfPlayerdataTrue>();
             if (deactive != null)
@@ -4123,6 +4192,29 @@ namespace EnemyRandomizerMod
 
             }, 0);
         }
+
+        protected override int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
+        {
+            if (objectThatWillBeReplaced == null)
+                return base.GetStartingMaxHP(objectThatWillBeReplaced);
+
+            if(objectThatWillBeReplaced.IsBoss())
+                return base.GetStartingMaxHP(objectThatWillBeReplaced);
+
+            //maps get insane when there's lots of these.... so scale down their HP really fast if there's more than 1
+            var result = base.GetStartingMaxHP(objectThatWillBeReplaced);
+            float hpScale = GameObject.FindObjectsOfType<GhostWarriorMarmuControl>().Length;
+
+            if (hpScale < 1f)
+                hpScale = 2f;
+            else if (hpScale > 1f)
+                hpScale *= 4f;
+
+            float curHP = result;
+            float newHP = curHP / hpScale;
+
+            return Mathf.Clamp(Mathf.FloorToInt(newHP), 1, Mathf.FloorToInt(curHP));
+        }
     }
 
     public class GhostWarriorMarmuSpawner : DefaultSpawner<GhostWarriorMarmuControl>
@@ -4584,9 +4676,40 @@ namespace EnemyRandomizerMod
         public float customTransformMinAliveTime = 1f;
         public float customTransformAggroRange = 10f;
 
+        public int NumGPZ => GameObject.FindObjectsOfType<GreyPrinceControl>().Length;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
+
+
+            var setJumps = control.GetState("Set Jumps");
+            setJumps.InsertCustomAction(() => { 
+            if (NumGPZ > 2)
+            {
+                //not allowed to jump if there's too many GPZ
+                control.SetState("Idle Start");
+            }
+            }, 0);
+
+            var landWaves = control.GetState("Land Waves");
+            landWaves.InsertCustomAction(() => {
+                control.FsmVariables.GetFsmFloat("Shockwave Y").Value = SpawnerExtensions.GetRayOn(pos2d + Vector2.up * 0.5f, Vector2.down, 10).point.y;
+            }, 0);
+
+            {
+                var slashWavesR = control.GetState("Slash Waves R");
+                slashWavesR.InsertCustomAction(() => {
+                    control.FsmVariables.GetFsmFloat("Shockwave Y").Value = SpawnerExtensions.GetRayOn(pos2d + Vector2.up * 0.5f, Vector2.down, 10).point.y;
+                }, 0);
+            }
+
+            {
+                var slashWavesL = control.GetState("Slash Waves L");
+                slashWavesL.InsertCustomAction(() => {
+                    control.FsmVariables.GetFsmFloat("Shockwave Y").Value = SpawnerExtensions.GetRayOn(pos2d + Vector2.up * 0.5f, Vector2.down, 10).point.y;
+                }, 0);
+            }
 
             var e1 = control.GetState("Enter 1");
             e1.AddCustomAction(() => { control.FsmVariables.GetFsmInt("Level").Value = 1; });//force level to be 1 so this doesn't get out of hand...
