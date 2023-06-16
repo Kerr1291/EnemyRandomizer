@@ -1037,8 +1037,7 @@ namespace EnemyRandomizerMod
                 int minBossHP = 500;
                 if (soc.defaultScaledMaxHP < minBossHP)
                 {
-                    soc.defaultScaledMaxHP = minBossHP;
-                    soc.CurrentHP = minBossHP;
+                    soc.MaxHP = minBossHP;
                 }
             }
 

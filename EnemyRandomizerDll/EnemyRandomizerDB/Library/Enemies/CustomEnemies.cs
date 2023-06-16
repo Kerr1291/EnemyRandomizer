@@ -16,7 +16,31 @@ namespace EnemyRandomizerMod
 
 
 
+    /////////////////////////////////////////////////////////////////////////////
+    ///// 
+    public class ZapCloudControl : DefaultSpawnedEnemyControl
+    {
+    }
 
+    public class ZapCloudSpawner : DefaultSpawner<ZapCloudControl> { }
+
+    public class ZapCloudPrefabConfig : DefaultPrefabConfig { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    ///// 
+    public class JellyEggBombControl : DefaultSpawnedEnemyControl
+    {
+    }
+
+    public class JellyEggBombSpawner : DefaultSpawner<JellyEggBombControl> { }
+
+    public class JellyEggBombPrefabConfig : DefaultPrefabConfig { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -32,17 +56,28 @@ namespace EnemyRandomizerMod
         //GameObject hitCrystals;
         DamageEnemies damageEnemies;
 
+        IEnumerator StopAfter(GameObject hitEffect, float time)
+        {
+            yield return new WaitForSeconds(time);
+            GameObject.Destroy(hitEffect);
+            GameObject.Destroy(gameObject);
+        }
+
         public void Splat()
         {
-            var hitEffect = SpawnerExtensions.SpawnEntityAt("Hit Crystals", transform.position);
+            GameObject hitEffect = SpawnerExtensions.SpawnEntityAt("Hit Crystals", transform.position);
+            StartCoroutine(StopAfter(hitEffect, 0.25f));
         }
 
         public override void Setup(GameObject other)
         {
             base.Setup(other);
 
-            damageEnemies = gameObject.GetOrAddComponent<DamageEnemies>();
-            damageEnemies.damageDealt = 10;
+            var beam = gameObject.FindGameObjectInDirectChildren("Beam");
+            var fsm = beam.LocateMyFSM("Beam Extender");
+
+            damageEnemies = beam.GetOrAddComponent<DamageEnemies>();
+            damageEnemies.damageDealt = 100;
             damageEnemies.direction = 90f; //TODO: make sure this isn't backwards
             damageEnemies.magnitudeMult = 1f;
             damageEnemies.moveDirection = false;
@@ -54,22 +89,124 @@ namespace EnemyRandomizerMod
             var hm = gameObject.GetOrAddComponent<HealthManager>();
             hm.hp = 64;//TODO:
             hm.OnDeath += Splat;
-            hm.IsInvincible = true;
+            hm.IsInvincible = false;
+            hm.hasSpecialDeath = false;
             Geo = 7;
             MRenderer.enabled = true;
             Collider.enabled = true;
 
-            var dir = gameObject.GetRandomDirectionFromSelf();
-            PhysicsBody.velocity = dir * 13f;
+            var explode = SpawnerExtensions.SpawnEntityAt("Death Puff Med", transform.position, null, false, false);
+            explode.transform.SetParent(transform);
+            explode.transform.localPosition = Vector3.zero;
 
-            float angle = SpawnerExtensions.RotateToDirection(dir);
-            gameObject.SetRotation(angle);
+            var de = gameObject.GetOrAddComponent<EnemyDeathEffectsUninfected>();
+            de.doKillFreeze = false;
+            de.uninfectedDeathPt = explode;
+
+            var tinker = gameObject.GetComponent<TinkEffect>();
+            if (tinker != null)
+                GameObject.Destroy(tinker);
+
+            //var extend = fsm.GetState("Extend");
+            //extend.InsertCustomAction(() => {
+
+            //    var myUp = gameObject.GetUpFromSelfAngle(false).normalized * 2f;
+            //    var toUp = SpawnerExtensions.GetRayOn(transform.position.ToVec2() + myUp, myUp.normalized, 100f).distance;
+            //    fsm.FsmVariables.GetFsmFloat("Ray Distance").Value = toUp; }, 1);
+
+            //float angle = SpawnerExtensions.RotateToDirection(dir);
+            //gameObject.SetRotation(angle);
         }
     }
 
     public class LaserTurretFramesSpawner : DefaultSpawner<LaserTurretFramesControl> { }
 
     public class LaserTurretFramesPrefabConfig : DefaultPrefabConfig { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    ///// 
+    public class LaserTurretControl : DefaultSpawnedEnemyControl
+    {
+        public override string FSMName => "Control";
+
+        public override bool takesSpecialCharmDamage => true;
+        public override bool takesSpecialSpellDamage => true;
+
+        //GameObject hitCrystals;
+        DamageEnemies damageEnemies;
+
+        IEnumerator StopAfter(GameObject hitEffect, float time)
+        {
+            yield return new WaitForSeconds(time);
+            GameObject.Destroy(hitEffect);
+            GameObject.Destroy(gameObject);
+        }
+
+        public void Splat()
+        {
+            GameObject hitEffect = SpawnerExtensions.SpawnEntityAt("Hit Crystals", transform.position);
+            StartCoroutine(StopAfter(hitEffect, 0.25f));
+        }
+
+        public override void Setup(GameObject other)
+        {
+            base.Setup(other);
+
+            var beam = gameObject.FindGameObjectInDirectChildren("Beam");
+            var fsm = beam.LocateMyFSM("Beam Extender");
+
+            damageEnemies = beam.GetOrAddComponent<DamageEnemies>();
+            damageEnemies.damageDealt = 100;
+            damageEnemies.direction = 90f; //TODO: make sure this isn't backwards
+            damageEnemies.magnitudeMult = 1f;
+            damageEnemies.moveDirection = false;
+            damageEnemies.circleDirection = false;
+            damageEnemies.ignoreInvuln = false;
+            damageEnemies.attackType = AttackTypes.Generic;
+            damageEnemies.specialType = 0;
+
+            var hm = gameObject.GetOrAddComponent<HealthManager>();
+            hm.hp = 64;//TODO:
+            hm.OnDeath += Splat;
+            hm.IsInvincible = false;
+            hm.hasSpecialDeath = false;
+            Geo = 7;
+            MRenderer.enabled = true;
+            Collider.enabled = true;
+
+            var explode = SpawnerExtensions.SpawnEntityAt("Death Puff Med", transform.position, null, false, false);
+            explode.transform.SetParent(transform);
+            explode.transform.localPosition = Vector3.zero;
+
+            var de = gameObject.GetOrAddComponent<EnemyDeathEffectsUninfected>();
+            de.doKillFreeze = false;
+            de.uninfectedDeathPt = explode;
+
+            var tinker = gameObject.GetComponent<TinkEffect>();
+            if (tinker != null)
+                GameObject.Destroy(tinker);
+
+            //var extend = fsm.GetState("Extend");
+            //extend.InsertCustomAction(() => {
+
+            //    var myUp = gameObject.GetUpFromSelfAngle(false).normalized * 2f;
+            //    var toUp = SpawnerExtensions.GetRayOn(transform.position.ToVec2() + myUp, myUp.normalized, 100f).distance;
+            //    fsm.FsmVariables.GetFsmFloat("Ray Distance").Value = toUp; }, 1);
+
+            //float angle = SpawnerExtensions.RotateToDirection(dir);
+            //gameObject.SetRotation(angle);
+        }
+    }
+
+    public class LaserTurretSpawner : DefaultSpawner<LaserTurretControl> { }
+
+    public class LaserTurretPrefabConfig : DefaultPrefabConfig { }
     /////
     //////////////////////////////////////////////////////////////////////////////
 

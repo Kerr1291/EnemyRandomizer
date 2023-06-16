@@ -251,7 +251,7 @@ namespace EnemyRandomizerMod
             try
             {
                 if (gameObject.IsVisible())
-                    SetPositionOnSpawn();
+                    SetPositionOnSpawn(objectThatWillBeReplaced);
             }
             catch (Exception e)
             {
@@ -286,7 +286,9 @@ namespace EnemyRandomizerMod
                 || zoneScale == MetaDataTypes.ProgressionZoneScale["MONOMON_ARCHIVE"]
                 || zoneScale == MetaDataTypes.ProgressionZoneScale["ROYAL_GARDENS"])
             {
-                if(transform.position.z > 0.1f)
+                string currentScene = gameObject.SceneName();
+
+                if(transform.position.z > 10f || currentScene == "Fungus3_50")
                 {
                     GetComponents<Collider2D>().ToList().ForEach(x => x.enabled = false);
                     GetComponents<DamageHero>().ToList().ForEach(x => GameObject.Destroy(x));
@@ -333,18 +335,18 @@ namespace EnemyRandomizerMod
             gameObject.StickToGroundX(spawnPosOffsetToUse);
         }
 
-        public virtual void SetPositionOnSpawn()
+        public virtual void SetPositionOnSpawn(GameObject objectThatWillBeReplaced)
         {
-            PreSetSpawnPosition();
+            PreSetSpawnPosition(objectThatWillBeReplaced);
 
-            DoSetSpawnPosition();
+            DoSetSpawnPosition(objectThatWillBeReplaced);
 
-            AddPositionLogicFixers();
+            AddPositionLogicFixers(objectThatWillBeReplaced);
 
-            OnSetSpawnPosition();
+            OnSetSpawnPosition(objectThatWillBeReplaced);
         }
 
-        protected virtual void PreSetSpawnPosition()
+        protected virtual void PreSetSpawnPosition(GameObject objectThatWillBeReplaced)
         {
             var poob = gameObject.GetComponent<PreventOutOfBounds>();
             if (poob)
@@ -357,13 +359,10 @@ namespace EnemyRandomizerMod
             {
                 GameObject.Destroy(piw);
             }
-
-            //first, if the enemy is or was inside a wall, fix that
-            //CorrectInsideWallPosition(); 
         }
 
 
-        protected virtual void DoSetSpawnPosition()
+        protected virtual void DoSetSpawnPosition(GameObject objectThatWillBeReplaced)
         {
             //then, place it "on the ground" or whereever it should be
             if (useCustomPositonOnSpawn)
@@ -372,7 +371,7 @@ namespace EnemyRandomizerMod
                 SetDefaultPosition();
         }
 
-        protected virtual void AddPositionLogicFixers()
+        protected virtual void AddPositionLogicFixers(GameObject objectThatWillBeReplaced)
         {
             //try this resolution before finalizing their placement with "prevent out of bounds"
             //if (gameObject.IsInsideWalls())
@@ -388,7 +387,7 @@ namespace EnemyRandomizerMod
             }
         }
 
-        protected virtual void OnSetSpawnPosition()
+        protected virtual void OnSetSpawnPosition(GameObject objectThatWillBeReplaced)
         {
 
         }
@@ -599,8 +598,28 @@ namespace EnemyRandomizerMod
             catch (Exception e) { Dev.LogError($"Exception caught on destroy callback for {thisMetadata} ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
         }
 
+        public bool CanSpawnInScene
+        {
+            get
+            {
+                bool canSpawn = false;
+                try
+                {
+                    canSpawn = gameObject.IsInAValidScene() && 
+                        ((this.thisMetadata.SceneName == EnemyRandomizerDatabase.GetBlackBorders().Value.FirstOrDefault().scene.name)
+                        ||(this.thisMetadata.SceneName.TrimEnd("_boss") == EnemyRandomizerDatabase.GetBlackBorders().Value.FirstOrDefault().scene.name));
+                }
+                catch (Exception) { }
+                
+                return canSpawn;
+            }
+        }
+
         protected virtual void DoValidSceneDestroyEvents()
         {
+            if (!CanSpawnInScene)
+                return;
+
             if (explodeOnDeath && !string.IsNullOrEmpty(explodeOnDeathEffect))
                 ExplodeOnDeath();
 
@@ -698,11 +717,24 @@ namespace EnemyRandomizerMod
             var spawned = SpawnerExtensions.SpawnEntityAt(spawnEntityOnDeath, transform.position, null, false);
             if (spawned != null)
             {
-                var metaInfo = new ObjectMetadata(spawned);
-                //did this spawn into a different scene?
-                if (metaInfo.SceneName != thisMetadata.SceneName)
-                    GameObject.Destroy(spawned);
-                else
+                spawned.ScaleObject(SizeScale);
+                spawned.ScaleAudio(SizeScale);
+
+                //if this spawns an enemy, scale the hp to be similar
+                if(spawned.ObjectType() == PrefabObject.PrefabType.Enemy)
+                {
+                    spawned.SetMaxHP(spawned.GetScaledMaxHP(thisMetadata.GetDatabaseKey()));
+                }
+
+                //undo for now
+                //var metaInfo = new ObjectMetadata(spawned);
+                ////did this spawn into a different scene?
+                //if (metaInfo.SceneName != thisMetadata.SceneName)
+                //{
+                //    Dev.Log($"{gameObject} on death? {metaInfo.SceneName} != {thisMetadata.SceneName} destroying spawned thing");
+                //    GameObject.Destroy(spawned);
+                //}
+                //else
                     spawned.SafeSetActive(true);
             }
         }

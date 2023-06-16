@@ -182,6 +182,8 @@
         <SceneObject path="Corpse Sheo/Pt Red"/>
         <SceneObject path="Corpse Sheo/Pt Blue"/>
         <SceneObject path="Corpse Sheo/Pt Yellow"/>
+        <SceneObject path="_Props/Health Cocoon"/>
+        <SceneObject path="Health Scuttler"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Tutorial_01">
@@ -511,6 +513,9 @@
     <SceneData name="Ruins2_03_boss">
       <sceneObjects>
         <SceneObject path="Battle Control/Black Knight 4"/>
+        <SceneObject path="Battle Control/Black Knight 4/Bugs In 1"/>
+        <SceneObject path="Battle Control/Black Knight 4/Bugs In 2"/>
+        <SceneObject path="Battle Control/Black Knight 4/Entry Steam"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Ruins2_11_boss">
@@ -708,6 +713,12 @@
       <sceneObjects>
         <SceneObject path="shadow_gate/Slash Effect/Pt Bounce"/>
         <SceneObject path="mega_mantis_tall_slash/slash_core/Particle_rocks_long (2)"/>
+      </sceneObjects>
+    </SceneData>
+    <SceneData name="Fungus3_26">
+      <sceneObjects>
+        <SceneObject path="Jelly Egg Bomb"/>
+        <SceneObject path="Zap Cloud"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Fungus3_23_boss">
@@ -916,6 +927,11 @@
     <SceneData name="Abyss_15">
       <sceneObjects>
         <SceneObject path="Shade Sibling (14)"/>
+      </sceneObjects>
+    </SceneData>
+    <SceneData name="Abyss_16">
+      <sceneObjects>
+        <SceneObject path="Abyss Tendrils"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Abyss_19">
@@ -1384,6 +1400,7 @@
     <string>Dream Mage Lord Phase2</string>
     <string>Lost Kin</string>
     <string>Zoteling</string>
+    <string>Zoteling Hopper</string>
     <string>Zote Balloon</string>
     <string>Grey Prince</string>
     <string>Radiance</string>
@@ -1407,10 +1424,13 @@
     <string>Zote Crew Tall</string>
     <string>Hornet Nosk</string>
     <string>Mace Head Bug</string>
-    <string>Big Centipede Col</string>
+    <string>Big Centipede</string>
+    <string>Laser Turret</string>
     <string>Laser Turret Frames</string>
+    <string>Zap Cloud</string>
     <string>Jelly Egg Bomb</string>
     <string>Worm</string>
+    <string>Abyss Tendrils</string>
     <string>Bee Dropper</string>
   </enemyNames>
   <hazardNames>
@@ -1418,6 +1438,7 @@
     <string>Mage Orb</string>
     <string>Barb Region</string>
     <string>Hornet Barb</string>
+    <string>Laser Turret</string>
     <string>Laser Turret Frames</string>
     <string>Gas Explosion Recycle M</string>
     <string>Gas Explosion Recycle L</string>
@@ -1472,15 +1493,17 @@
     <string>Paint Shot R</string>
     <string>Paint Shot P Up</string>
     <string>Stalactite Hazard</string>
-    <string>Big Centipede Col</string>
+    <string>Big Centipede</string>
     <string>Acid Box</string>
     <string>Worm</string>
+    <string>Abyss Tendrils</string>
     <string>Cave Spikes Invis</string>
     <string>Swipe</string>
     <string>Cave Spikes tile</string>
     <string>Spike Collider</string>
     <string>Sphere Ball</string>
     <string>Zap Cloud</string>
+    <string>Jelly Egg Bomb</string>
     <string>Shot Point</string>
     <string>Deep Spikes</string>
     <string>Mega Jelly Multizap</string>
@@ -1489,7 +1512,6 @@
     <string>White_ Spikes</string>
     <string>wp_saw</string>
     <string>Slash Ball</string>
-    <string>Jelly Egg Bomb</string>
     <string>Dung Pillar</string>
     <string>RoofSpikes</string>
   </hazardNames>
@@ -1680,6 +1702,9 @@
     <string>lock burst</string>
     <string>wispy smoke object</string>
     <string>Pt Break</string>
+    <string>Bugs In 1</string>
+    <string>Bugs In 2</string>
+    <string>Entry Steam</string>
   </effectNames>
   <otherNames>
     <string>Sword 1</string><!--used by ghost warrior xero -->

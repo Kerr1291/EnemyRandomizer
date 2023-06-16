@@ -367,6 +367,7 @@ namespace EnemyRandomizerMod
             {"Buzzer Col", "Buzzer" },
             {"_0092_fountain (1)", "_0092_fountain_1"},
             {"Giant Fly Col", "Giant Fly" },
+            {"Big Centipede Col", "Big Centipede" },
         };
 
         static List<string> keysEndingWithASpecialCharacter = new List<string>()
@@ -375,6 +376,8 @@ namespace EnemyRandomizerMod
             {"Sword 2"},
             {"Sword 3"},
             {"Sword 4"},
+            {"Bugs In 1"},
+            {"Bugs In 2"},
             {"Zombie Spider 1"},
             {"Zombie Spider 2"},
             {"Zombie Fungus A"},

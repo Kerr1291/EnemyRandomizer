@@ -751,9 +751,9 @@ namespace EnemyRandomizerMod
             }, 3);
         }
 
-        protected override void OnSetSpawnPosition()
+        protected override void OnSetSpawnPosition(GameObject objectThatWillBeReplaced)
         {
-            base.OnSetSpawnPosition();
+            base.OnSetSpawnPosition(objectThatWillBeReplaced);
 
             cover.transform.position = transform.position;
             under.transform.position = transform.position;
@@ -1410,6 +1410,11 @@ namespace EnemyRandomizerMod
         public override void Setup(GameObject other)
         {
             base.Setup(other);
+
+            //pick something random from the arena list
+            var prefabName = SpawnerExtensions.GetRandomPrefabNameForArenaEnemy(null, null);
+            spawnOnDeath = prefabName;
+
             gameObject.AddParticleEffect_WhiteSoulEmissions(Color.green);
         }
     }
@@ -1763,6 +1768,87 @@ namespace EnemyRandomizerMod
     //////////////////////////////////////////////////////////////////////////////
 
 
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class WormControl : DefaultSpawnedEnemyControl
+    {
+    }
+
+    public class WormSpawner : DefaultSpawner<WormControl> { }
+
+    public class WormPrefabConfig : DefaultPrefabConfig { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class AbyssTendrilsControl : DefaultSpawnedEnemyControl
+    {
+    }
+
+    public class AbyssTendrilsSpawner : DefaultSpawner<AbyssTendrilsControl> { }
+
+    public class AbyssTendrilsPrefabConfig : DefaultPrefabConfig { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class BigCentipedeControl : DefaultSpawnedEnemyControl
+    {
+        public override string FSMName => "Big Centipede";
+
+        GameObject entry;
+        GameObject exit;
+
+        public override void Setup(GameObject objectThatWillBeReplaced = null)
+        {
+            base.Setup(objectThatWillBeReplaced);
+
+            //no special logic for colo garpedes
+            if (IsInColo())
+                return;
+
+            entry = gameObject.FindGameObjectInDirectChildren("Entry");
+            exit = gameObject.FindGameObjectInDirectChildren("Exit");
+
+            //make the garpedes cycle
+            var burrowed = control.GetState("Burrowed");
+            burrowed.ChangeTransition("FINISHED", "Return Pos");
+        }
+
+        protected override void OnSetSpawnPosition(GameObject objectThatWillBeReplaced)
+        {
+            base.OnSetSpawnPosition(objectThatWillBeReplaced);
+
+            entry.transform.position = gameObject.transform.position;
+
+            //move exit to far off
+            var facing = gameObject.GetUpFromSelfAngle(false);
+
+            var ray = SpawnerExtensions.GetRayOn(pos2d + facing, facing, 200f);
+
+            exit.transform.position = ray.point;
+        }
+    }
+
+    public class BigCentipedeSpawner : DefaultSpawner<BigCentipedeControl> { }
+
+    public class BigCentipedePrefabConfig : DefaultPrefabConfig { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
 
 
 

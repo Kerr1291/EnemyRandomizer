@@ -99,7 +99,7 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
 
         const string defaultDatabaseFilePath = "EnemyRandomizerDatabase.xml";
-        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9h]";
+        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9m]";
         static string currentVersion = currentVersionPrefix;
             //Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + $" CURRENT SEED:[{GlobalSettings.seed}] -- TO CHANGE SEED --> MODS > ENEMY RANDOMIZER > ENEMY RANDOMIZER MODULES";
 
@@ -231,6 +231,9 @@ namespace EnemyRandomizerMod
             ModHooks.OnReceiveDeathEventHook -= MODHOOK_RecieveDeathEvent;
             ModHooks.OnReceiveDeathEventHook += MODHOOK_RecieveDeathEvent;
 
+            ModHooks.ColliderCreateHook -= ModHooks_ColliderCreateHook;
+            ModHooks.ColliderCreateHook += ModHooks_ColliderCreateHook;
+
             ModHooks.OnEnableEnemyHook -= MODHOOK_OnHealthManagerObjectEnabled;
             ModHooks.OnEnableEnemyHook += MODHOOK_OnHealthManagerObjectEnabled;
 
@@ -287,6 +290,19 @@ namespace EnemyRandomizerMod
             };
         }
 
+        private void ModHooks_ColliderCreateHook(GameObject obj)
+        {
+            try
+            {
+                if (obj != null && obj.name.Contains("Health Scuttler"))
+                {
+                    //test.....
+                    RandomizeEnemy(obj);
+                }
+            }
+            catch (Exception e) { }
+        }
+
         IEnumerator UpdateLabelOnLoad()
         {
             yield return new WaitUntil(() => GameObject.FindObjectOfType<ModVersionDraw>(true) != null);
@@ -305,6 +321,10 @@ namespace EnemyRandomizerMod
             Dev.Log("==                                                                                   ==");
             Dev.Log("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
             BlackBorders.Value = obj;
+            if(BlackBorders != null && BlackBorders.Value != null && BlackBorders.Value.Count > 0)
+            {
+                BattleManager.DoSceneCheck(obj.First());
+            }
         }
 
         void Instance_UnloadingLevel()
@@ -342,6 +362,8 @@ namespace EnemyRandomizerMod
             ModHooks.OnReceiveDeathEventHook -= MODHOOK_RecieveDeathEvent;
 
             ModHooks.OnEnableEnemyHook -= MODHOOK_OnHealthManagerObjectEnabled;
+
+            ModHooks.ColliderCreateHook -= ModHooks_ColliderCreateHook;
 
             ModHooks.ObjectPoolSpawnHook -= MODHOOK_OnObjectPoolSpawn;
 
@@ -663,7 +685,8 @@ namespace EnemyRandomizerMod
 
             try
             {
-                EnemyRandomizer.bypassNextReplacement = true;
+                if(setActive)
+                    EnemyRandomizer.bypassNextReplacement = true;
                 //EnemyRandomizer.debugCustomReplacement = replacement;
 
                 return EnemyRandomizerDatabase.CustomSpawn(pos, objectName, replacement, setActive);

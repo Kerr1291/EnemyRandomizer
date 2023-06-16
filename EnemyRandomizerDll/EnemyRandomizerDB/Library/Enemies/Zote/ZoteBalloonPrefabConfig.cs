@@ -53,7 +53,9 @@ namespace EnemyRandomizerMod
             });
 
             var endState = control.AddState("DestroyGO");
-            endState.AddCustomAction(() => { Destroy(gameObject); });
+            endState.AddCustomAction(() => {
+                SpawnerExtensions.SpawnEntityAt("Gas Explosion M2", transform.position, null, true, false);
+                Destroy(gameObject); });
 
             var reset = control.GetState("Reset");
             reset.RemoveTransition("FINISHED");
@@ -61,7 +63,9 @@ namespace EnemyRandomizerMod
             var death = control.GetState("Die");
             death.DisableAction(4);
 
-            control.OverrideState( "Reset", () => { GameObject.Destroy(gameObject); });
+            control.OverrideState( "Reset", () => {
+                SpawnerExtensions.SpawnEntityAt("Gas Explosion M2", transform.position, null, true, false);
+                GameObject.Destroy(gameObject); });
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Spawn Pos");
             //this.AddResetToStateOnHide(control, "Init");

@@ -46,9 +46,12 @@ namespace EnemyRandomizerMod
                 drbody.velocity = Vector3.zero;
             }
 
-            for(int i = 0; i < disableList.Length; ++i)
+            if (disableList != null)
             {
-                disableList[i].SetActive(false);
+                for (int i = 0; i < disableList.Length; ++i)
+                {
+                    disableList[i].SetActive(false);
+                }
             }
 
             Mesh M = null;

@@ -109,6 +109,20 @@ namespace EnemyRandomizerMod
             return null;
         }
 
+        public static List<GameObject> FindGameObjectsNameContainsInChildren(this GameObject gameObject, string name)
+        {
+            List<GameObject> children = new List<GameObject>();
+            if (gameObject == null)
+                return null;
+
+            foreach (var t in gameObject.GetComponentsInChildren<Transform>(true))
+            {
+                if (t.name.Contains(name))
+                    children.Add( t.gameObject );
+            }
+            return children;
+        }
+
         public static TComponent FindObjectOfType<TComponent>(bool includeInactive = true)
             where TComponent : Component
         {

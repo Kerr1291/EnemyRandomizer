@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.Events;
 using On;
+using Satchel;
 
 namespace EnemyRandomizerMod
 {
@@ -32,6 +33,11 @@ namespace EnemyRandomizerMod
         public int preKilledEnemies = 0;
 
         public bool isCustomArena = false;
+
+        public void ForceBattleEnd()
+        {
+            OnBattleEnded();
+        }
 
         public virtual void Dispose()
         {
@@ -64,9 +70,50 @@ namespace EnemyRandomizerMod
             On.HutongGames.PlayMaker.FsmState.OnEnter += FsmState_OnEnter;
         }
 
+        IEnumerator FixFlyCorpse()
+        {
+            GameObject burster;
+            for (; ; )
+            {
+                yield return new WaitForEndOfFrame();
+                if (SceneName != "Crossroads_04")
+                    yield break;
+
+                burster = GameObject.Find("Corpse Big Fly Burster(Clone)");
+                if (burster != null && burster.LocateMyFSM("burster").enabled)
+                    break;
+            }
+
+            Dev.Log("Found burster corpse");
+            if (SceneName != "Crossroads_04")
+                yield break;
+
+            var fsm = burster.LocateMyFSM("burster");
+            var spawn = fsm.GetState("Spawn Flies 2");
+            spawn.AddCustomAction(() => {
+                SpawnerExtensions.SpawnEnemyForEnemySpawner(burster.transform.position, true, "Fly");
+                SpawnerExtensions.SpawnEnemyForEnemySpawner(burster.transform.position, true, "Fly");
+                SpawnerExtensions.SpawnEnemyForEnemySpawner(burster.transform.position, true, "Fly");
+                SpawnerExtensions.SpawnEnemyForEnemySpawner(burster.transform.position, true, "Fly");
+                SpawnerExtensions.SpawnEnemyForEnemySpawner(burster.transform.position, true, "Fly");
+                SpawnerExtensions.SpawnEnemyForEnemySpawner(burster.transform.position, true, "Fly");
+                GameManager.instance.BroadcastFSMEventAfterTime("END", 4f);
+            });
+            Dev.Log("Burster corpse setup complete");
+        }
+
         protected virtual void OnBattleStarted()
         {
             Dev.Log("BATTLE STARTED");
+
+            if (SceneName == "Crossroads_04")
+            {
+                if (GameManager.instance.playerData.giantFlyDefeated == false)
+                {
+                    GameManager.instance.StartCoroutine(FixFlyCorpse());
+                }
+            }
+
             battleStarted = true;
             battleEnded = false;
             BattleManager.Instance.Value.StartCoroutine(ForceProgressWatchdog(12f));
@@ -110,6 +157,12 @@ namespace EnemyRandomizerMod
             }
             else
             {
+                if (GameObject.FindObjectsOfType<HealthManager>().Select(x => x.gameObject).Any(x => x.IsBoss()))
+                {
+                    Dev.Log("SKIP KILLING EVERYTHING BEFORE ARENA -- THIS IS A BOSS ARENA");
+                    return;
+                }
+
                 Dev.LogWarning("Battle has started and we have no collider to check if all previous battle enemies are in the arena!");
 
                 var bmos = SpawnedObjectControl.GetAllBattle.ToList();
@@ -130,10 +183,17 @@ namespace EnemyRandomizerMod
         IEnumerator ForceProgressWatchdog(float timer = 10f)
         {
             Dev.Log("WATCHDOG STARTED");
+
             float updateRate = 0f;
             float t = 0f;
             for (; ; )
             {
+                if(GameObject.FindObjectsOfType<HealthManager>().Select(x => x.gameObject).Any(x => x.IsBoss()))
+                {
+                    Dev.Log("WATCHDOG CANCELED -- THIS IS A BOSS ARENA");
+                    yield break;
+                }
+
                 if(battleEnded)
                 {
                     Dev.Log("WATCHDOG ENDED -- BATTLE COMPLETE");
@@ -213,14 +273,29 @@ namespace EnemyRandomizerMod
             if (self == null || self.Fsm != FSM.Fsm)
                 return;
 
-            if (self.Actions.OfType<SendEventByName>().Any(x => x.sendEvent != null && x.sendEvent.Value == "BG CLOSE"))
+            if (self.Actions.OfType<SendEventByName>().Any(x => x.sendEvent != null && 
+            (x.sendEvent.Value == "BG CLOSE" || 
+            x.sendEvent.Value == "DREAM GATE CLOSE" ||
+            x.sendEvent.Value == "FIGHT START" ||
+            x.sendEvent.Value == "GHOST FIGHT START" ||
+            x.sendEvent.Value == "BATTLE START")))
             {
                 OnBattleStarted();
             }
 
-            if (self.Actions.OfType<SendEventByName>().Any(x => x.sendEvent != null && x.sendEvent.Value == "BG OPEN"))
+            if (self.Actions.OfType<SendEventByName>().Any(x => x.sendEvent != null && (x.sendEvent.Value == "BG OPEN" ||
+            x.sendEvent.Value == "GRIMM DEFEATED" ||
+            x.sendEvent.Value == "BOSS DEATH" ||
+            x.sendEvent.Value == "DISSIPATE" ||
+            x.sendEvent.Value == "GHOST DEFEAT" ||
+            x.sendEvent.Value == "GHOST DEAD" ||
+            x.sendEvent.Value == "DISSIPATE" ||
+            x.sendEvent.Value == "KILLED" ||
+            x.sendEvent.Value == "IK GATE OPEN" ||
+            x.sendEvent.Value == "BATTLE END")))
             {
-                OnBattleEnded();
+                if(battleStarted)
+                    OnBattleEnded();
             }
 
             if (self.Name == "Idle")
@@ -510,10 +585,6 @@ namespace EnemyRandomizerMod
             }
         }
 
-        //public void RegisterEnemy(BattleManagedObject bmo)
-        //{
-        //}
-
         public static void OpenGates(bool isWhitePalace = false)
         {
             PlayMakerFSM.BroadcastEvent("BG OPEN");
@@ -530,32 +601,16 @@ namespace EnemyRandomizerMod
                     }
                 }
             }
-
-            //var fsms = GameObject.FindObjectsOfType<PlayMakerFSM>();
-            //{
-            //    fsms
-            //        .Where(x => x != null)
-            //        .ToList()
-            //        .ForEach(x =>
-            //        {
-            //            x.SendEvent("BG OPEN");
-            //        });
-            //}
         }
 
-        public static void CloseGates()
+        public static void CloseGates(bool broadcastBattleStart = false)
         {
             PlayMakerFSM.BroadcastEvent("BG CLOSE");
-            //var fsms = GameObject.FindObjectsOfType<PlayMakerFSM>();
-            //{
-            //    fsms
-            //        .Where(x => x != null)
-            //        .ToList()
-            //        .ForEach(x =>
-            //        {
-            //            x.SendEvent("BG CLOSE");
-            //        });
-            //}
+            PlayMakerFSM.BroadcastEvent("DREAM GATE CLOSE");
+            PlayMakerFSM.BroadcastEvent("FIGHT START");
+            PlayMakerFSM.BroadcastEvent("GHOST FIGHT START");
+            if (broadcastBattleStart)
+                PlayMakerFSM.BroadcastEvent("BATTLE START");            
         }
 
         public static IEnumerable<CameraLockArea> GetCameraLocksFromScene(GameObject gameObject)
@@ -569,6 +624,12 @@ namespace EnemyRandomizerMod
             {
                 c.gameObject.SetActive(false);
             }
+        }
+
+        public static void UnlockCameras()
+        {
+            if (BattleManager.StateMachine.Value.FSM != null)
+                UnlockCameras(GetCameraLocksFromScene(BattleManager.StateMachine.Value.FSM.gameObject));
         }
     }
 

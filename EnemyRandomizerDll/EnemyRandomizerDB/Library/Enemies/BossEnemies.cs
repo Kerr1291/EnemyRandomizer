@@ -36,6 +36,10 @@ namespace EnemyRandomizerMod
             //enable this after activating/repositioning traitor lord
             this.InsertHiddenState(control, "Init", "FINISHED", "Fall");
 
+            //remove all journal stuff from the boss fsm
+            control.OverrideState("Journal", () =>{ });
+            
+
             var fall = control.GetState("Fall");
             fall.DisableAction(1);
             fall.DisableAction(2);
@@ -445,9 +449,9 @@ namespace EnemyRandomizerMod
             teleOut.DisableAction(3);
         }
 
-        protected override void OnSetSpawnPosition()
+        protected override void OnSetSpawnPosition(GameObject objectThatWillBeReplaced)
         {
-            base.OnSetSpawnPosition();
+            base.OnSetSpawnPosition(objectThatWillBeReplaced);
 
             GetComponent<PreventOutOfBounds>().onBoundCollision -= ForceDownward;
             GetComponent<PreventOutOfBounds>().onBoundCollision += ForceDownward;
@@ -753,9 +757,9 @@ namespace EnemyRandomizerMod
             control.AddTimeoutAction(control.GetState("Hs Ret Right"), "FINISHED", 0.5f);
         }
 
-        protected override void OnSetSpawnPosition()
+        protected override void OnSetSpawnPosition(GameObject objectThatWillBeReplaced)
         {
-            base.OnSetSpawnPosition();
+            base.OnSetSpawnPosition(objectThatWillBeReplaced);
             GetComponent<PreventOutOfBounds>().onBoundCollision -= OnCollision;
             GetComponent<PreventOutOfBounds>().onBoundCollision += OnCollision;
         }
@@ -1413,7 +1417,7 @@ namespace EnemyRandomizerMod
         }
 
 
-        protected override int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
+        public override int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
         {
             var result = base.GetStartingMaxHP(objectThatWillBeReplaced);
             p1HP = CurrentHP;
@@ -3092,6 +3096,14 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
+            var corpse = gameObject.GetCorpseObject();
+            if(corpse != null)
+            {
+                var cc = corpse.LocateMyFSM("Corpse Control");
+                var init = cc.GetState("Init");
+                init.DisableActions(5);
+            }
+
             SetupChildrenStuff();
 
             SetupInitStates();
@@ -3483,6 +3495,15 @@ namespace EnemyRandomizerMod
             var corpse = gameObject.GetCorpseObject();
             if (corpse != null)
             {
+                var cfsm = corpse.LocateMyFSM("Control");
+                {
+                    if(cfsm != null)
+                    {
+                        cfsm.GetState("Set PD").DisableActions(0);
+                        cfsm.GetState("Blow").DisableActions(5);
+                    }
+                }
+
                 corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
             }
 
@@ -4193,7 +4214,7 @@ namespace EnemyRandomizerMod
             }, 0);
         }
 
-        protected override int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
+        public override int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
         {
             if (objectThatWillBeReplaced == null)
                 return base.GetStartingMaxHP(objectThatWillBeReplaced);
@@ -4779,6 +4800,49 @@ namespace EnemyRandomizerMod
 
         public override bool preventOutOfBoundsAfterPositioning => true;
 
+        
+        IEnumerator WaitForCorpse(GameObject go)
+        {
+            for(; ; )
+            {
+                if (go == null)
+                    break;
+
+                if (!go.scene.IsValid())
+                    yield break;
+
+                
+                yield return null;
+            }
+
+            for (; ; )
+            {
+                if (go == null)
+                {
+                    var found = GameObject.FindObjectsOfType<PlayMakerFSM>().Where(x => x.name == "burster");
+                    foreach (var f in found)
+                    {
+                        var spawn = f.GetState("Spawn Flies 2");
+                        if (spawn.Actions.Length <= 3)
+                        {
+                            spawn.AddCustomAction(() =>
+                            {
+                                SpawnerExtensions.SpawnEnemyForEnemySpawner(f.transform.position, true, "Fly");
+                                SpawnerExtensions.SpawnEnemyForEnemySpawner(f.transform.position, true, "Fly");
+                                SpawnerExtensions.SpawnEnemyForEnemySpawner(f.transform.position, true, "Fly");
+                                SpawnerExtensions.SpawnEnemyForEnemySpawner(f.transform.position, true, "Fly");
+                                SpawnerExtensions.SpawnEnemyForEnemySpawner(f.transform.position, true, "Fly");
+                                SpawnerExtensions.SpawnEnemyForEnemySpawner(f.transform.position, true, "Fly");
+                            });
+                            yield break;
+                        }
+                    }
+                }
+                yield return null;
+            }
+        }
+
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
@@ -4803,11 +4867,9 @@ namespace EnemyRandomizerMod
                 fly.DisableAction(5);
                 fly.DisableAction(6);
                 fly.DisableAction(7);
-            }
-        }
 
-        protected override void SetCustomPositionOnSpawn()
-        {
+                GameManager.instance.StartCoroutine(WaitForCorpse(gameObject));
+            }
         }
 
         //public void SelfSpawnBabies()
@@ -4877,27 +4939,6 @@ namespace EnemyRandomizerMod
 
     public class GiantFlySpawner : DefaultSpawner<GiantFlyControl>
     {
-        public override GameObject Spawn(PrefabObject prefabToSpawn, GameObject objectToReplace)
-        {
-            var gameObject = base.Spawn(prefabToSpawn, objectToReplace);
-
-            var corpse = gameObject.GetCorpseObject();
-            if (corpse != null)
-            {
-                var fsm = corpse.LocateMyFSM("burster");
-                var spawn = fsm.GetState("Spawn Flies 2");
-                spawn.AddCustomAction(() => {
-                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpse.transform.position, true, "Fly");
-                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpse.transform.position, true, "Fly");
-                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpse.transform.position, true, "Fly");
-                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpse.transform.position, true, "Fly");
-                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpse.transform.position, true, "Fly");
-                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpse.transform.position, true, "Fly");
-                });
-            }
-
-            return gameObject;
-        }
     }
 
     public class GiantFlyPrefabConfig : DefaultPrefabConfig { }
@@ -5321,9 +5362,9 @@ namespace EnemyRandomizerMod
             });
         }
 
-        protected override void OnSetSpawnPosition()
+        protected override void OnSetSpawnPosition(GameObject objectThatWillBeReplaced)
         {
-            base.OnSetSpawnPosition();
+            base.OnSetSpawnPosition(objectThatWillBeReplaced);
             gameObject.FindGameObjectInDirectChildren("Head").SafeSetActive(false);
 
 
@@ -5972,9 +6013,9 @@ namespace EnemyRandomizerMod
             }
         }
 
-        protected override void OnSetSpawnPosition()
+        protected override void OnSetSpawnPosition(GameObject objectThatWillBeReplaced)
         {
-            base.OnSetSpawnPosition();
+            base.OnSetSpawnPosition(objectThatWillBeReplaced);
 
             PhysicsBody.isKinematic = false;
 

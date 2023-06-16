@@ -336,7 +336,11 @@ namespace EnemyRandomizerMod
                 var soc = loadedObjectToProcess.GetComponent<SpawnedObjectControl>();
                 if(isColo && soc == null)
                 {
-                    SpawnerExtensions.DestroyObject(loadedObjectToProcess); 
+                    //don't destroy garpedes
+                    if (!loadedObjectToProcess.name.Contains("Big Centipede"))
+                    {
+                        SpawnerExtensions.DestroyObject(loadedObjectToProcess);
+                    }
                     return true;
                 }
 

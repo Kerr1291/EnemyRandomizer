@@ -129,7 +129,7 @@ namespace EnemyRandomizerMod
             }
         }
 
-        protected override int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
+        public override int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
         {
             if(preceptsEnabled)
             {
@@ -348,75 +348,75 @@ namespace EnemyRandomizerMod
 
         public static List<Color> _58colors = new List<Color>()
         {
-            new Color(1.00f, 1.00f, 1.00f, 1f),    // white
+            new Color(1.00f, 1.00f, 1.00f, 1f),    // white            0
             new Color(0.56f, 0.93f, 0.93f, 1f),    // LightCyan
             new Color(0.93f, 0.38f, 0.51f, 1f),    // HotPink
             new Color(0.80f, 0.59f, 0.00f, 1f),    // Gold
-            new Color(0.98f, 0.50f, 0.45f, 1f),    // LightCoral
-                
-            new Color(0.93f, 0.93f, 0.93f, 1f),    // LightGray
-            new Color(0.84f, 0.56f, 0.56f, 1f),    // IndianRed
-            new Color(0.56f, 0.93f, 0.56f, 1f),    // LightGreen
-            new Color(0.56f, 0.56f, 0.93f, 1f),    // LightBlue
-            new Color(0.93f, 0.93f, 0.56f, 1f),    // LightYellow
-                                                       
-            new Color(0.93f, 0.56f, 0.93f, 1f),    // Plum
-            new Color(0.00f, 0.00f, 0.00f, 1f),    // black
-            new Color(1.00f, 0.00f, 0.00f, 1f),    // red
-            new Color(0.75f, 0.75f, 0.75f, 1f),    // Silver
-            new Color(0.78f, 0.08f, 0.52f, 1f),    // DeepPink
-                                                       
-            new Color(0.33f, 0.42f, 0.18f, 1f),    // DarkOliveGreen
-            new Color(0.41f, 0.41f, 0.41f, 1f),    // DimGray
-            new Color(0.91f, 0.76f, 0.65f, 1f),    // BurlyWood
-            new Color(0.96f, 0.96f, 0.86f, 1f),    // Cornsilk
-            new Color(0.55f, 0.47f, 0.14f, 1f),    // DarkKhaki
-                                                       
-            new Color(0.70f, 0.89f, 0.96f, 1f),    // LightSkyBlue
-            new Color(0.89f, 0.47f, 0.20f, 1f),    // Sienna
-            new Color(0.00f, 1.00f, 0.00f, 1f),    // green
-            new Color(0.24f, 0.71f, 0.56f, 1f),    // MediumAquamarine
-            new Color(0.58f, 0.00f, 0.83f, 1f),    // Indigo
-                                                       
-            new Color(0.63f, 0.08f, 0.82f, 1f),    // DarkMagenta
-            new Color(0.94f, 0.50f, 0.31f, 1f),    // Salmon
-            new Color(0.29f, 0.59f, 0.82f, 1f),    // SteelBlue
-            new Color(0.85f, 0.53f, 0.10f, 1f),    // DarkGoldenrod
-            new Color(0.40f, 0.80f, 0.67f, 1f),    // MediumSeaGreen
-                                                       
-            new Color(0.68f, 0.85f, 0.90f, 1f),    // LightSteelBlue
-            new Color(0.27f, 0.51f, 0.71f, 1f),    // DodgerBlue
-            new Color(0.00f, 0.00f, 1.00f, 1f),    // blue
-            new Color(0.95f, 0.50f, 0.00f, 1f),    // Orange
-            new Color(0.85f, 0.45f, 0.82f, 1f),    // Orchid
-                                                       
-            new Color(0.88f, 0.65f, 0.47f, 1f),    // Tan
-            new Color(0.44f, 0.53f, 0.56f, 1f),    // CadetBlue
-            new Color(0.99f, 0.94f, 0.81f, 1f),    // Cornsilk
-            new Color(0.65f, 0.00f, 0.18f, 1f),    // Maroon
-            new Color(0.49f, 0.99f, 0.83f, 1f),    // MintCream
-                                                       
-            new Color(0.86f, 0.44f, 0.58f, 1f),    // RosyBrown
-            new Color(0.84f, 0.28f, 0.28f, 1f),    // Firebrick
-            new Color(0.24f, 0.67f, 0.24f, 1f),    // LimeGreen
-            new Color(0.24f, 0.53f, 0.96f, 1f),    // MediumBlue
-            new Color(0.96f, 0.96f, 0.96f, 1f),    // WhiteSmoke
-
-            new Color(0.69f, 0.13f, 0.13f, 1f),    // DarkRed
-            new Color(0.65f, 0.16f, 0.49f, 1f),    // MediumPurple
-            new Color(0.73f, 0.56f, 0.75f, 1f),    // MediumOrchid
-            new Color(0.00f, 0.75f, 0.75f, 1f),    // Aqua
-            new Color(0.87f, 0.63f, 0.87f, 1f),    // Thistle
-
-            new Color(0.75f, 0.50f, 0.31f, 1f),    // Chocolate
-            new Color(0.51f, 0.81f, 0.93f, 1f),    // SkyBlue
-            new Color(0.43f, 0.50f, 0.82f, 1f),    // DarkSlateBlue
-            new Color(0.90f, 0.63f, 0.56f, 1f),    // Coral
-            new Color(0.11f, 0.67f, 0.55f, 1f),    // SeaGreen
-                
-            new Color(0.82f, 0.37f, 0.57f, 1f),    // MediumVioletRed
-            new Color(0.77f, 0.60f, 0.43f, 1f),    // Peru
-            new Color(0.56f, 0.56f, 0.56f, 1f),    // DarkGray
+            new Color(0.98f, 0.50f, 0.45f, 1f),    // LightCoral       4
+                                                                       
+            new Color(0.93f, 0.93f, 0.93f, 1f),    // LightGray        
+            new Color(0.84f, 0.56f, 0.56f, 1f),    // IndianRed        
+            new Color(0.56f, 0.93f, 0.56f, 1f),    // LightGreen       
+            new Color(0.56f, 0.56f, 0.93f, 1f),    // LightBlue        
+            new Color(0.93f, 0.93f, 0.56f, 1f),    // LightYellow      9
+                                                                       
+            new Color(0.93f, 0.56f, 0.93f, 1f),    // Plum             
+            new Color(0.00f, 0.00f, 0.00f, 1f),    // black            
+            new Color(1.00f, 0.00f, 0.00f, 1f),    // red              
+            new Color(0.75f, 0.75f, 0.75f, 1f),    // Silver           
+            new Color(0.78f, 0.08f, 0.52f, 1f),    // DeepPink         14
+                                                                       
+            new Color(0.33f, 0.42f, 0.18f, 1f),    // DarkOliveGreen   
+            new Color(0.41f, 0.41f, 0.41f, 1f),    // DimGray          
+            new Color(0.91f, 0.76f, 0.65f, 1f),    // BurlyWood        
+            new Color(0.96f, 0.96f, 0.86f, 1f),    // Cornsilk         
+            new Color(0.55f, 0.47f, 0.14f, 1f),    // DarkKhaki        19
+                                                                       
+            new Color(0.70f, 0.89f, 0.96f, 1f),    // LightSkyBlue     
+            new Color(0.89f, 0.47f, 0.20f, 1f),    // Sienna           
+            new Color(0.00f, 1.00f, 0.00f, 1f),    // green            
+            new Color(0.24f, 0.71f, 0.56f, 1f),    // MediumAquamarine 
+            new Color(0.58f, 0.00f, 0.83f, 1f),    // Indigo           24
+                                                                       
+            new Color(0.63f, 0.08f, 0.82f, 1f),    // DarkMagenta      
+            new Color(0.94f, 0.50f, 0.31f, 1f),    // Salmon           
+            new Color(0.29f, 0.59f, 0.82f, 1f),    // SteelBlue        
+            new Color(0.85f, 0.53f, 0.10f, 1f),    // DarkGoldenrod    
+            new Color(0.40f, 0.80f, 0.67f, 1f),    // MediumSeaGreen   29
+                                                                       
+            new Color(0.68f, 0.85f, 0.90f, 1f),    // LightSteelBlue   
+            new Color(0.27f, 0.51f, 0.71f, 1f),    // DodgerBlue       
+            new Color(0.00f, 0.00f, 1.00f, 1f),    // blue             
+            new Color(0.95f, 0.50f, 0.00f, 1f),    // Orange           
+            new Color(0.85f, 0.45f, 0.82f, 1f),    // Orchid           34
+                                                                       
+            new Color(0.88f, 0.65f, 0.47f, 1f),    // Tan              
+            new Color(0.44f, 0.53f, 0.56f, 1f),    // CadetBlue        
+            new Color(0.99f, 0.94f, 0.81f, 1f),    // Cornsilk         
+            new Color(0.65f, 0.00f, 0.18f, 1f),    // Maroon           
+            new Color(0.49f, 0.99f, 0.83f, 1f),    // MintCream        39
+                                                                       
+            new Color(0.86f, 0.44f, 0.58f, 1f),    // RosyBrown        
+            new Color(0.84f, 0.28f, 0.28f, 1f),    // Firebrick        
+            new Color(0.24f, 0.67f, 0.24f, 1f),    // LimeGreen        
+            new Color(0.24f, 0.53f, 0.96f, 1f),    // MediumBlue       
+            new Color(0.96f, 0.96f, 0.96f, 1f),    // WhiteSmoke       44
+                                                                       
+            new Color(0.69f, 0.13f, 0.13f, 1f),    // DarkRed          
+            new Color(0.65f, 0.16f, 0.49f, 1f),    // MediumPurple     
+            new Color(0.73f, 0.56f, 0.75f, 1f),    // MediumOrchid     
+            new Color(0.00f, 0.75f, 0.75f, 1f),    // Aqua             
+            new Color(0.87f, 0.63f, 0.87f, 1f),    // Thistle          49
+                                                                       
+            new Color(0.75f, 0.50f, 0.31f, 1f),    // Chocolate        
+            new Color(0.51f, 0.81f, 0.93f, 1f),    // SkyBlue          
+            new Color(0.43f, 0.50f, 0.82f, 1f),    // DarkSlateBlue    
+            new Color(0.90f, 0.63f, 0.56f, 1f),    // Coral            
+            new Color(0.11f, 0.67f, 0.55f, 1f),    // SeaGreen         54
+                                                                       
+            new Color(0.82f, 0.37f, 0.57f, 1f),    // MediumVioletRed  
+            new Color(0.77f, 0.60f, 0.43f, 1f),    // Peru             
+            new Color(0.56f, 0.56f, 0.56f, 1f),    // DarkGray         57
         };
 
         public static void ShiftSpriteHue(this tk2dSprite sprite, TriadicColorPalette colorPalette)

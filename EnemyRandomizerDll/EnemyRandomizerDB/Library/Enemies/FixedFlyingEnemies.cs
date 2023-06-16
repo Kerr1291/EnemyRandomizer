@@ -295,7 +295,7 @@ namespace EnemyRandomizerMod
             this.InsertHiddenState(control, "Init", "FINISHED", "Wake");
         }
 
-        protected override int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
+        public override int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
         {
             var result = base.GetStartingMaxHP(objectThatWillBeReplaced);
 

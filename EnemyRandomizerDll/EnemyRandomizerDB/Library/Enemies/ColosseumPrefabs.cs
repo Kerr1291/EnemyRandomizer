@@ -699,8 +699,9 @@ namespace EnemyRandomizerMod
         public SpawnedObjectControl soc;
         public AudioSource audioSource;
         public AudioSource coloMCaudioSource;
+        public AudioSource targetAudioSource;
 
-        public void PlayMusic()
+        public void PlayMusic(float volume = 0.8f, GameObject target = null)
         {
             bool isColoBronze = BattleManager.StateMachine.Value is ColoBronze;
             if (isColoBronze)
@@ -710,16 +711,32 @@ namespace EnemyRandomizerMod
                 coloMCaudioSource = mc.GetComponent<AudioSource>();
                 coloMCaudioSource.Stop();
                 coloMCaudioSource.clip = audioSource.clip;
+                if (coloMCaudioSource.isPlaying)
+                {
+                    coloMCaudioSource.volume = 1f;
+                }
+                else
+                {
+                    coloMCaudioSource.Play();
+                    coloMCaudioSource.volume = 0.8f;
+                }
             }
-
-            if (coloMCaudioSource.isPlaying)
+            else if(target != null)
             {
-                coloMCaudioSource.volume = 1f;
-            }
-            else
-            {
-                coloMCaudioSource.Play();
-                coloMCaudioSource.volume = 0.8f;
+                targetAudioSource = target.GetComponent<AudioSource>();
+                if(targetAudioSource != null)
+                {
+                    targetAudioSource.Stop();
+                    targetAudioSource.clip = audioSource.clip;
+                    if (targetAudioSource.isPlaying)
+                    {
+                        targetAudioSource.Stop();
+                    }
+                    {
+                        targetAudioSource.Play();
+                        targetAudioSource.volume = volume;
+                    }
+                }
             }
         }
 
@@ -727,6 +744,9 @@ namespace EnemyRandomizerMod
         {
             if (coloMCaudioSource != null && coloMCaudioSource.isPlaying)
                 coloMCaudioSource.Stop();
+
+            if (targetAudioSource != null && targetAudioSource.isPlaying)
+                targetAudioSource.Stop();
         }
     }
 

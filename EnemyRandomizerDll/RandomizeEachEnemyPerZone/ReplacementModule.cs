@@ -20,7 +20,8 @@ namespace EnemyRandomizerMod
             ("Randomize Enemies", "Should enemies be randomized?", true),
             ("Randomize Hazards", "[VERY JANKY]: Should (some) hazards be randomized?", false),
             ("Randomize Effects", "[EXTREMELY JANKY]:Should (some) effects be randomized?", false),
-            ("Use basic replacement matching?", "Try to replace enemies with similar types? (DO NOT USE WITH ZOTE MODE!)", false)
+            ("Use basic replacement matching?", "Try to replace enemies with similar types? (DO NOT USE WITH ZOTE MODE!)", false),
+            ("Allow bad replacements?", "Try and pick enemies that won't instantly die when spawned", false)
         };
 
         public bool MatchReplacements
@@ -84,12 +85,52 @@ namespace EnemyRandomizerMod
 
         public virtual List<PrefabObject> GetValidEnemyReplacements(GameObject originalObject, List<PrefabObject> validReplacements)
         {
+            //special logic for replacing lasers or worms
+            if (originalObject != null)
+            {
+                //special logic for replacing this
+                if (originalObject.GetObjectPrefab().prefabName == "Laser Turret Frames" ||
+                    originalObject.GetObjectPrefab().prefabName == "Worm")
+                {
+                    List<string> validLaserReplacements = new List<string>()
+                    {
+                        "Laser Turret Frames",
+                        "Big Centipede",
+                        "Zote Turret",
+                        "White Palace Fly",
+                        "Inflater",
+                        "Mawlek Turret",
+                        "Blow Fly",
+                        "Moss Flyer",
+                        "Lazy Flyer Enemy",
+                        "Plant Trap",
+                        "Ceiling Dropper",
+                        "Jellyfish",
+                        "Abyss Tendrils",
+                        "Worm",
+                        "Mender Bug",
+                    };
+
+                    return validLaserReplacements.Select(x => SpawnerExtensions.GetObjectPrefab(x)).ToList();
+                }
+            }
+
             bool isFlyer = originalObject.IsFlying();
             bool isStatic = !originalObject.IsMobile();
             bool isWalker = originalObject.IsWalker();
             bool isClimbing = originalObject.IsClimbing();
             bool isBattleArena = originalObject.IsBattleEnemy();
             bool isBoss = originalObject.IsBoss();
+            //var up = originalObject.GetUpFromSelfAngle(false);
+            //bool isSideWays = false;
+            //bool isUp = false;
+            
+            //if(Mathnv.FastApproximately(up.y,0f, 0.1f) && (Mathnv.FastApproximately(up.x, 1f, 0.1f) || Mathnv.FastApproximately(up.x, -1f, 0.1f)))
+            //{
+            //    isSideWays = true;
+            //}
+            //else if (up.y > 0)
+            //    isUp = true;
 
             IEnumerable<PrefabObject> possible = validReplacements;
             if (originalObject.CheckIfIsPogoLogicType())
@@ -113,19 +154,15 @@ namespace EnemyRandomizerMod
             //if it's not a pogo or smasher, can do normal replacement stuff
             if ((!originalObject.CheckIfIsPogoLogicType() && !originalObject.IsSmasher()))
             {
-                if (MatchReplacements)
+                //if we're replacing a boss, we're gonna now pull from the special boss list
+                if(isBoss)
                 {
-                    possible = possible.Where(x => !MetaDataTypes.ReplacementEnemiesToSkip.Contains(x.prefabName));
-
-
-                    if (isBoss)
+                    possible = possible.Where(x => MetaDataTypes.SafeForBossReplacementWeights.ContainsKey(x.prefabName));
+                }
+                else
+                {
+                    if (MatchReplacements)
                     {
-                        possible = possible.Where(x => SpawnerExtensions.IsBoss(x.prefabName));
-                    }
-                    else
-                    {
-                        possible = possible.Where(x => !SpawnerExtensions.IsBoss(x.prefabName));
-
                         if (isFlyer)
                         {
                             possible = possible.Where(x => SpawnerExtensions.IsFlying(x.prefabName));
@@ -151,21 +188,54 @@ namespace EnemyRandomizerMod
                         }
                     }
 
-                    //possible = pMetas.Select(x => x.ObjectPrefab);
-                }
-
-                if (isBattleArena)
-                {
-                    possible = possible.Where(x =>
+                    if (isBattleArena)
                     {
-                        if (MetaDataTypes.SafeForArenas.TryGetValue(x.prefabName, out var isok))
+                        possible = possible.Where(x =>
                         {
-                            return isok;
+                            if (MetaDataTypes.SafeForArenas.TryGetValue(x.prefabName, out var isok))
+                            {
+                                return isok;
+                            }
+                            return false;
+                        }).ToList();
+                    }
+
+                    //if allow bad replacements is off, then try and do this to have fewer enemies spawn into spikes and stuff
+                    if (Settings.GetOption(CustomOptions[4].Name).value == false)
+                    {
+                        //if (!isFlyer && (isSideWays || !isUp))
+                        //{
+                        //    if (isUp)
+                        //    {
+                        //        //diagonal? do nothing
+                        //    }
+                        //    else if (isSideWays)
+                        //    {
+                        //        //sideways, let's replace with a wall or static enemy
+                        //        possible = possible.Where(x => SpawnerExtensions.IsWallMounted(x.prefabName));
+                        //    }
+                        //    else
+                        //    {
+                        //        //down
+                        //        possible = possible.Where(x => SpawnerExtensions.IsWallMounted(x.prefabName));
+                        //    }
+                        //}
+                        //else
+                        {
+                            //normal upright enemy
+                            if (isFlyer)
+                            {
+                                possible = possible.Where(x => SpawnerExtensions.IsFlying(x.prefabName));
+                            }
+                            else
+                            {
+                                possible = possible.Where(x => !SpawnerExtensions.IsFlying(x.prefabName));
+                            }
                         }
-                        return false;
-                    }).ToList();
+                    }
                 }
             }
+
 
             //always filter through this final filter
             return possible.Where(x => !MetaDataTypes.ReplacementEnemiesToSkip.Contains(x.prefabName)).ToList();
@@ -201,6 +271,11 @@ namespace EnemyRandomizerMod
             return validReplacements.Select(x => x.DefaultRNGWeight).ToList();
         }
 
+        protected virtual List<float> GetBossWeights(List<PrefabObject> validReplacements)
+        {
+            return validReplacements.Select(x => x.BossRNGWeight).ToList();
+        }
+
         protected virtual PrefabObject GetObject(List<PrefabObject> validReplacements, List<float> weights, RNG rng)
         {
             int replacementIndex = rng.WeightedRand(weights);
@@ -218,7 +293,37 @@ namespace EnemyRandomizerMod
         {
             PrefabObject replacementPrefab = null;
 
-            if(validReplacements.Count == 1)
+            if (originalObject != null)
+            {
+                //surprise, sometimes it's a saw
+                if (originalObject.GetObjectPrefab().prefabName == "Laser Turret Frames" ||
+                    originalObject.GetObjectPrefab().prefabName == "Worm")
+                {
+                    bool isSaw = SpawnerExtensions.RollProbability(out _, 2, 100);
+
+                    if (isSaw)
+                    {
+                        var up = originalObject.GetUpFromSelfAngle(false);
+                        replacementPrefab = Database.Objects["wp_saw"];
+                        var saw = Database.Replace(originalObject, replacementPrefab);
+                        var damageEnemies = saw.GetOrAddComponent<DamageEnemies>();
+                        damageEnemies.circleDirection = true;
+                        damageEnemies.damageDealt = 1000;
+                        var t = saw.GetOrAddComponent<CustomTweener>();
+                        {
+                            var min = SpawnerExtensions.GetRayOn(originalObject.transform.position, -up, 20f);
+                            var max = SpawnerExtensions.GetRayOn(originalObject.transform.position, up, 20f);
+                            t.from = min.point;
+                            t.to = max.point;
+                            t.travelTime = UnityEngine.Random.Range(1f, 5f);
+                            t.lerpFunc = t.easeInOutQuad;
+                        }
+                        return saw;
+                    }
+                }
+            }
+
+            if (validReplacements.Count == 1)
             {
                 replacementPrefab = validReplacements.FirstOrDefault();
             }
@@ -229,7 +334,16 @@ namespace EnemyRandomizerMod
                 List<float> weights = null;
                 var originalPrefab = originalObject.GetObjectPrefab();
                 if (originalPrefab.prefabType == PrefabObject.PrefabType.Enemy)
-                    weights = GetWeights(validReplacements);
+                {
+                    if(SpawnerExtensions.IsBoss(originalPrefab.prefabName))
+                    {
+                        weights = GetBossWeights(validReplacements);
+                    }
+                    else
+                    {
+                        weights = GetWeights(validReplacements);
+                    }
+                }
                 int maxTries = 10;
                 for (int i = 0; i < maxTries; ++i)
                 {
@@ -261,7 +375,8 @@ namespace EnemyRandomizerMod
             }
 
             //do the replace
-            return Database.Replace(originalObject, replacementPrefab);
+            var replacement = Database.Replace(originalObject, replacementPrefab);
+            return replacement;
         }
 
 

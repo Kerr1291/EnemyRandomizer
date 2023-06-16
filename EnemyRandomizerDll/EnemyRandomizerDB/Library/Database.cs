@@ -46,6 +46,24 @@ namespace EnemyRandomizerMod
             }
         }
 
+        [XmlIgnore]
+        public float BossRNGWeight
+        {
+            get
+            {
+                if (defaultRNGWeight == null)
+                {
+                    //cache the table lookup
+                    if (MetaDataTypes.SafeForBossReplacementWeights.ContainsKey(prefabName))
+                        defaultRNGWeight = MetaDataTypes.SafeForBossReplacementWeights[prefabName];
+                    else
+                        defaultRNGWeight = 1f;
+                }
+
+                return defaultRNGWeight.Value;
+            }
+        }
+
         public override string ToString()
         {
             return $"[Type:{prefabType}, PrefabName:{prefabName}, {source}]";

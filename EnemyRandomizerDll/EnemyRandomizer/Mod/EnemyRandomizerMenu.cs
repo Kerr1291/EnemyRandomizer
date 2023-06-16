@@ -19,10 +19,12 @@ namespace EnemyRandomizerMod
         protected string[] playtesters = new string[]
         {
             "ColetteMSLP",
-            "oatmille1",
-            "Dwarfwoot",
-            "Sethadocious",
             "Manno Stone",
+            "Dwarfwoot",
+            "oatmille1",
+            "Sethadocious",
+            "Wangha",
+            "hyperspace_coder",
             "...and you; thanks for playing!"
         };
 
@@ -77,7 +79,7 @@ namespace EnemyRandomizerMod
                     GlobalSettings.UseCustomSeed = b;
                     GeneralOptionsMenu.Find("SeedInput").isVisible = b;
                     GeneralOptionsMenu.Reflow();
-                    UpdateModVersionLabel();
+                    //UpdateModVersionLabel();
                 },
                 loadSetting: () => GlobalSettings.UseCustomSeed
             ),
@@ -90,9 +92,64 @@ namespace EnemyRandomizerMod
                     GlobalSettings.UseCustomColoSeed = b;
                     GeneralOptionsMenu.Find("SeedInput2").isVisible = b;
                     GeneralOptionsMenu.Reflow();
-                    UpdateModVersionLabel();
                 },
                 loadSetting: () => GlobalSettings.UseCustomColoSeed
+            ),
+
+            Blueprints.HorizontalBoolOption(
+                name: "Reset To Default Settings",
+                description: "Change all settings back to the mod defaults",
+                applySetting: b =>
+                {
+                    GlobalSettings.UseCustomSeed = false;
+                    GlobalSettings.UseCustomColoSeed = false;
+                    {
+                        var logic = EnemyRandomizer.instance.logicTypes["Zote Mode"];
+                        EnemyRandomizer.instance.enemyReplacer.DisableLogic(logic);
+                        RootMenuObject.Find(logic.Name).Hide();
+                    }
+                    {
+                        var logic = EnemyRandomizer.instance.logicTypes["Enemy Filter"];
+                        EnemyRandomizer.instance.enemyReplacer.DisableLogic(logic);
+                        RootMenuObject.Find(logic.Name).Hide();
+                    }
+                    {
+                        var logic = EnemyRandomizer.instance.logicTypes["Enemy Enabler"];
+                        EnemyRandomizer.instance.enemyReplacer.DisableLogic(logic);
+                        RootMenuObject.Find(logic.Name).Hide();
+                    }
+                    {
+                        var logic = EnemyRandomizer.instance.logicTypes["Replacement Logic"];
+                        logic.Settings.GetOption("Randomize Enemies").value = true;
+                        logic.Settings.GetOption("Randomize Hazards").value = false;
+                        logic.Settings.GetOption("Randomize Effects").value = false;
+                        logic.Settings.GetOption("Use basic replacement matching?").value = false;
+                        logic.Settings.GetOption("Allow bad replacements?").value = false;
+                        EnemyRandomizer.instance.enemyReplacer.EnableLogic(logic);
+                        RootMenuObject.Find(logic.Name).Show();
+                    }
+                    {
+                        var logic = EnemyRandomizer.instance.logicTypes["Randomization Modes"];
+                        logic.Settings.GetOption("Transition").value = false;
+                        logic.Settings.GetOption("Object").value = true;
+                        logic.Settings.GetOption("Room").value = false;
+                        logic.Settings.GetOption("Zone").value = false;
+                        logic.Settings.GetOption("Type").value = false;
+                        EnemyRandomizer.instance.enemyReplacer.EnableLogic(logic);
+                        RootMenuObject.Find(logic.Name).Show();
+                    }
+                    {
+                        var logic = EnemyRandomizer.instance.logicTypes["Enemy Size Changer"];
+                        logic.Settings.GetOption("Match Audio to Scaling").value = true;
+                        logic.Settings.GetOption("Match").value = true;
+                        logic.Settings.GetOption("Random").value = false;
+                        logic.Settings.GetOption("All Big").value = false;
+                        logic.Settings.GetOption("All Tiny").value = false;
+                        EnemyRandomizer.instance.enemyReplacer.EnableLogic(logic);
+                        RootMenuObject.Find(logic.Name).Show();
+                    }
+                },
+                loadSetting: () => true
             ),
 
             //Blueprints.HorizontalBoolOption(
@@ -103,9 +160,9 @@ namespace EnemyRandomizerMod
             //),
             new TextPanel("------------------------"),
             new TextPanel("Credits"),
+            new TextPanel("Enemy Randomizer Author: Kerr1291"),
             new TextPanel("Satchel/UI: Mulhima"),
             new TextPanel("Special Thanks: TheDanielMat"),
-            new TextPanel("Enemy Randomizer Author: Kerr1291"),
             new TextPanel("_Playtesters_"),// "+string.Join(", ",playtesters)),
             //Blueprints.GenericHorizontalOption<System.FormattableString>(
             //    name: "Credits",

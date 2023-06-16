@@ -9,6 +9,7 @@ using UniRx;
 using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.Events;
+using Satchel;
 
 namespace EnemyRandomizerMod
 {
@@ -25,6 +26,7 @@ namespace EnemyRandomizerMod
                     "Mantis Battle",
                     "Lurker Control",
                     "Battle Control",
+                    "Grimm Scene",
                     "Grimm Holder",
                     "Grub Scene",
                     "Boss Scene Controller",
@@ -63,22 +65,134 @@ namespace EnemyRandomizerMod
             }
         }
 
+        public static bool AggroAllBossesNow = true;
+        public static bool BlackKnightArenaDoneEarly = false;
+        public static int BlackKnightArenaKillCounter = 0;
+        public static int BlackKnightsActiveCounter = 0;
+        public static int BlackKnightCounter = 0;
         public static bool DidSceneCheck;
+
+        public void Update()
+        {
+            //special logic for this
+            if(StateMachine != null && StateMachine.Value != null)
+            {
+                var currentScene = StateMachine.Value.SceneName;
+
+                if (currentScene == "Mines_32")
+                {
+                    if(StateMachine.Value.battleStarted)
+                    {
+                        return;
+                    }
+
+                    if(HeroController.instance.transform.position.x < 38f)
+                    {
+                        gameObject.GetDirectChildren().ForEach(x => x.SafeSetActive(true));
+                    }
+                }
+            }
+        }
+
+        public static ZoteMusicControl zmusic;
+        public static void PlayZoteTheme(bool gramaphone = false, float volume = .8f)
+        {
+            if (zmusic == null)
+            {
+                GameObject music = SpawnerExtensions.SpawnEntityAt("Zote Music", HeroController.instance.transform.position, null, true, false);
+                zmusic = music.GetComponent<ZoteMusicControl>();
+            }
+
+            if (gramaphone)
+            {
+                var gc = GameObject.Find("Gramophone Control");
+                if (gc != null)
+                {
+                    var g = gc.FindGameObjectInDirectChildren("gramaphone");
+                    if (g != null)
+                    {
+                        Dev.Log("playing zote music");
+                        zmusic.PlayMusic(volume, g);
+                        if (zmusic.audioSource != null)
+                        {
+                            var normal = zmusic.audioSource.outputAudioMixerGroup.audioMixer.FindSnapshot("Normal - Gramaphone");
+                            normal.TransitionTo(2f);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                zmusic.PlayMusic(volume);
+                if (zmusic.audioSource != null)
+                {
+                    var normal = zmusic.audioSource.outputAudioMixerGroup.audioMixer.FindSnapshot("Action");
+                    normal.TransitionTo(2f);
+                }
+            }
+        }
 
         public static void DoSceneCheck(GameObject sceneObject)
         {
+            BattleManager.DidSceneCheck = true;
+            Dev.Log("Checking scene " + sceneObject.SceneName());
+
             Scene currentScene = sceneObject.scene;
+
+            BlackKnightsActiveCounter = 0;
+            BlackKnightArenaKillCounter = 0;
+            BlackKnightCounter = 0;
+            BlackKnightArenaDoneEarly = false;
+            AggroAllBossesNow = false;
 
             var roots = currentScene.GetRootGameObjects();
 
-            //in this scene the battle manager isn't a root game object...
-            if(currentScene.name == "Ruins1_09")
+                //in this scene the battle manager isn't a root game object...
+            if (currentScene.name == "Ruins1_09")
             {
                 var found = GameObject.Find("Battle Scene");
 
                 if (found)
                 {
                     LoadFromFSM(found.GetComponent<PlayMakerFSM>());
+                }
+            }
+            //for abyss 19 we want a slightly different controller
+            else if (currentScene.name == "Abyss_19")
+            {
+                var found = GameObject.Find("infected_door");
+
+                if (found)
+                {
+                    LoadFromFSM(found.LocateMyFSM("Control"));
+                }
+            }
+            else if (currentScene.name == "Grimm_Main_Tent" || currentScene.name == "Grimm_Main_Tent_boss")
+            {
+                //grimm's stuff is a bit different, so use special cases to get the correct FSM
+                var found = GameObject.Find("Grimm Scene");
+
+                if (found)
+                {
+                    LoadFromFSM(found.LocateMyFSM("Initial Scene"));
+                }
+            }
+            else if (currentScene.name == "Grimm_Nightmare")
+            {
+                var found = GameObject.Find("Grimm Control");
+
+                if (found)
+                {
+                    LoadFromFSM(found.LocateMyFSM("Control"));
+                }
+            }
+            else if (currentScene.name == "GG_Lurker")
+            {
+                var found = GameObject.Find("Lurker Control");
+
+                if (found)
+                {
+                    LoadFromFSM(found.LocateMyFSM("Battle Start"));
                 }
             }
             else
@@ -102,22 +216,97 @@ namespace EnemyRandomizerMod
 
                 //TODO: update core position and rotation a bit
                 var core = EnemyRandomizerDatabase.CustomSpawnWithLogic(center.transform.position.ToVec2() + Vector2.up * 5f, "gg_blue_core", null, true);
+
+                var coreRoots = core.FindGameObjectsNameContainsInChildren("_root");
+                coreRoots.ForEach(x => GameObject.Destroy(x));
+                var dcmain = core.FindGameObjectNameContainsInChildren("dreamcatcher_main");
+                
+                if(dcmain != null)
+                    GameObject.Destroy(dcmain);
+
                 //var newCenter = EnemyRandomizerDatabase.CustomSpawnWithLogic(center.transform.position, "GG_Statue_Gorb", null, true);
                 //var newBack = EnemyRandomizerDatabase.CustomSpawnWithLogic(back.transform.position, "Knight_v01", null, true);
                 var newRight = EnemyRandomizerDatabase.CustomSpawnWithLogic(right.transform.position, "GG_Statue_Zote", null, true);
                 var newLeft = EnemyRandomizerDatabase.CustomSpawnWithLogic(left.transform.position, "GG_Statue_GreyPrince", null, true);//TODO: remove the trophy/phase markers on the statue
-                var floor_effect = EnemyRandomizerDatabase.CustomSpawnWithLogic(SpawnerExtensions.GetRayOn(center.transform.position, Vector2.down, 50f).point + Vector2.down, "dream_beam_animation", null, true);
+
+                var plaq = newLeft.FindGameObjectNameContainsInChildren("Plaque");
+                if(plaq != null)
+                    GameObject.Destroy(plaq);
+
+                var pdtrue = newLeft.GetComponent<DeactivateIfPlayerdataTrue>();
+                if(pdtrue != null)
+                {
+                    GameObject.DestroyImmediate(pdtrue);
+                }
+
+                var floor_effect = EnemyRandomizerDatabase.CustomSpawnWithLogic(new Vector3(29.4165f, 4.0255f, -.5f), "dream_beam_animation", null, true);
+
 
                 GameObject.Destroy(center);
                 GameObject.Destroy(back);
                 GameObject.Destroy(right);
                 GameObject.Destroy(left);
-                
+
+                PlayZoteTheme(false, 0.4f);
+
                 //TODO: change fountain text
                 //TODO: add challenge prompt to enter a unqiue enemy rando boss / make it warp you somewhere?
             }
+            else if (currentScene.name == "Fungus3_50")
+            {
+                try
+                {
+                    GameObject go = new GameObject("Wall");
+                    go.transform.position = new Vector3(1f, 110f);
+                    var collider = go.GetOrAddComponent<BoxCollider2D>();
+                    collider.size = new Vector2(1f, 30f);
+                }
+                catch (Exception e) { Dev.Log($"Error??? \n{e.Message}\n{e.StackTrace}"); }
 
-            BattleManager.DidSceneCheck = true;
+                try
+                {
+                    Dev.Log("spawning zotes");
+                    var lazyFliers = GameObjectExtensions.FindObjectsOfType<PlayMakerFSM>().Where(x => x.name.Contains("Lazy Flyer"));
+                    foreach (var flyer in lazyFliers)
+                    {
+                        Dev.Log("found one, making it zote " + flyer);
+                        var newThing = SpawnerExtensions.SpawnEntityAt("Zote Crew Fat", flyer.transform.position, null, true, false);
+                        Dev.Log("spawned " + newThing);
+                        var poob = newThing.GetComponent<PreventOutOfBounds>();
+                        if (poob != null)
+                            GameObject.Destroy(poob);
+                        var sz = newThing.GetComponent<SetZ>();
+                        if (sz != null)
+                            GameObject.Destroy(sz);
+                        newThing.transform.position = new Vector3(newThing.transform.position.x, newThing.transform.position.y, 12.5f + UnityEngine.Random.Range(0f, 5f));
+                        Dev.Log("doing set z");
+                        newThing.SafeSetActive(true);
+                        Dev.Log("activating it");
+                        SpawnerExtensions.DestroyObject(flyer.gameObject, true);
+                        Dev.Log("destroying old object");
+                    }
+                }
+                catch (Exception e) { Dev.Log($"Error??? \n{e.Message}\n{e.StackTrace}"); }
+
+                try
+                {
+                    Dev.Log("spawning zote music");
+                    var gc = GameObject.Find("Gramaphone Control");
+                    if (gc != null)
+                    {
+                        var g = gc.FindGameObjectInDirectChildren("gramaphone");
+                        if (g != null)
+                        {
+                            var fsm = g.LocateMyFSM("Music Control");
+                            var play = fsm.GetState("Play");
+                            play.DisableAction(0);
+                            play.InsertCustomAction(() => { PlayZoteTheme(true, 0.4f); }, 0);
+                        }
+                    }
+                }
+                catch (Exception e) { Dev.Log($"Error??? \n{e.Message}\n{e.StackTrace}"); }
+            }
+
         }
 
         public static void LoadFromFSM(PlayMakerFSM fsm)

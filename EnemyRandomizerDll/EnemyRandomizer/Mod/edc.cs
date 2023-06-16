@@ -51,7 +51,7 @@ public class edc : GameSingleton<edc>
         Dev.Log($"Spawning a {enemyName} to the right of the hero");
         lastSpawned = EnemyRandomizer.CustomSpawn(heropos + Vector2.right * heroposXoffset, enemyName, null, true);
         soc.spawnPositionOffsetOverride = offset;
-        soc.SetPositionOnSpawn();
+        soc.SetPositionOnSpawn(null);
         lastSpawnedName = enemyName;
         Dev.Log("spawned with custom offset " + soc.spawnPositionOffsetOverride);
         Dev.Log("--");
@@ -69,7 +69,7 @@ public class edc : GameSingleton<edc>
             poob.ForcePosition(heropos + Vector2.right * heroposXoffset);
 
         if (soc != null)
-            soc.SetPositionOnSpawn();
+            soc.SetPositionOnSpawn(null);
         var offset = soc.spawnPositionOffsetOverride == null ? soc.spawnPositionOffset : soc.spawnPositionOffsetOverride.Value;
         Dev.Log("positioned with offset " + offset);
     }
@@ -89,7 +89,7 @@ public class edc : GameSingleton<edc>
         {
             customSpawnOffset = offset;
             soc.spawnPositionOffsetOverride = offset;
-            soc.SetPositionOnSpawn();
+            soc.SetPositionOnSpawn(null);
         }
 
         Dev.Log("positioned with offset " + soc.spawnPositionOffsetOverride);

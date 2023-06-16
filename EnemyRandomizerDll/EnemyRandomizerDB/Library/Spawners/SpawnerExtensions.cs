@@ -1285,6 +1285,11 @@ namespace EnemyRandomizerMod
             return DatabaseName == null ? false : !MetaDataTypes.Static.Contains(DatabaseName);
         }
 
+        public static bool IsWallMounted(string DatabaseName)
+        {
+            return DatabaseName == null ? false : MetaDataTypes.IsWallMounted.Contains(DatabaseName);
+        }
+
         public static bool IsMobile(this GameObject gameObject)
         {
             string DatabaseName = gameObject.GetDatabaseKey();
@@ -3244,9 +3249,13 @@ namespace EnemyRandomizerMod
             return telePoint;
         }
 
-
-        public static void DoBlueHealHero(this GameObject gameObject, float maxHealDistance = 40f)
+        public static void DoBlueHealHero(this GameObject gameObject, float maxHealDistance = 40f, int maxBlueHP = 4)
         {
+            if (maxBlueHP > 0)
+            {
+                if (GameManager.instance.playerData.healthBlue > maxBlueHP)
+                    return;
+            }
             HeroController.instance.StartCoroutine(BlueHealHero(gameObject, maxHealDistance));
         }
 
@@ -3430,6 +3439,7 @@ namespace EnemyRandomizerMod
             }
         }
 
+
         public static string GetRandomPrefabNameForArenaBoss(RNG rng)
         {
             if (rng == null)
@@ -3448,6 +3458,34 @@ namespace EnemyRandomizerMod
             }
 
             var list = MetaDataTypes.GoodForArenaBossWeights.Where(x => isArenaOK(x.Key)).ToList();
+            var weights = list.Select(x => x.Value).ToList();
+
+            int replacementIndex = rng.WeightedRand(weights);
+            return list[replacementIndex].Key;
+
+        }
+
+
+
+        public static string GetRandomPrefabNameForBossReplacement(RNG rng)
+        {
+            if (rng == null)
+            {
+                rng = new RNG();
+                rng.Reset();
+            }
+
+            //bool isArenaOK(string name)
+            //{
+            //    if (MetaDataTypes.SafeForBossReplacement.TryGetValue(name, out var isok))
+            //    {
+            //        return isok;
+            //    }
+            //    return false;
+            //}
+
+            //var list = MetaDataTypes.SafeForBossReplacementWeights.Where(x => isArenaOK(x.Key)).ToList();
+            var list = MetaDataTypes.SafeForBossReplacementWeights.ToList();
             var weights = list.Select(x => x.Value).ToList();
 
             int replacementIndex = rng.WeightedRand(weights);
@@ -3943,7 +3981,7 @@ namespace EnemyRandomizerMod
                 soc.needsFinalize = false;
 
                 //apply the position logic
-                soc.SetPositionOnSpawn();
+                soc.SetPositionOnSpawn(objectToReplace);
             }
 
             //turn it on! (this will trigger the randomizer again but should bypass now that the originialMetadata field is set)
@@ -3982,6 +4020,128 @@ namespace EnemyRandomizerMod
             {
                 soc.MarkLoaded();
             }
+        }
+
+        public static void BroadcastFSMEventAfterTime(this MonoBehaviour owner, string fsmEvent, float time)
+        {
+            owner.StartCoroutine(BroadcastFSMEventAfterTime(fsmEvent, time));
+        }
+
+        public static void BroadcastFSMEventHeroHasMovedDown(this MonoBehaviour owner, string fsmEvent, float distance)
+        {
+            owner.StartCoroutine(BroadcastFSMEventAfterDistance(fsmEvent, distance));
+        }
+
+        public static IEnumerator BroadcastFSMEventAfterDistance(string fsmEvent, float distance)
+        {
+            var startpos = HeroController.instance.transform.position;
+            for(; ; )
+            {
+                var newPos = HeroController.instance.transform.position;
+
+                if(newPos.y < startpos.y &&  Mathf.Abs(newPos.y - startpos.y) > distance)
+                {
+                    PlayMakerFSM.BroadcastEvent(fsmEvent);
+                    yield break;
+                }
+
+                yield return null;
+            }
+            yield break;
+        }
+
+        public static IEnumerator BroadcastFSMEventAfterTime(string fsmEvent, float time)
+        {
+            yield return new WaitForSeconds(time);
+            PlayMakerFSM.BroadcastEvent(fsmEvent);
+        }
+
+        //example: "Waterways_15"
+        //         "door_dreamReturn"
+        public static void DreamTransitionTo(string sceneName, string transitionName, float fadeTime = 1f)
+        {
+            PlayMakerFSM.BroadcastEvent("FRIENDS OUT");
+
+            //wait for 3 seconds?
+
+            PlayMakerFSM.BroadcastEvent("WHITE PALACE END");
+
+            var blankerControl = GameObject.Find("Blanker White").LocateMyFSM("Blanker Control");
+            blankerControl.FsmVariables.GetFsmFloat("Fade Time").Value = fadeTime;
+            blankerControl.SendEvent("FADE IN");
+
+            //wait for fadeTime + 1.5f ?
+
+            var mainCamera = Camera.main.gameObject.LocateMyFSM("CameraFade");
+            if (mainCamera == null)
+            {
+                var mcGo = GameObject.Find("MainCamera");
+                if (mcGo != null)
+                    mainCamera = mcGo.LocateMyFSM("CameraFade");
+                if (mainCamera == null)
+                {
+                    var tk2dcam = GameObject.Find("tk2dCamera");
+                    if (tk2dcam != null)
+                    {
+                        mainCamera = tk2dcam.LocateMyFSM("CameraFade");
+
+                        if (mainCamera == null)
+                        {
+                            var cams = GameObjectExtensions.FindObjectsOfType<Camera>(true, false);
+                            var mainCam = cams.FirstOrDefault(x => x.gameObject.LocateMyFSM("CameraFade") != null);
+                            if (mainCam != null)
+                                mainCamera = mainCam.gameObject.LocateMyFSM("CameraFade");
+                        }
+                    }
+                }
+            }
+
+            GameManager.instance.TimePasses();
+            GameManager.instance.ResetSemiPersistentItems();
+
+            if (mainCamera != null)
+            {
+                mainCamera.FsmVariables.GetFsmBool("No Fade").Value = true;
+            }
+
+            HeroController.instance.gameObject.LocateMyFSM("Dream Return").FsmVariables.GetFsmBool("Dream Returning").Value = true;
+            HeroController.instance.EnterWithoutInput(true);
+
+            GameManager unsafeInstance = GameManager.UnsafeInstance;
+            unsafeInstance.BeginSceneTransition(new GameManager.SceneLoadInfo
+            {
+                SceneName = sceneName,
+                EntryGateName = transitionName,
+                EntryDelay = 0f,
+                Visualization = GameManager.SceneLoadVisualizations.Dream,
+                PreventCameraFadeOut = true,
+                WaitForSceneTransitionCameraFade = false,
+                AlwaysUnloadUnusedAssets = false
+            });
+        }
+
+        public static void SetMaxHP(this GameObject gameObject, int hp)
+        {
+            var control = gameObject.GetComponent<DefaultSpawnedEnemyControl>();
+            if (control == null)
+                return;
+            control.MaxHP = Mathf.Max(1, hp);
+        }
+
+        public static int GetMaxHP(this GameObject gameObject)
+        {
+            var control = gameObject.GetComponent<DefaultSpawnedEnemyControl>();
+            if (control == null)
+                return -1;
+            return control.MaxHP;
+        }
+
+        public static int GetScaledMaxHP(this GameObject gameObject, string databaseKeyToScaleFrom)
+        {
+            var control = gameObject.GetComponent<DefaultSpawnedEnemyControl>();
+            if (control == null)
+                return -1;
+            return control.GetStartingMaxHP(databaseKeyToScaleFrom);
         }
 
         public static GameObject SpawnEnemyForEnemySpawner(Vector2 pos, bool setActive = false, string originalEnemy = null, RNG rng = null)

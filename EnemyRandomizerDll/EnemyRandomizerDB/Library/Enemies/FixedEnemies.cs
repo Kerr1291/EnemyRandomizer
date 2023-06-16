@@ -342,9 +342,9 @@ namespace EnemyRandomizerMod
             control.AddTimeoutAction(control.GetState("Hit Ground"), "FINISHED", 1f);
         }
 
-        protected override void OnSetSpawnPosition()
+        protected override void OnSetSpawnPosition(GameObject objectThatWillBeReplaced)
         {
-            base.OnSetSpawnPosition();
+            base.OnSetSpawnPosition(objectThatWillBeReplaced);
             GetComponent<PreventOutOfBounds>().onBoundCollision -= Freeze;
             GetComponent<PreventOutOfBounds>().onBoundCollision += Freeze;
         }
@@ -411,9 +411,9 @@ namespace EnemyRandomizerMod
             control.AddTimeoutAction(control.GetState("Hit Ground"), "FINISHED", 1f);
         }
 
-        protected override void OnSetSpawnPosition()
+        protected override void OnSetSpawnPosition(GameObject objectThatWillBeReplaced)
         {
-            base.OnSetSpawnPosition();
+            base.OnSetSpawnPosition(objectThatWillBeReplaced);
             GetComponent<PreventOutOfBounds>().onBoundCollision -= Freeze;
             GetComponent<PreventOutOfBounds>().onBoundCollision += Freeze;
         }
