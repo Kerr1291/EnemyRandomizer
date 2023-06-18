@@ -33,6 +33,36 @@ namespace EnemyRandomizerMod
         public int preKilledEnemies = 0;
 
         public bool isCustomArena = false;
+        public bool isMiniArena = false;
+
+
+        public virtual Vector2 topLeft => Vector2.zero; //override these
+        public virtual Vector2 botRight => Vector2.zero;//override these
+
+
+        public bool HeroInBox(Vector2 topleft, Vector2 bottomRight)
+        {
+            var point = HeroController.instance.transform.position.ToVec2();
+
+            // Check if the point's X coordinate is within the box's X range
+            bool withinXRange = point.x >= topleft.x && point.x <= bottomRight.x;
+
+            // Check if the point's Y coordinate is within the box's Y range
+            bool withinYRange = point.y <= topleft.y && point.y >= bottomRight.y;
+
+            // Return true if the point is within both the X and Y ranges, indicating it is inside the box
+            return withinXRange && withinYRange;
+        }
+
+        public virtual bool IsHeroInBattleArea()
+        {
+            return HeroInBox(topLeft, botRight);
+        }
+
+        public void ForceBattleStart()
+        {
+            OnBattleStarted();
+        }
 
         public void ForceBattleEnd()
         {
@@ -84,7 +114,8 @@ namespace EnemyRandomizerMod
                     break;
             }
 
-            Dev.Log("Found burster corpse");
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                Dev.Log("Found burster corpse");
             if (SceneName != "Crossroads_04")
                 yield break;
 
@@ -99,12 +130,14 @@ namespace EnemyRandomizerMod
                 SpawnerExtensions.SpawnEnemyForEnemySpawner(burster.transform.position, true, "Fly");
                 GameManager.instance.BroadcastFSMEventAfterTime("END", 4f);
             });
-            Dev.Log("Burster corpse setup complete");
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                Dev.Log("Burster corpse setup complete");
         }
 
         protected virtual void OnBattleStarted()
         {
-            Dev.Log("BATTLE STARTED");
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                Dev.Log("BATTLE STARTED");
 
             if (SceneName == "Crossroads_04")
             {
@@ -159,11 +192,13 @@ namespace EnemyRandomizerMod
             {
                 if (GameObject.FindObjectsOfType<HealthManager>().Select(x => x.gameObject).Any(x => x.IsBoss()))
                 {
-                    Dev.Log("SKIP KILLING EVERYTHING BEFORE ARENA -- THIS IS A BOSS ARENA");
+                    if (SpawnedObjectControl.VERBOSE_DEBUG)
+                        Dev.Log("SKIP KILLING EVERYTHING BEFORE ARENA -- THIS IS A BOSS ARENA");
                     return;
                 }
 
-                Dev.LogWarning("Battle has started and we have no collider to check if all previous battle enemies are in the arena!");
+                if (SpawnedObjectControl.VERBOSE_DEBUG)
+                    Dev.LogWarning("Battle has started and we have no collider to check if all previous battle enemies are in the arena!");
 
                 var bmos = SpawnedObjectControl.GetAllBattle.ToList();
                 bmos.ForEach(x =>
@@ -173,7 +208,8 @@ namespace EnemyRandomizerMod
                     && x.gameObject.HasReplacedAnObject()
                     && x.gameObject.IsVisible())
                     {
-                        Dev.Log("Force killing pre-battle enemies for now until I implement a solution to check if they start inside the arena");
+                        if (SpawnedObjectControl.VERBOSE_DEBUG)
+                            Dev.Log("Force killing pre-battle enemies for now until I implement a solution to check if they start inside the arena");
                         x.gameObject.KillObjectNow();
                     }
                 });
@@ -182,7 +218,8 @@ namespace EnemyRandomizerMod
 
         IEnumerator ForceProgressWatchdog(float timer = 10f)
         {
-            Dev.Log("WATCHDOG STARTED");
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                Dev.Log("WATCHDOG STARTED");
 
             float updateRate = 0f;
             float t = 0f;
@@ -190,19 +227,22 @@ namespace EnemyRandomizerMod
             {
                 if(GameObject.FindObjectsOfType<HealthManager>().Select(x => x.gameObject).Any(x => x.IsBoss()))
                 {
-                    Dev.Log("WATCHDOG CANCELED -- THIS IS A BOSS ARENA");
+                    if (SpawnedObjectControl.VERBOSE_DEBUG)
+                        Dev.Log("WATCHDOG CANCELED -- THIS IS A BOSS ARENA");
                     yield break;
                 }
 
                 if(battleEnded)
                 {
-                    Dev.Log("WATCHDOG ENDED -- BATTLE COMPLETE");
+                    if (SpawnedObjectControl.VERBOSE_DEBUG)
+                        Dev.Log("WATCHDOG ENDED -- BATTLE COMPLETE");
                     yield break;
                 }
 
                 if (!battleStarted)
                 {
-                    Dev.Log("WATCHDOG CANCELED");
+                    if (SpawnedObjectControl.VERBOSE_DEBUG)
+                        Dev.Log("WATCHDOG CANCELED");
                     yield break;
                 }
 
@@ -235,14 +275,16 @@ namespace EnemyRandomizerMod
                         //try force next
                         if (t > (timer * 0.5f) && FSM.Fsm.ActiveState.Transitions.Length > 0)
                         {
-                            Dev.Log("TIMEOUT -- SENDING NEXT");
+                            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                                Dev.Log("TIMEOUT -- SENDING NEXT");
                             FSM.Fsm.Event(FSM.Fsm.ActiveState.Transitions[0].EventName);
                         }
                     }
 
                     if (t > timer)
                     {
-                        Dev.Log("TIMEOUT -- ENDING BATTLE");
+                        if (SpawnedObjectControl.VERBOSE_DEBUG)
+                            Dev.Log("TIMEOUT -- ENDING BATTLE");
                         OpenGates();
                     }
 
@@ -257,7 +299,8 @@ namespace EnemyRandomizerMod
 
         protected virtual void OnBattleEnded()
         {
-            Dev.Log("BATTLE OVER");
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                Dev.Log("BATTLE OVER");
             preKilledEnemies = 0;
             battleStarted = true;
             battleEnded = true;
@@ -294,8 +337,12 @@ namespace EnemyRandomizerMod
             x.sendEvent.Value == "IK GATE OPEN" ||
             x.sendEvent.Value == "BATTLE END")))
             {
-                if(battleStarted)
-                    OnBattleEnded();
+                bool isColo = BattleManager.Instance.Value.gameObject.scene.name.Contains("Room_Colosseum_");
+                if (!isColo)
+                {
+                    if (battleStarted)
+                        OnBattleEnded();
+                }
             }
 
             if (self.Name == "Idle")
@@ -429,10 +476,13 @@ namespace EnemyRandomizerMod
             if (self == null || self != FSM.Fsm)
                 return;
 
-            if (eventTarget != null)
-                Dev.Log($"Sending event {fsmEventName} to TARGET:{eventTarget.target} on GO:[{eventTarget.gameObject}]");
-            else
-                Dev.Log($"Sending event {fsmEventName} to {eventTarget}");
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
+            {
+                if (eventTarget != null)
+                    Dev.Log($"Sending event {fsmEventName} to TARGET:{eventTarget.target} on GO:[{eventTarget.gameObject}]");
+                else
+                    Dev.Log($"Sending event {fsmEventName} to {eventTarget}");
+            }
         }
 
         private void Fsm_Event_FsmEvent(On.HutongGames.PlayMaker.Fsm.orig_Event_FsmEvent orig, Fsm self, FsmEvent fsmEvent)
@@ -448,7 +498,8 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                Dev.Log($"Broadcasting event {fsmEvent.Name} from {self.Name}");
+                if (SpawnedObjectControl.VERBOSE_DEBUG)
+                    Dev.Log($"Broadcasting event {fsmEvent.Name} from {self.Name}");
             }
         }
 
@@ -588,6 +639,7 @@ namespace EnemyRandomizerMod
         public static void OpenGates(bool isWhitePalace = false)
         {
             PlayMakerFSM.BroadcastEvent("BG OPEN");
+            PlayMakerFSM.BroadcastEvent("DREAM GATE OPEN");
             if (isWhitePalace)
             {
                 var door2 = GameObject.Find("Palace Gate");

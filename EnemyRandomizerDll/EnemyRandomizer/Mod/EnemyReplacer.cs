@@ -47,6 +47,9 @@ namespace EnemyRandomizerMod
             EnemyRandomizerDatabase.GetCustomColoSeed -= GetCustomColoSeed;
             EnemyRandomizerDatabase.GetCustomColoSeed += GetCustomColoSeed;
 
+            EnemyRandomizerDatabase.ClearBypass -= EnemyRandomizer.ClearBypass;
+            EnemyRandomizerDatabase.ClearBypass += EnemyRandomizer.ClearBypass;
+
             return database.GetPreloadNames();
         }
 
@@ -166,6 +169,9 @@ namespace EnemyRandomizerMod
             EnemyRandomizerDatabase.GetCustomColoSeed -= GetCustomColoSeed;
             EnemyRandomizerDatabase.GetCustomColoSeed += GetCustomColoSeed;
 
+            EnemyRandomizerDatabase.ClearBypass -= EnemyRandomizer.ClearBypass;
+            EnemyRandomizerDatabase.ClearBypass += EnemyRandomizer.ClearBypass;
+
             SpawnerExtensions.SetupBoundsReactives();
 
             EnemyRandomizerDatabase.CustomSpawnWithLogic -= EnemyRandomizer.CustomSpawn;
@@ -190,6 +196,7 @@ namespace EnemyRandomizerMod
             EnemyRandomizerDatabase.GetBlackBorders -= GetBlackBorders;
             EnemyRandomizerDatabase.GetPlayerSeed -= GetCurrentSeed;
             EnemyRandomizerDatabase.GetCustomColoSeed -= GetCustomColoSeed;
+            EnemyRandomizerDatabase.ClearBypass -= EnemyRandomizer.ClearBypass;
             EnemyRandomizerDatabase.CustomSpawnWithLogic -= EnemyRandomizer.CustomSpawn;
         }
 

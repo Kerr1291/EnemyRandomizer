@@ -18,12 +18,12 @@ namespace EnemyRandomizerMod
 
         protected string[] playtesters = new string[]
         {
-            "ColetteMSLP",
             "Manno Stone",
+            "Wangha",
+            "ColetteMSLP",
             "Dwarfwoot",
             "oatmille1",
             "Sethadocious",
-            "Wangha",
             "hyperspace_coder",
             "...and you; thanks for playing!"
         };

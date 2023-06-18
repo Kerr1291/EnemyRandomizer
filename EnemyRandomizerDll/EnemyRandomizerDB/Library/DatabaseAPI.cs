@@ -23,6 +23,7 @@ namespace EnemyRandomizerMod
         static string DESTROY_ON_LOAD = "DestroyOnLoad";
         static string RESOURCES = "RESOURCES";
 
+        public static Action ClearBypass;
         public static Func<int> GetPlayerSeed;
         public static Func<int> GetCustomColoSeed;
         public static Func<EnemyRandomizerDatabase> GetDatabase;

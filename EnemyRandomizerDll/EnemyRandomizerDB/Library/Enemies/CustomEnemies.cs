@@ -95,17 +95,17 @@ namespace EnemyRandomizerMod
             MRenderer.enabled = true;
             Collider.enabled = true;
 
-            var explode = SpawnerExtensions.SpawnEntityAt("Death Puff Med", transform.position, null, false, false);
-            explode.transform.SetParent(transform);
-            explode.transform.localPosition = Vector3.zero;
+            //var explode = SpawnerExtensions.SpawnEntityAt("Death Puff Med", transform.position, null, false, false);
+            //explode.transform.SetParent(transform);
+            //explode.transform.localPosition = Vector3.zero;
 
-            var de = gameObject.GetOrAddComponent<EnemyDeathEffectsUninfected>();
-            de.doKillFreeze = false;
-            de.uninfectedDeathPt = explode;
+            //var de = gameObject.GetOrAddComponent<EnemyDeathEffectsUninfected>();
+            //de.doKillFreeze = false;
+            //de.uninfectedDeathPt = explode;
 
-            var tinker = gameObject.GetComponent<TinkEffect>();
-            if (tinker != null)
-                GameObject.Destroy(tinker);
+            //var tinker = gameObject.GetComponent<TinkEffect>();
+            //if (tinker != null)
+            //    GameObject.Destroy(tinker);
 
             //var extend = fsm.GetState("Extend");
             //extend.InsertCustomAction(() => {
@@ -180,17 +180,17 @@ namespace EnemyRandomizerMod
             MRenderer.enabled = true;
             Collider.enabled = true;
 
-            var explode = SpawnerExtensions.SpawnEntityAt("Death Puff Med", transform.position, null, false, false);
-            explode.transform.SetParent(transform);
-            explode.transform.localPosition = Vector3.zero;
+            //var explode = SpawnerExtensions.SpawnEntityAt("Death Puff Med", transform.position, null, false, false);
+            //explode.transform.SetParent(transform);
+            //explode.transform.localPosition = Vector3.zero;
 
-            var de = gameObject.GetOrAddComponent<EnemyDeathEffectsUninfected>();
-            de.doKillFreeze = false;
-            de.uninfectedDeathPt = explode;
+            //var de = gameObject.GetOrAddComponent<EnemyDeathEffectsUninfected>();
+            //de.doKillFreeze = false;
+            //de.uninfectedDeathPt = explode;
 
-            var tinker = gameObject.GetComponent<TinkEffect>();
-            if (tinker != null)
-                GameObject.Destroy(tinker);
+            //var tinker = gameObject.GetComponent<TinkEffect>();
+            //if (tinker != null)
+            //    GameObject.Destroy(tinker);
 
             //var extend = fsm.GetState("Extend");
             //extend.InsertCustomAction(() => {
@@ -206,7 +206,15 @@ namespace EnemyRandomizerMod
 
     public class LaserTurretSpawner : DefaultSpawner<LaserTurretControl> { }
 
-    public class LaserTurretPrefabConfig : DefaultPrefabConfig { }
+    public class LaserTurretPrefabConfig : DefaultPrefabConfig
+    {
+        public override void SetupPrefab(PrefabObject p)
+        {
+            base.SetupPrefab(p);
+
+            p.prefab.transform.rotation = Quaternion.identity;
+        }
+    }
     /////
     //////////////////////////////////////////////////////////////////////////////
 

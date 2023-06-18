@@ -29,6 +29,9 @@ namespace EnemyRandomizerMod
         float? defaultRNGWeight;
 
         [XmlIgnore]
+        float? bossRNGWeight;
+
+        [XmlIgnore]
         public float DefaultRNGWeight
         {
             get
@@ -51,16 +54,16 @@ namespace EnemyRandomizerMod
         {
             get
             {
-                if (defaultRNGWeight == null)
+                if (bossRNGWeight == null)
                 {
                     //cache the table lookup
                     if (MetaDataTypes.SafeForBossReplacementWeights.ContainsKey(prefabName))
-                        defaultRNGWeight = MetaDataTypes.SafeForBossReplacementWeights[prefabName];
+                        bossRNGWeight = MetaDataTypes.SafeForBossReplacementWeights[prefabName];
                     else
-                        defaultRNGWeight = 1f;
+                        bossRNGWeight = 1f;
                 }
 
-                return defaultRNGWeight.Value;
+                return bossRNGWeight.Value;
             }
         }
 

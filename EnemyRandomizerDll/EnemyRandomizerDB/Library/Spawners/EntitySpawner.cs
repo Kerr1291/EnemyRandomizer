@@ -12,6 +12,9 @@ namespace EnemyRandomizerMod
         public bool removeChildrenOnDeath = true;
         public string spawnEntityOnChildDeath;
 
+        public Vector2? topLeft;
+        public Vector2? botRight;
+
         protected HashSet<GameObject> children = new HashSet<GameObject>();
         public HashSet<GameObject> Children => children;
 
@@ -143,12 +146,25 @@ namespace EnemyRandomizerMod
             return null;
         }
 
+
+        IEnumerable<GameObject> GetChildrenOutsideArena()
+        {
+            try
+            {
+                var outside = children.Where(x => x != null).Where(x => IsOutsideArena(x));
+            }
+            catch (Exception e) { Dev.LogError($"Exception caught in GetChildrenOutsideArena when trying to get the children outside colo ERROR:{e.Message}  STACKTRACE: {e.StackTrace}"); }
+
+            return null;
+        }
+
         public virtual void RemoveDeadChildren()
         {
             if (children == null)
                 return;
 
             var outside = GetChildrenOutsideColo();
+            var outsideArena = GetChildrenOutsideArena();
 
             try
             {
@@ -164,6 +180,11 @@ namespace EnemyRandomizerMod
             if (outside != null)
             {
                 DestroyAllChildren(outside);
+            }
+
+            if(outsideArena != null)
+            {
+                DestroyAllChildren(outsideArena);
             }
         }
 
@@ -197,6 +218,34 @@ namespace EnemyRandomizerMod
                hm == null &&
                x.activeInHierarchy != false
             );
+        }
+
+        protected virtual bool IsOutsideArena(GameObject g)
+        {
+            if (g == null)
+                return true;
+
+            if (topLeft == null)
+                return false;
+
+            if (botRight == null)
+                return false;
+
+            return !InBox(g, topLeft.Value, botRight.Value);
+        }
+
+        public bool InBox(GameObject g, Vector2 topleft, Vector2 bottomRight)
+        {
+            var point = g.transform.position.ToVec2();
+
+            // Check if the point's X coordinate is within the box's X range
+            bool withinXRange = point.x >= topleft.x && point.x <= bottomRight.x;
+
+            // Check if the point's Y coordinate is within the box's Y range
+            bool withinYRange = point.y <= topleft.y && point.y >= bottomRight.y;
+
+            // Return true if the point is within both the X and Y ranges, indicating it is inside the box
+            return withinXRange && withinYRange;
         }
 
         protected virtual bool IsOutsideColo(GameObject g)

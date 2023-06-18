@@ -56,6 +56,8 @@ namespace EnemyRandomizerMod
 
             control.OverrideState("Death Reset", () => { GameObject.Destroy(gameObject); });
 
+            control.AddTimeoutAction(control.GetState("In Air"), "LAND", 4f);
+
             this.InsertHiddenState(control, "Init", "FINISHED", "Multiply");
             //this.AddResetToStateOnHide(control, "Init");
         }

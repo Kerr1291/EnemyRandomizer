@@ -279,6 +279,7 @@ namespace EnemyRandomizerMod
         protected virtual PrefabObject GetObject(List<PrefabObject> validReplacements, List<float> weights, RNG rng)
         {
             int replacementIndex = rng.WeightedRand(weights);
+            //Dev.Log("SELCTED REPLACEMENT INDEX " + replacementIndex + " WHICH IS "+ validReplacements[replacementIndex]);
             return validReplacements[replacementIndex];
         }
 
@@ -337,7 +338,9 @@ namespace EnemyRandomizerMod
                 {
                     if(SpawnerExtensions.IsBoss(originalPrefab.prefabName))
                     {
+                        //Dev.Log("THIS IS A BOSS; POSSIBLE BOSSES____");
                         weights = GetBossWeights(validReplacements);
+                        //validReplacements.ForEach(x => Dev.Log($"{x} - BOSS WEIGHT:{x.BossRNGWeight}"));
                     }
                     else
                     {
@@ -351,6 +354,9 @@ namespace EnemyRandomizerMod
                     {
                         if(weights != null)
                         {
+                            //Dev.Log("GETTING WEIGHTED REPLACEMENT -- WEIGHTS ARE");
+                            //weights.ForEach(x => Dev.Log($"{x}"));
+                            //Dev.Log("GETTING WEIGHTED REPLACEMENT");
                             replacementPrefab = GetObject(validReplacements, weights, rng);
                         }
                         else
@@ -376,6 +382,7 @@ namespace EnemyRandomizerMod
 
             //do the replace
             var replacement = Database.Replace(originalObject, replacementPrefab);
+            //Dev.Log("FINALLY: " + replacement);
             return replacement;
         }
 

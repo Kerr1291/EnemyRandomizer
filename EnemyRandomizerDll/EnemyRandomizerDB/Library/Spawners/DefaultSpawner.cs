@@ -168,53 +168,71 @@ namespace EnemyRandomizerMod
 
         public Action<SpawnEffect, GameObject> onSpawn;
 
-        protected virtual void Spawn()
+        protected virtual void Spawn(GameObject target, Vector2 pos)
         {
-#if DEBUG
-            if(SpawnedObjectControl.VERBOSE_DEBUG)
-            {
-                var metaInfo = ObjectMetadata.Get(gameObject);
-                //var soc = gameObject.GetComponent<SpawnedObjectControl>();
-                if (metaInfo == null)
-                    metaInfo = new ObjectMetadata(gameObject);
+            if (target == null)
+                target = gameObject;
 
-                Dev.Log($"A SpawnEffect attached to {metaInfo} is being invoked via OnEnable");
-            }
+            try
+            {
+#if DEBUG
+                if (SpawnedObjectControl.VERBOSE_DEBUG)
+                {
+                    var metaInfo = ObjectMetadata.Get(target);
+                    //var soc = gameObject.GetComponent<SpawnedObjectControl>();
+                    if (metaInfo == null)
+                        metaInfo = new ObjectMetadata(target);
+
+                    Dev.Log($"A SpawnEffect attached to {metaInfo} is being invoked");
+                }
 #endif
 
-            if (!gameObject.IsInAValidScene())
-                return;
+                if (!target.IsInAValidScene())
+                    return;
 
-            if ((effectToSpawn != NONE && !string.IsNullOrEmpty(effectToSpawn)) || (isSpawnerEnemy && allowRandomizationOfSpawn))
-            {
-                GameObject spawned = null;
-                if (isSpawnerEnemy && allowRandomizationOfSpawn)
+                if ((effectToSpawn != NONE && !string.IsNullOrEmpty(effectToSpawn)) || (isSpawnerEnemy && allowRandomizationOfSpawn))
                 {
-                    spawned = SpawnerExtensions.SpawnEnemyForEnemySpawner(transform.position, activateOnSpawn, null);
-                }
-                else
-                {
-                    spawned = SpawnerExtensions.SpawnEntityAt(effectToSpawn, transform.position, null, activateOnSpawn, allowRandomizationOfSpawn);
-                }
+                    GameObject spawned = null;
+                    if (isSpawnerEnemy && allowRandomizationOfSpawn)
+                    {
+                        spawned = SpawnerExtensions.SpawnEnemyForEnemySpawner(pos, activateOnSpawn, null);
+                    }
+                    else
+                    {
+                        spawned = SpawnerExtensions.SpawnEntityAt(effectToSpawn, pos, null, activateOnSpawn, allowRandomizationOfSpawn);
+                    }
 
-                onSpawn?.Invoke(this, spawned);
+                    onSpawn?.Invoke(this, spawned);
+                }
             }
+            catch (Exception e) { Dev.Log($"Caught exception in spawn effect \n{e.Message}\n{e.StackTrace} "); }
 
-            if(destroyGameObject)
-                GameObject.Destroy(gameObject);
+            EnemyRandomizerDatabase.ClearBypass();
+
+            if (destroyGameObject)
+                GameObject.Destroy(target);
+
+            GameObject.Destroy(gameObject);
         }
     }
 
     public class CorpseRemover : SpawnEffect
     {
+        public bool useOwner = false;
+        public GameObject owner;
+
+        public GameObject corpseTarget;
+        public Vector2 lastPos;
+
         public override bool destroyGameObject => true;
 
         public bool didSpawn = false;
-
-        protected virtual void OnEnable() { CheckRemoveAndSpawn(); }
+        public bool preRemoveCorpse = true;
 
         protected virtual void Update()
         {
+            if (owner != null)
+                lastPos = owner.transform.position;
             CheckRemoveAndSpawn();
         }
 
@@ -223,20 +241,58 @@ namespace EnemyRandomizerMod
             if (didSpawn)
                 return;
 
-            var parent = transform.parent;
-            if(parent == null)
-                Spawn();
-            else
+            if (preRemoveCorpse)
             {
-                var parentName = parent.name;
-                var thisName = gameObject.name;
+                if (corpseTarget != null)
+                {
+                    SpawnerExtensions.DestroyObject(corpseTarget);
+                    corpseTarget = null;
+                }
 
-                parentName = EnemyRandomizerDatabase.ToDatabaseKey(parentName);
-                thisName = thisName.Remove("Corpse");
-                thisName = EnemyRandomizerDatabase.ToDatabaseKey(thisName);
+                if (!useOwner)
+                {
+                    Spawn(owner, lastPos);
+                }
+            }
 
-                if (!parentName.Contains(thisName))
-                    Spawn();
+            if (useOwner)
+            {
+                bool hasHm = owner != null && owner.GetComponent<HealthManager>() != null;
+                bool isDead = false;
+                if (owner != null &&
+                    owner.GetComponent<HealthManager>() != null &&
+                    (owner.GetComponent<HealthManager>().hp <= 0 || owner.GetComponent<HealthManager>().isDead))
+                    isDead = true;
+
+                if (owner == null || 
+                   (!hasHm && !owner.activeInHierarchy) || 
+                    isDead)
+                {
+                    Spawn(owner, lastPos);
+                    didSpawn = true;
+                }
+
+                //var parent = transform.parent;
+                //if (parent == null)
+                //{
+                //    Spawn(owner, lastPos);
+                //    didSpawn = true;
+                //}
+                //else
+                //{
+                    //var parentName = parent.name;
+                    //var thisName = gameObject.name;
+
+                    //parentName = EnemyRandomizerDatabase.ToDatabaseKey(parentName);
+                    //thisName = thisName.Remove("Corpse");
+                    //thisName = EnemyRandomizerDatabase.ToDatabaseKey(thisName);
+
+                    //if (!parentName.Contains(thisName))
+                    //{
+                    //    Spawn(owner, lastPos);
+                    //    didSpawn = true;
+                    //}
+                //}
             }
         }
     }
@@ -255,7 +311,7 @@ namespace EnemyRandomizerMod
             mRenderer = GetComponent<MeshRenderer>();
         }
 
-        protected virtual void OnDestroy() { Spawn(); }
+        protected virtual void OnDestroy() { Spawn(gameObject, transform.position); }
 
         protected virtual void Update()
         {

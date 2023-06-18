@@ -528,15 +528,38 @@ namespace EnemyRandomizerMod
             return fixer;
         }
 
-        public static CorpseRemover AddCorpseRemoverWithEffect(this GameObject corpse, GameObject owner, string effect = null)
+        public static CorpseRemover AddCorpseRemoverWithEffect(this GameObject corpse, GameObject owner, string effect = null, bool preRemoveCorpse = true)
         {
-            var remover = corpse.gameObject.GetOrAddComponent<CorpseRemover>();
-            if (!string.IsNullOrEmpty(effect))
+            if(preRemoveCorpse)
             {
-                remover.effectToSpawn = effect;
+                var sub = new GameObject(corpse.name + " Corpse Substitute");
+                var remover = sub.gameObject.GetOrAddComponent<CorpseRemover>();
+
+                remover.corpseTarget = corpse;
+                remover.preRemoveCorpse = true;
+
+                remover.owner = owner;
+                remover.useOwner = owner != null;
+                if (!string.IsNullOrEmpty(effect))
+                {
+                    remover.effectToSpawn = effect;
+                }
+                return remover;
+            }   
+            else
+            {
+                var remover = corpse.gameObject.GetOrAddComponent<CorpseRemover>();
+
+                remover.preRemoveCorpse = false;
+                remover.owner = owner;
+                remover.useOwner = owner != null;
+                if (!string.IsNullOrEmpty(effect))
+                {
+                    remover.effectToSpawn = effect;
+                }
+                //remover.owner = ObjectMetadata.Get(owner);
+                return remover;
             }
-            //remover.owner = ObjectMetadata.Get(owner);
-            return remover;
         }
 
         public static void AddDieOnHPZeroToState(this FsmState state, HealthManager healthManager, string effectToSpawn = null)
@@ -869,6 +892,9 @@ namespace EnemyRandomizerMod
 
         public static string GetDatabaseKey(this ObjectMetadata metaObject)
         {
+            if (metaObject == null)
+                return null;
+
             return EnemyRandomizerDatabase.ToDatabaseKey(metaObject.ObjectName);
         }
 
@@ -1216,6 +1242,28 @@ namespace EnemyRandomizerMod
             return corpse;
         }
 
+        public static void DestroyAllCorpseObjects(this GameObject gameObject)
+        {
+            if (gameObject == null)
+                return ;
+
+            {
+                var corpse = gameObject.GetCorpse<EnemyDeathEffects>();
+                if (corpse != null)
+                {
+                    GameObject.Destroy(corpse);
+                }
+            }
+
+            {
+                var corpse = gameObject.GetCorpsePrefab<EnemyDeathEffects>();
+                if (corpse != null)
+                {
+                    GameObject.Destroy(corpse);
+                }
+            }
+        }
+
         public static bool IsBoss(string DatabaseName)
         {
             return DatabaseName == null ? false : MetaDataTypes.Bosses.Contains(DatabaseName);
@@ -1331,10 +1379,12 @@ namespace EnemyRandomizerMod
 
         public static Vector2 GetSizeFromUniqueObject(this GameObject sceneObject)
         {
-            Dev.Log($"Setting size for object {sceneObject}");
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                Dev.Log($"Setting size for object {sceneObject}");
             if (EnemyRandomizerDatabase.ToDatabaseKey(sceneObject.name) == "Acid Flyer")
             {
-                Dev.Log($"Looking for shell in {sceneObject}");
+                if (SpawnedObjectControl.VERBOSE_DEBUG)
+                    Dev.Log($"Looking for shell in {sceneObject}");
                 var shell = sceneObject.FindGameObjectInChildrenWithName("Shell");
                 if (shell == null)
                 {
@@ -1343,7 +1393,8 @@ namespace EnemyRandomizerMod
                     if (result != null)
                         shell = result.gameObject;
                 }
-                Dev.Log($"returning box collider for {shell}");
+                if (SpawnedObjectControl.VERBOSE_DEBUG)
+                    Dev.Log($"returning box collider for {shell}");
                 return shell.GetComponent<BoxCollider2D>().size;
             }
 
@@ -1354,12 +1405,14 @@ namespace EnemyRandomizerMod
         {
             string databaseName = EnemyRandomizerDatabase.ToDatabaseKey(objectName);
 
-            Dev.Log($"Getting size for object {objectName}");
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                Dev.Log($"Getting size for object {objectName}");
             if (databaseName == "Acid Flyer")
             {
                 var dbo = EnemyRandomizerDatabase.GetDatabase().Objects[databaseName];
 
-                Dev.Log($"Looking for shell in {dbo}");
+                if (SpawnedObjectControl.VERBOSE_DEBUG)
+                    Dev.Log($"Looking for shell in {dbo}");
                 var shell = dbo.prefab.FindGameObjectInChildrenWithName("Shell");
                 if (shell == null)
                 {
@@ -1368,7 +1421,8 @@ namespace EnemyRandomizerMod
                     if (result != null)
                         shell = result.gameObject;
                 }
-                Dev.Log($"returning box collider for {shell}");
+                if (SpawnedObjectControl.VERBOSE_DEBUG)
+                    Dev.Log($"returning box collider for {shell}");
                 return shell.GetComponent<BoxCollider2D>().size;
             }
 
@@ -1471,35 +1525,41 @@ namespace EnemyRandomizerMod
             if (!checkSpriteColliderLast && prefabObject.GetComponent<tk2dSprite>() && prefabObject.GetComponent<tk2dSprite>().boxCollider2D != null)
             {
                 result = prefabObject.GetComponent<tk2dSprite>().boxCollider2D.size;
-                Dev.Log($"Size of SPRITE {prefabObject} is {result}");
+
+                if (SpawnedObjectControl.VERBOSE_DEBUG) Dev.Log($"Size of SPRITE {prefabObject} is {result}");
             }
             else if (prefabObject.GetComponent<BoxCollider2D>())
             {
                 result = prefabObject.GetComponent<BoxCollider2D>().size;
-                Dev.Log($"Size of BOX {prefabObject} is {result}");
+
+                if (SpawnedObjectControl.VERBOSE_DEBUG) Dev.Log($"Size of BOX {prefabObject} is {result}");
             }
             else if (prefabObject.GetComponent<CircleCollider2D>())
             {
                 var newCCircle = prefabObject.GetComponent<CircleCollider2D>();
                 result = Vector2.one * newCCircle.radius;
-                Dev.Log($"Size of CIRCLE {prefabObject} is {result}");
+
+                if (SpawnedObjectControl.VERBOSE_DEBUG) Dev.Log($"Size of CIRCLE {prefabObject} is {result}");
             }
             else if (prefabObject.GetComponent<PolygonCollider2D>())
             {
                 var newCPoly = prefabObject.GetComponent<PolygonCollider2D>();
                 result = new Vector2(newCPoly.points.Select(x => x.x).Max() - newCPoly.points.Select(x => x.x).Min(), newCPoly.points.Select(x => x.y).Max() - newCPoly.points.Select(x => x.y).Min());
 
-                Dev.Log($"Size of POLYGON {prefabObject} is {result}");
+
+                if (SpawnedObjectControl.VERBOSE_DEBUG) Dev.Log($"Size of POLYGON {prefabObject} is {result}");
             }
             else if (checkSpriteColliderLast && prefabObject.GetComponent<tk2dSprite>() && prefabObject.GetComponent<tk2dSprite>().boxCollider2D != null)
             {
                 result = prefabObject.GetComponent<tk2dSprite>().boxCollider2D.size;
-                Dev.Log($"Size of SPRITE {prefabObject} is {result}");
+
+                if (SpawnedObjectControl.VERBOSE_DEBUG) Dev.Log($"Size of SPRITE {prefabObject} is {result}");
             }
             else
             {
                 result = prefabObject.transform.localScale;
-                Dev.Log($"Size of TRANSFORM SCALE {prefabObject} is {result}");
+
+                if (SpawnedObjectControl.VERBOSE_DEBUG) Dev.Log($"Size of TRANSFORM SCALE {prefabObject} is {result}");
 
                 if (result.x < 0)
                     result = new Vector2(-result.x, result.y);
@@ -1750,7 +1810,8 @@ namespace EnemyRandomizerMod
             if (source == null)
                 return;
 
-            Dev.Log($"Destroying [{source.GetSceneHierarchyPath()}]");
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                Dev.Log($"Destroying [{source.GetSceneHierarchyPath()}]");
             if (source.name.Contains("Fly") && source.scene.name == "Crossroads_04")
             {
                 //this seems to correctly decrement the count from the battle manager
@@ -1931,7 +1992,8 @@ namespace EnemyRandomizerMod
                 //pitch = pitch_rangeBot.Evaluate(t);
             }
 
-            Dev.Log($"{go.GetSceneHierarchyPath()} audio pitch from size {sizeScale} to t {t} to pitch {pitch}");
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                Dev.Log($"{go.GetSceneHierarchyPath()} audio pitch from size {sizeScale} to t {t} to pitch {pitch}");
 
             var audioSources = go.GetComponentsInChildren<AudioSource>(true);
             var audioSourcesPitchRandomizer = go.GetComponentsInChildren<AudioSourcePitchRandomizer>(true);

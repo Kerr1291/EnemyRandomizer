@@ -17,6 +17,8 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
+            control.AddTimeoutAction(control.GetState("In Air"), "LAND", 4f);
+
             var init = control.GetState("Init");
             init.DisableActions(8);
 

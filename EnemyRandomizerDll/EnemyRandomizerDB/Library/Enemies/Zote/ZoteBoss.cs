@@ -33,8 +33,6 @@ namespace EnemyRandomizerMod
     {
     }
 
-
-
     public class ZoteBossControl : DefaultSpawnedEnemyControl
     {
         public static int nextPrecept = 1;
@@ -58,6 +56,11 @@ namespace EnemyRandomizerMod
             {
                 var bronze = BattleManager.StateMachine.Value as ColoBronze;
                 skipRoar = !bronze.isZoteWave && !bronze.IsPreloading;
+            }
+            else
+            {
+                //never have a zote corpse
+                gameObject.DestroyAllCorpseObjects();//don't have a corpswe at all for zote
             }
 
             if (skipRoar)

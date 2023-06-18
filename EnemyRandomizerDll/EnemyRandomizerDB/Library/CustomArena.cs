@@ -10,6 +10,7 @@ using System.Collections.Generic;
 
 namespace EnemyRandomizerMod
 {
+
     public class CustomArena : BattleStateMachine
     {
         public bool IsPreloading { get; protected set; }
@@ -593,6 +594,14 @@ namespace EnemyRandomizerMod
                 }
             }
 
+            if (SceneName == "Room_Colosseum_Bronze")
+            {
+                if (currentState.Name.Contains("Wave 15"))
+                {
+                    return 3f;
+                }
+            }
+
             return currentState.GetActions<SendEventByName>().Where(x => x.sendEvent.Value == "SPAWN").FirstOrDefault().delay.Value;
         }
 
@@ -645,32 +654,52 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    var smCages = cages.Where(x => x.name.Contains("Small"));
-                    var lgCages = cages.Where(x => x.name.Contains("Large"));
-
-                    foreach (var cage in smCages)
+                    if (SceneName == "Room_Colosseum_Bronze" && currentState.Name.Contains("Wave 15"))
                     {
-                        string enemyInside = ColosseumCageSmallPrefabConfig.GetEnemyPrefabNameInsideCage(cage);
-                        Dev.Log($"COLO:{this.GetType().Name} -- Spawning Random [Small Cage] Arena Enemy: Wave {goName} Cage {cage} Original Enemy: {enemyInside}");
-                        var c = SpawnerExtensions.SpawnEntityAt("Arena Cage Small", cage.transform.position, null, true, false);
-                        var cc = c.GetComponent<ArenaCageControl>();
-                        if (cc != null)
-                        {
-                            cc.owner = this;
-                            cc.Spawn(null, enemyInside, waveDelay);
-                        }
+                        var bossPos = new Vector2(116f, 19.5f);
+                        var boss1 = SpawnerExtensions.GetRandomPrefabNameForArenaBoss(rng);
+
+                        SpawnerExtensions.SpawnEntityAt("Death Explode Boss", bossPos, null, true, false);
+
+                        var boss = Spawn(bossPos, boss1, "Blow Fly");
+
+                        ColoGold.TuneBoss(boss);
+
+                        boss.SafeSetActive(true);
                     }
-
-                    foreach (var cage in lgCages)
+                    else
                     {
-                        string enemyInside = ColosseumCageLargePrefabConfig.GetEnemyPrefabNameInsideCage(cage);
-                        Dev.Log($"COLO:{this.GetType().Name} --Spawning Random [Large Cage] Arena Enemy: Wave {goName} Cage {cage} Original Enemy: {enemyInside}");
-                        var c = SpawnerExtensions.SpawnEntityAt("Arena Cage Large", cage.transform.position, null, true, false);
-                        var cc = c.GetComponent<ArenaCageControl>();
-                        if (cc != null)
+                        var smCages = cages.Where(x => x.name.Contains("Small"));
+                        var lgCages = cages.Where(x => x.name.Contains("Large"));
+
+                        foreach (var cage in smCages)
                         {
-                            cc.owner = this;
-                            cc.Spawn(null, enemyInside, waveDelay);
+                            string enemyInside = ColosseumCageSmallPrefabConfig.GetEnemyPrefabNameInsideCage(cage);
+
+                            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                                Dev.Log($"COLO:{this.GetType().Name} -- Spawning Random [Small Cage] Arena Enemy: Wave {goName} Cage {cage} Original Enemy: {enemyInside}");
+                            var c = SpawnerExtensions.SpawnEntityAt("Arena Cage Small", cage.transform.position, null, true, false);
+                            var cc = c.GetComponent<ArenaCageControl>();
+                            if (cc != null)
+                            {
+                                cc.owner = this;
+                                cc.Spawn(null, enemyInside, waveDelay);
+                            }
+                        }
+
+                        foreach (var cage in lgCages)
+                        {
+                            string enemyInside = ColosseumCageLargePrefabConfig.GetEnemyPrefabNameInsideCage(cage);
+
+                            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                                Dev.Log($"COLO:{this.GetType().Name} --Spawning Random [Large Cage] Arena Enemy: Wave {goName} Cage {cage} Original Enemy: {enemyInside}");
+                            var c = SpawnerExtensions.SpawnEntityAt("Arena Cage Large", cage.transform.position, null, true, false);
+                            var cc = c.GetComponent<ArenaCageControl>();
+                            if (cc != null)
+                            {
+                                cc.owner = this;
+                                cc.Spawn(null, enemyInside, waveDelay);
+                            }
                         }
                     }
                 }
@@ -1028,7 +1057,7 @@ namespace EnemyRandomizerMod
             }
         }
 
-        protected virtual void TuneBoss(GameObject boss)
+        public static void TuneBoss(GameObject boss)
         {
             //make sure they have boss hp
             var soc = boss.GetComponent<DefaultSpawnedEnemyControl>();

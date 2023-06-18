@@ -540,8 +540,17 @@ namespace EnemyRandomizerMod
     /////
     public class CeilingDropperControl : DefaultSpawnedEnemyControl
     {
+        public override string FSMName => "Ceiling Dropper";
+
         public override float spawnPositionOffset => .5f;
         public override bool spawnOrientationIsFlipped => true;
+
+        public override void Setup(GameObject objectThatWillBeReplaced = null)
+        {
+            base.Setup(objectThatWillBeReplaced);
+
+            control.AddTimeoutAction(control.GetState("Dive"), "COLLIDE", 5f);
+        }
     }
 
     public class CeilingDropperSpawner : DefaultSpawner<CeilingDropperControl> { }
@@ -1562,9 +1571,14 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
-            isElite = SpawnerExtensions.RollProbability(out _, eliteChance, 10);
+            bool willBeElite = SpawnerExtensions.RollProbability(out _, eliteChance, 10);
 
-            if (isElite)
+            if(isElite)
+            {
+                willBeElite = false;
+            }
+
+            if (willBeElite)
             {
                 try
                 {
@@ -1632,7 +1646,7 @@ namespace EnemyRandomizerMod
                     }
                     catch (Exception e) {
 
-                        Dev.LogError($"Error making guard elite ! ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                        Dev.LogError($"Error making guard elite boomerang! ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
                     }
                 }
             }, 0);
@@ -1655,7 +1669,7 @@ namespace EnemyRandomizerMod
 
             try
             {
-                if (isElite)
+                if (willBeElite)
                 {
                     var wait = control.GetState("Wait");
                     wait.GetAction<WaitRandom>(2).timeMin = 0f;
@@ -1671,8 +1685,11 @@ namespace EnemyRandomizerMod
             catch (Exception e)
             {
 
-                Dev.LogError($"Error making guard elite ! ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
+                Dev.LogError($"Error making guard elite slashes and runs ! ERROR:{e.Message} STACKTRACE:{e.StackTrace}");
             }
+
+            if (willBeElite)
+                isElite = true;
         }
 
         IEnumerator DestroyBoomerangAfterTime(float time)
@@ -1806,6 +1823,23 @@ namespace EnemyRandomizerMod
 
     /////////////////////////////////////////////////////////////////////////////
     /////
+    public class MaceHeadBugControl : DefaultSpawnedEnemyControl
+    {
+    }
+
+    public class MaceHeadBugSpawner : DefaultSpawner<MaceHeadBugControl> { }
+
+    public class MaceHeadBugPrefabConfig : DefaultPrefabConfig { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
     public class BigCentipedeControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Big Centipede";
@@ -1901,6 +1935,10 @@ namespace EnemyRandomizerMod
     }
 
     public class HealthScuttlerSpawner : DefaultSpawner<HealthScuttlerControl>
+    {
+    }
+
+    public class HealthScuttlerPrefabConfig : DefaultPrefabConfig
     {
     }
 

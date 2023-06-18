@@ -42,13 +42,7 @@ namespace EnemyRandomizerMod
             {
                 if (EnemyHealthManager != null)
                 {
-                    Dev.Log(gameObject + " HP WAS " + EnemyHealthManager.hp);
-                    Dev.Log(Dev.FunctionHeader(0));
-                    Dev.Log(Dev.FunctionHeader(1));
-                    Dev.Log(Dev.FunctionHeader(2));
-                    Dev.Log(Dev.FunctionHeader(3));
                     EnemyHealthManager.hp = value;
-                    Dev.Log(gameObject + " HP IS " + EnemyHealthManager.hp);
                     lastSetHP = CurrentHP;
                 }
                 else
@@ -183,7 +177,7 @@ namespace EnemyRandomizerMod
                 }
                 else if(objectThatWillBeReplaced.IsBoss())
                 {
-                    CheckHackyBossSetup();
+                    CheckHackyBossSetup(objectThatWillBeReplaced);
                 }
                 else
                 {
@@ -290,6 +284,7 @@ namespace EnemyRandomizerMod
             }
         }
 
+        float grimmTimeout = 0f;
         protected virtual void Update()
         {
             if (!loaded)
@@ -298,7 +293,41 @@ namespace EnemyRandomizerMod
             if (gameObject.ObjectType() != PrefabObject.PrefabType.Enemy)
                 return;
 
-            CheckHackySceneFixesOnUpdate();
+            if(gameObject != null && gameObject.GetDatabaseKey() == "Grimm Boss")
+            {
+                var corpse = gameObject.GetCorpseObject();
+                if (corpse != null)
+                    GameObject.Destroy(corpse);
+
+                if(control.ActiveStateName == "AD Fire")
+                {
+                    grimmTimeout += Time.deltaTime;
+                    if(grimmTimeout > 1f)
+                    {
+                        control.SendEvent("LAND");
+                        grimmTimeout = 0f;
+                    }
+                }
+                else if (control.ActiveStateName == "AD Edge")
+                {
+                    grimmTimeout += Time.deltaTime;
+                    if (grimmTimeout > 1f)
+                    {
+                        control.SendEvent("LAND");
+                        grimmTimeout = 0f;
+                    }
+                }
+                else
+                {
+                    grimmTimeout = 0f;  
+                }
+            }
+
+            try
+            {
+                CheckHackySceneFixesOnUpdate();
+            }
+            catch (Exception e) { Dev.Log($"Caught exception in CheckHackySceneFixesOnUpdate :  \n{e.Message}\n{e.StackTrace}"); }
 
             if (counter > 0)
             {
@@ -309,19 +338,115 @@ namespace EnemyRandomizerMod
 
                     var orig = ObjectMetadata.GetOriginal(gameObject);
 
-                    if(specialAggroRange != null || (orig != null && orig.ObjectName.Contains("False Knight")))
+                    if(specialAggroRange != null && orig != null && !IsInColo())
                     {
-                        Dev.Log("FALSE KNIGHT REPLACEMENT FOUND");
                         var poob = gameObject.GetComponent<PreventOutOfBounds>();
                         string currentScene = SpawnerExtensions.SceneName(gameObject);
-                        if (currentScene == "Crossroads_10_boss" || currentScene == "Crossroads_10")//false knight
+
+
+
+                        if (orig.ObjectName.Contains("False Knight Dream"))
+                        {
+                            if (currentScene == "Dream_01_False_Knight")//false knight dream / failed champ
+                            {
+                                UnFreeze();
+                                transform.position = new Vector3(60f, 35f);
+                                if (poob != null)
+                                    poob.ForcePosition(new Vector3(60f, 35f));
+                            }
+                        }
+                        if (orig.ObjectName.Contains("False Knight"))
+                        {
+                            if (currentScene == "Crossroads_10_boss" || currentScene == "Crossroads_10")//false knight
+                            {
+                                UnFreeze();
+                                transform.position = new Vector3(29f, 38f);
+                                if (poob != null)
+                                    poob.ForcePosition(new Vector3(29f, 38f));
+                            }
+                        }
+                        else if (orig.ObjectName.Contains("Mage Lord") && !orig.ObjectName.Contains("Phase2"))
+                        {
+                            UnFreeze();
+                            transform.position = new Vector3(16f, 34f);
+                            if (poob != null)
+                                poob.ForcePosition(new Vector3(16f, 34f));
+                        }
+                        else if (orig.ObjectName.Contains("Mage Lord") && orig.ObjectName.Contains("Phase2"))
+                        {
+                            UnFreeze();
+                            transform.position = new Vector3(16f, 13f);
+                            if (poob != null)
+                                poob.ForcePosition(new Vector3(16f, 13f));
+                        }
+                        else if (orig.ObjectName.Contains("Dream Mage Lord") && !orig.ObjectName.Contains("Phase2"))
+                        {
+                            UnFreeze();
+                            transform.position = new Vector3(20f, 35f);
+                            if (poob != null)
+                                poob.ForcePosition(new Vector3(20f, 35f));
+                        }
+                        else if (orig.ObjectName.Contains("Dung Defender"))
+                        {
+                            UnFreeze();
+                            transform.position = new Vector3(75f, 13f);
+                            if (poob != null)
+                                poob.ForcePosition(new Vector3(75f, 13f));
+                        }
+                        else if (orig.ObjectName.Contains("Fluke Mother"))
+                        {
+                            UnFreeze();
+                            transform.position = new Vector3(18f, 17f);
+                            if (poob != null)
+                                poob.ForcePosition(new Vector3(18f, 17f));
+                        }
+                        else if (orig.ObjectName.Contains("Hornet Boss 2"))
+                        {
+                            UnFreeze();
+                            transform.position = new Vector3(34f, 33f);
+                            if (poob != null)
+                                poob.ForcePosition(new Vector3(34f, 33f));
+                        }
+                        else if (orig.ObjectName.Contains("Hornet Boss 1"))
+                        {
+                            UnFreeze();
+                            transform.position = new Vector3(27f, 35f);
+                            if (poob != null)
+                                poob.ForcePosition(new Vector3(27f, 35f));
+                        }
+                        else if (orig.ObjectName.Contains("Traitor Lord"))
+                        {
+                            UnFreeze();
+                            transform.position = new Vector3(44.0f, 35.9f);
+                            if (poob != null)
+                                poob.ForcePosition(new Vector3(44.0f, 35.9f));
+                        }
+                        else if (orig.ObjectName.Contains("Jar Collector"))
+                        {
+                            UnFreeze();
+                            transform.position = new Vector3(55f, 100f);
+                            if (poob != null)
+                                poob.ForcePosition(new Vector3(55f, 100f));
+                        }
+                        else if (orig.ObjectName.Contains("Lost Kin"))
+                        {
+                            UnFreeze();
+                            transform.position = new Vector3(27f, 34f);
+                            if (poob != null)
+                                poob.ForcePosition(new Vector3(27f, 34f));
+                        }
+                        else if (orig.ObjectName.Contains("Mawlek Body"))
+                        {
+                            UnFreeze();
+                            var prev = transform.position;
+                            prev.z = 0f;
+                            transform.position = prev;
+                            if (poob != null)
+                                poob.ForcePosition(prev);
+                        }
+                        else
                         {
 
-                            Dev.Log("FORCING FALSE KNGIHT REPLACEMENT INTO ARENA");
-                            UnFreeze();
-                            transform.position = new Vector3(29f, 38f);
-                            if (poob != null)
-                                poob.ForcePosition(new Vector3(29f, 38f));
                         }
                     }
                 }
@@ -392,7 +517,8 @@ namespace EnemyRandomizerMod
                 string currentScene = SpawnerExtensions.SceneName(gameObject);
                 if (currentScene == "Crossroads_09")//mawlek
                 {
-                    specialAggroRange = 1f;
+                    if (BattleManager.StateMachine.Value.battleStarted)
+                        didAggro = true;
                 }
                 else if (HeroInAggroRange() || BattleManager.AggroAllBossesNow)
                 {
@@ -531,6 +657,12 @@ namespace EnemyRandomizerMod
                 //use default hp
             }
 
+            //failsafe
+            if (CurrentHP <= 0)
+            {
+                MaxHP = 1 + MetaDataTypes.ProgressionZoneScale[GameManager.instance.GetCurrentMapZone()] * 2;
+            }
+
             if (SpawnedObjectControl.VERBOSE_DEBUG)
                 Dev.Log($"Setting {this} hp to {CurrentHP}");
         }
@@ -597,6 +729,21 @@ namespace EnemyRandomizerMod
         bool hackyClimberFixOnce = false;
         protected virtual void CheckHackySceneFixesOnUpdate()
         {
+            DisableCollidersForBackgroundThings();
+
+            if (gameObject.GetDatabaseKey() == "Ceiling Dropper")
+            {
+                var alertRange = gameObject.FindGameObjectInDirectChildren("Alert Range");
+                if (alertRange != null)
+                {
+                    var aBox = alertRange.GetComponent<BoxCollider2D>();
+                    if (aBox != null)
+                    {
+                        aBox.size = new Vector2(aBox.size.x, 50f);
+                    }
+                }
+            }
+
             if (!gameObject.IsBattleEnemy() && gameObject.IsClimbing() && !hackyClimberFixOnce)
             {
                 var rayUp = Physics2D.Raycast(transform.position, Vector2.up);
@@ -610,7 +757,6 @@ namespace EnemyRandomizerMod
 
                     if (rayDown.distance > 1f)
                     {
-                        Dev.Log("FIXING CLIMBER");
                         gameObject.SetActive(false);
                         gameObject.SetRotation(0f);
                         gameObject.StickToGroundX(spawnPositionOffset * .2f);
@@ -653,7 +799,6 @@ namespace EnemyRandomizerMod
 
                     if (hackyClimberFixTimer > 1.0f)
                     {
-                        Dev.Log("FIXING CLIMBER");
                         hackyClimberFixOnce = false;
 
                         hackyClimberFixTimer = 0f;
@@ -673,6 +818,9 @@ namespace EnemyRandomizerMod
 
             string currentScene = SpawnerExtensions.SceneName(gameObject);
 
+            if (gameObject == null)
+                return;
+
             var poob = gameObject.GetComponent<PreventOutOfBounds>();
             bool needUnstuck = false;
             Vector2 fixedPos = Vector2.zero;
@@ -682,7 +830,13 @@ namespace EnemyRandomizerMod
             {
                 Vector2 putHere = new Vector2(52.5f, 18f);
 
-                if(transform.position.y > 20)
+                if (IsInBox(new Vector2(6f, 10f), new Vector2(12f, 8f)))
+                {
+                    putHere = new Vector2(10f, 12f);
+                    needUnstuck = true;
+                }
+
+                if (transform.position.y > 20)
                 {
                     needUnstuck = true;
                 }
@@ -756,6 +910,119 @@ namespace EnemyRandomizerMod
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Crossroads_07")
+            {
+                Vector2 putHere = new Vector2(transform.position.x, 83f);
+
+                if (transform.position.y > 93f)
+                {
+                    needUnstuck = true;
+                }
+
+                if(transform.position.x < 0f || transform.position.x > 42f)
+                {
+                    putHere = new Vector2(21f, 83f);
+                }
+
+
+                if (transform.position.x < 18f && transform.position.y < 2.5f)
+                {
+                    putHere = new Vector2(10.5f, 10f);
+                }
+
+                if ((transform.position.x > 22f && transform.position.y < 2.5f) || transform.position.y < 2.5f)
+                {
+                    putHere = new Vector2(33f, 10f);
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Crossroads_13")
+            {
+                Vector2 putHere = new Vector2(19.5f, 13.5f);
+
+                if (transform.position.y < 11f && transform.position.x < 8f)
+                {
+                    needUnstuck = true;
+                }
+                else if (transform.position.y < 1.5f)
+                {
+                    putHere = new Vector2(transform.position.x, 12.5f);
+                    needUnstuck = true;
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Crossroads_03")
+            {
+                Vector2 putHere = new Vector2(22.5f, 35.5f);
+
+                if (IsInBox(new Vector2(26f, 53f), new Vector2(45f, 37f)))
+                {
+                    needUnstuck = true;
+                }
+                else if(transform.position.x > 25f)
+                {
+                    needUnstuck = true;
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Crossroads_04")
+            {
+                Vector2 putHere = new Vector2(80f, 5.0f);
+
+                if (IsInBox(new Vector2(79f, 15.7f), new Vector2(85f, 10f)))
+                {
+                    needUnstuck = true;
+                }
+                else if (transform.position.y < 0f)
+                {
+                    needUnstuck = true;
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Crossroads_21")
+            {
+                Vector2 putHere = new Vector2(transform.position.x, 3.3f);
+
+                if (transform.position.y < 1.5f)
+                {
+                    needUnstuck = true;
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
             if (currentScene == "Fungus1_23")
             {
                 Vector2 putHere = new Vector2(transform.position.x, 9f);
@@ -773,16 +1040,194 @@ namespace EnemyRandomizerMod
 
 
 
-            if (doSpecialBossAggro && ( currentScene == "Mines_18_boss" || currentScene == "Mines_18" || currentScene == "Mines_32"))
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Waterways_08")
             {
-                if(BattleManager.StateMachine.Value.battleStarted && !BattleManager.StateMachine.Value.battleEnded)
+                Vector2 putHere = new Vector2(transform.position.x, 7.5f);
+
+                //lower regions
+                if (pos2d.y < 7.5f)
                 {
-                    hackyLaserCDTimer += Time.deltaTime;
-                    if(hackyLaserCDTimer > 6f)
+                    putHere = new Vector2(transform.position.x, 7.5f);
+                    if (pos2d.x > 63 && pos2d.x < 67f)
                     {
-                        PlayMakerFSM.BroadcastEvent("LASER SHOOT");
-                        hackyLaserCDTimer = SpawnerExtensions.GetRandomValueBetween(-2, 2);
+                        putHere.y = 4.5f;
                     }
+                    else if (pos2d.x < 30f)
+                    {
+                        putHere.y = 6f;
+                    }
+
+                    if (pos2d.y < 1f)
+                    {
+                        needUnstuck = true;
+                    }
+                    else if (IsInBox(new Vector2(1f, 1f), new Vector2(100f, -10f)))
+                    {
+                        needUnstuck = true;
+                    }
+                    else if (IsInBox(new Vector2(105f, 5.8f), new Vector2(140f, -10f)))
+                    {
+                        needUnstuck = true;
+                    }
+                    else if (IsInBox(new Vector2(88f, 5.5f), new Vector2(96f, -10f)))
+                    {
+                        needUnstuck = true;
+                    }
+                    else if (IsInBox(new Vector2(70f, 3.5f), new Vector2(78f, -10f)))
+                    {
+                        needUnstuck = true;
+                    }
+                    else if (IsInBox(new Vector2(0, 10f), new Vector2(28f, 7f)))
+                    {
+                        needUnstuck = true;
+                    }
+                }
+
+                if (pos2d.y > 7.5f)
+                {
+                    putHere = new Vector2(transform.position.x, 7.5f);
+                    if(pos2d.x > 63 && pos2d.x < 67f)
+                    {
+                        putHere.y = 4.5f;
+                    }
+                    else if(pos2d.x < 30f)
+                    {
+                        putHere.y = 6f;
+                    }
+
+                    if (IsInBox(new Vector2(90f, 21.8f), new Vector2(93f, 10.1f)))
+                    {
+                        needUnstuck = true;
+                    }
+                    else if (IsInBox(new Vector2(93f, 21.8f), new Vector2(107f, 13f)))
+                    {
+                        needUnstuck = true;
+                    }
+                    else if (IsInBox(new Vector2(103f, 13f), new Vector2(107f, 10f)))
+                    {
+                        needUnstuck = true;
+                    }
+                    else if (IsInBox(new Vector2(47f, 21.8f), new Vector2(84f, 11f)))
+                    {
+                        needUnstuck = true;
+                    }
+                    else if (IsInBox(new Vector2(34f, 31f), new Vector2(48f, 13.2f)))
+                    {
+                        needUnstuck = true;
+                    }
+                    else if (IsInBox(new Vector2(0, 10f), new Vector2(28f, 7f)))
+                    {
+                        needUnstuck = true;
+                    }
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Dream_02_Mage_Lord")
+            {
+                if (HeroController.instance.transform.position.y > 23f)
+                {
+                    {
+                        var gate = GameObject.Find("Dream Gate Phase 2");
+                        if (gate != null)
+                            gate.SafeSetActive(false);
+                    }
+
+                    {
+                        var gate = GameObject.Find("Dream Gate Phase 2 (1)");
+                        if (gate != null)
+                            gate.SafeSetActive(false);
+                    }
+
+                    {
+                        var gate = GameObject.Find("Dream Gate Phase 2 (2)");
+                        if (gate != null)
+                            gate.SafeSetActive(false);
+                    }
+
+                    {
+                        var gate = GameObject.Find("Dream Gate Phase 2 (3)");
+                        if (gate != null)
+                            gate.SafeSetActive(false);
+                    }
+                }
+                else
+                {
+                    {
+                        var gate = GameObject.Find("Dream Gate Phase 2");
+                        if (gate != null)
+                            gate.SafeSetActive(true);
+                    }
+
+                    {
+                        var gate = GameObject.Find("Dream Gate Phase 2 (1)");
+                        if (gate != null)
+                            gate.SafeSetActive(true);
+                    }
+
+                    {
+                        var gate = GameObject.Find("Dream Gate Phase 2 (2)");
+                        if (gate != null)
+                            gate.SafeSetActive(true);
+                    }
+
+                    {
+                        var gate = GameObject.Find("Dream Gate Phase 2 (3)");
+                        if (gate != null)
+                            gate.SafeSetActive(true);
+                    }
+                }
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //trigger lasers
+            if (gameObject.ObjectType() == PrefabObject.PrefabType.Enemy && ( currentScene == "Mines_18_boss" || currentScene == "Mines_18" || currentScene == "Mines_32"))
+            {
+                hackyLaserCDTimer += Time.deltaTime;
+                if((currentScene == "Mines_32" && hackyLaserCDTimer > 4f) || (hackyLaserCDTimer > 6f))
+                {
+                    foreach(var t in GameObjectExtensions.EnumerateRootObjects().Where(x => x.name.Contains("Turret Mega")))
+                    {
+                        if(!t.activeInHierarchy)
+                        {
+                            t.SafeSetActive(true);
+                        }
+
+                        if(t.LocateMyFSM("Laser Bug Mega") != null && !t.LocateMyFSM("Laser Bug Mega").enabled)
+                        {
+                            t.LocateMyFSM("Laser Bug Mega").enabled = true;
+                        }
+                    }
+                    PlayMakerFSM.BroadcastEvent("LASER SHOOT");
+                    hackyLaserCDTimer = SpawnerExtensions.GetRandomValueBetween(-2, 2);
                 }
             }
 
@@ -793,7 +1238,24 @@ namespace EnemyRandomizerMod
                     poob.ForcePosition(fixedPos);
                     transform.position = fixedPos;
                 }
+                else
+                {
+                    transform.position = fixedPos;
+                }
             }
+        }
+        public bool IsInBox(Vector2 topleft, Vector2 bottomRight)
+        {
+            var point = pos2d;
+
+            // Check if the point's X coordinate is within the box's X range
+            bool withinXRange = point.x >= topleft.x && point.x <= bottomRight.x;
+
+            // Check if the point's Y coordinate is within the box's Y range
+            bool withinYRange = point.y <= topleft.y && point.y >= bottomRight.y;
+
+            // Return true if the point is within both the X and Y ranges, indicating it is inside the box
+            return withinXRange && withinYRange;
         }
 
         float hackyLaserCDTimer = 0f;
@@ -1200,6 +1662,8 @@ namespace EnemyRandomizerMod
             }
         }
 
+        public bool awardGrimmFlameOnDeath;
+
         protected virtual void CheckHackyFixesOnSetup(GameObject objectThatWillBeReplaced)
         {
             if (IsInColo())
@@ -1211,15 +1675,99 @@ namespace EnemyRandomizerMod
                 var aBox = alertRange.GetComponent<BoxCollider2D>();
                 aBox.size = new Vector2(aBox.size.x, 50f);
             }
+
+
+            if(objectThatWillBeReplaced != null)
+            {
+                var key = objectThatWillBeReplaced.GetDatabaseKey();
+
+                if((key.Contains("Flamebearer Small")) &&
+                    GameManager.instance.playerData.grimmChildLevel == 1 &&
+                    GameManager.instance.playerData.equippedCharm_40 &&
+                    (GameManager.instance.playerData.flamesCollected < GameManager.instance.playerData.flamesRequired))
+                {
+                    SpawnerExtensions.AddParticleEffect_TorchFire(gameObject, 8);
+                    SpawnerExtensions.AddParticleEffect_WhiteSoulEmissions(gameObject, Color.red);
+
+                    awardGrimmFlameOnDeath = true;
+                }
+
+                else if ((key.Contains("Flamebearer Med")) &&
+                    GameManager.instance.playerData.grimmChildLevel == 2 &&
+                    GameManager.instance.playerData.equippedCharm_40 &&
+                    (GameManager.instance.playerData.flamesCollected < GameManager.instance.playerData.flamesRequired))
+                {
+                    SpawnerExtensions.AddParticleEffect_TorchFire(gameObject, 8);
+                    SpawnerExtensions.AddParticleEffect_WhiteSoulEmissions(gameObject, Color.red);
+
+                    awardGrimmFlameOnDeath = true;
+                }
+
+                else if ((key.Contains("Flamebearer Large")) &&
+                    GameManager.instance.playerData.grimmChildLevel == 3 &&
+                    GameManager.instance.playerData.equippedCharm_40 &&
+                    (GameManager.instance.playerData.flamesCollected < GameManager.instance.playerData.flamesRequired))
+                {
+                    SpawnerExtensions.AddParticleEffect_TorchFire(gameObject, 8);
+                    SpawnerExtensions.AddParticleEffect_WhiteSoulEmissions(gameObject, Color.red);
+
+                    awardGrimmFlameOnDeath = true;
+                }
+
+
+                else if(key.Contains("Jelly Egg Bomb"))
+                {
+                    SpawnerExtensions.AddParticleEffect_TorchFire(gameObject, 4);
+                }
+            }
         }
 
-        protected virtual void CheckHackyBossSetup()
+        protected virtual void CheckHackyBossSetup(GameObject objectThatWillBeReplaced)
         {
             string currentScene = SpawnerExtensions.SceneName(gameObject);
-            bool isBoss = SpawnerExtensions.IsBoss(originialMetadata.GetDatabaseKey());
+            bool isBoss = SpawnerExtensions.IsBoss(objectThatWillBeReplaced.GetDatabaseKey());
             if (isBoss)
             {
                 doSpecialBossAggro = true;
+
+                if(gameObject.GetDatabaseKey() == "Super Spitter")
+                {
+                    var ssc = gameObject.GetComponent<SuperSpitterControl>();
+                    if(ssc != null)
+                    {
+                        ssc.MakeSuperBoss();
+                    }
+                }
+
+                //make the enemy into its boss type
+                {
+                    var bossType = gameObject.GetComponent<ZoteBossControl>();
+                    if (bossType != null)
+                    {
+                        PhysicsBody.gravityScale = 0.5f;
+                    }
+                }
+                {
+                    var bossType = gameObject.GetComponent<MageKnightControl>();
+                    if (bossType != null)
+                    {
+                        bossType.canFakeout = true;
+                    }
+                }
+                {
+                    var bossType = gameObject.GetComponent<GorgeousHuskControl>();
+                    if (bossType != null)
+                    {
+                        bossType.MakeSuperHusk();
+                    }
+                }
+                {
+                    var bossType = gameObject.GetComponent<RoyalGaurdControl>();
+                    if (bossType != null)
+                    {
+                        bossType.MakeElite();
+                    }
+                }
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////
                 if (currentScene == "Crossroads_09")//mawlek
@@ -1301,7 +1849,7 @@ namespace EnemyRandomizerMod
                 {
                     specialAggroRange = 12f;
                 }
-                else if ((currentScene == "Ruins1_24" || currentScene == "Ruins1_24_boss") && originialMetadata.GetDatabaseKey().Contains("Phase2"))//mage lord2
+                else if ((currentScene == "Ruins1_24" || currentScene == "Ruins1_24_boss") && objectThatWillBeReplaced.GetDatabaseKey().Contains("Phase2"))//mage lord2
                 {
                     specialAggroRange = 10f;
                 }
@@ -1309,7 +1857,7 @@ namespace EnemyRandomizerMod
                 {
                     specialAggroRange = 10f;
                 }
-                else if (currentScene == "Dream_02_Mage_Lord" && originialMetadata.GetDatabaseKey().Contains("Phase2"))//
+                else if (currentScene == "Dream_02_Mage_Lord" && objectThatWillBeReplaced.GetDatabaseKey().Contains("Phase2"))//
                 {
                     specialAggroRange = 10f;
                 }
@@ -1337,7 +1885,7 @@ namespace EnemyRandomizerMod
                 {
                     specialAggroRange = 10f;
                 }
-                else if (currentScene == "Dream_Mighty_Zote" && originialMetadata.GetDatabaseKey().Contains("Prince"))//zote
+                else if (currentScene == "Dream_Mighty_Zote" && objectThatWillBeReplaced.GetDatabaseKey().Contains("Prince"))//zote
                 {
                     specialAggroRange = 20f;
                 }
@@ -1562,6 +2110,30 @@ namespace EnemyRandomizerMod
             if (string.IsNullOrEmpty(currentScene))
                 return;
 
+            if (IsInColo())
+                return;
+
+            if (originialMetadata != null && originialMetadata.ObjectName.Contains("Jelly Egg Bomb"))
+            {
+                SpawnerExtensions.SpawnExplosionAt(pos2d);
+            }
+
+            if (awardGrimmFlameOnDeath)
+            {
+                var child = GameObject.FindGameObjectWithTag("Grimmchild");
+                if (child != null)
+                {
+                    var sf = child.GetComponentInChildren<SpriteFlash>(true);
+                    if(sf != null)
+                    {
+                        sf.FlashGrimmflame();
+                        GameManager.instance.playerData.flamesCollected += 1;
+                        GameManager.instance.AddToFlameList();
+                        SpawnerExtensions.SpawnEntityAt("particle_flame_blast", child.transform.position, null, true, false);
+                    }
+                }
+            }
+
             bool isBoss = SpawnerExtensions.IsBoss(originialMetadata.GetDatabaseKey());
             if (isBoss)
             {
@@ -1615,6 +2187,7 @@ namespace EnemyRandomizerMod
             else if (currentScene == "Waterways_12_boss" || currentScene == "Waterways_12")//fluke mother
             {
                 //BattleManager.StateMachine.Value.FSM.SendEvent("END");
+                PlayMakerFSM.BroadcastEvent("CHARM DROP");
                 GameManager.instance.playerData.flukeMotherDefeated = true; //TODO: take the setting of this out of the boss's corpse
             }
             else if (currentScene == "Fungus3_23_boss")//Mantis Traitor Lord
@@ -1655,6 +2228,10 @@ namespace EnemyRandomizerMod
             }
             else if (currentScene == "Fungus1_04_boss" || currentScene == "Fungus1_04")//hornet 1
             {
+                PlayMakerFSM.BroadcastEvent("HORNET KILLED");
+
+                BattleManager.SilenceMusic();
+
                 {
                     var cc = GameObject.Find("Cloak Corpse");
                     if (cc != null)
@@ -1673,6 +2250,7 @@ namespace EnemyRandomizerMod
                     }
                 }
 
+                GameManager.instance.StoryRecord_defeated("Hornet in Greenpath");
                 GameManager.instance.playerData.hornet1Defeated = true;
                 BattleStateMachine.OpenGates(false);
             }
@@ -1690,6 +2268,7 @@ namespace EnemyRandomizerMod
             else if (currentScene == "Waterways_05_boss" || currentScene == "Waterways_05")//dung
             {
                 BattleManager.StateMachine.Value.FSM.SendEvent("BATTLE END");
+                PlayMakerFSM.BroadcastEvent("CHARM DROP");
                 GameManager.instance.playerData.defeatedDungDefender = true;
                 BattleStateMachine.OpenGates(false);//just in case, send this, the fsm for this is a bit weird
             }
@@ -1712,9 +2291,11 @@ namespace EnemyRandomizerMod
             }
             else if (currentScene == "Mines_32")//mega beam miner 2
             {
-                BattleManager.StateMachine.Value.FSM.SendEvent("KILLED");
+                PlayMakerFSM.BroadcastEvent("KILLED");
+                BattleManager.StateMachine.Value.FSM.SetState("Wait");
                 BattleStateMachine.OpenGates(false);
                 BattleStateMachine.UnlockCameras();
+                GameManager.instance.playerData.killsMegaBeamMiner = 0;
             }
             else if (currentScene == "Grimm_Main_Tent_boss" || currentScene == "Grimm_Main_Tent")//
             {
@@ -1801,7 +2382,7 @@ namespace EnemyRandomizerMod
                 PlayMakerFSM.BroadcastEvent("QUAKE FAKE APPEAR");
                 PlayMakerFSM.BroadcastEvent("MAGE WINDOW BREAK");
 
-                GameManager.instance.BroadcastFSMEventAfterTime("PHASE 2", 5f);
+                GameManager.instance.BroadcastFSMEventAfterTime("PHASE 2", 10f);
 
                 PlayMakerFSM.BroadcastEvent("PHASE 2");
             }
@@ -1845,50 +2426,59 @@ namespace EnemyRandomizerMod
             else if (currentScene == "RestingGrounds_02_boss" || currentScene == "RestingGrounds_02")//xero
             {
                 GameManager.instance.playerData.xeroDefeated = 1;
-                BattleManager.StateMachine.Value.FSM.SendEvent("GHOST DEAD");
+                PlayMakerFSM.BroadcastEvent("GHOST DEAD");
                 PlayMakerFSM.BroadcastEvent("GHOST DEFEAT");
+                BattleStateMachine.OpenGates(false);
             }
             else if (currentScene == "Fungus3_40" || currentScene == "Fungus3_40_boss")//marmu
             {
                 if (originialMetadata != null && originialMetadata.ObjectName.Contains("Marmu"))
                 {
                     GameManager.instance.playerData.killedGhostMarmu = true;
-                    BattleManager.StateMachine.Value.FSM.SendEvent("GHOST DEAD");
+                    PlayMakerFSM.BroadcastEvent("GHOST DEAD");
                     PlayMakerFSM.BroadcastEvent("GHOST DEFEAT");
+                    BattleStateMachine.OpenGates(false);
                 }
             }
             else if (currentScene == "Deepnest_40")//galien
             {
                 GameManager.instance.playerData.galienDefeated = 1;
-                BattleManager.StateMachine.Value.FSM.SendEvent("GHOST DEAD");
+                PlayMakerFSM.BroadcastEvent("GHOST DEAD");
                 PlayMakerFSM.BroadcastEvent("GHOST DEFEAT");
+                BattleStateMachine.OpenGates(false);
             }
             else if (currentScene == "Cliffs_02_boss" || currentScene == "Cliffs_02")//gorb
             {
                 GameManager.instance.playerData.aladarSlugDefeated = 1;
-                BattleManager.StateMachine.Value.FSM.SendEvent("GHOST DEAD");
+                PlayMakerFSM.BroadcastEvent("GHOST DEAD");
                 PlayMakerFSM.BroadcastEvent("GHOST DEFEAT");
+                BattleStateMachine.OpenGates(false);
             }
             else if (currentScene == "Fungus1_35")//no eyes
             {
                 GameManager.instance.playerData.noEyesDefeated = 1;
-                BattleManager.StateMachine.Value.FSM.SendEvent("GHOST DEAD");
+                PlayMakerFSM.BroadcastEvent("GHOST DEAD");
                 PlayMakerFSM.BroadcastEvent("GHOST DEFEAT");
+                BattleStateMachine.OpenGates(false);
             }
             else if (currentScene == "Fungus2_32")//hu
             {
                 GameManager.instance.playerData.elderHuDefeated = 1;
-                BattleManager.StateMachine.Value.FSM.SendEvent("GHOST DEAD");
+                PlayMakerFSM.BroadcastEvent("GHOST DEAD");
                 PlayMakerFSM.BroadcastEvent("GHOST DEFEAT");
+                BattleStateMachine.OpenGates(false);
             }
             else if (currentScene == "Deepnest_East_10")//markoth
             {
                 GameManager.instance.playerData.markothDefeated = 1;
-                BattleManager.StateMachine.Value.FSM.SendEvent("GHOST DEAD");
+                PlayMakerFSM.BroadcastEvent("GHOST DEAD");
                 PlayMakerFSM.BroadcastEvent("GHOST DEFEAT");
+                PlayMakerFSM.BroadcastEvent("DREAM AREA DISABLE");
+                BattleStateMachine.OpenGates(false);
             }
             ////////////////////////////////////////////////////////////////////////////////////////////////
-            if (notifyBattleEnded)
+            
+            if (notifyBattleEnded && BattleManager.StateMachine != null && BattleManager.StateMachine.Value != null)
                 BattleManager.StateMachine.Value.ForceBattleEnd();
         }
 

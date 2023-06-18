@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UniRx;
+using System.Collections;
 
 namespace EnemyRandomizerMod
 {
@@ -186,12 +187,14 @@ namespace EnemyRandomizerMod
                         originialMetadata = originalObjectMeta;
                     }
 
-                    Dev.Log($"Attempting Setup for {thisMetadata} with {originalObjectMeta}");
+                    if (SpawnedObjectControl.VERBOSE_DEBUG)
+                        Dev.Log($"Attempting Setup for {thisMetadata} with {originalObjectMeta}");
                 }
                 else
                 {
-                    //there is no "replacement"
-                    Dev.Log($"Attempting Setup for {thisMetadata} with no replacement given");
+                    if (SpawnedObjectControl.VERBOSE_DEBUG)
+                        //there is no "replacement"
+                        Dev.Log($"Attempting Setup for {thisMetadata} with no replacement given");
                 }
             }
             catch (Exception e)
@@ -290,8 +293,27 @@ namespace EnemyRandomizerMod
 
                 if(transform.position.z > 10f || currentScene == "Fungus3_50")
                 {
-                    GetComponents<Collider2D>().ToList().ForEach(x => x.enabled = false);
-                    GetComponents<DamageHero>().ToList().ForEach(x => GameObject.Destroy(x));
+                    var setz = gameObject.GetComponent<SetZ>();
+                    if(setz != null)
+                    {
+                        GameObject.Destroy(setz);
+                    }
+
+                    if(currentScene != "Fungus3_50" || transform.position.z < 12f)
+                    {
+                        bool needsAdjust = GetComponents<Collider2D>().Any(x => x.enabled);
+                        if (needsAdjust)
+                        {
+                            transform.position = new Vector3(transform.position.x, transform.position.y, 12f + UnityEngine.Random.Range(0f, 4f));
+                            GetComponentsInChildren<Collider2D>(true).ToList().ForEach(x => x.enabled = false);
+                            GetComponentsInChildren<DamageHero>(true).ToList().ForEach(x => GameObject.Destroy(x));
+                        }
+                    }
+                    else
+                    {
+                        GetComponentsInChildren<Collider2D>(true).ToList().ForEach(x => x.enabled = false);
+                        GetComponentsInChildren<DamageHero>(true).ToList().ForEach(x => GameObject.Destroy(x));
+                    }
                 }
             }
         }
@@ -706,6 +728,16 @@ namespace EnemyRandomizerMod
             }
         }
 
+        //use to keep spawned enemies from dying instantly
+        protected virtual IEnumerator MakeTempInvincible(HealthManager target)
+        {
+            bool wasinv = target.IsInvincible;
+            target.IsInvincible = true;
+            yield return new WaitForSeconds(0.2f);
+            if(target != null)
+                target.IsInvincible = wasinv;
+        }
+
         protected virtual void SpawnEntityOnDeath()
         {
             if (string.IsNullOrEmpty(spawnEntityOnDeath))
@@ -724,6 +756,8 @@ namespace EnemyRandomizerMod
                 if(spawned.ObjectType() == PrefabObject.PrefabType.Enemy)
                 {
                     spawned.SetMaxHP(spawned.GetScaledMaxHP(thisMetadata.GetDatabaseKey()));
+
+                    GameManager.instance.StartCoroutine(MakeTempInvincible(spawned.GetEnemyHealthManager()));
                 }
 
                 //undo for now

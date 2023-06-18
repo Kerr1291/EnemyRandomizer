@@ -22,6 +22,8 @@ namespace EnemyRandomizerMod
 
             Geo = 11;
 
+            control.AddTimeoutAction(control.GetState("In Air"), "LAND", 4f);
+
             var init = control.GetState("Init");
             init.DisableAction(8);
 

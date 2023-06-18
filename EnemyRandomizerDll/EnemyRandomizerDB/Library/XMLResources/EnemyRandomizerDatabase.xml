@@ -184,6 +184,7 @@
         <SceneObject path="Corpse Sheo/Pt Yellow"/>
         <SceneObject path="_Props/Health Cocoon"/>
         <SceneObject path="Health Scuttler"/>
+        <SceneObject path="Mace Head Bug"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Tutorial_01">
@@ -343,6 +344,7 @@
     <SceneData name="Crossroads_10_boss">
       <sceneObjects>
         <SceneObject path="Battle Scene/False Knight New"/>
+        <SceneObject path="Mace Head Bug"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_10_boss_defeated">
@@ -362,7 +364,6 @@
     <SceneData name="Crossroads_12">
       <sceneObjects>
         <SceneObject path="_Enemies/Worm 1"/>
-        <SceneObject path="Cave Spikes Invis (2)"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_14">
@@ -395,21 +396,6 @@
       <sceneObjects>
         <SceneObject path="non_infected_event/Zombie Guard"/>
         <SceneObject path="non_infected_event/Zombie Guard/Swipe"/>
-      </sceneObjects>
-    </SceneData>
-    <SceneData name="Crossroads_25">
-      <sceneObjects>
-        <SceneObject path="Cave Spikes tile (3)"/>
-      </sceneObjects>
-    </SceneData>
-    <SceneData name="Crossroads_30">
-      <sceneObjects>
-        <SceneObject path="Spa Glows Surface"/>
-      </sceneObjects>
-    </SceneData>
-    <SceneData name="Crossroads_33">
-      <sceneObjects>
-        <SceneObject path="Spike Collider"/>
       </sceneObjects>
     </SceneData>
     <SceneData name="Crossroads_45">
@@ -1432,6 +1418,7 @@
     <string>Worm</string>
     <string>Abyss Tendrils</string>
     <string>Bee Dropper</string>
+    <string>Zoteling Buzzer</string>
   </enemyNames>
   <hazardNames>
     <string>Shot GladiatorSickle</string>
@@ -1497,10 +1484,10 @@
     <string>Acid Box</string>
     <string>Worm</string>
     <string>Abyss Tendrils</string>
-    <string>Cave Spikes Invis</string>
+    <!--<string>Cave Spikes Invis</string>-->
     <string>Swipe</string>
-    <string>Cave Spikes tile</string>
-    <string>Spike Collider</string>
+    <!--<string>Cave Spikes tile</string>-->
+    <!--<string>Spike Collider</string>-->
     <string>Sphere Ball</string>
     <string>Zap Cloud</string>
     <string>Jelly Egg Bomb</string>
@@ -1659,7 +1646,7 @@
     <string>FG_swarm_03</string>
     <string>glow_bug_swarm</string>
     <string>glow_bug_swarm_FG</string>
-    <string>Spa Glows Surface</string>
+    <!--<string>Spa Glows Surface</string>-->
     <string>Ruins_Rain</string>
     <string>Smoke particles</string>
     <string>Particle System glowies</string>

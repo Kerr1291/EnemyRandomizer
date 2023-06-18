@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.Events;
 using Satchel;
+using UnityEngine.Audio;
 
 namespace EnemyRandomizerMod
 {
@@ -77,6 +78,19 @@ namespace EnemyRandomizerMod
             //special logic for this
             if(StateMachine != null && StateMachine.Value != null)
             {
+                if (!StateMachine.Value.battleStarted)
+                {
+                    bool isColo = BattleManager.Instance.Value.gameObject.scene.name.Contains("Room_Colosseum_");
+                    if (!isColo)
+                    {
+                        if(StateMachine.Value.IsHeroInBattleArea())
+                        {
+                            StateMachine.Value.ForceBattleStart();
+                            return;
+                        }
+                    }
+                }
+
                 var currentScene = StateMachine.Value.SceneName;
 
                 if (currentScene == "Mines_32")
@@ -89,6 +103,95 @@ namespace EnemyRandomizerMod
                     if(HeroController.instance.transform.position.x < 38f)
                     {
                         gameObject.GetDirectChildren().ForEach(x => x.SafeSetActive(true));
+                    }
+                }
+                else if (currentScene == "Crossroads_09")
+                {
+                    if (StateMachine.Value.battleStarted ||
+                        GameManager.instance.playerData.mawlekDefeated)
+                    {
+                        return;
+                    }
+
+                    if (HeroController.instance.transform.position.x < 72f &&
+                        HeroController.instance.transform.position.x > 50f)
+                    {
+                        BattleStateMachine.CloseGates(true);
+                        GameObjectExtensions.FindObjectsOfType<HealthManager>().ToList().ForEach(x =>
+                        {
+                            x.gameObject.SafeSetActive(true);
+                            var setz = x.GetComponent<SetZ>();
+                            if (setz != null)
+                            {
+                                GameObject.Destroy(setz);
+                                x.transform.position = new Vector3(transform.position.x, transform.position.y, 0f);                                
+                            }
+
+                            if(x.gameObject.GetComponent<MeshRenderer>() != null)
+                            {
+                                x.gameObject.GetComponent<MeshRenderer>().enabled = true;
+                            }
+
+                            if (x.gameObject.GetComponent<Collider2D>() != null)
+                            {
+                                x.gameObject.GetComponent<Collider2D>().enabled = true;
+                            }
+                        });
+                    }
+                    else if(currentScene == "Dream_02_Mage_Lord")
+                    {
+                        if(HeroController.instance.transform.position.y > 23f)
+                        {
+                            {
+                                var gate = GameObject.Find("Dream Gate Phase 2");
+                                if (gate != null)
+                                    gate.SafeSetActive(false);
+                            }
+
+                            {
+                                var gate = GameObject.Find("Dream Gate Phase 2 (1)");
+                                if (gate != null)
+                                    gate.SafeSetActive(false);
+                            }
+
+                            {
+                                var gate = GameObject.Find("Dream Gate Phase 2 (2)");
+                                if (gate != null)
+                                    gate.SafeSetActive(false);
+                            }
+
+                            {
+                                var gate = GameObject.Find("Dream Gate Phase 2 (3)");
+                                if (gate != null)
+                                    gate.SafeSetActive(false);
+                            }
+                        }
+                        else
+                        {
+                            {
+                                var gate = GameObject.Find("Dream Gate Phase 2");
+                                if (gate != null)
+                                    gate.SafeSetActive(true);
+                            }
+
+                            {
+                                var gate = GameObject.Find("Dream Gate Phase 2 (1)");
+                                if (gate != null)
+                                    gate.SafeSetActive(true);
+                            }
+
+                            {
+                                var gate = GameObject.Find("Dream Gate Phase 2 (2)");
+                                if (gate != null)
+                                    gate.SafeSetActive(true);
+                            }
+
+                            {
+                                var gate = GameObject.Find("Dream Gate Phase 2 (3)");
+                                if (gate != null)
+                                    gate.SafeSetActive(true);
+                            }
+                        }
                     }
                 }
             }
@@ -111,7 +214,8 @@ namespace EnemyRandomizerMod
                     var g = gc.FindGameObjectInDirectChildren("gramaphone");
                     if (g != null)
                     {
-                        Dev.Log("playing zote music");
+                        if (SpawnedObjectControl.VERBOSE_DEBUG)
+                            Dev.Log("playing zote music");
                         zmusic.PlayMusic(volume, g);
                         if (zmusic.audioSource != null)
                         {
@@ -132,10 +236,32 @@ namespace EnemyRandomizerMod
             }
         }
 
+        public static void SilenceMusic()
+        {
+            var musicControl = GameObject.Find("AudioManager");
+            if (musicControl == null)
+                return;
+
+            var globalAudioSource = musicControl.GetComponentInChildren<AudioSource>(true);
+
+            if (globalAudioSource != null)
+            {
+                globalAudioSource.Stop();
+                var normal = globalAudioSource.outputAudioMixerGroup.audioMixer.FindSnapshot("Silence");
+                normal.TransitionTo(1f);
+            }
+        }
+
+        public static void DoSpecialSceneFixes(GameObject sceneObject)
+        {
+            Scene currentScene = sceneObject.scene;
+        }
+
         public static void DoSceneCheck(GameObject sceneObject)
         {
             BattleManager.DidSceneCheck = true;
-            Dev.Log("Checking scene " + sceneObject.SceneName());
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                Dev.Log("Checking scene " + sceneObject.SceneName());
 
             Scene currentScene = sceneObject.scene;
 
@@ -207,7 +333,7 @@ namespace EnemyRandomizerMod
 
             //TODO: move this into a better spot for generating our custom content
             //make our custom fountain
-            if(currentScene.name == "Ruins1_27")
+            if (currentScene.name == "Ruins1_27")
             {
                 var center = GameObject.Find("_0083_fountain");
                 var back = GameObject.Find("_0082_fountain");
@@ -215,14 +341,15 @@ namespace EnemyRandomizerMod
                 var left = GameObject.Find("_0092_fountain (1)");
 
                 //TODO: update core position and rotation a bit
-                var core = EnemyRandomizerDatabase.CustomSpawnWithLogic(center.transform.position.ToVec2() + Vector2.up * 5f, "gg_blue_core", null, true);
+                var core = EnemyRandomizerDatabase.CustomSpawnWithLogic(center.transform.position.ToVec2() + Vector2.up * 4f, "gg_blue_core", null, true);
 
-                var coreRoots = core.FindGameObjectsNameContainsInChildren("_root");
-                coreRoots.ForEach(x => GameObject.Destroy(x));
-                var dcmain = core.FindGameObjectNameContainsInChildren("dreamcatcher_main");
-                
-                if(dcmain != null)
-                    GameObject.Destroy(dcmain);
+                //TODO: remove roots
+                //var coreRoots = core.FindGameObjectsNameContainsInChildren("_root");
+                //coreRoots.ForEach(x => GameObject.Destroy(x));
+                //var dcmain = core.FindGameObjectNameContainsInChildren("dreamcatcher_main");
+
+                //if (dcmain != null)
+                //    GameObject.Destroy(dcmain);
 
                 //var newCenter = EnemyRandomizerDatabase.CustomSpawnWithLogic(center.transform.position, "GG_Statue_Gorb", null, true);
                 //var newBack = EnemyRandomizerDatabase.CustomSpawnWithLogic(back.transform.position, "Knight_v01", null, true);
@@ -230,13 +357,13 @@ namespace EnemyRandomizerMod
                 var newLeft = EnemyRandomizerDatabase.CustomSpawnWithLogic(left.transform.position, "GG_Statue_GreyPrince", null, true);//TODO: remove the trophy/phase markers on the statue
 
                 var plaq = newLeft.FindGameObjectNameContainsInChildren("Plaque");
-                if(plaq != null)
+                if (plaq != null)
                     GameObject.Destroy(plaq);
 
                 var pdtrue = newLeft.GetComponent<DeactivateIfPlayerdataTrue>();
-                if(pdtrue != null)
+                if (pdtrue != null)
                 {
-                    GameObject.DestroyImmediate(pdtrue);
+                    GameObject.Destroy(pdtrue);
                 }
 
                 var floor_effect = EnemyRandomizerDatabase.CustomSpawnWithLogic(new Vector3(29.4165f, 4.0255f, -.5f), "dream_beam_animation", null, true);
@@ -249,8 +376,52 @@ namespace EnemyRandomizerMod
 
                 PlayZoteTheme(false, 0.4f);
 
+                newLeft.SafeSetActive(true);
+                newRight.SafeSetActive(true);
+
                 //TODO: change fountain text
                 //TODO: add challenge prompt to enter a unqiue enemy rando boss / make it warp you somewhere?
+            }
+            else if (currentScene.name == "Waterways_12_boss" || currentScene.name == "Waterways_12")
+            {
+                //make safe floors to keep the boss sub from falling into water/acid
+                var p0 = new Vector3(22f, 3.5548f, 0);
+                var p1 = new Vector3(19f, 3.5548f, 0);
+                var p2 = new Vector3(17f, 3.5548f, 0);
+                var p3 = new Vector3(15f, 3.5548f, 0);
+
+                var p4 = new Vector3(7f, 3.5548f, 0);
+                var p5 = new Vector3(5f, 3.5548f, 0);
+
+                var p6 = new Vector3(32f, 3.5548f, 0);
+                var p7 = new Vector3(34f, 3.5548f, 0);
+                var p8 = new Vector3(36f, 3.5548f, 0);
+                var p9 = new Vector3(38f, 3.5548f, 0);
+                var p10 = new Vector3(40f, 3.5548f, 0);
+                var pboss = new Vector3(19.0291f, 21.7803f, 0f);
+
+                var plats = new List<Vector3>() { 
+                p0,
+                p1,
+                p2,
+                p3,
+                p4,
+                p5,
+                p6,
+                p7,
+                p8,
+                p9,
+                p10,
+                pboss,
+                };
+
+                var plat = GameObject.Find("plat_float_05");
+
+                foreach(var p in plats)
+                {
+                    var pnew = GameObject.Instantiate(plat);
+                    pnew.transform.position = p;
+                }                
             }
             else if (currentScene.name == "Fungus3_50")
             {
@@ -265,13 +436,17 @@ namespace EnemyRandomizerMod
 
                 try
                 {
-                    Dev.Log("spawning zotes");
+                    if (SpawnedObjectControl.VERBOSE_DEBUG)
+                        Dev.Log("spawning zotes");
                     var lazyFliers = GameObjectExtensions.FindObjectsOfType<PlayMakerFSM>().Where(x => x.name.Contains("Lazy Flyer"));
                     foreach (var flyer in lazyFliers)
                     {
-                        Dev.Log("found one, making it zote " + flyer);
+                        if (SpawnedObjectControl.VERBOSE_DEBUG)
+                            Dev.Log("found one, making it zote " + flyer);
                         var newThing = SpawnerExtensions.SpawnEntityAt("Zote Crew Fat", flyer.transform.position, null, true, false);
-                        Dev.Log("spawned " + newThing);
+
+                        if (SpawnedObjectControl.VERBOSE_DEBUG)
+                            Dev.Log("spawned " + newThing);
                         var poob = newThing.GetComponent<PreventOutOfBounds>();
                         if (poob != null)
                             GameObject.Destroy(poob);
@@ -279,18 +454,22 @@ namespace EnemyRandomizerMod
                         if (sz != null)
                             GameObject.Destroy(sz);
                         newThing.transform.position = new Vector3(newThing.transform.position.x, newThing.transform.position.y, 12.5f + UnityEngine.Random.Range(0f, 5f));
-                        Dev.Log("doing set z");
+
+                        if (SpawnedObjectControl.VERBOSE_DEBUG) Dev.Log("doing set z");
                         newThing.SafeSetActive(true);
-                        Dev.Log("activating it");
+
+                        if (SpawnedObjectControl.VERBOSE_DEBUG) Dev.Log("activating it");
                         SpawnerExtensions.DestroyObject(flyer.gameObject, true);
-                        Dev.Log("destroying old object");
+
+                        if (SpawnedObjectControl.VERBOSE_DEBUG) Dev.Log("destroying old object");
                     }
                 }
                 catch (Exception e) { Dev.Log($"Error??? \n{e.Message}\n{e.StackTrace}"); }
 
                 try
                 {
-                    Dev.Log("spawning zote music");
+
+                    if (SpawnedObjectControl.VERBOSE_DEBUG) Dev.Log("spawning zote music");
                     var gc = GameObject.Find("Gramaphone Control");
                     if (gc != null)
                     {
@@ -387,6 +566,14 @@ namespace EnemyRandomizerMod
             {
                 StateMachine.Value = new ColoGold();
             }
+            //else if (scene.name == "Crossroads_08")
+            //{
+            //    StateMachine.Value = new Crossroads_08Arena();
+            //}
+            //else if (scene.name == "Crossroads_22")
+            //{
+            //    StateMachine.Value = new Crossroads_22Arena();
+            //}
             else
             {
                 StateMachine.Value = new BattleStateMachine();

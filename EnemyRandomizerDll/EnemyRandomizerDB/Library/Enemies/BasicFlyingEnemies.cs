@@ -312,7 +312,7 @@ namespace EnemyRandomizerMod
 
         public AudioSource audio;
 
-        public int chanceToSpawnSuperBossOutOf100 = 5; // -> ( 20 / 100 )
+        public int chanceToSpawnSuperBossOutOf100 = 2; // -> ( 20 / 100 )
         bool isSuperBoss;
 
         public override string customDreamnailText => isSuperBoss ? "Destroy." : base.customDreamnailText;
@@ -334,7 +334,7 @@ namespace EnemyRandomizerMod
                 return;
 
             //TODO: add roar and a few other moves
-
+            
             isSuperBoss = true;
             Sprite.color = Color.red;
             gameObject.AddParticleEffect_TorchShadeEmissions();
@@ -827,22 +827,18 @@ namespace EnemyRandomizerMod
         public string thingToSpawn = "Lil Jellyfish";
 
         Func<GameObject> spawnerFunc;
-
+        bool isSuperJelly;
+        bool isWhiteJelly;
         public override void Setup(GameObject other)
         {
             base.Setup(other);
 
-            bool isSuperJelly = SpawnerExtensions.RollProbability(out int _, chanceToSpawnSuperJellyOutOf100, 100);
-            bool isWhiteJelly = SpawnerExtensions.RollProbability(out int _, chanceToSpawnWhiteJellyOutOf100, 100);
+            isSuperJelly = SpawnerExtensions.RollProbability(out int _, chanceToSpawnSuperJellyOutOf100, 100);
+            isWhiteJelly = SpawnerExtensions.RollProbability(out int _, chanceToSpawnWhiteJellyOutOf100, 100);
 
             if (isSuperJelly)
             {
                 gameObject.AddParticleEffect_WhiteSoulEmissions(Colors.GetColor(33));//orange
-                spawnerFunc = gameObject.GetRandomAttackSpawnerFunc();
-                var detach = control.GetState("Detach");
-                detach.AddCustomAction(() => {
-                    SpawnerExtensions.StartTrailEffectSpawns(this, 4, 0.2f, spawnerFunc);
-                });
             }
 
             if (isWhiteJelly)
@@ -850,6 +846,71 @@ namespace EnemyRandomizerMod
                 thingToSpawn = "wp_saw";
                 gameObject.AddParticleEffect_WhiteSoulEmissions();
             }
+        }
+
+        protected virtual IEnumerator MakeTempInvincibleAndFollow(HealthManager target, GameObject corpse)
+        {
+            float time = 0f;
+            bool wasinv = target.IsInvincible;
+            target.IsInvincible = true;
+            while (time < 1f)
+            {
+                if (target == null)
+                    break;
+
+                time += Time.deltaTime;
+                if (time > .2f)
+                {
+                    if (target != null)
+                        target.IsInvincible = wasinv;
+                }
+                if(target != null && corpse != null)
+                    target.transform.position = corpse.transform.position;
+
+                yield return new WaitForEndOfFrame();
+            }
+
+            yield break;
+        }
+
+        protected override void SpawnEntityOnDeath()
+        {
+            if (string.IsNullOrEmpty(spawnEntityOnDeath))
+                return;
+
+            if (!gameObject.IsInAValidScene())
+                return;
+
+            var corpse = gameObject.GetCorpseObject();
+            if (isSuperJelly)
+            {
+                try
+                {
+                    spawnerFunc = gameObject.GetRandomAttackSpawnerFunc();
+                    SpawnerExtensions.StartTrailEffectSpawns(corpse.LocateMyFSM("corpse"), 4, 0.2f, spawnerFunc);
+                }
+                catch (Exception) { Dev.Log("Error making jelly trails"); }
+            }
+
+            try
+            {
+                var spawned = SpawnerExtensions.SpawnEntityAt(spawnEntityOnDeath, transform.position, null, false);
+                if (spawned != null)
+                {
+                    spawned.ScaleObject(SizeScale);
+                    spawned.ScaleAudio(SizeScale);
+
+                    //if this spawns an enemy, scale the hp to be similar
+                    if (spawned.ObjectType() == PrefabObject.PrefabType.Enemy)
+                    {
+                        spawned.SetMaxHP(spawned.GetScaledMaxHP(thisMetadata.GetDatabaseKey()));
+                    }
+
+                    GameManager.instance.StartCoroutine(MakeTempInvincibleAndFollow(spawned.GetEnemyHealthManager(), corpse));
+                    spawned.SafeSetActive(true);
+                }
+            }
+            catch (Exception) { Dev.Log("Error moving lil jelly or other thing"); }
         }
     }
 

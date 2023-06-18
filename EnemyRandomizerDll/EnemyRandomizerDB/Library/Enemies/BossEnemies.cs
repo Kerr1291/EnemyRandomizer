@@ -1479,10 +1479,11 @@ namespace EnemyRandomizerMod
 
 
             var adFire = control.GetState("AD Fire");
-            control.AddTimeoutAction(adFire, "LAND", 1f);
+            adFire.DisableAction(5);
+            control.AddTimeoutAction(adFire, "LAND", 0.5f);
 
             var adEdge = control.GetState("AD Edge");
-            control.AddTimeoutAction(adFire, "LAND", 1f);
+            control.AddTimeoutAction(adEdge, "LAND", 0.5f);
 
             this.InsertHiddenState(control, "Init", "FINISHED", "GG Bow");
 
@@ -1495,6 +1496,7 @@ namespace EnemyRandomizerMod
     public class GrimmBossSpawner : DefaultSpawner<GrimmBossControl>
     {
         public override bool corpseRemovedByEffect => true;
+        public override string corpseRemoveEffectName => "Death Puff Med";
     }
 
     public class GrimmBossPrefabConfig : DefaultPrefabConfig { }
@@ -1699,8 +1701,8 @@ namespace EnemyRandomizerMod
 
             this.InsertHiddenState(control, "Pause", "FINISHED", "Init");
 
-            var phaseq = control.GetState("Phase ?");
-            control.OverrideState("Phase ?", () => {
+            var phaseq = control.GetState("Phase?");
+            control.OverrideState("Phase?", () => {
                 if (CurrentHPf > MaxHPf / 2)
                     control.SendEvent("PHASE1");
                 else if (CurrentHP > MaxHPf / 4)
@@ -1792,6 +1794,7 @@ namespace EnemyRandomizerMod
             if (corpse != null)
             {
                 corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
+                SpawnerExtensions.DestroyAllCorpseObjects(gameObject);
             }
 
             //TODO: make lurker balls killable
@@ -3229,6 +3232,15 @@ namespace EnemyRandomizerMod
             var corpse = gameObject.GetCorpseObject();
             if (corpse != null)
             {
+                var cfsm = corpse.LocateMyFSM("Control");
+                {
+                    if (cfsm != null)
+                    {
+                        cfsm.GetState("Set PD").DisableActions(0);
+                        cfsm.GetState("Blow").DisableActions(5);
+                    }
+                }
+
                 corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
             }
 
@@ -4593,8 +4605,6 @@ namespace EnemyRandomizerMod
             if (fsm != null)
                 GameObject.Destroy(fsm);
 
-            balloonFSM = gameObject.LocateMyFSM("Spawn Balloon");
-
             var pause = control.GetState("Pause");
             pause.DisableAction(1);
             pause.AddCustomAction(() => { control.SendEvent("FINISHED"); });
@@ -4608,11 +4618,10 @@ namespace EnemyRandomizerMod
 
             var closeGates = control.GetState("Close Gates");
             closeGates.DisableAction(0);
-            closeGates.DisableAction(3);
 
-            var setx = control.GetState("Set X");
+            var setx = control.GetState("Set Pos");
             setx.DisableAction(0);
-            setx.DisableAction(2);
+            setx.DisableAction(1);
 
             var introFall = control.GetState("Intro Fall");
             introFall.DisableAction(2);
@@ -4626,7 +4635,8 @@ namespace EnemyRandomizerMod
 
             var inAir2 = control.GetState("In Air 2");
             inAir2.DisableAction(3);
-            inAir2.AddAction(new Wait() { time = 3f, finishEvent = new FsmEvent("LAND") });
+            //inAir2.AddAction(new Wait() { time = 3f, finishEvent = new FsmEvent("LAND") });
+            control.AddTimeoutAction(inAir2, "LAND", 3f);
 
             var inAir = control.GetState("In Air");
             inAir.InsertCustomAction(() => {
@@ -4634,46 +4644,50 @@ namespace EnemyRandomizerMod
                 control.FsmVariables.GetFsmFloat("Air Dash Height").Value = floorY + 3f;
             }, 0);
 
-            var inert = balloonFSM.GetState("Inert");
-            inert.AddCustomAction(() => { balloonFSM.SendEvent("START SPAWN"); });
+            control.AddTimeoutAction(control.GetState("Stun Start"), "LAND", 3f);
+            control.AddTimeoutAction(control.GetState("Dstab Fall"), "LAND", 3f);
 
-            var stop = balloonFSM.GetState("Stop");
-            inert.AddCustomAction(() => { balloonFSM.SendEvent("START SPAWN"); });
 
-            balloonFSM.OverrideState("Spawn", () =>
+            //balloon fsm config
             {
-                if (ChildController.AtMaxChildren)
-                {
-                    balloonFSM.SendEvent("STOP SPAWN");
-                }
+                balloonFSM = gameObject.LocateMyFSM("Spawn Balloon");
 
-                if (gameObject.CanSeePlayer())
-                {
-                    var randomDir = UnityEngine.Random.insideUnitCircle;
-                    var spawnRay = SpawnerExtensions.GetRayOn(gameObject, randomDir, 12f);
+                var inert = balloonFSM.GetState("Inert");
+                inert.AddCustomAction(() => { balloonFSM.SendEvent("START SPAWN"); });
 
-                    if (spawnRay.distance < 5f)
+                var stop = balloonFSM.GetState("Stop");
+                stop.AddCustomAction(() => { balloonFSM.SendEvent("START SPAWN"); });
+
+                balloonFSM.OverrideState("Spawn", () =>
+                {
+                    if (ChildController.AtMaxChildren)
                     {
-                        balloonFSM.SendEvent("CANCEL");
+                        balloonFSM.SendEvent("STOP SPAWN");
+                    }
+
+                    if (gameObject.CanSeePlayer())
+                    {
+                        var randomDir = UnityEngine.Random.insideUnitCircle;
+                        var spawnRay = SpawnerExtensions.GetRayOn(gameObject, randomDir, 12f);
+
+                        if (spawnRay.distance < 5f)
+                        {
+                            balloonFSM.SendEvent("CANCEL");
+                        }
+                        else
+                        {
+
+                            var spawnPoint = spawnRay.point - spawnRay.normal;
+                            ChildController.SpawnAndTrackChild("Parasite Balloon", spawnPoint);
+                            balloonFSM.SendEvent("FINISHED");
+                        }
                     }
                     else
                     {
-
-                        var spawnPoint = spawnRay.point - spawnRay.normal;
-                        ChildController.SpawnAndTrackChild("Parasite Balloon", spawnPoint);
-                        balloonFSM.SendEvent("FINISHED");
+                        balloonFSM.SendEvent("CANCEL");
                     }
-                }
-                else
-                {
-                    balloonFSM.SendEvent("CANCEL");
-                }
-            });
-        }
-
-        protected override void SetCustomPositionOnSpawn()
-        {
-            gameObject.StickToGround(-1f);
+                });
+            }
         }
     }
 

@@ -373,8 +373,14 @@ namespace EnemyRandomizerMod
                 if (soc.gameObject.GetDatabaseKey() == "Ceiling Dropper")
                 {
                     var alertRange = gameObject.FindGameObjectInDirectChildren("Alert Range");
-                    var aBox = alertRange.GetComponent<BoxCollider2D>();
-                    aBox.size = new Vector2(aBox.size.x, 50f);
+                    if (alertRange != null)
+                    {
+                        var aBox = alertRange.GetComponent<BoxCollider2D>();
+                        if (aBox != null)
+                        {
+                            aBox.size = new Vector2(aBox.size.x, 50f);
+                        }
+                    }
                 }
                 if (soc.gameObject.GetDatabaseKey() == "Fluke Mother")
                 {
@@ -700,6 +706,7 @@ namespace EnemyRandomizerMod
         public AudioSource audioSource;
         public AudioSource coloMCaudioSource;
         public AudioSource targetAudioSource;
+        public AudioSource globalAudioSource;
 
         public void PlayMusic(float volume = 0.8f, GameObject target = null)
         {
@@ -735,6 +742,28 @@ namespace EnemyRandomizerMod
                     {
                         targetAudioSource.Play();
                         targetAudioSource.volume = volume;
+                    }
+                }
+            }
+            else
+            {
+                var musicControl = GameObject.Find("AudioManager");
+                if (musicControl == null)
+                    return;
+                globalAudioSource = musicControl.GetComponentInChildren<AudioSource>(true);
+
+                if (globalAudioSource != null)
+                {
+                    globalAudioSource.Stop();
+                    globalAudioSource.clip = audioSource.clip;
+                    if (globalAudioSource.isPlaying)
+                    {
+                        globalAudioSource.volume = 1f;
+                    }
+                    else
+                    {
+                        globalAudioSource.Play();
+                        globalAudioSource.volume = volume;
                     }
                 }
             }

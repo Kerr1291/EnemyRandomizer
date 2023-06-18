@@ -99,7 +99,7 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
 
         const string defaultDatabaseFilePath = "EnemyRandomizerDatabase.xml";
-        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9m]";
+        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9-rc1]";
         static string currentVersion = currentVersionPrefix;
             //Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + $" CURRENT SEED:[{GlobalSettings.seed}] -- TO CHANGE SEED --> MODS > ENEMY RANDOMIZER > ENEMY RANDOMIZER MODULES";
 
@@ -294,13 +294,18 @@ namespace EnemyRandomizerMod
         {
             try
             {
-                if (obj != null && obj.name.Contains("Health Scuttler"))
+                if (obj != null && obj.name.Contains("Health Scuttler") && obj.GetComponent<SpawnedObjectControl>() == null && ObjectMetadata.Get(obj) == null)
+                {
+                    //test.....
+                    RandomizeEnemy(obj);
+                }
+                else if (obj != null && obj.name.Contains("Jelly Egg Bomb") && obj.GetComponent<SpawnedObjectControl>() == null && ObjectMetadata.Get(obj) == null)
                 {
                     //test.....
                     RandomizeEnemy(obj);
                 }
             }
-            catch (Exception e) { }
+            catch (Exception e) { Dev.Log($"Caught exception in ModHooks_ColliderCreateHook :::: \n{e.Message}\n{e.StackTrace}"); }
         }
 
         IEnumerator UpdateLabelOnLoad()
@@ -698,7 +703,13 @@ namespace EnemyRandomizerMod
 
             return null;
         }
+
+        public static void ClearBypass()
+        {
+            EnemyRandomizer.bypassNextReplacement = false;
+        }
     }
+
 
     public class RecycleOnDisable : MonoBehaviour
     {
