@@ -104,7 +104,8 @@ namespace EnemyRandomizerMod
         /// </summary>
         public virtual DefaultSpawnedEnemyControl AddController(GameObject newlySpawnedObject)
         {
-            Dev.Log($"starting setup of control component of type {typeof(DefaultSpawnedEnemyControl).Name} for {newlySpawnedObject.GetSceneHierarchyPath()}");
+            if(SpawnedObjectControl.VERBOSE_DEBUG)
+                Dev.Log($"starting setup of control component of type {typeof(DefaultSpawnedEnemyControl).Name} for {newlySpawnedObject.GetSceneHierarchyPath()}");
             return newlySpawnedObject.GetOrAddComponent<DefaultSpawnedEnemyControl>();
         }
 
@@ -124,7 +125,8 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    Dev.LogWarning($"{gameObject} has no corpse to apply an effect to!");
+                    if (SpawnedObjectControl.VERBOSE_DEBUG)
+                        Dev.LogWarning($"{gameObject} has no corpse to apply an effect to!");
                 }
             }
 
@@ -140,7 +142,8 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    Dev.LogWarning($"{gameObject} has no corpse to apply an effect to!");
+                    if (SpawnedObjectControl.VERBOSE_DEBUG)
+                        Dev.LogWarning($"{gameObject} has no corpse to apply an effect to!");
                 }
             }
         }
@@ -151,7 +154,8 @@ namespace EnemyRandomizerMod
     {
         public override DefaultSpawnedEnemyControl AddController(GameObject newlySpawnedObject)
         {
-            Dev.Log($"starting setup of control component of type {typeof(TControlComponent).Name} for {newlySpawnedObject.GetSceneHierarchyPath()}");
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                Dev.Log($"starting setup of control component of type {typeof(TControlComponent).Name} for {newlySpawnedObject.GetSceneHierarchyPath()}");
             return newlySpawnedObject.GetOrAddComponent<TControlComponent>();
         }
     }
@@ -356,6 +360,30 @@ namespace EnemyRandomizerMod
         {
             if(positionLock != null)
                 transform.position = positionLock.Value;
+        }
+    }
+
+
+    public class FSMWaker : MonoBehaviour
+    {
+        public PlayMakerFSM fsm;
+        public string wakeState = "Sleep";
+        public string wakeString = "WAKE";
+
+        protected virtual void OnEnable()
+        {
+            fsm = gameObject.LocateMyFSM("Control");//default
+        }
+
+        protected virtual void Update()
+        {
+            if(fsm != null)
+            {
+                if(fsm.ActiveStateName == wakeState)
+                {
+                    fsm.SendEvent(wakeString);
+                }
+            }
         }
     }
 }

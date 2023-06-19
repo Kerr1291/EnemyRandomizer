@@ -215,7 +215,7 @@ namespace EnemyRandomizerMod
                 {
                     control = gameObject.LocateMyFSM(FSMName);
 
-                    if (control == null)
+                    if (control == null && VERBOSE_DEBUG)
                         Dev.LogError($"Failed to locate my fsm: {FSMName}");
                 }
             }

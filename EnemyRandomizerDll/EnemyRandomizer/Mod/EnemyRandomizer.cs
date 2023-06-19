@@ -18,6 +18,7 @@ using UnityEngine.Events;
 using Cysharp.Threading.Tasks.Triggers;
 using Cysharp.Threading.Tasks.Linq;
 using Cysharp.Threading.Tasks;
+using Satchel;
 
 namespace EnemyRandomizerMod
 {
@@ -99,7 +100,7 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
 
         const string defaultDatabaseFilePath = "EnemyRandomizerDatabase.xml";
-        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9-rc1]";
+        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9.1.2]";
         static string currentVersion = currentVersionPrefix;
             //Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + $" CURRENT SEED:[{GlobalSettings.seed}] -- TO CHANGE SEED --> MODS > ENEMY RANDOMIZER > ENEMY RANDOMIZER MODULES";
 
@@ -318,13 +319,16 @@ namespace EnemyRandomizerMod
 
         void ModHooks_DrawBlackBordersHook(List<GameObject> obj)
         {
-            Dev.Log("=======================================================================================");
-            Dev.Log("==                                                                                   ==");
-            Dev.Log("==  NEW SCENE HAS BEEN ENTERED              SCENE IS BEING LOADED                    ==");
-            Dev.Log("==                                                                                   ==");
-            Dev.Log("==                         SCENE BOARDERS LOADED                                     ==");
-            Dev.Log("==                                                                                   ==");
-            Dev.Log("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
+            if (EnemyReplacer.VERBOSE_LOGGING)
+            {
+                Dev.Log("=======================================================================================");
+                Dev.Log("==                                                                                   ==");
+                Dev.Log("==  NEW SCENE HAS BEEN ENTERED              SCENE IS BEING LOADED                    ==");
+                Dev.Log("==                                                                                   ==");
+                Dev.Log("==                         SCENE BOARDERS LOADED                                     ==");
+                Dev.Log("==                                                                                   ==");
+                Dev.Log("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
+            }
             BlackBorders.Value = obj;
             if(BlackBorders != null && BlackBorders.Value != null && BlackBorders.Value.Count > 0)
             {
@@ -334,13 +338,16 @@ namespace EnemyRandomizerMod
 
         void Instance_UnloadingLevel()
         {
-            Dev.Log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-            Dev.Log("==                                                                                   ==");
-            Dev.Log("==  OLD SCENE EXITED                        OBJECT LOADING PAUSED                    ==");
-            Dev.Log("==                                          SCENE BOARDERS CLEARED                   ==");
-            Dev.Log("==  SCENE IS BEING UNLOADED                                                          ==");
-            Dev.Log("==                                                                                   ==");
-            Dev.Log("=======================================================================================");
+            if (EnemyReplacer.VERBOSE_LOGGING)
+            {
+                Dev.Log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                Dev.Log("==                                                                                   ==");
+                Dev.Log("==  OLD SCENE EXITED                        OBJECT LOADING PAUSED                    ==");
+                Dev.Log("==                                          SCENE BOARDERS CLEARED                   ==");
+                Dev.Log("==  SCENE IS BEING UNLOADED                                                          ==");
+                Dev.Log("==                                                                                   ==");
+                Dev.Log("=======================================================================================");
+            }
             try
             {
                 if (BlackBorders.Value != null)
@@ -607,6 +614,31 @@ namespace EnemyRandomizerMod
             {
                 BattleManager.LoadFromFSM(fsm);
             }
+
+            try
+            {
+                if (fsm != null)
+                {
+                    //never spawn this, the white screen is annoying
+                    if (fsm.gameObject.name.Contains("Corpse Zote Ordeal First"))
+                    {
+                        SpawnerExtensions.DestroyObject(fsm.gameObject);
+                        return;
+                    }
+
+                    if (fsm.gameObject.name.Contains("Flamebearer Spawn") && GameManager.instance.playerData.grimmChildLevel > 0 && GameManager.instance.playerData.equippedCharm_40)
+                    {
+                        fsm.GetState("Ready").InsertCustomAction(() => {
+                            PlayMakerFSM.BroadcastEvent("ALERT");
+                            foreach(var f in GameObjectExtensions.EnumerateRootObjects(true).Where(x => x.name.Contains("Flamebearer") && x.name.Contains("(Clone)") && !x.activeInHierarchy && x.gameObject.GetComponent<FlameBearerFixer>()))
+                            {
+                                f.SafeSetActive(true);
+                            }
+                        }, 0);                       
+                    }
+                }
+            }
+            catch (Exception e) { }//nom
         }
 
         void DoBattleSceneCheck(GameObject gameObject)

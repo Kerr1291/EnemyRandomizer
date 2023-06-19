@@ -2237,7 +2237,7 @@ namespace EnemyRandomizerMod
             {"Grey Prince", 1.0f},
             {"Pale Lurker", 1.0f},
             {"Fat Fluke", 1.0f},
-            {"Zote Thwomp", 1.0f},//99
+            {"Zote Thwomp", 0.01f},//99
             
             {"Zote Crew Normal", 1.0f},
             {"Zote Crew Fat", 1.0f},
@@ -2247,24 +2247,24 @@ namespace EnemyRandomizerMod
             
             {"Colosseum_Worm", 1.0f},
             {"Colosseum Grass Hopper", 1.0f},//106
-            {"Sly Boss", 1.0f},//107
-            {"Sheo Boss", 1.0f},//108
-            {"Oro", 1.0f},//109
+            {"Sly Boss", 0.01f},//107
+            {"Sheo Boss", 0.001f},//108
+            {"Oro", 0.001f},//109
 
-            {"Mato", 1.0f},//110
+            {"Mato", 0.001f},//110
             {"Hive Knight", 1.0f},//111
-            {"Zombie Beam Miner Rematch", 1.0f},//112
-            {"Nightmare Grimm Boss", 1.0f},//113
-            {"Dream Mage Lord", 1.0f},//114
+            {"Zombie Beam Miner Rematch", 0.01f},//112
+            {"Nightmare Grimm Boss", 0.01f},//113
+            {"Dream Mage Lord", 0.001f},//114
 
-            {"Radiance", 1.0f},//115
-            {"Mega Jellyfish", 1.0f},//116
-            {"Absolute Radiance", 1.0f},//117
+            {"Radiance", 0.1f},//115
+            {"Mega Jellyfish", 0.1f},//116
+            {"Absolute Radiance", 0.1f},//117
             {"Ghost Warrior Xero", 1.0f},//118
-            {"Ghost Warrior Hu", 1.0f},//119
+            {"Ghost Warrior Hu", 0.001f},//119
 
             {"Ghost Warrior Markoth", 1.0f},//120
-            {"Mega Moss Charger", 1.0f},//121
+            {"Mega Moss Charger", 0.5f},//121
         };
 
 

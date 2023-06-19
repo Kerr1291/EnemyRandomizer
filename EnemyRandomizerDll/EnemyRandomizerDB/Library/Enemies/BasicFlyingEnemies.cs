@@ -313,7 +313,7 @@ namespace EnemyRandomizerMod
         public AudioSource audio;
 
         public int chanceToSpawnSuperBossOutOf100 = 2; // -> ( 20 / 100 )
-        bool isSuperBoss;
+        public bool isSuperBoss;
 
         public override string customDreamnailText => isSuperBoss ? "Destroy." : base.customDreamnailText;
 
@@ -394,60 +394,74 @@ namespace EnemyRandomizerMod
             catch (Exception) { }
         }
 
+        bool didConfigDistanceFly = false;
         protected virtual void ConfigureDistanceFly()
         {
-            try
+            if (!didConfigDistanceFly)
             {
-                var distFly = control.GetState("Distance Fly");
-                distFly.InsertCustomAction(() =>
-                {
-                    if (!isSuperBoss)
-                        return;
-
                 try
                 {
-                    var action = distFly.GetFirstActionOfType<DistanceFly>();
-                    if (action != null)
+                    var distFly = control.GetState("Distance Fly");
+                    distFly.InsertCustomAction(() =>
                     {
-                        if (HeroController.instance.cState != null && HeroController.instance.cState.superDashing)
+                        if (!isSuperBoss)
+                            return;
+
+                        try
                         {
-                            action.distance = 10f;
-                            action.speedMax = 100f;
-                            action.acceleration = 20f;
+                            var action = distFly.GetFirstActionOfType<DistanceFly>();
+                            if (action != null)
+                            {
+                                if (HeroController.instance.cState != null && HeroController.instance.cState.superDashing)
+                                {
+                                    action.distance = 10f;
+                                    action.speedMax = 100f;
+                                    action.acceleration = 20f;
+                                }
+                                else
+                                {
+                                    action.distance = 10f;
+                                    action.speedMax = 9f;
+                                    action.acceleration = 0.5f;
+                                }
+                            }
+                        }
+                        catch (Exception e) { Dev.LogError("Error inside distance fly " + e.Message + " " + e.StackTrace); }
+                    }, 0);
+                }
+                catch (Exception) { Dev.LogError("Error config distance fly"); }
+            }
+            didConfigDistanceFly = true;
+        }
+
+        bool didConfigDistanceShot = false;
+        protected virtual void ConfigureShot(int actionIindex)
+        {
+            if (!didConfigDistanceShot)
+            {
+                FsmState fire = control.GetState("Fire");
+
+                {
+                    int fireAction = actionIindex;
+                    var originalFire = fire.GetAction(fireAction);
+                    fire.DisableAction(fireAction);
+                    fire.InsertCustomAction(() =>
+                    {
+                        if (!isSuperBoss)
+                        {
+                            originalFire.Enabled = true;
+                            return;
                         }
                         else
                         {
-                            action.distance = 10f;
-                            action.speedMax = 9f;
-                            action.acceleration = 0.5f;
+                            originalFire.Enabled = false;
                         }
-                    }
+                        ShootSuperSpitterShot();
+
+                    }, fireAction);
                 }
-                catch (Exception e) { Dev.LogError("Error inside distance fly "+e.Message + " " + e.StackTrace); }
-                }, 0);
             }
-            catch (Exception) { Dev.LogError("Error config distance fly"); }
-        }
-
-        protected virtual void ConfigureShot(int actionIindex)
-        {
-            FsmState fire = control.GetState("Fire");
-
-            {
-                int fireAction = actionIindex;
-                var originalFire = fire.GetAction(fireAction);
-                fire.DisableAction(fireAction);
-                fire.InsertCustomAction(() =>
-                {
-                    if (!isSuperBoss)
-                    {
-                        originalFire.Enabled = true;
-                        return;
-                    }
-                    ShootSuperSpitterShot();
-
-                }, fireAction);
-            }
+            didConfigDistanceShot = true;
         }
 
         protected virtual void ConfigureFire()
@@ -540,7 +554,11 @@ namespace EnemyRandomizerMod
         public override void Setup(GameObject objectThatWillBeReplaced = null)
         {
             base.Setup(objectThatWillBeReplaced);
-            isSuperBoss = SpawnerExtensions.RollProbability(out int _, chanceToSpawnSuperBossOutOf100, 100);
+
+            if (!isSuperBoss)
+            {
+                isSuperBoss = SpawnerExtensions.RollProbability(out int _, chanceToSpawnSuperBossOutOf100, 100);
+            }
 
             audio = GetComponent<AudioSource>();
             if (isSuperBoss)

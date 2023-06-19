@@ -4052,7 +4052,8 @@ namespace EnemyRandomizerMod
             //nothing to do here if these objects are the same
             if (!hasMetaDataAlready && objectToReplace != null && gameObject != objectToReplace)
             {
-                Dev.Log($"{thisMetaData} is replacing {otherMetaData} and so {objectToReplace} will now be destroyed...");
+                if (SpawnedObjectControl.VERBOSE_DEBUG)
+                    Dev.Log($"{thisMetaData} is replacing {otherMetaData} and so {objectToReplace} will now be destroyed...");
 
                 //boom
                 SpawnerExtensions.DestroyObject(objectToReplace);
@@ -4094,6 +4095,11 @@ namespace EnemyRandomizerMod
             owner.StartCoroutine(BroadcastFSMEventAfterDistance(fsmEvent, distance));
         }
 
+        public static void BroadcastFSMEventHeroHasMovedUnder(this MonoBehaviour owner, string fsmEvent, float ypos)
+        {
+            owner.StartCoroutine(BroadcastFSMEventAfterUnder(fsmEvent, ypos));
+        }
+
         public static IEnumerator BroadcastFSMEventAfterDistance(string fsmEvent, float distance)
         {
             var startpos = HeroController.instance.transform.position;
@@ -4102,6 +4108,22 @@ namespace EnemyRandomizerMod
                 var newPos = HeroController.instance.transform.position;
 
                 if(newPos.y < startpos.y &&  Mathf.Abs(newPos.y - startpos.y) > distance)
+                {
+                    PlayMakerFSM.BroadcastEvent(fsmEvent);
+                    yield break;
+                }
+
+                yield return null;
+            }
+            yield break;
+        }
+
+
+        public static IEnumerator BroadcastFSMEventAfterUnder(string fsmEvent, float ypos)
+        {
+            for (; ; )
+            {
+                if (HeroController.instance.transform.position.y < ypos)
                 {
                     PlayMakerFSM.BroadcastEvent(fsmEvent);
                     yield break;
@@ -4204,6 +4226,20 @@ namespace EnemyRandomizerMod
             if (control == null)
                 return -1;
             return control.GetStartingMaxHP(databaseKeyToScaleFrom);
+        }
+
+        public static bool IsInBox(this GameObject go, Vector2 topleft, Vector2 bottomRight)
+        {
+            var point = go.transform.position.ToVec2();
+
+            // Check if the point's X coordinate is within the box's X range
+            bool withinXRange = point.x >= topleft.x && point.x <= bottomRight.x;
+
+            // Check if the point's Y coordinate is within the box's Y range
+            bool withinYRange = point.y <= topleft.y && point.y >= bottomRight.y;
+
+            // Return true if the point is within both the X and Y ranges, indicating it is inside the box
+            return withinXRange && withinYRange;
         }
 
         public static GameObject SpawnEnemyForEnemySpawner(Vector2 pos, bool setActive = false, string originalEnemy = null, RNG rng = null)

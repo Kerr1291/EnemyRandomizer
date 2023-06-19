@@ -18,13 +18,14 @@ namespace EnemyRandomizerMod
 
         protected string[] playtesters = new string[]
         {
-            "Manno Stone",
-            "Wangha",
             "ColetteMSLP",
+            "Manno",
+            "Wangha",
             "Dwarfwoot",
             "oatmille1",
             "Sethadocious",
             "hyperspace_coder",
+            "vampython",
             "...and you; thanks for playing!"
         };
 

@@ -191,13 +191,15 @@ namespace EnemyRandomizerMod
 
         IEnumerator FinalLoader(Action onComplete)
         {
-            Dev.Log("Finalizing loading");
+            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                Dev.Log("Finalizing loading");
             foreach(SceneData s in scenes)
             {
                 FinalizeAndLoadSceneData(s);
             }
 
-            Dev.Log("Object Database Loading Complete!");
+            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                Dev.Log("Object Database Loading Complete!");
             onComplete?.Invoke();
             yield break;
         }
@@ -218,33 +220,39 @@ namespace EnemyRandomizerMod
 
                     if (s.name == "RESOURCES" || s.name.Contains(DESTROY_ON_LOAD))
                     {
-                        Dev.Log("Trying to find resource");
+                        if(DEBUG_VERBOSE_SPAWNER_ERRORS)
+                            Dev.Log("Trying to find resource");
                         var go = GameObjectExtensions.FindResource(sceneObject.path);
                         if (go == null)
                         {
-                            Dev.Log("Cannot find resource to load; skipping");
+                            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                                Dev.Log("Cannot find resource to load; skipping");
                             continue;
                         }
 
-                        Dev.Log("Trying to create prefab object");
+                        if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                            Dev.Log("Trying to create prefab object");
                         var result = CreatePrefabObject(sceneObject.Name, go, sceneObject);
 
                         if (result == null)
                         {
-                            Dev.Log("Cannot create prefab object to load resource; skipping");
+                            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                                Dev.Log("Cannot create prefab object to load resource; skipping");
                             continue;
                         }
 
                         //unload the resource if we're not going to use it
                         if (result.prefab != go)
                         {
-                            Dev.Log("Unloading resource that will not be used...");
+                            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                                Dev.Log("Unloading resource that will not be used...");
                             go.SetActive(false);
                             GameObject.Destroy(go);
                         }
                     }
 
-                    Dev.Log($"[COMPLETED LOADING RESOURCE] NAME:{sceneObject.Name}");
+                    if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                        Dev.Log($"[COMPLETED LOADING RESOURCE] NAME:{sceneObject.Name}");
                 }
                 catch(Exception e)
                 {
@@ -254,12 +262,15 @@ namespace EnemyRandomizerMod
 
             try
             {
-                //verify
-                var finalObjects = s.sceneObjects.Where(x => x.Loaded == false);
-
-                foreach (var sceneObject in finalObjects)
+                if (DEBUG_VERBOSE_SPAWNER_ERRORS)
                 {
-                    Dev.Log($"[NOT LOADED] NAME:{sceneObject.Name} - PATH:{sceneObject.path} - SCENE:{s.name} OBJ_SCENE:{sceneObject.Scene}");
+                    //verify
+                    var finalObjects = s.sceneObjects.Where(x => x.Loaded == false);
+
+                    foreach (var sceneObject in finalObjects)
+                    {
+                        Dev.Log($"[NOT LOADED] NAME:{sceneObject.Name} - PATH:{sceneObject.path} - SCENE:{s.name} OBJ_SCENE:{sceneObject.Scene}");
+                    }
                 }
             }
             catch (Exception e)
@@ -283,7 +294,8 @@ namespace EnemyRandomizerMod
             if (!Objects.TryGetValue(name, out PrefabObject p))
                 return null;
 
-            Dev.Log("trying to spawn "+ name);
+            if(DEBUG_VERBOSE_SPAWNER_ERRORS)
+                Dev.Log("trying to spawn "+ name);
             return Spawn(p);
         }
 
@@ -300,7 +312,8 @@ namespace EnemyRandomizerMod
             if (!Objects.TryGetValue(original, out PrefabObject o))
                 return null;
 
-            Dev.Log("trying to spawn " + name);
+            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                Dev.Log("trying to spawn " + name);
             return Spawn(p,o);
         }
 
@@ -316,11 +329,13 @@ namespace EnemyRandomizerMod
                 defaultType = typeof(DefaultSpawner);
 
             bool isDefault = GetSpawner(p, defaultType, out var spawner);
-            Dev.Log("Spawner is " + spawner);
+            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                Dev.Log("Spawner is " + spawner);
             if (spawner == null)
                 return null;
 
-            Dev.Log("finally trying to spawn "+p.prefabName);
+            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                Dev.Log("finally trying to spawn "+p.prefabName);
             return spawner.Spawn(p, null);
         }
 
@@ -336,11 +351,13 @@ namespace EnemyRandomizerMod
                 defaultType = typeof(DefaultSpawner);
 
             bool isDefault = GetSpawner(p, defaultType, out var spawner);
-            Dev.Log("Spawner is " + spawner);
+            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                Dev.Log("Spawner is " + spawner);
             if (spawner == null)
                 return null;
 
-            Dev.Log($"finally trying to spawn {p.prefabName} using {o.prefabName} to configure it.");
+            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                Dev.Log($"finally trying to spawn {p.prefabName} using {o.prefabName} to configure it.");
             return spawner.Spawn(p, o.prefab);
         }
 
@@ -357,11 +374,13 @@ namespace EnemyRandomizerMod
                 defaultType = typeof(DefaultSpawner);
 
             bool isDefault = GetSpawner(prefabToSpawn, defaultType, out var spawner);
-            Dev.Log("in replace, Spawner is " + spawner);
+            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                Dev.Log("in replace, Spawner is " + spawner);
             if (spawner == null)
                 return null;
 
-            Dev.Log($"trying to spawn {prefabToSpawn} as a replacement for {objectToReplace}");
+            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                Dev.Log($"trying to spawn {prefabToSpawn} as a replacement for {objectToReplace}");
             return spawner.Spawn(prefabToSpawn, objectToReplace);
         }
 

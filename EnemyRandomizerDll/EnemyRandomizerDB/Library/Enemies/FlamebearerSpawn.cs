@@ -96,6 +96,22 @@ namespace EnemyRandomizerMod
     }
 
 
+    //public class FlamebearerSpawnController : DefaultSpawnedEnemyControl
+    //{
+    //    public override void Setup(GameObject objectThatWillBeReplaced = null)
+    //    {
+    //        base.Setup(objectThatWillBeReplaced);
+
+
+    //    }
+    //}
+
+    //public class FlamebearerSpawnSpawner : DefaultSpawner<FlamebearerSpawnController>
+    //{
+
+    //}
+
+
     public class FlamebearerSpawnPrefabConfig : DefaultPrefabConfig
     {
         public override void SetupPrefab(PrefabObject p)

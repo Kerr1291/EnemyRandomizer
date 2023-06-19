@@ -285,7 +285,9 @@ namespace EnemyRandomizerMod
                     {
                         if (SpawnedObjectControl.VERBOSE_DEBUG)
                             Dev.Log("TIMEOUT -- ENDING BATTLE");
-                        OpenGates();
+                        bool isWhitePalace = BattleManager.Instance.Value.gameObject.scene.name.Contains("White_Palace_");
+                        bool isRuins = BattleManager.Instance.Value.gameObject.scene.name.Contains("Ruins1_23");
+                        OpenGates(isWhitePalace, isRuins);
                     }
 
                     updateRate = 0f;
@@ -542,6 +544,7 @@ namespace EnemyRandomizerMod
 
             bool isColo = BattleManager.Instance.Value.gameObject.scene.name.Contains("Room_Colosseum_");
             bool isWhitePalace = BattleManager.Instance.Value.gameObject.scene.name.Contains("White_Palace_");
+            bool isRuins = BattleManager.Instance.Value.gameObject.scene.name.Contains("Ruins1_23");
             bool isFungus1_32 = BattleManager.Instance.Value.gameObject.scene.name.Contains("Fungus1_32");
 
             if (FSM.FsmVariables.Contains("Battle Enemies"))
@@ -632,11 +635,11 @@ namespace EnemyRandomizerMod
             if (forceOpenGates)
             {
                 battleStarted = false;
-                OpenGates(isWhitePalace);
+                OpenGates(isWhitePalace, isRuins);
             }
         }
 
-        public static void OpenGates(bool isWhitePalace = false)
+        public static void OpenGates(bool isWhitePalace = false, bool isRuins = false)
         {
             PlayMakerFSM.BroadcastEvent("BG OPEN");
             PlayMakerFSM.BroadcastEvent("DREAM GATE OPEN");
@@ -653,6 +656,9 @@ namespace EnemyRandomizerMod
                     }
                 }
             }
+
+            if(isRuins)
+                PlayMakerFSM.BroadcastEvent("OPEN");
         }
 
         public static void CloseGates(bool broadcastBattleStart = false)

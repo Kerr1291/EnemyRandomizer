@@ -105,6 +105,19 @@ namespace EnemyRandomizerMod
                         gameObject.GetDirectChildren().ForEach(x => x.SafeSetActive(true));
                     }
                 }
+                if (currentScene == "Ruins1_09")
+                {
+                    if (!StateMachine.Value.battleStarted)
+                    {
+                        return;
+                    }
+
+                    var hms = GameObject.FindObjectsOfType<HealthManager>().Length;
+                    if(hms <= 0)
+                    {
+                        BattleStateMachine.OpenGates(false);
+                    }
+                }
                 else if (currentScene == "Crossroads_09")
                 {
                     if (StateMachine.Value.battleStarted ||

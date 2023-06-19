@@ -1425,7 +1425,19 @@ namespace EnemyRandomizerMod
         }
     }
 
-    public class HiveKnightSpawner : DefaultSpawner<HiveKnightControl> { }
+    public class HiveKnightSpawner : DefaultSpawner<HiveKnightControl>
+    {
+        public override void SetupSpawnedObject(DefaultSpawnedEnemyControl newlySpawnedObject)
+        {
+            base.SetupSpawnedObject(newlySpawnedObject);
+
+            try
+            {
+                newlySpawnedObject.gameObject.GetOrAddComponent<FSMWaker>();
+            }
+            catch (Exception) { }//nom
+        }
+    }
 
     public class HiveKnightPrefabConfig : DefaultPrefabConfig { }
     /////
@@ -1819,6 +1831,8 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "nailmaster";
 
+        public override bool preventOutOfBoundsAfterPositioning => true;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
@@ -1829,22 +1843,25 @@ namespace EnemyRandomizerMod
                 corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
             }
 
-            control.ChangeTransition("Death Start", "FINISHED", "Explode");
-
-            var explode = control.GetState("Explode");
+            var explode = control.GetState("Death Start");
             explode.InsertCustomAction(() => {
                 if (EnemyHealthManager.hp <= 0)
                 {
-                    EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Death Explode Boss", null, true);
-                    Destroy(gameObject);
+                    SpawnerExtensions.SpawnEntityAt("Death Explode Boss", transform.position, null, true);
+                    SpawnerExtensions.DestroyObject(gameObject, false);
                 }
             }, 0);
 
-            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
+            this.InsertHiddenState(control, "Init", "ORO", "Idle");
         }
     }
 
-    public class OroSpawner : DefaultSpawner<OroControl> { }
+    public class OroSpawner : DefaultSpawner<OroControl>
+    {
+        public override bool corpseRemovedByEffect => true;
+
+        public override string corpseRemoveEffectName => "Death Explode Boss";
+    }
 
     public class OroPrefabConfig : DefaultPrefabConfig { }
     /////
@@ -1860,6 +1877,7 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "nailmaster";
 
+        public override bool preventOutOfBoundsAfterPositioning => true;
 
         public override void Setup(GameObject other)
         {
@@ -1871,22 +1889,25 @@ namespace EnemyRandomizerMod
                 corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
             }
 
-            this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
-
-            control.ChangeTransition("Death Start", "FINISHED", "Explode");
-
-            var explode = control.GetState("Explode");
+            var explode = control.GetState("Death Start");
             explode.InsertCustomAction(() => {
                 if (EnemyHealthManager.hp <= 0)
                 {
-                    EnemyRandomizerDatabase.CustomSpawnWithLogic(transform.position, "Death Explode Boss", null, true);
-                    Destroy(gameObject);
+                    SpawnerExtensions.SpawnEntityAt("Death Explode Boss", transform.position, null, true);
+                    SpawnerExtensions.DestroyObject(gameObject, false);
                 }
             }, 0);
+
+            this.InsertHiddenState(control, "Init", "MATO", "Idle");
         }
     }
 
-    public class MatoSpawner : DefaultSpawner<MatoControl> { }
+    public class MatoSpawner : DefaultSpawner<MatoControl>
+    {
+        public override bool corpseRemovedByEffect => true;
+
+        public override string corpseRemoveEffectName => "Death Explode Boss";
+    }
 
     public class MatoPrefabConfig : DefaultPrefabConfig { }
     /////
@@ -1916,6 +1937,8 @@ namespace EnemyRandomizerMod
     public class SheoBossSpawner : DefaultSpawner<SheoBossControl>
     {
         public override bool corpseRemovedByEffect => true;
+
+        public override string corpseRemoveEffectName => "Death Explode Boss";
     }
 
     public class SheoBossPrefabConfig : DefaultPrefabConfig { }
@@ -1932,18 +1955,29 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Control";
 
+        public override bool preventOutOfBoundsAfterPositioning => true;
 
         public override void Setup(GameObject other)
         {
             base.Setup(other);            
             this.InsertHiddenState(control, "Phase HP", "FINISHED", "Idle");
-            control.ChangeTransition("Death Reset", "FINISHED", "Explosion");
+
+            var explode = control.GetState("Death Reset");
+            explode.InsertCustomAction(() => {
+                if (EnemyHealthManager.hp <= 0)
+                {
+                    SpawnerExtensions.SpawnEntityAt("Death Explode Boss", transform.position, null, true);
+                    SpawnerExtensions.DestroyObject(gameObject, false);
+                }
+            }, 0);
         }
     }
 
-    public class SlyBossSpawner : DefaultSpawner<SlyBossControl> 
+    public class SlyBossSpawner : DefaultSpawner<SlyBossControl>
     {
         public override bool corpseRemovedByEffect => true;
+
+        public override string corpseRemoveEffectName => "Death Explode Boss";
     }
 
     public class SlyBossPrefabConfig : DefaultPrefabConfig { }
@@ -3165,6 +3199,8 @@ namespace EnemyRandomizerMod
     {
         public override string FSMName => "Control";
 
+        public override bool preventOutOfBoundsAfterPositioning => true;
+
         //values taken from hornet's FSM
         //for this rewrite I probably won't use them all, but since I collected the data
         //I'll keep it here anyway for now
@@ -3497,6 +3533,8 @@ namespace EnemyRandomizerMod
         public float throwDistance = 12f;
         public float minAirSphereHeight = 5f;
         public float throwMaxTravelTime = .8f;
+
+        public override bool preventOutOfBoundsAfterPositioning => true;
 
         public override void Setup(GameObject other)
         {
@@ -4166,7 +4204,12 @@ namespace EnemyRandomizerMod
         }
     }
 
-    public class MawlekBodySpawner : DefaultSpawner<MawlekBodyControl> { }
+    public class MawlekBodySpawner : DefaultSpawner<MawlekBodyControl>
+    {
+        public override bool corpseRemovedByEffect => true;
+
+        public override string corpseRemoveEffectName => "Death Explode Boss";
+    }
 
     public class MawlekBodyPrefabConfig : DefaultPrefabConfig { }
 

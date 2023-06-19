@@ -196,7 +196,9 @@ namespace EnemyRandomizerMod
         {
             bool isDefault = false;
             string typeName = "EnemyRandomizerMod." + string.Join("", p.prefabName.Split(' ')) + "Spawner";
-            Dev.Log(typeName);
+
+            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                Dev.Log(typeName);
             Type spawnerType = null;
 
             try

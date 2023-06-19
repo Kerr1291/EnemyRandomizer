@@ -291,7 +291,8 @@ namespace EnemyRandomizerMod
 
         public void ClearPendingLoads()
         {
-            Dev.Where();
+            if (EnemyReplacer.VERBOSE_LOGGING)
+                Dev.Where();
             pendingLoads.ToList().ForEach(x => GameManager.instance.StopCoroutine(x.Value));
             pendingLoads.Clear();
         }
