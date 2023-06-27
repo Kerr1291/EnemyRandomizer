@@ -122,6 +122,7 @@ namespace EnemyRandomizerMod
         public virtual float edgeL => SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.left, 50f).point.x;
         public virtual float edgeR => SpawnerExtensions.GetRayOn(pos2dWithOffset, Vector2.right, 50f).point.x;
 
+        protected bool didOnHitThisFrame = false;
         protected virtual void OnHit(int dmg) { }
         protected virtual void OnHeroInAggroRangeTheFirstTime() { }
 
@@ -129,6 +130,7 @@ namespace EnemyRandomizerMod
         //set this to false when spawning an enemy that you want to "fall" in
         public bool placeGroundSpawnOnGround = true;
         public virtual bool isInvincible => false;
+        public virtual bool takeCustomNailDamage => false;
         public virtual bool spawnOrientationIsFlipped => false;
         public virtual float spawnPositionOffset => 0.53f;
         public float? spawnPositionOffsetOverride = null;
@@ -139,7 +141,7 @@ namespace EnemyRandomizerMod
         public virtual bool preventOutOfBoundsAfterPositioning => false;
         public virtual bool preventInsideWallsAfterPositioning => false;
         public virtual bool explodeOnDeath => false;
-        public virtual string explodeOnDeathEffect => "Gas Explosion Recycle L";
+        public virtual string explodeOnDeathEffect => "Gas Explosion M";
         public virtual string spawnEntityOnDeath => null;
         public virtual bool hasCustomDreamnailReaction => gameObject.GetComponent<EnemyDreamnailReaction>() != null;
         public virtual string customDreamnailSourceName { get => originialMetadata == null ? "meme" : originialMetadata.GetDatabaseKey(); }
@@ -159,8 +161,72 @@ namespace EnemyRandomizerMod
             }
         }
 
+
+        protected bool isUnloading = false;
+
+        /// <summary>
+        /// change this to stop the emission of a corpse completely
+        /// </summary>
+        protected virtual bool emitCorpse => true;
+
+        protected virtual void Awake()
+        {
+            GameManager.instance.UnloadingLevel -= SetUnloading;
+            GameManager.instance.UnloadingLevel += SetUnloading;
+
+            On.EnemyDeathEffects.EmitCorpse -= EnemyDeathEffects_EmitCorpse;
+            On.EnemyDeathEffects.EmitCorpse += EnemyDeathEffects_EmitCorpse;
+        }
+
+        protected virtual void BeforeCorpseEmit(GameObject corpseObject, float? attackDirection, bool isWatery, bool spellBurn)
+        {
+            //TODO: custom logic here
+        }
+
+        protected virtual void AfterCorpseEmit(GameObject corpseObject, float? attackDirection, bool isWatery, bool spellBurn)
+        {
+            //TODO: custom logic here
+        }
+
+        private void EnemyDeathEffects_EmitCorpse(On.EnemyDeathEffects.orig_EmitCorpse orig, EnemyDeathEffects self, float? attackDirection, bool isWatery, bool spellBurn)
+        {
+            if (gameObject != self.gameObject)
+                return;
+
+            GameObject corpse = null;
+            try
+            {
+                if (emitCorpse)
+                {
+                    corpse = self.GetCorpseFromEDF();
+                    if (corpse != null)
+                        BeforeCorpseEmit(corpse, attackDirection, isWatery, spellBurn);
+                    orig(self, attackDirection, isWatery, spellBurn);
+                    if (corpse != null)
+                        AfterCorpseEmit(corpse, attackDirection, isWatery, spellBurn);
+                }
+                else
+                {
+                    if (!isUnloading)
+                        SpawnerExtensions.SpawnEntityAt("Death Puff Med", self.transform.position, null, true, false);
+                }
+            }
+            catch(Exception e)
+            {
+                Dev.LogError($"Caught unhandled exception in an EmitCorpse Hook for {gameObject} with corpse {corpse} {e.Message}\n{e.StackTrace}");
+            }
+        }
+
+        void SetUnloading()
+        {
+            isUnloading = true;
+        }
+
         public virtual void Setup(GameObject objectThatWillBeReplaced = null)
         {
+            if (isUnloading)
+                return;
+
             try
             {
                 //if this object doesn't yet have a meta object, make one
@@ -359,6 +425,9 @@ namespace EnemyRandomizerMod
 
         public virtual void SetPositionOnSpawn(GameObject objectThatWillBeReplaced)
         {
+            if (isUnloading)
+                return;
+
             PreSetSpawnPosition(objectThatWillBeReplaced);
 
             DoSetSpawnPosition(objectThatWillBeReplaced);
@@ -599,6 +668,9 @@ namespace EnemyRandomizerMod
 
         protected virtual void OnDisable()
         {
+            if (isUnloading)
+                return;
+
             try
             {
                 if (hasCustomDreamnailReaction)
@@ -612,6 +684,12 @@ namespace EnemyRandomizerMod
 
         protected virtual void OnDestroy()
         {
+            On.EnemyDeathEffects.EmitCorpse -= EnemyDeathEffects_EmitCorpse;
+            GameManager.instance.UnloadingLevel -= SetUnloading;
+
+            if (isUnloading)
+                return;
+
             try
             {
                 if (gameObject.IsInAValidScene())
@@ -624,6 +702,10 @@ namespace EnemyRandomizerMod
         {
             get
             {
+                if (isUnloading)
+                    return false;
+
+
                 bool canSpawn = false;
                 try
                 {
@@ -643,7 +725,9 @@ namespace EnemyRandomizerMod
                 return;
 
             if (explodeOnDeath && !string.IsNullOrEmpty(explodeOnDeathEffect))
+            {
                 ExplodeOnDeath();
+            }
 
             if (!string.IsNullOrEmpty(spawnEntityOnDeath))
                 SpawnEntityOnDeath();
@@ -789,6 +873,9 @@ namespace EnemyRandomizerMod
 
         public virtual void RecieveExtraDamage(ExtraDamageTypes extraDamageType)
         {
+            if (isUnloading)
+                return;
+
             int dmgAmount = ExtraDamageable.GetDamageOfType(extraDamageType);
             OnHit(dmgAmount);
 
@@ -817,8 +904,25 @@ namespace EnemyRandomizerMod
             }
         }
 
+        IEnumerator ResetOnHit(float afterTime)
+        {
+            yield return new WaitForSeconds(afterTime);
+            if (gameObject == null)
+                yield break;
+            didOnHitThisFrame = false;
+        }
+
         public virtual void Hit(HitInstance damageInstance)
         {
+            if (isUnloading)
+                return;
+
+            if (didOnHitThisFrame)
+                return;
+
+            didOnHitThisFrame = true;
+            StartCoroutine(ResetOnHit(0.2f));
+
             int dmgAmount = damageInstance.DamageDealt;
             OnHit(dmgAmount);
 
@@ -841,9 +945,22 @@ namespace EnemyRandomizerMod
                     }
                 }
             }
+            else
+            {
+                if (takeCustomNailDamage)
+                {
+                    if (EnemyHealthManager != null)
+                    {
+                        EnemyHealthManager.Hit(damageInstance);
+                    }
+                    else
+                    {
+                        gameObject.KillObjectNow();
+                    }
+                }
+            }
         }
     }
-
 }
 
 

@@ -458,6 +458,9 @@ namespace EnemyRandomizerMod
 
         public void MakeSuperHusk()
         {
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+                return;
+
             if (isSuperHusk)
                 return;
             isSuperHusk = true;
@@ -489,10 +492,18 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+                return;
+
             willExplodeOnDeath = SpawnerExtensions.RollProbability(out int _, isExplodingHuskChance, isSpecialHuskChanceMax);
             bool willEmitOnDeath = SpawnerExtensions.RollProbability(out int _, isEmissionHuskChance, isSpecialHuskChanceMax);
             isSuperHusk = SpawnerExtensions.RollProbability(out int _, isSuperHuskChance, isSpecialHuskChanceMax);
                                     
+            if(GameManager.instance.GetCurrentMapZone() == "COLOSSEUM")
+            {
+                willEmitOnDeath = false;
+            }
+
             if (willExplodeOnDeath || willEmitOnDeath)
             {
                 if (willEmitOnDeath)
@@ -1144,6 +1155,9 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+                return;
+
             var control = gameObject.LocateMyFSM("Mush Roller");
             attackSpawner = gameObject.GetRandomAttackSpawnerFunc();
 
@@ -1411,7 +1425,8 @@ namespace EnemyRandomizerMod
     /////
     public class fluke_baby_02Control : DefaultSpawnedEnemyControl
     {
-        public override bool doBlueHealHeroOnDeath => true;
+        protected bool allowBlueHealth = true;
+        public override bool doBlueHealHeroOnDeath => allowBlueHealth;
 
         public override string spawnEntityOnDeath => spawnOnDeath;
         public string spawnOnDeath = "Inflater";
@@ -1419,6 +1434,13 @@ namespace EnemyRandomizerMod
         public override void Setup(GameObject other)
         {
             base.Setup(other);
+
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+            {
+                allowBlueHealth = false;
+                spawnOnDeath = null;
+                return;
+            }
 
             //pick something random from the arena list
             var prefabName = SpawnerExtensions.GetRandomPrefabNameForArenaEnemy(null, null);
@@ -1442,13 +1464,22 @@ namespace EnemyRandomizerMod
     /////
     public class fluke_baby_01Control : DefaultSpawnedEnemyControl
     {
-        public override bool doBlueHealHeroOnDeath => true;
+        protected bool allowBlueHealth = true;
+        public override bool doBlueHealHeroOnDeath => allowBlueHealth;
         public override string spawnEntityOnDeath => spawnOnDeath;
         public string spawnOnDeath = "Orange Scuttler";
 
         public override void Setup(GameObject other)
         {
             base.Setup(other);
+
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+            {
+                allowBlueHealth = false;
+                spawnOnDeath = null;
+                return;
+            }
+
             gameObject.AddParticleEffect_WhiteSoulEmissions(Color.cyan);
         }
     }
@@ -1467,7 +1498,8 @@ namespace EnemyRandomizerMod
     /////
     public class fluke_baby_03Control : DefaultSpawnedEnemyControl
     {
-        public override bool doBlueHealHeroOnDeath => true;
+        protected bool allowBlueHealth = true;
+        public override bool doBlueHealHeroOnDeath => allowBlueHealth;
         public override string spawnEntityOnDeath => spawnOnDeath;
         public string spawnOnDeath = "Jelly Egg Bomb";
 
@@ -1475,6 +1507,12 @@ namespace EnemyRandomizerMod
         public override void Setup(GameObject other)
         {
             base.Setup(other);
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+            {
+                allowBlueHealth = false;
+                spawnOnDeath = null;
+                return;
+            }
             gameObject.AddParticleEffect_TorchFire();
         }
     }
@@ -1493,13 +1531,20 @@ namespace EnemyRandomizerMod
     /////
     public class EnemyControl : DefaultSpawnedEnemyControl
     {
-        public override bool doBlueHealHeroOnDeath => true;
+        protected bool allowBlueHealth = true;
+        public override bool doBlueHealHeroOnDeath => allowBlueHealth;
         public override string spawnEntityOnDeath => spawnOnDeath;
         public string spawnOnDeath = "HK Plume Prime";
 
         public override void Setup(GameObject other)
         {
             base.Setup(other);
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+            {
+                allowBlueHealth = false;
+                spawnOnDeath = null;
+                return;
+            }
             gameObject.AddParticleEffect_WhiteSoulEmissions();
         }
     }
@@ -1531,6 +1576,9 @@ namespace EnemyRandomizerMod
 
         public void MakeElite()
         {
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+                return;
+
             if (isElite)
                 return;
 
@@ -1572,6 +1620,9 @@ namespace EnemyRandomizerMod
             base.Setup(other);
 
             bool willBeElite = SpawnerExtensions.RollProbability(out _, eliteChance, 10);
+
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+                willBeElite = false;
 
             if(isElite)
             {
@@ -1739,6 +1790,9 @@ namespace EnemyRandomizerMod
         public override void Setup(GameObject other)
         {
             base.Setup(other);
+
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+                return;
 
             if (SizeScale < 0.7f)
             {
@@ -1973,6 +2027,9 @@ namespace EnemyRandomizerMod
         {
             base.Setup(objectThatWillBeReplaced);
 
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+                return;
+
             isBomb = SpawnerExtensions.RollProbability(out _, isBombChance, 100);
 
             {
@@ -2002,8 +2059,12 @@ namespace EnemyRandomizerMod
         protected override void Update()
         {
             base.Update();
+
             if (isBomb)
             {
+                if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+                    return;
+
                 if (gameObject.DistanceToPlayer() < 0.5f)
                 {
                     gameObject.KillObjectNow();

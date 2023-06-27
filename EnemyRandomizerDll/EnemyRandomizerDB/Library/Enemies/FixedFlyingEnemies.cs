@@ -27,14 +27,17 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
+            CurrentHP = 1;
+
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+                return;
+
             isZapFly = SpawnerExtensions.RollProbability(out _, chanceToBeZapFly, chanceToBeMaxZapFly);
 
             if(isZapFly)
             {
                 SpawnerExtensions.AddParticleEffect_WhiteSoulEmissions(gameObject, Color.cyan);
             }
-
-            CurrentHP = 1;
         }
 
         /// <summary>

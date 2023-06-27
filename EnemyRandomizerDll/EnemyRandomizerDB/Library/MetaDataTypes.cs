@@ -2119,56 +2119,56 @@ namespace EnemyRandomizerMod
 
         public static Dictionary<string, float> SafeForBossReplacementWeights = new Dictionary<string, float>()
         {
-            {"Hollow Knight Boss", 1.0f},
-            {"HK Prime", 1.0f},
+            {"Hollow Knight Boss", 0.5f},
+            {"HK Prime", 0.5f},
             {"Grimm Boss", 1.0f},
-            {"Dung Defender", 1.0f},
-            {"Mosquito", 1.0f},
+            {"Dung Defender", 0.5f},
+            {"Mosquito", 0.4f},
 
             {"Colosseum_Armoured_Roller", 1.0f},
             {"Colosseum_Miner", 1.0f},
-            {"Zote Boss", 1.0f},
-            {"Bursting Bouncer", 1.0f},
+            {"Zote Boss", 0.1f},
+            {"Bursting Bouncer", 0.25f},
             {"Super Spitter", 1.0f},//9
 
             {"Colosseum_Shield_Zombie", 1.0f},
-            {"Blobble", 1.0f},
+            {"Blobble", 0.25f},
             {"Colosseum_Armoured_Mosquito", 1.0f},
             {"Colosseum_Flying_Sentry", 1.0f},
-            {"Hopper", 1.0f},
+            {"Hopper", 0.5f},
             
-            {"Giant Hopper", 1.0f},
+            {"Giant Hopper", 0.5f},
             {"Spitting Zombie", 1.0f},
-            {"Mantis Heavy", 1.0f},
+            {"Mantis Heavy", 0.5f},
             {"Lesser Mawlek", 1.0f},
-            {"Mantis Heavy Flyer", 1.0f},//19
+            {"Mantis Heavy Flyer", 0.5f},//19
             
             {"Roller", 1.0f},
             {"Mossman_Runner", 1.0f},
-            {"Ghost Warrior Slug", 1.0f},
-            {"Baby Centipede", 1.0f},
+            {"Ghost Warrior Slug", 0.1f},
+            {"Baby Centipede", 0.0001f},
             {"Mega Fat Bee", 1.0f},
             
             {"Lobster", 1.0f},
             {"Mage Knight", 1.0f},
             {"Mage", 1.0f},
-            {"Electric Mage", 1.0f},
+            {"Electric Mage", 0.7f},
             {"Lancer", 1.0f},//29
             
-            {"Zombie Runner", 1.0f},
+            {"Zombie Runner", 0.2f},
             {"Spitter", 1.0f},
-            {"Zombie Hornhead", 1.0f},
+            {"Zombie Hornhead", 0.5f},
             {"Giant Fly", 1.0f},
-            {"Zombie Barger", 1.0f},
+            {"Zombie Barger", 0.2f},
             
             {"Mawlek Body", 1.0f},
             {"False Knight New", 1.0f},
-            {"Prayer Slug", 1.0f},
+            {"Prayer Slug", 0.1f},
             {"Zombie Shield", 1.0f},
             {"Hatcher", 1.0f},//39
             
-            {"Zombie Leaper", 1.0f},
-            {"Zombie Guard", 1.0f},
+            {"Zombie Leaper", 0.2f},
+            {"Zombie Guard", 0.5f},
             {"Zombie Myla", 1.0f},
             {"Royal Zombie Fat", 1.0f},
             {"Royal Zombie", 1.0f},
@@ -2192,39 +2192,39 @@ namespace EnemyRandomizerMod
             {"Moss Knight", 1.0f},//59
             
             {"Grass Hopper", 1.0f},
-            {"Ghost Warrior No Eyes", 1.0f},
-            {"Fungus Flyer", 1.0f},
+            {"Ghost Warrior No Eyes", 0.01f},
+            {"Fungus Flyer", 0.001f},
             {"Zombie Fungus B", 1.0f},
             {"Fung Crawler", 1.0f},
             
             {"Mushroom Brawler", 1.0f},
             {"Mushroom Roller", 1.0f},
             {"Zombie Fungus A", 1.0f},
-            {"Moss Flyer", 1.0f},
+            {"Moss Flyer", 0.001f},
             {"Garden Zombie", 1.0f},//69
             
             {"Mantis Traitor Lord", 1.0f},
             {"Moss Knight Fat", 1.0f},
             {"Ghost Warrior Marmu", 1.0f},
             {"Grave Zombie", 1.0f},
-            {"Crystal Crawler", 1.0f},
+            {"Crystal Crawler", 0.5f},
             
             {"Zombie Miner", 1.0f},
             {"Crystal Flyer", 1.0f},
-            {"Mines Crawler", 1.0f},
+            {"Mines Crawler", 0.5f},
             {"Mega Zombie Beam Miner", 1.0f},
             {"Zombie Beam Miner", 1.0f},//79
             
-            {"Spider Mini", 1.0f},
+            {"Spider Mini", 0.5f},
             {"Centipede Hatcher", 1.0f},
             {"Mimic Spider", 1.0f},
             {"Slash Spider", 1.0f},
             {"Ghost Warrior Galien", 1.0f},
             
-            {"Blow Fly", 1.0f},
+            {"Blow Fly", 0.001f},
             {"Hornet Boss 2", 1.0f},
             {"Flip Hopper", 1.0f},
-            {"Inflater", 1.0f},
+            {"Inflater", 0.1f},
             {"Flukeman", 1.0f},//89
             
             {"Fluke Mother", 1.0f},
@@ -2261,7 +2261,7 @@ namespace EnemyRandomizerMod
             {"Mega Jellyfish", 0.1f},//116
             {"Absolute Radiance", 0.1f},//117
             {"Ghost Warrior Xero", 1.0f},//118
-            {"Ghost Warrior Hu", 0.001f},//119
+            {"Ghost Warrior Hu", 0.5f},//119
 
             {"Ghost Warrior Markoth", 1.0f},//120
             {"Mega Moss Charger", 0.5f},//121

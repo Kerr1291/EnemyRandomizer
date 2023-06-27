@@ -31,6 +31,18 @@ namespace EnemyRandomizerMod
         public HashSet<IRandomizerLogic> previousLogic = new HashSet<IRandomizerLogic>();
         public Dictionary<GameObject, IEnumerator> pendingLoads = new Dictionary<GameObject, IEnumerator>();
 
+        protected bool isUnloading = false;
+
+        void SetUnloading()
+        {
+            isUnloading = true;
+        }
+
+        void SetReadyToLoad()
+        {
+            isUnloading = false;
+        }
+
         public List<(string, string)> GetPreloadNames(string databaseFilePath)
         {
             database = LoadDatabase(databaseFilePath);
@@ -150,6 +162,11 @@ namespace EnemyRandomizerMod
             return database;
         }
 
+        public EnemyRandomizerSettings GetGlobalSettings()
+        {
+            return EnemyRandomizer.GlobalSettings;
+        }
+
         public ReactiveProperty<List<GameObject>> GetBlackBorders()
         {
             return EnemyRandomizer.BlackBorders;
@@ -159,6 +176,9 @@ namespace EnemyRandomizerMod
         {
             EnemyRandomizerDatabase.GetDatabase -= GetCurrentDatabase;
             EnemyRandomizerDatabase.GetDatabase += GetCurrentDatabase;
+
+            EnemyRandomizerDatabase.GetGlobalSettings -= GetGlobalSettings;
+            EnemyRandomizerDatabase.GetGlobalSettings += GetGlobalSettings;
 
             EnemyRandomizerDatabase.GetBlackBorders -= GetBlackBorders;
             EnemyRandomizerDatabase.GetBlackBorders += GetBlackBorders;
@@ -177,10 +197,21 @@ namespace EnemyRandomizerMod
             EnemyRandomizerDatabase.CustomSpawnWithLogic -= EnemyRandomizer.CustomSpawn;
             EnemyRandomizerDatabase.CustomSpawnWithLogic += EnemyRandomizer.CustomSpawn;
 
+            GameManager.instance.UnloadingLevel -= SetUnloading;
+            GameManager.instance.UnloadingLevel += SetUnloading;
+
+            GameManager.SceneTransitionBegan -= GameManager_SceneTransitionBegan;
+            GameManager.SceneTransitionBegan += GameManager_SceneTransitionBegan;
+
             foreach (var logic in previousLogic)
             {
                 EnableLogic(logic);
             }
+        }
+
+        private void GameManager_SceneTransitionBegan(SceneLoad sceneLoad)
+        {
+            SetReadyToLoad();
         }
 
         public void OnModDisabled()
@@ -189,15 +220,25 @@ namespace EnemyRandomizerMod
 
             foreach (var logic in loadedLogics)
             {
-                DisableLogic(logic, false);
+                try
+                {
+                    DisableLogic(logic, false);
+                }
+                catch(Exception e)
+                {
+                    Dev.LogError($"Caught unhandled exception when trying to invoke DisableLogic on {logic} {e.Message}\n{e.StackTrace}");
+                }
             }
 
             EnemyRandomizerDatabase.GetDatabase -= GetCurrentDatabase;
+            EnemyRandomizerDatabase.GetGlobalSettings -= GetGlobalSettings;
             EnemyRandomizerDatabase.GetBlackBorders -= GetBlackBorders;
             EnemyRandomizerDatabase.GetPlayerSeed -= GetCurrentSeed;
             EnemyRandomizerDatabase.GetCustomColoSeed -= GetCustomColoSeed;
             EnemyRandomizerDatabase.ClearBypass -= EnemyRandomizer.ClearBypass;
             EnemyRandomizerDatabase.CustomSpawnWithLogic -= EnemyRandomizer.CustomSpawn;
+            GameManager.instance.UnloadingLevel -= SetUnloading;
+            GameManager.SceneTransitionBegan -= GameManager_SceneTransitionBegan;
         }
 
         public void EnableLogic(IRandomizerLogic newLogic, bool updateSettings = true)
@@ -299,16 +340,25 @@ namespace EnemyRandomizerMod
 
         public GameObject RandomizeEnemy(GameObject original)
         {
+            if (isUnloading)
+                return original;
+
             return OnObjectLoaded(original);
         }
 
         public GameObject RandomizeHazard(DamageHero originalHazard)
         {
+            if (isUnloading)
+                return originalHazard == null ? null : originalHazard.gameObject;
+
             return OnObjectLoaded(originalHazard.gameObject);
         }
 
         public GameObject RandomizeEffect(GameObject original)
         {
+            if (isUnloading)
+                return original;
+
             return OnObjectLoaded(original);
         }
 
@@ -414,6 +464,9 @@ namespace EnemyRandomizerMod
 
         public GameObject OnObjectLoaded(GameObject loadedObjectToProcess)
         {
+            if (isUnloading)
+                return loadedObjectToProcess;
+
             if (loadedObjectToProcess == null)
             {
                 if (VERBOSE_LOGGING)

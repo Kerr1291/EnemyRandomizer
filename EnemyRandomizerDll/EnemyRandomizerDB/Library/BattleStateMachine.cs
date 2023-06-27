@@ -639,7 +639,7 @@ namespace EnemyRandomizerMod
             }
         }
 
-        public static void OpenGates(bool isWhitePalace = false, bool isRuins = false)
+        public static void OpenGates(bool isWhitePalace = false, bool isRuins = false, bool isMawlek = false)
         {
             PlayMakerFSM.BroadcastEvent("BG OPEN");
             PlayMakerFSM.BroadcastEvent("DREAM GATE OPEN");

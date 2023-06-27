@@ -312,7 +312,7 @@ namespace EnemyRandomizerMod
 
         public AudioSource audio;
 
-        public int chanceToSpawnSuperBossOutOf100 = 2; // -> ( 20 / 100 )
+        public int chanceToSpawnSuperBossOutOf100 = 2; // -> ( 2 / 100 )
         public bool isSuperBoss;
 
         public override string customDreamnailText => isSuperBoss ? "Destroy." : base.customDreamnailText;
@@ -328,8 +328,14 @@ namespace EnemyRandomizerMod
         public float spawnCooldown = 10f;
         public float spawnTime = 0f;
 
+        public bool skipShooting = false;
+        public bool skipSpawning = false;
+
         public void MakeSuperBoss()
         {
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+                return;
+
             if (isSuperBoss)
                 return;
 
@@ -345,6 +351,9 @@ namespace EnemyRandomizerMod
         protected override void Update()
         {
             base.Update();
+
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+                return;
 
             if (isSuperBoss)
             {
@@ -506,10 +515,11 @@ namespace EnemyRandomizerMod
                 float yDist = Mathf.Abs(heroPos2d.y - pos2d.y);
                 if (yDist > 10f)
                 {
-                    shot = SpawnerExtensions.SpawnEntityAt("Shot GladiatorSickle", spawnPos, null, true, false);
+                    shot = SpawnerExtensions.SpawnEntityAt("Dung Ball Large", spawnPos, null, true, false);
                 }
                 else if (gameObject.DistanceToPlayer() > 40f)
                 {
+                    spawnPos = gameObject.DirectionToPlayer() * 4f + pos2d;
                     shot = SpawnerExtensions.SpawnEntityAt("Lil Jellyfish", spawnPos, null, true, false);
                 }
                 else if (gameObject.DistanceToPlayer() > 12f)
@@ -555,6 +565,9 @@ namespace EnemyRandomizerMod
         {
             base.Setup(objectThatWillBeReplaced);
 
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+                return;
+
             if (!isSuperBoss)
             {
                 isSuperBoss = SpawnerExtensions.RollProbability(out int _, chanceToSpawnSuperBossOutOf100, 100);
@@ -574,7 +587,10 @@ namespace EnemyRandomizerMod
 
         public override int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
         {
-            if(!isSuperBoss)
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+                return base.GetStartingMaxHP(objectThatWillBeReplaced);
+
+            if (!isSuperBoss)
                 return base.GetStartingMaxHP(objectThatWillBeReplaced);
 
             float min = 200f;
@@ -851,6 +867,9 @@ namespace EnemyRandomizerMod
         {
             base.Setup(other);
 
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+                return;
+
             isSuperJelly = SpawnerExtensions.RollProbability(out int _, chanceToSpawnSuperJellyOutOf100, 100);
             isWhiteJelly = SpawnerExtensions.RollProbability(out int _, chanceToSpawnWhiteJellyOutOf100, 100);
 
@@ -897,6 +916,9 @@ namespace EnemyRandomizerMod
                 return;
 
             if (!gameObject.IsInAValidScene())
+                return;
+
+            if (isUnloading)
                 return;
 
             var corpse = gameObject.GetCorpseObject();
@@ -951,19 +973,20 @@ namespace EnemyRandomizerMod
             base.Setup(objectThatWillBeReplaced);
         }
 
-        //TODO: double check if the lil jellies that spawn from enemies have replacements or not and use that to determine if a freeze is necessary
+        protected virtual void OnEnable()
+        {
+            if (GameManager.instance.gameState != GlobalEnums.GameState.PLAYING)
+            {
+                Freeze();
+                StartCoroutine(UnfreezeWhenPlaying());
+            }
+        }
 
-        //protected virtual void OnEnable()
-        //{
-        //    Freeze();
-        //    StartCoroutine(UnfreezeAfter(5f));
-        //}
-
-        //IEnumerator UnfreezeAfter(float time)
-        //{
-        //    yield return new WaitForSeconds(time);
-        //    UnFreeze();
-        //}
+        IEnumerator UnfreezeWhenPlaying()
+        {
+            yield return new WaitUntil(() => GameManager.instance.gameState == GlobalEnums.GameState.PLAYING);
+            UnFreeze();
+        }
 
 
         //protected virtual void Freeze()

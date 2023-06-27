@@ -166,6 +166,42 @@ namespace EnemyRandomizerMod
             return groundOrPlatformName.Any(x => gameObject.name.Contains(x));
         }
 
+        public static GameObject GetCorpseFromEDF(this EnemyDeathEffects edf)
+        {
+            var deathEffects = edf;
+
+            if (deathEffects == null)
+                return null;
+
+            var rootType = deathEffects.GetType();
+
+            System.Reflection.FieldInfo GetCorpseField(Type t)
+            {
+                return t.GetField("corpse", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            }
+
+            while (rootType != typeof(EnemyDeathEffects) && rootType != null)
+            {
+                if (GetCorpseField(rootType) != null)
+                    break;
+                rootType = rootType.BaseType;
+            }
+
+            if (rootType == null)
+                return null;
+
+            var corpseObject = (GameObject)GetCorpseField(rootType).GetValue(deathEffects);
+
+            if (corpseObject == null)
+            {
+                return null;
+            }
+            else
+            {
+                return corpseObject;
+            }
+        }
+
         static GameObject GetCorpse<T>(this GameObject prefab)
             where T : EnemyDeathEffects
         {

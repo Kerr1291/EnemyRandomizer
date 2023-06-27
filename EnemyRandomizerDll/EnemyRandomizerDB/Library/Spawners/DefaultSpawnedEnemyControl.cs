@@ -101,7 +101,10 @@ namespace EnemyRandomizerMod
         public override void Setup(GameObject objectThatWillBeReplaced = null)
         {
             base.Setup(objectThatWillBeReplaced);
-            
+
+            if (isUnloading)
+                return;
+
             if (gameObject.ObjectType() != PrefabObject.PrefabType.Enemy)
                 return;
 
@@ -160,22 +163,22 @@ namespace EnemyRandomizerMod
                         AddCustomSmashBehaviour();
                     }
                 }
-                else if(objectThatWillBeReplaced.name.Contains("fluke_baby"))
+                else if (objectThatWillBeReplaced.name.Contains("fluke_baby"))
                 {
                     MaxHP = 1;
                     gameObject.ScaleObject(0.25f);
                     gameObject.ScaleAudio(0.25f);
                     bool canDamageHero = SpawnerExtensions.RollProbability(out _, 10, 100);
-                    if(!canDamageHero)
+                    if (!canDamageHero)
                     {
                         var damageHero = gameObject.GetComponent<DamageHero>();
-                        if(damageHero != null)
+                        if (damageHero != null)
                         {
                             damageHero.damageDealt = 0;
                         }
                     }
                 }
-                else if(objectThatWillBeReplaced.IsBoss())
+                else if (objectThatWillBeReplaced.IsBoss())
                 {
                     CheckHackyBossSetup(objectThatWillBeReplaced);
                 }
@@ -200,7 +203,10 @@ namespace EnemyRandomizerMod
 
         public virtual int GetStartingMaxHP(GameObject objectThatWillBeReplaced)
         {
-            if(objectThatWillBeReplaced == null)
+            if (isUnloading)
+                return 0;
+
+            if (objectThatWillBeReplaced == null)
             {
                 return gameObject.OriginalPrefabHP();
             }
@@ -217,6 +223,9 @@ namespace EnemyRandomizerMod
 
         public virtual int GetStartingMaxHP(string prefabName)
         {
+            if (isUnloading)
+                return 0;
+
             if (string.IsNullOrEmpty(prefabName))
             {
                 return gameObject.OriginalPrefabHP();
@@ -263,7 +272,7 @@ namespace EnemyRandomizerMod
             }
             else
             {
-                if(doSpecialBossAggro)
+                if (doSpecialBossAggro)
                 {
                     if (gameObject.IsNearPlayer(AggroRange) && gameObject.CanSeePlayer())
                     {
@@ -293,16 +302,16 @@ namespace EnemyRandomizerMod
             if (gameObject.ObjectType() != PrefabObject.PrefabType.Enemy)
                 return;
 
-            if(gameObject != null && gameObject.GetDatabaseKey() == "Grimm Boss")
+            if (gameObject != null && gameObject.GetDatabaseKey() == "Grimm Boss")
             {
                 var corpse = gameObject.GetCorpseObject();
                 if (corpse != null)
                     GameObject.Destroy(corpse);
 
-                if(control.ActiveStateName == "AD Fire")
+                if (control.ActiveStateName == "AD Fire")
                 {
                     grimmTimeout += Time.deltaTime;
-                    if(grimmTimeout > 1f)
+                    if (grimmTimeout > 1f)
                     {
                         control.SendEvent("LAND");
                         grimmTimeout = 0f;
@@ -319,7 +328,7 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    grimmTimeout = 0f;  
+                    grimmTimeout = 0f;
                 }
             }
 
@@ -338,7 +347,7 @@ namespace EnemyRandomizerMod
 
                     var orig = ObjectMetadata.GetOriginal(gameObject);
 
-                    if(specialAggroRange != null && orig != null && !IsInColo())
+                    if (specialAggroRange != null && orig != null && !IsInColo())
                     {
                         var poob = gameObject.GetComponent<PreventOutOfBounds>();
                         string currentScene = SpawnerExtensions.SceneName(gameObject);
@@ -441,11 +450,28 @@ namespace EnemyRandomizerMod
                         else if (orig.ObjectName.Contains("Mawlek Body"))
                         {
                             UnFreeze();
-                            var prev = transform.position;
-                            prev.z = 0f;
-                            transform.position = prev;
+                            transform.position = new Vector3(62f, 8f, 0f);
                             if (poob != null)
-                                poob.ForcePosition(prev);
+                                poob.ForcePosition(new Vector3(62f, 8f, 0f));
+
+                            var hitbox = gameObject.GetComponent<Collider2D>();
+                            if (hitbox != null)
+                                hitbox.enabled = true;
+
+                            if (MRenderer != null)
+                                MRenderer.enabled = true;
+
+                            //make fluke mother big if she spawns in mawlek's room
+                            if (thisMetadata.GetDatabaseKey() == "Fluke Mother")
+                            {
+                                var pos = new Vector3(61.8909f, 12.1455f, 0);
+                                transform.position = pos;
+                                if (poob != null)
+                                    poob.ForcePosition(pos);
+                                gameObject.ScaleObject(1f);
+                                gameObject.ScaleAudio(0.8f);
+                                SizeScale = 1f;
+                            }
                         }
                         else
                         {
@@ -460,7 +486,7 @@ namespace EnemyRandomizerMod
             {
                 debugColliders = gameObject.GetOrAddComponent<DebugColliders>();
             }
-            else if(showDebugColliders && !debugColliders.enabled)
+            else if (showDebugColliders && !debugColliders.enabled)
             {
                 debugColliders.enabled = true;
             }
@@ -529,7 +555,7 @@ namespace EnemyRandomizerMod
                 }
 
 
-                if(didAggro)
+                if (didAggro)
                 {
                     didShowWhenHeroWasInAggroRange = true;
                     OnHeroInAggroRangeTheFirstTime();
@@ -598,7 +624,7 @@ namespace EnemyRandomizerMod
                 return originalEnemyHP * multiplier;
 
             }
-            else if(ratio < 0.5f)
+            else if (ratio < 0.5f)
             {
                 return originalEnemyHP;
             }
@@ -622,8 +648,8 @@ namespace EnemyRandomizerMod
                 return defaultNewEnemyHP;
 
             //in dream world (dream boss, so let's use that hp)
-            if(zoneScale == MetaDataTypes.ProgressionZoneScale["DREAM_WORLD"] || 
-               zoneScale == MetaDataTypes.ProgressionZoneScale["FINAL_BOSS"] )
+            if (zoneScale == MetaDataTypes.ProgressionZoneScale["DREAM_WORLD"] ||
+               zoneScale == MetaDataTypes.ProgressionZoneScale["FINAL_BOSS"])
             {
                 return originalEnemyHP;
             }
@@ -642,7 +668,10 @@ namespace EnemyRandomizerMod
             if (isColo)
                 return;
 
-            if(SpawnedObjectControl.VERBOSE_DEBUG)
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().balanceReplacementHP)
+                return;
+
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
                 Dev.Log($"{this} hp was {CurrentHP}");
 
             if (objectThatWillBeReplaced == null && originialMetadata != null)
@@ -650,7 +679,7 @@ namespace EnemyRandomizerMod
                 defaultScaledMaxHP = GetStartingMaxHP(originialMetadata.GetDatabaseKey());
                 CurrentHP = defaultScaledMaxHP;
             }
-            else if(objectThatWillBeReplaced != null)
+            else if (objectThatWillBeReplaced != null)
             {
                 defaultScaledMaxHP = GetStartingMaxHP(objectThatWillBeReplaced);
                 CurrentHP = defaultScaledMaxHP;
@@ -672,6 +701,17 @@ namespace EnemyRandomizerMod
 
         protected virtual void SetupEnemyGeo()
         {
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().randomizeReplacementGeo)
+            {
+                int basicGeo = SpawnerExtensions.GetOriginalGeo(thisMetadata.ObjectName);
+                if (originialMetadata != null && thisMetadata != originialMetadata)
+                {
+                    basicGeo = SpawnerExtensions.GetOriginalGeo(originialMetadata.ObjectName);
+                }
+                Geo = basicGeo;
+                return;
+            }
+
             bool isBoss = false;
             int originalGeo = SpawnerExtensions.GetOriginalGeo(thisMetadata.ObjectName);
             if (originialMetadata != null && thisMetadata != originialMetadata)
@@ -690,7 +730,7 @@ namespace EnemyRandomizerMod
                 }
                 else
                 {
-                    if(isBoss)
+                    if (isBoss)
                     {
                         Geo = SpawnerExtensions.GetRandomValueBetween(geoScale * 50, geoScale * 100);
                     }
@@ -708,6 +748,9 @@ namespace EnemyRandomizerMod
 
         public override void RecieveExtraDamage(ExtraDamageTypes extraDamageType)
         {
+            if (isUnloading)
+                return;
+
             base.RecieveExtraDamage(extraDamageType);
             if (takesSpecialCharmDamage && EnemyHealthManager != null)
             {
@@ -718,6 +761,9 @@ namespace EnemyRandomizerMod
 
         public override void Hit(HitInstance damageInstance)
         {
+            if (isUnloading)
+                return;
+
             base.Hit(damageInstance);
             if (takesSpecialSpellDamage && EnemyHealthManager != null && damageInstance.AttackType == AttackTypes.Spell)
             {
@@ -844,7 +890,7 @@ namespace EnemyRandomizerMod
                     needUnstuck = true;
                 }
 
-                if(transform.position.x < 37f)
+                if (transform.position.x < 37f)
                 {
                     if (transform.position.x > 35f)
                     {
@@ -922,7 +968,7 @@ namespace EnemyRandomizerMod
                     needUnstuck = true;
                 }
 
-                if(transform.position.x < 0f || transform.position.x > 42f)
+                if (transform.position.x < 0f || transform.position.x > 42f)
                 {
                     putHere = new Vector2(21f, 83f);
                 }
@@ -974,7 +1020,7 @@ namespace EnemyRandomizerMod
                 {
                     needUnstuck = true;
                 }
-                else if(transform.position.x > 25f)
+                else if (transform.position.x > 25f)
                 {
                     needUnstuck = true;
                 }
@@ -1091,7 +1137,7 @@ namespace EnemyRandomizerMod
             {
                 Vector2 putHere = new Vector2(100f, 11f);
 
-                if(transform.position.y > 18f)
+                if (transform.position.y > 18f)
                 {
                     putHere = new Vector2(transform.position.x, 18f);
                     needUnstuck = true;
@@ -1176,7 +1222,7 @@ namespace EnemyRandomizerMod
                     putHere = putHere_phase1;
                     needUnstuck = true;
                 }
-                else if(hero_inPhase2Area && !boss_inPhase2Area)
+                else if (hero_inPhase2Area && !boss_inPhase2Area)
                 {
                     putHere = putHere_phase2;
                     needUnstuck = true;
@@ -1367,7 +1413,7 @@ namespace EnemyRandomizerMod
                 if (transform.position.x < 1f)
                 {
                     needUnstuck = true;
-                }                
+                }
                 else if (transform.position.x > 28f)
                 {
                     putHere = new Vector2(20f, transform.position.y);
@@ -1506,11 +1552,11 @@ namespace EnemyRandomizerMod
                 if (pos2d.y > 7.5f)
                 {
                     putHere = new Vector2(transform.position.x, 7.5f);
-                    if(pos2d.x > 63 && pos2d.x < 67f)
+                    if (pos2d.x > 63 && pos2d.x < 67f)
                     {
                         putHere.y = 4.5f;
                     }
-                    else if(pos2d.x < 30f)
+                    else if (pos2d.x < 30f)
                     {
                         putHere.y = 6f;
                     }
@@ -1657,19 +1703,19 @@ namespace EnemyRandomizerMod
 
 
             //trigger lasers
-            if (gameObject.ObjectType() == PrefabObject.PrefabType.Enemy && ( currentScene == "Mines_18_boss" || currentScene == "Mines_18" || currentScene == "Mines_32"))
+            if (gameObject.ObjectType() == PrefabObject.PrefabType.Enemy && (currentScene == "Mines_18_boss" || currentScene == "Mines_18" || currentScene == "Mines_32"))
             {
                 hackyLaserCDTimer += Time.deltaTime;
-                if((currentScene == "Mines_32" && hackyLaserCDTimer > 4f) || (hackyLaserCDTimer > 6f))
+                if ((currentScene == "Mines_32" && hackyLaserCDTimer > 4f) || (hackyLaserCDTimer > 6f))
                 {
-                    foreach(var t in GameObjectExtensions.EnumerateRootObjects().Where(x => x.name.Contains("Turret Mega")))
+                    foreach (var t in GameObjectExtensions.EnumerateRootObjects().Where(x => x.name.Contains("Turret Mega")))
                     {
-                        if(!t.activeInHierarchy)
+                        if (!t.activeInHierarchy)
                         {
                             t.SafeSetActive(true);
                         }
 
-                        if(t.LocateMyFSM("Laser Bug Mega") != null && !t.LocateMyFSM("Laser Bug Mega").enabled)
+                        if (t.LocateMyFSM("Laser Bug Mega") != null && !t.LocateMyFSM("Laser Bug Mega").enabled)
                         {
                             t.LocateMyFSM("Laser Bug Mega").enabled = true;
                         }
@@ -1679,9 +1725,82 @@ namespace EnemyRandomizerMod
                 }
             }
 
+            //trigger grim spikes
+            if (gameObject.ObjectType() == PrefabObject.PrefabType.Enemy && (currentScene.Contains("Grimm_")))
+            {
+                hackyLaserCDTimer += Time.deltaTime;
+                if ((currentScene.Contains("Grimm_Nightmare") && hackyLaserCDTimer > 4f) || (hackyLaserCDTimer > 6f))
+                {
+                    foreach (var t in GameObjectExtensions.EnumerateRootObjects().Where(x => x.name.Contains("Grimm Spike Holder")))
+                    {
+                        if (!t.activeInHierarchy)
+                        {
+                            t.SafeSetActive(true);
+                        }
+
+                        if (t.LocateMyFSM("Spike Control") != null && !t.LocateMyFSM("Spike Control").enabled)
+                        {
+                            t.LocateMyFSM("Spike Control").enabled = true;
+                        }
+                    }
+                    PlayMakerFSM.BroadcastEvent("SPIKE ATTACK");
+                    hackyLaserCDTimer = SpawnerExtensions.GetRandomValueBetween(-2, 2);
+                }
+            }
+
+
+
+            //trigger hive knight attacks
+            if (gameObject.ObjectType() == PrefabObject.PrefabType.Enemy && (currentScene.Contains("Hive_05")))
+            {
+                int attack = SpawnerExtensions.GetRandomValueBetween(0, 2);
+                hackyLaserCDTimer += Time.deltaTime;
+                if (hackyLaserCDTimer > 10f)
+                {
+                    if (attack == 0)
+                    {
+                        foreach (var t in BattleManager.Instance.Value.gameObject.FindGameObjectInDirectChildren("Droppers").EnumerateChildren().Where(x => x.name.Contains("Bee Dropper")))
+                        {
+                            if (!t.activeInHierarchy)
+                            {
+                                t.SafeSetActive(true);
+                            }
+
+                            if (t.LocateMyFSM("Control") != null && !t.LocateMyFSM("Control").enabled)
+                            {
+                                t.LocateMyFSM("Control").enabled = true;
+                            }
+                        }
+                        PlayMakerFSM.BroadcastEvent("SWARM");
+                        hackyLaserCDTimer = SpawnerExtensions.GetRandomValueBetween(-5, 5);
+                    }
+                    else if (attack == 1)
+                    {
+                        var t = BattleManager.Instance.Value.gameObject.FindGameObjectInDirectChildren("Globs");
+                        {
+                            if (!t.activeInHierarchy)
+                            {
+                                t.SafeSetActive(true);
+                            }
+
+                            if (t.LocateMyFSM("Control") != null && !t.LocateMyFSM("Control").enabled)
+                            {
+                                t.LocateMyFSM("Control").enabled = true;
+                            }
+                        }
+                        PlayMakerFSM.BroadcastEvent("FIRE");
+                        hackyLaserCDTimer = SpawnerExtensions.GetRandomValueBetween(-5, 5);
+                    }
+                    else
+                    {
+                        hackyLaserCDTimer = SpawnerExtensions.GetRandomValueBetween(-1, 1);
+                    }
+                }
+            }
+
             if (needUnstuck)
             {
-                if(poob != null)
+                if (poob != null)
                 {
                     poob.ForcePosition(fixedPos);
                     transform.position = fixedPos;
@@ -1800,9 +1919,9 @@ namespace EnemyRandomizerMod
                     transform.position = upwardShift * 2f;
                 }
 
-                if(gameObject.IsClimbing())
+                if (gameObject.IsClimbing())
                 {
-                    if(!isRoofFlat)
+                    if (!isRoofFlat)
                     {
                         RNG rng = new RNG();
                         bool heads = rng.CoinToss();
@@ -1822,8 +1941,9 @@ namespace EnemyRandomizerMod
 
             if (doSpecialBossAggro)
             {
-                if (MRenderer != null)
-                    MRenderer.enabled = false;
+                //for now just don't
+                //if (MRenderer != null)
+                //    MRenderer.enabled = false;
 
                 string currentScene = SpawnerExtensions.SceneName(gameObject);
 
@@ -2240,10 +2360,10 @@ namespace EnemyRandomizerMod
             {
                 doSpecialBossAggro = true;
 
-                if(gameObject.GetDatabaseKey() == "Super Spitter")
+                if (gameObject.GetDatabaseKey() == "Super Spitter")
                 {
                     var ssc = gameObject.GetComponent<SuperSpitterControl>();
-                    if(ssc != null)
+                    if (ssc != null)
                     {
                         ssc.MakeSuperBoss();
                         StartCoroutine(ForceSuperBossHack(ssc));
@@ -2451,7 +2571,7 @@ namespace EnemyRandomizerMod
                 ////////////////////////////////////////////////////////////////////////////////////////////////
                 if (currentScene == "Crossroads_09")//mawlek
                 {
-                    BattleManager.StateMachine.Value.FSM.SendEvent("START");
+                    PlayMakerFSM.BroadcastEvent("START");
                 }
                 else
                 if (currentScene == "Crossroads_04")//giant fly
@@ -2577,7 +2697,7 @@ namespace EnemyRandomizerMod
                     BattleStateMachine.CloseGates(true);
                 }
                 else if (currentScene == "Dream_Mighty_Zote" && originialMetadata.GetDatabaseKey().Contains("Prince"))//zote
-                {                    
+                {
                     BattleManager.StateMachine.Value.FSM.SendEvent("ENTER");
                     BattleManager.StateMachine.Value.FSM.SendEvent("ZOTE APPEAR");
                     BattleStateMachine.CloseGates(true);
@@ -2637,7 +2757,7 @@ namespace EnemyRandomizerMod
                 if (child != null)
                 {
                     var sf = child.GetComponentInChildren<SpriteFlash>(true);
-                    if(sf != null)
+                    if (sf != null)
                     {
                         sf.FlashGrimmflame();
                         GameManager.instance.playerData.flamesCollected += 1;
@@ -2661,6 +2781,7 @@ namespace EnemyRandomizerMod
             if (currentScene == "Crossroads_09")//mawlek
             {
                 BattleManager.StateMachine.Value.FSM.SendEvent("BATTLE END");
+                PlayMakerFSM.BroadcastEvent("CHARM DROP");
                 GameManager.instance.playerData.mawlekDefeated = true;
             }
             else
@@ -2990,7 +3111,7 @@ namespace EnemyRandomizerMod
                 BattleStateMachine.OpenGates(false);
             }
             ////////////////////////////////////////////////////////////////////////////////////////////////
-            
+
             if (notifyBattleEnded && BattleManager.StateMachine != null && BattleManager.StateMachine.Value != null)
                 BattleManager.StateMachine.Value.ForceBattleEnd();
         }

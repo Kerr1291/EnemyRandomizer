@@ -19,13 +19,14 @@ namespace EnemyRandomizerMod
         protected string[] playtesters = new string[]
         {
             "ColetteMSLP",
-            "Manno",
+            "Manno Stone",
             "Wangha",
             "Dwarfwoot",
             "oatmille1",
             "Sethadocious",
             "hyperspace_coder",
             "vampython",
+            "Mathulu",
             "...and you; thanks for playing!"
         };
 
@@ -98,10 +99,63 @@ namespace EnemyRandomizerMod
             ),
 
             Blueprints.HorizontalBoolOption(
+                name: "Balance Replacement HP",
+                description: "Should the randomizer try to balance the HP of the enemy it spawns? [RECOMMENDED TO KEEP ENABLED]",
+                applySetting: b =>
+                {
+                    GlobalSettings.balanceReplacementHP = b;
+                    GeneralOptionsMenu.Find("balanceReplacementHP").isVisible = b;
+                    GeneralOptionsMenu.Reflow();
+                },
+                loadSetting: () => GlobalSettings.balanceReplacementHP
+            ),
+
+            Blueprints.HorizontalBoolOption(
+                name: "Randomize Replacement Geo",
+                description: "Should the randomizer try to place geo into enemies it generates? (Without this, many will have zero by default)",
+                applySetting: b =>
+                {
+                    GlobalSettings.randomizeReplacementGeo = b;
+                    GeneralOptionsMenu.Find("randomizeReplacementGeo").isVisible = b;
+                    GeneralOptionsMenu.Reflow();
+                },
+                loadSetting: () => GlobalSettings.randomizeReplacementGeo
+            ),
+
+            Blueprints.HorizontalBoolOption(
+                name: "Allow Custom Enemies",
+                description: "May the randomizer spawn non-vanilla things?",
+                applySetting: b =>
+                {
+                    GlobalSettings.allowCustomEnemies = b;
+                    GeneralOptionsMenu.Find("allowCustomEnemies").isVisible = b;
+                    GeneralOptionsMenu.Reflow();
+                },
+                loadSetting: () => GlobalSettings.allowCustomEnemies
+            ),
+
+            Blueprints.HorizontalBoolOption(
+                name: "Allow Enemy Rando Extras",
+                description: "May the randomizer modify the game in extra ways (mostly cosmetic)?",
+                applySetting: b =>
+                {
+                    GlobalSettings.allowEnemyRandoExtras = b;
+                    GeneralOptionsMenu.Find("allowCustomEnemies").isVisible = b;
+                    GeneralOptionsMenu.Reflow();
+                },
+                loadSetting: () => GlobalSettings.allowEnemyRandoExtras
+            ),
+
+
+            Blueprints.HorizontalBoolOption(
                 name: "Reset To Default Settings",
                 description: "Change all settings back to the mod defaults",
                 applySetting: b =>
                 {
+                    GlobalSettings.balanceReplacementHP = true;
+                    GlobalSettings.randomizeReplacementGeo = true;
+                    GlobalSettings.allowCustomEnemies = true;
+                    GlobalSettings.allowEnemyRandoExtras = true;
                     GlobalSettings.UseCustomSeed = false;
                     GlobalSettings.UseCustomColoSeed = false;
                     {
@@ -131,8 +185,8 @@ namespace EnemyRandomizerMod
                     }
                     {
                         var logic = EnemyRandomizer.instance.logicTypes["Randomization Modes"];
-                        logic.Settings.GetOption("Transition").value = false;
                         logic.Settings.GetOption("Object").value = true;
+                        logic.Settings.GetOption("Transition").value = false;
                         logic.Settings.GetOption("Room").value = false;
                         logic.Settings.GetOption("Zone").value = false;
                         logic.Settings.GetOption("Type").value = false;
@@ -232,6 +286,12 @@ namespace EnemyRandomizerMod
         {
             if(EnemyRandomizer.Instance.logicTypes == null)
                 EnemyRandomizer.Instance.logicTypes = LogicLoader.LoadLogics();
+
+            if (!GlobalSettings.hasDoneAlpha92Reset)
+            {
+                GlobalSettings.DoAlpha9Reset();
+                ResetToDefaults();
+            }
 
             var previouslyLoadedLogics = EnemyRandomizer.GlobalSettings.loadedLogics;
             var loadedLogics = EnemyRandomizer.Instance.enemyReplacer.ConstructLogics(previouslyLoadedLogics, logicTypes);

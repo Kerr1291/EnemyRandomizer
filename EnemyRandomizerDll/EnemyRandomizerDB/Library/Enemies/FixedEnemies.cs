@@ -48,10 +48,6 @@ namespace EnemyRandomizerMod
     public class MenderBugControl : DefaultSpawnedEnemyControl
     {
         public override string FSMName => "Mender Bug Ctrl";
-        public override bool preventInsideWallsAfterPositioning => false;
-        public override bool preventOutOfBoundsAfterPositioning => true;
-
-        public override bool explodeOnDeath => true;//mender bug's revenge
 
         public override void Setup(GameObject other)
         {
@@ -68,32 +64,6 @@ namespace EnemyRandomizerMod
             fly.ChangeTransition("DESTROY", "Init");
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Idle");
-        }
-
-        protected virtual void OnEnable()
-        {
-            var poob = GetComponent<PreventOutOfBounds>();
-            if (poob != null)
-            {
-                poob.onBoundCollision -= Explode;
-                poob.onBoundCollision += Explode;
-            }
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-
-            var poob = GetComponent<PreventOutOfBounds>();
-            if (poob != null)
-            {
-                poob.onBoundCollision -= Explode;
-            }
-        }
-
-        void Explode(RaycastHit2D r, GameObject a, GameObject b)
-        {
-            gameObject.KillObjectNow();
         }
     }
 
@@ -118,7 +88,8 @@ namespace EnemyRandomizerMod
 
         public override float spawnPositionOffset => 0.66f;
 
-        public override bool isInvincible => GameManager.instance.GetPlayerDataInt("fireballLevel") > 0;
+        //TODO: fix this
+        public override bool isInvincible => false;// GameManager.instance.GetPlayerDataInt("fireballLevel") > 0;
 
         public RNG rng = new RNG();
         public GameObject lastSpawnedObject;

@@ -28,9 +28,9 @@ namespace EnemyRandomizerMod
 
         List<(string Name, string Info, bool Default)> CustomOptions = new List<(string, string, bool)>()
         {
-            ("Transition", "(Old Chaos Mode) Each time you change rooms everything is will be different", false),
-            ("Object", "Each object will change to a different type", false),
-            ("Room", "Each room will change one object type", true),
+            ("Object", "Each object will change to a different type (Best Setting)", true),
+            ("Transition", "Each time you change rooms everything is will be different (Old Chaos Mode)", false),
+            ("Room", "Each room will change one object type", false),
             ("Zone", "Each zone will change one object type", false),
             ("Type", "This will result in one type of object being changed in the same way throughout the game", false),
         };
@@ -46,10 +46,10 @@ namespace EnemyRandomizerMod
 
 
             var elems = new List<Element>();
-            var types = new string[] { "Transition", "Object", "Room", "Zone", "Type" };
+            var types = new string[] { "Object", "Transition", "Room", "Zone", "Type" };
             var desc = new string[] {
-                "(Old Chaos Mode) Each time you change rooms everything is will be different",
-                "Each object will change to a different type",
+                "Each object will change to a different type (Best Setting)",
+                "Each time you change rooms everything is will be different (Old Chaos Mode)",
                 "Each room will change one object type",
                 "Each zone will change one object type",
                 "This will result in one type of object being changed in the same way throughout the game" };
@@ -111,12 +111,12 @@ namespace EnemyRandomizerMod
         {
             if (Settings.GetOption(CustomOptions[0].Name).value)
             {
-                return onStartGameRNG;
-            }
-            else if (Settings.GetOption(CustomOptions[1].Name).value)
-            {
                 return RandomizeEachObject(sourceData.ObjectName(), sourceData.SceneName(), seed);
             }
+            else if(Settings.GetOption(CustomOptions[1].Name).value)
+            {
+                return onStartGameRNG;
+            }             
             else if (Settings.GetOption(CustomOptions[2].Name).value)
             {
                 return RandomizeEachRoom(sourceData.GetDatabaseKey(), sourceData.SceneName(), seed);

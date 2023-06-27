@@ -27,8 +27,25 @@ namespace EnemyRandomizerMod
         public int RemainingSpawns => maxChildren - children.Count;
 
         public bool AtMaxChildren => Children.Count >= maxChildren;
+
+        protected bool isUnloading = false;
+
+        protected virtual void Awake()
+        {
+            GameManager.instance.UnloadingLevel -= SetUnloading;
+            GameManager.instance.UnloadingLevel += SetUnloading;
+        }
+
+        void SetUnloading()
+        {
+            isUnloading = true;
+        }
+
         public virtual GameObject ActivateAndTrackSpawnedObject(GameObject objectThatWillBeReplaced)
         {
+            if (isUnloading)
+                return null;
+
             GameObject spawnedObject = objectThatWillBeReplaced;
             var handle = EnemyRandomizerDatabase.OnObjectReplaced.AsObservable().Subscribe(x =>
             {
@@ -54,6 +71,9 @@ namespace EnemyRandomizerMod
 
         public void UntrackObject(GameObject child)
         {
+            if (isUnloading)
+                return;
+
             if (Children == null)
                 return;
 
@@ -63,6 +83,9 @@ namespace EnemyRandomizerMod
 
         public void TrackObject(GameObject child)
         {
+            if (isUnloading)
+                return;
+
             if (Children == null)
                 return;
 
@@ -72,6 +95,9 @@ namespace EnemyRandomizerMod
 
         public virtual GameObject SpawnAndTrackChild(string objectName, Vector3 spawnPoint, string originalEnemy = null, bool setActive = true, bool allowRandomization = false)
         {
+            if (isUnloading)
+                return null;
+
             GameObject child = SpawnerExtensions.SpawnEntityAt(objectName, spawnPoint, originalEnemy, setActive, allowRandomization);
 
             Children.Add(child);
@@ -81,6 +107,11 @@ namespace EnemyRandomizerMod
 
         protected virtual void OnDestroy()
         {
+            GameManager.instance.UnloadingLevel -= SetUnloading;
+
+            if (isUnloading)
+                return;
+
             try
             {
                 if (removeChildrenOnDeath)
@@ -91,6 +122,9 @@ namespace EnemyRandomizerMod
 
         protected virtual void Update()
         {
+            if (isUnloading)
+                return;
+
             try
             {
                 RemoveDeadChildren();
@@ -103,6 +137,9 @@ namespace EnemyRandomizerMod
 
         public virtual void RemoveChildren()
         {
+            if (isUnloading)
+                return;
+
             if (Children != null)
             {
                 foreach(var x in Children)
@@ -137,6 +174,9 @@ namespace EnemyRandomizerMod
 
         IEnumerable<GameObject> GetChildrenOutsideColo()
         {
+            if (isUnloading)
+                return null;
+
             try
             {
                 var outside = children.Where(x => x != null).Where(x => IsOutsideColo(x));
@@ -149,6 +189,9 @@ namespace EnemyRandomizerMod
 
         IEnumerable<GameObject> GetChildrenOutsideArena()
         {
+            if (isUnloading)
+                return null;
+
             try
             {
                 var outside = children.Where(x => x != null).Where(x => IsOutsideArena(x));
@@ -160,6 +203,9 @@ namespace EnemyRandomizerMod
 
         public virtual void RemoveDeadChildren()
         {
+            if (isUnloading)
+                return;
+
             if (children == null)
                 return;
 
@@ -190,6 +236,9 @@ namespace EnemyRandomizerMod
 
         protected virtual void DestroyAllChildren(IEnumerable<GameObject> childrenToDestroy)
         {
+            if (isUnloading)
+                return;
+
             foreach (var c in Children.Where(x => x != null))
             {
                 try
@@ -202,6 +251,9 @@ namespace EnemyRandomizerMod
 
         protected virtual bool IsAlive(GameObject x)
         {
+            if (isUnloading)
+                return false;
+
             if (x == null)
                 return false;
 
@@ -222,6 +274,9 @@ namespace EnemyRandomizerMod
 
         protected virtual bool IsOutsideArena(GameObject g)
         {
+            if (isUnloading)
+                return true;
+
             if (g == null)
                 return true;
 
@@ -236,6 +291,9 @@ namespace EnemyRandomizerMod
 
         public bool InBox(GameObject g, Vector2 topleft, Vector2 bottomRight)
         {
+            if (isUnloading)
+                return false;
+
             var point = g.transform.position.ToVec2();
 
             // Check if the point's X coordinate is within the box's X range
@@ -250,6 +308,9 @@ namespace EnemyRandomizerMod
 
         protected virtual bool IsOutsideColo(GameObject g)
         {
+            if (isUnloading)
+                return true;
+
             if (g == null)
                 return true;
 
@@ -318,6 +379,9 @@ namespace EnemyRandomizerMod
         /// </summary>
         public virtual GameObject SpawnCustomArenaEnemy(Vector2 pos, string specificEnemy = null, string originalEnemy = null, RNG rng = null)
         {
+            if (isUnloading)
+                return null;
+
             GameObject enemy = null;
             string enemyToSpawn = null;
             try

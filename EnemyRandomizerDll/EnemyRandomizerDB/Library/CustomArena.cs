@@ -473,19 +473,27 @@ namespace EnemyRandomizerMod
         public int zotesSpawned = 0;
         protected virtual void OnZoteSpawn(ArenaCageControl cage, GameObject zote)
         {
-            var zotec = zote.GetComponent<ZoteBossControl>();
-            if (zotec != null)
+            if(EnemyRandomizerDatabase.GetGlobalSettings().allowEnemyRandoExtras)
             {
-                zotec.SetColor(zotesSpawned);
+                var zotec = zote.GetComponent<ZoteBossControl>();
+                if (zotec != null)
+                {
+                    zotec.SetColor(zotesSpawned);
 
-                float scale = rng.Rand(0.5f, 1.2f);
-                zotec.gameObject.ScaleObject(scale);
-                zotec.gameObject.ScaleAudio(scale);
+                    float scale = rng.Rand(0.5f, 1.2f);
+                    zotec.gameObject.ScaleObject(scale);
+                    zotec.gameObject.ScaleAudio(scale);
+                }
+
+                zotesSpawned++;
+                if (zotesSpawned >= 57)
+                {
+                    cage.onSpawn -= OnZoteSpawn;
+                }
             }
-
-            zotesSpawned++;
-            if(zotesSpawned >= 57)
+            else
             {
+                zotesSpawned++;
                 cage.onSpawn -= OnZoteSpawn;
             }
         }
@@ -607,12 +615,26 @@ namespace EnemyRandomizerMod
 
         protected virtual void PreloadZoteWave(GameObject zoteCage)
         {
-            PreloadCageEntity(zoteCage.transform.position, "Arena Cage Zote", "Zote Boss", 1, 57);
+            if(EnemyRandomizerDatabase.GetGlobalSettings().allowEnemyRandoExtras)
+            {
+                PreloadCageEntity(zoteCage.transform.position, "Arena Cage Zote", "Zote Boss", 1, 57);
+            }
+            else
+            {
+                PreloadCageEntity(zoteCage.transform.position, "Arena Cage Zote", "Zote Boss", 1, 1);
+            }
         }
 
         protected virtual void SpawnZoteWave(GameObject zoteCage, float waveDelay)
         {
-            SpawnCageEntity(zoteCage.transform.position, "Arena Cage Zote", "Zote Boss", 57, waveDelay, true);
+            if(EnemyRandomizerDatabase.GetGlobalSettings().allowEnemyRandoExtras)
+            {
+                SpawnCageEntity(zoteCage.transform.position, "Arena Cage Zote", "Zote Boss", 57, waveDelay, true);
+            }
+            else
+            {
+                SpawnCageEntity(zoteCage.transform.position, "Arena Cage Zote", "Zote Boss", 1, waveDelay, true);
+            }
         }
 
         List<GameObject> empty = new List<GameObject>();
@@ -1069,6 +1091,12 @@ namespace EnemyRandomizerMod
                     soc.MaxHP = minBossHP;
                 }
             }
+
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowEnemyRandoExtras)
+                return;
+
+            if (!EnemyRandomizerDatabase.GetGlobalSettings().allowCustomEnemies)
+                return;
 
             {
                 var bossType = boss.GetComponent<ZoteBossControl>();

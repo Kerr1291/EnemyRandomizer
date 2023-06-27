@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
 using On.Language;
 
 namespace EnemyRandomizerMod
 {
-    public class DefaultPrefabConfig : IPrefabConfig
+    public class DefaultSpawner<TControlComponent> : DefaultSpawner
+        where TControlComponent : DefaultSpawnedEnemyControl
     {
-        public virtual void SetupPrefab(PrefabObject p)
+        public override DefaultSpawnedEnemyControl AddController(GameObject newlySpawnedObject)
         {
-            p.prefabName = EnemyRandomizerDatabase.ToDatabaseKey(p.prefab.name);
+            if (SpawnedObjectControl.VERBOSE_DEBUG)
+                Dev.Log($"starting setup of control component of type {typeof(TControlComponent).Name} for {newlySpawnedObject.GetSceneHierarchyPath()}");
+            return newlySpawnedObject.GetOrAddComponent<TControlComponent>();
         }
     }
 
@@ -115,273 +117,41 @@ namespace EnemyRandomizerMod
 
             if (corpseRemovedByEffect)
             {
-                //default effect = death explode boss
-                string removeEffect = string.IsNullOrEmpty(corpseRemoveEffectName) ? "Death Explode Boss" : corpseRemoveEffectName;
+                if (GameManager.instance.GetCurrentMapZone() != "FINAL_BOSS")
+                {
+                    //default effect = death explode boss
+                    string removeEffect = string.IsNullOrEmpty(corpseRemoveEffectName) ? "Death Explode Boss" : corpseRemoveEffectName;
 
-                GameObject corpse = gameObject.GetCorpseObject();
-                if (corpse != null)
-                {
-                    corpse.AddCorpseRemoverWithEffect(gameObject, removeEffect);
-                }
-                else
-                {
-                    if (SpawnedObjectControl.VERBOSE_DEBUG)
-                        Dev.LogWarning($"{gameObject} has no corpse to apply an effect to!");
+                    GameObject corpse = gameObject.GetCorpseObject();
+                    if (corpse != null)
+                    {
+                        corpse.AddCorpseRemoverWithEffect(gameObject, removeEffect);
+                    }
+                    else
+                    {
+                        if (SpawnedObjectControl.VERBOSE_DEBUG)
+                            Dev.LogWarning($"{gameObject} has no corpse to apply an effect to!");
+                    }
                 }
             }
 
             if (spawnEffectOnCorpseRemoved)
             {
-                //default effect = death explode boss
-                string removeEffect = string.IsNullOrEmpty(corpseRemoveEffectName) ? "Death Explode Boss" : corpseRemoveEffectName;
-
-                GameObject corpse = gameObject.GetCorpseObject();
-                if (corpse != null)
+                if (GameManager.instance.GetCurrentMapZone() != "FINAL_BOSS")
                 {
-                    corpse.AddEffectSpawnerOnCorpseRemoved(gameObject, removeEffect);
-                }
-                else
-                {
-                    if (SpawnedObjectControl.VERBOSE_DEBUG)
-                        Dev.LogWarning($"{gameObject} has no corpse to apply an effect to!");
-                }
-            }
-        }
-    }
+                    //default effect = death explode boss
+                    string removeEffect = string.IsNullOrEmpty(corpseRemoveEffectName) ? "Death Explode Boss" : corpseRemoveEffectName;
 
-    public class DefaultSpawner<TControlComponent> : DefaultSpawner
-        where TControlComponent : DefaultSpawnedEnemyControl
-    {
-        public override DefaultSpawnedEnemyControl AddController(GameObject newlySpawnedObject)
-        {
-            if (SpawnedObjectControl.VERBOSE_DEBUG)
-                Dev.Log($"starting setup of control component of type {typeof(TControlComponent).Name} for {newlySpawnedObject.GetSceneHierarchyPath()}");
-            return newlySpawnedObject.GetOrAddComponent<TControlComponent>();
-        }
-    }
-
-    public abstract class SpawnEffect : MonoBehaviour
-    {
-        public const string NONE = "NONE";
-
-        public string effectToSpawn = "Gas Explosion Recycle L";
-        public virtual bool destroyGameObject => false;
-        public virtual bool allowRandomizationOfSpawn => false;
-        public bool isSpawnerEnemy = false;
-        public bool activateOnSpawn = true;
-
-        public Action<SpawnEffect, GameObject> onSpawn;
-
-        protected virtual void Spawn(GameObject target, Vector2 pos)
-        {
-            if (target == null)
-                target = gameObject;
-
-            try
-            {
-#if DEBUG
-                if (SpawnedObjectControl.VERBOSE_DEBUG)
-                {
-                    var metaInfo = ObjectMetadata.Get(target);
-                    //var soc = gameObject.GetComponent<SpawnedObjectControl>();
-                    if (metaInfo == null)
-                        metaInfo = new ObjectMetadata(target);
-
-                    Dev.Log($"A SpawnEffect attached to {metaInfo} is being invoked");
-                }
-#endif
-
-                if (!target.IsInAValidScene())
-                    return;
-
-                if ((effectToSpawn != NONE && !string.IsNullOrEmpty(effectToSpawn)) || (isSpawnerEnemy && allowRandomizationOfSpawn))
-                {
-                    GameObject spawned = null;
-                    if (isSpawnerEnemy && allowRandomizationOfSpawn)
+                    GameObject corpse = gameObject.GetCorpseObject();
+                    if (corpse != null)
                     {
-                        spawned = SpawnerExtensions.SpawnEnemyForEnemySpawner(pos, activateOnSpawn, null);
+                        corpse.AddEffectSpawnerOnCorpseRemoved(gameObject, removeEffect);
                     }
                     else
                     {
-                        spawned = SpawnerExtensions.SpawnEntityAt(effectToSpawn, pos, null, activateOnSpawn, allowRandomizationOfSpawn);
+                        if (SpawnedObjectControl.VERBOSE_DEBUG)
+                            Dev.LogWarning($"{gameObject} has no corpse to apply an effect to!");
                     }
-
-                    onSpawn?.Invoke(this, spawned);
-                }
-            }
-            catch (Exception e) { Dev.Log($"Caught exception in spawn effect \n{e.Message}\n{e.StackTrace} "); }
-
-            EnemyRandomizerDatabase.ClearBypass();
-
-            if (destroyGameObject)
-                GameObject.Destroy(target);
-
-            GameObject.Destroy(gameObject);
-        }
-    }
-
-    public class CorpseRemover : SpawnEffect
-    {
-        public bool useOwner = false;
-        public GameObject owner;
-
-        public GameObject corpseTarget;
-        public Vector2 lastPos;
-
-        public override bool destroyGameObject => true;
-
-        public bool didSpawn = false;
-        public bool preRemoveCorpse = true;
-
-        protected virtual void Update()
-        {
-            if (owner != null)
-                lastPos = owner.transform.position;
-            CheckRemoveAndSpawn();
-        }
-
-        protected virtual void CheckRemoveAndSpawn()
-        {
-            if (didSpawn)
-                return;
-
-            if (preRemoveCorpse)
-            {
-                if (corpseTarget != null)
-                {
-                    SpawnerExtensions.DestroyObject(corpseTarget);
-                    corpseTarget = null;
-                }
-
-                if (!useOwner)
-                {
-                    Spawn(owner, lastPos);
-                }
-            }
-
-            if (useOwner)
-            {
-                bool hasHm = owner != null && owner.GetComponent<HealthManager>() != null;
-                bool isDead = false;
-                if (owner != null &&
-                    owner.GetComponent<HealthManager>() != null &&
-                    (owner.GetComponent<HealthManager>().hp <= 0 || owner.GetComponent<HealthManager>().isDead))
-                    isDead = true;
-
-                if (owner == null || 
-                   (!hasHm && !owner.activeInHierarchy) || 
-                    isDead)
-                {
-                    Spawn(owner, lastPos);
-                    didSpawn = true;
-                }
-
-                //var parent = transform.parent;
-                //if (parent == null)
-                //{
-                //    Spawn(owner, lastPos);
-                //    didSpawn = true;
-                //}
-                //else
-                //{
-                    //var parentName = parent.name;
-                    //var thisName = gameObject.name;
-
-                    //parentName = EnemyRandomizerDatabase.ToDatabaseKey(parentName);
-                    //thisName = thisName.Remove("Corpse");
-                    //thisName = EnemyRandomizerDatabase.ToDatabaseKey(thisName);
-
-                    //if (!parentName.Contains(thisName))
-                    //{
-                    //    Spawn(owner, lastPos);
-                    //    didSpawn = true;
-                    //}
-                //}
-            }
-        }
-    }
-
-    public class SpawnEffectOnDestroy : SpawnEffect
-    {
-        public override bool allowRandomizationOfSpawn => allowRandomization;
-
-        public bool allowRandomization = false;
-        public bool forceDestroyIfRendererBecomesDisabled = true;
-        MeshRenderer mRenderer;
-        bool wasEnabled = false;
-
-        protected virtual void OnEnable()
-        {
-            mRenderer = GetComponent<MeshRenderer>();
-        }
-
-        protected virtual void OnDestroy() { Spawn(gameObject, transform.position); }
-
-        protected virtual void Update()
-        {
-            if (mRenderer == null)
-                return;
-
-            if(!wasEnabled)
-                wasEnabled = mRenderer.enabled;
-
-            if (wasEnabled && mRenderer.enabled == false)
-            {
-                GameObject.Destroy(gameObject);
-            }
-        }
-    }
-
-    public class CorpseOrientationFixer : MonoBehaviour
-    {
-        public float corpseAngle;
-        public float timeout = 5f;
-
-        IEnumerator Start()
-        {
-            while (timeout > 0f)
-            {
-                var angles = transform.localEulerAngles;
-                angles.z = corpseAngle;
-                transform.localEulerAngles = angles;
-                yield return null;
-                timeout -= Time.deltaTime;
-            }
-
-            yield break;
-        }
-    }
-
-    public class PositionLocker : MonoBehaviour
-    {
-        public Vector2? positionLock;
-
-        protected virtual void Update()
-        {
-            if(positionLock != null)
-                transform.position = positionLock.Value;
-        }
-    }
-
-
-    public class FSMWaker : MonoBehaviour
-    {
-        public PlayMakerFSM fsm;
-        public string wakeState = "Sleep";
-        public string wakeString = "WAKE";
-
-        protected virtual void OnEnable()
-        {
-            fsm = gameObject.LocateMyFSM("Control");//default
-        }
-
-        protected virtual void Update()
-        {
-            if(fsm != null)
-            {
-                if(fsm.ActiveStateName == wakeState)
-                {
-                    fsm.SendEvent(wakeString);
                 }
             }
         }

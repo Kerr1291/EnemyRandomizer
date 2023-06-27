@@ -22,7 +22,8 @@ using Satchel;
 
 namespace EnemyRandomizerMod
 {
-    public partial class EnemyRandomizer : Mod, ITogglableMod, IGlobalSettings<EnemyRandomizerSettings>, ILocalSettings<EnemyRandomizerPlayerSettings>, IDisposable
+    public partial class EnemyRandomizer : Mod,// ITogglableMod, (currently broken) 
+        IGlobalSettings<EnemyRandomizerSettings>, ILocalSettings<EnemyRandomizerPlayerSettings>, IDisposable
     {
         public static EnemyRandomizer Instance 
         {
@@ -100,7 +101,7 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
 
         const string defaultDatabaseFilePath = "EnemyRandomizerDatabase.xml";
-        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9.1.2]";
+        static string currentVersionPrefix = /*Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() +*/ "[Alpha 9.2]";
         static string currentVersion = currentVersionPrefix;
             //Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + $" CURRENT SEED:[{GlobalSettings.seed}] -- TO CHANGE SEED --> MODS > ENEMY RANDOMIZER > ENEMY RANDOMIZER MODULES";
 
@@ -165,6 +166,67 @@ namespace EnemyRandomizerMod
             ModHooks.FinishedLoadingModsHook -= ModHooks_FinishedLoadingModsHook;
         }
 
+        protected virtual void ResetToDefaults()
+        {
+            try
+            {
+                {
+                    GlobalSettings.balanceReplacementHP = true;
+                    GlobalSettings.randomizeReplacementGeo = true;
+                    GlobalSettings.allowCustomEnemies = true;
+                    GlobalSettings.allowEnemyRandoExtras = true;
+                    GlobalSettings.UseCustomSeed = false;
+                    GlobalSettings.UseCustomColoSeed = false;
+                    {
+                        var logic = EnemyRandomizer.instance.logicTypes["Zote Mode"];
+                        EnemyRandomizer.instance.enemyReplacer.DisableLogic(logic);
+                        RootMenuObject.Find(logic.Name).Hide();
+                    }
+                    {
+                        var logic = EnemyRandomizer.instance.logicTypes["Enemy Filter"];
+                        EnemyRandomizer.instance.enemyReplacer.DisableLogic(logic);
+                        RootMenuObject.Find(logic.Name).Hide();
+                    }
+                    {
+                        var logic = EnemyRandomizer.instance.logicTypes["Enemy Enabler"];
+                        EnemyRandomizer.instance.enemyReplacer.DisableLogic(logic);
+                        RootMenuObject.Find(logic.Name).Hide();
+                    }
+                    {
+                        var logic = EnemyRandomizer.instance.logicTypes["Replacement Logic"];
+                        logic.Settings.GetOption("Randomize Enemies").value = true;
+                        logic.Settings.GetOption("Randomize Hazards").value = false;
+                        logic.Settings.GetOption("Randomize Effects").value = false;
+                        logic.Settings.GetOption("Use basic replacement matching?").value = false;
+                        logic.Settings.GetOption("Allow bad replacements?").value = false;
+                        EnemyRandomizer.instance.enemyReplacer.EnableLogic(logic);
+                        RootMenuObject.Find(logic.Name).Show();
+                    }
+                    {
+                        var logic = EnemyRandomizer.instance.logicTypes["Randomization Modes"];
+                        logic.Settings.GetOption("Object").value = true;
+                        logic.Settings.GetOption("Transition").value = false;
+                        logic.Settings.GetOption("Room").value = false;
+                        logic.Settings.GetOption("Zone").value = false;
+                        logic.Settings.GetOption("Type").value = false;
+                        EnemyRandomizer.instance.enemyReplacer.EnableLogic(logic);
+                        RootMenuObject.Find(logic.Name).Show();
+                    }
+                    {
+                        var logic = EnemyRandomizer.instance.logicTypes["Enemy Size Changer"];
+                        logic.Settings.GetOption("Match Audio to Scaling").value = true;
+                        logic.Settings.GetOption("Match").value = true;
+                        logic.Settings.GetOption("Random").value = false;
+                        logic.Settings.GetOption("All Big").value = false;
+                        logic.Settings.GetOption("All Tiny").value = false;
+                        EnemyRandomizer.instance.enemyReplacer.EnableLogic(logic);
+                        RootMenuObject.Find(logic.Name).Show();
+                    }
+                }
+            }
+            catch (Exception e) { }//later..
+        }
+
         public override List<(string, string)> GetPreloadNames()
         {
             if (DEBUG_SKIP_LOADING)
@@ -214,7 +276,8 @@ namespace EnemyRandomizerMod
             }
 
             EnableMod();
-            UIManager.instance.StartCoroutine(UpdateLabelOnLoad());
+
+            //UIManager.instance.StartCoroutine(UpdateLabelOnLoad());
         }
 
 
@@ -251,6 +314,8 @@ namespace EnemyRandomizerMod
             ModHooks.SlashHitHook -= DebugPrintObjectOnHit;
             ModHooks.SlashHitHook += DebugPrintObjectOnHit;
 #endif
+            ModHooks.SlashHitHook -= MODHOOK_SlashHitHook;
+            ModHooks.SlashHitHook += MODHOOK_SlashHitHook;
 
             //override to set if an object is semiPersistent or not
             On.PersistentBoolItem.Awake -= ONHOOK_PersistentBoolItem_OnAwake;
@@ -276,7 +341,7 @@ namespace EnemyRandomizerMod
             {
                 orig(self);
                 GeneralOptionsMenu.Find("SeedInput").Hide();
-                UpdateModVersionLabel();
+                //UpdateModVersionLabel();
             };
 
             // can remove after testing
@@ -286,7 +351,7 @@ namespace EnemyRandomizerMod
                 {
                     GeneralOptionsMenu?.Find("SeedInput")?.Show();
                 }
-                UpdateModVersionLabel();
+                //UpdateModVersionLabel();
                 return orig(self);
             };
         }
@@ -309,13 +374,13 @@ namespace EnemyRandomizerMod
             catch (Exception e) { Dev.Log($"Caught exception in ModHooks_ColliderCreateHook :::: \n{e.Message}\n{e.StackTrace}"); }
         }
 
-        IEnumerator UpdateLabelOnLoad()
-        {
-            yield return new WaitUntil(() => GameObject.FindObjectOfType<ModVersionDraw>(true) != null);
-            var mvd = GameObject.FindObjectOfType<ModVersionDraw>(true);
-            yield return new WaitUntil(() => mvd.drawString.Contains(currentVersion));
-            UpdateModVersionLabel();
-        }
+        //IEnumerator UpdateLabelOnLoad()
+        //{
+        //    yield return new WaitUntil(() => GameObject.FindObjectOfType<ModVersionDraw>(true) != null);
+        //    var mvd = GameObject.FindObjectOfType<ModVersionDraw>(true);
+        //    yield return new WaitUntil(() => mvd.drawString.Contains(currentVersion));
+        //    UpdateModVersionLabel();
+        //}
 
         void ModHooks_DrawBlackBordersHook(List<GameObject> obj)
         {
@@ -388,6 +453,8 @@ namespace EnemyRandomizerMod
 #if DEBUG
             ModHooks.SlashHitHook -= DebugPrintObjectOnHit;
 #endif
+            ModHooks.SlashHitHook -= MODHOOK_SlashHitHook;
+
             On.PersistentBoolItem.Awake -= ONHOOK_PersistentBoolItem_OnAwake;
             On.PlayMakerFSM.OnEnable -= ONHOOK_PlayMakerFSM_OnEnable;
             On.PersistentBoolItem.SetMyID -= ONHOOK_PersistentBoolItem_SetMyID;
@@ -396,21 +463,29 @@ namespace EnemyRandomizerMod
             ModHooks.DrawBlackBordersHook -= ModHooks_DrawBlackBordersHook;
         }
 
-        public void UpdateModVersionLabel()
-        {
-            //TODO: put a condition here to add more info
-            //after testing a few versions without this notice to see if it was useful or not
-            return;
-            //string olds = currentVersion;
-            //string news = GetVersionString();
-            ////Dev.Log($"{olds}   {news}    {currentVersion}");
-            //currentVersion = news;
-            //var mvd = GameObject.FindObjectOfType<ModVersionDraw>(true);
-            //mvd.drawString = mvd.drawString.Replace(olds, news);
-        }
+        //public void UpdateModVersionLabel()
+        //{
+        //    //TODO: put a condition here to add more info
+        //    //after testing a few versions without this notice to see if it was useful or not
+        //    return;
+        //    //string olds = currentVersion;
+        //    //string news = GetVersionString();
+        //    ////Dev.Log($"{olds}   {news}    {currentVersion}");
+        //    //currentVersion = news;
+        //    //var mvd = GameObject.FindObjectOfType<ModVersionDraw>(true);
+        //    //mvd.drawString = mvd.drawString.Replace(olds, news);
+        //}
 
         public void EnableMod()
         {
+#if DEBUG
+            {
+                Dev.Logger.GuiLoggingEnabled = true;
+                DevLogger.Instance.ShowSlider();
+                DevLogger.Instance.Show(true);
+                Dev.Logger.LoggingEnabled = true;
+            }
+#endif
             RegisterCallbacks();
             if (!DEBUG_SKIP_LOADING)
             {
@@ -429,6 +504,26 @@ namespace EnemyRandomizerMod
         ///Revert all changes the mod has made
         public void Unload()
         {
+            try
+            {
+                enemyReplacer.OnModDisabled();
+            }
+            catch(Exception e)
+            {
+                Dev.LogError($"Caught unhandled exception when trying to invoke OnModDisabled in Unload() for the enemy replacer {e.Message}\n{e.StackTrace}");
+            }
+
+            try
+            {
+                UnRegisterCallbacks();
+            }
+            catch (Exception e)
+            {
+                Dev.LogError($"Caught unhandled exception when trying to invoke UnRegisterCallbacks in Unload() for enemy randomizer {e.Message}\n{e.StackTrace}");
+            }
+
+            isDisabled = true;
+
 #if DEBUG
             {
                 Dev.Logger.GuiLoggingEnabled = false;
@@ -437,15 +532,47 @@ namespace EnemyRandomizerMod
                 Dev.Logger.LoggingEnabled = false;
             }
 #endif
-            enemyReplacer.OnModDisabled();
-            UnRegisterCallbacks();
-            isDisabled = true;
         }
+
+        bool didCompatCheck = false;
+        bool isRandomizerLoaded = false;
 
         protected virtual GameObject RandomizeEnemy(GameObject enemyObject)
         {
             DoBattleSceneCheck(enemyObject);
+
+            if(!didCompatCheck)
+            {
+                didCompatCheck = true;
+                isRandomizerLoaded = DoModCompatCheck();                
+            }
+
+            if(isRandomizerLoaded)
+            {
+                if (!CompatCheck(enemyObject))
+                    return enemyObject;
+            }
+
             return enemyReplacer.RandomizeEnemy(enemyObject);
+        }
+
+        protected virtual bool DoModCompatCheck()
+        {
+            return ModHooks.GetAllMods().Any(x => x.GetName().Contains("Randomizer") && !x.GetName().Contains("Enemy"));
+        }
+
+        protected virtual bool CompatCheck(GameObject enemyObject)
+        {
+            if(enemyObject.name.Contains("Gorgeous"))
+            {
+                return false;
+            }
+            else if(enemyObject.name.Contains("Egg Sac"))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         protected virtual GameObject RandomizeHazard(DamageHero hazardObject)
@@ -501,6 +628,11 @@ namespace EnemyRandomizerMod
 
         void MODHOOK_LoadFromSave(int saveSlot)
         {
+            if (!GlobalSettings.hasDoneAlpha92Reset)
+            {
+                GlobalSettings.DoAlpha9Reset();
+                ResetToDefaults();
+            }
             SetGameSeed();
             enemyReplacer.OnStartGame(PlayerSettings);
         }
@@ -512,6 +644,11 @@ namespace EnemyRandomizerMod
 
         void MODHOOK_NewGameHook()
         {
+            if (!GlobalSettings.hasDoneAlpha92Reset)
+            {
+                GlobalSettings.DoAlpha9Reset();
+                ResetToDefaults();
+            }
             SetGameSeed();
             enemyReplacer.OnStartGame(PlayerSettings);
         }
@@ -521,15 +658,16 @@ namespace EnemyRandomizerMod
             var pooledGO = RandomizePooledSpawn(originalGameObject);
 
             //see if this pooled game object should me pooled by the randomizer
-            if (pooledGO != null && MetaDataTypes.RandoControlledPooling.Any(x => pooledGO.name.Contains(x)))
-            {
-                //can't be doing this for everything, is causing nullrefs
-                //want to do it for some things, maybe based on a list?
-                pooledGO.GetOrAddComponent<RecycleOnDisable>();
-                var auto = pooledGO.GetComponent<AutoRecycleSelf>();
-                if (auto != null)
-                    GameObject.Destroy(auto);
-            }
+            //TODO:? look into this another time, for now just disable this this functionality since we're not using it
+            //if (pooledGO != null && MetaDataTypes.RandoControlledPooling.Any(x => pooledGO.name.Contains(x)))
+            //{
+            //    //can't be doing this for everything, is causing nullrefs
+            //    //want to do it for some things, maybe based on a list?
+            //    pooledGO.GetOrAddComponent<RecycleOnDisable>();
+            //    var auto = pooledGO.GetComponent<AutoRecycleSelf>();
+            //    if (auto != null)
+            //        GameObject.Destroy(auto);
+            //}
 
             return pooledGO;
         }
@@ -581,6 +719,37 @@ namespace EnemyRandomizerMod
 #endif
             ResetBattleSceneCheck();
             return sceneName;
+        }
+
+        static void MODHOOK_SlashHitHook(Collider2D otherCollider, GameObject gameObject)
+        {
+            try
+            {
+                //invoke the custom hit methods for any spawned objects struck by the player's nail
+                var soc = otherCollider.GetComponent<SpawnedObjectControl>();
+                if (soc != null)
+                {
+                    soc.Hit(new HitInstance()
+                    {
+                        Source = HeroController.instance.gameObject,
+                        AttackType = AttackTypes.Nail,
+                        CircleDirection = false,
+                        Direction = HeroController.instance.gameObject.transform.position.ToVec2().GetActualDirection(otherCollider.transform.position.ToVec2()),
+                        IgnoreInvulnerable = false,
+                        MagnitudeMultiplier = 1.0f,
+                        MoveAngle = 0f,
+                        MoveDirection = false,
+                        Multiplier = 1f,
+                        SpecialType = SpecialTypes.None,
+                        IsExtraDamage = false,
+                        DamageDealt = PlayerData.instance.nailDamage,                         
+                    });
+                }
+            }
+            catch(Exception e)
+            {
+                Dev.LogError("Caught unhandled exception in Hit callback the player's nail hit " + otherCollider.gameObject + e.StackTrace + e.Message);
+            }
         }
 
         void ONHOOK_DamageHero_OnEnable(On.DamageHero.orig_OnEnable orig, DamageHero self)
@@ -743,13 +912,13 @@ namespace EnemyRandomizerMod
     }
 
 
-    public class RecycleOnDisable : MonoBehaviour
-    {
-        public void OnDisable()
-        {
-            ObjectPool.Recycle(gameObject);
-        }
-    }
+    //public class RecycleOnDisable : MonoBehaviour
+    //{
+    //    public void OnDisable()
+    //    {
+    //        ObjectPool.Recycle(gameObject);
+    //    }
+    //}
 }
 
 

@@ -1451,8 +1451,6 @@ namespace EnemyRandomizerMod
     /////
     public class GrimmBossControl : DefaultSpawnedEnemyControl
     {
-        public override bool explodeOnDeath => true;
-
         public override string FSMName => "Control";
 
         public override void Setup(GameObject other)
@@ -1502,6 +1500,8 @@ namespace EnemyRandomizerMod
             var ggbow = control.GetState("GG Bow");
             ggbow.ChangeTransition("FINISHED", "Tele Out");
             ggbow.ChangeTransition("TOOK DAMAGE", "Tele Out");
+
+            gameObject.DestroyAllCorpseObjects();
         }
     }
 
@@ -1527,6 +1527,8 @@ namespace EnemyRandomizerMod
         public override string FSMName => "Control";
 
         public override bool preventOutOfBoundsAfterPositioning => true;
+
+        protected override bool emitCorpse => false;        
 
         protected virtual void SetupJunk()
         {
@@ -1601,6 +1603,8 @@ namespace EnemyRandomizerMod
                 FixDeath();
 
                 FixMoves();
+
+                gameObject.DestroyAllCorpseObjects();//don't have a corpse at all for PV - causes issues
             }
             catch(Exception e)
             {
@@ -1612,6 +1616,8 @@ namespace EnemyRandomizerMod
     public class NightmareGrimmBossSpawner : DefaultSpawner<NightmareGrimmBossControl>
     {
         public override bool corpseRemovedByEffect => true;
+
+        public override string corpseRemoveEffectName => "Death Puff Med";
     }
 
     public class NightmareGrimmBossPrefabConfig : DefaultPrefabConfig { }
@@ -1665,10 +1671,17 @@ namespace EnemyRandomizerMod
             }, 0);
 
             this.InsertHiddenState(control, "Init", "FINISHED", "Init Idle");
+
+            gameObject.DestroyAllCorpseObjects();
         }
     }
 
-    public class HollowKnightBossSpawner : DefaultSpawner<HollowKnightBossControl> { }
+    public class HollowKnightBossSpawner : DefaultSpawner<HollowKnightBossControl>
+    {
+        public override bool corpseRemovedByEffect => true;
+
+        public override string corpseRemoveEffectName => "Death Puff Med";
+    }
 
     public class HollowKnightBossPrefabConfig : DefaultPrefabConfig { }
     /////
@@ -1682,6 +1695,10 @@ namespace EnemyRandomizerMod
     /////
     public class HKPrimeControl : DefaultSpawnedEnemyControl
     {
+        public override bool preventOutOfBoundsAfterPositioning => true;
+
+        protected override bool emitCorpse => false;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);
@@ -1690,6 +1707,7 @@ namespace EnemyRandomizerMod
             if (corpse != null)
             {
                 corpse.AddCorpseRemoverWithEffect(gameObject, "Death Explode Boss");
+                gameObject.DestroyAllCorpseObjects();//don't have a corpse at all for PV - causes issues
             }
 
             control.GetState("Intro 1").GetFirstActionOfType<Wait>().time = 0.25f;
@@ -1778,7 +1796,12 @@ namespace EnemyRandomizerMod
         }
     }
 
-    public class HKPrimeSpawner : DefaultSpawner<HKPrimeControl> { }
+    public class HKPrimeSpawner : DefaultSpawner<HKPrimeControl>
+    {
+        public override bool corpseRemovedByEffect => true;
+
+        public override string corpseRemoveEffectName => "Death Puff Med";
+    }
 
     public class HKPrimePrefabConfig : DefaultPrefabConfig { }
     /////
@@ -2697,7 +2720,7 @@ namespace EnemyRandomizerMod
 
                 var placeRings = attacking.GetState("Place Rings");
                 placeRings.AddCustomAction(() => {
-                    SetRingPositions(heroPos2d);
+                    SetRingPositions(pos2d);
                 });
 
                 attacking.ChangeTransition("Choice 2", "MEGA", "Choice");
@@ -3152,6 +3175,24 @@ namespace EnemyRandomizerMod
             SetupSpawn();
         }
 
+        bool? previousState;
+
+        protected override void BeforeCorpseEmit(GameObject corpseObject, float? attackDirection, bool isWatery, bool spellBurn)
+        {
+            base.BeforeCorpseEmit(corpseObject, attackDirection, isWatery, spellBurn);
+
+            if(!gameObject.SceneName().Contains("Waterways_12"))
+                previousState = PlayerData.instance.flukeMotherDefeated;
+        }
+
+        protected override void AfterCorpseEmit(GameObject corpseObject, float? attackDirection, bool isWatery, bool spellBurn)
+        {
+            base.AfterCorpseEmit(corpseObject, attackDirection, isWatery, spellBurn);
+
+            if (!gameObject.SceneName().Contains("Waterways_12"))
+                PlayerData.instance.flukeMotherDefeated = previousState.Value;
+        }
+
 
         protected override void SetCustomPositionOnSpawn()
         {
@@ -3163,6 +3204,7 @@ namespace EnemyRandomizerMod
 
     public class FlukeMotherPrefabConfig : DefaultPrefabConfig
     {
+        //TODO: make into prefabs for fun
         public static AudioClip squirtA;
         public static AudioClip squirtB;
 
@@ -3170,15 +3212,19 @@ namespace EnemyRandomizerMod
         {
             base.SetupPrefab(p);
 
-            var control = p.prefab.LocateMyFSM("Fluke Mother");
-
-            var spawn2 = control.GetState("Spawn 2");
-
-            if (squirtA == null || squirtB == null)
+            try
             {
-                squirtA = spawn2.GetAction<AudioPlayerOneShotSingle>(9).audioClip.Value as AudioClip;
-                squirtB = spawn2.GetAction<AudioPlayerOneShotSingle>(10).audioClip.Value as AudioClip;
+                var control = p.prefab.LocateMyFSM("Fluke Mother");
+
+                var spawn2 = control.GetState("Spawn 2");
+
+                if (squirtA == null || squirtB == null)
+                {
+                    squirtA = spawn2.GetAction<AudioPlayerOneShotSingle>(9).audioClip.Value as AudioClip;
+                    squirtB = spawn2.GetAction<AudioPlayerOneShotSingle>(10).audioClip.Value as AudioClip;
+                }
             }
+            catch (Exception e) { }
         }
     }
 
@@ -4857,48 +4903,37 @@ namespace EnemyRandomizerMod
 
         public override bool preventOutOfBoundsAfterPositioning => true;
 
-        
-        IEnumerator WaitForCorpse(GameObject go)
+        protected override void AfterCorpseEmit(GameObject corpseObject, float? attackDirection, bool isWatery, bool spellBurn)
         {
-            for(; ; )
+            base.AfterCorpseEmit(corpseObject, attackDirection, isWatery, spellBurn);
+
+            var fsm = corpseObject.LocateMyFSM("burster");
+
+            if (fsm == null)
+                return;
+
+            var spawn = fsm.GetState("Spawn Flies 2");
+            if (spawn == null)
+                return;
+
+            //don't double modify somehow
+            if (spawn.Actions.Length <= 3)
             {
-                if (go == null)
-                    break;
-
-                if (!go.scene.IsValid())
-                    yield break;
-
-                
-                yield return null;
-            }
-
-            for (; ; )
-            {
-                if (go == null)
+                spawn.AddCustomAction(() =>
                 {
-                    var found = GameObject.FindObjectsOfType<PlayMakerFSM>().Where(x => x.name == "burster");
-                    foreach (var f in found)
+                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpseObject.transform.position, true, "Fly");
+                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpseObject.transform.position, true, "Fly");
+                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpseObject.transform.position, true, "Fly");
+                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpseObject.transform.position, true, "Fly");
+                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpseObject.transform.position, true, "Fly");
+                    SpawnerExtensions.SpawnEnemyForEnemySpawner(corpseObject.transform.position, true, "Fly");
+                    if(BattleManager.StateMachine.Value != null && BattleManager.StateMachine.Value.SceneName == "Crossroads_04")
                     {
-                        var spawn = f.GetState("Spawn Flies 2");
-                        if (spawn.Actions.Length <= 3)
-                        {
-                            spawn.AddCustomAction(() =>
-                            {
-                                SpawnerExtensions.SpawnEnemyForEnemySpawner(f.transform.position, true, "Fly");
-                                SpawnerExtensions.SpawnEnemyForEnemySpawner(f.transform.position, true, "Fly");
-                                SpawnerExtensions.SpawnEnemyForEnemySpawner(f.transform.position, true, "Fly");
-                                SpawnerExtensions.SpawnEnemyForEnemySpawner(f.transform.position, true, "Fly");
-                                SpawnerExtensions.SpawnEnemyForEnemySpawner(f.transform.position, true, "Fly");
-                                SpawnerExtensions.SpawnEnemyForEnemySpawner(f.transform.position, true, "Fly");
-                            });
-                            yield break;
-                        }
+                        GameManager.instance.BroadcastFSMEventAfterTime("END", 4f);
                     }
-                }
-                yield return null;
+                });
             }
         }
-
 
         public override void Setup(GameObject other)
         {
@@ -4924,74 +4959,8 @@ namespace EnemyRandomizerMod
                 fly.DisableAction(5);
                 fly.DisableAction(6);
                 fly.DisableAction(7);
-
-                GameManager.instance.StartCoroutine(WaitForCorpse(gameObject));
             }
         }
-
-        //public void SelfSpawnBabies()
-        //{
-        //    SpawnBabies(gameObject);
-        //}
-
-        //static void SpawnBabies(GameObject owner)
-        //{
-        //    try
-        //    {
-        //        if (EnemyRandomizerDatabase.GetDatabase != null)
-        //        {
-        //            for (int i = 0; i < babiesToSpawn; ++i)
-        //            {
-        //                GameObject result = null;
-        //                if (EnemyRandomizerDatabase.GetDatabase().Enemies.TryGetValue("Fly", out var src))
-        //                {
-        //                    Dev.Log("trying to spawn via prefab " + src.prefabName);
-        //                    result = EnemyRandomizerDatabase.GetDatabase().Spawn(src);
-        //                }
-        //                else
-        //                {
-        //                    Dev.Log("trying to spawn via string");
-        //                    result = EnemyRandomizerDatabase.GetDatabase().Spawn("Fly");
-        //                }
-
-        //                Dev.Log("result = " + result);
-        //                Dev.Log("self.Owner = " + owner);
-        //                if (result != null && owner != null)
-        //                {
-        //                    result.transform.position = owner.transform.position;
-        //                    result.SafeSetActive(true);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Dev.LogError($"Caught exception trying to spawn a custom fly! {e.Message} STACKTRACE:{e.StackTrace}");
-        //    }
-        //}
-
-        //static string MODHOOK_BeforeSceneLoad(string sceneName)
-        //{
-        //    ModHooks.BeforeSceneLoadHook -= MODHOOK_BeforeSceneLoad;
-        //    On.HutongGames.PlayMaker.FsmState.OnEnter -= FsmState_OnEnter;
-        //    return sceneName;
-        //}
-        //public virtual void OnEnable()
-        //{
-        //    ModHooks.BeforeSceneLoadHook -= MODHOOK_BeforeSceneLoad;
-        //    ModHooks.BeforeSceneLoadHook += MODHOOK_BeforeSceneLoad;
-        //    On.HutongGames.PlayMaker.FsmState.OnEnter -= FsmState_OnEnter;
-        //    On.HutongGames.PlayMaker.FsmState.OnEnter += FsmState_OnEnter;
-        //}
-        //static void FsmState_OnEnter(On.HutongGames.PlayMaker.FsmState.orig_OnEnter orig, HutongGames.PlayMaker.FsmState self)
-        //{
-        //    orig(self);
-
-        //    if (string.Equals(self.Name, "Spawn Flies 2"))
-        //    {
-        //        SpawnBabies(self.Fsm.Owner.gameObject);
-        //    }
-        //}
     }
 
     public class GiantFlySpawner : DefaultSpawner<GiantFlyControl>

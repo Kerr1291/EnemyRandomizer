@@ -17,6 +17,7 @@ using Dev = Modding.Logger;
 
 namespace EnemyRandomizerMod
 {
+
     public partial class EnemyRandomizerDatabase
     {
         public static string BlockHitEffectName = "Block Hit v2";
@@ -27,6 +28,7 @@ namespace EnemyRandomizerMod
         public static Func<int> GetPlayerSeed;
         public static Func<int> GetCustomColoSeed;
         public static Func<EnemyRandomizerDatabase> GetDatabase;
+        public static Func<EnemyRandomizerSettings> GetGlobalSettings;
         public static Func<ReactiveProperty<List<GameObject>>> GetBlackBorders;
 
         static UnityEvent<(GameObject newObject, GameObject oldObject)> onObjectReplaced;
