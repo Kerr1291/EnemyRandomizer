@@ -81,6 +81,27 @@ namespace EnemyRandomizerMod
     public class FlamebearerLargeControl : FlamebearerControl
     {
         public override int Level => 3;
+
+        public override void Setup(GameObject other)
+        {
+            base.Setup(other);
+
+            var spawnSpiral = control.GetState("Spawn Spiral");
+            spawnSpiral.AddCustomAction(() => {
+                if (GameManager.instance.playerData.grimmChildLevel <= 2)
+                {
+                    control.SendEvent("LEVEL 2");
+                }
+            });
+
+            var shootLv = control.GetState("Shoot Lv");
+            shootLv.AddCustomAction(() => {
+                if (GameManager.instance.playerData.grimmChildLevel <= 2)
+                {
+                    control.SendEvent("LEVEL 1");
+                }
+            });
+        }
     }
 
     public class FlamebearerSmallSpawner : DefaultSpawner<FlamebearerSmallControl>

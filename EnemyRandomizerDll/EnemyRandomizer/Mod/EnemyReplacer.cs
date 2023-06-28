@@ -62,6 +62,9 @@ namespace EnemyRandomizerMod
             EnemyRandomizerDatabase.ClearBypass -= EnemyRandomizer.ClearBypass;
             EnemyRandomizerDatabase.ClearBypass += EnemyRandomizer.ClearBypass;
 
+            EnemyRandomizerDatabase.GetGlobalSettings -= GetGlobalSettings;
+            EnemyRandomizerDatabase.GetGlobalSettings += GetGlobalSettings;
+
             return database.GetPreloadNames();
         }
 

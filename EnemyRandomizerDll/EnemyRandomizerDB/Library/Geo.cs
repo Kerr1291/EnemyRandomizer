@@ -97,11 +97,17 @@ namespace EnemyRandomizerMod
                     lg = value / 25;
                     rem = value % 25;
                 }
-                if(rem > 0)
+                else
+                {
+                    rem = value;
+                }
+
+                if(rem > 5)
                 {
                     med = rem / 5;
                     rem = rem % 5;
                 }
+
                 if(rem  > 0)
                 {
                     sm = rem;

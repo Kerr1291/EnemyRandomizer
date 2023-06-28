@@ -721,28 +721,27 @@ namespace EnemyRandomizerMod
             }
 
             var zone = GameManager.instance.GetCurrentMapZone();
-            int geoScale = 1;
-            if (MetaDataTypes.GeoZoneScale.TryGetValue(zone, out geoScale))
+            if (MetaDataTypes.GeoZoneScale.TryGetValue(zone, out int geoScale))
             {
                 if (originalGeo <= 0)
                 {
-                    Geo = SpawnerExtensions.GetRandomValueBetween(geoScale, geoScale * 5);
+                    Geo = SpawnerExtensions.GetRandomValueBetween(geoScale, geoScale * 5 + 1);
                 }
                 else
                 {
                     if (isBoss)
                     {
-                        Geo = SpawnerExtensions.GetRandomValueBetween(geoScale * 50, geoScale * 100);
+                        Geo = SpawnerExtensions.GetRandomValueBetween(geoScale * 50, geoScale * 100 + 1);
                     }
                     else
                     {
-                        Geo = SpawnerExtensions.GetRandomValueBetween(1, originalGeo * geoScale);
+                        Geo = SpawnerExtensions.GetRandomValueBetween(1, originalGeo * geoScale + 1);
                     }
                 }
             }
             else
             {
-                Geo = SpawnerExtensions.GetRandomValueBetween(1 + originalGeo, originalGeo * 2);
+                Geo = SpawnerExtensions.GetRandomValueBetween(1 + originalGeo, originalGeo * 2 + 1);
             }
         }
 

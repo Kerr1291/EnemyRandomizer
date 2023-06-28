@@ -4683,6 +4683,24 @@ namespace EnemyRandomizerMod
 
         public override string FSMName => "IK Control";
 
+        public override bool preventOutOfBoundsAfterPositioning => true;
+
+        public float customTransformMinAliveTime = 1f;
+        public float customTransformAggroRange = 6f;
+
+        protected override void CheckControlInCustomHiddenState()
+        {
+            if (customTransformMinAliveTime > 0)
+            {
+                customTransformMinAliveTime -= Time.deltaTime;
+                return;
+            }
+
+            if (gameObject.CanSeePlayer() && gameObject.DistanceToPlayer() < customTransformAggroRange)
+            {
+                base.CheckControlInCustomHiddenState();
+            }
+        }
 
         public override void Setup(GameObject other)
         {
@@ -4693,6 +4711,30 @@ namespace EnemyRandomizerMod
             var fsm = gameObject.LocateMyFSM("FSM");
             if (fsm != null)
                 GameObject.Destroy(fsm);
+
+            this.InsertHiddenState(control, "Init", "FINISHED", "Start Pause");
+
+            var startpause = control.GetState("Start Pause");
+            startpause.DisableAction(0);
+            startpause.GetAction<Wait>(1).time = 0.25f;
+
+            control.ChangeTransition("Start Pause", "FINISHED", "Spawning 1");
+
+            //fast transformation
+            {
+                var trans1 = control.GetState("Spawning 1");
+                trans1.DisableAction(0);
+                trans1.GetAction<Wait>(1).time = 0.1f;
+
+                var trans2 = control.GetState("Spawning 2");
+                trans2.GetAction<Wait>(1).time = 0.1f;
+
+                var trans3 = control.GetState("Spawning 3");
+                trans3.GetAction<Wait>(1).time = 0.1f;
+
+                var trans4 = control.GetState("Spawning 4");
+                trans4.GetAction<Wait>(1).time = 0.1f;
+            }
 
             var pause = control.GetState("Pause");
             pause.DisableAction(1);
@@ -4720,7 +4762,7 @@ namespace EnemyRandomizerMod
                 control.SendEvent("LAND"); });
 
             control.ChangeTransition("Intro Land", "FINISHED", "First Counter");
-            this.InsertHiddenState(control, "Intro Land", "FINISHED", "First Counter");
+            //this.InsertHiddenState(control, "Intro Land", "FINISHED", "First Counter");
 
             var inAir2 = control.GetState("In Air 2");
             inAir2.DisableAction(3);
@@ -4780,7 +4822,11 @@ namespace EnemyRandomizerMod
         }
     }
 
-    public class InfectedKnightSpawner : DefaultSpawner<InfectedKnightControl> { }
+    public class InfectedKnightSpawner : DefaultSpawner<InfectedKnightControl>
+    {
+        public override bool corpseRemovedByEffect => true;
+        public override string corpseRemoveEffectName => "Death Puff Med";
+    }
 
 
     public class InfectedKnightPrefabConfig : DefaultPrefabConfig { }
