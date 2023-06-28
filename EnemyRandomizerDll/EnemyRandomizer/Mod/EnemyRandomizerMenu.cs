@@ -52,6 +52,8 @@ namespace EnemyRandomizerMod
 
             var elements = new List<Element>
         {
+
+
             Blueprints.IntInputField(
                 name: "Randomizer Seed",
                 _storeValue: i => GlobalSettings.seed = i,
@@ -98,13 +100,15 @@ namespace EnemyRandomizerMod
                 loadSetting: () => GlobalSettings.UseCustomColoSeed
             ),
 
+
+
             Blueprints.HorizontalBoolOption(
                 name: "Balance Replacement HP",
                 description: "Should the randomizer try to balance the HP of the enemy it spawns? [RECOMMENDED TO KEEP ENABLED]",
                 applySetting: b =>
                 {
                     GlobalSettings.balanceReplacementHP = b;
-                    GeneralOptionsMenu.Find("balanceReplacementHP").isVisible = b;
+                    //GeneralOptionsMenu.Find("balanceReplacementHP").isVisible = b;
                     GeneralOptionsMenu.Reflow();
                 },
                 loadSetting: () => GlobalSettings.balanceReplacementHP
@@ -116,7 +120,7 @@ namespace EnemyRandomizerMod
                 applySetting: b =>
                 {
                     GlobalSettings.randomizeReplacementGeo = b;
-                    GeneralOptionsMenu.Find("randomizeReplacementGeo").isVisible = b;
+                    //GeneralOptionsMenu.Find("randomizeReplacementGeo").isVisible = b;
                     GeneralOptionsMenu.Reflow();
                 },
                 loadSetting: () => GlobalSettings.randomizeReplacementGeo
@@ -128,7 +132,7 @@ namespace EnemyRandomizerMod
                 applySetting: b =>
                 {
                     GlobalSettings.allowCustomEnemies = b;
-                    GeneralOptionsMenu.Find("allowCustomEnemies").isVisible = b;
+                    //GeneralOptionsMenu.Find("allowCustomEnemies").isVisible = b;
                     GeneralOptionsMenu.Reflow();
                 },
                 loadSetting: () => GlobalSettings.allowCustomEnemies
@@ -140,11 +144,13 @@ namespace EnemyRandomizerMod
                 applySetting: b =>
                 {
                     GlobalSettings.allowEnemyRandoExtras = b;
-                    GeneralOptionsMenu.Find("allowCustomEnemies").isVisible = b;
+                    //GeneralOptionsMenu.Find("allowRandoExtras").isVisible = b;
                     GeneralOptionsMenu.Reflow();
                 },
                 loadSetting: () => GlobalSettings.allowEnemyRandoExtras
             ),
+
+
 
 
             Blueprints.HorizontalBoolOption(
