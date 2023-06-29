@@ -16,7 +16,7 @@ Satchel: https://github.com/PrashantMohta/Satchel
 
 ## Release Installation
 
-Get via one of the mod installers like scarab: https://github.com/fifty-six/Scarab
+Get via one of the mod installers like scarab+: https://themulhima.github.io/Scarab?download 
 
 Or manually extract the zip dlls into the Mods/EnemyRandomizer folder
 
