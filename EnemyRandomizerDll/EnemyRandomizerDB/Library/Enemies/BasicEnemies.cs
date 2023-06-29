@@ -533,7 +533,7 @@ namespace EnemyRandomizerMod
         protected override void OnHit(int dmgAmount)
         {
             if(isSuperHusk)
-                gameObject.SpawnEntity("Shot Markoth Nail", true);
+                gameObject.SpawnEntity("wp_saw", true);//temporary
         }
     }
 

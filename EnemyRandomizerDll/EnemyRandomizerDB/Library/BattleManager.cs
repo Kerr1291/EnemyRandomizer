@@ -75,7 +75,7 @@ namespace EnemyRandomizerMod
             //special logic for this
             if (StateMachine != null && StateMachine.Value != null)
             {
-                if (!StateMachine.Value.battleStarted)
+                if (!StateMachine.Value.battleStarted && StateMachine.Value.useBoxToForceStart)
                 {
                     bool isColo = BattleManager.Instance.Value.gameObject.scene.name.Contains("Room_Colosseum_");
                     if (!isColo)
@@ -248,6 +248,20 @@ namespace EnemyRandomizerMod
 
         public static void StopZoteTheme()
         {
+            var musicControl2 = GameObject.Find("Atmos Cave Wind");
+            if (musicControl2 == null)
+                return;
+
+            var globalAudioSource2 = musicControl2.GetComponent<AudioSource>();
+
+            if (globalAudioSource2 != null)
+            {
+                globalAudioSource2.Stop();
+
+                var normal = globalAudioSource2.outputAudioMixerGroup.audioMixer.FindSnapshot("Silence");
+                normal.TransitionTo(1f);
+            }
+
             if (zmusic == null)
                 return;
 
@@ -267,6 +281,7 @@ namespace EnemyRandomizerMod
             if (globalAudioSource != null)
             {
                 globalAudioSource.Stop();
+
                 var normal = globalAudioSource.outputAudioMixerGroup.audioMixer.FindSnapshot("Silence");
                 normal.TransitionTo(1f);
             }
@@ -277,6 +292,7 @@ namespace EnemyRandomizerMod
             Scene currentScene = sceneObject.scene;
         }
 
+        public static bool startedZoteTheme = false;
         public static void DoSceneCheck(GameObject sceneObject)
         {
             BattleManager.DidSceneCheck = true;
@@ -351,18 +367,23 @@ namespace EnemyRandomizerMod
                 }
             }
 
-            if (EnemyRandomizerDatabase.GetGlobalSettings().allowEnemyRandoExtras)
+            try
             {
-                //allow zote theme to play on these maps
-                if (currentScene.name != "Ruins1_27"
-                    && currentScene.name != "Fungus3_50"
-                    && currentScene.name != "Room_Colosseum_Bronze"
-                    && currentScene.name != "Room_Colosseum_Silver"
-                    && currentScene.name != "Room_Colosseum_Gold")
+                if (EnemyRandomizerDatabase.GetGlobalSettings().allowEnemyRandoExtras)
                 {
-                    StopZoteTheme();
+                    //allow zote theme to play on these maps
+                    if (currentScene.name != "Ruins1_27"
+                        && currentScene.name != "Fungus3_50"
+                        && currentScene.name != "Room_Colosseum_Bronze"
+                        && currentScene.name != "Room_Colosseum_Silver"
+                        && currentScene.name != "Room_Colosseum_Gold")
+                    {
+                        if (startedZoteTheme)
+                            StopZoteTheme();
+                    }
                 }
             }
+            catch (Exception e) { Dev.LogError($"Caught exception when trying to stop the zote theme? {e.Message}\n{e.StackTrace}"); }
 
 
             //TODO: move this into a better spot for generating our custom content
@@ -371,6 +392,7 @@ namespace EnemyRandomizerMod
             {
                 if (EnemyRandomizerDatabase.GetGlobalSettings().allowEnemyRandoExtras)
                 {
+                    startedZoteTheme = true;
                     var center = GameObject.Find("_0083_fountain");
                     var back = GameObject.Find("_0082_fountain");
                     var right = GameObject.Find("_0092_fountain");
@@ -464,6 +486,7 @@ namespace EnemyRandomizerMod
             {
                 if (EnemyRandomizerDatabase.GetGlobalSettings().allowEnemyRandoExtras)
                 {
+                    startedZoteTheme = true;
                     try
                     {
                         GameObject go = new GameObject("Wall");

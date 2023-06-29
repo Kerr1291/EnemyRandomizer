@@ -46,6 +46,8 @@ namespace EnemyRandomizerMod
 
         public static int titleShowing = 0;
 
+        protected override bool emitCorpse => false;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);

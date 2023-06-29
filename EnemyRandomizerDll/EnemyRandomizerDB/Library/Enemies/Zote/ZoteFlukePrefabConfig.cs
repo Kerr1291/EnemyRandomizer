@@ -12,6 +12,10 @@ namespace EnemyRandomizerMod
 {
     public class ZoteFlukeControl : DefaultSpawnedEnemyControl
     {
+        protected override bool emitCorpse => false;
+
+        public override string spawnEntityOnDeath => "Death Puff Med";
+
         public Vector2 spawnPos;
 
         protected virtual void OnEnable()

@@ -617,6 +617,24 @@ namespace EnemyRandomizerMod
                     }
                 }
             }
+            else //skipping for logic
+            {
+                var key = loadedObjectToProcess.GetDatabaseKey();
+                if (!string.IsNullOrEmpty(key))
+                {
+                    //get the spawner
+                    var spawner = EnemyRandomizerDatabase.GetDatabase().GetSpawner(key);
+                    if (spawner != null)
+                    {
+                        //hacky fix for now
+                        if (key == "Giant Fly")
+                        {
+                            //apply the spawner's logic to this gruz mother to set it up correctly
+                            spawner.ConfigureObject(objectToModifyAndActivate, objectToSourceAndDestroy);
+                        }
+                    }
+                }
+            }
 
             //Activate and The Replacement or Loaded Object and Remove The Original============================
             objectToModifyAndActivate.FinalizeReplacement(objectToSourceAndDestroy);

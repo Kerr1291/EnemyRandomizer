@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UniRx;
 using System.Collections;
+using Modding;
 
 namespace EnemyRandomizerMod
 {
@@ -176,6 +177,8 @@ namespace EnemyRandomizerMod
 
             On.EnemyDeathEffects.EmitCorpse -= EnemyDeathEffects_EmitCorpse;
             On.EnemyDeathEffects.EmitCorpse += EnemyDeathEffects_EmitCorpse;
+
+
         }
 
         protected virtual void BeforeCorpseEmit(GameObject corpseObject, float? attackDirection, bool isWatery, bool spellBurn)
@@ -190,8 +193,16 @@ namespace EnemyRandomizerMod
 
         private void EnemyDeathEffects_EmitCorpse(On.EnemyDeathEffects.orig_EmitCorpse orig, EnemyDeathEffects self, float? attackDirection, bool isWatery, bool spellBurn)
         {
+            //this is a global hook, so only run it for the related game object
             if (gameObject != self.gameObject)
+            {
+                //Dev.Log(gameObject.GetSceneHierarchyPath() + " != " + self.gameObject.GetSceneHierarchyPath());
+                orig(self, attackDirection, isWatery, spellBurn);
                 return;
+            }
+
+            if (VERBOSE_DEBUG)
+                Dev.Log("Emitting corpse from " + self.gameObject.GetSceneHierarchyPath());
 
             GameObject corpse = null;
             try
@@ -199,14 +210,34 @@ namespace EnemyRandomizerMod
                 if (emitCorpse)
                 {
                     corpse = self.GetCorpseFromEDF();
+
+                    if (VERBOSE_DEBUG)
+                    {
+                        if (corpse != null)
+                            Dev.Log("Corpse of enemy: " + corpse.GetSceneHierarchyPath());
+                        else
+                            Dev.Log("Corpse is null -- nothing to do here");
+                    }
+
                     if (corpse != null)
                         BeforeCorpseEmit(corpse, attackDirection, isWatery, spellBurn);
+
+                    if (VERBOSE_DEBUG)
+                        Dev.Log("Invoking original emission function");
+
                     orig(self, attackDirection, isWatery, spellBurn);
+
                     if (corpse != null)
                         AfterCorpseEmit(corpse, attackDirection, isWatery, spellBurn);
+
+                    if (VERBOSE_DEBUG)
+                        Dev.Log("Finished emit corpse....");
                 }
                 else
                 {
+                    if (VERBOSE_DEBUG)
+                        Dev.Log("Corpse emission disabled for: " + self.gameObject.GetSceneHierarchyPath());
+
                     if (!isUnloading)
                         SpawnerExtensions.SpawnEntityAt("Death Puff Med", self.transform.position, null, true, false);
                 }

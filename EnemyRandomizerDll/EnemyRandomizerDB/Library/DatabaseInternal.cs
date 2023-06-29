@@ -191,6 +191,35 @@ namespace EnemyRandomizerMod
             return (IPrefabConfig)Activator.CreateInstance(configType);
         }
 
+        public ISpawner GetSpawner(string name)
+        {
+            string typeName = "EnemyRandomizerMod." + string.Join("", name.Split(' ')) + "Spawner";
+            Type spawnerType = null;
+            ISpawner spawnerTypeToUse = null;
+
+            try
+            {
+                if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                    Dev.Log($"Trying to get spawner of type {typeName}");
+                spawnerType = typeof(EnemyRandomizerDatabase).Assembly.GetType(typeName);
+            }
+            catch (Exception e)
+            {
+                Dev.LogWarning($"No spawner found for {typeName} from the EnemyRandomizerDatabase assembly.");
+            }
+
+            if (spawnerType == null)
+            {
+                if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                    Dev.Log($"No matching spawner type found for {typeName}");
+
+                return null;
+            }
+
+            spawnerTypeToUse = (ISpawner)Activator.CreateInstance(spawnerType);
+            return spawnerTypeToUse;
+        }
+
         //TODO: fix this to load types from other assemblies/namespaces/etc
         bool GetSpawner(PrefabObject p, Type defaultType, out ISpawner spawnerTypeToUse)
         {

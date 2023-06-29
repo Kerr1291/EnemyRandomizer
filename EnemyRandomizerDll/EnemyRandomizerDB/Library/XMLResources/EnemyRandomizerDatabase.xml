@@ -167,8 +167,8 @@
         <SceneObject path="Boss Puff Wave"/>
         <SceneObject path="Shockwave Spurt L Z"/>
         <SceneObject path="Shockwave Spurt Z"/>
-        <SceneObject path="Radiant Nail"/>
-        <SceneObject path="Radiant Beam R"/>
+        <!--<SceneObject path="Radiant Nail"/>-->
+        <!--<SceneObject path="Radiant Beam R"/>-->
         <SceneObject path="Shot HK Glob"/>
         <SceneObject path="Shot HK Spurt"/>
         <SceneObject path="HK Plume"/>
@@ -281,7 +281,7 @@
         <SceneObject path="Colosseum Manager/Waves/Wave 4/Colosseum Cage Small"/>        <!-- armored roller -->
         <SceneObject path="Colosseum Manager/Waves/Wave 50/Colosseum Cage Large"/>       <!-- ??? -->
         <SceneObject path="Colosseum Manager/Waves/Wave 10/Colosseum Cage Small (4)"/> <!--col grass hopper-->
-        <SceneObject path="Colosseum Manager/Waves/Wave 12/Colosseum Cage Small (4)"/> <!--mosquito-->
+        <SceneObject path="Colosseum Manager/Waves/Wave 12/Colosseum Cage Small (3)"/> <!--mosquito-->
         <SceneObject path="Colosseum Manager/Waves/Wave 6/Colosseum Cage Large"/><!-- ??? -->
         <SceneObject path="Colosseum Manager/Waves/Wave 45/Colosseum Cage Small 1"/><!--mantis heavy flyer-->
         <SceneObject path="Colosseum Manager/Waves/Wave 17/Colosseum Cage Small (2)"/><!--super spitter col-->
@@ -1080,48 +1080,40 @@
     <SceneData name="GG_Hollow_Knight">
       <sceneObjects>
         <SceneObject path="Battle Scene/HK Prime">
-          <components>HealthManager DamageHero EnemyDeathEffectsUninfected</components>
         </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Lurker">
       <sceneObjects>
         <SceneObject path="Lurker Control/Pale Lurker">
-          <components>EnemyDreamnailReaction HealthManager DamageHero EnemyDeathEffectsUninfected</components>
         </SceneObject>
         <SceneObject path="Lurker Control/Pale Lurker/Slash Ball">
-          <components>DamageHero</components>
         </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Nailmasters">
       <sceneObjects>
         <SceneObject path="Brothers/Oro">
-          <components>EnemyDreamnailReaction HealthManager DamageHero EnemyDeathEffectsUninfected</components>
         </SceneObject>
         <SceneObject path="Brothers/Mato">
-          <components>EnemyDreamnailReaction HealthManager DamageHero EnemyDeathEffectsUninfected</components>
         </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Painter">
       <sceneObjects>
         <SceneObject path="Battle Scene/Sheo Boss">
-          <components>EnemyDreamnailReaction HealthManager DamageHero EnemyDeathEffectsUninfected</components>
         </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Pipeway">
       <sceneObjects>
         <SceneObject path="Fat Fluke">
-          <components>EnemyDreamnailReaction HealthManager DamageHero EnemyDeathEffects</components>
         </SceneObject>
       </sceneObjects>
     </SceneData>
     <SceneData name="GG_Radiance">
       <sceneObjects>
         <SceneObject path="Boss Control/Absolute Radiance">
-          <components>EnemyDreamnailReaction HealthManager EnemyDeathEffectsUninfected</components>
         </SceneObject>
       </sceneObjects>
     </SceneData>
@@ -1468,8 +1460,8 @@
     <string>Flameball Nightmare Straight</string>
     <string>Shockwave Spurt L Z</string>
     <string>Shockwave Spurt Z</string>
-    <string>Radiant Nail</string>
-    <string>Radiant Beam R</string>
+    <!--<string>Radiant Nail</string>-->
+    <!--<string>Radiant Beam R</string>-->
     <string>Shot HK Glob</string>
     <string>Shot HK Spurt</string>
     <string>HK Plume</string>

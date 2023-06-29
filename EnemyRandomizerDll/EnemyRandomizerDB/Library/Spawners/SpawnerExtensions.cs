@@ -202,6 +202,48 @@ namespace EnemyRandomizerMod
             }
         }
 
+        public static void SetCorpseOnEDF(this EnemyDeathEffects edf, GameObject newCorpse, bool destroyOld = true)
+        {
+            var deathEffects = edf;
+
+            if (deathEffects == null)
+                return ;
+
+            var rootType = deathEffects.GetType();
+
+            System.Reflection.FieldInfo GetCorpseField(Type t)
+            {
+                return t.GetField("corpse", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            }
+
+            while (rootType != typeof(EnemyDeathEffects) && rootType != null)
+            {
+                if (GetCorpseField(rootType) != null)
+                    break;
+                rootType = rootType.BaseType;
+            }
+
+            if (rootType == null)
+                return ;
+
+            var corpseObject = (GameObject)GetCorpseField(rootType).GetValue(deathEffects);
+
+            GetCorpseField(rootType).SetValue(deathEffects, newCorpse);
+
+            if (corpseObject == null)
+            {
+                return ;
+            }
+            else
+            {
+                if (destroyOld)
+                {
+                    corpseObject.SafeSetActive(false);
+                    GameObject.Destroy(corpseObject);
+                }
+            }
+        }
+
         static GameObject GetCorpse<T>(this GameObject prefab)
             where T : EnemyDeathEffects
         {
@@ -1848,11 +1890,11 @@ namespace EnemyRandomizerMod
 
             if (SpawnedObjectControl.VERBOSE_DEBUG)
                 Dev.Log($"Destroying [{source.GetSceneHierarchyPath()}]");
-            if (source.name.Contains("Fly") && source.scene.name == "Crossroads_04")
-            {
-                //this seems to correctly decrement the count from the battle manager
-                BattleManager.StateMachine.Value.RegisterEnemyDeath(null);
-            }
+            //if (source.name.Contains("Fly") && source.scene.name == "Crossroads_04")
+            //{
+            //    //this seems to correctly decrement the count from the battle manager
+            //    BattleManager.StateMachine.Value.RegisterEnemyDeath(null);
+            //}
 
             if (disableObjectBeforeDestroy)
             {
@@ -3808,6 +3850,24 @@ namespace EnemyRandomizerMod
             ge.startSize = 3;
             if (customColor != null)
                 ge.startColor = customColor.Value;
+            glow.SetActive(true);
+            return ge;
+        }
+
+
+
+
+        public static ParticleSystem AddParticleEffect_ShinySparkles(this GameObject gameObject, Color? customColor = null)
+        {
+            var glow = SpawnerExtensions.SpawnEntityAt("Idle Pt", gameObject.transform.position);
+            var ge = glow.GetComponent<ParticleSystem>();
+            glow.transform.parent = gameObject.transform;
+            glow.transform.localPosition = Vector3.zero;
+            ge.simulationSpace = ParticleSystemSimulationSpace.World;
+            ge.startSize = 1;
+            if (customColor != null)
+                ge.startColor = customColor.Value;
+            //var scopy = ge.shape;
             glow.SetActive(true);
             return ge;
         }

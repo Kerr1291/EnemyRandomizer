@@ -312,7 +312,7 @@ namespace EnemyRandomizerMod
 
         public AudioSource audio;
 
-        public int chanceToSpawnSuperBossOutOf100 = 2; // -> ( 2 / 100 )
+        public int chanceToSpawnSuperBossOutOf200 = 2; // -> ( 2 / 100 )
         public bool isSuperBoss;
 
         public override string customDreamnailText => isSuperBoss ? "Destroy." : base.customDreamnailText;
@@ -325,7 +325,7 @@ namespace EnemyRandomizerMod
 
         int[] stageHP = new int[4];
 
-        public float spawnCooldown = 10f;
+        public float spawnCooldown = 20f;
         public float spawnTime = 0f;
 
         public bool skipShooting = false;
@@ -570,7 +570,7 @@ namespace EnemyRandomizerMod
 
             if (!isSuperBoss)
             {
-                isSuperBoss = SpawnerExtensions.RollProbability(out int _, chanceToSpawnSuperBossOutOf100, 100);
+                isSuperBoss = SpawnerExtensions.RollProbability(out int _, chanceToSpawnSuperBossOutOf200, 200);
             }
 
             audio = GetComponent<AudioSource>();

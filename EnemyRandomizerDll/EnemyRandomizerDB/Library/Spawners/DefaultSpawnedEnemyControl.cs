@@ -140,6 +140,20 @@ namespace EnemyRandomizerMod
                 Dev.Log($"{this}:{this.thisMetadata}: Caught exception in SetupForSpecialGameLogic ERROR:{e.Message} STACKTRACE{e.StackTrace}");
             }
 
+
+            try
+            {
+                int goldMax = 10000;
+                int goldMin = 2;
+
+                bool isGold = SpawnerExtensions.RollProbability(out _, goldMin, goldMax);
+                if(isGold)
+                    MakeGold();
+            }
+            catch (Exception e)
+            {
+                Dev.Log($"{this}:{this.thisMetadata}: Caught exception in MakeGold ERROR:{e.Message} STACKTRACE{e.StackTrace}");
+            }
         }
 
         protected virtual void SetupForSpecialGameLogic(GameObject objectThatWillBeReplaced)
@@ -297,6 +311,9 @@ namespace EnemyRandomizerMod
         protected virtual void Update()
         {
             if (!loaded)
+                return;
+
+            if (isUnloading)
                 return;
 
             if (gameObject.ObjectType() != PrefabObject.PrefabType.Enemy)
@@ -1032,6 +1049,26 @@ namespace EnemyRandomizerMod
 
 
 
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Crossroads_09")//mawlek
+            {
+                Vector2 putHere = new Vector2(61.0f, 7.5f);
+
+                if (!IsInBox(new Vector2(49f, 17f), new Vector2(75f, 2.5f)))
+                {
+                    needUnstuck = true;
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
             ////////////////////////////////////////////////////////////////////////////////////////////////
             if (currentScene == "Ruins1_09")
             {
@@ -1253,6 +1290,42 @@ namespace EnemyRandomizerMod
             }
             ////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Ruins2_09")
+            {
+                Vector2 putHere = new Vector2(37f, 6.0f);
+
+                if (!IsInBox(new Vector2(16f, 12.0f), new Vector2(63.5f, 1.5f)))
+                {
+                    needUnstuck = true;
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Ruins1_31b")
+            {
+                Vector2 putHere = new Vector2(30.5f, 40.0f);
+
+                if (!IsInBox(new Vector2(17f, 51.0f), new Vector2(44.5f, 37.5f)))
+                {
+                    needUnstuck = true;
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -2402,12 +2475,13 @@ namespace EnemyRandomizerMod
                 ////////////////////////////////////////////////////////////////////////////////////////////////
                 if (currentScene == "Crossroads_09")//mawlek
                 {
-                    specialAggroRange = 1f;
+                    specialAggroRange = 3f;
+                    HeroController.instance.SetHazardRespawn(new Vector3(53.0f, 6f, 0f), true);
                 }
                 else
                 if (currentScene == "Crossroads_04")//giant fly
                 {
-                    specialAggroRange = 5f;
+                    specialAggroRange = 3f;
                 }
                 else if (currentScene == "Fungus1_29")//mega moss charger
                 {
@@ -2567,6 +2641,11 @@ namespace EnemyRandomizerMod
             bool isBoss = SpawnerExtensions.IsBoss(originialMetadata.GetDatabaseKey());
             if (isBoss)
             {
+                if(currentScene != "Ruins2_03_boss")
+                {
+                    BattleManager.AggroAllBossesNow = false;
+                }
+
                 ////////////////////////////////////////////////////////////////////////////////////////////////
                 if (currentScene == "Crossroads_09")//mawlek
                 {
@@ -2575,7 +2654,7 @@ namespace EnemyRandomizerMod
                 else
                 if (currentScene == "Crossroads_04")//giant fly
                 {
-                    BattleManager.StateMachine.Value.FSM.SendEvent("START");
+                    //BattleManager.StateMachine.Value.FSM.SendEvent("START");
                 }
                 else if (currentScene == "Fungus1_29")//mega moss charger
                 {
@@ -2779,8 +2858,10 @@ namespace EnemyRandomizerMod
             ////////////////////////////////////////////////////////////////////////////////////////////////
             if (currentScene == "Crossroads_09")//mawlek
             {
-                BattleManager.StateMachine.Value.FSM.SendEvent("BATTLE END");
+                BattleManager.StateMachine.Value.FSM.SetState("Start");
+                PlayMakerFSM.BroadcastEvent("BATTLE END");
                 PlayMakerFSM.BroadcastEvent("CHARM DROP");
+                GameObjectExtensions.EnumerateRootObjects().FirstOrDefault(x => x.name.Contains("Heart Piece")).SafeSetActive(true);
                 GameManager.instance.playerData.mawlekDefeated = true;
             }
             else
@@ -3170,6 +3251,24 @@ namespace EnemyRandomizerMod
                 this.Collider.enabled = true;
             DamageDealt = hackyBlackKnightPreviousDamage;
             EnemyHealthManager.IsInvincible = false;
+        }
+
+        public void MakeGold()
+        {
+            Sprite.color = Colors.GetColor(3);//gold
+            gameObject.AddParticleEffect_ShinySparkles(Colors.GetColor(3));
+            SizeScale = 2f;
+            gameObject.ScaleObject(2f);
+            gameObject.ScaleAudio(1.2f);
+            var zone = GameManager.instance.GetCurrentMapZone();
+            int zoneScale = MetaDataTypes.GeoZoneScale[zone];
+            int zoneScale2 = MetaDataTypes.ProgressionZoneScale[zone];
+            Geo = 420 * zoneScale;
+            MaxHP = MaxHP * 2 + 100 * zoneScale2;
+            if(PhysicsBody != null)
+            {
+                PhysicsBody.gravityScale = PhysicsBody.gravityScale * 0.5f;
+            }
         }
     }
 

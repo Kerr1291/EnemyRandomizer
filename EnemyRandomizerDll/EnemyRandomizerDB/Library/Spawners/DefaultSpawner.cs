@@ -47,6 +47,13 @@ namespace EnemyRandomizerMod
             if (gameObject == null)
                 return null;
 
+            ConfigureObject(gameObject, objectToReplace);
+
+            return gameObject;
+        }
+
+        public void ConfigureObject(GameObject gameObject, GameObject objectToReplace)
+        {
             //format the name cleanly (remove the (clone) part)
             gameObject.name = EnemyRandomizerDatabase.ToDatabaseKey(gameObject.name);
 
@@ -76,7 +83,7 @@ namespace EnemyRandomizerMod
                 spawnedControl.thisMetadata = new ObjectMetadata(gameObject);
                 spawnedControl.Setup(objectToReplace);
             }
-            else if(gameObject.CheckIfIsCustomArenaCageType())
+            else if (gameObject.CheckIfIsCustomArenaCageType())
             {
                 if (gameObject.GetComponent<SpawnedObjectControl>() != null)
                 {
@@ -84,7 +91,7 @@ namespace EnemyRandomizerMod
                 }
 
                 var spawnedControl = gameObject.AddComponent<SpawnedObjectControl>();
-                
+
                 spawnedControl.thisMetadata = new ObjectMetadata(gameObject);
                 spawnedControl.Setup(objectToReplace);
             }
@@ -97,8 +104,6 @@ namespace EnemyRandomizerMod
 
                 SetupSpawnedObject(controller);
             }
-
-            return gameObject;
         }
 
         /// <summary>

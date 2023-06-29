@@ -474,7 +474,7 @@ namespace EnemyRandomizerMod
             {"Colosseum_Armoured_Mosquito", 0.5f},
             {"Spitter", 0.5f},
             {"Moss Flyer", 1f},
-            {"Zoteling Buzzer", 0.25f},
+            //{"Zoteling Buzzer", 0.25f},
             {"Hornet Boss 1", 0.5f},
             {"Fluke Fly", 0.5f},
             {"Bee Hatchling Ambient", 0.5f},
@@ -975,7 +975,7 @@ namespace EnemyRandomizerMod
             {"Dream Mage Lord Phase2", "DreamMageLordPhase2"},
             {"Lost Kin", "LostKin"},
             {"Zoteling", "Zoteling"},
-            {"Zoteling Buzzer", "ZotelingBuzzer"},
+            //{"Zoteling Buzzer", "ZotelingBuzzer"},
             {"Zoteling Hopper", "ZotelingHopper"},
             {"Zote Balloon", "ZoteBalloon"},
             {"Grey Prince", "GreyPrince"},
@@ -1409,7 +1409,7 @@ namespace EnemyRandomizerMod
             {"False Knight Dream", false},
             {"Lost Kin", true},
             {"Zoteling", true},
-            {"Zoteling Buzzer", true},
+            //{"Zoteling Buzzer", true},
             {"Grey Prince", true},
             {"Pale Lurker", true},
             {"Fat Fluke", true},
@@ -1434,30 +1434,32 @@ namespace EnemyRandomizerMod
             {"Zombie Spider 2", false},//sometimes spawns inside spikes or floors where it won't wake up
             {"Zombie Spider 1", false},//sometimes spawns inside spikes or floors where it won't wake up
             {"Plant Trap", false}, //spawns floating too much, can be hard to find
+            
+            //test these after fixes
+            {"Hive Knight", true},//not spawning
+            {"Grimm Boss", true},//teleports into walls
+            {"Nightmare Grimm Boss", true},//stuck on spawn -- still steals HUD -- death doesn't delete
+            {"Hollow Knight Boss", true},//fell through world
+            {"HK Prime", true},//didn't spawn
+            {"Absolute Radiance", true},//nullref
+            {"Sly Boss", true},//didn't die
+            {"Ghost Warrior Hu", true},
+            {"Infected Knight", true},//didn't spawn
 
             //these could go into the arena pool after they're fixed
-            {"Hive Knight", false},//not spawning
-            {"Grimm Boss", false},//teleports into walls
-            {"Nightmare Grimm Boss", false},//stuck on spawn -- still steals HUD -- death doesn't delete
+            {"Radiance", false},
             {"Dream Mage Lord", false},
             {"Dream Mage Lord Phase2", false},
-            {"Radiance", false},
-            {"Hollow Knight Boss", false},//fell through world
-            {"HK Prime", false},//didn't spawn
             {"Oro", false},//didn't delete
             {"Mato", false},//didn't activate or die
             {"Sheo Boss", false},//didn't die
-            {"Absolute Radiance", false},//nullref
-            {"Sly Boss", false},//didn't die
             {"Zote Fluke", false},//add poob
             {"Ordeal Zoteling", false},
-            {"Bee Dropper", false}, //needs some starting velocity, a collider so it can be hit?, and POOB component
-            {"Ghost Warrior Hu", false},
+            {"Bee Dropper", false}, //needs some starting velocity, a collider so it can be hit?, and POOB component            
             {"Mega Jellyfish", false},
             {"Ghost Warrior Xero", false},//killing caused nullrefs
             {"Zombie Beam Miner Rematch", false},
             {"Ghost Warrior Markoth", false},
-            {"Infected Knight", false},//didn't spawn
             {"Dung Defender", false},
             {"Jellyfish GG", false},
             {"White Defender", false},//error on spawn
@@ -1608,7 +1610,7 @@ namespace EnemyRandomizerMod
             {"Zote Boss", 0.35f},
 
             {"Zoteling", 0.25f},
-            {"Zoteling Buzzer", 0.15f},
+            //{"Zoteling Buzzer", 0.15f},
             {"Zoteling Hopper", 0.15f},
             {"Zote Balloon", 0.1f},
 
@@ -1644,8 +1646,8 @@ namespace EnemyRandomizerMod
             {"Mato", 0.1f},//didn't activate or die
             {"Sheo Boss", 0.1f},//didn't die
 
-            {"Hollow Knight Boss", 0.05f},//fell through world
-            {"HK Prime", 0.01f},//didn't spawn
+            {"Hollow Knight Boss", 0.005f},//fell through world
+            {"HK Prime", 0.05f},//didn't spawn
             
             {"Radiance", 0.001f},
             {"Absolute Radiance", 0.001f},//nullref
@@ -1679,7 +1681,7 @@ namespace EnemyRandomizerMod
             {"Bee Hatchling Ambient", 0.4f},
             {"Bee Stinger", 0.3f},
             {"Big Bee", 0.25f},
-            {"Lost Kin", 0.5f},
+            {"Lost Kin", 0.25f},
 
             {"Grimm Boss", 0.1f},//teleports into walls
             {"Nightmare Grimm Boss", 0.05f},//stuck on spawn -- still steals HUD -- death doesn't delete
@@ -1730,7 +1732,7 @@ namespace EnemyRandomizerMod
             {"Mines Crawler", 0.7f},
             {"Spider Mini", 0.9f},
             {"Centipede Hatcher", 0.3f},
-            {"Mimic Spider", 0.2f},//nullref
+            {"Mimic Spider", 0.25f},//nullref
             {"Slash Spider", 0.5f},
             {"Spider Flyer", 0.7f},
             {"Blow Fly", 0.5f},
@@ -1745,7 +1747,7 @@ namespace EnemyRandomizerMod
             {"Grey Prince", 0.1f},
             {"Pale Lurker", 0.2f},
             {"Fat Fluke", 0.7f},
-            {"Sly Boss", 0.01f},//didn't die
+            {"Sly Boss", 0.05f},//didn't die
             {"Hornet Nosk", 0.1f},
             {"Mace Head Bug", 0.1f},
             {"Big Centipede", 0.1f},
@@ -1843,7 +1845,7 @@ namespace EnemyRandomizerMod
             {"Zote Boss", 0.5f},// still has white screen issue?
 
             {"Zoteling", 0.25f},
-            {"Zoteling Buzzer", 0.25f},
+            //{"Zoteling Buzzer", 0.25f},
             {"Zoteling Hopper", 0.25f},
             //{"Ordeal Zoteling", 0.25f},
 

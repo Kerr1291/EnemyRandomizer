@@ -11,6 +11,10 @@ namespace EnemyRandomizerMod
     {
         public float startYPos;
 
+        protected override bool emitCorpse => false;
+
+        public override string spawnEntityOnDeath => "Death Puff Med";
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);

@@ -12,6 +12,8 @@ namespace EnemyRandomizerMod
     {
         GameObject Spawn(PrefabObject prefabToSpawn, GameObject objectToReplace);
 
+        void ConfigureObject(GameObject newlySpawnedObject, GameObject objectToReplace);
+
         DefaultSpawnedEnemyControl AddController(GameObject newlySpawnedObject);
 
         void SetupSpawnedObject(DefaultSpawnedEnemyControl newlySpawnedObject);
