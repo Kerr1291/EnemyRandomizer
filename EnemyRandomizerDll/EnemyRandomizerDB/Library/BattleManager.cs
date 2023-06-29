@@ -258,8 +258,12 @@ namespace EnemyRandomizerMod
             {
                 globalAudioSource2.Stop();
 
-                var normal = globalAudioSource2.outputAudioMixerGroup.audioMixer.FindSnapshot("Silence");
-                normal.TransitionTo(1f);
+                if (globalAudioSource2.outputAudioMixerGroup != null && globalAudioSource2.outputAudioMixerGroup.audioMixer != null)
+                {
+                    var normal = globalAudioSource2.outputAudioMixerGroup.audioMixer.FindSnapshot("Silence");
+                    if(normal != null)
+                        normal.TransitionTo(1f);
+                }
             }
 
             if (zmusic == null)
@@ -384,6 +388,16 @@ namespace EnemyRandomizerMod
                 }
             }
             catch (Exception e) { Dev.LogError($"Caught exception when trying to stop the zote theme? {e.Message}\n{e.StackTrace}"); }
+
+
+            if(currentScene.name == "Fungus1_20_v02" || currentScene.name == "Fungus1_32")
+            {
+                //prevent zote dead in enemy rando
+                if(GameManager.instance.playerData.zoteDead)
+                {
+                    GameManager.instance.playerData.zoteDead = false;
+                }
+            }
 
 
             //TODO: move this into a better spot for generating our custom content

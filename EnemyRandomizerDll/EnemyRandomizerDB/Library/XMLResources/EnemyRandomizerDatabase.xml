@@ -828,6 +828,12 @@
         <SceneObject path="Laser Turret Mega" />
       </sceneObjects>
     </SceneData>
+    <SceneData name="Mines_37">
+      <sceneObjects>
+        <SceneObject path="stomper_offset (3)" />
+        <SceneObject path="stomper_fast" />
+      </sceneObjects>
+    </SceneData>
     <SceneData name="Deepnest_03">
       <sceneObjects>
         <SceneObject path="Zombie Hornhead Sp (4)" />
@@ -1411,8 +1417,12 @@
     <string>Abyss Tendrils</string>
     <string>Bee Dropper</string>
     <string>Zoteling Buzzer</string>
+    <string>stomper_offset</string>
+    <string>stomper_fast</string>
   </enemyNames>
   <hazardNames>
+    <string>stomper_offset</string>
+    <string>stomper_fast</string>
     <string>Shot GladiatorSickle</string>
     <string>Mage Orb</string>
     <string>Barb Region</string>
@@ -1713,5 +1723,7 @@
     <string>Arena Cage Zote</string>
     <string>Zote Music</string>
     <string>Tiso Boss</string>
+    <string>stomper_offset</string>
+    <string>stomper_fast</string>
   </otherNames>
 </EnemyRandomizerDatabase>

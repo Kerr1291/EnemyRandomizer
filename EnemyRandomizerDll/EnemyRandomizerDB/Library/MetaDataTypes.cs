@@ -100,6 +100,8 @@ namespace EnemyRandomizerMod
             "Abyss Crawler",
             "Abyss Tendrils",
             "Big Centipede",
+            "stomper_offset",
+            "stomper_fast",
             };
 
         public static List<string> Static = new List<string>() {
@@ -125,6 +127,8 @@ namespace EnemyRandomizerMod
             "Big Centipede",
             "Jelly Egg Bomb",
             "Zap Cloud",
+            "stomper_offset",
+            "stomper_fast",
             };
 
         public static List<string> Flying = new List<string>() {
@@ -537,7 +541,9 @@ namespace EnemyRandomizerMod
             "Mimic Spider",
             "Jelly Egg Bomb",
             "Zap Cloud",
-            "Mega Moss Charger"
+            "Mega Moss Charger",
+            "stomper_offset",
+            "stomper_fast",
         };
 
         public static List<string> InGroundEnemy = new List<string>()
@@ -549,7 +555,7 @@ namespace EnemyRandomizerMod
             "Moss Charger",
             "Zote Turret",
             "Laser Turret Frames",
-            "Mega Moss Charger"
+            "Mega Moss Charger",
         };
 
         public static List<string> RandoControlledPooling = new List<string>()
@@ -1004,7 +1010,9 @@ namespace EnemyRandomizerMod
             {"Laser Turret Frames", "LaserBug"},
             {"Jelly Egg Bomb", "JellyEggBomb"},
             {"Worm", "ColWorm"},
-            {"Bee Dropper", "Pigeon"}
+            {"Bee Dropper", "Pigeon"},
+            {"stomper_offset", "BigCentipede" },
+            {"stomper_fast", "BigCentipede" }
         };
 
         public static Dictionary<string, bool> GoodForArenaBoss = new Dictionary<string, bool>()
@@ -1494,6 +1502,8 @@ namespace EnemyRandomizerMod
             
             //{"Grub Mimic Bottle", false},
             {"Mage Orb", false },
+            {"stomper_offset", false },
+            {"stomper_fast", false },
             
             //these are junk enemies, duplicates, or not enemies; never spawn these
             {"Hatcher Baby", false},
@@ -1523,7 +1533,7 @@ namespace EnemyRandomizerMod
 
         public static Dictionary<string, float> RNGWeights = new Dictionary<string, float>()
         {
-            {"Health Scuttler", 0.001f},
+            {"Health Scuttler", 0.01f},
             {"Abyss Tendrils", 0.01f},
             {"Orange Scuttler", 0.01f},
 
@@ -1749,12 +1759,14 @@ namespace EnemyRandomizerMod
             {"Fat Fluke", 0.7f},
             {"Sly Boss", 0.05f},//didn't die
             {"Hornet Nosk", 0.1f},
-            {"Mace Head Bug", 0.1f},
+            {"Mace Head Bug", 0.01f},
             {"Big Centipede", 0.1f},
             {"Laser Turret Frames", 0.25f},//nullref
             {"Jelly Egg Bomb", 0.25f},//not loaded?
             {"Zap Cloud", 0.25f},
             {"Worm", 0.5f}, //need flipped
+            {"stomper_offset", 0.05f },
+            {"stomper_fast", 0.05f },
             {"Zombie Spider 1", 0.5f},//didn't spawn
             {"Colosseum_Worm", 0.4f},
             

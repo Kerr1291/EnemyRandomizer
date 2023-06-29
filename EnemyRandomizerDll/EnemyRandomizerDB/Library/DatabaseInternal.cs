@@ -32,6 +32,16 @@ namespace EnemyRandomizerMod
         {
             PrefabObject prefabObject = null;
 
+            if(DEBUG_VERBOSE_SPAWNER_ERRORS)
+            {
+                Dev.LogError("Creating prefab object for " + name + " using " + go);
+            }
+
+            if(s == null)
+            {
+                Dev.LogError("NULL SCENE OBJECT! THIS SHOULD NEVER HAPPEN!");
+            }
+
             if (s.Loaded)
             {
                 if (DEBUG_VERBOSE_SPAWNER_ERRORS)
@@ -40,9 +50,20 @@ namespace EnemyRandomizerMod
             }
 
             string typeName = ToDatabaseKey(name);
+
+            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+            {
+                Dev.LogError("Database key for " + name + " is " + typeName);
+            }
+
             if (!string.IsNullOrEmpty(s.customTypeName))
             {
                 typeName = s.customTypeName;
+            }
+
+            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+            {
+                Dev.LogError("Next, creating prefab object for " + name + " using type " + typeName + " does this have a custom type?: "+s.customTypeName);
             }
 
             var config = GetPrefabConfig(typeName, typeof(DefaultPrefabConfig));
@@ -50,7 +71,7 @@ namespace EnemyRandomizerMod
             if (config != null)
             {
                 if (DEBUG_VERBOSE_SPAWNER_ERRORS)
-                    Dev.Log($"[{s.Scene.name}] {s.path} = {config.GetType()} - Running Setup");
+                    Dev.Log($"[{s.Scene.name}] {s.path} = {config.GetType()} - Creating PrefabObject");
 
                 prefabObject = new PrefabObject()
                 {
@@ -60,6 +81,9 @@ namespace EnemyRandomizerMod
                 };
 
                 config.SetupPrefab(prefabObject);
+
+                if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                    Dev.Log($"[{s.Scene.name}] {s.path} = {config.GetType()} - Setup was run on the PrefabObject {prefabObject}");
 
                 if (prefabObject.prefab == null)
                 {
@@ -149,7 +173,20 @@ namespace EnemyRandomizerMod
 
         IPrefabConfig GetPrefabConfig(string prefabConfigNameToUse, Type defaultType = null)
         {
-            string typeName = "EnemyRandomizerMod." + string.Join("",prefabConfigNameToUse.Split(' ')) + "PrefabConfig";
+            string typeName = null;
+
+            if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                Dev.Log("Building name for prefab config type " + prefabConfigNameToUse);
+
+            try
+            {
+                typeName = "EnemyRandomizerMod." + string.Join("", prefabConfigNameToUse.Split(' ')) + "PrefabConfig";
+            }
+            catch (Exception e)
+            {
+                Dev.LogError($"Caught unhandled exception in GetPrefabConfig() building the type name");
+            }
+
             Type configType = null;
 
             if (DEBUG_VERBOSE_SPAWNER_ERRORS)
@@ -161,34 +198,61 @@ namespace EnemyRandomizerMod
             }
             catch (Exception e)
             {
+                Dev.LogError($"Caught unhandled exception in GetPrefabConfig() getting the type name");
             }
 
-            if (configType == null)
+            try
             {
-                if (DEBUG_VERBOSE_SPAWNER_ERRORS)
-                    Dev.LogWarning($"Cannot find prefab config with type {typeName} in the database assembly");
-            }
-            else
-            {
-                if (!typeof(IPrefabConfig).IsAssignableFrom(configType))
+                if (configType == null)
                 {
-                    Dev.LogError($"configType given is not an IPrefabConfig: {configType}");
-                    return null;
+                    if (DEBUG_VERBOSE_SPAWNER_ERRORS)
+                        Dev.LogWarning($"Cannot find prefab config with type {typeName} in the database assembly");
+                }
+                else
+                {
+                    if (!typeof(IPrefabConfig).IsAssignableFrom(configType))
+                    {
+                        Dev.LogError($"configType given is not an IPrefabConfig: {configType}");
+                        return null;
+                    }
                 }
             }
-
-            if (configType == null && defaultType != null)
+            catch (Exception e)
             {
-                if (!typeof(IPrefabConfig).IsAssignableFrom(defaultType))
-                {
-                    Dev.LogError($"Default configType given is not an IPrefabConfig: {defaultType}");
-                    return null;
-                }
-
-                configType = defaultType;
+                Dev.LogError($"Caught unhandled exception in GetPrefabConfig() checking the type name");
             }
 
-            return (IPrefabConfig)Activator.CreateInstance(configType);
+
+            try
+            {
+                if (configType == null && defaultType != null)
+                {
+                    if (!typeof(IPrefabConfig).IsAssignableFrom(defaultType))
+                    {
+                        Dev.LogError($"Default configType given is not an IPrefabConfig: {defaultType}");
+                        return null;
+                    }
+
+                    configType = defaultType;
+                }
+            }
+            catch (Exception e)
+            {
+                Dev.LogError($"Caught unhandled exception in GetPrefabConfig() getting the default type name");
+            }
+
+            IPrefabConfig result = null;
+
+            try
+            {
+                result = (IPrefabConfig)Activator.CreateInstance(configType);
+            }
+            catch (Exception e)
+            {
+                Dev.LogError($"Caught unhandled exception in GetPrefabConfig() building the prefab config instance");
+            }
+
+            return result;
         }
 
         public ISpawner GetSpawner(string name)
@@ -330,20 +394,20 @@ namespace EnemyRandomizerMod
                 return str;
         }
 
-        public static List<System.Type> dataBaseObjectComponents = new List<System.Type>()
-        {
-            typeof(EnemyDreamnailReaction),
-            typeof(HealthManager),
-            typeof(DamageHero),
-            typeof(EnemyDeathEffects),
-            typeof(DamageEnemies),
-            typeof(ParticleSystem),
-        };
+        //public static List<System.Type> dataBaseObjectComponents = new List<System.Type>()
+        //{
+        //    typeof(EnemyDreamnailReaction),
+        //    typeof(HealthManager),
+        //    typeof(DamageHero),
+        //    typeof(EnemyDeathEffects),
+        //    typeof(DamageEnemies),
+        //    typeof(ParticleSystem),
+        //};
 
-        static List<System.Type> excludedComponents = new List<System.Type>()
-        {
-            typeof(TMPro.TextMeshPro),
-        };
+        //static List<System.Type> excludedComponents = new List<System.Type>()
+        //{
+        //    typeof(TMPro.TextMeshPro),
+        //};
 
         static List<string> garbageValues = new List<string>()
         {
@@ -399,6 +463,7 @@ namespace EnemyRandomizerMod
             {"_0092_fountain (1)", "_0092_fountain_1"},
             {"Giant Fly Col", "Giant Fly" },
             {"Big Centipede Col", "Big Centipede" },
+            {"Mace Head Bug", "Mace Head Bug" },
         };
 
         static List<string> keysEndingWithASpecialCharacter = new List<string>()

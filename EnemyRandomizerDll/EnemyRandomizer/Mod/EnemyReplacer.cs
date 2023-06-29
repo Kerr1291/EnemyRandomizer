@@ -853,6 +853,9 @@ namespace EnemyRandomizerMod
             {
                 if (VERBOSE_LOGGING)
                     Dev.LogWarning($"[{debugHeader}]: The object cannot be processed yet...");
+
+
+
                 yield return new WaitUntil(() => loadedObjectToProcess == null || !loadedObjectToProcess.IsValid() || loadedObjectToProcess.CanProcessObject());
             }
 
@@ -1025,6 +1028,12 @@ namespace EnemyRandomizerMod
             try
             {
                 result = loadedObjectToProcess.SkipForLogic();
+
+                //TODO: this scene requires some specific pogo fixes that need to be implemented sometime
+                if(loadedObjectToProcess != null && loadedObjectToProcess.SceneName() == "Deepnest_38")
+                {
+                    return true;
+                }
             }
             catch (Exception e)
             {

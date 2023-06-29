@@ -253,6 +253,13 @@ namespace EnemyRandomizerMod
                             UnlockCameras(GetCameraLocksFromScene(FSM.gameObject));
                     }
 
+
+                    if (SceneName == "Ruins3_10")
+                    {
+                        if (FSM != null)
+                            UnlockCameras(GetCameraLocksFromScene(FSM.gameObject));
+                    }
+
                     if (SpawnedObjectControl.VERBOSE_DEBUG)
                         Dev.Log("WATCHDOG CANCELED");
                     yield break;

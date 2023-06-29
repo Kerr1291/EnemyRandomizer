@@ -893,11 +893,28 @@ namespace EnemyRandomizerMod
             ////////////////////////////////////////////////////////////////////////////////////////////////
             if (currentScene == "Crossroads_01")
             {
-                Vector2 putHere = new Vector2(52.5f, 18f);
+                Vector2 putHere = new Vector2(58.5f, 12f);
 
                 if (IsInBox(new Vector2(6f, 10f), new Vector2(12f, 8f)))
                 {
                     putHere = new Vector2(10f, 12f);
+                    needUnstuck = true;
+                }
+
+
+                if (IsInBox(new Vector2(0f, 2.5f), new Vector2(36f, 0f)))
+                {
+                    putHere = new Vector2(9.5f, 12.5f);
+                    needUnstuck = true;
+                }
+
+                if (transform.position.x < 0f)
+                {
+                    needUnstuck = true;
+                }
+
+                if (transform.position.x > 100f)
+                {
                     needUnstuck = true;
                 }
 
@@ -1188,6 +1205,67 @@ namespace EnemyRandomizerMod
                     fixedPos = putHere;
             }
             ////////////////////////////////////////////////////////////////////////////////////////////////
+            ///
+
+
+
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Deepnest_30") //long fall after deepnest spike maze
+            {
+                Vector2 putHere = new Vector2(32f, 155f);
+
+                if (transform.position.y > 157f)
+                {
+                    needUnstuck = true;
+                }
+
+                if (transform.position.y < 65f)
+                {
+                    putHere = new Vector2(55.5f, 100f);
+                    needUnstuck = true;
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Deepnest_37") //garpede dodging scene
+            {
+                Vector2 putHere = new Vector2(25, 15f);
+
+                if (transform.position.x < 5f)
+                {
+                    putHere = new Vector2(8f, 22f);
+                    needUnstuck = true;
+                }
+                else if(transform.position.x > 77f)
+                {
+                    putHere = new Vector2(76f, 11f);
+                    needUnstuck = true;
+                }
+                else if(transform.position.y > 30f)
+                {
+                    putHere = new Vector2(43f, 17f);
+                    needUnstuck = true;
+                }
+                else if (transform.position.y < 1f)
+                {
+                    putHere = new Vector2(47f, 4.5f);
+                    needUnstuck = true;
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -1326,6 +1404,76 @@ namespace EnemyRandomizerMod
                     fixedPos = putHere;
             }
             ////////////////////////////////////////////////////////////////////////////////////////////////
+            ///
+
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Fungus1_31")
+            {
+                Vector2 putHere = new Vector2(22f, 20.0f);
+
+                if (transform.position.y < 0f
+                    || transform.position.x < -1f
+                    || transform.position.x > 37f
+                    )
+                {
+                    needUnstuck = true;
+                }
+
+                if (IsInBox(new Vector2(25f, 82.0f), new Vector2(27.0f, 76.0f)))
+                {
+                    needUnstuck = true;
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            ///
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Fungus1_22")
+            {
+                Vector2 putHere = new Vector2(22f, 35.0f);
+
+                if (transform.position.y < 0f
+                    || transform.position.x < -1f
+                    || transform.position.x > 35f
+                    )
+                {
+                    needUnstuck = true;
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            ///
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Fungus3_48")
+            {
+                Vector2 putHere = new Vector2(8f, 9.0f);
+
+                if (transform.position.x < 3f)
+                {
+                    putHere = new Vector2(15f, 96.0f);
+                    needUnstuck = true;
+                }
+
+                if (transform.position.y < 0f
+                    )
+                {
+                    needUnstuck = true;
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -1356,6 +1504,87 @@ namespace EnemyRandomizerMod
                 else if (IsInBox(new Vector2(10.5f, 55.5f), new Vector2(20f, 52.5f)))
                 {
                     putHere = new Vector2(20f, 48f);
+                    needUnstuck = true;
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            ///
+
+
+
+
+
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Mines_37")
+            {
+                Vector2 putHere = new Vector2(37f, 15f);
+
+                if (transform.position.y > 65f || transform.position.y < 1f ||
+                    transform.position.x > 75f || transform.position.x < 0f)
+                {
+                    needUnstuck = true;
+                }
+                else if (IsInBox(new Vector2(40f, 52f), new Vector2(76f, 19f)))
+                {
+                    putHere = new Vector2(58f, 16f);
+                    needUnstuck = true;
+                }
+                else if (IsInBox(new Vector2(16f, 28.5f), new Vector2(19f, 26.5f)))
+                {
+                    putHere = new Vector2(12f, 26f);
+                    needUnstuck = true;
+                }
+                else if (IsInBox(new Vector2(5f, 13.5f), new Vector2(67f, 8f)))
+                {
+                    putHere = new Vector2(transform.position.x, 5f);
+                    needUnstuck = true;
+                }
+                else if (IsInBox(new Vector2(0f, 22f), new Vector2(22f, 18f)))
+                {
+                    putHere = new Vector2(6f, 15.5f);
+                    needUnstuck = true;
+                }
+
+                if (needUnstuck)
+                    fixedPos = putHere;
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            if (currentScene == "Fungus1_01b")
+            {
+                Vector2 putHere = new Vector2(22f, 7.5f);
+
+                if (transform.position.y < 4.5f)
+                {
+                    putHere = new Vector2(transform.position.x, 7.5f);
+                    needUnstuck = true;
+                }
+                else if (transform.position.x < 1f || transform.position.x > 44f)
+                {
+                    needUnstuck = true;
+                }
+                else if (IsInBox(new Vector2(18f, 17f), new Vector2(29f, 12f)))
+                {
+                    putHere = new Vector2(22f, 21f);
+                    needUnstuck = true;
+                }
+                else if (IsInBox(new Vector2(18f, 30f), new Vector2(31.5f, 27f)))
+                {
+                    putHere = new Vector2(22f, 34f);
                     needUnstuck = true;
                 }
 
@@ -2942,10 +3171,17 @@ namespace EnemyRandomizerMod
             }
             else if (currentScene == "Fungus1_04_boss" || currentScene == "Fungus1_04")//hornet 1
             {
-                PlayMakerFSM.BroadcastEvent("HORNET KILLED");
+                try
+                {
+                    PlayMakerFSM.BroadcastEvent("HORNET KILLED");
+                    BattleManager.SilenceMusic();
+                }
+                catch(Exception e)
+                {
+                    Dev.LogError("Error broadcasting hornet killed and then turning off hornet battle music via BattleManager.SilenceMusic()\n");
+                }
 
-                BattleManager.SilenceMusic();
-
+                try
                 {
                     var cc = GameObject.Find("Cloak Corpse");
                     if (cc != null)
@@ -2954,7 +3190,12 @@ namespace EnemyRandomizerMod
                         fsm.SendEvent("HORNET LEAVE");
                     }
                 }
+                catch (Exception e)
+                {
+                    Dev.LogError("Error sending HORNET LEAVE\n");
+                }
 
+                try
                 {
                     var cc = GameObject.Find("Dreamer Scene 1");
                     if (cc != null)
@@ -2963,10 +3204,21 @@ namespace EnemyRandomizerMod
                         cc.GetComponent<Collider2D>().enabled = true;
                     }
                 }
+                catch (Exception e)
+                {
+                    Dev.LogError("Error activating dreamer scene\n");
+                }
 
-                GameManager.instance.StoryRecord_defeated("Hornet in Greenpath");
-                GameManager.instance.playerData.hornet1Defeated = true;
-                BattleStateMachine.OpenGates(false);
+                try
+                {
+                    GameManager.instance.StoryRecord_defeated("Hornet in Greenpath");
+                    GameManager.instance.playerData.hornet1Defeated = true;
+                    BattleStateMachine.OpenGates(false);
+                }
+                catch (Exception e)
+                {
+                    Dev.LogError("Error logging hornet1defeated and opening gates after battle\n");
+                }
             }
             else if (currentScene == "Deepnest_East_Hornet_boss" || currentScene == "Deepnest_East_Hornet")//
             {

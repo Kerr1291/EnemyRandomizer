@@ -14,6 +14,34 @@ namespace EnemyRandomizerMod
 {
 
 
+    /////////////////////////////////////////////////////////////////////////////
+    ///// 
+    public class stomper_offsetControl : DefaultSpawnedEnemyControl
+    {
+    }
+
+    public class stomper_offsetSpawner : DefaultSpawner<stomper_offsetControl> { }
+
+    public class stomper_offsetPrefabConfig : DefaultPrefabConfig { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    ///// 
+    public class stomper_fastControl : DefaultSpawnedEnemyControl
+    {
+    }
+
+    public class stomper_fastSpawner : DefaultSpawner<stomper_fastControl> { }
+
+    public class stomper_fastPrefabConfig : DefaultPrefabConfig { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
 
 
     /////////////////////////////////////////////////////////////////////////////
@@ -125,6 +153,36 @@ namespace EnemyRandomizerMod
     /////
     //////////////////////////////////////////////////////////////////////////////
 
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class AbyssTendrilsControl : DefaultSpawnedEnemyControl
+    {
+    }
+
+    public class AbyssTendrilsSpawner : DefaultSpawner<AbyssTendrilsControl> { }
+
+    public class AbyssTendrilsPrefabConfig : DefaultPrefabConfig { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    /////
+    public class MaceHeadBugControl : DefaultSpawnedEnemyControl
+    {
+    }
+
+    public class MaceHeadBugSpawner : DefaultSpawner<MaceHeadBugControl> { }
+
+    public class MaceHeadBugPrefabConfig : DefaultPrefabConfig { }
+    /////
+    //////////////////////////////////////////////////////////////////////////////
 
 
 

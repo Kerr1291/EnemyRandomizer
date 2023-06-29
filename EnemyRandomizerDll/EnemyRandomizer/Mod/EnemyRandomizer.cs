@@ -101,7 +101,7 @@ namespace EnemyRandomizerMod
         public EnemyRandomizerPlayerSettings OnSaveLocal() => PlayerSettings;
 
         const string defaultDatabaseFilePath = "EnemyRandomizerDatabase.xml";
-        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9.2.3]";
+        static string currentVersionPrefix = Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + "[Alpha 9.2.4]";
         static string currentVersion = currentVersionPrefix;
             //Assembly.GetAssembly(typeof(EnemyRandomizer)).GetName().Version.ToString() + $" CURRENT SEED:[{GlobalSettings.seed}] -- TO CHANGE SEED --> MODS > ENEMY RANDOMIZER > ENEMY RANDOMIZER MODULES";
 
@@ -369,6 +369,11 @@ namespace EnemyRandomizerMod
                 {
                     //test.....
                     RandomizeEnemy(obj);
+                }
+                else if (obj != null && obj.name.Contains("mines_stomper") && obj.transform.parent != null && obj.transform.parent.gameObject.GetComponent<SpawnedObjectControl>() == null && ObjectMetadata.Get(obj.transform.parent.gameObject) == null)
+                {
+                    //test.....
+                    RandomizeEnemy(obj.transform.parent.gameObject);
                 }
             }
             catch (Exception e) { Dev.Log($"Caught exception in ModHooks_ColliderCreateHook :::: \n{e.Message}\n{e.StackTrace}"); }
@@ -804,6 +809,13 @@ namespace EnemyRandomizerMod
                                 f.SafeSetActive(true);
                             }
                         }, 0);                       
+                    }
+
+                    var obj = fsm.gameObject;
+                    if (obj != null && obj.name.Contains("mines_stomper") && obj.transform.parent != null && obj.transform.parent.gameObject.GetComponent<SpawnedObjectControl>() == null && ObjectMetadata.Get(obj.transform.parent.gameObject) == null)
+                    {
+                        //test.....
+                        RandomizeEnemy(obj.transform.parent.gameObject);
                     }
                 }
             }

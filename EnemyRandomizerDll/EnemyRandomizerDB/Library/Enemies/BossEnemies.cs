@@ -1776,6 +1776,8 @@ namespace EnemyRandomizerMod
 
         protected override bool emitCorpse => false;
 
+        public override float spawnPositionOffset => 1f;
+
         public override void Setup(GameObject other)
         {
             base.Setup(other);

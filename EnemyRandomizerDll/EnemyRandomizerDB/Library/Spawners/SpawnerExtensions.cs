@@ -870,6 +870,9 @@ namespace EnemyRandomizerMod
             if (gameObject.ObjectType() == PrefabObject.PrefabType.Effect)
                 return true;
 
+            if (gameObject.name.Contains("stomper"))
+                return true;
+
             return gameObject != null && gameObject.activeInHierarchy && gameObject.RenderersVisible() && gameObject.InBounds();
         }
 
