@@ -10,13 +10,23 @@ Find me here to give feedback, ideas, etc. Or use github, whichever!
 
 https://discord.gg/hollow-knight-modding-879125729936298015
 
+Example Videos: 
+
+https://drive.google.com/file/d/1G3aR5bAU5YiEFhTdPvdlg4h1eI4ieI4b/view?usp=sharing  - Crystal Peaks enemies and traps shuffled
+
+https://drive.google.com/file/d/1QuvzM5rtYydBPk1yCktoLL11vc1Ny5Dt/view?usp=sharing  - Pogo-Logic-Required enemies replaced without creating softlock
+
+https://drive.google.com/file/d/1G3BE9u_vaW1UwtanP4FpF0NTMO9famyZ/view?usp=sharing  - Replaced background enemies and music playing from speaker with zote themed fun
+
+https://drive.google.com/file/d/12t-UbXAOYYa5D3liKXn-9aRLYTVC7TXr/view?usp=sharing  - Boss replaced with a custom enemy and the custscenes and progression still function
+
 ## Dependencies
 
 Satchel: https://github.com/PrashantMohta/Satchel
 
 ## Release Installation
 
-Get via one of the mod installers like scarab: https://github.com/fifty-six/Scarab
+Get via one of the mod installers like scarab+: https://themulhima.github.io/Scarab?download 
 
 Or manually extract the zip dlls into the Mods/EnemyRandomizer folder
 
