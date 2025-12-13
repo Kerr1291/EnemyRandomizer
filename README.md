@@ -1,6 +1,7 @@
-# EnemyRandomizer
+# EnemyRandomizer 
 
 https://github.com/Kerr1291/EnemyRandomizer
+Today I typically go by a new alias, but still own this repo: Snugi  (discord: snugifox)
 
 This is a mod for [Hollow Knight](http://hollowknight.com/) that randomizes the Enemies.
 
